@@ -17,7 +17,7 @@ const Header = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [darkMode, setDarkMode] = React.useState(false);
   const [openQuick, setOpenQuick] = React.useState(false);
-  let menuRef = React.useRef();
+  let menuRef = React.useRef(null);
 
   //  default = light
   React.useEffect(() => {
@@ -48,6 +48,18 @@ const Header = () => {
   const handleQuickClose = () => {
     setOpenQuick(false);
   };
+
+  React.useEffect(() => {
+    function handleClickOutside(event) {
+      if (menuRef.current && !menuRef.current.contains(event.target)) {
+        setOpenQuick(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <>
@@ -80,17 +92,17 @@ const Header = () => {
       </div>
 
       <div
-        className={`dropdown ${openQuick ? "active" : "inactive"}  p-2 min-w-[191px] overflow-hidden rounded-xl fixed right-23 border border-gray-200 bg-light z-999 transition-all ease-in-out duration-200 transform -translate-x-1 block shadow-2xl`}
+        className={`dropdown ${openQuick ? "active" : "inactive"}  p-2 min-w-[191px] overflow-hidden rounded-xl fixed right-23 border border-gray-200 bg-light dark:bg-gray-900 z-999 transition-all ease-in-out duration-200 transform -translate-x-1 block shadow-2xl`}
         ref={menuRef}
       >
         <div className="flex justify-between items-center border-b border-gray-300 pb-1.5">
           <span className="text-xs">QUICK ADD</span>
           <button onClick={handleQuickClose}>
-            <X size={14} />
+            <X size={14} className="dark:text-light" />
           </button>
         </div>
         <div>
-          <ul className="[&>li]:text-black [&>li]:text-xs [&>li]:font-inter-regular [&>li]:py-2">
+          <ul className="[&>li]:text-black [&>li]:text-xs [&>li]:font-inter-regular [&>li]:py-2 dark:[&>li]:text-light">
             <li>
               <a href="" className="flex items-center gap-2">
                 <span className="bg-blue-300/20 rounded-full w-8 h-8 ">

@@ -6,6 +6,8 @@ import { Link } from "react-router-dom";
 import LogoLg from "../../assets/svg/LogoLg";
 import LogoSm from "../../assets/svg/LogoSm";
 import { getNavList } from "./function-nav";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { devNavUrl } from "@/config/config";
 
 const Navigation = ({ menu, submenu }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -87,18 +89,16 @@ const Navigation = ({ menu, submenu }) => {
                     ? "rounded-lg bg-primary text-secondary"
                     : "text-white hover:bg-primary hover:text-secondary rounded-lg"
                 }`;
-
                 return (
                   <div key={index} className="mb-2">
                     <Link
-                      to={item.path ? `${link}/${item.path}` : undefined}
+                      to={`${isEmptyItem(item?.path, `${devNavUrl}`)}`}
                       onMouseEnter={(e) => handleMouseEnter(e, item)}
                       onMouseLeave={handleMouseLeave}
                       onTouchStart={(e) => handleMouseEnter(e, item)}
                       className={sharedClass}
                     >
                       <span className="text-lg">{item.icon}</span>
-
                       <span
                         className={`
               text-sm whitespace-nowrap
@@ -111,13 +111,15 @@ const Navigation = ({ menu, submenu }) => {
                     </Link>
 
                     {/* SUBMENU */}
-                    {isExpanded && item.subList?.length > 0 && (
-                      <div className="ml-8 mt-1">
-                        {item.subList.map((sub, i) => (
-                          <Link
-                            key={i}
-                            to={`${link}/${sub.path}`}
-                            className={`
+                    {isExpanded &&
+                      item.subList?.length > 0 &&
+                      submenu !== "" && (
+                        <div className="ml-8 mt-1">
+                          {item.subList.map((sub, i) => (
+                            <Link
+                              key={i}
+                              to={`${link}/${sub.path}`}
+                              className={`
                   block text-xs py-1 px-2 rounded-md
                   transition-all duration-150
                   ${
@@ -126,12 +128,12 @@ const Navigation = ({ menu, submenu }) => {
                       : "text-white hover:bg-primary/40"
                   }
                 `}
-                          >
-                            {sub.name}
-                          </Link>
-                        ))}
-                      </div>
-                    )}
+                            >
+                              {sub.name}
+                            </Link>
+                          ))}
+                        </div>
+                      )}
                   </div>
                 );
               })}
