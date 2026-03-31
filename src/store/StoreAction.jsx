@@ -96,6 +96,13 @@ export const setIsSearch = (val) => {
   };
 };
 
+export const setTabValue = (val) => {
+  return {
+    type: "TAB_VALUE",
+    payload: val,
+  };
+};
+
 export const setIsSettingsOpen = (val) => {
   return {
     type: "IS_SETTINGS_OPEN",

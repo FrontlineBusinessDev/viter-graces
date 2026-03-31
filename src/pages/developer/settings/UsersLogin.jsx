@@ -1,4 +1,4 @@
-import HeaderNav from "@/layout/HeaderNav";
+import HeaderNav from "@/layout/header/HeaderNav";
 import { StoreContext } from "@/store/StoreContext";
 import { LayoutSettings } from "lucide-react";
 import React from "react";

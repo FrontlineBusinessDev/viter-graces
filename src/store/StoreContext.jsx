@@ -23,6 +23,7 @@ const initVal = {
   isDonateNowOpen: false,
   isStripeError: null,
   isNavFullShow: isMobileOrTablet ? false : true,
+  tabValue: "",
   scrollPosition: 0,
   credentials: {},
   // credentials: {

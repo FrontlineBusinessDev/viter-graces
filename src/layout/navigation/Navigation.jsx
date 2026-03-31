@@ -1,4 +1,4 @@
-import { setIsNavFullShow } from "@/store/StoreAction";
+import { setIsNavFullShow, setTabValue } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { ChevronRight, LucideLogOut } from "lucide-react";
 import React, { useRef } from "react";
@@ -33,6 +33,7 @@ const Navigation = ({ menu, submenu }) => {
     setHoverItem(item);
     setHoverText(` ${item.label}`);
     setShowHover(true);
+    dispatch(setTabValue(item?.title_tab));
 
     const rect = e.currentTarget.getBoundingClientRect();
     const navRect = navWrapperRef.current.getBoundingClientRect();

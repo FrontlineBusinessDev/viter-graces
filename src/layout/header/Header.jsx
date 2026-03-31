@@ -13,7 +13,7 @@ import {
 } from "lucide-react";
 import React from "react";
 
-const Header = () => {
+const Header = ({ menu }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [darkMode, setDarkMode] = React.useState(false);
   const [openQuick, setOpenQuick] = React.useState(false);
@@ -69,7 +69,9 @@ const Header = () => {
         } transition-all ease-in duration-200  sm:pr-6 pr-0 bg-light py-2 shadow-xs border-b border-gray-300 dark:border-gray-600 dark:bg-gray-900 sticky top-0 z-50`}
       >
         <div className="flex justify-between items-center">
-          <h2 className="text-black text-sm dark:text-light">Dashboard</h2>
+          <h2 className="text-black text-sm dark:text-light capitalize">
+            {menu}
+          </h2>
           <div className="flex items-center gap-3">
             <button className="btn--green" onClick={handleQuickOpen}>
               <Plus size={16} /> Quick Add

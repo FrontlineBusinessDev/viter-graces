@@ -167,22 +167,22 @@
     @apply bg-dark-bg dark:bg-[#090e1a];
   }
   table {
-    @apply border-collapse border-spacing-2 text-left w-full table-auto;
+    @apply text-left w-full table-auto shadow-md dark:border dark:border-[#1f2b47];
   }
   table tr:hover {
-    @apply bg-gray-100;
+    @apply bg-gray-100 dark:border-[#1f2b47]/20!;
   }
   table tr {
-    @apply border-b border-solid border-gray-300;
+    @apply border-b border-solid border-gray-200 dark:border-[#1f2b47] hover:bg-[#1f2b47]/30;
   }
   table tr.currentUser .table-action {
     @apply bg-primary/5 backdrop-opacity-100;
   }
   table th {
-    @apply font-bold bg-gray-200 py-2 px-3;
+    @apply font-bold bg-[#F6F7F9] dark:bg-[#1f2b47]/20 py-2 px-3;
   }
   table td {
-    @apply px-3 py-2;
+    @apply px-3 py-2 bg-light dark:bg-[#1f2b47]/10;
   }
   input,
   select {
@@ -227,7 +227,7 @@
 
 @layer components {
   .wrapper {
-    @apply relative min-h-[90dvh] print:pt-0 ml-10 pr-6 pl-4 transition-all duration-150 ease-linear;
+    @apply relative max-h-[90dvh] print:pt-0 ml-10 pr-6 pl-4 transition-all duration-150 ease-linear;
   }
   .navigation {
     @apply fixed left-0 top-0  z-50;
@@ -341,7 +341,7 @@
   }
 
   .btn--green {
-    @apply bg-primary text-white hover:bg-dark-green flex items-center gap-1 rounded-lg py-2 px-3;
+    @apply bg-primary text-white hover:bg-dark-green flex items-center gap-1 rounded-lg pb-1 pt-1.5 px-5;
   }
 
   .btn--outline {
