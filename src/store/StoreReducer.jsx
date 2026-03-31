@@ -141,7 +141,7 @@ export const StoreReducer = (state, action) => {
     case "TAB_VALUE":
       return {
         ...state,
-        scrollPosition: action.payload,
+        tabValue: action.payload,
       };
 
     case "CREDENTIALS":

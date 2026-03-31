@@ -1,6 +1,8 @@
 import Pills from "@/components/Pills";
+import { apiVersion } from "@/config/config";
 import HeaderNav from "@/layout/header/HeaderNav";
 import TableDefaultPage from "@/layout/table/TableDefaultPage";
+import useQueryData from "@/services/useQueryData";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import { useInView } from "react-intersection-observer";
@@ -18,7 +20,17 @@ const Settings = () => {
     },
   ];
 
-  console.log("123", store.tabValue);
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data: roles,
+  } = useQueryData(
+    `${apiVersion}/roles`, // endpoint
+    "get", // method
+    "roles", // key
+  );
+
   return (
     <>
       <HeaderNav menu={"settings"} activeTab="user">
@@ -35,7 +47,7 @@ const Settings = () => {
             key: "children",
             path: "children",
           }}
-          classname="h-[calc(100dvh-180px)]! "
+          classname="h-[calc(85dvh-180px)]! "
           dataItem={dataItem}
         >
           {Array?.from({ length: 3 }, (_, i) => (

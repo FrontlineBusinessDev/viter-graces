@@ -20,11 +20,11 @@ function App() {
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <StoreProvider>
-          <ThemeProvider>
+        <ThemeProvider>
+          <StoreProvider>
             <RouterProvider router={router} />
-          </ThemeProvider>
-        </StoreProvider>
+          </StoreProvider>
+        </ThemeProvider>
       </QueryClientProvider>
     </>
   );

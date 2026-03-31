@@ -4,7 +4,6 @@ use \Firebase\JWT\JWT;
 
 require "Database.php";
 require "Response.php";
-require "env.php";
 
 function checkApiKey()
 {

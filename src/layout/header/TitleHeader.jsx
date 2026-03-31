@@ -18,15 +18,16 @@ const TitleHeader = () => {
               <div className="rounded-lg bg-gray-200 p-1 inline-block">
                 <ul className="flex gap-2 items-center">
                   {item?.array_tab.map((itemTab, key) => {
-                    console.log("123", store.tabValue, itemTab?.title_tab);
-                    const sharedClass = `py-1 px-3 flex rounded-lg cursor-pointer ${
-                      store.tabValue === itemTab?.title_tab ? "bg-light" : ""
+                    const sharedClass = `py-1 px-3 flex rounded-lg cursor-pointer transition-all duration-150 ease-linear  ${
+                      store.tabValue === itemTab?.title_tab
+                        ? "bg-light text-black/80 font-bold "
+                        : ""
                     }`;
                     return (
                       <li
                         key={key}
                         className={sharedClass}
-                        onClick={() => itemTab?.on_click}
+                        onClick={() => itemTab?.on_click(itemTab?.title_tab)}
                       >
                         {itemTab?.icon}
                         {itemTab?.title_tab}

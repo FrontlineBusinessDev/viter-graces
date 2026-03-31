@@ -54,7 +54,7 @@ const TableDefaultPage = ({
           )}
           {/* TABLE */}
           <div
-            className={`md:overflow-auto md:h-[calc(100dvh-230px)] h-[calc(100dvh-270px)] ${classname}`}
+            className={`md:overflow-auto md:h-[calc(100dvh-230px)] ${classname}`}
             ref={scrollRef}
             onScroll={(e) => handleScroll(e)}
           >

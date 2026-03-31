@@ -6,7 +6,6 @@ import HeaderNav from "@/layout/header/HeaderNav";
 import { StoreContext } from "@/store/StoreContext";
 import {
   AlertTriangle,
-  LayoutDashboard,
   PhilippinePeso,
   TrendingUp,
   Trophy,
