@@ -29,11 +29,27 @@
 
     <meta
       name="description"
-      content="We are a ministry which deeply appreciates the financial support, physical help and spiritual prayers of our community."
+      content="Grace's Food"
     />
   </head>
-  <body class="bg-white dark:bg-gray-600 transition">
+  <body class="bg-white dark:bg-dark-mode transition">
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      (function () {
+        const saved = localStorage.getItem("theme");
+
+        if (saved === "dark") {
+          document.documentElement.classList.add("dark");
+        } else if (saved === "light") {
+          document.documentElement.classList.remove("dark");
+        } else {
+          // FIRST LOAD → SYSTEM MODE
+          if (window.matchMedia("(prefers-color-scheme: dark)").matches) {
+            document.documentElement.classList.add("dark");
+          }
+        }
+      })();
+    </script>
   </body>
 </html>

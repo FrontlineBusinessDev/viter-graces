@@ -9,7 +9,7 @@ import { getNavList } from "./function-nav";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { devNavUrl } from "@/config/config";
 
-const Navigation = ({ menu, submenu }) => {
+const Navigation = ({ menu, submenu, mobileNavOpen }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   // const userRole = store.credentials?.data?.role_code;
   const userRole = "developer";
@@ -63,17 +63,17 @@ const Navigation = ({ menu, submenu }) => {
     <>
       <aside
         className={`
-        fixed top-0 left-0 h-dvh z-999 bg-dark-bg dark:bg-[#090e1a]
-        transition-all duration-300 ease-in-out
-        ${isExpanded ? "w-60" : "w-[70px]"}
-      `}
+    fixed top-0 left-0 h-dvh z-999 bg-dark-bg dark:bg-[#090e1a]
+    transition-all duration-300 ease-in-out
+    ${isExpanded ? " lg:w-60" : "w-60 lg:w-[70px]"}                                
+  `}
       >
         <div
           className="flex flex-col h-full overflow-hidden"
           ref={navWrapperRef}
         >
           <div className="py-4 border-b flex justify-center items-center">
-            {isExpanded ? <LogoLg /> : <LogoSm />}
+            {isExpanded || mobileNavOpen ? <LogoLg /> : <LogoSm />}
           </div>
 
           {/* NAV  */}
@@ -82,7 +82,7 @@ const Navigation = ({ menu, submenu }) => {
               .filter((item) => item.roles?.includes(userRole))
               .map((item, index) => {
                 const sharedClass = `${
-                  isExpanded
+                  isExpanded || window.innerWidth < 640
                     ? "gap-2 w-full flex items-center p-2 justify-start tooltip-navigation"
                     : "relative group flex items-center justify-center"
                 }  h-7 mb-2 mx-auto py-5 px-3 ${
@@ -102,17 +102,17 @@ const Navigation = ({ menu, submenu }) => {
                       <span className="text-lg">{item.icon}</span>
                       <span
                         className={`
-              text-sm whitespace-nowrap
-              transition-all duration-200
-              ${isExpanded ? "opacity-100" : "opacity-0 w-0 overflow-hidden"}
-            `}
+                          text-sm whitespace-nowrap
+                          transition-all duration-200
+                          ${isExpanded || window.innerWidth < 640 ? "opacity-100" : "opacity-0 w-0 overflow-hidden"}
+                        `}
                       >
                         {item.label}
                       </span>
                     </Link>
 
                     {/* SUBMENU */}
-                    {isExpanded &&
+                    {(isExpanded || window.innerWidth < 640) &&
                       item.subList?.length > 0 &&
                       submenu !== "" && (
                         <div className="ml-8 mt-1">
@@ -147,7 +147,7 @@ const Navigation = ({ menu, submenu }) => {
                 A
               </div>
 
-              {isExpanded && (
+              {(isExpanded || window.innerWidth < 640) && (
                 <div className="flex">
                   <div className="flex flex-col">
                     <span className="text-light text-sm">Richard Santos</span>
@@ -162,24 +162,26 @@ const Navigation = ({ menu, submenu }) => {
               )}
             </div>
 
-            {!isExpanded && (
+            {!isExpanded && !mobileNavOpen && (
               <button className="p-2 hover:bg-primary rounded-md">
                 <LucideLogOut className="text-light" size={18} />
               </button>
             )}
 
-            <button
-              onClick={toggleNav}
-              className={`flex items-center gap-2 py-2 pl-1 w-full hover:rounded-lg hover:bg-primary hover:text-secondary`}
-            >
-              <ChevronRight
-                className={` hover:text-secondary ${isExpanded && "rotate-180"}`}
-                size={14}
-              />
-              <span className={`${!isExpanded && "hidden"} text-light`}>
-                Collapse
-              </span>
-            </button>
+            {!mobileNavOpen ? (
+              <button
+                onClick={toggleNav}
+                className={`flex items-center gap-2 py-2 pl-1 w-full hover:rounded-lg hover:bg-primary hover:text-secondary`}
+              >
+                <ChevronRight
+                  className={` hover:text-secondary ${isExpanded && "rotate-180"}`}
+                  size={14}
+                />
+                <span className={`${!isExpanded && "hidden"} text-light`}>
+                  Collapse
+                </span>
+              </button>
+            ) : null}
           </div>
         </div>
       </aside>
