@@ -44,7 +44,7 @@ const SearchBar = ({ search, dispatch, setOnSearch, onSearch, label }) => {
         <input
           type="search"
           placeholder={label}
-          className="text-xs py-[0px] h-[32px] pl-7"
+          className="text-xs py-0 h-8 pl-7"
           ref={search}
           onChange={(e) => handleChange(e, search)}
         />
