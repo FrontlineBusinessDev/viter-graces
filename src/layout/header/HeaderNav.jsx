@@ -3,9 +3,13 @@ import Navigation from "@/layout/navigation/Navigation";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import TitleHeader from "./TitleHeader";
+import { setTabValue } from "@/store/StoreAction";
 const HeaderNav = ({ children, menu, submenu, activeTab = "" }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
+  React.useEffect(() => {
+    dispatch(setTabValue(activeTab));
+  }, [menu]);
   return (
     <>
       <Navigation menu={menu} submenu={submenu} />
@@ -15,7 +19,7 @@ const HeaderNav = ({ children, menu, submenu, activeTab = "" }) => {
           !store.isNavFullShow ? " pl-12 " : " pl-[220px] "
         } pr-0`}
       >
-        {activeTab !== "" ? <TitleHeader activeTab={activeTab} /> : ""}
+        {activeTab !== "" ? <TitleHeader /> : ""}
         {children}
       </div>
     </>

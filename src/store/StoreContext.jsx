@@ -13,7 +13,7 @@ const initVal = {
   isCreatePassSuccess: false,
   isForgotPassSuccess: false,
   isResetPass: false,
-  isDonateNowOpen: false,
+  isLogin: false,
   isStripeError: null,
   isNavFullShow: isMobileOrTablet ? false : true,
   tabValue: "",

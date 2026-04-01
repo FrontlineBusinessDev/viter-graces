@@ -1,4 +1,4 @@
-import { setIsSearch, setTabValue } from "@/store/StoreAction";
+import { setIsSearch } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { Building2, UserCog, Users } from "lucide-react";
 
@@ -6,9 +6,8 @@ import React from "react";
 
 export const titleHeaderTab = () => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const onClickTab = (val) => {
+  const onClickTab = () => {
     dispatch(setIsSearch(false));
-    dispatch(setTabValue(val));
   };
 
   let navItems = [
@@ -19,7 +18,7 @@ export const titleHeaderTab = () => {
       array_tab: [
         {
           icon: <Users className="size-4 mr-1" />,
-          title_tab: "user",
+          title_tab: "users",
           on_click: onClickTab,
         },
         {
@@ -29,7 +28,7 @@ export const titleHeaderTab = () => {
         },
         {
           icon: <Building2 className="size-4 mr-1" />,
-          title_tab: "product owner",
+          title_tab: "product-owner",
           on_click: onClickTab,
         },
       ],

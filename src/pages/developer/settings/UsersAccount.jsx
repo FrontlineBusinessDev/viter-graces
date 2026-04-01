@@ -1,6 +1,5 @@
 import HeaderNav from "@/layout/header/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
-import { setTabValue } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 const UsersAccount = () => {
@@ -22,10 +21,11 @@ const UsersAccount = () => {
   ];
   return (
     <>
-      <HeaderNav menu={"settings"} activeTab="user">
+      <HeaderNav menu={"settings"} activeTab="users">
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(97dvh-200px)] h-[calc(97dvh-250px)]`}
+          path="roles"
         />
       </HeaderNav>
     </>

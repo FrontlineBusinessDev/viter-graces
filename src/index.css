@@ -341,7 +341,7 @@
   }
 
   .btn--green {
-    @apply bg-primary text-white hover:bg-dark-green flex items-center gap-1 rounded-lg pb-1 pt-1.5 px-5;
+    @apply bg-primary text-white hover:bg-dark-green flex items-center gap-1 rounded-lg pb-1 pt-px px-5;
   }
 
   .btn--outline {

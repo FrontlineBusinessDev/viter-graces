@@ -125,7 +125,7 @@ export const getNavList = () => {
       label: "Settings",
       icon: <Settings className="size-5" />,
       menu: "settings",
-      path: `${devNavUrl}/settings`,
+      path: `${devNavUrl}/users`,
       isOpenSubmenu: "",
       on_click: onClickNav,
       subList: [],

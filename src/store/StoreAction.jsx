@@ -26,6 +26,20 @@ export const setIsAction = (val) => {
   };
 };
 
+export const setIsLogin = (val) => {
+  return {
+    type: "IS_LOGIN",
+    payload: val,
+  };
+};
+
+export const setIsNavFullShow = (val) => {
+  return {
+    type: "NAV_FULL_SHOW",
+    payload: val,
+  };
+};
+
 export const setIsResetPass = (val) => {
   return {
     type: "RESETPASS",

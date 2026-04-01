@@ -17,6 +17,7 @@ class Role
 
     public $column_start;
     public $column_total;
+    public $column_search;
 
     public function __construct($db)
     {
@@ -63,10 +64,10 @@ class Role
     public function readAll()
     {
         try {
-            $sql = "select ";
-            $sql .= "* ";
-            $sql .= "from ";
-            $sql .= " {$this->tblRole} ";
+            $sql = "select *, ";
+            $sql .= "role_aid as id, ";
+            $sql .= "role_name as name ";
+            $sql .= "from {$this->tblRole} ";
             $sql .= "order by role_is_active desc, ";
             $sql .= "role_name asc ";
             $query = $this->connection->query($sql);
@@ -80,10 +81,10 @@ class Role
     public function readLimit()
     {
         try {
-            $sql = "select ";
-            $sql .= "* ";
-            $sql .= "from ";
-            $sql .= " {$this->tblRole} ";
+            $sql = "select *, ";
+            $sql .= "role_aid as id, ";
+            $sql .= "role_name as name ";
+            $sql .= "from {$this->tblRole} ";
             $sql .= "order by role_is_active desc, ";
             $sql .= "role_name asc ";
             $sql .= "limit :start, ";
@@ -92,6 +93,32 @@ class Role
             $query->execute([
                 "start" => $this->column_start - 1,
                 "total" => $this->column_total,
+            ]);
+        } catch (PDOException $ex) {
+
+            returnError($ex);
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function search()
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "role_aid as id, ";
+            $sql .= "role_name as name ";
+            $sql .= "from ";
+            $sql .= " {$this->tblRole} ";
+            $sql .= "where ( role_name like :role_name ";
+            $sql .= "or role_description like :role_description ";
+            $sql .= ") ";
+            $sql .= "order by role_is_active desc, ";
+            $sql .= "role_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "role_name" => "%{$this->column_search}%",
+                "role_description" => "%{$this->column_search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -103,7 +130,10 @@ class Role
     public function readById()
     {
         try {
-            $sql = "select * from {$this->tblRole} ";
+            $sql = "select *, ";
+            $sql .= "role_aid as id, ";
+            $sql .= "role_name as name ";
+            $sql .= "from {$this->tblRole} ";
             $sql .= "where role_aid = :role_aid ";
             $sql .= "order by role_name asc ";
             $query = $this->connection->prepare($sql);

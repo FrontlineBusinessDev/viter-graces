@@ -72,6 +72,17 @@ export const StoreReducer = (state, action) => {
         isAction: action.payload,
       };
 
+    case "IS_LOGIN":
+      return {
+        ...state,
+        isLogin: action.payload,
+      };
+    case "NAV_FULL_SHOW":
+      return {
+        ...state,
+        isNavFullShow: action.payload,
+      };
+
     case "CREDENTIALS":
       return {
         ...state,
