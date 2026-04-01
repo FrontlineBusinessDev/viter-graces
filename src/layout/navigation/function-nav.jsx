@@ -17,12 +17,6 @@ import React from "react";
 
 export const getNavList = () => {
   const { store, dispatch } = React.useContext(StoreContext);
-  // const handleSettingsOpen = () => {
-  //   dispatch(setIsSettingsOpen(!store.isSettingsOpen));
-  // };
-  // const handleReportsOpen = () => {
-  //   dispatch(setIsReportsOpen(!store.isReportsOpen));
-  // };
   const onClickNav = () => {
     dispatch(setIsSearch(false));
   };

@@ -3,6 +3,7 @@ import DashboardOverview from "@/components/DashboardCharts";
 import ProfitLossChart from "@/components/ProfitLossChart";
 import StatCard from "@/components/StatCard";
 import HeaderNav from "@/layout/header/HeaderNav";
+import { setTabValue } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import {
   AlertTriangle,
@@ -13,6 +14,10 @@ import {
 import React from "react";
 const Dashboard = () => {
   const { store, dispatch } = React.useContext(StoreContext);
+
+  React.useEffect(() => {
+    dispatch(setTabValue(""));
+  }, []);
 
   return (
     <>

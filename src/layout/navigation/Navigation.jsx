@@ -58,12 +58,6 @@ const Navigation = ({ menu, submenu }) => {
     dispatch(setIsNavFullShow(!isExpanded));
   };
 
-  const menuNavData = getNavList()?.filter((item) => item?.menu === menu);
-
-  React.useEffect(() => {
-    dispatch(setTabValue(isEmptyItem(menuNavData[0]?.title_tab, "")));
-  }, []);
-
   return (
     <>
       <aside

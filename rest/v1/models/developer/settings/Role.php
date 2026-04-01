@@ -15,6 +15,9 @@ class Role
     public $tblUserSystem;
     public $tblUserOther;
 
+    public $column_start;
+    public $column_total;
+
     public function __construct($db)
     {
         $this->connection = $db;
@@ -67,6 +70,29 @@ class Role
             $sql .= "order by role_is_active desc, ";
             $sql .= "role_name asc ";
             $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readLimit()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "* ";
+            $sql .= "from ";
+            $sql .= " {$this->tblRole} ";
+            $sql .= "order by role_is_active desc, ";
+            $sql .= "role_name asc ";
+            $sql .= "limit :start, ";
+            $sql .= ":total ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "start" => $this->column_start - 1,
+                "total" => $this->column_total,
+            ]);
         } catch (PDOException $ex) {
             $query = false;
         }

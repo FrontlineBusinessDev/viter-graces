@@ -11,11 +11,11 @@ const HeaderNav = ({ children, menu, submenu, activeTab = "" }) => {
       <Navigation menu={menu} submenu={submenu} />
       <Header menu={menu} />
       <div
-        className={`wrapper overflow-auto transform transition-all duration-300 ease-in-out py-5 bg-[#F6F7F9] dark:bg-[#0b111e] h-[93.5dvh] ${
+        className={`wrapper overflow-auto transform transition-all duration-300 ease-in-out py-5 ${
           !store.isNavFullShow ? " pl-12 " : " pl-[220px] "
-        } sm:pr-6 pr-0`}
+        } pr-0`}
       >
-        {activeTab !== "" ? <TitleHeader menu={menu} /> : ""}
+        {activeTab !== "" ? <TitleHeader activeTab={activeTab} /> : ""}
         {children}
       </div>
     </>

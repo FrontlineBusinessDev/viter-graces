@@ -1,11 +1,15 @@
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import { titleHeaderTab } from "./function-header";
+import { setTabValue } from "@/store/StoreAction";
 
-const TitleHeader = () => {
+const TitleHeader = ({ activeTab }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const userRole = "developer";
 
+  React.useEffect(() => {
+    dispatch(setTabValue(activeTab));
+  }, []);
   return (
     <>
       {titleHeaderTab()
@@ -18,7 +22,7 @@ const TitleHeader = () => {
               <div className="rounded-lg bg-gray-200 p-1 inline-block">
                 <ul className="flex gap-2 items-center">
                   {item?.array_tab.map((itemTab, key) => {
-                    const sharedClass = `py-1 px-3 flex rounded-lg cursor-pointer transition-all duration-150 ease-linear  ${
+                    const sharedClass = `py-1 px-3 flex rounded-lg cursor-pointer transition-all duration-150 ease-linear capitalize ${
                       store.tabValue === itemTab?.title_tab
                         ? "bg-light text-black/80 font-bold "
                         : ""

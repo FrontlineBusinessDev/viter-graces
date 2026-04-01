@@ -3,19 +3,19 @@
   font-family: "poppins";
   font-style: normal;
   font-display: block;
-  src: url(/fonts/poppins-regular.woff) format("woff");
+  src: url(src/assets/fonts/poppins-regular.woff) format("woff");
 }
 @font-face {
   font-family: "inter-regular";
   font-style: normal;
   font-display: block;
-  src: url(/fonts/inter-regular.woff2) format("woff2");
+  src: url(src/assets/fonts/inter-regular.woff2) format("woff2");
 }
 @font-face {
   font-family: "inter-bold";
   font-style: normal;
   font-display: block;
-  src: url(/fonts/inter-bold.woff2) format("woff2");
+  src: url(src/assets/fonts/inter-bold.woff2) format("woff2");
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -158,7 +158,7 @@
     @apply font-inter-regular text-[10px] dark:text-light;
   }
   body {
-    @apply leading-relaxed font-poppins text-xs min-h-full text-dark;
+    @apply leading-relaxed font-poppins text-xs min-h-full text-dark bg-[#F6F7F9] dark:bg-[#0b111e];
   }
   pre {
     @apply font-poppins;
@@ -227,10 +227,10 @@
 
 @layer components {
   .wrapper {
-    @apply relative max-h-[90dvh] print:pt-0 ml-10 pr-6 pl-4 transition-all duration-150 ease-linear;
+    @apply relative h-full overflow-auto print:pt-0 ml-10 pr-6 pl-4 transition-all duration-150 ease-linear dark:bg-[#0b111e];
   }
   .navigation {
-    @apply fixed left-0 top-0  z-50;
+    @apply fixed left-0 top-0 z-50;
   }
   .nav {
     @apply flex items-center;

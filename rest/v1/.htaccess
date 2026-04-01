@@ -15,4 +15,5 @@ RewriteRule ^upload-multiple-files$ core/upload-multiple-files.php [L]
 RewriteRule ^roles$ controllers/developer/settings/role/role.php [L]
 RewriteRule ^roles/([0-9]+)$ controllers/developer/settings/role/role.php?roleid=$1 [L]
 RewriteRule ^roles/active/([0-9]+)$ controllers/developer/settings/role/active.php?roleid=$1 [L]
+RewriteRule ^roles/page/([0-9]+)$ controllers/developer/settings/role/page.php?start=$1 [L]
   

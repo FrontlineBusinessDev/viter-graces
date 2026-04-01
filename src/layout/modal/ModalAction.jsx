@@ -3,7 +3,7 @@ import ButtonSpinner from "@/components/spinners/ButtonSpinner";
 import { queryData } from "@/services/queryData";
 import {
   setError,
-  setIsArchive,
+  setIsAction,
   setMessage,
   setSuccess,
 } from "@/store/StoreAction";
@@ -14,18 +14,18 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CircleQuestionMark } from "lucide-react";
 import React from "react";
 
-const ModalAction = ({ mysqlApiArchive, msg, successMsg, item, queryKey }) => {
+const ModalAction = ({ mysqlApiAction, msg, successMsg, item, queryKey }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (values) => queryData(mysqlApiArchive, "put", values),
+    mutationFn: (values) => queryData(mysqlApiAction, "put", values),
     onSuccess: (data) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: [queryKey] });
 
       if (data.success) {
-        dispatch(setIsArchive(false));
+        dispatch(setIsAction(false));
         dispatch(setSuccess(true));
         dispatch(setMessage(successMsg));
       }
@@ -44,7 +44,7 @@ const ModalAction = ({ mysqlApiArchive, msg, successMsg, item, queryKey }) => {
   };
 
   const handleClose = () => {
-    dispatch(setIsArchive(false));
+    dispatch(setIsAction(false));
   };
 
   handleEscape(() => handleClose());
