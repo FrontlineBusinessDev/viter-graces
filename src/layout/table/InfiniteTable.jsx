@@ -19,9 +19,8 @@ import {
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import ActionButtonTable from "../ActionButtonTable";
 import ModalAction from "../modal/ModalAction";
-import { setIsAction } from "@/store/StoreAction";
 
-const InfiniteTable = ({ columns, className, path = "" }) => {
+const InfiniteTable = ({ columns, className, path = "", setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [dataItem, setData] = React.useState(null);
   const [sorting, setSorting] = useState([]);
@@ -95,6 +94,13 @@ const InfiniteTable = ({ columns, className, path = "" }) => {
   });
 
   const rows = table?.getRowModel()?.rows;
+
+  // ACTIONS ADD
+  const handleAdd = () => {
+    dispatch(setIsAdd(true));
+    setItemEdit(null);
+  };
+
   return (
     <>
       <div className="flex justify-between pr-6 mb-3">
@@ -108,7 +114,7 @@ const InfiniteTable = ({ columns, className, path = "" }) => {
           />
         </div>
 
-        <AddButton value={"roles"} />
+        <AddButton value={"roles"} onClick={handleAdd} />
       </div>
       <div className="hidden sm:block">
         {/* TABLE */}
@@ -193,6 +199,7 @@ const InfiniteTable = ({ columns, className, path = "" }) => {
                               item={item?.column?.columnDef}
                               dataArray={row.original}
                               setData={setData}
+                              setItemEdit={setItemEdit}
                             />
                           ) : (
                             ""
@@ -224,8 +231,8 @@ const InfiniteTable = ({ columns, className, path = "" }) => {
       </div>
       {store.isAction && (
         <ModalAction
-          mysqlApiAction={`${apiVersion}/${path}/active/${dataItem?.id}`}
-          msg={`Are you sure you want to ${dataItem?.action} `}
+          mysqlApiAction={`${apiVersion}/${dataItem?.path}}`}
+          msg={`Are you sure you want to ${dataItem?.action}`}
           successMsg={`${dataItem?.action} successfully.`}
           item={dataItem}
           queryKey={path}

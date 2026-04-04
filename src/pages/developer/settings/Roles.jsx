@@ -5,6 +5,7 @@ import { ArchiveRestore, Edit, Trash } from "lucide-react";
 import React from "react";
 const Roles = () => {
   const { store, dispatch } = React.useContext(StoreContext);
+  const [itemEdit, setItemEdit] = React.useState(null);
   // ✅ Columns
   const columns = [
     {
@@ -52,6 +53,7 @@ const Roles = () => {
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(95dvh-200px)] h-[calc(100dvh-250px)]`}
           path="roles"
+          setItemEdit={setItemEdit}
         />
       </HeaderNav>
     </>
