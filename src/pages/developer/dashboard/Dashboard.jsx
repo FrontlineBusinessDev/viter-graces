@@ -2,7 +2,7 @@ import CashflowChart from "@/components/CashflowChart";
 import DashboardOverview from "@/components/DashboardCharts";
 import ProfitLossChart from "@/components/ProfitLossChart";
 import StatCard from "@/components/StatCard";
-import HeaderNav from "@/layout/header/HeaderNav";
+import HeaderNav from "@/layout/headers/HeaderNav";
 import { setTabValue } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import {

@@ -254,7 +254,7 @@
     @apply opacity-50 hover:bg-white hover:text-dark hover:border-gray-300;
   }
   .modal-body {
-    @apply h-[calc(100dvh-50px)];
+    @apply h-[calc(100%-50px)];
   }
   .modal-form-container {
     @apply h-full flex flex-col justify-between overflow-y-auto pr-4;
@@ -323,17 +323,13 @@
     @apply text-red-500;
   }
   .tooltip-action-table {
-    @apply relative p-1 bg-transparent leading-none z-20;
+    @apply relative p-1 bg-transparent leading-none z-20 hover:bg-primary/20 hover:rounded-sm;
   }
   .tooltip-action-table::after {
     @apply content-[attr(data-tooltip)] absolute -translate-x-2/4 bottom-full -top-6 bg-dark/80 text-white p-1 rounded-sm h-fit leading-none z-20 whitespace-nowrap text-center opacity-0 text-[10px] pointer-events-none transition ease-linear scale-0 duration-75 left-1/2;
   }
   .tooltip-action-table:hover::after {
     @apply opacity-100 scale-100;
-  }
-
-  .btn-action-table svg {
-    @apply fill-gray-800/70;
   }
 
   .btn {

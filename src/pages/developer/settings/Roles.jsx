@@ -1,12 +1,13 @@
-import HeaderNav from "@/layout/header/HeaderNav";
+import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
-import { ArchiveRestore, Edit, Trash } from "lucide-react";
+import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
 import React from "react";
+import ModalRoles from "./modal/ModalRoles";
 const Roles = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
-  // ✅ Columns
+  // Columns
   const columns = [
     {
       accessorKey: "role_is_active",
@@ -35,10 +36,18 @@ const Roles = () => {
     {
       accessorKey: "action",
       action_array: [
-        { name: "edit", icon: <Edit className="h-3 w-3" /> },
-        { name: "archieve", icon: <ArchiveRestore className="h-3 w-3" /> },
-        { name: "restore", icon: <ArchiveRestore className="h-3 w-3" /> },
-        { name: "delete", icon: <Trash className="h-3 w-3" /> },
+        { name: "edit", icon: <Edit className="h-3 w-3" />, isActive: 1 },
+        {
+          name: "archieve",
+          icon: <ArchiveRestore className="h-3 w-3" />,
+          isActive: 1,
+        },
+        {
+          name: "restore",
+          icon: <RotateCcw className="h-3 w-3" />,
+          isActive: 0,
+        },
+        { name: "delete", icon: <Trash className="h-3 w-3" />, isActive: 0 },
       ],
       header: "Action",
       classTh: "",
@@ -56,6 +65,7 @@ const Roles = () => {
           setItemEdit={setItemEdit}
         />
       </HeaderNav>
+      {store.isAdd && <ModalRoles itemEdit={itemEdit} />}
     </>
   );
 };

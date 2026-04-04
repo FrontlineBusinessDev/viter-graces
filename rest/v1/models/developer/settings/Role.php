@@ -66,6 +66,7 @@ class Role
         try {
             $sql = "select *, ";
             $sql .= "role_aid as id, ";
+            $sql .= "role_is_active as is_active, ";
             $sql .= "role_name as name ";
             $sql .= "from {$this->tblRole} ";
             $sql .= "order by role_is_active desc, ";
@@ -83,6 +84,7 @@ class Role
         try {
             $sql = "select *, ";
             $sql .= "role_aid as id, ";
+            $sql .= "role_is_active as is_active, ";
             $sql .= "role_name as name ";
             $sql .= "from {$this->tblRole} ";
             $sql .= "order by role_is_active desc, ";
@@ -107,6 +109,7 @@ class Role
         try {
             $sql = "select *, ";
             $sql .= "role_aid as id, ";
+            $sql .= "role_is_active as is_active, ";
             $sql .= "role_name as name ";
             $sql .= "from ";
             $sql .= " {$this->tblRole} ";
@@ -132,6 +135,7 @@ class Role
         try {
             $sql = "select *, ";
             $sql .= "role_aid as id, ";
+            $sql .= "role_is_active as is_active, ";
             $sql .= "role_name as name ";
             $sql .= "from {$this->tblRole} ";
             $sql .= "where role_aid = :role_aid ";

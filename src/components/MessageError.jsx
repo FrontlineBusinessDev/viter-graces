@@ -5,31 +5,17 @@ import React from "react";
 
 const MessageError = () => {
   const { store, dispatch } = React.useContext(StoreContext);
-  // const observer = new IntersectionObserver((entries) =>
-  //   entries.forEach((entry) => entry.isIntersecting)
-  // );
   const ref = React.useRef(null);
 
   const handleClose = () => {
     dispatch(setError(false));
   };
 
-  // React.useEffect(() => {
-  //   let timeError = setTimeout(() => {
-  //     dispatch(setError(false));
-  //     dispatch(setMessage(""));
-  //   }, 10000);
-  //   if (!store.error) clearTimeout(timeError);
-  // }, []);
-
   React.useEffect(() => {
     if (ref) {
-      // ref.current.scrollIntoView({ behavior: "smooth" });
       ref.current.scrollIntoView();
     }
   }, [ref]);
-
-  // console.log(ref?.current?.scrollHeight);
 
   return (
     <>

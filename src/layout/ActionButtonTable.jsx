@@ -1,6 +1,7 @@
 import ActionButton from "@/components/buttons/ActionButton";
 import { setIsAction, setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
 import React from "react";
 
 const ActionButtonTable = ({ item, dataArray, setData, setItemEdit }) => {
@@ -31,7 +32,7 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit }) => {
       <div className="flex items-center justify-end gap-3">
         {item?.action_array?.map((a, key) => {
           return (
-            a?.name === "edit" && (
+            isEmptyItem(a?.name, "") === "edit" && (
               <div key={key}>
                 <ActionButton item={a} onClick={() => handleUpdate(a)} />
               </div>
@@ -40,7 +41,9 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit }) => {
         })}
         {item?.action_array?.map((a, key) => {
           return (
-            a?.name !== "edit" && (
+            isEmptyItem(a?.name, "") !== "edit" &&
+            Number(isEmptyItem(a?.isActive, 1)) ===
+              Number(isEmptyItem(dataArray?.is_active, 1)) && (
               <div key={key}>
                 <ActionButton item={a} onClick={() => handleAction(a)} />
               </div>

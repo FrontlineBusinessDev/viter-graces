@@ -1,4 +1,4 @@
-import Header from "@/layout/header/Header";
+import Header from "@/layout/headers/Header";
 import Navigation from "@/layout/navigation/Navigation";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
