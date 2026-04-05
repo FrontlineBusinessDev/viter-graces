@@ -23,6 +23,7 @@ if (array_key_exists("id", $_GET)) {
     compareName($val, $val_name_old, $val->role_name);
     // update
     $query = checkUpdate($val);
+    $query = checkUpdateUserAccountRole($val);
     returnSuccess($val, "Role", $query);
 }
 

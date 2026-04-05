@@ -24,4 +24,8 @@ RewriteRule ^users/([0-9]+)$ controllers/developer/settings/user/user.php?id=$1 
 RewriteRule ^users/active/([0-9]+)$ controllers/developer/settings/user/active.php?id=$1 [L] 
 RewriteRule ^users/page/([0-9]+)$ controllers/developer/settings/user/page.php?start=$1 [L]
 RewriteRule ^users/search$ controllers/developer/settings/user/search.php [L]
+RewriteRule ^users/key/([A-Za-z0-9-]+)$ controllers/developer/settings/user/key.php?key=$1 [L]
+RewriteRule ^users/password$ controllers/developer/settings/user/set-password.php [L]
+RewriteRule ^users/token$ controllers/developer/settings/user/token.php [L]
+RewriteRule ^users/login$ controllers/developer/settings/user/login.php [L]
   

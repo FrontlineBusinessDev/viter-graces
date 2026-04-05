@@ -60,10 +60,14 @@ export const InputText = ({
 
   return (
     <>
-      <label htmlFor={props.id || props.name}>
-        {label}
-        {required && <span className="text-alert"> *</span>}
-      </label>
+      {label !== "" ? (
+        <label htmlFor={props.id || props.name}>
+          {label}
+          {required && <span className="text-alert"> *</span>}
+        </label>
+      ) : (
+        ""
+      )}
       <input
         {...field}
         {...props}

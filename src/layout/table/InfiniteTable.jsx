@@ -121,8 +121,8 @@ const InfiniteTable = ({ columns, className, path = "", setItemEdit }) => {
       <div className="hidden sm:block">
         {/* TABLE */}
         <div className="relative rounded-md text-center overflow-auto z-0 ">
-          {status !== "loading" && isFetching && <TableSpinner />}
-          <div className={`${className} pr-6! `}>
+          {status !== "pending" && isFetching && <TableSpinner />}
+          <div className={`${className} pr-6!`}>
             <table className="overflow-auto dark:border-[#0b111e]">
               <thead className={`relative z-50`}>
                 {table?.getHeaderGroups()?.map((headerGroup) => (
@@ -150,10 +150,10 @@ const InfiniteTable = ({ columns, className, path = "", setItemEdit }) => {
               </thead>
 
               <tbody>
-                {(status === "loading" || data?.pages[0]?.count === 0) && (
+                {(status === "pending" || data?.pages[0]?.count === 0) && (
                   <tr>
                     <td colSpan="100%" className="p-10">
-                      {status === "loading" ? (
+                      {status === "pending" ? (
                         <TableLoading count={20} cols={3} />
                       ) : (
                         <NoData />

@@ -323,7 +323,7 @@
     @apply text-red-500;
   }
   .tooltip-action-table {
-    @apply relative p-1 bg-transparent leading-none z-20 hover:bg-primary/20 hover:rounded-sm;
+    @apply relative p-1 bg-transparent leading-none z-999 hover:bg-primary/20 hover:rounded-sm;
   }
   .tooltip-action-table::after {
     @apply content-[attr(data-tooltip)] absolute -translate-x-2/4 bottom-full -top-6 bg-dark/80 text-white p-1 rounded-sm h-fit leading-none z-20 whitespace-nowrap text-center opacity-0 text-[10px] pointer-events-none transition ease-linear scale-0 duration-75 left-1/2;

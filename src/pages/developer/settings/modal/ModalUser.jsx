@@ -1,9 +1,8 @@
 import ModalButton from "@/components/buttons/ModalButton";
-import { InputSelect, InputSelectArray } from "@/components/inputs/InputSelect";
+import { InputSelectArray } from "@/components/inputs/InputSelect";
 import { InputText } from "@/components/inputs/InputText";
-import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
-import { apiVersion } from "@/config/config";
+import { apiVersion, devNavUrl } from "@/config/config";
 import ModalHeader from "@/layout/headers/ModalHeader";
 import { queryData } from "@/services/queryData";
 import useQueryData from "@/services/useQueryData";
@@ -66,17 +65,18 @@ const ModalUser = ({ itemEdit }) => {
     user_account_first_name: isEmptyItem(itemEdit?.user_account_first_name, ""),
     user_account_last_name: isEmptyItem(itemEdit?.user_account_last_name, ""),
     user_account_email: isEmptyItem(itemEdit?.user_account_email, ""),
-    user_account_id: isEmptyItem(itemEdit?.user_account_id, ""),
+    user_account_role_id: isEmptyItem(itemEdit?.user_account_role_id, ""),
     user_account_role: isEmptyItem(itemEdit?.user_account_role, ""),
 
     name: isEmptyItem(itemEdit?.name, ""),
+    password_link: `/create-password`,
   };
 
   const yupSchema = Yup.object({
     user_account_first_name: Yup.string().trim().required("Required"),
     user_account_last_name: Yup.string().trim().required("Required"),
     user_account_email: Yup.string().trim().required("Required"),
-    user_account_id: Yup.string().trim().required("Required"),
+    user_account_role_id: Yup.string().trim().required("Required"),
   });
 
   React.useEffect(() => {
@@ -96,6 +96,7 @@ const ModalUser = ({ itemEdit }) => {
                 onSubmit={async (values, { setSubmitting, resetForm }) => {
                   dispatch(setError(false));
                   // mutate data
+                  // console.log(values);
                   mutation.mutate(values);
                 }}
               >
@@ -111,13 +112,19 @@ const ModalUser = ({ itemEdit }) => {
                           isLoading={isLoading || isFetching}
                           error={error}
                           result={roles}
+                          onChange={(e) => {
+                            props.values.user_account_role_id = e.target.value;
+                            props.values.user_account_role =
+                              e.target.options[e.target.selectedIndex].text;
+                            return e;
+                          }}
                         />
                       </div>
                       <div className="relative mt-3">
                         <InputText
                           label="First name"
                           type="text"
-                          name="role_name"
+                          name="user_account_first_name"
                           placeholder={`${itemEdit ? "Update user first name" : "Enter new user first name"}`}
                           disabled={mutation.isPending}
                         />
@@ -126,7 +133,7 @@ const ModalUser = ({ itemEdit }) => {
                         <InputText
                           label="Last name"
                           type="text"
-                          name="role_name"
+                          name="user_account_last_name"
                           placeholder={`${itemEdit ? "Update user last name" : "Enter new user last name"}`}
                           disabled={mutation.isPending}
                         />
@@ -135,7 +142,7 @@ const ModalUser = ({ itemEdit }) => {
                         <InputText
                           label="Email"
                           type="text"
-                          name="role_name"
+                          name="user_account_email"
                           placeholder={`${itemEdit ? "Update user email" : "Enter new user email"}`}
                           disabled={mutation.isPending}
                         />

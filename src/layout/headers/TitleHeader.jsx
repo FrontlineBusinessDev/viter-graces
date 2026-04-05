@@ -7,6 +7,7 @@ import { isEmptyItem } from "@/utilities/isEmptyItem";
 
 const TitleHeader = ({}) => {
   const { store, dispatch } = React.useContext(StoreContext);
+  // const userRole = store.credentials?.data?.role_code;
   const userRole = "developer";
 
   return (
@@ -28,7 +29,7 @@ const TitleHeader = ({}) => {
                     }`;
                     return (
                       <Link
-                        to={`${devNavUrl}/${isEmptyItem(itemTab?.title_tab, ``)}`}
+                        to={`${devNavUrl}/${userRole}/${isEmptyItem(itemTab?.title_tab, ``)}`}
                         key={key}
                         className={sharedClass}
                       >

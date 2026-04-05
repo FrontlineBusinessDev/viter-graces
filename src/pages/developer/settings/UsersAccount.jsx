@@ -62,7 +62,7 @@ const UsersAccount = () => {
         },
       ],
       header: "Action",
-      classTh: "",
+      classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
     },
   ];
@@ -71,7 +71,7 @@ const UsersAccount = () => {
       <HeaderNav menu={"settings"} activeTab="users">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(97dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
           path="users"
           setItemEdit={setItemEdit}
         />

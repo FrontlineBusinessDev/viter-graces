@@ -6,8 +6,10 @@ class User
     public $user_account_first_name;
     public $user_account_last_name;
     public $user_account_email;
-    public $user_account_id;
+    public $user_account_role_id;
     public $user_account_role;
+    public $user_account_key;
+    public $user_account_password;
     public $user_account_created;
     public $user_account_updated;
 
@@ -34,17 +36,19 @@ class User
             $sql .= "( user_account_first_name, ";
             $sql .= "user_account_last_name, ";
             $sql .= "user_account_email, ";
-            $sql .= "user_account_id, ";
+            $sql .= "user_account_role_id, ";
             $sql .= "user_account_role, ";
             $sql .= "user_account_is_active, ";
+            $sql .= "user_account_key, ";
             $sql .= "user_account_created, ";
             $sql .= "user_account_updated ) values ( ";
             $sql .= ":user_account_first_name, ";
             $sql .= ":user_account_last_name, ";
             $sql .= ":user_account_email, ";
-            $sql .= ":user_account_id, ";
+            $sql .= ":user_account_role_id, ";
             $sql .= ":user_account_role, ";
             $sql .= ":user_account_is_active, ";
+            $sql .= ":user_account_key, ";
             $sql .= ":user_account_created, ";
             $sql .= ":user_account_updated ) ";
             $query = $this->connection->prepare($sql);
@@ -52,9 +56,10 @@ class User
                 "user_account_first_name" => $this->user_account_first_name,
                 "user_account_last_name" => $this->user_account_last_name,
                 "user_account_email" => $this->user_account_email,
-                "user_account_id" => $this->user_account_id,
+                "user_account_role_id" => $this->user_account_role_id,
                 "user_account_role" => $this->user_account_role,
                 "user_account_is_active" => $this->user_account_is_active,
+                "user_account_key" => $this->user_account_key,
                 "user_account_created" => $this->user_account_created,
                 "user_account_updated" => $this->user_account_updated,
             ]);
@@ -169,7 +174,7 @@ class User
             $sql .= "user_account_first_name = :user_account_first_name, ";
             $sql .= "user_account_last_name = :user_account_last_name, ";
             $sql .= "user_account_email = :user_account_email, ";
-            $sql .= "user_account_id = :user_account_id, ";
+            $sql .= "user_account_role_id = :user_account_role_id, ";
             $sql .= "user_account_role = :user_account_role, ";
             $sql .= "user_account_updated = :user_account_updated ";
             $sql .= "where user_account_aid  = :user_account_aid ";
@@ -178,7 +183,7 @@ class User
                 "user_account_first_name" => $this->user_account_first_name,
                 "user_account_last_name" => $this->user_account_last_name,
                 "user_account_email" => $this->user_account_email,
-                "user_account_id" => $this->user_account_id,
+                "user_account_role_id" => $this->user_account_role_id,
                 "user_account_role" => $this->user_account_role,
                 "user_account_updated" => $this->user_account_updated,
                 "user_account_aid" => $this->user_account_aid,
@@ -235,6 +240,64 @@ class User
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "name" => "{$this->column_fullname}",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+
+    // read key
+    public function readKey()
+    {
+        try {
+            $sql = "select user_account_key from {$this->tblUserAccount} ";
+            $sql .= "where user_account_key = :user_account_key ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "user_account_key" => $this->user_account_key,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // set password
+    public function setPassword()
+    {
+        try {
+            $sql = "update {$this->tblUserAccount} set ";
+            $sql .= "user_account_password = :user_account_password, ";
+            $sql .= "user_account_key = '', ";
+            $sql .= "user_account_updated = :user_account_updated ";
+            $sql .= "where user_account_key  = :user_account_key ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "user_account_password" => $this->user_account_password,
+                "user_account_updated" => $this->user_account_updated,
+                "user_account_key" => $this->user_account_key,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+
+
+    // read login
+    public function readLogin()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblUserAccount} ";
+            $sql .= "where user_account_email = :user_account_email ";
+            $sql .= "and user_account_is_active = 1 ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "user_account_email" => $this->user_account_email,
             ]);
         } catch (PDOException $ex) {
             $query = false;

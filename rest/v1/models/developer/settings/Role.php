@@ -12,8 +12,7 @@ class Role
     public $connection;
     public $lastInsertedId;
     public $tblRole;
-    public $tblUserSystem;
-    public $tblUserOther;
+    public $tblUserAccount;
 
     public $column_start;
     public $column_total;
@@ -23,8 +22,7 @@ class Role
     {
         $this->connection = $db;
         $this->tblRole = "graces_roles";
-        $this->tblUserSystem = "wfsv1_user_system";
-        $this->tblUserOther = "wfsv1_user_other";
+        $this->tblUserAccount = "graces_user_account";
     }
 
     // create
@@ -291,15 +289,20 @@ class Role
         return $query;
     }
 
-    // association
-    public function checkUserSystemAssociation()
+    // read by role id in User Account
+    public function checkUserAccountAssociated()
     {
         try {
-            $sql = "select user_system_role_id from {$this->tblUserSystem} ";
-            $sql .= "where user_system_role_id = :role_aid ";
+            $sql = "select *, ";
+            $sql .= "user_account_aid as id, ";
+            $sql .= "user_account_is_active as is_active, ";
+            $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) as name ";
+            $sql .= "from {$this->tblUserAccount} ";
+            $sql .= "where user_account_role_id = :user_account_role_id ";
+            $sql .= "order by user_account_first_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "role_aid" => "{$this->role_aid}",
+                "user_account_role_id" => $this->role_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -307,14 +310,19 @@ class Role
         return $query;
     }
 
-    public function checkUserOtherAssociation()
+    // Update User Account
+    public function updateUserAccountRole()
     {
         try {
-            $sql = "select user_other_role_id from {$this->tblUserOther} ";
-            $sql .= "where user_other_role_id = :role_aid ";
+            $sql = "update {$this->tblRole} set ";
+            $sql .= "user_account_role = :user_account_role, ";
+            $sql .= "user_account_updated = :user_account_updated ";
+            $sql .= "where user_account_role_id  = :user_account_role_id ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "role_aid" => "{$this->role_aid}",
+                "user_account_role" => $this->role_name,
+                "user_account_updated" => $this->role_updated,
+                "user_account_role_id" => $this->role_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;

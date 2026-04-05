@@ -12,12 +12,8 @@ if (array_key_exists("roleid", $_GET)) {
     $val->role_aid = $_GET['roleid'];
     $column_name = strtolower($data['role_name']);
     checkId($val->role_aid);
-    // delete
-    // if ($column_name == "developer") {
-    //     isUserSystemAssociated($val);
-    // } else {
-    //     isUserOtherAssociated($val);
-    // }
+    // delete 
+    isUserAccountAssociated($val);
 
     $query = checkDelete($val);
     returnSuccess($val, "Role", $query);

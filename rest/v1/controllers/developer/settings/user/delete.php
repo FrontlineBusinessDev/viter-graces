@@ -7,14 +7,13 @@ $val = new User($conn);
 // get $_GET data
 $error = [];
 $returnData = [];
-if (array_key_exists("roleid", $_GET)) {
+if (array_key_exists("id", $_GET)) {
     // get data
-    $val->user_account_aid = $_GET['roleid'];
-    $column_name = strtolower($data['role_name']);
+    $val->user_account_aid = $_GET['id'];
     checkId($val->user_account_aid);
 
     $query = checkDelete($val);
-    returnSuccess($val, "Role", $query);
+    returnSuccess($val, "User Account", $query);
 }
 
 // return 404 error if endpoint not available
