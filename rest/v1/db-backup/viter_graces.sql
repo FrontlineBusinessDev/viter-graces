@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 31, 2026 at 09:21 AM
+-- Generation Time: Apr 05, 2026 at 05:55 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -42,9 +42,26 @@ CREATE TABLE `graces_roles` (
 --
 
 INSERT INTO `graces_roles` (`role_aid`, `role_is_active`, `role_code`, `role_name`, `role_description`, `role_created`, `role_updated`) VALUES
-(1, 1, 'r_is_developer', 'Developer', 'Developer role', '2025-09-11 08:47:16', '2025-09-11 08:51:40'),
-(2, 1, 'r_is_admin', 'Admin', 'Admin role', '2025-09-11 08:47:24', '2025-09-11 08:51:43'),
-(3, 1, 'r_is_donor', 'Donor', 'Donor role', '2025-09-11 08:49:39', '2025-09-11 08:51:26');
+(2, 1, 'r_is_admin', 'Admin', 'Admin role', '2025-09-11 08:47:24', '2026-04-05 10:32:37'),
+(91, 1, 'r_is_developer', 'Developer', 'Developer', '2026-04-05 11:07:25', '2026-04-05 11:07:25');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `graces_user_account`
+--
+
+CREATE TABLE `graces_user_account` (
+  `user_account_aid` int(11) NOT NULL,
+  `user_account_is_active` tinyint(1) NOT NULL,
+  `user_account_first_name` varchar(125) NOT NULL,
+  `user_account_last_name` varchar(125) NOT NULL,
+  `user_account_email` varchar(125) NOT NULL,
+  `user_account_id` int(11) NOT NULL,
+  `user_account_role` varchar(125) NOT NULL,
+  `user_account_created` datetime NOT NULL,
+  `user_account_updated` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Indexes for dumped tables
@@ -57,6 +74,12 @@ ALTER TABLE `graces_roles`
   ADD PRIMARY KEY (`role_aid`);
 
 --
+-- Indexes for table `graces_user_account`
+--
+ALTER TABLE `graces_user_account`
+  ADD PRIMARY KEY (`user_account_aid`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
@@ -64,7 +87,13 @@ ALTER TABLE `graces_roles`
 -- AUTO_INCREMENT for table `graces_roles`
 --
 ALTER TABLE `graces_roles`
-  MODIFY `role_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `role_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=92;
+
+--
+-- AUTO_INCREMENT for table `graces_user_account`
+--
+ALTER TABLE `graces_user_account`
+  MODIFY `user_account_aid` int(11) NOT NULL AUTO_INCREMENT;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
