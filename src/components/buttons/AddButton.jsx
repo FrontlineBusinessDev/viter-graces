@@ -5,7 +5,7 @@ const AddButton = ({ value = "Add", onClick = (e) => e }) => {
     <>
       <button className="btn--green " onClick={onClick}>
         <Plus size={16} />
-        <span>{value}</span>
+        <span className="capitalize">{value}</span>
       </button>
     </>
   );

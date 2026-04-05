@@ -13,8 +13,15 @@ RewriteRule ^upload-multiple-files$ core/upload-multiple-files.php [L]
 
 ### ROLES ###
 RewriteRule ^roles$ controllers/developer/settings/role/role.php [L]
-RewriteRule ^roles/([0-9]+)$ controllers/developer/settings/role/role.php?roleid=$1 [L]
-RewriteRule ^roles/active/([0-9]+)$ controllers/developer/settings/role/active.php?roleid=$1 [L]
+RewriteRule ^roles/([0-9]+)$ controllers/developer/settings/role/role.php?id=$1 [L]
+RewriteRule ^roles/active/([0-9]+)$ controllers/developer/settings/role/active.php?id=$1 [L] 
 RewriteRule ^roles/page/([0-9]+)$ controllers/developer/settings/role/page.php?start=$1 [L]
 RewriteRule ^roles/search$ controllers/developer/settings/role/search.php [L]
+
+### User ACCOUNT ###
+RewriteRule ^users$ controllers/developer/settings/user/user.php [L]
+RewriteRule ^users/([0-9]+)$ controllers/developer/settings/user/user.php?id=$1 [L]
+RewriteRule ^users/active/([0-9]+)$ controllers/developer/settings/user/active.php?id=$1 [L] 
+RewriteRule ^users/page/([0-9]+)$ controllers/developer/settings/user/page.php?start=$1 [L]
+RewriteRule ^users/search$ controllers/developer/settings/user/search.php [L]
   

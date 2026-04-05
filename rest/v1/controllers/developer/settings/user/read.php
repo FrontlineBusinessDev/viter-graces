@@ -3,14 +3,14 @@
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new Role($conn);
+$val = new User($conn);
 // get $_GET data
 $error = [];
 $returnData = [];
 
 if (array_key_exists("roleid", $_GET)) {
-    $val->role_aid = $_GET['roleid'];
-    checkId($val->role_aid);
+    $val->user_account_aid = $_GET['roleid'];
+    checkId($val->user_account_aid);
     $query = checkReadById($val);
     http_response_code(200);
     getQueriedData($query);

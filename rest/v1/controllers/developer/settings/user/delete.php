@@ -3,21 +3,15 @@
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new Role($conn);
+$val = new User($conn);
 // get $_GET data
 $error = [];
 $returnData = [];
 if (array_key_exists("roleid", $_GET)) {
     // get data
-    $val->role_aid = $_GET['roleid'];
+    $val->user_account_aid = $_GET['roleid'];
     $column_name = strtolower($data['role_name']);
-    checkId($val->role_aid);
-    // delete
-    // if ($column_name == "developer") {
-    //     isUserSystemAssociated($val);
-    // } else {
-    //     isUserOtherAssociated($val);
-    // }
+    checkId($val->user_account_aid);
 
     $query = checkDelete($val);
     returnSuccess($val, "Role", $query);

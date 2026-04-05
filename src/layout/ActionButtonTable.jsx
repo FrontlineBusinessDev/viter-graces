@@ -11,9 +11,11 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit }) => {
   const handleAction = (val) => {
     dispatch(setIsAction(true));
     setData({
-      ...val,
       ...dataArray,
-      path: `${val?.name}/${dataArray?.id}`,
+      path:
+        val?.name !== "delete"
+          ? `${val?.path}/${dataArray?.id}`
+          : `${dataArray?.id}`,
       action: val?.name,
     });
   };
@@ -21,9 +23,7 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit }) => {
   const handleUpdate = (val) => {
     dispatch(setIsAdd(true));
     setItemEdit({
-      ...val,
       ...dataArray,
-      path: `${val?.name}/${dataArray?.id}`,
     });
   };
 
@@ -32,7 +32,9 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit }) => {
       <div className="flex items-center justify-end gap-3">
         {item?.action_array?.map((a, key) => {
           return (
-            isEmptyItem(a?.name, "") === "edit" && (
+            isEmptyItem(a?.name, "") === "edit" &&
+            Number(isEmptyItem(a?.isActive, 1)) ===
+              Number(isEmptyItem(dataArray?.is_active, 1)) && (
               <div key={key}>
                 <ActionButton item={a} onClick={() => handleUpdate(a)} />
               </div>

@@ -3,27 +3,27 @@
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$role = new Role($conn);
+$val = new Role($conn);
 // get $_GET data
 $error = [];
 $returnData = [];
-if (array_key_exists("roleid", $_GET)) {
+if (array_key_exists("id", $_GET)) {
     // check data
     checkPayload($data);
     // get data
-    $role->role_aid = $_GET['roleid'];
-    $role->role_name = checkIndex($data, "role_name");
-    $role->role_code = "r_is_" . strtolower($role->role_name);
-    $role->role_description = checkIndex($data, "role_description");
-    $role->role_datetime = date("Y-m-d H:i:s");
+    $val->role_aid = $_GET['id'];
+    $val->role_name = checkIndex($data, "role_name");
+    $val->role_code = "r_is_" . strtolower($val->role_name);
+    $val->role_description = checkIndex($data, "role_description");
+    $val->role_updated = date("Y-m-d H:i:s");
 
-    $role_name_old = $data['role_name_old'];
+    $val_name_old = $data['role_name_old'];
 
-    checkId($role->role_aid);
-    compareName($role, $role_name_old, $role->role_name);
+    checkId($val->role_aid);
+    compareName($val, $val_name_old, $val->role_name);
     // update
-    $query = checkUpdate($role);
-    returnSuccess($role, "Role", $query);
+    $query = checkUpdate($val);
+    returnSuccess($val, "Role", $query);
 }
 
 // return 404 error if endpoint not available

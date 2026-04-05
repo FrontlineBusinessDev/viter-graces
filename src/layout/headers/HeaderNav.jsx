@@ -4,6 +4,7 @@ import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import TitleHeader from "./TitleHeader";
 import { setTabValue } from "@/store/StoreAction";
+import Toast from "@/components/Toast";
 const HeaderNav = ({ children, menu, submenu, activeTab = "" }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
@@ -22,6 +23,7 @@ const HeaderNav = ({ children, menu, submenu, activeTab = "" }) => {
         {activeTab !== "" ? <TitleHeader /> : ""}
         {children}
       </div>
+      {store.success && <Toast variant="success" />}
     </>
   );
 };

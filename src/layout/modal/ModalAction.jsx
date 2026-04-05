@@ -19,7 +19,12 @@ const ModalAction = ({ mysqlApiAction, msg, successMsg, item, queryKey }) => {
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
-    mutationFn: (values) => queryData(mysqlApiAction, "put", values),
+    mutationFn: (values) =>
+      queryData(
+        mysqlApiAction,
+        isEmptyItem(item?.action, "active") !== "delete" ? "put" : "delete",
+        values,
+      ),
     onSuccess: (data) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: [queryKey] });
@@ -35,11 +40,11 @@ const ModalAction = ({ mysqlApiAction, msg, successMsg, item, queryKey }) => {
       }
     },
   });
-
   const handleYes = async () => {
     // mutate data
     mutation.mutate({
-      isActive: 0,
+      isActive: Number(isEmptyItem(item?.is_active, 0)) === 1 ? 0 : 1,
+      ...item,
     });
   };
 

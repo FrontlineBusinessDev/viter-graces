@@ -60,6 +60,10 @@ export const InputText = ({
 
   return (
     <>
+      <label htmlFor={props.id || props.name}>
+        {label}
+        {required && <span className="text-alert"> *</span>}
+      </label>
       <input
         {...field}
         {...props}
@@ -73,7 +77,6 @@ export const InputText = ({
         }}
         ref={refVal}
       />
-      <label htmlFor={props.id || props.name}>{label}</label>
 
       {meta.touched && meta.error ? (
         <span className="error-show">{meta.error}</span>
@@ -109,7 +112,9 @@ export const InputLogin = ({
         }}
         ref={refVal}
       />
-      <label htmlFor={props.id || props.name}>{icon}</label>
+      <label htmlFor={props.id || props.name} className="label_login">
+        {icon}
+      </label>
 
       {meta.touched && meta.error ? (
         <span className="error-show">{meta.error}</span>

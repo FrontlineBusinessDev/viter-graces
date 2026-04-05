@@ -36,18 +36,30 @@ const Roles = () => {
     {
       accessorKey: "action",
       action_array: [
-        { name: "edit", icon: <Edit className="h-3 w-3" />, isActive: 1 },
+        {
+          name: "edit",
+          path: "roles",
+          icon: <Edit className="h-3 w-3" />,
+          isActive: 1,
+        },
         {
           name: "archieve",
+          path: "active",
           icon: <ArchiveRestore className="h-3 w-3" />,
           isActive: 1,
         },
         {
           name: "restore",
+          path: "active",
           icon: <RotateCcw className="h-3 w-3" />,
           isActive: 0,
         },
-        { name: "delete", icon: <Trash className="h-3 w-3" />, isActive: 0 },
+        {
+          name: "delete",
+          path: "roles",
+          icon: <Trash className="h-3 w-3" />,
+          isActive: 0,
+        },
       ],
       header: "Action",
       classTh: "",

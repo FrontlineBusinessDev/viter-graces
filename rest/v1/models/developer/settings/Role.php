@@ -7,7 +7,7 @@ class Role
     public $role_code;
     public $role_description;
     public $role_created;
-    public $role_datetime;
+    public $role_updated;
 
     public $connection;
     public $lastInsertedId;
@@ -37,13 +37,13 @@ class Role
             $sql .= "role_description, ";
             $sql .= "role_is_active, ";
             $sql .= "role_created, ";
-            $sql .= "role_datetime ) values ( ";
+            $sql .= "role_updated ) values ( ";
             $sql .= ":role_name, ";
             $sql .= ":role_code, ";
             $sql .= ":role_description, ";
             $sql .= ":role_is_active, ";
             $sql .= ":role_created, ";
-            $sql .= ":role_datetime ) ";
+            $sql .= ":role_updated ) ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "role_name" => $this->role_name,
@@ -51,7 +51,7 @@ class Role
                 "role_description" => $this->role_description,
                 "role_is_active" => $this->role_is_active,
                 "role_created" => $this->role_created,
-                "role_datetime" => $this->role_datetime,
+                "role_updated" => $this->role_updated,
             ]);
             $this->lastInsertedId = $this->connection->lastInsertId();
         } catch (PDOException $ex) {
@@ -158,14 +158,14 @@ class Role
             $sql .= "role_name = :role_name, ";
             $sql .= "role_code = :role_code, ";
             $sql .= "role_description = :role_description, ";
-            $sql .= "role_datetime = :role_datetime ";
+            $sql .= "role_updated = :role_updated ";
             $sql .= "where role_aid  = :role_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "role_name" => $this->role_name,
                 "role_code" => $this->role_code,
                 "role_description" => $this->role_description,
-                "role_datetime" => $this->role_datetime,
+                "role_updated" => $this->role_updated,
                 "role_aid" => $this->role_aid,
             ]);
         } catch (PDOException $ex) {
@@ -180,12 +180,12 @@ class Role
         try {
             $sql = "update {$this->tblRole} set ";
             $sql .= "role_is_active = :role_is_active, ";
-            $sql .= "role_datetime = :role_datetime ";
+            $sql .= "role_updated = :role_updated ";
             $sql .= "where role_aid = :role_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "role_is_active" => $this->role_is_active,
-                "role_datetime" => $this->role_datetime,
+                "role_updated" => $this->role_updated,
                 "role_aid" => $this->role_aid,
             ]);
         } catch (PDOException $ex) {
@@ -231,12 +231,12 @@ class Role
         try {
             $sql = "update {$this->tblRole} set ";
             $sql .= "role_is_{$column_name} = :role_column_name, ";
-            $sql .= "role_datetime = :role_datetime ";
+            $sql .= "role_updated = :role_updated ";
             $sql .= "where role_name = :role_name ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "role_column_name" => $this->role_is_active,
-                "role_datetime" => $this->role_datetime,
+                "role_updated" => $this->role_updated,
                 "role_name" => $this->role_name,
             ]);
         } catch (PDOException $ex) {

@@ -19,6 +19,8 @@ import {
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import ActionButtonTable from "../ActionButtonTable";
 import ModalAction from "../modal/ModalAction";
+import { setIsAdd } from "@/store/StoreAction";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
 
 const InfiniteTable = ({ columns, className, path = "", setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -114,7 +116,7 @@ const InfiniteTable = ({ columns, className, path = "", setItemEdit }) => {
           />
         </div>
 
-        <AddButton value={"roles"} onClick={handleAdd} />
+        <AddButton value={path} onClick={handleAdd} />
       </div>
       <div className="hidden sm:block">
         {/* TABLE */}
@@ -133,7 +135,7 @@ const InfiniteTable = ({ columns, className, path = "", setItemEdit }) => {
                       <th
                         key={header?.id}
                         onClick={header?.column?.getToggleSortingHandler()}
-                        className={`${header?.column?.columnDef?.classTh}`}
+                        className={`${isEmptyItem(header?.column?.columnDef?.classTh, "")}`}
                       >
                         {flexRender(
                           header?.column?.columnDef?.header,
@@ -178,10 +180,16 @@ const InfiniteTable = ({ columns, className, path = "", setItemEdit }) => {
                       {row.getVisibleCells().map((item) => (
                         <td
                           key={item?.id}
-                          className={`${item?.column?.columnDef?.classTd}`}
+                          className={`${isEmptyItem(item?.column?.columnDef?.classTd, "")}`}
                         >
                           {item?.column?.columnDef?.header === "status" ? (
-                            <Pills>
+                            <Pills
+                              variant={
+                                flexRender(item?.getValue(), item?.getContext())
+                                  ? "active"
+                                  : "inactive"
+                              }
+                            >
                               {flexRender(item?.getValue(), item?.getContext())
                                 ? "Active"
                                 : "Inactive"}
@@ -231,7 +239,7 @@ const InfiniteTable = ({ columns, className, path = "", setItemEdit }) => {
       </div>
       {store.isAction && (
         <ModalAction
-          mysqlApiAction={`${apiVersion}/${dataItem?.path}}`}
+          mysqlApiAction={`${apiVersion}/${path}/${dataItem?.path}`}
           msg={`Are you sure you want to ${dataItem?.action}`}
           successMsg={`${dataItem?.action} successfully.`}
           item={dataItem}

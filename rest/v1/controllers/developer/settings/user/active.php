@@ -4,12 +4,12 @@ require '../../../../core/header.php';
 // use needed functions
 require '../../../../core/functions.php';
 // use needed classes
-require '../../../../models/developer/settings/Role.php';
+require '../../../../models/developer/settings/User.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new Role($conn);
+$val = new User($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -20,10 +20,10 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     if (array_key_exists("id", $_GET)) {
         // check data
         checkPayload($data);
-        $val->role_aid = $_GET['id'];
-        $val->role_is_active = trim($data["isActive"]);
-        $val->role_updated = date("Y-m-d H:i:s");
-        checkId($val->role_aid);
+        $val->user_account_aid = $_GET['id'];
+        $val->user_account_is_active = trim($data["isActive"]);
+        $val->user_account_updated = date("Y-m-d H:i:s");
+        checkId($val->user_account_aid);
         $query = checkActive($val);
         http_response_code(200);
         returnSuccess($val, "Role", $query);

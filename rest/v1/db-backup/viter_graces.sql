@@ -34,14 +34,14 @@ CREATE TABLE `graces_roles` (
   `role_name` varchar(128) NOT NULL,
   `role_description` text NOT NULL,
   `role_created` datetime NOT NULL,
-  `role_datetime` datetime NOT NULL
+  `role_updated` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `graces_roles`
 --
 
-INSERT INTO `graces_roles` (`role_aid`, `role_is_active`, `role_code`, `role_name`, `role_description`, `role_created`, `role_datetime`) VALUES
+INSERT INTO `graces_roles` (`role_aid`, `role_is_active`, `role_code`, `role_name`, `role_description`, `role_created`, `role_updated`) VALUES
 (1, 1, 'r_is_developer', 'Developer', 'Developer role', '2025-09-11 08:47:16', '2025-09-11 08:51:40'),
 (2, 1, 'r_is_admin', 'Admin', 'Admin role', '2025-09-11 08:47:24', '2025-09-11 08:51:43'),
 (3, 1, 'r_is_donor', 'Donor', 'Donor role', '2025-09-11 08:49:39', '2025-09-11 08:51:26');
