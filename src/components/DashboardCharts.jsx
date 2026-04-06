@@ -1,3 +1,4 @@
+import useDarkMode from "@/custom-hooks/useDarkMode";
 import { LineChart, TrendingDown } from "lucide-react";
 import React from "react";
 import {
@@ -11,6 +12,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import GraphTooltip from "./GraphTooltip";
 
 const salesData = {
   Weekly: [
@@ -96,6 +98,7 @@ const dashboardData = {
 
 export default function DashboardOverview() {
   const [timeframe, setTimeframe] = React.useState("Weekly");
+  const { darkMode, toggleDarkMode } = useDarkMode();
 
   const currentData = salesData[timeframe];
 
@@ -137,11 +140,10 @@ export default function DashboardOverview() {
 
               <YAxis tickFormatter={(value) => `₱${value}`} />
 
-              <Tooltip
-                formatter={(value) => [`₱${value.toLocaleString()}`, "Sales"]}
-              />
+              <Tooltip content={<GraphTooltip darkMode={darkMode} />} />
 
               <Area
+                name="Sales"
                 type="monotone"
                 dataKey="value"
                 stroke="#2563EB"

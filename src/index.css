@@ -31,6 +31,7 @@
   light: "#FFFFFF",
   dark-bg: "#111111",
   gray-bg: "#C5CAD3",
+  dark-mode: "#0b111e",
   lightWarning: "#fffde7",
   warning: "#f09a02",
   warning-light: "#EDCC7E",
@@ -51,6 +52,7 @@
   --color-light: rgb(255 255 255);
   --color-dark-bg: rgb(17 17 17);
   --color-gray-bg: rgb(197 202 211);
+  --color-dark-mode: rgb(11 17 30);
   --color-light-warning: rgb(255 253 231);
   --color-warning: rgb(240 154 2);
   --color-alert: rgb(63 5 5);
@@ -227,7 +229,7 @@
 
 @layer components {
   .wrapper {
-    @apply relative h-full overflow-auto print:pt-0 ml-10 pr-6 pl-4 transition-all duration-150 ease-linear dark:bg-[#0b111e];
+    @apply relative  print:pt-0 md:ml-10 pr-6 pl-4 transition-all duration-150 ease-linear;
   }
   .navigation {
     @apply fixed left-0 top-0 z-50;

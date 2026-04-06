@@ -107,7 +107,7 @@ const ModalUser = ({ itemEdit }) => {
                         <InputSelectArray
                           label="Role"
                           type="text"
-                          name="user_other_role_id"
+                          name="user_account_role_id"
                           disabled={mutation.isPending}
                           isLoading={isLoading || isFetching}
                           error={error}

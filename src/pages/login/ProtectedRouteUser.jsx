@@ -2,6 +2,7 @@ import FetchingSpinner from "@/components/spinners/FetchingSpinner";
 import { apiVersion, devNavUrl, UrlAdmin, UrlDeveloper } from "@/config/config";
 import PageNotFound from "@/layout/PageNotFound";
 import { queryData } from "@/services/queryData";
+import { setCredentials } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import { Navigate } from "react-router-dom";
@@ -26,7 +27,7 @@ const ProtectedRouteUser = ({ children }) => {
 
       const isUserKeyMatched =
         login?.success == true &&
-        login.data.user_key === login.data.user_other_password;
+        login.data.user_key === login.data.user_account_password;
       // check if the password from database is matched
       // to the password used to login
       // if not, logout the user

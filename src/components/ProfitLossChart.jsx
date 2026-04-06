@@ -1,3 +1,4 @@
+import { DollarSign, TrendingDown, TrendingUp } from "lucide-react";
 import React from "react";
 import {
   ComposedChart,
@@ -8,6 +9,8 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
+import GraphTooltip from "./GraphTooltip";
+import useDarkMode from "@/custom-hooks/useDarkMode";
 
 const profitLossData = {
   Weekly: [
@@ -45,14 +48,17 @@ const profitLossData = {
 
 export default function ProfitLossChart() {
   const [timeframe, setTimeframe] = React.useState("Weekly");
+  const { darkMode } = useDarkMode();
 
   const currentData = profitLossData[timeframe];
 
   return (
     <>
-      <div className="bg-white rounded-xl p-4 shadow">
+      <div className="bg-white dark:bg-gray-900 rounded-xl p-4 shadow">
         <div className="flex justify-between mb-4">
-          <h2 className="font-semibold text-black text-sm">Profit & Loss</h2>
+          <h2 className="font-semibold text-black text-sm dark:text-light">
+            Profit & Loss
+          </h2>
           <div className="flex gap-2">
             {["Weekly", "Monthly", "Yearly"].map((frame) => (
               <button
@@ -70,15 +76,30 @@ export default function ProfitLossChart() {
 
         <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="bg-blue-100 p-3 rounded">
-            <p className="text-sm text-gray-600">Net</p>
+            <p className="flex items-center gap-2 text-sm text-gray-600">
+              <span className="text-blue-600">
+                <DollarSign size={14} />
+              </span>
+              Net
+            </p>
             <p className="text-blue-600 font-semibold">₱85,097</p>
           </div>
           <div className="bg-green-100 p-3 rounded">
-            <p className="text-sm text-gray-600">Income</p>
+            <p className="flex items-center gap-2 text-sm text-gray-600">
+              <span className="text-green-600">
+                <TrendingUp size={14} />
+              </span>
+              Income
+            </p>
             <p className="text-green-600 font-semibold">₱145,301</p>
           </div>
           <div className="bg-red-100 p-3 rounded">
-            <p className="text-sm text-gray-600">Expenses</p>
+            <p className="flex items-center gap-2 text-sm text-gray-600">
+              <span className="text-red-600">
+                <TrendingDown size={14} />
+              </span>
+              Expenses
+            </p>
             <p className="text-red-600 font-semibold">₱60,204</p>
           </div>
         </div>
@@ -88,7 +109,7 @@ export default function ProfitLossChart() {
           <ComposedChart data={currentData}>
             <XAxis dataKey="label" />
             <YAxis tickFormatter={(v) => `₱${v / 1000}k`} />
-            <Tooltip formatter={(v) => `₱${v.toLocaleString()}`} />
+            <Tooltip content={<GraphTooltip darkMode={darkMode} />} />
 
             {/* Dashed Lines */}
             <Line
