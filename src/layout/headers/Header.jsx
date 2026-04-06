@@ -1,6 +1,8 @@
+import useDarkMode from "@/custom-hooks/useDarkMode";
 import { StoreContext } from "@/store/StoreContext";
 import {
   Bell,
+  Menu,
   Moon,
   Package,
   PhilippinePeso,
@@ -12,35 +14,14 @@ import {
   X,
 } from "lucide-react";
 import React from "react";
+import Navigation from "../navigation/Navigation";
 
-const Header = () => {
+const Header = ({ menu, toggleMobileNav }) => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const [darkMode, setDarkMode] = React.useState(false);
+  const { darkMode, toggleDarkMode } = useDarkMode();
   const [openQuick, setOpenQuick] = React.useState(false);
+
   let menuRef = React.useRef(null);
-
-  //  default = light
-  React.useEffect(() => {
-    const saved = localStorage.getItem("theme");
-
-    if (saved === "dark") {
-      setDarkMode(true);
-      document.documentElement.classList.add("dark");
-    } else {
-      setDarkMode(false);
-      document.documentElement.classList.remove("dark");
-    }
-  }, []);
-
-  React.useEffect(() => {
-    if (darkMode) {
-      document.documentElement.classList.add("dark");
-      localStorage.setItem("theme", "dark");
-    } else {
-      document.documentElement.classList.remove("dark");
-      localStorage.setItem("theme", "light");
-    }
-  }, [darkMode]);
 
   const handleQuickOpen = () => {
     setOpenQuick(true);
@@ -65,17 +46,27 @@ const Header = () => {
     <>
       <div
         className={` overflow-x-hidden ${
-          !store.isNavFullShow ? "ml-10 pl-12 " : " pl-[260px] "
+          !store.isNavFullShow ? "md:ml-10 md:pl-12 " : " md:pl-[260px] "
         } transition-all ease-in duration-200  sm:pr-6 pr-0 bg-light py-2 shadow-xs border-b border-gray-300 dark:border-gray-600 dark:bg-gray-900 sticky top-0 z-50`}
       >
-        <div className="flex justify-between items-center">
-          <h2 className="text-black text-sm dark:text-light">Dashboard</h2>
+        {/* Mobile Navigation */}
+        <div className="flex justify-between items-center px-4 lg:px-0">
+          <button
+            className="sm:hidden p-2 rounded hover:bg-gray-200 dark:hover:bg-gray-700"
+            onClick={toggleMobileNav}
+          >
+            <Menu />
+          </button>
+
+          <h2 className="text-black text-sm dark:text-light capitalize">
+            {menu}
+          </h2>
           <div className="flex items-center gap-3">
             <button className="btn--green" onClick={handleQuickOpen}>
               <Plus size={16} /> Quick Add
             </button>
             <button
-              onClick={() => setDarkMode(!darkMode)}
+              onClick={toggleDarkMode}
               className="p-3 hover:bg-primary hover:text-light rounded"
             >
               {darkMode ? (

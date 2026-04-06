@@ -3,19 +3,19 @@
   font-family: "poppins";
   font-style: normal;
   font-display: block;
-  src: url(/fonts/poppins-regular.woff) format("woff");
+  src: url(src/assets/fonts/poppins-regular.woff) format("woff");
 }
 @font-face {
   font-family: "inter-regular";
   font-style: normal;
   font-display: block;
-  src: url(/fonts/inter-regular.woff2) format("woff2");
+  src: url(src/assets/fonts/inter-regular.woff2) format("woff2");
 }
 @font-face {
   font-family: "inter-bold";
   font-style: normal;
   font-display: block;
-  src: url(/fonts/inter-bold.woff2) format("woff2");
+  src: url(src/assets/fonts/inter-bold.woff2) format("woff2");
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -31,6 +31,7 @@
   light: "#FFFFFF",
   dark-bg: "#111111",
   gray-bg: "#C5CAD3",
+  dark-mode: "#0b111e",
   lightWarning: "#fffde7",
   warning: "#f09a02",
   warning-light: "#EDCC7E",
@@ -51,6 +52,7 @@
   --color-light: rgb(255 255 255);
   --color-dark-bg: rgb(17 17 17);
   --color-gray-bg: rgb(197 202 211);
+  --color-dark-mode: rgb(11 17 30);
   --color-light-warning: rgb(255 253 231);
   --color-warning: rgb(240 154 2);
   --color-alert: rgb(63 5 5);
@@ -158,7 +160,7 @@
     @apply font-inter-regular text-[10px] dark:text-light;
   }
   body {
-    @apply leading-relaxed font-poppins text-xs min-h-full text-dark;
+    @apply leading-relaxed font-poppins text-xs min-h-full text-dark bg-[#F6F7F9] dark:bg-[#0b111e];
   }
   pre {
     @apply font-poppins;
@@ -167,22 +169,22 @@
     @apply bg-dark-bg dark:bg-[#090e1a];
   }
   table {
-    @apply border-collapse border-spacing-2 text-left w-full table-auto;
+    @apply text-left w-full table-auto shadow-md dark:border dark:border-[#1f2b47];
   }
   table tr:hover {
-    @apply bg-gray-100;
+    @apply bg-gray-100 dark:border-[#1f2b47]/20!;
   }
   table tr {
-    @apply border-b border-solid border-gray-300;
+    @apply border-b border-solid border-gray-200 dark:border-[#1f2b47] hover:bg-[#1f2b47]/30;
   }
   table tr.currentUser .table-action {
     @apply bg-primary/5 backdrop-opacity-100;
   }
   table th {
-    @apply font-bold bg-gray-200 py-2 px-3;
+    @apply font-bold bg-[#F6F7F9] dark:bg-[#1f2b47]/20 py-2 px-3;
   }
   table td {
-    @apply px-3 py-2;
+    @apply px-3 py-2 bg-light dark:bg-[#1f2b47]/10;
   }
   input,
   select {
@@ -194,10 +196,10 @@
   textarea {
     @apply block border border-solid border-gray-300 p-2 rounded-lg w-full h-28 bg-transparent outline-none;
   }
-  label {
+  label.label_login {
     @apply flex justify-center transform -translate-y-6 -translate-x-1 absolute left-3 top-[32px] px-1 z-10 isolate;
   }
-  label:after {
+  label.label_login:after {
     @apply content-[''] w-[97%] h-[2.5px] absolute left-px top-[7.2px] -z-10;
   }
   input:disabled,
@@ -227,10 +229,10 @@
 
 @layer components {
   .wrapper {
-    @apply relative min-h-[90dvh] print:pt-0 ml-10 pr-6 pl-4 transition-all duration-150 ease-linear;
+    @apply relative  print:pt-0 md:ml-10 pr-6 pl-4 transition-all duration-150 ease-linear;
   }
   .navigation {
-    @apply fixed left-0 top-0  z-50;
+    @apply fixed left-0 top-0 z-50;
   }
   .nav {
     @apply flex items-center;
@@ -239,10 +241,10 @@
     @apply flex justify-end w-full -bottom-5 mt-6 mb-4 gap-2 left-0 bg-white z-20;
   }
   .btn-modal-submit {
-    @apply bg-primary w-full rounded text-light p-3 uppercase duration-300 ease-in;
+    @apply bg-primary w-full rounded text-light p-3 duration-300 ease-in cursor-pointer flex justify-center;
   }
   .btn-modal-submit:hover {
-    @apply bg-dark-green w-full rounded text-light p-3 uppercase duration-300 ease-in;
+    @apply bg-dark-green w-full rounded text-light p-3 duration-300 ease-in;
   }
   .btn-modal-submit:disabled {
     @apply opacity-50;
@@ -254,7 +256,7 @@
     @apply opacity-50 hover:bg-white hover:text-dark hover:border-gray-300;
   }
   .modal-body {
-    @apply h-[calc(100dvh-50px)];
+    @apply h-[calc(100%-50px)];
   }
   .modal-form-container {
     @apply h-full flex flex-col justify-between overflow-y-auto pr-4;
@@ -319,11 +321,11 @@
   textarea.error-show {
     @apply border border-red-500 animate-shake;
   }
-  label.error-show {
+  label.label_login.error-show {
     @apply text-red-500;
   }
   .tooltip-action-table {
-    @apply relative p-1 bg-transparent leading-none z-20;
+    @apply relative p-1 bg-transparent leading-none z-999 hover:bg-primary/20 hover:rounded-sm;
   }
   .tooltip-action-table::after {
     @apply content-[attr(data-tooltip)] absolute -translate-x-2/4 bottom-full -top-6 bg-dark/80 text-white p-1 rounded-sm h-fit leading-none z-20 whitespace-nowrap text-center opacity-0 text-[10px] pointer-events-none transition ease-linear scale-0 duration-75 left-1/2;
@@ -332,16 +334,12 @@
     @apply opacity-100 scale-100;
   }
 
-  .btn-action-table svg {
-    @apply fill-gray-800/70;
-  }
-
   .btn {
     @apply px-[18px] py-3.5 bg-white rounded-full text-black border border-transparent  items-center gap-[15px] transition-all duration-500 cursor-pointer min-w-[180px] justify-center text-base font-inter-regular;
   }
 
   .btn--green {
-    @apply bg-primary text-white hover:bg-dark-green flex items-center gap-1 rounded-lg py-2 px-3;
+    @apply bg-primary text-white hover:bg-dark-green flex items-center gap-1 rounded-lg pb-1 pt-1.5 px-5;
   }
 
   .btn--outline {

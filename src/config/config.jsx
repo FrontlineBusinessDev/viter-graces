@@ -10,6 +10,7 @@ export const devNavUrl = import.meta.env.VITE_APP_DEV_NAV_URL;
 
 export const setTimeZone = import.meta.env.VITE_APP_DEV_TIME_ZONE;
 export const UrlDeveloper = import.meta.env.VITE_APP_DEV_URL_DEVELOPER;
+export const UrlAdmin = import.meta.env.VITE_APP_DEV_URL_ADMIN;
 export const isDemoMode = 0;
 export const googleThumbnailLink = import.meta.env
   .VITE_APP_DEV_GOOGLE_THUMBNAIL_LINK;

@@ -1,4 +1,4 @@
-import { devApiUrl, devKey } from "../helpers/functions-general";
+import { devApiUrl, devKey } from "@/config/config";
 
 export const queryData = (endpoint, method = "get", fd = {}) => {
   let url = devApiUrl + endpoint;

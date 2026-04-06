@@ -1,5 +1,5 @@
 import LogoFull from "@/assets/svg/LogoFull";
-import { InputText } from "@/components/InputText";
+import { InputText } from "@/components/inputs/InputText";
 import ButtonSpinner from "@/components/spinners/ButtonSpinner";
 import { apiVersion } from "@/config/config";
 import { checkRoleToRedirect } from "@/custom-hooks/login-functions";
