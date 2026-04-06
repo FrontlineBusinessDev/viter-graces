@@ -72,7 +72,7 @@ const Roles = () => {
       <HeaderNav menu={"settings"} activeTab="roles">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(95dvh-200px)] h-[calc(100dvh-200px)]`}
+          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(100dvh-200px)]`}
           path="roles"
           setItemEdit={setItemEdit}
         />
