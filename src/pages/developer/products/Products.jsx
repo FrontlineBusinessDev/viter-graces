@@ -1,4 +1,4 @@
-import HeaderNav from "@/layout/header/HeaderNav";
+import HeaderNav from "@/layout/headers/HeaderNav";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 const Products = () => {

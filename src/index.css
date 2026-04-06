@@ -3,19 +3,19 @@
   font-family: "poppins";
   font-style: normal;
   font-display: block;
-  src: url(/fonts/poppins-regular.woff) format("woff");
+  src: url(src/assets/fonts/poppins-regular.woff) format("woff");
 }
 @font-face {
   font-family: "inter-regular";
   font-style: normal;
   font-display: block;
-  src: url(/fonts/inter-regular.woff2) format("woff2");
+  src: url(src/assets/fonts/inter-regular.woff2) format("woff2");
 }
 @font-face {
   font-family: "inter-bold";
   font-style: normal;
   font-display: block;
-  src: url(/fonts/inter-bold.woff2) format("woff2");
+  src: url(src/assets/fonts/inter-bold.woff2) format("woff2");
 }
 
 @custom-variant dark (&:where(.dark, .dark *));
@@ -160,7 +160,7 @@
     @apply font-inter-regular text-[10px] dark:text-light;
   }
   body {
-    @apply leading-relaxed font-poppins text-xs min-h-full text-dark;
+    @apply leading-relaxed font-poppins text-xs min-h-full text-dark bg-[#F6F7F9] dark:bg-[#0b111e];
   }
   pre {
     @apply font-poppins;
@@ -196,10 +196,10 @@
   textarea {
     @apply block border border-solid border-gray-300 p-2 rounded-lg w-full h-28 bg-transparent outline-none;
   }
-  label {
+  label.label_login {
     @apply flex justify-center transform -translate-y-6 -translate-x-1 absolute left-3 top-[32px] px-1 z-10 isolate;
   }
-  label:after {
+  label.label_login:after {
     @apply content-[''] w-[97%] h-[2.5px] absolute left-px top-[7.2px] -z-10;
   }
   input:disabled,
@@ -232,7 +232,7 @@
     @apply relative  print:pt-0 md:ml-10 pr-6 pl-4 transition-all duration-150 ease-linear;
   }
   .navigation {
-    @apply fixed left-0 top-0  z-50;
+    @apply fixed left-0 top-0 z-50;
   }
   .nav {
     @apply flex items-center;
@@ -241,10 +241,10 @@
     @apply flex justify-end w-full -bottom-5 mt-6 mb-4 gap-2 left-0 bg-white z-20;
   }
   .btn-modal-submit {
-    @apply bg-primary w-full rounded text-light p-3 uppercase duration-300 ease-in;
+    @apply bg-primary w-full rounded text-light p-3 duration-300 ease-in cursor-pointer flex justify-center;
   }
   .btn-modal-submit:hover {
-    @apply bg-dark-green w-full rounded text-light p-3 uppercase duration-300 ease-in;
+    @apply bg-dark-green w-full rounded text-light p-3 duration-300 ease-in;
   }
   .btn-modal-submit:disabled {
     @apply opacity-50;
@@ -256,7 +256,7 @@
     @apply opacity-50 hover:bg-white hover:text-dark hover:border-gray-300;
   }
   .modal-body {
-    @apply h-[calc(100dvh-50px)];
+    @apply h-[calc(100%-50px)];
   }
   .modal-form-container {
     @apply h-full flex flex-col justify-between overflow-y-auto pr-4;
@@ -321,21 +321,17 @@
   textarea.error-show {
     @apply border border-red-500 animate-shake;
   }
-  label.error-show {
+  label.label_login.error-show {
     @apply text-red-500;
   }
   .tooltip-action-table {
-    @apply relative p-1 bg-transparent leading-none z-20;
+    @apply relative p-1 bg-transparent leading-none z-999 hover:bg-primary/20 hover:rounded-sm;
   }
   .tooltip-action-table::after {
     @apply content-[attr(data-tooltip)] absolute -translate-x-2/4 bottom-full -top-6 bg-dark/80 text-white p-1 rounded-sm h-fit leading-none z-20 whitespace-nowrap text-center opacity-0 text-[10px] pointer-events-none transition ease-linear scale-0 duration-75 left-1/2;
   }
   .tooltip-action-table:hover::after {
     @apply opacity-100 scale-100;
-  }
-
-  .btn-action-table svg {
-    @apply fill-gray-800/70;
   }
 
   .btn {

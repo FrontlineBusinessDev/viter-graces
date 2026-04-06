@@ -1,10 +1,10 @@
 export const checkLocalStorage = () => {
-  let wfstoken = null;
+  let gracestoken = null;
   try {
-    wfstoken = JSON.parse(localStorage.getItem("wfstoken"));
+    gracestoken = JSON.parse(localStorage.getItem("gracestoken"));
   } catch (error) {
-    wfstoken = null;
+    gracestoken = null;
   }
 
-  return wfstoken;
+  return gracestoken;
 };

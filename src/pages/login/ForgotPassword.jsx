@@ -49,12 +49,12 @@ const ForgotPassword = () => {
   });
 
   const initVal = {
-    user_other_email: "",
+    user_account_email: "",
     password: "",
   };
 
   const yupSchema = Yup.object({
-    user_other_email: Yup.string().trim().email("Invalid email"),
+    user_account_email: Yup.string().trim().email("Invalid email"),
     password: Yup.string().trim().required("Required"),
   });
 
@@ -101,7 +101,7 @@ const ForgotPassword = () => {
                         placeholder="ENTER EMAIL ADDRESS"
                         icon={<User className="text-white" />}
                         type="text"
-                        name="user_other_email"
+                        name="user_account_email"
                         className="text-white"
                         disabled={mutation.isPending}
                       />

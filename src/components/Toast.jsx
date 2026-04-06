@@ -1,3 +1,5 @@
+import { setSuccess } from "@/store/StoreAction";
+import { StoreContext } from "@/store/StoreContext";
 import {
   CheckCircle,
   CircleX,
@@ -8,6 +10,7 @@ import {
 import React from "react";
 
 const Toast = ({ variant = "info", ...props }) => {
+  const { store, dispatch } = React.useContext(StoreContext);
   const variants = {
     info: {
       title: "Information",
@@ -40,25 +43,42 @@ const Toast = ({ variant = "info", ...props }) => {
     },
   };
 
-  const base =
-    "fixed top-2 left-1/2 -translate-x-1/2 flex items-center gap-2 py-1.5 px-2 bg-secondary rounded-r-sm border-y border-r  border-y-line border-r-line ";
+  const handleClose = () => {
+    setTimeout(() => {
+      dispatch(setSuccess(false));
+    }, 200);
+  };
+
+  React.useEffect(() => {
+    setTimeout(() => {
+      handleClose();
+    }, 3000);
+  }, []);
 
   return (
-    <div className={`${base} ${variants[variant].border}`}>
+    <div
+      className={`fixed top-2 left-1/2 -translate-x-1/2 flex items-center gap-2 py-1.5 px-2 bg-light rounded-r-sm border-y border-r 
+        border-y-line border-r-line z-99 
+        ${variants[variant]?.border}`}
+    >
       <div
-        className={`size-8 rounded-full grid place-content-center ${variants[variant].style}`}
+        className={`size-8 rounded-full grid place-content-center ${variants[variant]?.style}`}
       >
-        {variants[variant].icon}
+        {variants[variant]?.icon}
       </div>
       <div className="w-60 pt-1">
         <h5 className="leading-4 font-bold text-sm mb-0.5">
-          {variants[variant].title}
+          {variants[variant]?.title}
         </h5>
         <p className="opacity-70 mb-0 text-xs whitespace-nowrap">
-          {variants[variant].message}
+          {variants[variant]?.message}
         </p>
       </div>
-      <button {...props}>
+      <button
+        {...props}
+        onClick={handleClose}
+        className="hover:bg-primary/20 hover:rounded-sm p-1 "
+      >
         <X size={14} />
       </button>
     </div>

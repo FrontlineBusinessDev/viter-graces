@@ -1,9 +1,13 @@
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import { titleHeaderTab } from "./function-header";
+import { Link } from "react-router-dom";
+import { devNavUrl } from "@/config/config";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
 
-const TitleHeader = () => {
+const TitleHeader = ({}) => {
   const { store, dispatch } = React.useContext(StoreContext);
+  // const userRole = store.credentials?.data?.role_code;
   const userRole = "developer";
 
   return (
@@ -15,22 +19,23 @@ const TitleHeader = () => {
             <div key={index} className="mb-5">
               <h1 className="text-base capitalize">{item?.title}</h1>
               <p>{item.title}</p>
-              <div className="rounded-lg bg-gray-200 p-1 inline-block">
+              <div className="rounded-lg bg-gray-200 p-1 inline-block ">
                 <ul className="flex gap-2 items-center">
                   {item?.array_tab.map((itemTab, key) => {
-                    console.log("123", store.tabValue, itemTab?.title_tab);
-                    const sharedClass = `py-1 px-3 flex rounded-lg cursor-pointer ${
-                      store.tabValue === itemTab?.title_tab ? "bg-light" : ""
+                    const sharedClass = `py-1 px-3 flex rounded-lg cursor-pointer rounded-md font-medium transition-colors duration-200 capitalize ${
+                      store.tabValue === itemTab?.title_tab
+                        ? "bg-light text-black/80 font-bold "
+                        : ""
                     }`;
                     return (
-                      <li
+                      <Link
+                        to={`${devNavUrl}/${userRole}/${isEmptyItem(itemTab?.title_tab, ``)}`}
                         key={key}
                         className={sharedClass}
-                        onClick={() => itemTab?.on_click}
                       >
                         {itemTab?.icon}
                         {itemTab?.title_tab}
-                      </li>
+                      </Link>
                     );
                   })}
                 </ul>
