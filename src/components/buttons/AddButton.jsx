@@ -1,11 +1,11 @@
 import { Plus } from "lucide-react";
 
-const AddButton = ({ value = "Add" }) => {
+const AddButton = ({ value = "Add", onClick = (e) => e }) => {
   return (
     <>
-      <button className="btn--green ">
-        <Plus size={16} />
-        <span>{value}</span>
+      <button className="btn--green flex items-center" onClick={onClick}>
+        <Plus size={15} />
+        <span className="capitalize leading-0">{value}</span>
       </button>
     </>
   );

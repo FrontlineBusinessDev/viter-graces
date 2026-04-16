@@ -1,4 +1,4 @@
-import { setIsNavFullShow, setTabValue } from "@/store/StoreAction";
+import { setIsAdd, setIsNavFullShow, setTabValue } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { ChevronRight, LucideLogOut } from "lucide-react";
 import React, { useRef } from "react";
@@ -33,7 +33,6 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
     setHoverItem(item);
     setHoverText(` ${item.label}`);
     setShowHover(true);
-    dispatch(setTabValue(item?.title_tab));
 
     const rect = e.currentTarget.getBoundingClientRect();
     const navRect = navWrapperRef.current.getBoundingClientRect();
@@ -63,9 +62,9 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
     <>
       <aside
         className={`
-    fixed top-0 left-0 h-dvh z-999 bg-dark-bg dark:bg-[#090e1a]
+    fixed top-0 left-0 h-dvh z-999 bg-dark-bg dark:bg-dark-mode
     transition-all duration-300 ease-in-out
-    ${isExpanded ? " lg:w-60" : "w-60 lg:w-[70px]"}                                
+    ${isExpanded ? " w-60" : "w-60 md:w-[70px]"}                                
   `}
       >
         <div
@@ -154,7 +153,7 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                     <span className="text-xs uppercase">Admin</span>
                   </div>
                   <div className=" rounded-lg hover:bg-primary p-2 h-9 ml-4">
-                    <button href="" className="">
+                    <button href="#" className="">
                       <LucideLogOut className="text-light" size={20} />
                     </button>
                   </div>

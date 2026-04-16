@@ -1,14 +1,19 @@
-import Header from "@/layout/header/Header";
+import Header from "@/layout/headers/Header";
 import Navigation from "@/layout/navigation/Navigation";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import TitleHeader from "./TitleHeader";
+import { setTabValue } from "@/store/StoreAction";
+import Toast from "@/components/Toast";
 
-const HeaderNav = ({ children, menu, submenu }) => {
-  const { store } = React.useContext(StoreContext);
+const HeaderNav = ({ children, menu, submenu, activeTab = "" }) => {
+  const { store, dispatch } = React.useContext(StoreContext);
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
   const toggleMobileNav = () => setMobileNavOpen(!mobileNavOpen);
 
+  React.useEffect(() => {
+    dispatch(setTabValue(activeTab));
+  }, [menu]);
   return (
     <>
       <div className="hidden sm:block">
@@ -34,19 +39,15 @@ const HeaderNav = ({ children, menu, submenu }) => {
           </div>
         </>
       )}
-
       <div
-        className={`wrapper transform transition-all duration-300 ease-in-out py-5 bg-[#F6F7F9] dark:bg-dark-mode ${
-          !store.isNavFullShow ? "md:pl-12 " : "md:pl-[220px] "
-        } sm:pr-6 pr-0`}
+        className={`wrapper overflow-auto transform transition-all duration-300 ease-in-out py-5 ${
+          !store.isNavFullShow ? " md:pl-14 sm:px-4  " : " md:pl-[220px] "
+        } `}
       >
-        {store.tabValue !== "" ? (
-          <TitleHeader menu={menu} activeTab={activeTab} />
-        ) : (
-          ""
-        )}
+        {activeTab !== "" ? <TitleHeader /> : ""}
         {children}
       </div>
+      {store.success && <Toast variant="success" />}
     </>
   );
 };

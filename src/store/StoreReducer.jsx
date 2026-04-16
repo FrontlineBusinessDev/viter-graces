@@ -18,42 +18,6 @@ export const StoreReducer = (state, action) => {
         success: action.payload,
       };
 
-    case "IS_SHOW":
-      return {
-        ...state,
-        isShow: action.payload,
-      };
-
-    case "SHOW":
-      return {
-        ...state,
-        isNavFullShow: action.payload,
-      };
-
-    case "ARCHIVE":
-      return {
-        ...state,
-        isArchive: action.payload,
-      };
-
-    case "STATUS":
-      return {
-        ...state,
-        isStatus: action.payload,
-      };
-
-    case "DELETE":
-      return {
-        ...state,
-        isDelete: action.payload,
-      };
-
-    case "RESTORE":
-      return {
-        ...state,
-        isRestore: action.payload,
-      };
-
     case "RESETPASS":
       return {
         ...state,
@@ -64,18 +28,6 @@ export const StoreReducer = (state, action) => {
       return {
         ...state,
         isAdd: action.payload,
-      };
-
-    case "IS_VIEW":
-      return {
-        ...state,
-        isView: action.payload,
-      };
-
-    case "IS_ADD_MODAL":
-      return {
-        ...state,
-        isAddModal: action.payload,
       };
 
     case "IS_SEARCH":
@@ -96,36 +48,6 @@ export const StoreReducer = (state, action) => {
         isForgotPassSuccess: action.payload,
       };
 
-    case "IS_LOGIN":
-      return {
-        ...state,
-        isLogin: action.payload,
-      };
-
-    case "IS_LOGOUT":
-      return {
-        ...state,
-        isLogout: action.payload,
-      };
-
-    case "IS_ACCOUNT_UPDATED":
-      return {
-        ...state,
-        isAccountUpdated: action.payload,
-      };
-
-    case "IS_SETTINGS_OPEN":
-      return {
-        ...state,
-        isSettingsOpen: action.payload,
-      };
-
-    case "IS_DONATE_NOW_OPEN":
-      return {
-        ...state,
-        isDonateNowOpen: action.payload,
-      };
-
     case "IS_STRIPE_ERROR":
       return {
         ...state,
@@ -141,7 +63,24 @@ export const StoreReducer = (state, action) => {
     case "TAB_VALUE":
       return {
         ...state,
-        scrollPosition: action.payload,
+        tabValue: action.payload,
+      };
+
+    case "ACTION":
+      return {
+        ...state,
+        isAction: action.payload,
+      };
+
+    case "IS_LOGIN":
+      return {
+        ...state,
+        isLogin: action.payload,
+      };
+    case "NAV_FULL_SHOW":
+      return {
+        ...state,
+        isNavFullShow: action.payload,
       };
 
     case "CREDENTIALS":

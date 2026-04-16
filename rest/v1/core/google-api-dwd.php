@@ -19,7 +19,7 @@ $returnData = [];
 function getSubjectEmail()
 {
 
-    $subject = GOOGLE_API_SUBJECT_EMIAL; // localhost 
+    $subject = GOOGLE_API_SUBJECT_EMAIL; // localhost 
     return $subject;
 }
 
