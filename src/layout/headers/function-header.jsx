@@ -45,7 +45,7 @@ export const titleHeaderTab = () => {
         },
         {
           icon: <FileText className="size-4 mr-1" />,
-          title_tab: "purchase orders",
+          title_tab: "purchase-orders",
           on_click: onClickTab,
         },
       ],

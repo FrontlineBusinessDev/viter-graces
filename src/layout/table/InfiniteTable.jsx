@@ -128,7 +128,7 @@ const InfiniteTable = ({ columns, className, path = "", setItemEdit }) => {
                 {table?.getHeaderGroups()?.map((headerGroup) => (
                   <tr
                     key={headerGroup?.id}
-                    className=" sm:table-row sticky top-0 z-10 sm:z-10 capitalize dark:bg-[#0b111e] "
+                    className=" sm:table-row sticky top-0 z-10 sm:z-10 uppercase dark:bg-[#0b111e] "
                   >
                     <th className="w-px">#</th>
                     {headerGroup?.headers?.map((header) => (

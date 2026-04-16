@@ -35,7 +35,7 @@ const ModalWrapper = ({
                 {itemEdit ? "Update" : "Add New"} {val}
               </h3>
             </div>
-            {children}
+            <div className="p-3 overflow-y-auto">{children}</div>
           </div>
         </div>
       </div>
