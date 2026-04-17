@@ -1,11 +1,9 @@
 import getBlobDuration from "get-blob-duration";
 import React from "react";
 import { setError, setMessage } from "@/store/StoreAction";
-import {
-  convertTimeToDecimal,
-  devApiUrl,
-  fetchFormData,
-} from "../helpers/functions-general";
+import { convertTimeToDecimal } from "@/utilities/convertTimeToDecimal";
+import { devApiUrl } from "@/config/config";
+import { fetchFormData } from "@/utilities/fetchFormData";
 
 const handleGetSeconds = async (blobFile) => {
   let result = 0,
@@ -61,7 +59,7 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
         fd.append(
           `file${count}`,
           filesArrayList[i],
-          filesArrayList[i].name.toLowerCase()
+          filesArrayList[i].name.toLowerCase(),
         );
         count++;
       }
@@ -115,7 +113,7 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
     fileLimit = 20,
     isAcceptImageOnly = false,
     sizeLimitKb = null,
-    saveToServer = false
+    saveToServer = false,
   ) => {
     dispatch(setError(false));
     let allImageSizes = 0,
@@ -125,13 +123,13 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
     if (e.target.files.length > fileLimit) {
       dispatch(setError(true));
       dispatch(
-        setMessage(`Invalid length of file. Only accept ${fileLimit} or less.`)
+        setMessage(`Invalid length of file. Only accept ${fileLimit} or less.`),
       );
       return false;
     }
     if (sizeLimitKb) {
       const filterExcessFileSize = Array.from(e.target.files).filter(
-        (item) => Number(item.size) > Number(sizeLimitKb)
+        (item) => Number(item.size) > Number(sizeLimitKb),
       );
       console.log(filterExcessFileSize);
       if (filterExcessFileSize?.length > 0) {
@@ -139,9 +137,9 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
         dispatch(
           setMessage(
             `Only accept total of ${Number(sizeLimitKb)} kb and less. (${Number(
-              filterExcessFileSize[0]?.size
-            )} kb)`
-          )
+              filterExcessFileSize[0]?.size,
+            )} kb)`,
+          ),
         );
         return;
       }
@@ -153,7 +151,7 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
         (item) => {
           allImageSizes += item.size;
           return item.type.split("/")[0] !== "image";
-        }
+        },
       );
       // console.log(allImageSizes);
       if (checkCountIfFileIsImage.length > 0) {
@@ -171,7 +169,7 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
     const myFiles = Array.from(files);
     // RENAME FILE FOR UNIQUE FILENAME
     const fileBlob = myFiles.map((item, i) =>
-      item.slice(0, myFiles[i].size, myFiles[i].type)
+      item.slice(0, myFiles[i].size, myFiles[i].type),
     );
     const fileName = myFiles.map((item, i) => item.name.split(".")[0]);
     const fileExtension = myFiles.map((item, i) => item.name.split(".")[1]);
@@ -182,7 +180,7 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
         `${fileName[i].toLowerCase()}_${Date.now()}.${fileExtension[i]}`,
         {
           type: myFiles[i].type,
-        }
+        },
       );
       return file;
     });
@@ -193,12 +191,12 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
     if (saveToServer) {
       if (mergeFilesData?.length == 1) {
         const arrayFilesName = mergeFilesData.map(
-          (item) => JSON.parse(item).name
+          (item) => JSON.parse(item).name,
         );
         propsField.setFieldValue(fieldValue, arrayFilesName[0]);
       } else {
         const arrayFilesName = mergeFilesData.map(
-          (item) => JSON.parse(item).name
+          (item) => JSON.parse(item).name,
         );
         propsField.setFieldValue(fieldValue, arrayFilesName);
       }

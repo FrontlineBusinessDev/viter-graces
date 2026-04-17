@@ -123,7 +123,7 @@ const InfiniteTable = ({ columns, className, path = "", setItemEdit }) => {
         <div className="relative rounded-xl text-center overflow-auto z-0 ">
           {status !== "pending" && isFetching && <TableSpinner />}
           <div className={`${className} `}>
-            <table className="overflow-auto border border-gray-300 dark:border-[#0b111e]">
+            <table className="overflow-auto border border-gray-300 dark:border-[#0b111e] ">
               <thead className={`relative z-50`}>
                 {table?.getHeaderGroups()?.map((headerGroup) => (
                   <tr

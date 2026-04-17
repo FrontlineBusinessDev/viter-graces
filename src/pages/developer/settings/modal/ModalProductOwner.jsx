@@ -110,7 +110,7 @@ const ModalProductOwner = ({ itemEdit }) => {
             {(props) => {
               return (
                 <Form>
-                  <div className="relative mt-3">
+                  <div className="relative">
                     <InputText
                       label="First name"
                       type="text"

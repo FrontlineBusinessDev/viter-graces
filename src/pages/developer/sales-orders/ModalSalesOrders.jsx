@@ -22,7 +22,7 @@ import { Plus } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
 
-const ModalPurchaseOrder = ({ itemEdit }) => {
+const ModalSalesOrders = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [items, setItems] = React.useState([]);
   const [counter, setCounter] = React.useState(0);
@@ -106,7 +106,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
   return (
     <>
       <ModalWrapper
-        val="Purchase Order"
+        val="Sales Order"
         itemEdit={itemEdit}
         mutation={mutation}
         isOpen={true}
@@ -129,16 +129,24 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="relative">
                       <InputText
-                        label="PO Number"
-                        type="text"
+                        label="Order Number"
+                        type="number"
                         name="user_account_first_name"
-                        placeholder={`${itemEdit ? "Update PO number" : "Enter new PO number"}`}
+                        placeholder={`${itemEdit ? "Update PO-149181" : "Enter PO-149181"}`}
+                        disabled={mutation.isPending}
+                      />
+                    </div>
+                    <div className="relative ">
+                      <InputText
+                        label="Order Date"
+                        type="date"
+                        name="user_account_last_name"
                         disabled={mutation.isPending}
                       />
                     </div>
                     <div className="relative">
                       <InputSelectArray
-                        label="Supplier"
+                        label="Customer"
                         type="text"
                         name="user_account_role_id"
                         disabled={mutation.isPending}
@@ -153,20 +161,21 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         }}
                       />
                     </div>
-                    <div className="relative ">
-                      <InputText
-                        label="Order Date"
-                        type="date"
-                        name="user_account_last_name"
-                        disabled={mutation.isPending}
-                      />
-                    </div>
                     <div className="relative">
-                      <InputText
-                        label="Expected Delivery"
-                        type="date"
-                        name="user_account_last_name"
+                      <InputSelectArray
+                        label="Payment Method"
+                        type="text"
+                        name="user_account_role_id"
                         disabled={mutation.isPending}
+                        isLoading={isLoading || isFetching}
+                        error={error}
+                        result={supplier}
+                        onChange={(e) => {
+                          props.values.user_account_role_id = e.target.value;
+                          props.values.user_account_role =
+                            e.target.options[e.target.selectedIndex].text;
+                          return e;
+                        }}
                       />
                     </div>
                   </div>
@@ -189,25 +198,19 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                       </div>
                     ) : (
                       <div className="flex flex-col">
-                        <ul className="hidden md:grid grid-cols-[1.5fr_1.3fr_.7fr_1.3fr] px-3 mt-2 text-dark">
+                        <ul className="hidden md:grid grid-cols-[2fr_1fr_2fr] px-3 mt-2 text-dark">
                           <li>Products</li>
-                          <li>Product Owner</li>
                           <li>Quantity</li>
                           <li>Price per pc.</li>
                         </ul>
                         {items.map((item, index) => (
                           <div
                             key={index}
-                            className="grid grid-cols-2 md:flex md:flex-row gap-3 items-center p-3 mt-1"
+                            className="grid grid-cols-2 md:grid md:grid-cols-[12fr_1fr_1fr_1fr_1fr] gap-3 items-center p-3 mt-1"
                           >
                             <input
                               type="text"
                               placeholder="Product Name"
-                              className="input"
-                            />
-                            <input
-                              type="text"
-                              placeholder="Product Owner"
                               className="input"
                             />
                             <input
@@ -237,33 +240,39 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="relative mt-3">
-                      <InputSelectArray
-                        label="Status"
-                        type="text"
-                        name="user_account_role_id"
+                      <InputText
+                        label="Discount"
+                        type="number"
+                        name="user_account_first_name"
+                        placeholder={`${itemEdit ? "0" : "0"}`}
                         disabled={mutation.isPending}
-                        isLoading={isLoading || isFetching}
                       />
                     </div>
                     <div className="relative mt-3">
-                      <InputSelectArray
-                        label="Payment Status"
-                        type="text"
-                        name="user_account_role_id"
+                      <InputText
+                        label="Tax (₱)"
+                        type="number"
+                        name="user_account_first_name"
+                        placeholder={`${itemEdit ? "0" : "0"}`}
                         disabled={mutation.isPending}
-                        isLoading={isLoading || isFetching}
                       />
+                    </div>
+                    <div className="relative mt-3">
+                      <InputText
+                        label="Amount Paid"
+                        type="number"
+                        name="user_account_first_name"
+                        placeholder={`${itemEdit ? "0" : "0"}`}
+                        disabled={mutation.isPending}
+                      />
+                    </div>
+                    <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end my-5 p-2">
+                      <p className="flex flex-col place-self-end text-primary text-lg text-right">
+                        <span className="text-black dark:text-light text-sm">Total</span>₱ 0.00
+                      </p>
                     </div>
                   </div>
 
-                  <div className="bg-[#F5F5EC] dark:bg-gray-600 w-[50%] place-self-end my-5 p-2">
-                    <p className="flex flex-col place-self-end text-primary text-lg text-right">
-                      <span className="text-black dark:text-light text-sm">
-                        Total
-                      </span>
-                      ₱ 0.00
-                    </p>
-                  </div>
                   <div className="relative">
                     <InputTextArea
                       label="Note"
@@ -300,4 +309,4 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
   );
 };
 
-export default ModalPurchaseOrder;
+export default ModalSalesOrders;

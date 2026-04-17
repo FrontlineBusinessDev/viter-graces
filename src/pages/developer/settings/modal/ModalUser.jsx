@@ -113,7 +113,7 @@ const ModalUser = ({ itemEdit }) => {
             {(props) => {
               return (
                 <Form>
-                  <div className="relative mt-3">
+                  <div className="relative">
                     <InputSelectArray
                       label="Role"
                       type="text"

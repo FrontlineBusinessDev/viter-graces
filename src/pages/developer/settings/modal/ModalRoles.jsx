@@ -94,7 +94,7 @@ const ModalRoles = ({ itemEdit }) => {
             {(props) => {
               return (
                 <Form>
-                  <div className="relative mt-5 mb-6">
+                  <div className="relative mb-6">
                     {itemEdit ? (
                       <p className="flex gap-1">
                         <span className="text-primary">Name:</span>
@@ -114,6 +114,7 @@ const ModalRoles = ({ itemEdit }) => {
                     <InputTextArea
                       label="Description"
                       name="role_description"
+                      placeholder={`${itemEdit ? "Update description" : "Enter description"}`}
                       disabled={mutation.isPending}
                     />
                   </div>

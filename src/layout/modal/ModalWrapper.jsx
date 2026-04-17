@@ -18,15 +18,15 @@ const ModalWrapper = ({
   return (
     <>
       <div
-        className="bg-dark/50 dark:bg-dark-mode/90 overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-999 flex justify-center items-center w-full md:inset-0 max-h-full animate-fadeIn"
+        className="bg-dark/50 dark:bg-dark-mode/90 fixed inset-0 z-999 flex justify-center items-center overflow-y-auto animate-fadeIn"
         onClick={handleClose}
       >
         <div
-          className={`p-1 ${width} animate-slideUp`}
+          className={`p-1 ${width} animate-slideUp w-full max-w-lg my-10`}
           onClick={(e) => e.stopPropagation()}
         >
-          <div className="bg-light dark:bg-gray-900 p-3 pt-5 rounded-lg dark:border dark:border-gray-800">
-            <div className="modal-header relative mb-4">
+          <div className="bg-light dark:bg-gray-900 rounded-lg dark:border dark:border-gray-800 flex flex-col max-h-[90vh]">
+            <div className="modal-header relative p-4">
               <CloseButton
                 handleClose={handleClose}
                 disabled={mutation.isPending}
@@ -35,7 +35,8 @@ const ModalWrapper = ({
                 {itemEdit ? "Update" : "Add New"} {val}
               </h3>
             </div>
-            <div className="p-3 overflow-y-auto">{children}</div>
+
+            <div className="p-4 overflow-y-auto flex-1">{children}</div>
           </div>
         </div>
       </div>

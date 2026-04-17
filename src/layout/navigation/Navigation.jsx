@@ -152,20 +152,9 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                     <span className="text-light text-sm">Richard Santos</span>
                     <span className="text-xs uppercase">Admin</span>
                   </div>
-                  <div className=" rounded-lg hover:bg-primary p-2 h-9 ml-4">
-                    <button href="#" className="">
-                      <LucideLogOut className="text-light" size={20} />
-                    </button>
-                  </div>
                 </div>
               )}
             </div>
-
-            {!isExpanded && !mobileNavOpen && (
-              <button className="p-2 hover:bg-primary rounded-md">
-                <LucideLogOut className="text-light" size={18} />
-              </button>
-            )}
 
             {!mobileNavOpen ? (
               <button

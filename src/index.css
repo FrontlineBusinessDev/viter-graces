@@ -197,7 +197,7 @@
     @apply block border border-solid border-gray-300 p-2 rounded-lg w-full h-28 bg-transparent outline-none;
   }
   label.label_login {
-    @apply flex justify-center transform -translate-y-6 -translate-x-1 absolute left-3 top-[32px] px-1 z-10 isolate;
+    @apply flex justify-center transform -translate-y-6 -translate-x-1 absolute left-3 top-[35px] px-1 z-10 isolate;
   }
   label.label_login:after {
     @apply content-[''] w-[97%] h-[2.5px] absolute left-px top-[7.2px] -z-10;
@@ -251,6 +251,12 @@
   }
   .btn-modal-cancel:disabled {
     @apply opacity-50 hover:bg-white hover:text-dark hover:border-gray-300;
+  }
+  .btn-modal-submit-login {
+    @apply bg-primary w-full rounded-lg text-light px-2 hover:bg-dark-green hover:transition-all hover:duration-300 hover:ease-in-out;
+  }
+  .btn-modal-submit-login:disabled {
+    @apply opacity-50;
   }
   .modal-body {
     @apply h-[calc(100%-50px)];

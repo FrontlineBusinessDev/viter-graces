@@ -50,7 +50,7 @@ export const getNavList = () => {
       label: "Inventory",
       icon: <Warehouse className="size-5" />,
       menu: "inventory",
-      path: `${devNavUrl}/${userRole}/inventory`,
+      path: `${devNavUrl}/${userRole}/stock-overview`,
       isOpenSubmenu: "",
       on_click: onClickNav,
       subList: [],
@@ -71,7 +71,7 @@ export const getNavList = () => {
     {
       label: "Sales Orders",
       icon: <ShoppingCart className="size-5" />,
-      menu: "sales-orders",
+      menu: "sales orders",
       path: `${devNavUrl}/${userRole}/sales-orders`,
       isOpenSubmenu: "",
       on_click: onClickNav,
