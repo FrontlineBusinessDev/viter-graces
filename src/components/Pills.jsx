@@ -8,6 +8,8 @@ const Pills = ({ children, variant = "active" }) => {
     inactive: "bg-gray-100 text-gray-500",
     warning: "bg-warning/10 text-warning",
     alert: "bg-alert/10 text-alert",
+    instock: "bg-success/20 text-success",
+    lowstock: "bg-warning/10 text-warning",
   };
 
   return <div className={`${base} ${variants[variant]}`}>{children}</div>;

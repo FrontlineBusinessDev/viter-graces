@@ -5,7 +5,7 @@ const CloseButton = ({ handleClose = (e) => e, disabled = false }) => {
     <>
       <button
         type="button"
-        className="absolute top-0 right-0 cursor-pointer hover:bg-primary/20 hover:rounded-sm"
+        className="absolute top-3 right-2 cursor-pointer hover:bg-primary/20 hover:rounded-sm"
         onClick={handleClose}
         disabled={disabled}
       >

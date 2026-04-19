@@ -1,10 +1,10 @@
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
-import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
+import { TriangleAlert } from "lucide-react";
 import React from "react";
-import ModalProducts from "./ModalProducts";
-const Products = () => {
+import ModalStockOverview from "./modal/ModalStockOverview";
+const StockOverview = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
 
@@ -30,75 +30,54 @@ const Products = () => {
     },
     {
       accessorKey: "email",
-      header: "Category",
+      header: "Location",
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "phone",
-      header: "Price",
+      header: "Current Stock",
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "address",
-      header: "Cost",
+      header: "Threshold",
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "address",
-      header: "Stocks",
+      header: "Unit",
       classTh: "",
       classTd: "",
-    },
-    {
-      accessorKey: "action",
-      action_array: [
-        {
-          name: "edit",
-          path: "purchase orders",
-          icon: <Edit className="h-3 w-3" />,
-          isActive: 1,
-        },
-        {
-          name: "archieve",
-          path: "active",
-          icon: <ArchiveRestore className="h-3 w-3" />,
-          isActive: 1,
-        },
-        {
-          name: "restore",
-          path: "active",
-          icon: <RotateCcw className="h-3 w-3" />,
-          isActive: 0,
-        },
-        {
-          name: "delete",
-          path: "purchase orders",
-          icon: <Trash className="h-3 w-3" />,
-          isActive: 0,
-        },
-      ],
-      header: "Action",
-      classTh: "text-center w-[7rem]",
-      classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
     },
   ];
 
   return (
     <>
-      <HeaderNav menu={"products"} activeTab="products">
+      <HeaderNav menu={"inventory"} activeTab="stock-overview">
+        <div className="bg-orange-100 text-orange-600 dark:bg-orange-200 dark:text-orange-300 border border-orange-300 rounded-xl px-3 py-2 my-2  ">
+          <div className="flex items-center gap-2">
+            <TriangleAlert size={14} className="place-self-start mt-0.5" />
+            <p className="dark:text-orange-600 mb-0 ">
+              <span className="dark:text-orange-600 font-bold ">
+                2 products
+              </span>{" "}
+              are below low stock threshold: Cassava chips (C), Kropek.
+            </p>
+          </div>
+        </div>
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="product"
+          path="stock movement"
           setItemEdit={setItemEdit}
         />
       </HeaderNav>
-      {store.isAdd && <ModalProducts itemEdit={itemEdit} />}
+      {store.isAdd && <ModalStockOverview itemEdit={itemEdit} />}
     </>
   );
 };
 
-export default Products;
+export default StockOverview;

@@ -1,6 +1,7 @@
 import ModalButton from "@/components/buttons/ModalButton";
 import { InputSelectArray } from "@/components/inputs/InputSelect";
 import { InputText } from "@/components/inputs/InputText";
+import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { apiVersion, devNavUrl } from "@/config/config";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
@@ -20,7 +21,7 @@ import { Form, Formik } from "formik";
 import React from "react";
 import * as Yup from "yup";
 
-const ModalUser = ({ itemEdit }) => {
+const ModalSuppliers = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
   const handleClose = () => {
@@ -33,11 +34,11 @@ const ModalUser = ({ itemEdit }) => {
     isLoading,
     isFetching,
     error,
-    data: roles,
+    data: suppliers,
   } = useQueryData(
-    `${apiVersion}/roles`, // endpoint
+    `${apiVersion}/suppliers`, // endpoint
     "get", // method
-    "roles", // key
+    "suppliers", // key
   );
 
   const queryClient = useQueryClient();
@@ -93,7 +94,7 @@ const ModalUser = ({ itemEdit }) => {
   return (
     <>
       <ModalWrapper
-        val="User"
+        val="Supplier"
         itemEdit={itemEdit}
         mutation={mutation}
         isOpen={true}
@@ -114,23 +115,6 @@ const ModalUser = ({ itemEdit }) => {
               return (
                 <Form>
                   <div className="relative">
-                    <InputSelectArray
-                      label="Role"
-                      type="text"
-                      name="user_account_role_id"
-                      disabled={mutation.isPending}
-                      isLoading={isLoading || isFetching}
-                      error={error}
-                      result={roles}
-                      onChange={(e) => {
-                        props.values.user_account_role_id = e.target.value;
-                        props.values.user_account_role =
-                          e.target.options[e.target.selectedIndex].text;
-                        return e;
-                      }}
-                    />
-                  </div>
-                  <div className="relative mt-3">
                     <InputText
                       label="First name"
                       type="text"
@@ -150,10 +134,37 @@ const ModalUser = ({ itemEdit }) => {
                   </div>
                   <div className="relative mt-3">
                     <InputText
+                      label="Contact Person"
+                      type="text"
+                      name="user_account_last_name"
+                      placeholder={`${itemEdit ? "Update contact person" : "Enter contact person"}`}
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="relative mt-3">
+                    <InputText
                       label="Email"
                       type="text"
                       name="user_account_email"
                       placeholder={`${itemEdit ? "Update user email" : "Enter new user email"}`}
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="relative mt-3">
+                    <InputText
+                      label="Phone"
+                      type="number"
+                      name="user_account_email"
+                      placeholder={`${itemEdit ? "+63" : "+63"}`}
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="relative mt-3">
+                    <InputTextArea
+                      label="Address"
+                      type="text"
+                      name="user_account_email"
+                      placeholder={`${itemEdit ? "Update address" : "Enter new address"}`}
                       disabled={mutation.isPending}
                     />
                   </div>
@@ -184,4 +195,4 @@ const ModalUser = ({ itemEdit }) => {
   );
 };
 
-export default ModalUser;
+export default ModalSuppliers;

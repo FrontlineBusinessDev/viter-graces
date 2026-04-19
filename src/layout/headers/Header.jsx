@@ -2,6 +2,7 @@ import useDarkMode from "@/custom-hooks/useDarkMode";
 import { StoreContext } from "@/store/StoreContext";
 import {
   Bell,
+  LucideLogOut,
   Menu,
   Moon,
   Package,
@@ -61,7 +62,7 @@ const Header = ({ menu, toggleMobileNav }) => {
           <h2 className="text-black text-sm dark:text-light capitalize">
             {menu}
           </h2>
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2">
             <button className="btn--green" onClick={handleQuickOpen}>
               <Plus size={16} /> Quick Add
             </button>
@@ -75,8 +76,9 @@ const Header = ({ menu, toggleMobileNav }) => {
                 <Moon size={16} />
               )}
             </button>
-            <button>
-              <Bell size={16} className="dark:text-light" />
+
+            <button className="p-3 hover:bg-primary hover:text-light rounded">
+              <LucideLogOut size={16} />
             </button>
           </div>
         </div>

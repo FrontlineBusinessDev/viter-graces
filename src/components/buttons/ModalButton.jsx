@@ -9,13 +9,9 @@ const ModalButton = ({
   loading = false,
   itemEdit,
   type = "submit",
+  handleClose,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const handleClose = () => {
-    dispatch(setIsAdd(false));
-  };
-
-  handleEscape(() => handleClose());
 
   return (
     <>
@@ -23,12 +19,10 @@ const ModalButton = ({
         type={type}
         disabled={disabled}
         className={`${type === "submit" ? "btn-modal-submit" : "btn-modal-cancel"}`}
-        onClick={(e) => {
-          `${type === "submit" ? e : handleClose}`;
-        }}
+        onClick={type !== "submit" ? handleClose : undefined}
       >
         {loading ? <ButtonSpinner /> : " "}
-        <span className="ml-2">
+        <span className="">
           {type === "submit" ? <>{itemEdit ? "Save" : "Add"}</> : "Cancel"}
         </span>
       </button>

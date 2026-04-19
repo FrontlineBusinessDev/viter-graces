@@ -1,10 +1,12 @@
-import HeaderNav from "@/layout/headers/HeaderNav";
+
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
 import React from "react";
-import ModalProducts from "./ModalProducts";
-const Products = () => {
+import ModalSuppliers from "./modal/ModalSuppliers";
+import HeaderNav from "@/layout/headers/HeaderNav";
+
+const Suppliers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
 
@@ -18,37 +20,31 @@ const Products = () => {
     },
     {
       accessorKey: "name",
-      header: "Products",
+      header: "name",
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "contact person",
-      header: "SKU",
+      header: "contact person",
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "email",
-      header: "Category",
+      header: "email",
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "phone",
-      header: "Price",
+      header: "phone",
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "address",
-      header: "Cost",
-      classTh: "",
-      classTd: "",
-    },
-    {
-      accessorKey: "address",
-      header: "Stocks",
+      header: "address",
       classTh: "",
       classTd: "",
     },
@@ -57,7 +53,7 @@ const Products = () => {
       action_array: [
         {
           name: "edit",
-          path: "purchase orders",
+          path: "suppliers",
           icon: <Edit className="h-3 w-3" />,
           isActive: 1,
         },
@@ -75,7 +71,7 @@ const Products = () => {
         },
         {
           name: "delete",
-          path: "purchase orders",
+          path: "suppliers",
           icon: <Trash className="h-3 w-3" />,
           isActive: 0,
         },
@@ -88,17 +84,17 @@ const Products = () => {
 
   return (
     <>
-      <HeaderNav menu={"products"} activeTab="products">
+      <HeaderNav menu={"suppliers"} activeTab="suppliers">
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="product"
+          path="suppliers"
           setItemEdit={setItemEdit}
         />
       </HeaderNav>
-      {store.isAdd && <ModalProducts itemEdit={itemEdit} />}
+      {store.isAdd && <ModalSuppliers itemEdit={itemEdit} />}
     </>
   );
 };
 
-export default Products;
+export default Suppliers;

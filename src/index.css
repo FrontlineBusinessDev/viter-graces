@@ -160,13 +160,13 @@
     @apply font-inter-regular text-[10px] dark:text-light;
   }
   body {
-    @apply leading-relaxed font-poppins text-xs min-h-full text-dark bg-[#F6F7F9] dark:bg-[#0b111e];
+    @apply leading-relaxed font-poppins text-xs min-h-full text-dark dark:text-light bg-[#F6F7F9] dark:bg-[#0b111e];
   }
   pre {
     @apply font-poppins;
   }
   nav {
-    @apply bg-dark-bg dark:bg-[#090e1a];
+    @apply bg-dark-bg dark:bg-dark-mode;
   }
   table {
     @apply text-left w-full table-auto shadow-md dark:border dark:border-[#1f2b47];
@@ -188,16 +188,16 @@
   }
   input,
   select {
-    @apply h-[40px] border border-solid border-gray-300 p-2 rounded-sm w-full truncate bg-transparent outline-none;
+    @apply h-[40px] border border-solid border-gray-300 p-2 rounded-lg w-full truncate bg-transparent outline-none dark:bg-dark-mode mt-1;
   }
   select {
-    @apply text-xs h-[35px];
+    @apply text-xs h-[35px] rounded-lg;
   }
   textarea {
     @apply block border border-solid border-gray-300 p-2 rounded-lg w-full h-28 bg-transparent outline-none;
   }
   label.label_login {
-    @apply flex justify-center transform -translate-y-6 -translate-x-1 absolute left-3 top-[32px] px-1 z-10 isolate;
+    @apply flex justify-center transform -translate-y-6 -translate-x-1 absolute left-3 top-[35px] px-1 z-10 isolate;
   }
   label.label_login:after {
     @apply content-[''] w-[97%] h-[2.5px] absolute left-px top-[7.2px] -z-10;
@@ -238,22 +238,25 @@
     @apply flex items-center;
   }
   .modal-action {
-    @apply flex justify-end w-full -bottom-5 mt-6 mb-4 gap-2 left-0 bg-white z-20;
+    @apply flex -bottom-5 mt-6 mb-4 gap-2 z-20 justify-self-end;
   }
   .btn-modal-submit {
-    @apply bg-primary w-full rounded text-light p-3 duration-300 ease-in cursor-pointer flex justify-center;
-  }
-  .btn-modal-submit:hover {
-    @apply bg-dark-green w-full rounded text-light p-3 duration-300 ease-in;
+    @apply bg-primary min-w-20 rounded-lg text-light px-2 hover:bg-dark-green hover:transition-all hover:duration-300 hover:ease-in-out;
   }
   .btn-modal-submit:disabled {
     @apply opacity-50;
   }
   .btn-modal-cancel {
-    @apply flex items-center justify-center text-dark gap-2 px-3 py-1.5 bg-white rounded-md border-gray-300 border w-full;
+    @apply flex items-center justify-center text-dark gap-2 px-3 py-1.5 bg-transparent rounded-md border-gray-300 border min-w-20 hover:bg-gray-300 hover:transition-all hover:duration-300 hover:ease-in-out dark:hover:bg-gray-700;
   }
   .btn-modal-cancel:disabled {
     @apply opacity-50 hover:bg-white hover:text-dark hover:border-gray-300;
+  }
+  .btn-modal-submit-login {
+    @apply bg-primary w-full rounded-lg text-light px-2 hover:bg-dark-green hover:transition-all hover:duration-300 hover:ease-in-out;
+  }
+  .btn-modal-submit-login:disabled {
+    @apply opacity-50;
   }
   .modal-body {
     @apply h-[calc(100%-50px)];
@@ -339,7 +342,7 @@
   }
 
   .btn--green {
-    @apply bg-primary text-white hover:bg-dark-green flex items-center gap-1 rounded-lg pb-1 pt-1.5 px-5;
+    @apply bg-primary text-white hover:bg-dark-green flex items-center gap-1 rounded-lg py-1 px-5;
   }
 
   .btn--outline {
