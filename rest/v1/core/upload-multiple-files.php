@@ -1,6 +1,7 @@
 <?php
 
 require "Response.php";
+require "env.php";
 // use needed classes
 $response = new Response();
 $error = [];
@@ -11,8 +12,7 @@ if ($_FILES) {
         // loop and save file to public img
         for ($i = 0; $i < count($_FILES); $i++) {
             $file = $_FILES["file$i"]["name"];
-            // move_uploaded_file($_FILES["file$i"]["tmp_name"], "../../../img/" . strtolower($file)); // if online
-            move_uploaded_file($_FILES["file$i"]["tmp_name"], "../../../public/img/" . strtolower($file)); // if localhost
+            move_uploaded_file($_FILES["file$i"]["tmp_name"], UPLOAD_MULTIPLE_PATH . strtolower($file)); // if localhost
         }
         $returnData["success"] = true;
         $returnData["message"] = "File success.";

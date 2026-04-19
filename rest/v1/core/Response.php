@@ -40,11 +40,8 @@ class Response
         }
 
         if ($this->_success === false) {
-            // $this->_responseData['data'] = $this->_data;
             $this->_responseData = $this->_data;
         } else {
-            // http_response_code($this->_statusCode);
-            // $this->_responseData['data'] = $this->_data;
             $this->_responseData = $this->_data;
         }
 

@@ -2,6 +2,7 @@
 
 // Require Response
 require_once 'Response.php';
+require "env.php";
 // Required google api vendor
 require_once __DIR__ . '/../google-api/vendor/autoload.php';
 
@@ -18,20 +19,18 @@ $returnData = [];
 function getSubjectEmail()
 {
 
-    $subject = "emmanuel.manalo@frontlinebusiness.com.ph"; // localhost
-    // $subject = "golden@goldenluxuryauto.com"; // production
+    $subject = GOOGLE_API_SUBJECT_EMAIL; // localhost 
     return $subject;
 }
 
 function getDirectoryPath()
 {
-    $localPath = __DIR__ . '/../../../public/img/'; // localhost
-    // $localPath = __DIR__ . '/../../../img/'; // production
+    $localPath = GOOGLE_API_DIRECTORY_PATH; // localhost 
     return $localPath;
 }
 
 // GOOGLE API KEY
-putenv('GOOGLE_APPLICATION_CREDENTIALS=' . __DIR__ . '/../google-api/google-key.json'); // production 
+putenv('GOOGLE_APPLICATION_CREDENTIALS=' . __DIR__ . GOOGLE_API_GOOGLE_KEY); // production 
 
 function getClientService()
 {

@@ -9,8 +9,7 @@ function checkApiKey()
 {
     // validate apikey
     http_response_code(200);
-    $apiKey = require __DIR__ . '/../../../apikey.php';
-    // $apiKey = require $_SERVER["DOCUMENT_ROOT"] . '/../../apikey.php';
+    $apiKey = WEB_APP_API_KEY;
     $auth_array = explode(" ", $_SERVER['HTTP_AUTHORIZATION']);
     $un_pw = explode(":", base64_decode($auth_array[1]));
     $un = $un_pw[0];
@@ -184,61 +183,33 @@ function loginAccess(
     $email,
     $row,
     $result,
-    $key
+    $key,
 ) {
     $response = new Response();
     $error = [];
     $returnData = [];
     if (password_verify($password, $hash_password)) {
-        try {
-            $payload = array(
-                "iss" => "localhost", // A string containing the name or identifier of the issuer application.
-                "aud" => "tm",
-                "iat" => time(),  // timestamp of token issuing.
-                "data" => array("email" => $email, "data" => $row), // App payload
-            );
-            $jwt = JWT::encode($payload, $key, 'HS256');
+        $payload = array(
+            "iss" => "localhost", // A string containing the name or identifier of the issuer application.
+            "aud" => "hr_local",
+            "iat" => time(),  // timestamp of token issuing.
+            "data" => array("email" => $email, "data" => $row), // App payload
+        );
+        $jwt = JWT::encode($payload, $key, 'HS256');
 
-            if ($row['role_code'] == 'r_is_developer') {
-                $user_key = $row['user_system_password'];
-                $role = strtolower($row['role_name']);
-                $fname = mb_substr($row['user_system_fname'], 0, 1);
-                $lname = mb_substr($row['user_system_lname'], 0, 1);
-                $nickName = "$lname$fname";
-            } else {
-                $user_key = $row['user_other_password'];
-                $role = strtolower($row['role_name']);
-                $fname = mb_substr($row['user_other_fname'], 0, 1);
-                $lname = mb_substr($row['user_other_lname'], 0, 1);
-                $nickName = "$lname$fname";
-            }
-
-            http_response_code(200);
-            $returnData["data"] = [
-                array_merge(
-                    (array)$row,
-                    array('user_key' => $user_key),
-                    array('role' => $role),
-                    array('nickName' => $nickName),
-                    array('server_datetime' => date('Y-m-d H:i:s')),
-                    array('server_date' => date('Y-m-d'))
-                ),
-                $jwt
-            ];
-            $returnData["count"] = $result->rowCount();
-            $returnData["success"] = true;
-            $returnData["message"] = "Access granted.";
-            $response->setData($returnData);
-            $response->send();
-            exit;
-        } catch (Throwable $e) {
-            returnHandleError('Error', "Login Error", $e->getMessage());
-        }
+        http_response_code(200);
+        $returnData["data"] = [$row, $jwt];
+        $returnData["count"] = $result->rowCount();
+        $returnData["success"] = true;
+        $returnData["message"] = "Access granted.";
+        $response->setData($returnData);
+        $response->send();
+        return $returnData;
     } else {
         $response->setSuccess(false);
         $error["count"] = 0;
         $error["success"] = false;
-        $error['error'] = "Invalid email or password.";
+        $error['error'] = "Access denied.";
         $response->setData($error);
         $response->send();
         exit;
@@ -248,64 +219,8 @@ function loginAccess(
     checkAccess();
 }
 
-// Token for system user
+// Token for other user
 function tokenOther(
-    $object,
-    $token,
-    $key
-) {
-    $response = new Response();
-    $returnData = [];
-    if (!empty($token)) {
-        try {
-            $decoded = JWT::decode($token, $key, array('HS256'));
-            $object->user_other_email = $decoded->data->email;
-            $result = checkLogin($object);
-            $row = $result->fetch(PDO::FETCH_ASSOC);
-            // THROW PHP ERROR IF DATA NOT DEFINE.
-            if (!isset($decoded->data->data->user_other_fname)) throw new Error('Invalid account.');
-            http_response_code(200);
-            $fname = mb_substr($decoded->data->data->user_other_fname, 0, 1);
-            $lname = mb_substr($decoded->data->data->user_other_lname, 0, 1);
-            $donorId = $decoded->data->data->user_other_practitioner_id ?? 0; //
-            $nickName = "$lname$fname";
-            $donorData = []; //
-
-            if ($donorId > 0) { //
-                $object->user_other_practitioner_id = $donorId; //
-                $donorQuery = $object->readDonorById(); //
-                $donorData = $donorQuery->fetch(PDO::FETCH_ASSOC); //
-                if ($donorData['practitioner_is_active'] == 0) returnError('Access denied.'); //
-            } //
-
-            $returnData["data"] = array_merge(
-                (array)$row,
-                (array)$donorData,
-                array('user_key' => $decoded->data->data->user_other_password), // data from login
-                array('role' => strtolower($decoded->data->data->role_name)),
-                array('nickName' => $nickName),
-                array('server_date' => date('Y-m-d'))
-            );
-            $returnData["count"] = $result->rowCount();
-            $returnData["success"] = true;
-            $returnData["server_datetime"] = date("Y-m-d H:i:s");
-            $returnData["message"] = "Access granted.";
-            $response->setData($returnData);
-            $response->send();
-            return $returnData;
-        } catch (Throwable $e) {
-            returnHandleError('Error', "Login Error", $e->getMessage());
-        }
-    } else {
-        returnHandleError('No token found.', 'Invalid credentials.', 'Invalid credentials.');
-    }
-    checkEndpoint();
-    http_response_code(200);
-    checkAccess();
-}
-
-// Token for system user
-function tokenSystem(
     $object,
     $token,
     $key
@@ -317,32 +232,30 @@ function tokenSystem(
     if (!empty($token)) {
         try {
             $decoded = JWT::decode($token, $key, array('HS256'));
-            $object->user_system_email = $decoded->data->email;
+            $object->user_account_email = $decoded->data->email;
             $result = checkLogin($object);
             $row = $result->fetch(PDO::FETCH_ASSOC);
-            // THROW PHP ERROR IF DATA NOT DEFINE.
-            if (!isset($decoded->data->data->user_system_fname)) throw new Error('Invalid account.');
-            http_response_code(200);
-            $fname = mb_substr($decoded->data->data->user_system_fname, 0, 1);
-            $lname = mb_substr($decoded->data->data->user_system_lname, 0, 1);
-            $nickName = "$lname$fname";
 
+            http_response_code(200);
             $returnData["data"] = array_merge(
                 (array)$row,
-                array('user_key' => $decoded->data->data->user_system_password), // data from login
-                array('role' => strtolower($decoded->data->data->role_name)),
-                array('nickName' => $nickName),
-                array('server_date' => date('Y-m-d'))
+                array('user_key' => $decoded->data->data->user_account_password), // data from login
+                array('role' => strtolower($decoded->data->data->user_account_role)),
             );
             $returnData["count"] = $result->rowCount();
             $returnData["success"] = true;
-            $returnData["server_datetime"] = date("Y-m-d H:i:s");
             $returnData["message"] = "Access granted.";
             $response->setData($returnData);
             $response->send();
             return $returnData;
-        } catch (Throwable $e) {
-            returnHandleError('Error', "Login System Error", $e->getMessage());
+        } catch (Exception $ex) {
+            $response->setSuccess(false);
+            $error["count"] = 0;
+            $error["success"] = false;
+            $error['error'] = "Catch no token found.";
+            $response->setData($error);
+            $response->send();
+            exit;
         }
     } else {
         $response->setSuccess(false);
@@ -357,7 +270,6 @@ function tokenSystem(
     http_response_code(200);
     checkAccess();
 }
-
 
 // Read
 function checkReadQuery($query, $total_result, $object_total, $object_start)

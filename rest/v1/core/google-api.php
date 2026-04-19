@@ -2,6 +2,7 @@
 
 // Require Response
 require_once 'Response.php';
+require "env.php";
 // Required google api vendor
 require_once __DIR__ . '/../google-api/vendor/autoload.php';
 
@@ -17,14 +18,13 @@ $returnData = [];
 
 function getDirectoryPath()
 {
-    $localPath = __DIR__ . '/../../../public/img/';
-    // $localPath = __DIR__ . '/../../../img/';
+    $localPath = GOOGLE_API_DIRECTORY_PATH; // localhost 
 
     return $localPath;
 }
 
-// GOOGLE API KEY
-putenv('GOOGLE_APPLICATION_CREDENTIALS=' . __DIR__ . '/../google-api/google-key.json');
+// GOOGLE API KEY 
+putenv('GOOGLE_APPLICATION_CREDENTIALS=' . __DIR__ . GOOGLE_API_GOOGLE_KEY); // production 
 
 // END CHANGE DIRECTORY PATH FOR LOCAL AND ONLINE PRODUCTION
 
@@ -71,7 +71,7 @@ function fileUploadToGoogleDriveWithPublicPermission($photo)
         $client = new Client();
         $client->useApplicationDefaultCredentials();
         // $client->setScopes(Drive::DRIVE);
-        $client->setScopes(['https://www.googleapis.com/auth/drive']);
+        $client->setScopes([GOOGLE_AUTH_DRIVE]);
         $driveService = new Drive($client);
         // store file id and permission id
         $googleIds = array();
@@ -157,7 +157,7 @@ function renameFile($fileId = '', $newTitle = '')
         // SERVICE
         $client = new Client();
         $client->useApplicationDefaultCredentials();
-        $client->setScopes(['https://www.googleapis.com/auth/drive']);
+        $client->setScopes([GOOGLE_AUTH_DRIVE]);
         $driveService = new Drive($client);
         $file = new Drive\DriveFile($client);
         $file->setName($newTitle);

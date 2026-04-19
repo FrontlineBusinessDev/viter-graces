@@ -1,4 +1,5 @@
 <?php
+require "env.php";
 
 class Database
 {
@@ -6,17 +7,11 @@ class Database
 
     public static function connectDb()
     {
-        // // Development
-        // $host = "localhost";
-        // $dbname = "dbebtpqmtfksdq";
-        // $username = "frontli5_fbs";
-        // $password = "6o~q%}%U^&67";
-
         // Localhost
-        $host = "localhost";
-        $dbname = "viter_graces";
-        $username = "root";
-        $password = "";
+        $host = DB_HOST;
+        $dbname = DB_NAME;
+        $username = DB_USERNAME;
+        $password = DB_PASSWORD;
 
         if (self::$dbConnection === null) {
             self::$dbConnection = new PDO("mysql:host={$host};dbname={$dbname};", $username, $password, [PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC]);

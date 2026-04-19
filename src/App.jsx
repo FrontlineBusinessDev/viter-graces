@@ -1,36 +1,34 @@
-import PageNotFound from "@/components/partials/PageNotFound";
-import { StoreProvider } from "@/store/StoreContext";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { Route, BrowserRouter as Router, Routes } from "react-router-dom";
-import "./index.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import PageNotFound from "./layout/PageNotFound";
 import { routesAccess } from "./routes/RoutesAccess";
 import { routesDeveloper } from "./routes/RoutesDeveloper";
+import { StoreProvider } from "./store/StoreContext";
+import { ThemeProvider } from "./store/ThemeContext.jsx";
 
-const App = () => {
+function App() {
   const queryClient = new QueryClient();
+
+  const router = createBrowserRouter([
+    {
+      path: "*",
+      element: <PageNotFound />
+    },
+    ...routesAccess,
+    ...routesDeveloper,
+  ]);
+
   return (
     <>
       <QueryClientProvider client={queryClient}>
-        <StoreProvider>
-          <Router>
-            <Routes>
-              <Route path={`*`} element={<PageNotFound />} />
-
-              {/* ACCESS USER ROUTE */}
-              {routesAccess.map(({ ...routeProps }, key) => {
-                return <Route key={key} {...routeProps} />;
-              })}
-
-              {/* SYSTEM USER ROUTE */}
-              {routesDeveloper.map(({ ...routeProps }, key) => {
-                return <Route key={key} {...routeProps} />;
-              })}
-            </Routes>
-          </Router>
-        </StoreProvider>{" "}
-      </QueryClientProvider>{" "}
+        <ThemeProvider>
+          <StoreProvider>
+            <RouterProvider router={router} />
+          </StoreProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
     </>
   );
-};
+}
 
 export default App;

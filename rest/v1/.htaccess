@@ -9,120 +9,23 @@ Header set Access-Control-Allow-Origin *
 
 #################################### ALL FOR DEVELOPER #################################
 ### FOR UPLOAD PHOTO ###
-RewriteRule ^upload-multiple-files$ core/upload-multiple-files.php [L] 
-
-### ACCOUNT CHANGE PASS ### 
-RewriteRule ^account/system/update-password$ controllers/developer/account/system/account-change-password.php [L] 
-RewriteRule ^account/other/update-password$ controllers/developer/account/other/account-change-password.php [L] 
+RewriteRule ^upload-multiple-files$ core/upload-multiple-files.php [L]  
 
 ### ROLES ###
-RewriteRule ^roles$ controllers/developer/settings/user/role/role.php [L]
-RewriteRule ^roles/([0-9]+)$ controllers/developer/settings/user/role/role.php?roleid=$1 [L]
-RewriteRule ^roles/active/([0-9]+)$ controllers/developer/settings/user/role/active.php?roleid=$1 [L]
- 
-### SYSTEM USER ###
-RewriteRule ^user-system$ controllers/developer/settings/user/system/system.php [L]
-RewriteRule ^user-system/([0-9]+)$ controllers/developer/settings/user/system/system.php?usersystemid=$1 [L]
-RewriteRule ^user-system/active/([0-9]+)$ controllers/developer/settings/user/system/active.php?usersystemid=$1 [L]
-RewriteRule ^user-system/search$ controllers/developer/settings/user/system/search.php [L]
-RewriteRule ^user-system/key/([A-Za-z0-9-]+)$ controllers/developer/settings/user/system/key.php?usersystemkey=$1 [L]
-RewriteRule ^user-system/page/([0-9]+)$ controllers/developer/settings/user/system/page.php?start=$1 [L]
-RewriteRule ^user-system/password$ controllers/developer/settings/user/system/set-password.php [L]
-RewriteRule ^user-system/login$ controllers/developer/settings/user/system/login.php [L]
-RewriteRule ^user-system/token$ controllers/developer/settings/user/system/token.php [L]
-RewriteRule ^user-system/reset$ controllers/developer/settings/user/system/reset-password.php [L]
-RewriteRule ^user-system/verify-email/([A-Za-z0-9-]+)$ controllers/developer/settings/user/system/update-email.php?usersystemkey=$1 [L]
+RewriteRule ^roles$ controllers/developer/settings/role/role.php [L]
+RewriteRule ^roles/([0-9]+)$ controllers/developer/settings/role/role.php?id=$1 [L]
+RewriteRule ^roles/active/([0-9]+)$ controllers/developer/settings/role/active.php?id=$1 [L] 
+RewriteRule ^roles/page/([0-9]+)$ controllers/developer/settings/role/page.php?start=$1 [L]
+RewriteRule ^roles/search$ controllers/developer/settings/role/search.php [L]
+
+### User ACCOUNT ###
+RewriteRule ^users$ controllers/developer/settings/user/user.php [L]
+RewriteRule ^users/([0-9]+)$ controllers/developer/settings/user/user.php?id=$1 [L]
+RewriteRule ^users/active/([0-9]+)$ controllers/developer/settings/user/active.php?id=$1 [L] 
+RewriteRule ^users/page/([0-9]+)$ controllers/developer/settings/user/page.php?start=$1 [L]
+RewriteRule ^users/search$ controllers/developer/settings/user/search.php [L]
+RewriteRule ^users/key/([A-Za-z0-9-]+)$ controllers/developer/settings/user/key.php?key=$1 [L]
+RewriteRule ^users/password$ controllers/developer/settings/user/set-password.php [L]
+RewriteRule ^users/token$ controllers/developer/settings/user/token.php [L]
+RewriteRule ^users/login$ controllers/developer/settings/user/login.php [L]
   
-### OTHER USER ###
-RewriteRule ^other-user$ controllers/developer/settings/user/other/other-user.php [L]
-RewriteRule ^other-user/([0-9]+)$ controllers/developer/settings/user/other/other-user.php?id=$1 [L]
-RewriteRule ^other-user/active/([0-9]+)$ controllers/developer/settings/user/other/active.php?id=$1 [L]
-RewriteRule ^other-user/page/([0-9]+)$ controllers/developer/settings/user/other/page.php?start=$1 [L]
-RewriteRule ^other-user/search$ controllers/developer/settings/user/other/search.php [L]
-RewriteRule ^other-user/login$ controllers/developer/settings/user/other/login.php [L]
-RewriteRule ^other-user/token$ controllers/developer/settings/user/other/token.php [L]
-RewriteRule ^other-user/key/([A-Za-z0-9-]+)$ controllers/developer/settings/user/other/key.php?userotherkey=$1 [L]
-RewriteRule ^other-user/password$ controllers/developer/settings/user/other/set-password.php [L]
-RewriteRule ^other-user/reset$ controllers/developer/settings/user/other/reset-password.php [L]
-RewriteRule ^other-user/verify-email/([A-Za-z0-9-]+)$ controllers/developer/settings/user/other/update-email.php?userotherkey=$1 [L]
-RewriteRule ^other-user/search-active-donor$ controllers/developer/settings/user/other/search-active-donor.php [L] 
-RewriteRule ^other-user/read-check-email-exist$ controllers/developer/settings/user/other/read-check-email-exist.php [L] 
-RewriteRule ^other-user/read-associate-by-id/([0-9]+)$ controllers/developer/settings/user/other/read-associate-by-id.php?id=$1 [L] 
-
-### PRACTITIONER ###
-RewriteRule ^practitioner$ controllers/developer/practitioner/practitioner.php [L]
-RewriteRule ^practitioner/([0-9]+)$ controllers/developer/practitioner/practitioner.php?id=$1 [L]
-RewriteRule ^practitioner/active/([0-9]+)$ controllers/developer/practitioner/active.php?id=$1 [L]
-RewriteRule ^practitioner/page/([0-9]+)$ controllers/developer/practitioner/page.php?start=$1 [L]
-RewriteRule ^practitioner/search$ controllers/developer/practitioner/search.php [L]
-RewriteRule ^practitioner/read-associate-by-id/([0-9]+)$ controllers/developer/practitioner/read-associate-by-id.php?id=$1 [L]
-RewriteRule ^practitioner/search-active-services$ controllers/developer/practitioner/search-active-services.php [L]
-RewriteRule ^practitioner/search-active-practitioner$ controllers/developer/practitioner/search-active-practitioner.php [L]
-RewriteRule ^practitioner/read-association-by-practitioner-id/([0-9]+)$ controllers/developer/practitioner/read-association-by-practitioner-id.php?id=$1 [L]
-RewriteRule ^practitioner/page-active/([0-9]+)$ controllers/developer/practitioner/page-active-practitioner.php?start=$1 [L]
-
-### PRACTITIONER ### 
-RewriteRule ^website-practitioner/page/([0-9]+)$ controllers/developer/website/practitioner/page.php?start=$1 [L]
-RewriteRule ^website-practitioner/search$ controllers/developer/website/practitioner/search.php [L] 
-
-### PRACTITIONER SERVICES ###
-RewriteRule ^practitioner-services$ controllers/developer/practitioner/practitioner-services/practitioner-services.php [L]
-RewriteRule ^practitioner-services/([0-9]+)$ controllers/developer/practitioner/practitioner-services/practitioner-services.php?id=$1 [L]
-RewriteRule ^practitioner-services/read-practitioner-services-by-practitioner-id/([0-9]+)$ controllers/developer/practitioner/practitioner-services/read-practitioner-services-by-practitioner-id.php?id=$1 [L]
- 
-### SCHEDULE ###
-RewriteRule ^schedule$ controllers/developer/schedule/schedule.php [L]
-RewriteRule ^schedule/([0-9]+)$ controllers/developer/schedule/schedule.php?id=$1 [L]
-RewriteRule ^schedule/read-associate-by-id/([0-9]+)$ controllers/developer/schedule/read-associate-by-id.php?id=$1 [L]
-RewriteRule ^schedule/filter-by-year-month$ controllers/developer/schedule/filter-by-year-month.php [L]
-RewriteRule ^schedule/filter-by-date$ controllers/developer/schedule/filter-by-date.php [L]
-RewriteRule ^schedule/filter-schedule$ controllers/developer/schedule/filter-schedule.php [L]
-RewriteRule ^schedule/filter-available-time-by-date-and-practitioner$ controllers/developer/schedule/filter-available-time-by-date-and-practitioner.php [L]
-RewriteRule ^schedule/filter-service-by-date-and-practitioner$ controllers/developer/schedule/filter-service-by-date-and-practitioner.php [L]
- 
-### SETTINGS NOTIFICATION ###
-RewriteRule ^notification$ controllers/developer/settings/notification/notification.php [L]
-RewriteRule ^notification/([0-9]+)$ controllers/developer/settings/notification/notification.php?id=$1 [L]
-RewriteRule ^notification/active/([0-9]+)$ controllers/developer/settings/notification/active.php?id=$1 [L]
-RewriteRule ^notification/page/([0-9]+)$ controllers/developer/settings/notification/page.php?start=$1 [L]
-RewriteRule ^notification/search$ controllers/developer/settings/notification/search.php [L]
-
-### BOOKING ###
-RewriteRule ^booking$ controllers/developer/booking/booking.php [L]
-RewriteRule ^booking/([0-9]+)$ controllers/developer/booking/booking.php?id=$1 [L]
-RewriteRule ^booking/page/([0-9]+)$ controllers/developer/booking/page.php?start=$1 [L]
-RewriteRule ^booking/search$ controllers/developer/booking/search.php [L]
-RewriteRule ^booking/read-associate-by-id/([0-9]+)$ controllers/developer/booking/read-associate-by-id.php?id=$1 [L]
-RewriteRule ^booking/filter-by-year-month$ controllers/developer/booking/filter-by-year-month.php [L]
-RewriteRule ^booking/send-email-booking$ controllers/developer/booking/send-email-booking.php [L]
-RewriteRule ^booking/send-email-booking-status$ controllers/developer/booking/send-email-booking-status.php [L]
-RewriteRule ^booking/status/([0-9]+)$ controllers/developer/booking/status.php?id=$1 [L]
-RewriteRule ^booking/search-active-practitioner-by-date$ controllers/developer/booking/search-active-practitioner-by-date.php [L]
-RewriteRule ^booking/filter-service-practitioner-time-by-date$ controllers/developer/booking/filter-service-practitioner-time-by-date.php [L]
-RewriteRule ^booking/filter-service-practitioner-by-date$ controllers/developer/booking/filter-service-practitioner-by-date.php [L]
-RewriteRule ^booking/page-by-practitioner-id/([0-9]+)$ controllers/developer/booking/page-by-practitioner-id.php?start=$1 [L]
-RewriteRule ^booking/search-by-practitioner-id$ controllers/developer/booking/search-by-practitioner-id.php [L]
-
-### CATEGORY SETTINGS ###
-RewriteRule ^category$ controllers/developer/settings/services/category/category.php [L]
-RewriteRule ^category/([0-9]+)$ controllers/developer/settings/services/category/category.php?id=$1 [L]
-RewriteRule ^category/active/([0-9]+)$ controllers/developer/settings/services/category/active.php?id=$1 [L]
-RewriteRule ^category/read-associated-by-id/([0-9]+)$ controllers/developer/settings/services/category/read-associated-by-id.php?id=$1 [L]
-
-### SERVICES SETTINGS ###
-RewriteRule ^services$ controllers/developer/settings/services/services.php [L]
-RewriteRule ^services/([0-9]+)$ controllers/developer/settings/services/services.php?id=$1 [L]
-RewriteRule ^services/active/([0-9]+)$ controllers/developer/settings/services/active.php?id=$1 [L]
-RewriteRule ^services/search-active-category$ controllers/developer/settings/services/search-active-category.php [L]
-RewriteRule ^services/read-associate-by-id/([0-9]+)$ controllers/developer/settings/services/read-associate-by-id.php?id=$1 [L]
-RewriteRule ^services/read-active-service$ controllers/developer/settings/services/read-active-service.php [L]
-
-### ACCOUNT ###
-RewriteRule ^account/donor-create$ controllers/developer/account/create-account/create-account.php [L] 
-
-### COUNTRY SETTINGS ###
-RewriteRule ^country$ controllers/developer/settings/country/country.php [L]
-RewriteRule ^country/([0-9]+)$ controllers/developer/settings/country/country.php?id=$1 [L]
-RewriteRule ^country/active/([0-9]+)$ controllers/developer/settings/country/active.php?id=$1 [L]  
-RewriteRule ^country/read-by-active$ controllers/developer/settings/country/read-by-active.php [L]   
-
