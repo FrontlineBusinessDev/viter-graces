@@ -13,14 +13,15 @@ import Roles from "@/pages/developer/settings/Roles";
 import UsersAccount from "@/pages/developer/settings/UsersAccount";
 import PurchaseOrder from "@/pages/developer/suppliers/PurchaseOrder";
 import Suppliers from "@/pages/developer/suppliers/Suppliers";
+import ProtectedRouteUser from "@/pages/login/ProtectedRouteUser";
 
 export const routesDeveloper = [
   {
     path: `${devNavUrl}/developer/dashboard`,
     element: (
-      // <ProtectedRouteUser>
-      <Dashboard />
-      // </ProtectedRouteUser>
+      <ProtectedRouteUser>
+        <Dashboard />
+      </ProtectedRouteUser>
     ),
   },
   {
@@ -34,73 +35,73 @@ export const routesDeveloper = [
   {
     path: `${devNavUrl}/developer/stock-overview`,
     element: (
-      // <ProtectedRouteUser>
-      <StockOverview />
-      // </ProtectedRouteUser>
+      <ProtectedRouteUser>
+        <StockOverview />
+      </ProtectedRouteUser>
     ),
   },
   {
     path: `${devNavUrl}/developer/movement-history`,
     element: (
-      // <ProtectedRouteUser>
-      <MovementHistory />
-      // </ProtectedRouteUser>
+      <ProtectedRouteUser>
+        <MovementHistory />
+      </ProtectedRouteUser>
     ),
   },
   {
     path: `${devNavUrl}/developer/customers`,
     element: (
-      // <ProtectedRouteUser>
-      <Customers />
-      // </ProtectedRouteUser>
+      <ProtectedRouteUser>
+        <Customers />
+      </ProtectedRouteUser>
     ),
   },
   {
     path: `${devNavUrl}/developer/sales-orders`,
     element: (
-      // <ProtectedRouteUser>
-      <SalesOrders />
-      // </ProtectedRouteUser>
+      <ProtectedRouteUser>
+        <SalesOrders />
+      </ProtectedRouteUser>
     ),
   },
   {
     path: `${devNavUrl}/developer/users`,
     element: (
-      // <ProtectedRouteUser>
-      <UsersAccount />
-      // </ProtectedRouteUser>
+      <ProtectedRouteUser>
+        <UsersAccount />
+      </ProtectedRouteUser>
     ),
   },
   {
     path: `${devNavUrl}/developer/roles`,
     element: (
-      // <ProtectedRouteUser>
-      <Roles />
-      // </ProtectedRouteUser>
+      <ProtectedRouteUser>
+        <Roles />
+      </ProtectedRouteUser>
     ),
   },
   {
     path: `${devNavUrl}/developer/product-owner`,
     element: (
-      // <ProtectedRouteUser>
-      <ProductOwner />
-      // </ProtectedRouteUser>
+      <ProtectedRouteUser>
+        <ProductOwner />
+      </ProtectedRouteUser>
     ),
   },
   {
     path: `${devNavUrl}/developer/suppliers`,
     element: (
-      // <ProtectedRouteUser>
-      <Suppliers />
-      // </ProtectedRouteUser>
+      <ProtectedRouteUser>
+        <Suppliers />
+      </ProtectedRouteUser>
     ),
   },
   {
     path: `${devNavUrl}/developer/purchase-orders`,
     element: (
-      // <ProtectedRouteUser>
-      <PurchaseOrder />
-      // </ProtectedRouteUser>
+      <ProtectedRouteUser>
+        <PurchaseOrder />
+      </ProtectedRouteUser>
     ),
   },
 ];

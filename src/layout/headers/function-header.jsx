@@ -21,13 +21,13 @@ export const titleHeaderTab = () => {
   let navItems = [
     {
       title: "products",
-      description: "7 total",
+      description: "Manage and organize your product catalog",
       roles: ["admin", "developer"],
       array_tab: [],
     },
     {
       title: "inventory",
-      description: "7 products tracked",
+      description: "Track and manage your stock in real time",
       roles: ["admin", "developer"],
       array_tab: [
         {
@@ -44,7 +44,7 @@ export const titleHeaderTab = () => {
     },
     {
       title: "customers",
-      description: "5 customers",
+      description: "Centralized management of all customers",
       roles: ["admin", "developer"],
       array_tab: [],
     },

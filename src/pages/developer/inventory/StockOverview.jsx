@@ -41,13 +41,13 @@ const StockOverview = () => {
       classTd: "",
     },
     {
-      accessorKey: "address",
+      accessorKey: "Threshold",
       header: "Threshold",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "address",
+      accessorKey: "unit",
       header: "Unit",
       classTh: "",
       classTd: "",

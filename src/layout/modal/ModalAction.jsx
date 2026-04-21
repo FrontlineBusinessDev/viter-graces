@@ -60,14 +60,14 @@ const ModalAction = ({ mysqlApiAction, msg, successMsg, item, queryKey }) => {
 
   return (
     <>
-      <div className="bg-dark/50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-99 flex justify-center items-center w-full md:inset-0 max-h-full animate-fadeIn">
+      <div className="bg-dark/50 dark:bg-dark-mode/90 overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-999 flex justify-center items-center w-full md:inset-0 max-h-full animate-fadeIn">
         <div className="p-1 w-[350px] animate-slideUp">
-          <div className="bg-white p-6 pt-10 text-center rounded-lg">
+          <div className="bg-white dark:bg-gray-900 p-6 pt-10 text-center rounded-lg">
             <CircleQuestionMark className="my-2 mx-auto animate-bounce h-11 w-11 text-red-700" />
             <p className="text-sm">{msg}</p>
             <p className="text-sm font-bold">{isEmptyItem(item?.name, "")}</p>
             {store.error && <MessageError />}
-            <div className="flex items-center gap-1 pt-8">
+            <div className="flex mt-6 mb-4 gap-2 justify-center ">
               <button
                 type="submit"
                 className="btn-modal-submit"

@@ -19,7 +19,6 @@ export const googleHDViewLink = import.meta.env
 export const googleViewLink = import.meta.env.VITE_APP_DEV_GOOGLE_VIEW_LINK;
 
 export const devKey = import.meta.env.VITE_APP_DEV_KEY;
-console.log(devKey);
 
 // reCAPTCHA site key TEST
 export const siteKey = import.meta.env.VITE_APP_DEV_GOOGLE_RECAPTHA_SITE_KEY;
