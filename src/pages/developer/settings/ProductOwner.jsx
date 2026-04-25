@@ -3,11 +3,11 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
 import React from "react";
-import ModalProducts from "./ModalProducts";
-const Products = () => {
+import ModalUser from "./modal/ModalUser";
+import ModalProductOwner from "./modal/ModalProductOwner";
+const ProductOwner = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
-
   // Columns
   const columns = [
     {
@@ -18,37 +18,19 @@ const Products = () => {
     },
     {
       accessorKey: "name",
-      header: "Products",
+      header: "name",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "contact person",
-      header: "SKU",
+      accessorKey: "user_account_email",
+      header: "email",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "email",
-      header: "Category",
-      classTh: "",
-      classTd: "",
-    },
-    {
-      accessorKey: "phone",
-      header: "Price",
-      classTh: "",
-      classTd: "",
-    },
-    {
-      accessorKey: "address",
-      header: "Cost",
-      classTh: "",
-      classTd: "",
-    },
-    {
-      accessorKey: "address",
-      header: "Stocks",
+      accessorKey: "products",
+      header: "products",
       classTh: "",
       classTd: "",
     },
@@ -57,7 +39,7 @@ const Products = () => {
       action_array: [
         {
           name: "edit",
-          path: "purchase orders",
+          path: "product-owner",
           icon: <Edit className="h-3 w-3" />,
           isActive: 1,
         },
@@ -75,7 +57,7 @@ const Products = () => {
         },
         {
           name: "delete",
-          path: "purchase orders",
+          path: "product-owner",
           icon: <Trash className="h-3 w-3" />,
           isActive: 0,
         },
@@ -85,20 +67,19 @@ const Products = () => {
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
     },
   ];
-
   return (
     <>
-      <HeaderNav menu={"products"} activeTab="products">
+      <HeaderNav menu={"settings"} activeTab="product-owner">
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="product"
+          path="owner"
           setItemEdit={setItemEdit}
         />
       </HeaderNav>
-      {store.isAdd && <ModalProducts itemEdit={itemEdit} />}
+      {store.isAdd && <ModalProductOwner itemEdit={itemEdit} />}
     </>
   );
 };
 
-export default Products;
+export default ProductOwner;

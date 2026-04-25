@@ -7,7 +7,7 @@ define("DB_USERNAME", '');
 define("DB_PASSWORD", '');
 
 // GOOGLE APIS
-define("GOOGLE_API_SUBJECT_EMIAL", '');
+define("GOOGLE_API_SUBJECT_EMAIL", '');
 define("GOOGLE_API_DIRECTORY_PATH", '');
 define("GOOGLE_API_GOOGLE_KEY", '');
 define("GOOGLE_AUTH_DRIVE", '');

@@ -1,10 +1,12 @@
-import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
 import React from "react";
-import ModalProducts from "./ModalProducts";
-const Products = () => {
+import ModalSuppliers from "./modal/ModalSuppliers";
+import HeaderNav from "@/layout/headers/HeaderNav";
+import ModalPurchaseOrder from "./modal/ModalPurchaseOrder";
+
+const PurchaseOrder = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
 
@@ -18,37 +20,37 @@ const Products = () => {
     },
     {
       accessorKey: "name",
-      header: "Products",
+      header: "PO Number",
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "contact person",
-      header: "SKU",
+      header: "Supplier",
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "email",
-      header: "Category",
+      header: "Order date",
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "phone",
-      header: "Price",
+      header: "expected",
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "address",
-      header: "Cost",
+      header: "total",
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "address",
-      header: "Stocks",
+      header: "payment",
       classTh: "",
       classTd: "",
     },
@@ -88,17 +90,17 @@ const Products = () => {
 
   return (
     <>
-      <HeaderNav menu={"products"} activeTab="products">
+      <HeaderNav menu={"suppliers"} activeTab="purchase-orders">
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="product"
+          path="purchase orders"
           setItemEdit={setItemEdit}
         />
       </HeaderNav>
-      {store.isAdd && <ModalProducts itemEdit={itemEdit} />}
+      {store.isAdd && <ModalPurchaseOrder itemEdit={itemEdit} />}
     </>
   );
 };
 
-export default Products;
+export default PurchaseOrder;

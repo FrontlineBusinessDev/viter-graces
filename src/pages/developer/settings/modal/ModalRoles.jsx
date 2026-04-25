@@ -3,7 +3,8 @@ import { InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { apiVersion } from "@/config/config";
-import ModalHeader from "@/layout/headers/ModalHeader";
+import ModalWrapper from "@/layout/modal/ModalWrapper";
+import ModalHeader from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
 import {
   setError,
@@ -12,6 +13,7 @@ import {
   setSuccess,
 } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
+import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
@@ -21,6 +23,12 @@ import * as Yup from "yup";
 const ModalRoles = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const queryClient = useQueryClient();
+
+  const handleClose = () => {
+    dispatch(setIsAdd(false));
+  };
+
+  handleEscape(() => handleClose());
 
   const mutation = useMutation({
     mutationFn: (values) =>
@@ -67,69 +75,72 @@ const ModalRoles = ({ itemEdit }) => {
 
   return (
     <>
-      <div className="bg-dark/50 overflow-y-auto overflow-x-hidden fixed top-0 right-0 bottom-0 left-0 z-999 flex justify-center items-center w-full md:inset-0 max-h-full animate-fadeIn">
-        <div className="p-1 w-[350px] animate-slideUp ">
-          <div className="bg-light p-3 pt-5 rounded-lg">
-            <ModalHeader val="Role" itemEdit={itemEdit} mutation={mutation} />
-            <div className="modal-body">
-              <Formik
-                initialValues={initVal}
-                validationSchema={yupSchema}
-                onSubmit={async (values, { setSubmitting, resetForm }) => {
-                  dispatch(setError(false));
-                  // mutate data
-                  mutation.mutate(values);
-                }}
-              >
-                {(props) => {
-                  return (
-                    <Form>
-                      <div className="relative mt-5 mb-6">
-                        {itemEdit ? (
-                          <p className="flex gap-1">
-                            <span className="text-primary">Name:</span>
-                            <span>{isEmptyItem(itemEdit?.role_name, "")}</span>
-                          </p>
-                        ) : (
-                          <InputText
-                            label="Role"
-                            type="text"
-                            name="role_name"
-                            placeholder={`${itemEdit ? "Update role" : "Enter new role"}`}
-                            disabled={mutation.isPending}
-                          />
-                        )}
-                      </div>
-                      <div className="relative mb-6">
-                        <InputTextArea
-                          label="Description"
-                          name="role_description"
-                          disabled={mutation.isPending}
-                        />
-                      </div>
+      <ModalWrapper
+        val="Role"
+        itemEdit={itemEdit}
+        mutation={mutation}
+        handleClose={handleClose}
+      >
+        <div className="modal-body">
+          <Formik
+            initialValues={initVal}
+            validationSchema={yupSchema}
+            onSubmit={async (values, { setSubmitting, resetForm }) => {
+              dispatch(setError(false));
+              // mutate data
+              mutation.mutate(values);
+            }}
+          >
+            {(props) => {
+              return (
+                <Form>
+                  <div className="relative mb-6">
+                    {itemEdit ? (
+                      <p className="flex gap-1">
+                        <span className="text-primary">Name:</span>
+                        <span>{isEmptyItem(itemEdit?.role_name, "")}</span>
+                      </p>
+                    ) : (
+                      <InputText
+                        label="Role"
+                        type="text"
+                        name="role_name"
+                        placeholder={`${itemEdit ? "Update role" : "Enter new role"}`}
+                        disabled={mutation.isPending}
+                      />
+                    )}
+                  </div>
+                  <div className="relative mb-6">
+                    <InputTextArea
+                      label="Description"
+                      name="role_description"
+                      placeholder={`${itemEdit ? "Update description" : "Enter description"}`}
+                      disabled={mutation.isPending}
+                    />
+                  </div>
 
-                      {store.error && <MessageError />}
-                      <div className="modal-action">
-                        <ModalButton
-                          disabled={mutation.isPending}
-                          loading={mutation.isPending}
-                          itemEdit={itemEdit}
-                        />
-                        <ModalButton
-                          disabled={mutation.isPending}
-                          loading={mutation.isPending}
-                          itemEdit={itemEdit}
-                          type="reset"
-                        />
-                      </div>
-                    </Form>
-                  );
-                }}
-              </Formik>
-            </div>
-          </div>
+                  {store.error && <MessageError />}
+                  <div className="modal-action">
+                    <ModalButton
+                      disabled={mutation.isPending}
+                      loading={mutation.isPending}
+                      itemEdit={itemEdit}
+                      type="button"
+                      handleClose={handleClose}
+                    />
+                    <ModalButton
+                      disabled={mutation.isPending}
+                      loading={mutation.isPending}
+                      itemEdit={itemEdit}
+                      type="submit"
+                    />
+                  </div>
+                </Form>
+              );
+            }}
+          </Formik>
         </div>
-      </div>
+      </ModalWrapper>
     </>
   );
 };

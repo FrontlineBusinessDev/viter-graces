@@ -105,7 +105,7 @@ const InfiniteTable = ({ columns, className, path = "", setItemEdit }) => {
 
   return (
     <>
-      <div className="flex justify-between pr-6 mb-3">
+      <div className="flex justify-between mb-3">
         <div className="w-full max-w-1/4 ">
           <SearchBar
             search={search}
@@ -118,17 +118,17 @@ const InfiniteTable = ({ columns, className, path = "", setItemEdit }) => {
 
         <AddButton value={path} onClick={handleAdd} />
       </div>
-      <div className="hidden sm:block">
+      <div className="">
         {/* TABLE */}
-        <div className="relative rounded-md text-center overflow-auto z-0 ">
+        <div className="relative rounded-xl text-center overflow-auto z-0 ">
           {status !== "pending" && isFetching && <TableSpinner />}
-          <div className={`${className} pr-6!`}>
-            <table className="overflow-auto dark:border-[#0b111e]">
+          <div className={`${className} `}>
+            <table className="overflow-auto border border-gray-300 dark:border-[#0b111e] ">
               <thead className={`relative z-50`}>
                 {table?.getHeaderGroups()?.map((headerGroup) => (
                   <tr
                     key={headerGroup?.id}
-                    className="hidden sm:table-row sticky top-0 z-10 sm:z-10 capitalize dark:bg-[#0b111e] "
+                    className=" sm:table-row sticky top-0 z-10 sm:z-10 uppercase dark:bg-[#0b111e] "
                   >
                     <th className="w-px">#</th>
                     {headerGroup?.headers?.map((header) => (

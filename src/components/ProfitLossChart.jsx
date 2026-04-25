@@ -65,7 +65,9 @@ export default function ProfitLossChart() {
                 key={frame}
                 onClick={() => setTimeframe(frame)}
                 className={`px-3 py-1 rounded-lg ${
-                  timeframe === frame ? "bg-primary text-white" : "bg-gray-200"
+                  timeframe === frame
+                    ? "bg-primary text-white"
+                    : "bg-gray-200 text-gray-700"
                 }`}
               >
                 {frame}

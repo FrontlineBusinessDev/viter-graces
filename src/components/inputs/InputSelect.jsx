@@ -53,8 +53,8 @@ export const InputSelectArray = ({
   return (
     <>
       <label htmlFor={props.id || props.name}>
+        {label} {""}
         {required && <span className="text-alert">*</span>}
-        {label}
       </label>
 
       <select

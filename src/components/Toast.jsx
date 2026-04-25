@@ -33,14 +33,13 @@ const Toast = ({ variant = "info", ...props }) => {
       style: "bg-warning/20",
       border: "border-l-2 border-warning",
     },
-
     alert: {
       title: "Alert",
       message: "this is error message",
       icon: <CircleX className="stroke-alert" size={16} />,
       style: "bg-alert/20",
       border: "border-l-2 border-alert",
-    },
+    }
   };
 
   const handleClose = () => {

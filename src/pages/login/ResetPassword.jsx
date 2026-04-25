@@ -311,7 +311,7 @@ const ResetPassword = () => {
                       <button
                         type="submit"
                         disabled={mutation.isPending || !props.dirty}
-                        className="btn-modal-submit p-3 uppercase "
+                        className="btn-modal-submit-login p-3 uppercase "
                       >
                         {mutation.isPending ? (
                           <ButtonSpinner />
