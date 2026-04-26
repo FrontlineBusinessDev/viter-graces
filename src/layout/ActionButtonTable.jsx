@@ -29,7 +29,7 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit }) => {
 
   return (
     <>
-      <div className="flex items-center justify-end gap-3">
+      <div className="flex items-center justify-end gap-3 ">
         {item?.action_array?.map((a, key) => {
           return (
             isEmptyItem(a?.name, "") === "edit" &&

@@ -40,7 +40,7 @@ const HeaderNav = ({ children, menu, submenu, activeTab = "" }) => {
         </>
       )}
       <div
-        className={`wrapper overflow-auto transform transition-all duration-300 ease-in-out py-5 ${
+        className={`wrapper overflow-auto transform transition-all duration-300 ease-in-out py-5 pr-0! ${
           !store.isNavFullShow ? " md:pl-14 sm:px-4  " : " md:pl-[220px] "
         } `}
       >

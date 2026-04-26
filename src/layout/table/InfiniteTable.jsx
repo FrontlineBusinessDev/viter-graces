@@ -8,24 +8,33 @@ import TableLoading from "@/components/spinners/TableLoading";
 import TableSpinner from "@/components/spinners/TableSpinner";
 import { apiVersion } from "@/config/config";
 import { queryDataInfinite } from "@/services/queryDataInfinite";
+import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import {
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { ArrowDown, ChevronDown, ChevronUp } from "lucide-react";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import ActionButtonTable from "../ActionButtonTable";
 import ModalAction from "../modal/ModalAction";
-import { setIsAdd } from "@/store/StoreAction";
-import { isEmptyItem } from "@/utilities/isEmptyItem";
 
-const InfiniteTable = ({ columns, className, path = "", setItemEdit }) => {
+const InfiniteTable = ({
+  columns,
+  className,
+  path = "",
+  setItemEdit,
+  haveFilterTable = false,
+}) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [dataItem, setData] = React.useState(null);
   const [sorting, setSorting] = useState([]);
+  const [columnFilters, setColumnFilters] = useState([]);
   const observer = useRef();
   const search = React.useRef(null);
   const [onSearch, setOnSearch] = React.useState(false);
@@ -89,10 +98,30 @@ const InfiniteTable = ({ columns, className, path = "", setItemEdit }) => {
   const table = useReactTable({
     data: tableData,
     columns,
-    state: { sorting },
+    state: { sorting, columnFilters },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+
+    filterFns: {
+      equals: (row, columnId, value) => {
+        return row.getValue(columnId) === value;
+      },
+      between: (row, columnId, value) => {
+        const rowValue = row.getValue(columnId);
+        const { min, max } = value || {};
+
+        console.log("rowValue", rowValue);
+        console.log("min max", { min, max });
+
+        if (min !== undefined && rowValue < min) return false;
+        if (max !== undefined && rowValue > max) return false;
+
+        return true;
+      },
+    },
   });
 
   const rows = table?.getRowModel()?.rows;
@@ -105,8 +134,8 @@ const InfiniteTable = ({ columns, className, path = "", setItemEdit }) => {
 
   return (
     <>
-      <div className="flex justify-between mb-3">
-        <div className="w-full max-w-1/4 ">
+      <div className="mb-3 pr-6">
+        <div className="sm:hidden w-full ">
           <SearchBar
             search={search}
             dispatch={dispatch}
@@ -116,38 +145,97 @@ const InfiniteTable = ({ columns, className, path = "", setItemEdit }) => {
           />
         </div>
 
-        <AddButton value={path} onClick={handleAdd} />
+        <div className="flex justify-end sm:mt-0 mt-3 ">
+          <AddButton value={path} onClick={handleAdd} />
+        </div>
       </div>
       <div className="">
         {/* TABLE */}
         <div className="relative rounded-xl text-center overflow-auto z-0 ">
           {status !== "pending" && isFetching && <TableSpinner />}
-          <div className={`${className} `}>
-            <table className="overflow-auto border border-gray-300 dark:border-[#0b111e] ">
-              <thead className={`relative z-50`}>
+          <div className={`${className}  pr-6`}>
+            <table className="overflow-auto border border-gray-300 dark:border-[#0b111e]">
+              <thead className={`relative z-50! `}>
                 {table?.getHeaderGroups()?.map((headerGroup) => (
                   <tr
                     key={headerGroup?.id}
-                    className=" sm:table-row sticky top-0 z-10 sm:z-10 uppercase dark:bg-[#0b111e] "
+                    className="sm:table-row sticky top-0 z-10 sm:z-10 uppercase dark:bg-[#0b111e] border-0!"
                   >
                     <th className="w-px">#</th>
                     {headerGroup?.headers?.map((header) => (
                       <th
                         key={header?.id}
-                        onClick={header?.column?.getToggleSortingHandler()}
-                        className={`${isEmptyItem(header?.column?.columnDef?.classTh, "")}`}
+                        className={` ${isEmptyItem(header?.column?.columnDef?.classTh, "")}`}
                       >
-                        {flexRender(
-                          header?.column?.columnDef?.header,
-                          header?.getContext(),
-                        )}
-                        {header?.column?.getIsSorted() === "asc" && " 🔼"}
-                        {header?.column?.getIsSorted() === "desc" && " 🔽"}
+                        <div className="flex items-start">
+                          <span>
+                            {flexRender(
+                              header?.column?.columnDef?.header,
+                              header?.getContext(),
+                            )}
+                          </span>
+
+                          {/* <button
+                            onClick={header?.column?.getToggleSortingHandler()}
+                            className="bg-gray-100 hover:bg-white rounded-sm ml-2 "
+                          >
+                            {header?.column?.getIsSorted() !== "asc" ? (
+                              <ChevronDown />
+                            ) : (
+                              <ChevronUp />
+                            )}
+                          </button> */}
+                        </div>
                       </th>
                     ))}
                   </tr>
                 ))}
               </thead>
+              {haveFilterTable ? (
+                <thead className={`relative z-50!  border-t-0!`}>
+                  {table?.getHeaderGroups()?.map((headerGroup) => (
+                    <tr
+                      key={headerGroup?.id}
+                      className="sm:table-row sticky top-9 z-10 sm:z-10 uppercase "
+                    >
+                      <th className="w-px "></th>
+                      {headerGroup?.headers?.map((header) => (
+                        <th
+                          key={header?.id}
+                          className={`pb-2! pr-2! ${isEmptyItem(header?.column?.columnDef?.classTh, "")}`}
+                        >
+                          {header.column.columnDef.meta?.filterComponent?.(
+                            header.column,
+                          )}
+
+                          {header.column.columnDef.meta === "" ? (
+                            <input
+                              type="search"
+                              placeholder={`Type to search ${flexRender(
+                                header?.column?.columnDef?.header,
+                                header?.getContext(),
+                              )}....`}
+                              className={`bg-white m-0! w-full! text-sm border rounded-md cursor-pointer! isFocused:border-primary!
+                              isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! `}
+                              onChange={(e) => {
+                                const val = e.target.value || undefined;
+
+                                header.column.setFilterValue(val);
+
+                                setData([]);
+                              }}
+                            />
+                          ) : (
+                            ""
+                          )}
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </thead>
+              ) : (
+                ""
+              )}
 
               <tbody>
                 {(status === "pending" || data?.pages[0]?.count === 0) && (
@@ -180,7 +268,7 @@ const InfiniteTable = ({ columns, className, path = "", setItemEdit }) => {
                       {row.getVisibleCells().map((item) => (
                         <td
                           key={item?.id}
-                          className={`${isEmptyItem(item?.column?.columnDef?.classTd, "")}`}
+                          className={` ${isEmptyItem(item?.column?.columnDef?.classTd, "")}`}
                         >
                           {item?.column?.columnDef?.header === "status" ? (
                             <Pills

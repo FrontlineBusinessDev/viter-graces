@@ -188,7 +188,7 @@
   }
   input,
   select {
-    @apply h-[40px] border border-solid border-gray-300 p-2 rounded-lg w-full truncate bg-transparent outline-none dark:bg-dark-mode mt-1;
+    @apply border border-solid border-gray-300 p-2 rounded-lg w-full truncate bg-transparent outline-none dark:bg-dark-mode mt-1;
   }
   select {
     @apply text-xs h-[35px] rounded-lg;

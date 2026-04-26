@@ -4,6 +4,7 @@ import { StoreContext } from "@/store/StoreContext";
 import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
 import React from "react";
 import ModalUser from "./modal/ModalUser";
+import { DefaultActionTableList } from "@/layout/ArrayValue";
 const UsersAccount = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -35,32 +36,7 @@ const UsersAccount = () => {
     },
     {
       accessorKey: "action",
-      action_array: [
-        {
-          name: "edit",
-          path: "roles",
-          icon: <Edit className="h-3 w-3" />,
-          isActive: 1,
-        },
-        {
-          name: "archieve",
-          path: "active",
-          icon: <ArchiveRestore className="h-3 w-3" />,
-          isActive: 1,
-        },
-        {
-          name: "restore",
-          path: "active",
-          icon: <RotateCcw className="h-3 w-3" />,
-          isActive: 0,
-        },
-        {
-          name: "delete",
-          path: "roles",
-          icon: <Trash className="h-3 w-3" />,
-          isActive: 0,
-        },
-      ],
+      action_array: DefaultActionTableList(),
       header: "Action",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
