@@ -23,6 +23,7 @@ import { ArrowDown, ChevronDown, ChevronUp } from "lucide-react";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import ActionButtonTable from "../ActionButtonTable";
 import ModalAction from "../modal/ModalAction";
+import TableStatus from "../TableStatus";
 
 const InfiniteTable = ({
   columns,
@@ -271,24 +272,16 @@ const InfiniteTable = ({
                           className={` ${isEmptyItem(item?.column?.columnDef?.classTd, "")}`}
                         >
                           {item?.column?.columnDef?.header === "status" ? (
-                            <Pills
-                              variant={
-                                flexRender(item?.getValue(), item?.getContext())
-                                  ? "active"
-                                  : "inactive"
-                              }
-                            >
-                              {flexRender(item?.getValue(), item?.getContext())
-                                ? "Active"
-                                : "Inactive"}
-                            </Pills>
+                            <TableStatus
+                              item={item?.column?.columnDef}
+                              dataArray={row.original}
+                            />
                           ) : (
                             flexRender(
                               item?.column?.columnDef?.cell,
                               item?.getContext(),
                             )
                           )}
-
                           {/* FOR ACTION BUTTONS */}
                           {item?.column?.columnDef?.accessorKey === "action" ? (
                             <ActionButtonTable

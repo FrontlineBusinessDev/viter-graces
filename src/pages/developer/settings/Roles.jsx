@@ -27,6 +27,7 @@ const Roles = () => {
           />
         ),
       },
+      status_option: ActiveInActiveStatus(),
       // filterFn: "between",
       // meta: {
       //   filterComponent: (column) => <InputMaxMinValue column={column} />,
