@@ -1,13 +1,12 @@
-import HeaderNav from "@/layout/headers/HeaderNav";
-import InfiniteTable from "@/layout/table/InfiniteTable";
-import { StoreContext } from "@/store/StoreContext";
-import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
-import React from "react";
-import ModalUser from "./modal/ModalUser";
 import {
   ActiveInActiveStatus,
   DefaultActionTableList,
 } from "@/layout/ArrayValue";
+import HeaderNav from "@/layout/headers/HeaderNav";
+import InfiniteTable from "@/layout/table/InfiniteTable";
+import { StoreContext } from "@/store/StoreContext";
+import React from "react";
+import ModalUser from "./modal/ModalUser";
 const UsersAccount = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
