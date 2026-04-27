@@ -1,6 +1,7 @@
 import { devNavUrl } from "@/config/config";
 import Customers from "@/pages/developer/customers/Customers";
 import Dashboard from "@/pages/developer/dashboard/Dashboard";
+import FinanceOverview from "@/pages/developer/finance/finance-overview/FinanceOverview";
 import MovementHistory from "@/pages/developer/inventory/MovementHistory";
 import {
   default as Inventory,
@@ -69,6 +70,14 @@ export const routesDeveloper = [
     element: (
       // <ProtectedRouteUser>
       <Returns />
+      // </ProtectedRouteUser>
+    ),
+  },
+  {
+    path: `${devNavUrl}/developer/finance-overview`,
+    element: (
+      // <ProtectedRouteUser>
+      <FinanceOverview />
       // </ProtectedRouteUser>
     ),
   },

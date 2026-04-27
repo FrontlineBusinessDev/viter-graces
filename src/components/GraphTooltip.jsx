@@ -4,9 +4,9 @@ const GraphTooltip = ({ active, payload, label, darkMode }) => {
   if (!active || !payload || !payload.length) return null;
 
   const colorMap = {
-    green: ["Money In", "Income"],
+    green: ["Money In", "Income", "Profit"],
     red: ["Money Out", "Expenses"],
-    blue: ["Balance", "Sales", "Net"],
+    blue: ["Balance", "Sales", "Net", "Revenue"],
   };
 
   const getColor = (name) => {

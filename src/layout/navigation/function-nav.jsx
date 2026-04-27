@@ -94,7 +94,7 @@ export const getNavList = () => {
       label: "Finance",
       icon: <DollarSign className="size-5" />,
       menu: "finance",
-      path: `${devNavUrl}/${userRole}/finance`,
+      path: `${devNavUrl}/${userRole}/finance-overview`,
       isOpenSubmenu: "",
       on_click: onClickNav,
       subList: [],
