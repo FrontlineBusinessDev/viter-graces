@@ -70,7 +70,7 @@ const Roles = () => {
       accessorKey: "action",
       action_array: DefaultActionTableList(),
       header: "Action",
-      classTh: "",
+      classTh: " text-center ",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
     },
   ];

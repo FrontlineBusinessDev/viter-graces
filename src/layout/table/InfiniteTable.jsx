@@ -156,7 +156,7 @@ const InfiniteTable = ({
           {status !== "pending" && isFetching && <TableSpinner />}
           <div className={`${className}  pr-6`}>
             <table className="overflow-auto border border-gray-300 dark:border-[#0b111e]">
-              <thead className={`relative z-50! `}>
+              <thead className={`relative z-50 `}>
                 {table?.getHeaderGroups()?.map((headerGroup) => (
                   <tr
                     key={headerGroup?.id}
@@ -168,15 +168,12 @@ const InfiniteTable = ({
                         key={header?.id}
                         className={` ${isEmptyItem(header?.column?.columnDef?.classTh, "")}`}
                       >
-                        <div className="flex items-start">
-                          <span>
-                            {flexRender(
-                              header?.column?.columnDef?.header,
-                              header?.getContext(),
-                            )}
-                          </span>
+                        {flexRender(
+                          header?.column?.columnDef?.header,
+                          header?.getContext(),
+                        )}
 
-                          {/* <button
+                        {/* <button
                             onClick={header?.column?.getToggleSortingHandler()}
                             className="bg-gray-100 hover:bg-white rounded-sm ml-2 "
                           >
@@ -186,14 +183,13 @@ const InfiniteTable = ({
                               <ChevronUp />
                             )}
                           </button> */}
-                        </div>
                       </th>
                     ))}
                   </tr>
                 ))}
               </thead>
               {haveFilterTable ? (
-                <thead className={`relative z-50!  border-t-0!`}>
+                <thead className={`relative z-50 border-t-0!`}>
                   {table?.getHeaderGroups()?.map((headerGroup) => (
                     <tr
                       key={headerGroup?.id}
@@ -212,12 +208,12 @@ const InfiniteTable = ({
                           {header.column.columnDef.meta === "" ? (
                             <input
                               type="search"
-                              placeholder={`Type to search ${flexRender(
-                                header?.column?.columnDef?.header,
-                                header?.getContext(),
-                              )}....`}
-                              className={`bg-white m-0! w-full! text-sm border rounded-md cursor-pointer! isFocused:border-primary!
-                              isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! `}
+                              // placeholder={`Type to search ${flexRender(
+                              //   header?.column?.columnDef?.header,
+                              //   header?.getContext(),
+                              // )}....`}
+                              className={`bg-white m-0! w-full! text-sm border cursor-pointer! isFocused:border-primary!
+                              isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! h-8 `}
                               onChange={(e) => {
                                 const val = e.target.value || undefined;
 
@@ -239,7 +235,7 @@ const InfiniteTable = ({
               )}
 
               <tbody>
-                {(status === "pending" || data?.pages[0]?.count === 0) && (
+                {(status === "pending" || rows?.length === 0) && (
                   <tr>
                     <td colSpan="100%" className="p-10">
                       {status === "pending" ? (

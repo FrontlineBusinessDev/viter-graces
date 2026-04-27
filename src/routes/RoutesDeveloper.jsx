@@ -7,6 +7,7 @@ import {
   default as StockOverview,
 } from "@/pages/developer/inventory/StockOverview";
 import Products from "@/pages/developer/products/Products";
+import Returns from "@/pages/developer/returns/Returns";
 import SalesOrders from "@/pages/developer/sales-orders/SalesOrders";
 import ProductOwner from "@/pages/developer/settings/ProductOwner";
 import Roles from "@/pages/developer/settings/Roles";
@@ -60,6 +61,14 @@ export const routesDeveloper = [
     element: (
       // <ProtectedRouteUser>
       <SalesOrders />
+      // </ProtectedRouteUser>
+    ),
+  },
+  {
+    path: `${devNavUrl}/developer/returns`,
+    element: (
+      // <ProtectedRouteUser>
+      <Returns />
       // </ProtectedRouteUser>
     ),
   },
