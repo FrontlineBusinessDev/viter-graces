@@ -55,6 +55,12 @@ export const titleHeaderTab = () => {
       array_tab: [],
     },
     {
+      title: "returns",
+      description: "6 orders total",
+      roles: ["admin", "developer"],
+      array_tab: [],
+    },
+    {
       title: "settings",
       description: "Manage your system configuration",
       roles: ["admin", "developer"],

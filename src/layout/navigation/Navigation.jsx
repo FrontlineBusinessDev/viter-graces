@@ -1,13 +1,13 @@
-import { setIsAdd, setIsNavFullShow, setTabValue } from "@/store/StoreAction";
+import LogoFull from "@/assets/svg/LogoFull";
+import LogoFullSm from "@/assets/svg/LogoFullSm";
+import { devNavUrl } from "@/config/config";
+import { setIsNavFullShow } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
-import { ChevronRight, LucideLogOut } from "lucide-react";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { ChevronRight } from "lucide-react";
 import React, { useRef } from "react";
 import { Link } from "react-router-dom";
-import LogoLg from "../../assets/svg/LogoLg";
-import LogoSm from "../../assets/svg/LogoSm";
 import { getNavList } from "./function-nav";
-import { isEmptyItem } from "@/utilities/isEmptyItem";
-import { devNavUrl } from "@/config/config";
 
 const Navigation = ({ menu, submenu, mobileNavOpen }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -72,7 +72,7 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
           ref={navWrapperRef}
         >
           <div className="py-4 border-b flex justify-center items-center">
-            {isExpanded || mobileNavOpen ? <LogoLg /> : <LogoSm />}
+            {isExpanded || mobileNavOpen ? <LogoFull /> : <LogoFullSm />}
           </div>
 
           {/* NAV  */}
