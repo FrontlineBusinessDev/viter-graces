@@ -349,7 +349,7 @@ const InfiniteTable = ({
               </button>
             )}
             {!hasNextPage && (
-              <div className="text-center md:my-8 p-1.5">
+              <div className="text-center md:my-8 p-1.5">  
                 <p className="mb-0 ">End of list.</p>
               </div>
             )}
