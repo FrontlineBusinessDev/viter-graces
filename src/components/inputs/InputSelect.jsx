@@ -121,19 +121,19 @@ export const SearchableSelectFilter = ({ column, options }) => {
       isClearable
       classNames={{
         control: ({ isFocused }) =>
-          ` w-full! h-[20px] text-sm border rounded-md px-1 cursor-pointer! shadow-none!
+          ` w-full! h-[10px]! text-sm border rounded-md px-1 cursor-pointer! shadow-none!
        ${isFocused ? " border-primary! " : " border-gray-300 "}
        hover:border-primary! `,
 
         valueContainer: () => "px-1 py-0",
 
-        input: () => "text-sm h-[20px] ",
+        input: () => "text-sm h-[10px]! ",
 
         placeholder: () => "text-gray-400 text-sm",
 
-        singleValue: () => "normal-case! text-sm h-[20px] ",
+        singleValue: () => "normal-case! text-sm h-[10px]! ",
 
-        indicatorsContainer: () => "h-[34px]",
+        indicatorsContainer: () => "h-[17px]!",
 
         dropdownIndicator: () =>
           "p-1 text-gray-500 hover:text-primary! cursor-pointer!",
