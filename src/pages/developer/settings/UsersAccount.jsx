@@ -4,7 +4,10 @@ import { StoreContext } from "@/store/StoreContext";
 import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
 import React from "react";
 import ModalUser from "./modal/ModalUser";
-import { DefaultActionTableList } from "@/layout/ArrayValue";
+import {
+  ActiveInActiveStatus,
+  DefaultActionTableList,
+} from "@/layout/ArrayValue";
 const UsersAccount = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -15,6 +18,7 @@ const UsersAccount = () => {
       header: "status",
       classTh: "w-[5rem]",
       classTd: "",
+      status_option: ActiveInActiveStatus(),
     },
     {
       accessorKey: "name",

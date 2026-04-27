@@ -37,7 +37,7 @@ const Dashboard = () => {
             subtitle="products below threshold"
             button="Click to view →"
             link=""
-            icon={<AlertTriangle className="text-orange-500" size={20} />}
+            icon={<AlertTriangle className="text-orange-500" size={20} />}  
             iconBg="bg-orange-100 dark:bg-[#291518]"
           />
 
