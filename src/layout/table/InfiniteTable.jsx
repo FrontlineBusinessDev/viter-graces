@@ -1,41 +1,45 @@
+import AddButton from "@/components/buttons/AddButton";
 import NoData from "@/components/NoData";
-import Pills from "@/components/Pills";
 import SearchBar from "@/components/SearchBar";
 import ServerError from "@/components/ServerError";
-import AddButton from "@/components/buttons/AddButton";
 import ButtonSpinner from "@/components/spinners/ButtonSpinner";
 import TableLoading from "@/components/spinners/TableLoading";
 import TableSpinner from "@/components/spinners/TableSpinner";
 import { apiVersion } from "@/config/config";
 import { queryDataInfinite } from "@/services/queryDataInfinite";
+import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import {
   flexRender,
   getCoreRowModel,
+  getFilteredRowModel,
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import ActionButtonTable from "../ActionButtonTable";
 import ModalAction from "../modal/ModalAction";
-import { setIsAdd } from "@/store/StoreAction";
-import { isEmptyItem } from "@/utilities/isEmptyItem";
+import TableStatus from "../TableStatus";
 
 const InfiniteTable = ({
   columns,
   className,
   path = "",
   setItemEdit,
+  haveFilterTable = false,
   mockData = [],
   isStatic = false,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [dataItem, setData] = React.useState(null);
   const [sorting, setSorting] = useState([]);
+  const [columnFilters, setColumnFilters] = useState([]);
   const observer = useRef();
   const search = React.useRef(null);
   const [onSearch, setOnSearch] = React.useState(false);
+  const [page, setPage] = useState(1);
 
   // React Query infinite fetch
   const {
@@ -65,7 +69,7 @@ const InfiniteTable = ({
       }
       return;
     },
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
     // enabled: !isStatic, // disable API
   });
 
@@ -107,10 +111,30 @@ const InfiniteTable = ({
   const table = useReactTable({
     data: tableData,
     columns,
-    state: { sorting },
+    state: { sorting, columnFilters },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
+    onColumnFiltersChange: setColumnFilters,
+    getFilteredRowModel: getFilteredRowModel(),
+
+    filterFns: {
+      equals: (row, columnId, value) => {
+        return row.getValue(columnId) === value;
+      },
+      between: (row, columnId, value) => {
+        const rowValue = row.getValue(columnId);
+        const { min, max } = value || {};
+
+        console.log("rowValue", rowValue);
+        console.log("min max", { min, max });
+
+        if (min !== undefined && rowValue < min) return false;
+        if (max !== undefined && rowValue > max) return false;
+
+        return true;
+      },
+    },
   });
 
   const rows = table?.getRowModel()?.rows;
@@ -123,8 +147,13 @@ const InfiniteTable = ({
 
   return (
     <>
-      <div className="flex justify-between mb-3 gap-4">
-        <div className="w-full md:max-w-1/4 ">
+      <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 pr-6">
+        <div className="flex justify-end sm:mb-0! mb-3 ">
+          <AddButton value={path} onClick={handleAdd} />
+        </div>
+        <div
+          className={`${haveFilterTable ? " sm:hidden " : " "} "w-full md:max-w-1/4 "`}
+        >
           <SearchBar
             search={search}
             dispatch={dispatch}
@@ -133,8 +162,6 @@ const InfiniteTable = ({
             label={"Search..."}
           />
         </div>
-
-        <AddButton value={path} onClick={handleAdd} />
       </div>
       <div className="">
         <div className="relative rounded-xl md:text-center overflow-auto z-0 ">
@@ -166,17 +193,15 @@ const InfiniteTable = ({
                     </p>
 
                     {/* STATUS (same logic as table) */}
-                    {cells.map((item) => {
+                    {cells.map((item, key) => {
                       if (item.column.columnDef.header === "status") {
                         return (
-                          <Pills
-                            key={item.id}
-                            variant={
-                              item.getValue() === 1 ? "active" : "inactive"
-                            }
-                          >
-                            {item.getValue() === 1 ? "Active" : "Inactive"}
-                          </Pills>
+                          <div key={key}>
+                            <TableStatus
+                              item={titleCell.column.columnDef}
+                              dataArray={row.original}
+                            />
+                          </div>
                         );
                       }
                       return null;
@@ -249,29 +274,82 @@ const InfiniteTable = ({
                 {table?.getHeaderGroups()?.map((headerGroup) => (
                   <tr
                     key={headerGroup?.id}
-                    className=" sm:table-row sticky top-0 z-10 sm:z-10 uppercase dark:bg-[#0b111e] "
+                    className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0! z-999"
                   >
-                    <th className="w-px">#</th>
+                    <th className="w-px dark:bg-[#0b111e]!">#</th>
                     {headerGroup?.headers?.map((header) => (
                       <th
                         key={header?.id}
-                        onClick={header?.column?.getToggleSortingHandler()}
-                        className={`${isEmptyItem(header?.column?.columnDef?.classTh, "")}`}
+                        className={` ${isEmptyItem(header?.column?.columnDef?.classTh, "")}`}
                       >
                         {flexRender(
                           header?.column?.columnDef?.header,
                           header?.getContext(),
                         )}
-                        {header?.column?.getIsSorted() === "asc" && " 🔼"}
-                        {header?.column?.getIsSorted() === "desc" && " 🔽"}
+
+                        {/* <button
+                            onClick={header?.column?.getToggleSortingHandler()}
+                            className="bg-gray-100 hover:bg-white rounded-sm ml-2 "
+                          >
+                            {header?.column?.getIsSorted() !== "asc" ? (
+                              <ChevronDown />
+                            ) : (
+                              <ChevronUp />
+                            )}
+                          </button> */}
                       </th>
                     ))}
                   </tr>
                 ))}
               </thead>
+              {haveFilterTable ? (
+                <thead className={`relative border-0!`}>
+                  {table?.getHeaderGroups()?.map((headerGroup) => (
+                    <tr
+                      key={headerGroup?.id}
+                      className="sm:table-row sticky top-9 uppercase dark:bg-[#0b111e] z-999"
+                    >
+                      <th className="w-px dark:bg-[#0b111e]! "> </th>
+                      {headerGroup?.headers?.map((header) => (
+                        <th
+                          key={header?.id}
+                          className={`pb-2! pr-2! ${isEmptyItem(header?.column?.columnDef?.classTh, "")}`}
+                        >
+                          {header.column.columnDef.meta?.filterComponent?.(
+                            header.column,
+                          )}
+
+                          {header.column.columnDef.meta === "" ? (
+                            <input
+                              type="search"
+                              // placeholder={`Type to search ${flexRender(
+                              //   header?.column?.columnDef?.header,
+                              //   header?.getContext(),
+                              // )}....`}
+                              className={`bg-white m-0! w-full! text-sm border cursor-pointer! isFocused:border-primary!
+                              isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! h-8 `}
+                              onChange={(e) => {
+                                const val = e.target.value || undefined;
+
+                                header.column.setFilterValue(val);
+
+                                setData([]);
+                              }}
+                            />
+                          ) : (
+                            ""
+                          )}
+                        </th>
+                      ))}
+                    </tr>
+                  ))}
+                </thead>
+              ) : (
+                ""
+              )}
 
               <tbody>
-                {(status === "pending" || data?.pages[0]?.count === 0) && (
+                {(status === "pending" || rows?.length === 0) && (
                   <tr>
                     <td colSpan="100%" className="p-10">
                       {status === "pending" ? (
@@ -296,6 +374,7 @@ const InfiniteTable = ({
                   return (
                     <React.Fragment key={row.id}>
                       <tr
+                        key={row.id}
                         ref={isLastRow ? lastRowRef : null}
                         className="hidden sm:table-row group"
                       >
@@ -303,44 +382,30 @@ const InfiniteTable = ({
                         {row.getVisibleCells().map((item) => (
                           <td
                             key={item?.id}
-                            className={`${isEmptyItem(
-                              item?.column?.columnDef?.classTd,
-                              "",
-                            )}`}
+                            className={` ${isEmptyItem(item?.column?.columnDef?.classTd, "")} overflow-visible `}
                           >
                             {item?.column?.columnDef?.header === "status" ? (
-                              <Pills
-                                variant={
-                                  flexRender(
-                                    item?.getValue(),
-                                    item?.getContext(),
-                                  )
-                                    ? "active"
-                                    : "inactive"
-                                }
-                              >
-                                {flexRender(
-                                  item?.getValue(),
-                                  item?.getContext(),
-                                )
-                                  ? "Active"
-                                  : "Inactive"}
-                              </Pills>
+                              <TableStatus
+                                item={item?.column?.columnDef}
+                                dataArray={row.original}
+                              />
                             ) : (
                               flexRender(
                                 item?.column?.columnDef?.cell,
                                 item?.getContext(),
                               )
                             )}
-
+                            {/* FOR ACTION BUTTONS */}
                             {item?.column?.columnDef?.accessorKey ===
-                              "action" && (
+                            "action" ? (
                               <ActionButtonTable
                                 item={item?.column?.columnDef}
                                 dataArray={row.original}
                                 setData={setData}
                                 setItemEdit={setItemEdit}
                               />
+                            ) : (
+                              ""
                             )}
                           </td>
                         ))}

@@ -89,6 +89,54 @@ export const InputText = ({
   );
 };
 
+export const InputMaxMinValue = ({ column }) => {
+  let value = column.getFilterValue() || { min: 0, max: "" };
+
+  return (
+    <>
+      <div className="flex gap-1">
+        {/* MIN */}
+        <input
+          type="number"
+          value={value?.min}
+          placeholder="Min"
+          className={`bg-white m-0! w-full! text-sm border rounded-md cursor-pointer! isFocused:border-primary!
+                              isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! `}
+          onChange={(e) => {
+            let min = e.target.value ? Number(e.target.value) : undefined;
+
+            const newValue = {
+              ...value,
+              min,
+            };
+
+            column.setFilterValue(newValue);
+          }}
+        />
+
+        {/* MAX */}
+        <input
+          type="number"
+          value={value?.max}
+          placeholder="Max"
+          className={`bg-white m-0! w-full! text-sm border rounded-md cursor-pointer! isFocused:border-primary!
+                              isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! `}
+          onChange={(e) => {
+            let max = e.target.value ? Number(e.target.value) : undefined;
+
+            const newValue = {
+              ...value,
+              max,
+            };
+
+            column.setFilterValue(newValue);
+          }}
+        />
+      </div>
+    </>
+  );
+};
+
 export const InputLogin = ({
   label = "",
   icon = "",

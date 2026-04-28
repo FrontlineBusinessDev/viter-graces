@@ -1,7 +1,11 @@
+import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
+import {
+  ActiveInActiveStatus,
+  DefaultActionTableList,
+} from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
-import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
 import React from "react";
 import ModalRoles from "./modal/ModalRoles";
 const Roles = () => {
@@ -12,58 +16,63 @@ const Roles = () => {
     {
       accessorKey: "role_is_active",
       header: "status",
-      classTh: "w-[5rem]",
+      classTh: "w-[10rem]! p-0!",
       classTd: "",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            options={ActiveInActiveStatus()}
+          />
+        ),
+      },
+      status_option: ActiveInActiveStatus(),
+      // filterFn: "between",
+      // meta: {
+      //   filterComponent: (column) => <InputMaxMinValue column={column} />,
+      // },
+      isMobileTitle: true,
     },
     {
       accessorKey: "role_name",
       header: "name",
-      classTh: "",
+      classTh: "w-[15rem]! p-0!",
       classTd: "",
+      meta: "",
+      // filterFn: "equals",
+      // meta: {
+      //   filterComponent: (column) => (
+      //     <SearchableSelectFilter column={column} options={statusOptions} />
+      //   ),
+      // },
       isMobileTitle: true,
     },
     {
       accessorKey: "role_code",
       header: "code",
-      classTh: "",
+      classTh: "w-[15rem]! p-0!",
       classTd: "",
+      meta: "",
+      // filterFn: "equals",
+      // meta: {
+      //   filterComponent: (column) => (
+      //     <SearchableSelectFilter column={column} options={statusOptions} />
+      //   ),
+      // },
     },
     {
       accessorKey: "role_description",
       header: "description",
-      classTh: "",
+      classTh: " p-0!",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "action",
-      action_array: [
-        {
-          name: "edit",
-          path: "roles",
-          icon: <Edit className="h-3 w-3" />,
-          isActive: 1,
-        },
-        {
-          name: "archieve",
-          path: "active",
-          icon: <ArchiveRestore className="h-3 w-3" />,
-          isActive: 1,
-        },
-        {
-          name: "restore",
-          path: "active",
-          icon: <RotateCcw className="h-3 w-3" />,
-          isActive: 0,
-        },
-        {
-          name: "delete",
-          path: "roles",
-          icon: <Trash className="h-3 w-3" />,
-          isActive: 0,
-        },
-      ],
+      action_array: DefaultActionTableList(),
       header: "Action",
-      classTh: "",
+      classTh: " text-center ",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
     },
   ];
@@ -76,6 +85,7 @@ const Roles = () => {
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(100dvh-200px)]`}
           path="roles"
           setItemEdit={setItemEdit}
+          haveFilterTable={true}
         />
       </HeaderNav>
       {store.isAdd && <ModalRoles itemEdit={itemEdit} />}
