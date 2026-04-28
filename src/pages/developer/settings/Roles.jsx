@@ -20,6 +20,7 @@ const Roles = () => {
       header: "name",
       classTh: "",
       classTd: "",
+      isMobileTitle: true,
     },
     {
       accessorKey: "role_code",
