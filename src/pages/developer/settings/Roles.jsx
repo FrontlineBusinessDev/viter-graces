@@ -32,6 +32,7 @@ const Roles = () => {
       // meta: {
       //   filterComponent: (column) => <InputMaxMinValue column={column} />,
       // },
+      isMobileTitle: true,
     },
     {
       accessorKey: "role_name",
@@ -45,6 +46,7 @@ const Roles = () => {
       //     <SearchableSelectFilter column={column} options={statusOptions} />
       //   ),
       // },
+      isMobileTitle: true,
     },
     {
       accessorKey: "role_code",

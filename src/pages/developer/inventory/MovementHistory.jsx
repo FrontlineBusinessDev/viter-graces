@@ -47,13 +47,13 @@ const MovementHistory = () => {
       classTd: "",
     },
     {
-      accessorKey: "address",
+      accessorKey: "location",
       header: "Locations",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "address",
+      accessorKey: "notes",
       header: "Notes",
       classTh: "",
       classTd: "",

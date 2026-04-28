@@ -42,7 +42,7 @@ const SearchBar = ({
       <div className="relative">
         <div
           type="submit"
-          className="absolute left-2 top-[10px] text-[14px] h-[30px] rounded-tr-none rounded-br-none border-l-0  text-gray-400 cursor-default"
+          className="absolute left-2 top-2.5 text-[14px] h-[30px] rounded-tr-none rounded-br-none border-l-0  text-gray-400 cursor-default"
         >
           <Search className="size-4" />
         </div>
