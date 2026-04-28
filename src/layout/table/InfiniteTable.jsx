@@ -152,17 +152,17 @@ const InfiniteTable = ({
       </div>
       <div className="">
         {/* TABLE */}
-        <div className="relative rounded-xl text-center overflow-auto z-0 ">
+        <div className="relative rounded-xl text-center overflow-auto ">
           {status !== "pending" && isFetching && <TableSpinner />}
           <div className={`${className}  pr-6`}>
-            <table className="overflow-auto border border-gray-300 dark:border-[#0b111e]">
-              <thead className={`relative z-50 `}>
+            <table className="overflow-auto border-0! ">
+              <thead className={`relative `}>
                 {table?.getHeaderGroups()?.map((headerGroup) => (
                   <tr
                     key={headerGroup?.id}
-                    className="sm:table-row sticky top-0 z-10 sm:z-10 uppercase dark:bg-[#0b111e] border-0!"
+                    className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0! z-999"
                   >
-                    <th className="w-px">#</th>
+                    <th className="w-px dark:bg-[#0b111e]!">#</th>
                     {headerGroup?.headers?.map((header) => (
                       <th
                         key={header?.id}
@@ -189,13 +189,13 @@ const InfiniteTable = ({
                 ))}
               </thead>
               {haveFilterTable ? (
-                <thead className={`relative z-50 border-t-0!`}>
+                <thead className={`relative border-0!`}>
                   {table?.getHeaderGroups()?.map((headerGroup) => (
                     <tr
                       key={headerGroup?.id}
-                      className="sm:table-row sticky top-9 z-10 sm:z-10 uppercase "
+                      className="sm:table-row sticky top-9 uppercase dark:bg-[#0b111e] z-999"
                     >
-                      <th className="w-px "></th>
+                      <th className="w-px dark:bg-[#0b111e]! "> </th>
                       {headerGroup?.headers?.map((header) => (
                         <th
                           key={header?.id}
@@ -265,7 +265,7 @@ const InfiniteTable = ({
                       {row.getVisibleCells().map((item) => (
                         <td
                           key={item?.id}
-                          className={` ${isEmptyItem(item?.column?.columnDef?.classTd, "")}`}
+                          className={` ${isEmptyItem(item?.column?.columnDef?.classTd, "")} overflow-visible `}
                         >
                           {item?.column?.columnDef?.header === "status" ? (
                             <TableStatus

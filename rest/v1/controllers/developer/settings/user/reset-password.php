@@ -32,11 +32,11 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     if ($query->rowCount() == 0) {
         returnError("Invalid email. Please use a registered one.");
     };
-    // $mail = sendEmail(
-    //     $password_link,
-    //     $val->user_account_email,
-    //     $val->user_account_key
-    // );
+    $mail = sendEmail(
+        $password_link,
+        $val->user_account_email,
+        $val->user_account_key
+    );
 
     $query = checkResetPassword($val);
     http_response_code(200);
