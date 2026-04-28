@@ -31,6 +31,8 @@ const InfiniteTable = ({
   path = "",
   setItemEdit,
   haveFilterTable = false,
+  mockData = [],
+  isStatic = false,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [dataItem, setData] = React.useState(null);
@@ -39,6 +41,7 @@ const InfiniteTable = ({
   const observer = useRef();
   const search = React.useRef(null);
   const [onSearch, setOnSearch] = React.useState(false);
+  const [page, setPage] = useState(1);
 
   // React Query infinite fetch
   const {
@@ -68,14 +71,25 @@ const InfiniteTable = ({
       }
       return;
     },
-    refetchOnWindowFocus: false,
+    refetchOnWindowFocus: true,
+    // enabled: !isStatic, // disable API
   });
+
+  const finalStatus = isStatic ? "success" : status;
+  const finalError = isStatic ? null : error;
+  const finalHasNextPage = isStatic ? false : hasNextPage;
 
   // // Flatten pages into single array
   const tableData = useMemo(
     () => data?.pages?.flatMap((page) => page.data || []) ?? [],
     [data],
   );
+
+  // use UI-only data
+  // const tableData = useMemo(() => {
+  //   if (isStatic) return mockData;
+  //   return data?.pages?.flatMap((page) => page.data || []) ?? [];
+  // }, [data, mockData, isStatic]);
 
   // // Infinite scroll trigger
   const lastRowRef = useCallback(
@@ -152,11 +166,97 @@ const InfiniteTable = ({
       </div>
       <div className="">
         {/* TABLE */}
-        <div className="relative rounded-xl text-center overflow-auto ">
+        <div className="relative rounded-xl md:text-center overflow-auto z-0 ">
           {status !== "pending" && isFetching && <TableSpinner />}
-          <div className={`${className}  pr-6`}>
-            <table className="overflow-auto border-0! ">
-              <thead className={`relative `}>
+          <div className={`${className} `}>
+            {/* MOBILE CARD */}
+            {rows?.map((row) => {
+              const cells = row.getVisibleCells();
+
+              const titleCell =
+                cells.find((c) => c.column.columnDef.isMobileTitle) || cells[0];
+
+              const statusCell = cells.find(
+                (c) => c.column.columnDef.header === "status",
+              );
+
+              const actionCell = cells.find(
+                (c) => c.column.columnDef.header === "action",
+              );
+
+              return (
+                <div
+                  key={row.id}
+                  className="sm:hidden border rounded-xl p-4 mb-4 shadow-sm"
+                >
+                  {/* HEADER */}
+                  <div className="flex justify-between items-center mb-2">
+                    <p className="font-semibold text-lg">
+                      {flexRender(
+                        titleCell.column.columnDef.cell,
+                        titleCell.getContext(),
+                      )}
+                    </p>
+
+                    {/* STATUS */}
+                    {statusCell ? (
+                      <TableStatus
+                        item={titleCell.column.columnDef}
+                        dataArray={row.original}
+                      />
+                    ) : (
+                      ""
+                    )}
+                  </div>
+
+                  {/* OTHER FIELDS */}
+                  <div className="space-y-2">
+                    {cells.map((cell) => {
+                      const accessor = cell.column.columnDef.accessorKey;
+
+                      // Skip special fields
+                      if (
+                        cell.id === titleCell.id ||
+                        accessor === "status" ||
+                        accessor === "action"
+                      )
+                        return null;
+
+                      const header = cell.column.columnDef.header;
+
+                      return (
+                        <div key={cell.id} className="grid grid-cols-2">
+                          <p className="text-xs text-gray-500">
+                            {typeof header === "string" ? header : ""}
+                          </p>
+                          <p className="text-sm">
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext(),
+                            )}
+                          </p>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* ACTIONS */}
+                  {actionCell && (
+                    <div className="flex gap-2 mt-3">
+                      <ActionButtonTable
+                        item={actionCell.column.columnDef}
+                        dataArray={row.original}
+                        setData={setData}
+                        setItemEdit={setItemEdit}
+                      />
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+
+            <table className="overflow-auto md:border md:border-gray-300 dark:border-[#0b111e] ">
+              <thead className={`relative z-50 hidden sm:table-header-group`}>
                 {table?.getHeaderGroups()?.map((headerGroup) => (
                   <tr
                     key={headerGroup?.id}
@@ -255,48 +355,52 @@ const InfiniteTable = ({
                 )}
                 {rows?.map((row, index) => {
                   const isLastRow = index === rows?.length - 1;
+                  const rowData = row.original;
+
                   return (
-                    <tr
-                      key={row.id}
-                      ref={isLastRow ? lastRowRef : null}
-                      className="hidden sm:table-row group"
-                    >
-                      <td className="text-center">{index + 1}.</td>
-                      {row.getVisibleCells().map((item) => (
-                        <td
-                          key={item?.id}
-                          className={` ${isEmptyItem(item?.column?.columnDef?.classTd, "")} overflow-visible `}
-                        >
-                          {item?.column?.columnDef?.header === "status" ? (
-                            <TableStatus
-                              item={item?.column?.columnDef}
-                              dataArray={row.original}
-                            />
-                          ) : (
-                            flexRender(
-                              item?.column?.columnDef?.cell,
-                              item?.getContext(),
-                            )
-                          )}
-                          {/* FOR ACTION BUTTONS */}
-                          {item?.column?.columnDef?.accessorKey === "action" ? (
-                            <ActionButtonTable
-                              item={item?.column?.columnDef}
-                              dataArray={row.original}
-                              setData={setData}
-                              setItemEdit={setItemEdit}
-                            />
-                          ) : (
-                            ""
-                          )}
-                        </td>
-                      ))}
-                    </tr>
+                    <React.Fragment key={row.id}>
+                      <tr
+                        key={row.id}
+                        ref={isLastRow ? lastRowRef : null}
+                        className="hidden sm:table-row group"
+                      >
+                        <td className="text-center">{index + 1}.</td>
+                        {row.getVisibleCells().map((item) => (
+                          <td
+                            key={item?.id}
+                            className={` ${isEmptyItem(item?.column?.columnDef?.classTd, "")} overflow-visible `}
+                          >
+                            {item?.column?.columnDef?.header === "status" ? (
+                              <TableStatus
+                                item={item?.column?.columnDef}
+                                dataArray={row.original}
+                              />
+                            ) : (
+                              flexRender(
+                                item?.column?.columnDef?.cell,
+                                item?.getContext(),
+                              )
+                            )}
+                            {/* FOR ACTION BUTTONS */}
+                            {item?.column?.columnDef?.accessorKey ===
+                            "action" ? (
+                              <ActionButtonTable
+                                item={item?.column?.columnDef}
+                                dataArray={row.original}
+                                setData={setData}
+                                setItemEdit={setItemEdit}
+                              />
+                            ) : (
+                              ""
+                            )}
+                          </td>
+                        ))}
+                      </tr>
+                    </React.Fragment>
                   );
                 })}
               </tbody>
             </table>
-
             {isFetchingNextPage && (
               <button className="text-center h-full relative text-primary rounded-full w-full disabled:opacity-50 disabled:cursor-not-allowed ">
                 {isFetchingNextPage ? (
@@ -307,7 +411,7 @@ const InfiniteTable = ({
               </button>
             )}
             {!hasNextPage && (
-              <div className="text-center my-8 p-1.5">
+              <div className="text-center md:my-8 p-1.5">
                 <p className="mb-0 ">End of list.</p>
               </div>
             )}

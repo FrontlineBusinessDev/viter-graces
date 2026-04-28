@@ -2,6 +2,7 @@ import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
+import ModalReturns from "./ModalReturns";
 
 const Returns = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -65,11 +66,11 @@ const Returns = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="Returns"
+          path="Process Returns"
           setItemEdit={setItemEdit}
         />
       </HeaderNav>
-      {/* {store.isAdd && <ModalSalesOrders itemEdit={itemEdit} />} */}
+      {store.isAdd && <ModalReturns itemEdit={itemEdit} />}
     </>
   );
 };

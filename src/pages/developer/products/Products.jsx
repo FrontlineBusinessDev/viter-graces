@@ -11,7 +11,7 @@ const Products = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "user_account_is_active",
+      accessorKey: "status",
       header: "status",
       classTh: "w-[5rem]",
       classTd: "",
@@ -21,33 +21,34 @@ const Products = () => {
       header: "Products",
       classTh: "",
       classTd: "",
+      isMobileTitle: true,
     },
     {
-      accessorKey: "contact person",
+      accessorKey: "sku",
       header: "SKU",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "email",
+      accessorKey: "category",
       header: "Category",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "phone",
+      accessorKey: "price",
       header: "Price",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "address",
+      accessorKey: "cost",
       header: "Cost",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "address",
+      accessorKey: "stocks",
       header: "Stocks",
       classTh: "",
       classTd: "",
@@ -58,25 +59,25 @@ const Products = () => {
         {
           name: "edit",
           path: "purchase orders",
-          icon: <Edit className="h-3 w-3" />,
+          icon: <Edit className="md:size-3 size-5" />,
           isActive: 1,
         },
         {
-          name: "archieve",
+          name: "archive",
           path: "active",
-          icon: <ArchiveRestore className="h-3 w-3" />,
+          icon: <ArchiveRestore className="md:size-3 size-5" />,
           isActive: 1,
         },
         {
           name: "restore",
           path: "active",
-          icon: <RotateCcw className="h-3 w-3" />,
+          icon: <RotateCcw className="md:size-3 size-5" />,
           isActive: 0,
         },
         {
           name: "delete",
           path: "purchase orders",
-          icon: <Trash className="h-3 w-3" />,
+          icon: <Trash className="md:size-3 size-5" />,
           isActive: 0,
         },
       ],
@@ -86,14 +87,39 @@ const Products = () => {
     },
   ];
 
+  const mockUsers = [
+    {
+      id: 1,
+      status: "Active",
+      name: "John Doe",
+      sku: "MBP14-001",
+      category: "Electronics",
+      price: "1,999.00",
+      cost: "₱1500.00",
+      stocks: "11",
+    },
+    {
+      id: 2,
+      status: "Inactive",
+      name: "Jane Smith",
+      sku: "IP15P-001",
+      category: "Electronics",
+      price: "1,500.00",
+      cost: "₱1300.00",
+      stocks: "4",
+    },
+  ];
+
   return (
     <>
       <HeaderNav menu={"products"} activeTab="products">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(93dvh-100px)] h-[calc(97dvh-250px)]`}
           path="product"
           setItemEdit={setItemEdit}
+          // mockData={}
+          // isStatic={false}
         />
       </HeaderNav>
       {store.isAdd && <ModalProducts itemEdit={itemEdit} />}

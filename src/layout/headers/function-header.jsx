@@ -21,13 +21,13 @@ export const titleHeaderTab = () => {
   let navItems = [
     {
       title: "products",
-      description: "7 total",
+      description: "Manage and organize your product catalog",
       roles: ["admin", "developer"],
       array_tab: [],
     },
     {
       title: "inventory",
-      description: "7 products tracked",
+      description: "Track and manage your stock in real time",
       roles: ["admin", "developer"],
       array_tab: [
         {
@@ -44,7 +44,7 @@ export const titleHeaderTab = () => {
     },
     {
       title: "customers",
-      description: "5 customers",
+      description: "Centralized management of all customers",
       roles: ["admin", "developer"],
       array_tab: [],
     },
@@ -59,6 +59,43 @@ export const titleHeaderTab = () => {
       description: "6 orders total",
       roles: ["admin", "developer"],
       array_tab: [],
+    },
+    {
+      title: "finance",
+      description: "Manage your finance",
+      roles: ["admin", "developer"],
+      array_tab: [
+        {
+          icon: "",
+          title_tab: "finance-overview",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "cash-sales",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "accounts-receivable",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "expenses",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "accounts-payable",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "sales-journal",
+          on_click: onClickTab,
+        },
+      ],
     },
     {
       title: "settings",
