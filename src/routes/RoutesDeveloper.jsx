@@ -1,12 +1,14 @@
 import { devNavUrl } from "@/config/config";
 import Customers from "@/pages/developer/customers/Customers";
 import Dashboard from "@/pages/developer/dashboard/Dashboard";
+import FinanceOverview from "@/pages/developer/finance/finance-overview/FinanceOverview";
 import MovementHistory from "@/pages/developer/inventory/MovementHistory";
 import {
   default as Inventory,
   default as StockOverview,
 } from "@/pages/developer/inventory/StockOverview";
 import Products from "@/pages/developer/products/Products";
+import Returns from "@/pages/developer/returns/Returns";
 import SalesOrders from "@/pages/developer/sales-orders/SalesOrders";
 import ProductOwner from "@/pages/developer/settings/ProductOwner";
 import Roles from "@/pages/developer/settings/Roles";
@@ -62,6 +64,22 @@ export const routesDeveloper = [
       <ProtectedRouteUser>
         <SalesOrders />
       </ProtectedRouteUser>
+    ),
+  },
+  {
+    path: `${devNavUrl}/developer/returns`,
+    element: (
+      // <ProtectedRouteUser>
+      <Returns />
+      // </ProtectedRouteUser>
+    ),
+  },
+  {
+    path: `${devNavUrl}/developer/finance-overview`,
+    element: (
+      // <ProtectedRouteUser>
+      <FinanceOverview />
+      // </ProtectedRouteUser>
     ),
   },
   {

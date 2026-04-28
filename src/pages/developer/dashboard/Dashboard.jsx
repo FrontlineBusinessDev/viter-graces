@@ -25,8 +25,11 @@ const Dashboard = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
           <StatCard
             title="Sales Today"
-            value="₱0.00"
-            subtitle="Yesterday: ₱0.00"
+            value="₱******"
+            subtitle="Yesterday: ₱******"
+            flipContent="₱12,450.00"
+            subTitleFlip="Yesterday: ₱10,000.00"
+            flipBg="bg-green-100 dark:bg-green-900"
             icon={<TrendingUp className="text-green-600" size={20} />}
             iconBg="bg-green-100 dark:bg-[#082125]"
           />
@@ -52,8 +55,11 @@ const Dashboard = () => {
 
           <StatCard
             title="Expenses Today"
-            value="₱0.00"
-            subtitle="Yesterday: ₱0.00"
+            value="₱******"
+            subtitle="Yesterday: ₱******"
+            flipContent="₱12,450.00"
+            subTitleFlip="Yesterday: ₱10,000.00"
+            flipBg="bg-red-100 dark:bg-red-900"
             icon={<PhilippinePeso className="text-red-500" size={20} />}
             iconBg="bg-red-100 dark:bg-[#2a1019]"
           />

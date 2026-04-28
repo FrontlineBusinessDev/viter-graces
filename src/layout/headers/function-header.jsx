@@ -55,6 +55,49 @@ export const titleHeaderTab = () => {
       array_tab: [],
     },
     {
+      title: "returns",
+      description: "6 orders total",
+      roles: ["admin", "developer"],
+      array_tab: [],
+    },
+    {
+      title: "finance",
+      description: "Manage your finance",
+      roles: ["admin", "developer"],
+      array_tab: [
+        {
+          icon: "",
+          title_tab: "finance-overview",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "cash-sales",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "accounts-receivable",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "expenses",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "accounts-payable",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "sales-journal",
+          on_click: onClickTab,
+        },
+      ],
+    },
+    {
       title: "settings",
       description: "Manage your system configuration",
       roles: ["admin", "developer"],

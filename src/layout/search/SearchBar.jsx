@@ -1,4 +1,5 @@
 import { setIsSearch } from "@/store/StoreAction";
+import { Search } from "lucide-react";
 import { FaSearch } from "react-icons/fa";
 
 const SearchBar = ({ search, dispatch, setOnSearch, onSearch, label }) => {
@@ -38,7 +39,7 @@ const SearchBar = ({ search, dispatch, setOnSearch, onSearch, label }) => {
           type="submit"
           className="absolute left-2 top-[9.3px] text-[14px] h-[30px] rounded-tr-none rounded-br-none border-l-0  text-gray-400 cursor-default"
         >
-          <FaSearch />
+          <Search />
         </div>
         {/* {label !== "" && <label>{label}</label>} */}
         <input

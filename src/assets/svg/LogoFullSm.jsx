@@ -1,8 +1,8 @@
 import * as React from "react";
-const LogoFull = () => (
+const LogoFullSm = () => (
   <svg
     width="226"
-    height="201"
+    height="80"
     viewBox="0 0 101 90"
     fill="none"
     xmlns="http://www.w3.org/2000/svg"
@@ -5604,4 +5604,4 @@ const LogoFull = () => (
     </defs>
   </svg>
 );
-export default LogoFull;
+export default LogoFullSm;
