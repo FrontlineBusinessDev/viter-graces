@@ -1,8 +1,7 @@
+import AddButton from "@/components/buttons/AddButton";
 import NoData from "@/components/NoData";
-import Pills from "@/components/Pills";
 import SearchBar from "@/components/SearchBar";
 import ServerError from "@/components/ServerError";
-import AddButton from "@/components/buttons/AddButton";
 import ButtonSpinner from "@/components/spinners/ButtonSpinner";
 import TableLoading from "@/components/spinners/TableLoading";
 import TableSpinner from "@/components/spinners/TableSpinner";
@@ -19,7 +18,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { ArrowDown, ChevronDown, ChevronUp } from "lucide-react";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import ActionButtonTable from "../ActionButtonTable";
 import ModalAction from "../modal/ModalAction";
@@ -149,8 +147,13 @@ const InfiniteTable = ({
 
   return (
     <>
-      <div className="mb-3 pr-6">
-        <div className="sm:hidden w-full ">
+      <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 pr-6">
+        <div className="flex justify-end sm:mb-0! mb-3 ">
+          <AddButton value={path} onClick={handleAdd} />
+        </div>
+        <div
+          className={`${haveFilterTable ? " sm:hidden " : " "} "w-full md:max-w-1/4 "`}
+        >
           <SearchBar
             search={search}
             dispatch={dispatch}
@@ -159,13 +162,8 @@ const InfiniteTable = ({
             label={"Search..."}
           />
         </div>
-
-        <div className="flex justify-end sm:mt-0 mt-3 ">
-          <AddButton value={path} onClick={handleAdd} />
-        </div>
       </div>
       <div className="">
-        {/* TABLE */}
         <div className="relative rounded-xl md:text-center overflow-auto z-0 ">
           {status !== "pending" && isFetching && <TableSpinner />}
           <div className={`${className} `}>
@@ -176,14 +174,6 @@ const InfiniteTable = ({
               const titleCell =
                 cells.find((c) => c.column.columnDef.isMobileTitle) || cells[0];
 
-              const statusCell = cells.find(
-                (c) => c.column.columnDef.header === "status",
-              );
-
-              const actionCell = cells.find(
-                (c) => c.column.columnDef.header === "action",
-              );
-
               return (
                 <div
                   key={row.id}
@@ -191,49 +181,68 @@ const InfiniteTable = ({
                 >
                   {/* HEADER */}
                   <div className="flex justify-between items-center mb-2">
-                    <p className="font-semibold text-lg">
+                    <p
+                      className={`font-semibold text-lg ${
+                        titleCell.column.columnDef.classTd || ""
+                      }`}
+                    >
                       {flexRender(
                         titleCell.column.columnDef.cell,
                         titleCell.getContext(),
                       )}
                     </p>
 
-                    {/* STATUS */}
-                    {statusCell ? (
-                      <TableStatus
-                        item={titleCell.column.columnDef}
-                        dataArray={row.original}
-                      />
-                    ) : (
-                      ""
-                    )}
+                    {/* STATUS (same logic as table) */}
+                    {cells.map((item, key) => {
+                      if (item.column.columnDef.header === "status") {
+                        return (
+                          <div key={key}>
+                            <TableStatus
+                              item={titleCell.column.columnDef}
+                              dataArray={row.original}
+                            />
+                          </div>
+                        );
+                      }
+                      return null;
+                    })}
                   </div>
 
                   {/* OTHER FIELDS */}
                   <div className="space-y-2">
                     {cells.map((cell) => {
-                      const accessor = cell.column.columnDef.accessorKey;
+                      const colDef = cell.column.columnDef;
+                      const accessor = colDef.accessorKey;
 
-                      // Skip special fields
+                      // Skip title, status, action
                       if (
                         cell.id === titleCell.id ||
-                        accessor === "status" ||
+                        colDef.header === "status" ||
                         accessor === "action"
                       )
                         return null;
 
-                      const header = cell.column.columnDef.header;
+                      const header = colDef.header;
 
                       return (
-                        <div key={cell.id} className="grid grid-cols-2">
-                          <p className="text-xs text-gray-500">
+                        <div
+                          key={cell.id}
+                          className={`grid grid-cols-2 ${isEmptyItem(
+                            colDef.classTd,
+                            "",
+                          )}`}
+                        >
+                          <p
+                            className={`text-xs text-gray-500 ${isEmptyItem(
+                              colDef.classTh,
+                              "",
+                            )}`}
+                          >
                             {typeof header === "string" ? header : ""}
                           </p>
+
                           <p className="text-sm">
-                            {flexRender(
-                              cell.column.columnDef.cell,
-                              cell.getContext(),
-                            )}
+                            {flexRender(colDef.cell, cell.getContext())}
                           </p>
                         </div>
                       );
@@ -241,20 +250,25 @@ const InfiniteTable = ({
                   </div>
 
                   {/* ACTIONS */}
-                  {actionCell && (
-                    <div className="flex gap-2 mt-3">
-                      <ActionButtonTable
-                        item={actionCell.column.columnDef}
-                        dataArray={row.original}
-                        setData={setData}
-                        setItemEdit={setItemEdit}
-                      />
-                    </div>
-                  )}
+                  {cells.map((item) => {
+                    if (item.column.columnDef.accessorKey === "action") {
+                      return (
+                        <div key={item.id} className="flex gap-2 mt-3">
+                          <ActionButtonTable
+                            item={item.column.columnDef}
+                            dataArray={row.original}
+                            setData={setData}
+                            setItemEdit={setItemEdit}
+                          />
+                        </div>
+                      );
+                    }
+                    return null;
+                  })}
                 </div>
               );
             })}
-
+            {/* TABLE */}
             <table className="overflow-auto md:border md:border-gray-300 dark:border-[#0b111e] ">
               <thead className={`relative z-50 hidden sm:table-header-group`}>
                 {table?.getHeaderGroups()?.map((headerGroup) => (

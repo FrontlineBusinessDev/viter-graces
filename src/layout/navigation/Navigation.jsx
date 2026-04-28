@@ -64,7 +64,7 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
         className={`
     fixed top-0 left-0 h-dvh z-999 bg-dark-bg dark:bg-dark-mode
     transition-all duration-300 ease-in-out
-    ${isExpanded ? " w-60" : "w-60 md:w-[70px]"}                                
+    ${isExpanded ? " w-60 " : "w-60 md:w-[70px]"}                                
   `}
       >
         <div
