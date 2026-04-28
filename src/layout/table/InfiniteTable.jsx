@@ -123,8 +123,8 @@ const InfiniteTable = ({
 
   return (
     <>
-      <div className="flex justify-between mb-3">
-        <div className="w-full max-w-1/4 ">
+      <div className="flex justify-between mb-3 gap-4">
+        <div className="w-full md:max-w-1/4 ">
           <SearchBar
             search={search}
             dispatch={dispatch}
