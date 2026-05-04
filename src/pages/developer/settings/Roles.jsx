@@ -32,7 +32,6 @@ const Roles = () => {
       // meta: {
       //   filterComponent: (column) => <InputMaxMinValue column={column} />,
       // },
-      isMobileTitle: true,
     },
     {
       accessorKey: "role_name",
@@ -50,8 +49,8 @@ const Roles = () => {
     },
     {
       accessorKey: "role_code",
-      header: "code",
-      classTh: "w-[15rem]! p-0!",
+      header: "Code",
+      classTh: "lg:w-[15rem]! p-0!",
       classTd: "",
       meta: "",
       // filterFn: "equals",
@@ -63,7 +62,7 @@ const Roles = () => {
     },
     {
       accessorKey: "role_description",
-      header: "description",
+      header: "Description",
       classTh: " p-0!",
       classTd: "",
       meta: "",

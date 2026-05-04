@@ -52,6 +52,12 @@ const StockOverview = () => {
       classTh: "",
       classTd: "",
     },
+    {
+      accessorKey: "product_owner",
+      header: "Product Owner",
+      classTh: "",
+      classTd: "",
+    },
   ];
 
   return (

@@ -1,6 +1,7 @@
 import { devNavUrl } from "@/config/config";
 import Customers from "@/pages/developer/customers/Customers";
 import Dashboard from "@/pages/developer/dashboard/Dashboard";
+import CashSales from "@/pages/developer/finance/cash-sales/CashSales";
 import FinanceOverview from "@/pages/developer/finance/finance-overview/FinanceOverview";
 import MovementHistory from "@/pages/developer/inventory/MovementHistory";
 import {
@@ -29,9 +30,9 @@ export const routesDeveloper = [
   {
     path: `${devNavUrl}/developer/products`,
     element: (
-      // <ProtectedRouteUser>
-      <Products />
-      // </ProtectedRouteUser>
+      <ProtectedRouteUser>
+        <Products />
+      </ProtectedRouteUser>
     ),
   },
   {
@@ -69,17 +70,25 @@ export const routesDeveloper = [
   {
     path: `${devNavUrl}/developer/returns`,
     element: (
-      // <ProtectedRouteUser>
-      <Returns />
-      // </ProtectedRouteUser>
+      <ProtectedRouteUser>
+        <Returns />
+      </ProtectedRouteUser>
     ),
   },
   {
     path: `${devNavUrl}/developer/finance-overview`,
     element: (
-      // <ProtectedRouteUser>
-      <FinanceOverview />
-      // </ProtectedRouteUser>
+      <ProtectedRouteUser>
+        <FinanceOverview />
+      </ProtectedRouteUser>
+    ),
+  },
+  {
+    path: `${devNavUrl}/developer/cash-sales`,
+    element: (
+      <ProtectedRouteUser>
+        <CashSales />
+      </ProtectedRouteUser>
     ),
   },
   {

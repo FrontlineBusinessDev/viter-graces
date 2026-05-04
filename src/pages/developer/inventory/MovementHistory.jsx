@@ -24,7 +24,7 @@ const MovementHistory = () => {
     },
     {
       accessorKey: "contact person",
-      header: "Product",
+      header: "Products",
       classTh: "",
       classTd: "",
     },
@@ -49,6 +49,12 @@ const MovementHistory = () => {
     {
       accessorKey: "location",
       header: "Locations",
+      classTh: "",
+      classTd: "",
+    },
+    {
+      accessorKey: "product_owner",
+      header: "Product Owner",
       classTh: "",
       classTd: "",
     },
