@@ -113,19 +113,10 @@ const ModalCustomer = ({ itemEdit }) => {
                 <Form>
                   <div className="relative">
                     <InputText
-                      label="First name"
+                      label="Name"
                       type="text"
                       name="product_owner_first_name"
-                      placeholder={`${itemEdit ? "Update user first name" : "Enter new user first name"}`}
-                      disabled={mutation.isPending}
-                    />
-                  </div>
-                  <div className="relative mt-3">
-                    <InputText
-                      label="Last name"
-                      type="text"
-                      name="product_owner_last_name"
-                      placeholder={`${itemEdit ? "Update user last name" : "Enter new user last name"}`}
+                      placeholder={`${itemEdit ? "Update name" : "Enter name"}`}
                       disabled={mutation.isPending}
                     />
                   </div>
@@ -134,16 +125,52 @@ const ModalCustomer = ({ itemEdit }) => {
                       label="Email"
                       type="text"
                       name="product_owner_email"
-                      placeholder={`${itemEdit ? "Update user email" : "Enter new user email"}`}
+                      placeholder={`${itemEdit ? "Update email" : "Enter new email"}`}
                       disabled={mutation.isPending}
                     />
                   </div>
                   <div className="relative mt-3">
-                    <InputTextArea
+                    <InputText
+                      label="Phone"
+                      type="number"
+                      name="product_owner_email"
+                      placeholder={`${itemEdit ? "Update phone" : "Enter phone"}`}
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="relative mt-3">
+                    <InputText
                       label="Address"
                       type="text"
                       name="address"
                       placeholder={`${itemEdit ? "Update address" : "Enter address"}`}
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="relative mt-3">
+                    <InputText
+                      label="Messenger"
+                      type="text"
+                      name="product_owner_Messenger"
+                      placeholder={`${itemEdit ? "Update Messenger" : "Enter new Messenger"}`}
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="relative mt-3">
+                    <InputText
+                      label="Whatsapp"
+                      type="text"
+                      name="product_owner_Whatsapp"
+                      placeholder={`${itemEdit ? "Update Whatsapp" : "Enter new Whatsapp"}`}
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="relative mt-3">
+                    <InputText
+                      label="Other"
+                      type="text"
+                      name="product_owner_Other"
+                      placeholder={`${itemEdit ? "Update Other" : "Enter new Other"}`}
                       disabled={mutation.isPending}
                     />
                   </div>

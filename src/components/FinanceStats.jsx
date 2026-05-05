@@ -15,7 +15,7 @@ const FinanceStats = ({
     >
       <div className={`${iconBg} p-2 rounded-lg`}>{icon}</div>
       <div>
-        <p className="text-xs text-gray-400 uppercase tracking-wide dark:text-gray-300">
+        <p className="text-xs text-gray-400 capitalize tracking-wide dark:text-gray-300">
           {title}
         </p>
         <h2

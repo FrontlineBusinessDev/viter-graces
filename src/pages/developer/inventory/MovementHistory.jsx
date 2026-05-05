@@ -15,48 +15,56 @@ const MovementHistory = () => {
       header: "Type",
       classTh: "w-[5rem]",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "name",
       header: "Date",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "contact person",
       header: "Products",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "email",
       header: "QTY",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "phone",
       header: "Before",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "address",
       header: "After",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "location",
       header: "Locations",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "product_owner",
       header: "Product Owner",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "notes",
@@ -85,6 +93,7 @@ const MovementHistory = () => {
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
           path="stock movement"
           setItemEdit={setItemEdit}
+          haveFilterTable={true}
         />
       </HeaderNav>
       {store.isAdd && <ModalStockOverview itemEdit={itemEdit} />}

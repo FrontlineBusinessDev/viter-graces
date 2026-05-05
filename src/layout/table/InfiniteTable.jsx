@@ -162,7 +162,7 @@ const InfiniteTable = ({
 
   return (
     <>
-      <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 lg:pr-6">
+      <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4">
         <div className="flex justify-end sm:mb-0! mb-3 ">
           {path === "" ? "" : <AddButton value={path} onClick={handleAdd} />}
         </div>

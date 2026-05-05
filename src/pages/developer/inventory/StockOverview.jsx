@@ -4,6 +4,8 @@ import { StoreContext } from "@/store/StoreContext";
 import { TriangleAlert } from "lucide-react";
 import React from "react";
 import ModalStockOverview from "./modal/ModalStockOverview";
+import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 const StockOverview = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -15,48 +17,66 @@ const StockOverview = () => {
       header: "status",
       classTh: "w-[5rem]",
       classTd: "",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            options={ActiveInActiveStatus()}
+          />
+        ),
+      },
+      status_option: ActiveInActiveStatus(),
     },
     {
       accessorKey: "name",
       header: "Products",
       classTh: "",
       classTd: "",
+      isMobileTitle: true,
+      meta: "",
     },
     {
       accessorKey: "contact person",
       header: "SKU",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "email",
       header: "Location",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "phone",
       header: "Current Stock",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "Threshold",
       header: "Threshold",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "unit",
       header: "Unit",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "product_owner",
       header: "Product Owner",
       classTh: "",
       classTd: "",
+      meta: "",
     },
   ];
 
@@ -79,6 +99,7 @@ const StockOverview = () => {
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
           path="stock movement"
           setItemEdit={setItemEdit}
+          haveFilterTable={true}
         />
       </HeaderNav>
       {store.isAdd && <ModalStockOverview itemEdit={itemEdit} />}
