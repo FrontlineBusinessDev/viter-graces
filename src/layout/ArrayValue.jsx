@@ -18,25 +18,25 @@ export const DefaultActionTableList = ({ path }) => {
     {
       name: "edit",
       path: path,
-      icon: <Edit className="h-3 w-3" />,
+      icon: <Edit className="size-5 lg:size-4" />,
       isActive: 1,
     },
     {
       name: "archieve",
       path: "active",
-      icon: <ArchiveRestore className="h-3 w-3" />,
+      icon: <ArchiveRestore className="size-5 lg:size-4" />,
       isActive: 1,
     },
     {
       name: "restore",
       path: "active",
-      icon: <RotateCcw className="h-3 w-3" />,
+      icon: <RotateCcw className="size-5 lg:size-4" />,
       isActive: 0,
     },
     {
       name: "delete",
       path: path,
-      icon: <Trash className="h-3 w-3" />,
+      icon: <Trash className="size-5 lg:size-4" />,
       isActive: 0,
     },
   ];
@@ -47,31 +47,31 @@ export const UserActionTableList = ({ path }) => {
     {
       name: "edit",
       path: path,
-      icon: <Edit className="h-3 w-3" />,
+      icon: <Edit className="size-5 lg:size-4" />,
       isActive: 1,
     },
     {
       name: "archieve",
       path: "active",
-      icon: <ArchiveRestore className="h-3 w-3" />,
+      icon: <ArchiveRestore className="size-5 lg:size-4" />,
       isActive: 1,
     },
     {
       name: "reset",
       path: "reset-password",
-      icon: <KeySquare className="h-3 w-3" />,
+      icon: <KeySquare className="size-5 lg:size-4" />,
       isActive: 1,
     },
     {
       name: "restore",
       path: "active",
-      icon: <RotateCcw className="h-3 w-3" />,
+      icon: <RotateCcw className="size-5 lg:size-4" />,
       isActive: 0,
     },
     {
       name: "delete",
       path: path,
-      icon: <Trash className="h-3 w-3" />,
+      icon: <Trash className="size-5 lg:size-4" />,
       isActive: 0,
     },
   ];

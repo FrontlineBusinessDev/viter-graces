@@ -229,7 +229,7 @@
 
 @layer components {
   .wrapper {
-    @apply relative  print:pt-0 md:ml-10 pr-6 pl-4 transition-all duration-150 ease-linear;
+    @apply relative  print:pt-0 md:ml-10 px-6 transition-all duration-150 ease-linear;
   }
   .navigation {
     @apply fixed left-0 top-0 z-50;
