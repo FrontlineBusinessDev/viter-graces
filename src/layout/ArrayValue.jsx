@@ -13,11 +13,11 @@ export const ActiveInActiveStatus = () => {
   ];
 };
 // FOR TABLE ACTION
-export const DefaultActionTableList = () => {
+export const DefaultActionTableList = ({ path }) => {
   return [
     {
       name: "edit",
-      path: "roles",
+      path: path,
       icon: <Edit className="size-5 lg:size-4" />,
       isActive: 1,
     },
@@ -29,18 +29,18 @@ export const DefaultActionTableList = () => {
     },
     {
       name: "delete",
-      path: "roles",
+      path: path,
       icon: <Trash className="size-5 lg:size-4" />,
       isActive: 0,
     },
   ];
 };
 // FOR TABLE ACTION
-export const UserActionTableList = () => {
+export const UserActionTableList = ({ path }) => {
   return [
     {
       name: "edit",
-      path: "roles",
+      path: path,
       icon: <Edit className="size-5 lg:size-4" />,
       isActive: 1,
     },
@@ -64,23 +64,23 @@ export const UserActionTableList = () => {
     },
     {
       name: "delete",
-      path: "roles",
+      path: path,
       icon: <Trash className="size-5 lg:size-4" />,
       isActive: 0,
     },
   ];
 };
-export const EditDeleteActionTableList = () => {
+export const EditDeleteActionTableList = ({ path }) => {
   return [
     {
       name: "edit",
-      path: "roles",
+      path: path,
       icon: <Edit className="size-5 lg:size-4" />,
       isActive: 1,
     },
     {
       name: "delete",
-      path: "roles",
+      path: path,
       icon: <Trash className="size-5 lg:size-4" />,
       isActive: 1,
     },
