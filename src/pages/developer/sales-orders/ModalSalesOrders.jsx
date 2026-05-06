@@ -266,7 +266,7 @@ const ModalSalesOrders = ({ itemEdit }) => {
                         disabled={mutation.isPending}
                       />
                     </div>
-                    <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end my-5 p-2">
+                    <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end my-3 p-2">
                       <p className="flex flex-col place-self-end text-primary text-lg text-right">
                         <span className="text-black dark:text-light text-sm">Total</span>₱ 0.00
                       </p>
@@ -282,6 +282,24 @@ const ModalSalesOrders = ({ itemEdit }) => {
                       disabled={mutation.isPending}
                     />
                   </div>
+
+                  <div className="relative my-3 ">
+                      <InputSelectArray
+                        label="Received by:"
+                        type="text"
+                        name="user_account_role_id"
+                        disabled={mutation.isPending}
+                        isLoading={isLoading || isFetching}
+                        error={error}
+                        result={supplier}
+                        onChange={(e) => {
+                          props.values.user_account_role_id = e.target.value;
+                          props.values.user_account_role =
+                            e.target.options[e.target.selectedIndex].text;
+                          return e;
+                        }}
+                      />
+                    </div>
 
                   {store.error && <MessageError />}
                   <div className="modal-action">

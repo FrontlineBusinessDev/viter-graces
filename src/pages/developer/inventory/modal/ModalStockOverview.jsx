@@ -1,10 +1,12 @@
 import ModalButton from "@/components/buttons/ModalButton";
+import { InputSelectArray } from "@/components/inputs/InputSelect";
 import { InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { apiVersion } from "@/config/config";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
+import useQueryData from "@/services/useQueryData";
 import {
   setError,
   setIsAdd,
@@ -22,6 +24,18 @@ import * as Yup from "yup";
 const ModalStockOverview = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const queryClient = useQueryClient();
+  const [loading, setLoading] = React.useState(false);
+
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data: roles,
+  } = useQueryData(
+    `${apiVersion}/roles`, // endpoint
+    "get", // method
+    "roles", // key
+  );
 
   const handleClose = () => {
     dispatch(setIsAdd(false));
@@ -127,6 +141,23 @@ const ModalStockOverview = ({ itemEdit }) => {
                       name="warehouse_location"
                       placeholder={`${itemEdit ? "Update warehouse location" : "Enter warehouse location"}`}
                       disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="relative mt-5 mb-6">
+                    <InputSelectArray
+                      label="Product Owner"
+                      type="text"
+                      name="user_account_role_id"
+                      disabled={mutation.isPending}
+                      isLoading={isLoading || isFetching}
+                      error={error}
+                      result={roles}
+                      onChange={(e) => {
+                        props.values.user_account_role_id = e.target.value;
+                        props.values.user_account_role =
+                          e.target.options[e.target.selectedIndex].text;
+                        return e;
+                      }}
                     />
                   </div>
                   <div className="relative mb-6">

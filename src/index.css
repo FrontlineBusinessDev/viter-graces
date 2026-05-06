@@ -229,7 +229,7 @@
 
 @layer components {
   .wrapper {
-    @apply relative  print:pt-0 md:ml-10 pr-6 pl-4 transition-all duration-150 ease-linear;
+    @apply relative  print:pt-0 md:ml-10 px-6 transition-all duration-150 ease-linear;
   }
   .navigation {
     @apply fixed left-0 top-0 z-50;
@@ -347,5 +347,9 @@
 
   .btn--outline {
     @apply bg-transparent text-primary border border-primary hover:bg-primary hover:text-white inline-flex;
+  }
+
+  .btn--outline--gray {
+    @apply bg-transparent text-gray-600 dark:text-white border border-dark/50 hover:bg-primary hover:text-white inline-flex rounded-lg p-2 transition-all duration-500 font-semibold ;
   }
 }
