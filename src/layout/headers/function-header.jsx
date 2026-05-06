@@ -104,6 +104,66 @@ export const titleHeaderTab = () => {
       ],
     },
     {
+      title: "reports",
+      description: "Review sales performance and transaction summaries.",
+      roles: ["admin", "developer"],
+      array_tab: [
+        {
+          icon: "",
+          title_tab: "sales-reports",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "stock-levels",
+          description_tab: "Monitor current inventory quantities.",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "low-stock",
+          description_tab: "Track items that need restocking.",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "inventory-movement",
+          description_tab: "Track stock movements and adjustments.",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "profit-&-loss",
+          description_tab: "Review income, costs, and net profit.",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "AR-report",
+          description_tab: "Monitor outstanding customer balances.",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "AP-report",
+          description_tab: "Review supplier balances and payables.",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "expenses-report",
+          description_tab: "Track business expenses and spending trends.",
+          on_click: onClickTab,
+        },
+        {
+          icon: "",
+          title_tab: "overdue-payments",
+          description_tab: "Monitor unpaid balances past due date.",
+          on_click: onClickTab,
+        },
+      ],
+    },
+    {
       title: "settings",
       description: "Manage your system configuration",
       roles: ["admin", "developer"],

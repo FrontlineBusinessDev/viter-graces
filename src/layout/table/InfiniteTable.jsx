@@ -22,6 +22,7 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import ActionButtonTable from "../ActionButtonTable";
 import ModalAction from "../modal/ModalAction";
 import TableStatus from "../TableStatus";
+import ExportCSVButton from "@/components/buttons/ExportCSVButton";
 
 const InfiniteTable = ({
   columns,
@@ -31,6 +32,7 @@ const InfiniteTable = ({
   haveFilterTable = false,
   mockData = [],
   isStatic = false,
+  hasExport = false,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [dataItem, setData] = React.useState(null);
@@ -162,10 +164,23 @@ const InfiniteTable = ({
 
   return (
     <>
-      <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4">
-        <div className="flex justify-end sm:mb-0! mb-3 ">
-          {path === "" ? "" : <AddButton value={path} onClick={handleAdd} />}
-        </div>
+      <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 items-center">
+        {path === "" ? (
+          ""
+        ) : (
+          <div className="flex justify-end sm:mb-0! mb-3 ">
+            <AddButton value={path} onClick={handleAdd} />
+          </div>
+        )}
+
+        {hasExport === true ? (
+          <div className="flex justify-end sm:mb-0! ">
+            {hasExport === true ? <ExportCSVButton /> : ""}
+          </div>
+        ) : (
+          ""
+        )}
+
         <div
           className={`${haveFilterTable ? " sm:hidden " : " "} "w-full md:max-w-1/4 "`}
         >
@@ -242,7 +257,7 @@ const InfiniteTable = ({
                       return (
                         <div
                           key={cell.id}
-                          className={`grid grid-cols-[1fr_2fr] ${isEmptyItem(
+                          className={`grid grid-cols-[1fr_2fr] gap-3 items-center ${isEmptyItem(
                             colDef.classTd,
                             "",
                           )}`}
@@ -256,7 +271,7 @@ const InfiniteTable = ({
                             {typeof header === "string" ? header : ""}
                           </p>
 
-                          <p className="text-sm">
+                          <p className="text-sm wrap-break-word min-w-[200px]">
                             {flexRender(colDef.cell, cell.getContext())}
                           </p>
                         </div>
@@ -291,7 +306,7 @@ const InfiniteTable = ({
                     key={headerGroup?.id}
                     className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0! z-999"
                   >
-                    <th className="w-px dark:bg-[#0b111e]!">#</th>
+                    <th className="w-px ">#</th>
                     {headerGroup?.headers?.map((header) => (
                       <th
                         key={header?.id}

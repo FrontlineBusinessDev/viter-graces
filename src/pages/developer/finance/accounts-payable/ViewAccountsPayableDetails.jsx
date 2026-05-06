@@ -3,7 +3,7 @@ import ExportCSVButton from "@/components/buttons/ExportCSVButton";
 import { Download, Pencil, Plus, Trash2 } from "lucide-react";
 import React from "react";
 
-const ViewAccountsReceivableDetails = ({ setView, itemEdit }) => {
+const ViewAccountsPayableDetails = ({ setView, itemEdit }) => {
   const handleClose = () => {
     setView(false);
   };
@@ -123,11 +123,11 @@ const ViewAccountsReceivableDetails = ({ setView, itemEdit }) => {
             </span>
           </div>
 
-          <ExportCSVButton/>
+          <ExportCSVButton />
         </div>
       </div>
     </div>
   );
 };
 
-export default ViewAccountsReceivableDetails;
+export default ViewAccountsPayableDetails;

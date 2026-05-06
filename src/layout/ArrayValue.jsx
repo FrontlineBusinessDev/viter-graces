@@ -18,19 +18,19 @@ export const DefaultActionTableList = () => {
     {
       name: "edit",
       path: "roles",
-      icon: <Edit className="size-5 lg:size-3" />,
+      icon: <Edit className="size-5 lg:size-4" />,
       isActive: 1,
     },
     {
       name: "archieve",
       path: "active",
-      icon: <ArchiveRestore className="size-5 lg:size-3" />,
+      icon: <ArchiveRestore className="size-5 lg:size-4" />,
       isActive: 1,
     },
     {
       name: "delete",
       path: "roles",
-      icon: <Trash className="size-5 lg:size-3" />,
+      icon: <Trash className="size-5 lg:size-4" />,
       isActive: 0,
     },
   ];
@@ -41,32 +41,48 @@ export const UserActionTableList = () => {
     {
       name: "edit",
       path: "roles",
-      icon: <Edit className="size-5 lg:size-3" />,
+      icon: <Edit className="size-5 lg:size-4" />,
       isActive: 1,
     },
     {
       name: "archieve",
       path: "active",
-      icon: <ArchiveRestore className="size-5 lg:size-3" />,
+      icon: <ArchiveRestore className="size-5 lg:size-4" />,
       isActive: 1,
     },
     {
       name: "reset",
       path: "active",
-      icon: <KeySquare className="size-5 lg:size-3" />,
+      icon: <KeySquare className="size-5 lg:size-4" />,
       isActive: 1,
     },
     {
       name: "restore",
       path: "active",
-      icon: <RotateCcw className="size-5 lg:size-3" />,
+      icon: <RotateCcw className="size-5 lg:size-4" />,
       isActive: 0,
     },
     {
       name: "delete",
       path: "roles",
-      icon: <Trash className="size-5 lg:size-3" />,
+      icon: <Trash className="size-5 lg:size-4" />,
       isActive: 0,
+    },
+  ];
+};
+export const EditDeleteActionTableList = () => {
+  return [
+    {
+      name: "edit",
+      path: "roles",
+      icon: <Edit className="size-5 lg:size-4" />,
+      isActive: 1,
+    },
+    {
+      name: "delete",
+      path: "roles",
+      icon: <Trash className="size-5 lg:size-4" />,
+      isActive: 1,
     },
   ];
 };

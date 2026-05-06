@@ -35,7 +35,7 @@ const Roles = () => {
     },
     {
       accessorKey: "role_name",
-      header: "name",
+      header: "Role",
       classTh: "w-[15rem]! p-0!",
       classTd: "",
       meta: "",
@@ -47,19 +47,7 @@ const Roles = () => {
       // },
       isMobileTitle: true,
     },
-    {
-      accessorKey: "role_code",
-      header: "Code",
-      classTh: "lg:w-[15rem]! p-0!",
-      classTd: "",
-      meta: "",
-      // filterFn: "equals",
-      // meta: {
-      //   filterComponent: (column) => (
-      //     <SearchableSelectFilter column={column} options={statusOptions} />
-      //   ),
-      // },
-    },
+    
     {
       accessorKey: "role_description",
       header: "Description",

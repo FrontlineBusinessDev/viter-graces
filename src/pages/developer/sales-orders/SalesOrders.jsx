@@ -119,7 +119,7 @@ const SalesOrders = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="Sales order"
+          path="New Order"
           setItemEdit={setItemEdit}
           haveFilterTable={true}
         />

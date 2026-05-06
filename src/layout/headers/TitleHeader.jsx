@@ -55,7 +55,7 @@ const TitleHeader = ({}) => {
                   ${
                     isActive
                       ? "bg-light dark:bg-dark-mode text-black/80 dark:text-light font-bold"
-                      : "text-gray-500 hover:text-black"
+                      : "text-gray-500 hover:text-black dark:hover:text-light"
                   }
                 `}
                     >

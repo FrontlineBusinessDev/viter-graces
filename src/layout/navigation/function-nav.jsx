@@ -105,7 +105,7 @@ export const getNavList = () => {
       label: "Reports",
       icon: <ChartColumn className="size-5" />,
       menu: "reports",
-      path: `${devNavUrl}/${userRole}/reports`,
+      path: `${devNavUrl}/${userRole}/sales-reports`,
       isOpenSubmenu: "",
       on_click: onClickNav,
       subList: [],
