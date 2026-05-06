@@ -7,7 +7,7 @@ require '../../../../core/Encryption.php';
 // use needed classes
 require '../../../../models/developer/settings/User.php';
 // use notification template
-require '../../../../../notifications/reset-password.php';
+require '../../../../lib/notifications/reset-password.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
@@ -22,27 +22,32 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
     // check data
     checkPayload($data);
+    if (array_key_exists("id", $_GET)) {
+        // get data
+        $val->user_account_aid = $_GET['id'];
+        checkId($val->user_account_aid);
 
-    $val->user_account_key = $encrypt->doHash(rand());
-    $val->user_account_updated = date("Y-m-d H:i:s");
-    $val->user_account_email = trim($data["item"]);
-    $password_link = "/create-password";
+        $val->user_account_key = $encrypt->doHash(rand());
+        $val->user_account_updated = date("Y-m-d H:i:s");
+        $val->user_account_email = trim($data["user_account_email"]);
+        $password_link = "/create-password";
 
-    $query = $val->readLogin();
-    if ($query->rowCount() == 0) {
-        returnError("Invalid email. Please use a registered one.");
-    };
-    $mail = sendEmail(
-        $password_link,
-        $val->user_account_email,
-        $val->user_account_key
-    );
+        $query = $val->readLogin();
+        if ($query->rowCount() == 0) {
+            returnError("Invalid email. Please use a registered one.");
+        };
+        $mail = sendEmail(
+            $password_link,
+            $val->user_account_email,
+            $val->user_account_key
+        );
 
-    $query = checkResetPassword($val);
-    http_response_code(200);
-    returnSuccess($val, "User Account", $query);
-    // return 404 error if endpoint not available
-    checkEndpoint();
+        $query = checkResetPassword($val);
+        http_response_code(200);
+        returnSuccess($val, "User Account", $query);
+        // return 404 error if endpoint not available
+        checkEndpoint();
+    }
 }
 
 http_response_code(200);

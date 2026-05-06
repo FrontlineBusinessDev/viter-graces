@@ -285,7 +285,44 @@ class User
         return $query;
     }
 
-
+    // set password
+    public function resetPassword()
+    {
+        try {
+            $sql = "update {$this->tblUserAccount} set ";
+            $sql .= "user_account_key = :user_account_key, ";
+            $sql .= "user_account_updated = :user_account_updated ";
+            $sql .= "where user_account_aid = :user_account_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "user_account_updated" => $this->user_account_updated,
+                "user_account_key" => $this->user_account_key,
+                "user_account_aid" => $this->user_account_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+    // set password
+    public function resetPasswordByEmail()
+    {
+        try {
+            $sql = "update {$this->tblUserAccount} set ";
+            $sql .= "user_account_key = :user_account_key, ";
+            $sql .= "user_account_updated = :user_account_updated ";
+            $sql .= "where user_account_email = :user_account_email ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "user_account_updated" => $this->user_account_updated,
+                "user_account_key" => $this->user_account_key,
+                "user_account_email" => $this->user_account_email,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
 
     // read login
     public function readLogin()
