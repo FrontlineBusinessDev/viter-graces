@@ -28,12 +28,6 @@ export const DefaultActionTableList = ({ path }) => {
       isActive: 1,
     },
     {
-      name: "restore",
-      path: "active",
-      icon: <RotateCcw className="size-5 lg:size-4" />,
-      isActive: 0,
-    },
-    {
       name: "delete",
       path: path,
       icon: <Trash className="size-5 lg:size-4" />,
@@ -58,7 +52,7 @@ export const UserActionTableList = ({ path }) => {
     },
     {
       name: "reset",
-      path: "reset-password",
+      path: "active",
       icon: <KeySquare className="size-5 lg:size-4" />,
       isActive: 1,
     },
@@ -73,6 +67,22 @@ export const UserActionTableList = ({ path }) => {
       path: path,
       icon: <Trash className="size-5 lg:size-4" />,
       isActive: 0,
+    },
+  ];
+};
+export const EditDeleteActionTableList = ({ path }) => {
+  return [
+    {
+      name: "edit",
+      path: path,
+      icon: <Edit className="size-5 lg:size-4" />,
+      isActive: 1,
+    },
+    {
+      name: "delete",
+      path: path,
+      icon: <Trash className="size-5 lg:size-4" />,
+      isActive: 1,
     },
   ];
 };

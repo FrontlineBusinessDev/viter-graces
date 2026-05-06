@@ -22,6 +22,7 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import ActionButtonTable from "../ActionButtonTable";
 import ModalAction from "../modal/ModalAction";
 import TableStatus from "../TableStatus";
+import ExportCSVButton from "@/components/buttons/ExportCSVButton";
 
 const InfiniteTable = ({
   columns,
@@ -31,6 +32,7 @@ const InfiniteTable = ({
   haveFilterTable = false,
   mockData = [],
   isStatic = false,
+  hasExport = false,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [dataItem, setData] = React.useState(null);
@@ -40,6 +42,19 @@ const InfiniteTable = ({
   const search = React.useRef(null);
   const [onSearch, setOnSearch] = React.useState(false);
   const [page, setPage] = useState(1);
+
+  const searchPayload = useMemo(
+    () => ({
+      searchValue: search.current?.value || "",
+      id: "",
+    }),
+    [store.isSearch],
+  );
+
+  const queryKey = useMemo(
+    () => [path, store.isSearch],
+    [path, store.isSearch],
+  );
 
   // React Query infinite fetch
   const {
@@ -51,26 +66,28 @@ const InfiniteTable = ({
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: [path, store.isSearch],
+    queryKey,
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
         `${apiVersion}/${path}/search`,
         `${apiVersion}/${path}/page/${pageParam}`,
-        store.isSearch, // search boolean
-        {
-          searchValue: search.current.value,
-          id: "",
-        }, // search value
+        store.isSearch,
+        searchPayload,
         "post",
       ),
+
     getNextPageParam: (lastPage) => {
       if (lastPage.page < lastPage.total) {
         return lastPage.page + lastPage.count;
       }
-      return;
+      return undefined;
     },
+
+    staleTime: 1000 * 60 * 5, // 5 mins → no refetch when revisiting
+    gcTime: 1000 * 60 * 30, // keep cache for 30 mins
     refetchOnWindowFocus: true,
-    // enabled: !isStatic, // disable API
+    refetchOnMount: false,
+    // enabled: !isStatic,
   });
 
   const finalStatus = isStatic ? "success" : status;
@@ -147,10 +164,23 @@ const InfiniteTable = ({
 
   return (
     <>
-      <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 pr-6">
-        <div className="flex justify-end sm:mb-0! mb-3 ">
-          <AddButton value={path} onClick={handleAdd} />
-        </div>
+      <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 items-center">
+        {path === "" ? (
+          ""
+        ) : (
+          <div className="flex justify-end sm:mb-0! mb-3 ">
+            <AddButton value={path} onClick={handleAdd} />
+          </div>
+        )}
+
+        {hasExport === true ? (
+          <div className="flex justify-end sm:mb-0! ">
+            {hasExport === true ? <ExportCSVButton /> : ""}
+          </div>
+        ) : (
+          ""
+        )}
+
         <div
           className={`${haveFilterTable ? " sm:hidden " : " "} "w-full md:max-w-1/4 "`}
         >
@@ -192,13 +222,13 @@ const InfiniteTable = ({
                       )}
                     </p>
 
-                    {/* STATUS (same logic as table) */}
+                    {/* STATUS */}
                     {cells.map((item, key) => {
                       if (item.column.columnDef.header === "status") {
                         return (
                           <div key={key}>
                             <TableStatus
-                              item={titleCell.column.columnDef}
+                              item={item.column.columnDef}
                               dataArray={row.original}
                             />
                           </div>
@@ -227,7 +257,7 @@ const InfiniteTable = ({
                       return (
                         <div
                           key={cell.id}
-                          className={`grid grid-cols-2 ${isEmptyItem(
+                          className={`grid grid-cols-[1fr_2fr] gap-3 items-center ${isEmptyItem(
                             colDef.classTd,
                             "",
                           )}`}
@@ -241,7 +271,7 @@ const InfiniteTable = ({
                             {typeof header === "string" ? header : ""}
                           </p>
 
-                          <p className="text-sm">
+                          <p className="text-sm wrap-break-word min-w-[200px]">
                             {flexRender(colDef.cell, cell.getContext())}
                           </p>
                         </div>
@@ -276,7 +306,7 @@ const InfiniteTable = ({
                     key={headerGroup?.id}
                     className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0! z-999"
                   >
-                    <th className="w-px dark:bg-[#0b111e]!">#</th>
+                    <th className="w-px ">#</th>
                     {headerGroup?.headers?.map((header) => (
                       <th
                         key={header?.id}
@@ -307,7 +337,7 @@ const InfiniteTable = ({
                   {table?.getHeaderGroups()?.map((headerGroup) => (
                     <tr
                       key={headerGroup?.id}
-                      className="sm:table-row sticky top-9 uppercase dark:bg-[#0b111e] z-999"
+                      className="sm:table-row sticky top-9 uppercase dark:bg-[#0b111e] z-999 hidden lg:group"
                     >
                       <th className="w-px dark:bg-[#0b111e]! "> </th>
                       {headerGroup?.headers?.map((header) => (

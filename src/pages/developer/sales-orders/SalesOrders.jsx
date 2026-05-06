@@ -4,10 +4,14 @@ import { StoreContext } from "@/store/StoreContext";
 import { ArchiveRestore, Edit, Eye, RotateCcw, Trash } from "lucide-react";
 import React from "react";
 import ModalSalesOrders from "./ModalSalesOrders";
+import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
+import ViewSalesDetails from "./ViewSalesDetails";
 
 const SalesOrders = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
+  const [isView, setView] = React.useState(false);
 
   // Columns
   const columns = [
@@ -16,42 +20,58 @@ const SalesOrders = () => {
       header: "status",
       classTh: "w-[5rem]",
       classTd: "",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            options={ActiveInActiveStatus()}
+          />
+        ),
+      },
+      status_option: ActiveInActiveStatus(),
     },
     {
       accessorKey: "name",
       header: "order #",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "email",
       header: "date",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "phone",
       header: "customer",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "address",
       header: "total",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "address",
       header: "paid",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "address",
       header: "method",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "action",
@@ -99,11 +119,13 @@ const SalesOrders = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="Sales order"
+          path="New Order"
           setItemEdit={setItemEdit}
+          haveFilterTable={true}
         />
       </HeaderNav>
       {store.isAdd && <ModalSalesOrders itemEdit={itemEdit} />}
+      {isView && <ViewSalesDetails itemEdit={itemEdit} setView={setView} />}
     </>
   );
 };

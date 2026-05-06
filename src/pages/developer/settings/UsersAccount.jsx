@@ -31,7 +31,7 @@ const UsersAccount = () => {
       accessorKey: "user_account_email",
       header: "Email",
       classTh: "",
-      classTd: "break-words",
+      classTd: "",
     },
     {
       accessorKey: "user_account_role",
@@ -52,7 +52,7 @@ const UsersAccount = () => {
       <HeaderNav menu={"settings"} activeTab="users">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)] `}
           path="users"
           setItemEdit={setItemEdit}
         />

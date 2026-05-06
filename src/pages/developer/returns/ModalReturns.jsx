@@ -185,7 +185,7 @@ const ModalReturns = ({ itemEdit }) => {
                     <label htmlFor="">Linked Order *</label>
                     <div
                       type="submit"
-                      className="absolute left-2 top-9 text-[14px] h-[30px] rounded-tr-none rounded-br-none border-l-0  text-gray-400 cursor-default"
+                      className="absolute left-2 top-7 text-[14px] h-[30px] rounded-tr-none rounded-br-none border-l-0  text-gray-400 cursor-default"
                     >
                       <Search size={14} />
                     </div>
