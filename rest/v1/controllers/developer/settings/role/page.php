@@ -11,14 +11,21 @@ $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new Role($conn);
+// get payload
+$body = file_get_contents("php://input");
+$data = json_decode($body, true);
 // validate api key
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
+    // check data
+    checkPayload($data);
 
     if (array_key_exists("start", $_GET)) {
         $val->column_start = $_GET['start'];
         $val->column_total = 15;
 
+        // FOR MULTIPLE FILTER 
+        $val->filters = $data['columnFilters'];
         checkLimitId($val->column_start, $val->column_total);
 
         $query = checkReadLimit($val);

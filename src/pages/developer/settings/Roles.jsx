@@ -47,7 +47,7 @@ const Roles = () => {
       // },
       isMobileTitle: true,
     },
-    
+
     {
       accessorKey: "role_description",
       header: "Description",

@@ -1,8 +1,4 @@
-import {
-  ActiveInActiveStatus,
-  DefaultActionTableList,
-  UserActionTableList,
-} from "@/layout/ArrayValue";
+import { ActiveInActiveStatus, UserActionTableList } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";

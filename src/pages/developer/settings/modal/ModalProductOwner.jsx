@@ -29,31 +29,20 @@ const ModalProductOwner = ({ itemEdit }) => {
 
   handleEscape(() => handleClose());
 
-  const {
-    isLoading,
-    isFetching,
-    error,
-    data: productOwner,
-  } = useQueryData(
-    `${apiVersion}/productOwner`, // endpoint
-    "get", // method
-    "productOwner", // key
-  );
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
         itemEdit
-          ? `${apiVersion}/users/${itemEdit?.id}`
-          : `${apiVersion}/users`,
+          ? `${apiVersion}/product-owner/${itemEdit?.id}`
+          : `${apiVersion}/product-owner`,
         itemEdit ? "put" : "post",
         values,
       ),
     onSuccess: (data) => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["product-owner"] });
 
       if (data.success) {
         dispatch(setIsAdd(false));
@@ -68,19 +57,19 @@ const ModalProductOwner = ({ itemEdit }) => {
   });
 
   const initVal = {
-    product_owner_aid: isEmptyItem(itemEdit?.product_owner_aid, ""),
-    product_owner_first_name: isEmptyItem(
-      itemEdit?.product_owner_first_name,
-      "",
-    ),
-    product_owner_last_name: isEmptyItem(itemEdit?.product_owner_last_name, ""),
-    product_owner_email: isEmptyItem(itemEdit?.product_owner_email, ""),
+    user_account_aid: isEmptyItem(itemEdit?.user_account_aid, ""),
+    user_account_first_name: isEmptyItem(itemEdit?.user_account_first_name, ""),
+    user_account_last_name: isEmptyItem(itemEdit?.user_account_last_name, ""),
+    user_account_email: isEmptyItem(itemEdit?.user_account_email, ""),
+
+    name: isEmptyItem(itemEdit?.name, ""),
+    password_link: `/create-password`,
   };
 
   const yupSchema = Yup.object({
-    product_owner_first_name: Yup.string().trim().required("Required"),
-    product_owner_last_name: Yup.string().trim().required("Required"),
-    product_owner_email: Yup.string().trim().required("Required"),
+    user_account_first_name: Yup.string().trim().required("Required"),
+    user_account_last_name: Yup.string().trim().required("Required"),
+    user_account_email: Yup.string().trim().required("Required"),
   });
 
   React.useEffect(() => {
@@ -110,11 +99,11 @@ const ModalProductOwner = ({ itemEdit }) => {
             {(props) => {
               return (
                 <Form>
-                  <div className="relative">
+                  <div className="relative mt-3">
                     <InputText
                       label="First name"
                       type="text"
-                      name="product_owner_first_name"
+                      name="user_account_first_name"
                       placeholder={`${itemEdit ? "Update user first name" : "Enter new user first name"}`}
                       disabled={mutation.isPending}
                     />
@@ -123,7 +112,7 @@ const ModalProductOwner = ({ itemEdit }) => {
                     <InputText
                       label="Last name"
                       type="text"
-                      name="product_owner_last_name"
+                      name="user_account_last_name"
                       placeholder={`${itemEdit ? "Update user last name" : "Enter new user last name"}`}
                       disabled={mutation.isPending}
                     />
@@ -132,7 +121,7 @@ const ModalProductOwner = ({ itemEdit }) => {
                     <InputText
                       label="Email"
                       type="text"
-                      name="product_owner_email"
+                      name="user_account_email"
                       placeholder={`${itemEdit ? "Update user email" : "Enter new user email"}`}
                       disabled={mutation.isPending}
                     />

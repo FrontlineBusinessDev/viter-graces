@@ -1,11 +1,12 @@
+import {
+  ActiveInActiveStatus,
+  DefaultActionTableList,
+} from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
-import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
 import React from "react";
-import ModalUser from "./modal/ModalUser";
 import ModalProductOwner from "./modal/ModalProductOwner";
-import { DefaultActionTableList } from "@/layout/ArrayValue";
 const ProductOwner = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -16,6 +17,7 @@ const ProductOwner = () => {
       header: "status",
       classTh: "w-[5rem]",
       classTd: "",
+      status_option: ActiveInActiveStatus(),
     },
     {
       accessorKey: "name",
@@ -26,12 +28,6 @@ const ProductOwner = () => {
     {
       accessorKey: "user_account_email",
       header: "email",
-      classTh: "",
-      classTd: "",
-    },
-    {
-      accessorKey: "products",
-      header: "products",
       classTh: "",
       classTd: "",
     },
@@ -49,7 +45,7 @@ const ProductOwner = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="owner"
+          path="product-owner"
           setItemEdit={setItemEdit}
         />
       </HeaderNav>

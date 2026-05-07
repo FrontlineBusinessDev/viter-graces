@@ -1,5 +1,8 @@
+import { apiVersion } from "@/config/config";
+import useQueryData from "@/services/useQueryData";
 import { setError } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useField } from "formik";
 import React from "react";
 import Select from "react-select";
@@ -43,13 +46,22 @@ export const InputSelectArray = ({
   label,
   required = true,
   onChange = null,
-  result,
-  isLoading = false,
-  error = false,
+  path = null,
   ...props
 }) => {
-  const { dispatch } = React.useContext(StoreContext);
+  const { store, dispatch } = React.useContext(StoreContext);
   const [field, meta] = useField(props);
+
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data: result,
+  } = useQueryData(
+    `${apiVersion}/${path}`, // endpoint
+    "get", // method
+    `${path}`, // key
+  );
 
   return (
     <>
@@ -74,7 +86,7 @@ export const InputSelectArray = ({
             <option value="" hidden>
               No data
             </option>
-          ) : isLoading ? (
+          ) : isLoading || isFetching ? (
             <option value="" hidden>
               ...Loading
             </option>
@@ -83,15 +95,33 @@ export const InputSelectArray = ({
               Server Error
             </option>
           ) : (
-            <option value="" hidden></option>
+            <option value="" hidden>
+              --
+            </option>
           )}
-          {result?.data?.map((item, key) => {
-            return (
-              <option key={key} value={item.id}>
-                {item.name}
-              </option>
-            );
-          })}
+          {store.credentials?.data?.role === "developer" ? (
+            <>
+              {result?.data?.map((item, key) => {
+                return (
+                  <option key={key} value={item.id}>
+                    {item.name}
+                  </option>
+                );
+              })}
+            </>
+          ) : (
+            <>
+              {result?.data?.map((item, key) => {
+                return isEmptyItem(item?.name, "") !== "developer" ? (
+                  <option key={key} value={item.id}>
+                    {item.name}
+                  </option>
+                ) : (
+                  ""
+                );
+              })}
+            </>
+          )}
         </optgroup>
       </select>
 

@@ -23,15 +23,15 @@ import ActionButtonTable from "../ActionButtonTable";
 import ModalAction from "../modal/ModalAction";
 import TableStatus from "../TableStatus";
 import ExportCSVButton from "@/components/buttons/ExportCSVButton";
+import { DebouncedInput } from "@/components/inputs/InputText";
 
 const InfiniteTable = ({
   columns,
   className,
   path = "",
+  subPath = "",
   setItemEdit,
   haveFilterTable = false,
-  mockData = [],
-  isStatic = false,
   hasExport = false,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -42,17 +42,27 @@ const InfiniteTable = ({
   const search = React.useRef(null);
   const [onSearch, setOnSearch] = React.useState(false);
   const [page, setPage] = useState(1);
+  const [isFetchFilterDate, setIsFetchFilterDate] = useState(false);
 
   const searchPayload = useMemo(
     () => ({
       searchValue: search.current?.value || "",
+      isDeveloper:
+        isEmptyItem(store?.credentials?.data?.role, "admin") === "developer"
+          ? "1"
+          : "0",
       id: "",
     }),
     [store.isSearch],
   );
 
   const queryKey = useMemo(
-    () => [path, store.isSearch],
+    () => [
+      path,
+      store.isSearch,
+      JSON.stringify({ searchPayload }),
+      isFetchFilterDate ? JSON.stringify({ columnFilters }) : "",
+    ],
     [path, store.isSearch],
   );
 
@@ -69,10 +79,13 @@ const InfiniteTable = ({
     queryKey,
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
-        `${apiVersion}/${path}/search`,
+        null,
         `${apiVersion}/${path}/page/${pageParam}`,
-        store.isSearch,
-        searchPayload,
+        false,
+        {
+          ...searchPayload,
+          columnFilters: isFetchFilterDate ? columnFilters : [],
+        },
         "post",
       ),
 
@@ -90,21 +103,11 @@ const InfiniteTable = ({
     // enabled: !isStatic,
   });
 
-  const finalStatus = isStatic ? "success" : status;
-  const finalError = isStatic ? null : error;
-  const finalHasNextPage = isStatic ? false : hasNextPage;
-
   // // Flatten pages into single array
   const tableData = useMemo(
     () => data?.pages?.flatMap((page) => page.data || []) ?? [],
     [data],
   );
-
-  // use UI-only data
-  // const tableData = useMemo(() => {
-  //   if (isStatic) return mockData;
-  //   return data?.pages?.flatMap((page) => page.data || []) ?? [];
-  // }, [data, mockData, isStatic]);
 
   // // Infinite scroll trigger
   const lastRowRef = useCallback(
@@ -161,6 +164,14 @@ const InfiniteTable = ({
     dispatch(setIsAdd(true));
     setItemEdit(null);
   };
+
+  React.useEffect(() => {
+    if (data?.pages[0]?.total < 30) {
+      setIsFetchFilterDate(false);
+    } else {
+      setIsFetchFilterDate(true);
+    }
+  }, [columnFilters]);
 
   return (
     <>
@@ -350,20 +361,15 @@ const InfiniteTable = ({
                           )}
 
                           {header.column.columnDef.meta === "" ? (
-                            <input
+                            <DebouncedInput
                               type="search"
-                              // placeholder={`Type to search ${flexRender(
-                              //   header?.column?.columnDef?.header,
-                              //   header?.getContext(),
-                              // )}....`}
-                              className={`bg-white m-0! w-full! text-sm border cursor-pointer! isFocused:border-primary!
-                              isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! h-8 `}
-                              onChange={(e) => {
-                                const val = e.target.value || undefined;
-
-                                header.column.setFilterValue(val);
-
+                              className={`bg-white m-0! w-full! text-sm border cursor-pointer! isFocused:border-primary! isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! h-8`}
+                              value={header.column.getFilterValue() ?? ""}
+                              onChange={(value) => {
                                 setData([]);
+                                header.column.setFilterValue(
+                                  value || undefined,
+                                );
                               }}
                             />
                           ) : (
@@ -390,7 +396,7 @@ const InfiniteTable = ({
                     </td>
                   </tr>
                 )}
-                {(status === "error" || error) && (
+                {error && (
                   <tr>
                     <td colSpan="100%" className="p-10">
                       <ServerError />

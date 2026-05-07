@@ -5,29 +5,29 @@ import { Link, useLocation } from "react-router-dom";
 import { titleHeaderTab } from "./function-header";
 
 const TitleHeader = ({}) => {
-   const { store } = React.useContext(StoreContext);
-   const userRole = "developer";
+  const { store } = React.useContext(StoreContext);
+  const userRole = "developer";
 
-   const location = useLocation();
-   const currentTab = location.pathname.split("/")[3];
+  const location = useLocation();
+  const currentTab = location.pathname.split("/")[3];
 
-   const currentHeader = titleHeaderTab().find((item) => {
-     const hasTabs = item.array_tab.length > 0;
+  const currentHeader = titleHeaderTab().find((item) => {
+    const hasTabs = item.array_tab.length > 0;
 
-     if (!item.roles?.includes(userRole)) return false;
+    if (!item.roles?.includes(userRole)) return false;
 
-     if (hasTabs) {
-       return item.array_tab.some((tab) => tab.title_tab === currentTab);
-     }
+    if (hasTabs) {
+      return item.array_tab.some((tab) => tab.title_tab === currentTab);
+    }
 
-     return item.title === currentTab;
-   });
+    return item.title === currentTab;
+  });
 
-   const currentTabData = currentHeader?.array_tab?.find(
-     (tab) => tab.title_tab === currentTab,
-   );
+  const currentTabData = currentHeader?.array_tab?.find(
+    (tab) => tab.title_tab === currentTab,
+  );
 
-   const formatText = (text) => text.replace(/-/g, " ");
+  const formatText = (text) => text.replace(/-/g, " ");
 
   return (
     <>

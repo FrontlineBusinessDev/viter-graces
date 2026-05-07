@@ -1,8 +1,6 @@
-import { setIsAdd } from "@/store/StoreAction";
-import ButtonSpinner from "../spinners/ButtonSpinner";
-import { handleEscape } from "@/utilities/handleEscape";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
+import ButtonSpinner from "../spinners/ButtonSpinner";
 
 const ModalButton = ({
   disabled = false,

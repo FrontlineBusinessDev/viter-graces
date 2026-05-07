@@ -4,7 +4,7 @@ require '../../../../lib/notifications/verify-account.php';
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new User($conn);
+$val = new ProductOwner($conn);
 $encrypt = new Encryption();
 // get payload
 $body = file_get_contents("php://input");
@@ -19,8 +19,6 @@ checkPayload($data);
 $val->user_account_first_name = checkIndex($data, "user_account_first_name");
 $val->user_account_last_name = checkIndex($data, "user_account_last_name");
 $val->user_account_email = trim(checkIndex($data, "user_account_email"));
-$val->user_account_role_id = checkIndex($data, "user_account_role_id");
-$val->user_account_role = checkIndex($data, "user_account_role");
 $val->user_account_is_active = 1;
 $val->user_account_created = date("Y-m-d H:i:s");
 $val->user_account_updated = date("Y-m-d H:i:s");
@@ -28,6 +26,14 @@ $val->column_fullname = $val->user_account_first_name . " " . $val->user_account
 // check name
 isNameExist($val, $val->column_fullname);
 // create
+
+$queryRole = getResultData($val->readProductOwnerRole());
+if (count($queryRole) > 0) {
+    $val->user_account_role_id = $queryRole[0]["id"];
+    $val->user_account_role = $queryRole[0]["name"];
+} else {
+    returnError("Invalid Role code please contact developer.");
+}
 
 $val->user_account_key = $encrypt->doHash(rand());
 $password_link = checkIndex($data, "password_link");
