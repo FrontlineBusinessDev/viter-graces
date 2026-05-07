@@ -15,6 +15,7 @@ import {
   EditDeleteActionTableList,
 } from "@/layout/ArrayValue";
 import { setIsAdd } from "@/store/StoreAction";
+import ModalAddItem from "./modal/ModalAddItem";
 
 const Suppliers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -24,6 +25,7 @@ const Suppliers = () => {
   const search = React.useRef(null);
   const [onSearch, setOnSearch] = React.useState(false);
   const [isView, setView] = React.useState(false);
+  const [addItem, setAddItem] = React.useState(false);
 
   // ACTIONS ADD
   const handleAdd = () => {
@@ -34,6 +36,10 @@ const Suppliers = () => {
   const handleView = (item) => {
     setView(true);
     setItemEdit(item);
+  };
+
+  const handleAddItem = () => {
+    setAddItem((prev) => !prev);
   };
 
   // Columns
@@ -70,14 +76,14 @@ const Suppliers = () => {
     },
     {
       accessorKey: "action",
-      action_array: DefaultActionTableList(),
+      action_array: DefaultActionTableList("suppliers"),
       header: "Action",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
     },
     {
       accessorKey: "add-delete-action",
-      action_array: EditDeleteActionTableList(),
+      action_array: EditDeleteActionTableList("suppliers"),
       header: "Action",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
@@ -240,7 +246,7 @@ const Suppliers = () => {
                           <div className="place-self-end">
                             <button
                               className="btn--green flex items-center py-2! "
-                              // onClick={onClick}
+                              onClick={handleAddItem}
                             >
                               <Plus size={15} />
                               <span className="capitalize leading-0">
@@ -314,6 +320,7 @@ const Suppliers = () => {
         </div>
       </HeaderNav>
       {store.isAdd && <ModalSuppliers itemEdit={itemEdit} />}
+      {addItem && <ModalAddItem itemEdit={itemEdit} setAddItem={setAddItem} />}
     </>
   );
 };

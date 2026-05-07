@@ -18,11 +18,33 @@ import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
+import { Plus } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
 
 const ModalSuppliers = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
+  const [items, setItems] = React.useState([]);
+  const [itemsContact, setItemsContact] = React.useState([]);
+  const [counter, setCounter] = React.useState(0);
+  const [counterContact, setCounterContact] = React.useState(0);
+
+  const handleAddItem = () => {
+    setItems((prev) => [...prev, { id: counter }]);
+    setCounter((prev) => prev + 1);
+  };
+
+  const handleRemoveItem = (id) => {
+    setItems((prev) => prev.filter((item) => item.id !== id));
+  };
+
+  const handleAddItemContact = () => {
+    if (itemsContact.length >= 2) return;
+
+    setItemsContact((prev) => [...prev, { id: counterContact }]);
+
+    setCounterContact((prev) => prev + 1);
+  };
 
   const handleClose = () => {
     dispatch(setIsAdd(false));
@@ -114,57 +136,188 @@ const ModalSuppliers = ({ itemEdit }) => {
             {(props) => {
               return (
                 <Form>
-                  <div className="relative">
-                    <InputText
-                      label="First name"
-                      type="text"
-                      name="user_account_first_name"
-                      placeholder={`${itemEdit ? "Update user first name" : "Enter new user first name"}`}
-                      disabled={mutation.isPending}
-                    />
+                  <div className="grid grid-cols-2 gap-2">
+                    <div className="relative">
+                      <InputText
+                        label="Name"
+                        type="text"
+                        name="user_account_first_name"
+                        placeholder={`${itemEdit ? "Update name" : "Enter name"}`}
+                        disabled={mutation.isPending}
+                      />
+                    </div>
+                    <div className="relative ">
+                      <InputText
+                        label="Phone"
+                        type="text"
+                        name="user_account_last_name"
+                        placeholder={`${itemEdit ? "Update phone" : "Enter phone"}`}
+                        disabled={mutation.isPending}
+                      />
+                    </div>
+                    <div className="relative mt-3">
+                      <InputText
+                        label="Email"
+                        type="text"
+                        name="user_account_email"
+                        placeholder={`${itemEdit ? "Update user email" : "Enter new user email"}`}
+                        disabled={mutation.isPending}
+                      />
+                    </div>
+                    <div className="relative mt-3">
+                      <InputText
+                        label="Address"
+                        type="text"
+                        name="user_account_last_name"
+                        placeholder={`${itemEdit ? "Update Address" : "Enter Address"}`}
+                        disabled={mutation.isPending}
+                      />
+                    </div>
                   </div>
+
+                  <div className="grid lg:grid-cols-3 gap-2">
+                    <div className="relative mt-3">
+                      <InputText
+                        label="Messenger"
+                        type="number"
+                        name="user_account_email"
+                        placeholder={`${itemEdit ? "Messenger" : "Messenger"}`}
+                        disabled={mutation.isPending}
+                      />
+                    </div>
+                    <div className="relative mt-3">
+                      <InputText
+                        label="WhatsApp"
+                        type="number"
+                        name="user_account_email"
+                        placeholder={`${itemEdit ? "WhatsApp" : "WhatsApp"}`}
+                        disabled={mutation.isPending}
+                      />
+                    </div>
+                    <div className="relative mt-3">
+                      <InputText
+                        label="Other"
+                        type="number"
+                        name="user_account_email"
+                        placeholder={`${itemEdit ? "Other" : "Other"}`}
+                        disabled={mutation.isPending}
+                      />
+                    </div>
+                  </div>
+
+                  <div className="flex my-7 justify-center">
+                    <a
+                      className={`btn--green flex items-center justify-center text-black gap-2 px-3 py-2! bg-transparent rounded-md border border-gray-300 min-w-20
+                        ${
+                          itemsContact.length >= 2
+                            ? "opacity-50 pointer-events-none cursor-not-allowed"
+                            : "cursor-pointer"
+                        }`}
+                      onClick={handleAddItemContact}
+                    >
+                      <Plus size={15} />
+                      <span className="capitalize leading-0">
+                        Add Contact Person
+                      </span>
+                    </a>
+                  </div>
+
+                  {itemsContact.map((item, index) => (
+                    <div key={item.id} className="grid grid-cols-2 gap-2 mb-3">
+                      <div className="relative">
+                        <InputText
+                          label={`Name ${index + 1}`}
+                          type="text"
+                          name={`contact_name_${index}`}
+                          placeholder="Enter name"
+                          disabled={mutation.isPending}
+                        />
+                      </div>
+
+                      <div className="relative">
+                        <InputText
+                          label={`Phone ${index + 1}`}
+                          type="text"
+                          name={`contact_phone_${index}`}
+                          placeholder="Enter phone"
+                          disabled={mutation.isPending}
+                        />
+                      </div>
+                    </div>
+                  ))}
+
+                  <div className="flex my-7 justify-between">
+                    <label htmlFor="">Items</label>
+                    <a
+                      className="flex items-center justify-center text-black gap-2 px-3 py-1.5 bg-transparent rounded-md border-gray-300 border min-w-20 hover:bg-primary transition-all duration-300 ease-in-out hover:text-light dark:text-light cursor-pointer"
+                      onClick={handleAddItem}
+                    >
+                      <Plus size={15} />
+                      <span className="capitalize leading-0">Add Item</span>
+                    </a>
+                  </div>
+
+                  <div className="border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out ">
+                    {items.length === 0 ? (
+                      <div className="h-20 flex items-center justify-center ">
+                        <p>No Items added yet.</p>
+                      </div>
+                    ) : (
+                      <div className="flex flex-col">
+                        <ul className="hidden md:grid grid-cols-[2.2fr_1fr_2fr] px-3 mt-2 text-dark">
+                          <li>Item(s)</li>
+                          <li>Unit</li>
+                          <li>Est. Cost</li>
+                        </ul>
+                        {items.map((item, index) => (
+                          <div
+                            key={index}
+                            className="grid grid-cols-2 md:grid md:grid-cols-[12fr_1fr_1fr_1fr_1fr] gap-3 items-center p-3 mt-1"
+                          >
+                            <input
+                              type="text"
+                              placeholder="Product Name"
+                              className="input"
+                            />
+                            <input
+                              type="number"
+                              placeholder="Qty"
+                              className="input md:w-20"
+                            />
+                            <input
+                              type="number"
+                              placeholder="Price"
+                              className="input md:w-24"
+                            />
+                            <span className="font-semibold text-black dark:text-light">
+                              ₱0.00
+                            </span>
+                            <button
+                              onClick={() => handleRemoveItem(item.id)}
+                              className="text-red-500 text-xl"
+                            >
+                              ✕
+                            </button>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+
                   <div className="relative mt-3">
                     <InputText
-                      label="Last name"
-                      type="text"
-                      name="user_account_last_name"
-                      placeholder={`${itemEdit ? "Update user last name" : "Enter new user last name"}`}
-                      disabled={mutation.isPending}
-                    />
-                  </div>
-                  <div className="relative mt-3">
-                    <InputText
-                      label="Contact Person"
-                      type="text"
-                      name="user_account_last_name"
-                      placeholder={`${itemEdit ? "Update contact person" : "Enter contact person"}`}
-                      disabled={mutation.isPending}
-                    />
-                  </div>
-                  <div className="relative mt-3">
-                    <InputText
-                      label="Email"
-                      type="text"
+                      label="Delivery Date"
+                      type="date"
                       name="user_account_email"
-                      placeholder={`${itemEdit ? "Update user email" : "Enter new user email"}`}
-                      disabled={mutation.isPending}
-                    />
-                  </div>
-                  <div className="relative mt-3">
-                    <InputText
-                      label="Phone"
-                      type="number"
-                      name="user_account_email"
-                      placeholder={`${itemEdit ? "+63" : "+63"}`}
                       disabled={mutation.isPending}
                     />
                   </div>
                   <div className="relative mt-3">
                     <InputTextArea
-                      label="Address"
+                      label="Notes"
                       type="text"
                       name="user_account_email"
-                      placeholder={`${itemEdit ? "Update address" : "Enter new address"}`}
+                      placeholder={`${itemEdit ? "Update notes" : "Enter notes"}`}
                       disabled={mutation.isPending}
                     />
                   </div>
