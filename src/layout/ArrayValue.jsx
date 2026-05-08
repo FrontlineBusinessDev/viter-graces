@@ -13,60 +13,76 @@ export const ActiveInActiveStatus = () => {
   ];
 };
 // FOR TABLE ACTION
-export const DefaultActionTableList = () => {
+export const DefaultActionTableList = ({ path }) => {
   return [
     {
       name: "edit",
-      path: "roles",
-      icon: <Edit className="size-5 lg:size-3" />,
+      path: path,
+      icon: <Edit className="size-5 lg:size-4" />,
       isActive: 1,
     },
     {
       name: "archieve",
       path: "active",
-      icon: <ArchiveRestore className="size-5 lg:size-3" />,
+      icon: <ArchiveRestore className="size-5 lg:size-4" />,
       isActive: 1,
     },
     {
       name: "delete",
-      path: "roles",
-      icon: <Trash className="size-5 lg:size-3" />,
+      path: path,
+      icon: <Trash className="size-5 lg:size-4" />,
       isActive: 0,
     },
   ];
 };
 // FOR TABLE ACTION
-export const UserActionTableList = () => {
+export const UserActionTableList = ({ path }) => {
   return [
     {
       name: "edit",
-      path: "roles",
-      icon: <Edit className="size-5 lg:size-3" />,
+      path: path,
+      icon: <Edit className="size-5 lg:size-4" />,
       isActive: 1,
     },
     {
       name: "archieve",
       path: "active",
-      icon: <ArchiveRestore className="size-5 lg:size-3" />,
+      icon: <ArchiveRestore className="size-5 lg:size-4" />,
       isActive: 1,
     },
     {
       name: "reset",
       path: "active",
-      icon: <KeySquare className="size-5 lg:size-3" />,
+      icon: <KeySquare className="size-5 lg:size-4" />,
       isActive: 1,
     },
     {
       name: "restore",
       path: "active",
-      icon: <RotateCcw className="size-5 lg:size-3" />,
+      icon: <RotateCcw className="size-5 lg:size-4" />,
       isActive: 0,
     },
     {
       name: "delete",
-      path: "roles",
-      icon: <Trash className="size-5 lg:size-3" />,
+      path: path,
+      icon: <Trash className="size-5 lg:size-4" />,
       isActive: 0,
+    },
+  ];
+};
+export const EditDeleteActionTableList = ({ path }) => {
+  return [
+    {
+      name: "edit",
+      path: path,
+      icon: <Edit className="size-5 lg:size-4" />,
+      isActive: 1,
+    },
+    {
+      name: "delete",
+      path: path,
+      icon: <Trash className="size-5 lg:size-4" />,
+      isActive: 1,
     },
   ];
 };

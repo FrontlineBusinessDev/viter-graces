@@ -189,7 +189,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                       </div>
                     ) : (
                       <div className="flex flex-col">
-                        <ul className="hidden md:grid grid-cols-[1.5fr_1.3fr_.7fr_1.3fr] px-3 mt-2 text-dark">
+                        <ul className="hidden md:grid grid-cols-[.8fr_1fr_.7fr_1.3fr] px-3 mt-2 text-dark">
                           <li>Products</li>
                           <li>Product Owner</li>
                           <li>Quantity</li>

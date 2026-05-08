@@ -1,4 +1,5 @@
 import CloseButton from "@/components/buttons/CloseButton";
+import ExportCSVButton from "@/components/buttons/ExportCSVButton";
 import { Download } from "lucide-react";
 import React from "react";
 
@@ -28,7 +29,7 @@ const ViewDetails = ({ setView, itemEdit }) => {
               <p>Customer:</p>
               <p className="text-black dark:text-light">{itemEdit.name}</p>
             </li>
-            <li>
+            <li className="justify-end">
               <p>Date:</p>
               <p className="text-black dark:text-light">{itemEdit.date}</p>
             </li>
@@ -36,7 +37,7 @@ const ViewDetails = ({ setView, itemEdit }) => {
               <p>Payment:</p>
               <p className="text-black dark:text-light">{itemEdit.method}</p>
             </li>
-            <li>
+            <li className="justify-end">
               <p>Status:</p>
               <p
                 className={`inline-block px-2 py-1 text-xs rounded-full ${
@@ -98,12 +99,7 @@ const ViewDetails = ({ setView, itemEdit }) => {
             </span>
           </div>
 
-          <div className="my-4 place-self-center">
-            <button className="btn--outline--gray flex items-center gap-2">
-              <Download size={16} />
-              Export CSV
-            </button>
-          </div>
+          <ExportCSVButton/>
         </div>
       </div>
     </div>

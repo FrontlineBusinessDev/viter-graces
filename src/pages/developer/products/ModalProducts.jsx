@@ -216,6 +216,24 @@ const ModalProducts = ({ itemEdit }) => {
                     </div>
                     <div className="relative mt-3">
                       <InputText
+                        label="Stock Quantity"
+                        type="number"
+                        name="user_account_first_name"
+                        placeholder={`${itemEdit ? "0" : "0"}`}
+                        disabled={mutation.isPending}
+                      />
+                    </div>
+                    <div className="relative mt-3">
+                      <InputText
+                        label="Low Stock Threshold"
+                        type="number"
+                        name="user_account_first_name"
+                        placeholder={`${itemEdit ? "0" : "0"}`}
+                        disabled={mutation.isPending}
+                      />
+                    </div>
+                    <div className="relative mt-3">
+                      <InputText
                         label="Unit"
                         type="number"
                         name="user_account_first_name"

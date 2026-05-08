@@ -22,7 +22,7 @@ import { Plus } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
 
-const ModalSalesOrders = ({ itemEdit }) => {
+const ModalExpenses = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [items, setItems] = React.useState([]);
   const [counter, setCounter] = React.useState(0);
@@ -106,7 +106,7 @@ const ModalSalesOrders = ({ itemEdit }) => {
   return (
     <>
       <ModalWrapper
-        val="Sales Order"
+        val="Expenses"
         itemEdit={itemEdit}
         mutation={mutation}
         isOpen={true}
@@ -126,180 +126,103 @@ const ModalSalesOrders = ({ itemEdit }) => {
             {(props) => {
               return (
                 <Form>
+                  <div className="relative mb-3">
+                    <InputSelectArray
+                      label="Supplier"
+                      type="text"
+                      name="user_account_role_id"
+                      disabled={mutation.isPending}
+                      isLoading={isLoading || isFetching}
+                      error={error}
+                      result={supplier}
+                      onChange={(e) => {
+                        props.values.user_account_role_id = e.target.value;
+                        props.values.user_account_role =
+                          e.target.options[e.target.selectedIndex].text;
+                        return e;
+                      }}
+                    />
+                  </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="relative">
-                      <InputText
-                        label="Order Number"
-                        type="number"
-                        name="user_account_first_name"
-                        placeholder={`${itemEdit ? "Update PO-149181" : "Enter PO-149181"}`}
+                      <InputSelectArray
+                        label="Category"
+                        type="text"
+                        name="user_account_role_id"
                         disabled={mutation.isPending}
+                        isLoading={isLoading || isFetching}
+                        error={error}
+                        result={supplier}
+                        onChange={(e) => {
+                          props.values.user_account_role_id = e.target.value;
+                          props.values.user_account_role =
+                            e.target.options[e.target.selectedIndex].text;
+                          return e;
+                        }}
                       />
                     </div>
                     <div className="relative ">
                       <InputText
-                        label="Order Date"
+                        label="Amount"
+                        type="number"
+                        name="user_account_first_name"
+                        placeholder={`${itemEdit ? "0.00" : "0.00"}`}
+                        disabled={mutation.isPending}
+                      />
+                    </div>
+                    <div className="relative">
+                      <InputSelectArray
+                        label="VAT (Optional)"
+                        type="text"
+                        name="user_account_role_id"
+                        disabled={mutation.isPending}
+                        isLoading={isLoading || isFetching}
+                        error={error}
+                        result={supplier}
+                        onChange={(e) => {
+                          props.values.user_account_role_id = e.target.value;
+                          props.values.user_account_role =
+                            e.target.options[e.target.selectedIndex].text;
+                          return e;
+                        }}
+                      />
+                    </div>
+                    <div className="relative ">
+                      <InputText
+                        label="Date"
                         type="date"
                         name="user_account_last_name"
                         disabled={mutation.isPending}
                       />
                     </div>
-                    <div className="relative">
-                      <InputSelectArray
-                        label="Customer"
-                        type="text"
-                        name="user_account_role_id"
-                        disabled={mutation.isPending}
-                        isLoading={isLoading || isFetching}
-                        error={error}
-                        result={supplier}
-                        onChange={(e) => {
-                          props.values.user_account_role_id = e.target.value;
-                          props.values.user_account_role =
-                            e.target.options[e.target.selectedIndex].text;
-                          return e;
-                        }}
-                      />
-                    </div>
-                    <div className="relative">
-                      <InputSelectArray
-                        label="Payment Method"
-                        type="text"
-                        name="user_account_role_id"
-                        disabled={mutation.isPending}
-                        isLoading={isLoading || isFetching}
-                        error={error}
-                        result={supplier}
-                        onChange={(e) => {
-                          props.values.user_account_role_id = e.target.value;
-                          props.values.user_account_role =
-                            e.target.options[e.target.selectedIndex].text;
-                          return e;
-                        }}
-                      />
-                    </div>
                   </div>
-
-                  <div className="flex my-7 justify-between">
-                    <label htmlFor="">Order Items</label>
-                    <a
-                      className="flex items-center justify-center text-black gap-2 px-3 py-1.5 bg-transparent rounded-md border-gray-300 border min-w-20 hover:bg-primary transition-all duration-300 ease-in-out hover:text-light dark:text-light cursor-pointer"
-                      onClick={handleAddItem}
-                    >
-                      <Plus size={15} />
-                      <span className="capitalize leading-0">Add Item</span>
-                    </a>
-                  </div>
-
-                  <div className="border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out ">
-                    {items.length === 0 ? (
-                      <div className="h-20 flex items-center justify-center ">
-                        <p>No Items added yet.</p>
-                      </div>
-                    ) : (
-                      <div className="flex flex-col">
-                        <ul className="hidden md:grid grid-cols-[2fr_1fr_2fr] px-3 mt-2 text-dark">
-                          <li>Products</li>
-                          <li>Quantity</li>
-                          <li>Price per pc.</li>
-                        </ul>
-                        {items.map((item, index) => (
-                          <div
-                            key={index}
-                            className="grid grid-cols-2 md:grid md:grid-cols-[12fr_1fr_1fr_1fr_1fr] gap-3 items-center p-3 mt-1"
-                          >
-                            <input
-                              type="text"
-                              placeholder="Product Name"
-                              className="input"
-                            />
-                            <input
-                              type="number"
-                              placeholder="Qty"
-                              className="input md:w-20"
-                            />
-                            <input
-                              type="number"
-                              placeholder="Price"
-                              className="input md:w-24"
-                            />
-                            <span className="font-semibold text-black dark:text-light">
-                              ₱0.00
-                            </span>
-                            <button
-                              onClick={() => handleRemoveItem(item.id)}
-                              className="text-red-500 text-xl"
-                            >
-                              ✕
-                            </button>
-                          </div>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="relative mt-3">
-                      <InputText
-                        label="Discount"
-                        type="number"
-                        name="user_account_first_name"
-                        placeholder={`${itemEdit ? "0" : "0"}`}
-                        disabled={mutation.isPending}
-                      />
-                    </div>
-                    <div className="relative mt-3">
-                      <InputText
-                        label="Tax (₱)"
-                        type="number"
-                        name="user_account_first_name"
-                        placeholder={`${itemEdit ? "0" : "0"}`}
-                        disabled={mutation.isPending}
-                      />
-                    </div>
-                    <div className="relative mt-3">
-                      <InputText
-                        label="Amount Paid"
-                        type="number"
-                        name="user_account_first_name"
-                        placeholder={`${itemEdit ? "0" : "0"}`}
-                        disabled={mutation.isPending}
-                      />
-                    </div>
-                    <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end my-3 p-2">
-                      <p className="flex flex-col place-self-end text-primary text-lg text-right">
-                        <span className="text-black dark:text-light text-sm">Total</span>₱ 0.00
-                      </p>
-                    </div>
+                  <div className="relative my-3">
+                    <InputSelectArray
+                      label="Payment Method"
+                      type="text"
+                      name="user_account_role_id"
+                      disabled={mutation.isPending}
+                      isLoading={isLoading || isFetching}
+                      error={error}
+                      result={supplier}
+                      onChange={(e) => {
+                        props.values.user_account_role_id = e.target.value;
+                        props.values.user_account_role =
+                          e.target.options[e.target.selectedIndex].text;
+                        return e;
+                      }}
+                    />
                   </div>
 
                   <div className="relative">
                     <InputTextArea
-                      label="Note"
+                      label="Description"
                       type="text"
                       name="user_account_email"
-                      placeholder={`${itemEdit ? "Update notes" : "Enter notes"}`}
+                      placeholder={`${itemEdit ? "Update Description" : "Enter Description"}`}
                       disabled={mutation.isPending}
                     />
                   </div>
-
-                  <div className="relative my-3 ">
-                      <InputSelectArray
-                        label="Received by:"
-                        type="text"
-                        name="user_account_role_id"
-                        disabled={mutation.isPending}
-                        isLoading={isLoading || isFetching}
-                        error={error}
-                        result={supplier}
-                        onChange={(e) => {
-                          props.values.user_account_role_id = e.target.value;
-                          props.values.user_account_role =
-                            e.target.options[e.target.selectedIndex].text;
-                          return e;
-                        }}
-                      />
-                    </div>
 
                   {store.error && <MessageError />}
                   <div className="modal-action">
@@ -327,4 +250,4 @@ const ModalSalesOrders = ({ itemEdit }) => {
   );
 };
 
-export default ModalSalesOrders;
+export default ModalExpenses;

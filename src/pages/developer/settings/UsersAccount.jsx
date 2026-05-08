@@ -31,7 +31,7 @@ const UsersAccount = () => {
       accessorKey: "user_account_email",
       header: "Email",
       classTh: "",
-      classTd: "break-words",
+      classTd: "",
     },
     {
       accessorKey: "user_account_role",
@@ -41,7 +41,7 @@ const UsersAccount = () => {
     },
     {
       accessorKey: "action",
-      action_array: UserActionTableList(),
+      action_array: UserActionTableList("users"),
       header: "Action",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
@@ -52,7 +52,7 @@ const UsersAccount = () => {
       <HeaderNav menu={"settings"} activeTab="users">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)] `}
           path="users"
           setItemEdit={setItemEdit}
         />

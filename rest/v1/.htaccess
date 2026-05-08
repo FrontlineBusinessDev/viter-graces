@@ -28,4 +28,4 @@ RewriteRule ^users/key/([A-Za-z0-9-]+)$ controllers/developer/settings/user/key.
 RewriteRule ^users/password$ controllers/developer/settings/user/set-password.php [L]
 RewriteRule ^users/token$ controllers/developer/settings/user/token.php [L]
 RewriteRule ^users/login$ controllers/developer/settings/user/login.php [L]
-  
+RewriteRule ^users/reset-password$ controllers/developer/settings/user/reset-password.php [L] 
