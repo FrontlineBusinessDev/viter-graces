@@ -4,18 +4,13 @@ require '../../../../core/header.php';
 // use needed functions
 require '../../../../core/functions.php';
 // use needed classes
-require '../../../../models/developer/settings/Role.php';
+require '../../../../models/developer/settings/ProductOwner.php';
+require '../../../../core/Encryption.php';
 
 // validate api key
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
 
-    // GET
-    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-        $result = require 'read.php';
-        sendResponse($result);
-        exit;
-    }
     // POST
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $result = require 'create.php';
@@ -25,12 +20,6 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     // PUT
     if ($_SERVER['REQUEST_METHOD'] === 'PUT') {
         $result = require 'update.php';
-        sendResponse($result);
-        exit;
-    }
-    // DELETE
-    if ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-        $result = require 'delete.php';
         sendResponse($result);
         exit;
     }

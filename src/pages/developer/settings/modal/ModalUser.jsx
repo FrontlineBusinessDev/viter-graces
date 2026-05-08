@@ -29,17 +29,6 @@ const ModalUser = ({ itemEdit }) => {
 
   handleEscape(() => handleClose());
 
-  const {
-    isLoading,
-    isFetching,
-    error,
-    data: roles,
-  } = useQueryData(
-    `${apiVersion}/roles`, // endpoint
-    "get", // method
-    "roles", // key
-  );
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -118,10 +107,7 @@ const ModalUser = ({ itemEdit }) => {
                       label="Role"
                       type="text"
                       name="user_account_role_id"
-                      disabled={mutation.isPending}
-                      isLoading={isLoading || isFetching}
-                      error={error}
-                      result={roles}
+                      path="roles"
                       onChange={(e) => {
                         props.values.user_account_role_id = e.target.value;
                         props.values.user_account_role =

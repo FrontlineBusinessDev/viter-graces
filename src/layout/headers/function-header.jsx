@@ -166,7 +166,7 @@ export const titleHeaderTab = () => {
     {
       title: "settings",
       description: "Manage your system configuration",
-      roles: ["admin", "developer"],
+      roles: ["developer"],
       array_tab: [
         {
           icon: <Users className="size-4 mr-1" />,
@@ -178,6 +178,25 @@ export const titleHeaderTab = () => {
           icon: <UserCog className="size-4 mr-1" />,
           title_tab: "roles",
           description_tab: "Define roles and permissions.",
+          on_click: onClickTab,
+        },
+        {
+          icon: <Building2 className="size-4 mr-1" />,
+          title_tab: "product-owner",
+          description_tab: "Manage product owner profiles.",
+          on_click: onClickTab,
+        },
+      ],
+    },
+    {
+      title: "settings",
+      description: "Manage your system configuration",
+      roles: ["admin"],
+      array_tab: [
+        {
+          icon: <Users className="size-4 mr-1" />,
+          title_tab: "users",
+          description_tab: "Manage user accounts and access.",
           on_click: onClickTab,
         },
         {

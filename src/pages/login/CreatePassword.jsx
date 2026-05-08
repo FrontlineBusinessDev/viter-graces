@@ -143,7 +143,7 @@ const CreatePassword = () => {
             <div className="flex justify-center items-center flex-col">
               <LogoFull />
             </div>
-            <Check className="h-16 w-16 fill-success mx-auto mt-8" />
+            <Check className="h-16 w-16 mx-auto mt-8" color="rgb(0 145 38)" />
             <h2 className="mb-4 mt-2 text-lg text-center">Success!</h2>
             <p className="text-sm text-justify mb-6">
               Your password is set and ready to use. Click the button below to
@@ -167,7 +167,7 @@ const CreatePassword = () => {
           {/* <FetchingSpinner /> */}
           <div
             className="flex justify-center items-center bg-dark-bg "
-            style={{ transform: "translateY(clamp(5rem,12vw,8rem))" }}
+            style={{ transform: "translateY(clamp(2rem,12vw,0rem))" }}
           >
             <div className="w-88 p-6">
               <div className="flex justify-center items-center flex-col">

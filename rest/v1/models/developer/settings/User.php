@@ -13,10 +13,13 @@ class User
     public $user_account_created;
     public $user_account_updated;
 
+    public $isDeveloper;
+
     public $connection;
     public $lastInsertedId;
     public $tblUserAccount;
 
+    public $filters;
     public $column_start;
     public $column_total;
     public $column_search;
@@ -73,16 +76,42 @@ class User
     // read all
     public function readAll()
     {
+        $filterColumn = [];
+
+        foreach ($this->filters as $item) {
+            $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+        }
         try {
             $sql = "select *, ";
             $sql .= "user_account_aid as id, ";
             $sql .= "user_account_is_active as is_active, ";
             $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) as name ";
             $sql .= "from {$this->tblUserAccount} ";
+            $sql .= "where true ";
+            $sql .= ($this->isDeveloper != "1" ? "and user_account_role != 'Developer'  " : " ");
+            $sql .= ($this->column_search != "" ? "and (user_account_first_name like :user_account_first_name 
+                                                    or user_account_last_name like :user_account_last_name 
+                                                    or CONCAT(user_account_first_name, ' ', user_account_last_name) like :name 
+                                                    or CONCAT(user_account_last_name, ', ', user_account_first_name) like :fullname 
+                                                    or user_account_role like :user_account_role ) " : " ");
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            }
             $sql .= "order by user_account_is_active desc, ";
             $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) asc ";
-            $query = $this->connection->query($sql);
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                ...$this->column_search != "" ? [
+                    "user_account_first_name" => "%{$this->column_search}%",
+                    "user_account_last_name" => "%{$this->column_search}%",
+                    "name" => "%{$this->column_search}%",
+                    "fullname" => "%{$this->column_search}%",
+                    "user_account_role" => "%{$this->column_search}%",
+                ] : [],
+            ]);
         } catch (PDOException $ex) {
+
+            returnError($ex);
             $query = false;
         }
         return $query;
@@ -91,18 +120,131 @@ class User
     // read all
     public function readLimit()
     {
+        $filterColumn = [];
+
+        foreach ($this->filters as $item) {
+            $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+        }
         try {
             $sql = "select *, ";
             $sql .= "user_account_aid as id, ";
             $sql .= "user_account_is_active as is_active, ";
             $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) as name ";
             $sql .= "from {$this->tblUserAccount} ";
+            $sql .= "where true ";
+            $sql .= ($this->isDeveloper != "1" ? "and user_account_role != 'Developer'  " : " ");
+            $sql .= ($this->column_search != "" ? "and (user_account_first_name like :user_account_first_name 
+                                                    or user_account_last_name like :user_account_last_name 
+                                                    or CONCAT(user_account_first_name, ' ', user_account_last_name) like :name 
+                                                    or CONCAT(user_account_last_name, ', ', user_account_first_name) like :fullname 
+                                                    or user_account_role like :user_account_role ) " : " ");
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            }
             $sql .= "order by user_account_is_active desc, ";
             $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
             $query->execute([
+                ...$this->column_search != "" ? [
+                    "user_account_first_name" => "%{$this->column_search}%",
+                    "user_account_last_name" => "%{$this->column_search}%",
+                    "name" => "%{$this->column_search}%",
+                    "fullname" => "%{$this->column_search}%",
+                    "user_account_role" => "%{$this->column_search}%",
+                ] : [],
+                "start" => $this->column_start - 1,
+                "total" => $this->column_total,
+            ]);
+        } catch (PDOException $ex) {
+
+            returnError($ex);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readByProductOwner()
+    {
+        $filterColumn = [];
+
+        foreach ($this->filters as $item) {
+            $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "user_account_aid as id, ";
+            $sql .= "user_account_is_active as is_active, ";
+            $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) as name ";
+            $sql .= "from {$this->tblUserAccount} ";
+            $sql .= "where user_account_role = 'Product Owner' ";
+            $sql .= ($this->column_search != "" ? "and (user_account_first_name like :user_account_first_name 
+                                                    or user_account_last_name like :user_account_last_name 
+                                                    or CONCAT(user_account_first_name, ' ', user_account_last_name) like :name 
+                                                    or CONCAT(user_account_last_name, ', ', user_account_first_name) like :fullname 
+                                                    or user_account_role like :user_account_role ) " : " ");
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            }
+            $sql .= "order by user_account_is_active desc, ";
+            $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                ...$this->column_search != "" ? [
+                    "user_account_first_name" => "%{$this->column_search}%",
+                    "user_account_last_name" => "%{$this->column_search}%",
+                    "name" => "%{$this->column_search}%",
+                    "fullname" => "%{$this->column_search}%",
+                    "user_account_role" => "%{$this->column_search}%",
+                ] : [],
+            ]);
+        } catch (PDOException $ex) {
+
+            returnError($ex);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readByProductOwnerLimit()
+    {
+        $filterColumn = [];
+
+        foreach ($this->filters as $item) {
+            $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "user_account_aid as id, ";
+            $sql .= "user_account_is_active as is_active, ";
+            $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) as name ";
+            $sql .= "from {$this->tblUserAccount} ";
+            $sql .= "where true ";
+            $sql .= ($this->isDeveloper != "1" ? "and user_account_role != 'Developer'  " : " ");
+            $sql .= ($this->column_search != "" ? "and (user_account_first_name like :user_account_first_name 
+                                                    or user_account_last_name like :user_account_last_name 
+                                                    or CONCAT(user_account_first_name, ' ', user_account_last_name) like :name 
+                                                    or CONCAT(user_account_last_name, ', ', user_account_first_name) like :fullname 
+                                                    or user_account_role like :user_account_role ) " : " ");
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            }
+            $sql .= "order by user_account_is_active desc, ";
+            $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) asc ";
+            $sql .= "limit :start, ";
+            $sql .= ":total ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                ...$this->column_search != "" ? [
+                    "user_account_first_name" => "%{$this->column_search}%",
+                    "user_account_last_name" => "%{$this->column_search}%",
+                    "name" => "%{$this->column_search}%",
+                    "fullname" => "%{$this->column_search}%",
+                    "user_account_role" => "%{$this->column_search}%",
+                ] : [],
                 "start" => $this->column_start - 1,
                 "total" => $this->column_total,
             ]);
@@ -127,7 +269,7 @@ class User
             $sql .= "or user_account_last_name like :user_account_last_name ";
             $sql .= "or CONCAT(user_account_first_name, ' ', user_account_last_name) like :name ";
             $sql .= "or CONCAT(user_account_last_name, ', ', user_account_first_name) like :fullname ";
-            $sql .= "or role_description like :role_description ";
+            $sql .= "or user_account_role like :user_account_role ";
             $sql .= ") ";
             $sql .= "order by user_account_is_active desc, ";
             $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) asc ";
@@ -137,7 +279,7 @@ class User
                 "user_account_last_name" => "%{$this->column_search}%",
                 "name" => "%{$this->column_search}%",
                 "fullname" => "%{$this->column_search}%",
-                "role_description" => "%{$this->column_search}%",
+                "user_account_role" => "%{$this->column_search}%",
             ]);
         } catch (PDOException $ex) {
             $query = false;
@@ -247,7 +389,6 @@ class User
         return $query;
     }
 
-
     // read key
     public function readKey()
     {
@@ -285,7 +426,44 @@ class User
         return $query;
     }
 
-
+    // set password
+    public function resetPassword()
+    {
+        try {
+            $sql = "update {$this->tblUserAccount} set ";
+            $sql .= "user_account_key = :user_account_key, ";
+            $sql .= "user_account_updated = :user_account_updated ";
+            $sql .= "where user_account_aid = :user_account_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "user_account_updated" => $this->user_account_updated,
+                "user_account_key" => $this->user_account_key,
+                "user_account_aid" => $this->user_account_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+    // set password
+    public function resetPasswordByEmail()
+    {
+        try {
+            $sql = "update {$this->tblUserAccount} set ";
+            $sql .= "user_account_key = :user_account_key, ";
+            $sql .= "user_account_updated = :user_account_updated ";
+            $sql .= "where user_account_email = :user_account_email ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "user_account_updated" => $this->user_account_updated,
+                "user_account_key" => $this->user_account_key,
+                "user_account_email" => $this->user_account_email,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
 
     // read login
     public function readLogin()

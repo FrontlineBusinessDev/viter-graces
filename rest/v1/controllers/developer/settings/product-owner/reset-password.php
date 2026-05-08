@@ -4,15 +4,15 @@ require '../../../../core/header.php';
 // use needed functions
 require '../../../../core/functions.php';
 require '../../../../core/Encryption.php';
-// use needed classes
-require '../../../../models/developer/settings/User.php';
+// use needed classes 
+require '../../../../models/developer/settings/ProductOwner.php';
 // use notification template
 require '../../../../lib/notifications/reset-password.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new User($conn);
+$val = new ProductOwner($conn);
 $encrypt = new Encryption();
 // get payload
 $body = file_get_contents("php://input");

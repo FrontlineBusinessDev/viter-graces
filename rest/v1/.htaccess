@@ -28,4 +28,12 @@ RewriteRule ^users/key/([A-Za-z0-9-]+)$ controllers/developer/settings/user/key.
 RewriteRule ^users/password$ controllers/developer/settings/user/set-password.php [L]
 RewriteRule ^users/token$ controllers/developer/settings/user/token.php [L]
 RewriteRule ^users/login$ controllers/developer/settings/user/login.php [L]
-RewriteRule ^users/reset-password$ controllers/developer/settings/user/reset-password.php [L] 
+RewriteRule ^users/reset-password/([0-9]+)$ controllers/developer/settings/user/reset-password.php?id=$1 [L] 
+RewriteRule ^users/forget-password$ controllers/developer/settings/user/forget-password.php [L] 
+
+### PRODUCT OWNER ###
+RewriteRule ^product-owner/([0-9]+)$ controllers/developer/settings/product-owner/product-owner.php?id=$1 [L]
+RewriteRule ^product-owner$ controllers/developer/settings/product-owner/product-owner.php [L]
+RewriteRule ^product-owner/page/([0-9]+)$ controllers/developer/settings/product-owner/page.php?start=$1 [L]
+RewriteRule ^product-owner/active/([0-9]+)$ controllers/developer/settings/product-owner/active.php?id=$1 [L] 
+RewriteRule ^product-owner/reset-password/([0-9]+)$ controllers/developer/settings/product-owner/reset-password.php?id=$1 [L] 
