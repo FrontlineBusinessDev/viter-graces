@@ -6,9 +6,6 @@ require '../../../../core/functions.php';
 // use needed classes
 require '../../../../models/developer/settings/User.php';
 require '../../../../core/Encryption.php';
-// get payload
-$body = file_get_contents("php://input");
-$data = json_decode($body, true);
 
 // validate api key
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {

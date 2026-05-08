@@ -14,6 +14,7 @@ class Role
     public $tblRole;
     public $tblUserAccount;
 
+    public $filters;
     public $column_start;
     public $column_total;
     public $column_search;
@@ -61,12 +62,20 @@ class Role
     // read all
     public function readAll()
     {
+        $filterColumn = [];
+
+        foreach ($this->filters as $item) {
+            $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+        }
         try {
             $sql = "select *, ";
             $sql .= "role_aid as id, ";
             $sql .= "role_is_active as is_active, ";
             $sql .= "role_name as name ";
             $sql .= "from {$this->tblRole} ";
+            if (!empty($filterColumn)) {
+                $sql .= " where " . implode(" and ", $filterColumn);
+            }
             $sql .= "order by role_is_active desc, ";
             $sql .= "role_name asc ";
             $query = $this->connection->query($sql);
@@ -79,12 +88,20 @@ class Role
     // read all
     public function readLimit()
     {
+        $filterColumn = [];
+
+        foreach ($this->filters as $item) {
+            $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+        }
         try {
             $sql = "select *, ";
             $sql .= "role_aid as id, ";
             $sql .= "role_is_active as is_active, ";
             $sql .= "role_name as name ";
             $sql .= "from {$this->tblRole} ";
+            if (!empty($filterColumn)) {
+                $sql .= " where " . implode(" and ", $filterColumn);
+            }
             $sql .= "order by role_is_active desc, ";
             $sql .= "role_name asc ";
             $sql .= "limit :start, ";

@@ -4,6 +4,9 @@ $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new Role($conn);
+// get payload
+$body = file_get_contents("php://input");
+$data = json_decode($body, true);
 // get $_GET data
 $error = [];
 $returnData = [];

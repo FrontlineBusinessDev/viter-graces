@@ -9,6 +9,7 @@ $error = [];
 $returnData = [];
 
 if (array_key_exists("roleid", $_GET)) {
+    $val->filters = [];
     $val->role_aid = $_GET['roleid'];
     checkId($val->role_aid);
     $query = checkReadById($val);
@@ -17,6 +18,7 @@ if (array_key_exists("roleid", $_GET)) {
 }
 
 if (empty($_GET)) {
+    $val->filters = [];
     $query = checkReadAll($val);
     http_response_code(200);
     getQueriedData($query);
