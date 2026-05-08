@@ -183,7 +183,7 @@ const ModalSalesOrders = ({ itemEdit }) => {
                   <div className="flex my-7 justify-between">
                     <label htmlFor="">Order Items</label>
                     <a
-                      className="flex items-center justify-center text-black gap-2 px-3 py-1.5 bg-transparent rounded-md border-gray-300 border min-w-20 hover:bg-primary transition-all duration-300 ease-in-out hover:text-light dark:text-light"
+                      className="flex items-center justify-center text-black gap-2 px-3 py-1.5 bg-transparent rounded-md border-gray-300 border min-w-20 hover:bg-primary transition-all duration-300 ease-in-out hover:text-light dark:text-light cursor-pointer"
                       onClick={handleAddItem}
                     >
                       <Plus size={15} />
