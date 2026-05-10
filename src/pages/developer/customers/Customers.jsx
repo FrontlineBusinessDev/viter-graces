@@ -1,16 +1,25 @@
 import AddButton from "@/components/buttons/AddButton";
+import NoData from "@/components/NoData";
 import SearchBar from "@/components/SearchBar";
+import TableLoading from "@/components/spinners/TableLoading";
+import { apiVersion } from "@/config/config";
 import ActionButtonTable from "@/layout/ActionButtonTable";
 import { DefaultActionTableList } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
+import { queryDataInfinite } from "@/services/queryDataInfinite";
 import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
-import React from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import React, { useCallback, useMemo } from "react";
 import { AiFillMessage } from "react-icons/ai";
 import { FaFacebookMessenger } from "react-icons/fa";
 import { IoLogoWhatsapp } from "react-icons/io";
 import ModalCustomer from "./ModalCustomer";
 import ViewDetails from "./ViewDetails";
+import ServerError from "@/components/ServerError";
+import { useRef } from "react";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
 
 const Customers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -20,7 +29,8 @@ const Customers = () => {
   const search = React.useRef(null);
   const [onSearch, setOnSearch] = React.useState(false);
   const [isView, setView] = React.useState(false);
-
+  const observer = useRef();
+  let counter = 1;
   // ACTIONS ADD
   const handleAdd = () => {
     dispatch(setIsAdd(true));
@@ -75,24 +85,72 @@ const Customers = () => {
 
   const actionColumn = columns.find((col) => col.accessorKey === "action");
 
-  const data = [
-    {
-      id: 1,
-      name: "Gustin Meyer",
-      phone: "+63 925-165-5362",
-      email: "gutkowski@hotmail.com",
-      address: "Vintar 9611 Northern Samar",
-      facebook: "https://www.facebook.com/frontline.business",
-      whatsapp: "https://www.facebook.com/frontline.business",
-      other: "https://www.facebook.com/frontline.business",
-      order_no: "ORD-0165",
-      date: "03/07/2026",
-      paid: "2100.00",
-      method: "Check",
-      total: "2100.00",
-      payment_status: "Paid",
+  // React Query infinite fetch
+  const {
+    data,
+    error,
+    fetchNextPage,
+    hasNextPage,
+    isFetching,
+    isFetchingNextPage,
+    status,
+  } = useInfiniteQuery({
+    queryKey: ["customer"],
+    queryFn: async ({ pageParam = 1 }) =>
+      await queryDataInfinite(
+        null,
+        `${apiVersion}/customer/page/${pageParam}`,
+        false,
+        { columnFilters: [], searchValue: search.current?.value || "", id: "" },
+        "post",
+      ),
+
+    getNextPageParam: (lastPage) => {
+      if (lastPage.page < lastPage.total) {
+        return lastPage.page + lastPage.count;
+      }
+      return undefined;
     },
-  ];
+
+    staleTime: 1000 * 60 * 5, // 5 mins → no refetch when revisiting
+    gcTime: 1000 * 60 * 30, // keep cache for 30 mins
+    refetchOnWindowFocus: true,
+    refetchOnMount: false,
+    // enabled: !isStatic,
+  });
+
+  // // Flatten pages into single array
+  const tableData = useMemo(
+    () => data?.pages?.flatMap((page) => page.data || []) ?? [],
+    [data],
+  );
+
+  // // Infinite scroll trigger
+  const lastRowRef = useCallback(
+    (node) => {
+      if (isFetchingNextPage) return;
+
+      if (observer.current) observer.current.disconnect();
+
+      observer.current = new IntersectionObserver((entries) => {
+        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+          fetchNextPage();
+        }
+      });
+
+      if (node) observer.current.observe(node);
+    },
+    [isFetchingNextPage, hasNextPage, fetchNextPage],
+  );
+
+  // Table instance
+  const table = useReactTable({
+    data: tableData,
+    columns,
+    getCoreRowModel: getCoreRowModel(),
+  });
+
+  const rows = table?.getRowModel()?.rows;
 
   return (
     <>
@@ -113,12 +171,29 @@ const Customers = () => {
         </div>
         <div className="py-4">
           <div className="space-y-3">
-            {data.map((item) => {
+            {(status === "pending" || rows?.length === 0) && (
+              <div colSpan="100%" className="p-10">
+                {status === "pending" ? (
+                  <TableLoading count={20} cols={3} />
+                ) : (
+                  <NoData />
+                )}
+              </div>
+            )}
+            {error && (
+              <div colSpan="100%" className="p-10">
+                <ServerError />
+              </div>
+            )}
+
+            {rows?.map((item, index) => {
+              const isLastRow = index === rows?.length - 1;
               const isOpen = openRow === item.id;
 
               return (
                 <div
                   key={item.id}
+                  ref={isLastRow ? lastRowRef : null}
                   className="rounded-2xl border border-gray-300 bg-white shadow-sm dark:border-[#0b111e] dark:bg-[#0b111e] "
                 >
                   <div className="px-4 py-4 lg:px-5">
@@ -153,7 +228,7 @@ const Customers = () => {
                             </div>
 
                             <p className="text-xs text-gray-500 lg:hidden dark:text-light">
-                              #{item.id}
+                              #{counter++}
                             </p>
                           </div>
                         </button>
@@ -170,31 +245,46 @@ const Customers = () => {
 
                       <div className="text-sm text-gray-700 dark:text-light">
                         <p className="text-xs text-gray-400 lg:hidden">Phone</p>
-                        {item.phone}
+                        {item.customer_phone}
                       </div>
 
                       <div className="text-sm text-gray-700 wrap-break-word dark:text-light">
                         <p className="text-xs text-gray-400 lg:hidden">Email</p>
-                        {item.email}
+                        {item.customer_email}
                       </div>
 
                       <div className="text-sm text-gray-700 wrap-break-word dark:text-light">
                         <p className="text-xs text-gray-400 lg:hidden">
                           Address
                         </p>
-                        {item.address}
+                        {item.customer_address}
                       </div>
 
                       <div className="flex items-center gap-3">
-                        <a href={`${item.facebook}`} target="_black">
-                          <FaFacebookMessenger className="text-blue-500 size-4" />
-                        </a>
-                        <a href={`${item.whatsapp}`} target="_black">
-                          <IoLogoWhatsapp className="text-green-500 size-4.5" />
-                        </a>
-                        <a href={`tel:${item.other}`}>
-                          <AiFillMessage className="text-green-500 size-4.5" />
-                        </a>
+                        {isEmptyItem(item.customer_messenger, "") === "" ? (
+                          <a
+                            href={`${item.customer_messenger}`}
+                            target="_black"
+                          >
+                            <FaFacebookMessenger className="text-blue-500 size-4" />
+                          </a>
+                        ) : (
+                          ""
+                        )}
+                        {isEmptyItem(item.customer_whatsapp, "") === "" ? (
+                          <a href={`${item.customer_whatsapp}`} target="_black">
+                            <IoLogoWhatsapp className="text-green-500 size-4.5" />
+                          </a>
+                        ) : (
+                          ""
+                        )}
+                        {isEmptyItem(item.customer_other, "") === "" ? (
+                          <a href={`${item.customer_other}`} target="_black">
+                            <IoLogoWhatsapp className="text-green-500 size-4.5" />
+                          </a>
+                        ) : (
+                          ""
+                        )}
                       </div>
 
                       <div className="hidden lg:flex items-center justify-end text-gray-700 dark:text-light">

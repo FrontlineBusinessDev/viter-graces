@@ -209,7 +209,8 @@ const InfiniteTable = ({
           {status !== "pending" && isFetching && <TableSpinner />}
           <div className={`${className} `}>
             {/* MOBILE CARD */}
-            {rows?.map((row) => {
+            {rows?.map((row, index) => {
+              const isLastRow = index === rows?.length - 1;
               const cells = row.getVisibleCells();
 
               const titleCell =
@@ -218,6 +219,7 @@ const InfiniteTable = ({
               return (
                 <div
                   key={row.id}
+                  ref={isLastRow ? lastRowRef : null}
                   className="sm:hidden border rounded-xl p-4 mb-4 shadow-sm"
                 >
                   {/* HEADER */}
