@@ -1,25 +1,32 @@
 import AddButton from "@/components/buttons/AddButton";
 import NoData from "@/components/NoData";
 import SearchBar from "@/components/SearchBar";
+import ServerError from "@/components/ServerError";
 import TableLoading from "@/components/spinners/TableLoading";
 import { apiVersion } from "@/config/config";
 import ActionButtonTable from "@/layout/ActionButtonTable";
-import { DefaultActionTableList } from "@/layout/ArrayValue";
+import {
+  ActiveInActiveStatus,
+  DefaultActionTableList,
+} from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
+import TableDefaultStatusDot from "@/layout/TableDefaultStatusDot";
 import { queryDataInfinite } from "@/services/queryDataInfinite";
 import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
-import React, { useCallback, useMemo } from "react";
-import { AiFillMessage } from "react-icons/ai";
+import {
+  flexRender,
+  getCoreRowModel,
+  useReactTable,
+} from "@tanstack/react-table";
+import React, { useCallback, useMemo, useRef } from "react";
 import { FaFacebookMessenger } from "react-icons/fa";
 import { IoLogoWhatsapp } from "react-icons/io";
 import ModalCustomer from "./ModalCustomer";
 import ViewDetails from "./ViewDetails";
-import ServerError from "@/components/ServerError";
-import { useRef } from "react";
-import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { AiFillMessage } from "react-icons/ai";
 
 const Customers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -31,6 +38,8 @@ const Customers = () => {
   const [isView, setView] = React.useState(false);
   const observer = useRef();
   let counter = 1;
+  let counterTab = 1;
+  let counterMobileTab = 1;
   // ACTIONS ADD
   const handleAdd = () => {
     dispatch(setIsAdd(true));
@@ -45,31 +54,25 @@ const Customers = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "user_account_is_active",
-      header: "status",
-      classTh: "w-[5rem]",
-      classTd: "",
-    },
-    {
-      accessorKey: "name",
+      accessorKey: "customer_name",
       header: "name",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "email",
+      accessorKey: "customer_email",
       header: "email",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "phone",
+      accessorKey: "customer_phone",
       header: "phone",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "address",
+      accessorKey: "customer_address",
       header: "address",
       classTh: "",
       classTd: "",
@@ -192,61 +195,111 @@ const Customers = () => {
 
               return (
                 <div
-                  key={item.id}
+                  key={index}
                   ref={isLastRow ? lastRowRef : null}
                   className="rounded-2xl border border-gray-300 bg-white shadow-sm dark:border-[#0b111e] dark:bg-[#0b111e] "
                 >
                   <div className="px-4 py-4 lg:px-5">
                     <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[40px_1.5fr_1fr_1fr_1.3fr_140px_80px] lg:items-center">
                       <div className="hidden lg:block text-gray-500 text-sm dark:text-light">
-                        {item.id}
+                        {counterTab++}
                       </div>
-
-                      <div className="flex items-start justify-between gap-3 lg:contents">
-                        <button
-                          type="button"
-                          onClick={() => setOpenRow(isOpen ? null : item.id)}
-                          className="flex flex-1 items-center gap-2 text-left"
-                        >
-                          <span className="h-2.5 w-2.5 rounded-full bg-green-500 shrink-0" />
-
-                          <div className="min-w-0">
-                            <div className="flex items-center gap-2">
-                              <span className="text-sm font-medium text-gray-800 dark:text-light">
-                                {item.name}
-                              </span>
-
-                              <svg
-                                className={`h-4 w-4 text-gray-600 dark:text-light font-bold transition-transform ${
-                                  isOpen ? "rotate-180" : ""
-                                }`}
-                                fill="currentColor"
-                                viewBox="0 0 20 20"
+                      {item.getVisibleCells().map((aitem, akey) => {
+                        return (
+                          <React.Fragment key={akey}>
+                            {aitem?.column?.columnDef?.header === "name" ? (
+                              <div
+                                className="flex items-start justify-between gap-3 lg:contents"
+                                key={akey}
                               >
-                                <path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 011.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" />
-                              </svg>
-                            </div>
+                                <div className="flex flex-1 items-center gap-2 text-left">
+                                  <div className="min-w-0">
+                                    <div className="flex items-center gap-2">
+                                      <TableDefaultStatusDot
+                                        dataArray={rows[index]?.original}
+                                      />
+                                      <span className="text-sm font-medium text-gray-800 dark:text-light">
+                                        {flexRender(
+                                          aitem?.column?.columnDef?.cell,
+                                          aitem?.getContext(),
+                                        )}
+                                      </span>
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          setOpenRow(isOpen ? null : item.id)
+                                        }
+                                        className="flex flex-1 items-center gap-2 text-left"
+                                      >
+                                        <svg
+                                          className={`h-4 w-4 text-gray-600 dark:text-light font-bold transition-transform ${
+                                            isOpen ? "rotate-180" : ""
+                                          }`}
+                                          fill="currentColor"
+                                          viewBox="0 0 20 20"
+                                        >
+                                          <path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 011.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" />
+                                        </svg>
+                                      </button>
+                                    </div>
 
-                            <p className="text-xs text-gray-500 lg:hidden dark:text-light">
-                              #{counter++}
+                                    <p className="text-xs text-gray-500 lg:hidden dark:text-light">
+                                      #{counterMobileTab++}.
+                                    </p>
+                                  </div>
+                                </div>
+                              </div>
+                            ) : (
+                              <div
+                                className="text-sm text-gray-700 dark:text-light"
+                                key={akey}
+                              >
+                                <p className="text-xs text-gray-400 lg:hidden">
+                                  {flexRender(
+                                    aitem?.column?.columnDef?.cell,
+                                    aitem?.getContext(),
+                                  )}
+                                  sssss
+                                </p>
+                              </div>
+                            )}
+                            {aitem?.column?.columnDef?.accessorKey ===
+                            "action" ? (
+                              <div className="lg:hidden">
+                                <ActionButtonTable
+                                  item={aitem?.column?.columnDef}
+                                  dataArray={rows[index]?.original}
+                                  setData={setData}
+                                  setItemEdit={setItemEdit}
+                                />
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </React.Fragment>
+                        );
+                      })}
+
+                      {item.getVisibleCells().map((oitem, okey) => {
+                        return oitem?.column?.columnDef?.accessorKey !==
+                          "customer_name" ||
+                          oitem?.column?.columnDef?.accessorKey !==
+                            "customer_name" ? (
+                          <div
+                            className="text-sm text-gray-700 dark:text-light"
+                            key={okey}
+                          >
+                            <p className="text-xs text-gray-400 lg:hidden">
+                              {flexRender(
+                                oitem?.column?.columnDef?.cell,
+                                oitem?.getContext(),
+                              )}
                             </p>
                           </div>
-                        </button>
-
-                        <div className="lg:hidden">
-                          <ActionButtonTable
-                            item={actionColumn}
-                            dataArray={item}
-                            setData={setData}
-                            setItemEdit={setItemEdit}
-                          />
-                        </div>
-                      </div>
-
-                      <div className="text-sm text-gray-700 dark:text-light">
-                        <p className="text-xs text-gray-400 lg:hidden">Phone</p>
-                        {item.customer_phone}
-                      </div>
+                        ) : (
+                          ""
+                        );
+                      })}
 
                       <div className="text-sm text-gray-700 wrap-break-word dark:text-light">
                         <p className="text-xs text-gray-400 lg:hidden">Email</p>
@@ -280,21 +333,30 @@ const Customers = () => {
                         )}
                         {isEmptyItem(item.customer_other, "") === "" ? (
                           <a href={`${item.customer_other}`} target="_black">
-                            <IoLogoWhatsapp className="text-green-500 size-4.5" />
+                            <AiFillMessage className="text-green-500 size-4.5" />
                           </a>
                         ) : (
                           ""
                         )}
                       </div>
 
-                      <div className="hidden lg:flex items-center justify-end text-gray-700 dark:text-light">
-                        <ActionButtonTable
-                          item={actionColumn}
-                          dataArray={item}
-                          setData={setData}
-                          setItemEdit={setItemEdit}
-                        />
-                      </div>
+                      {item.getVisibleCells().map((iitem, iikey) => {
+                        return iitem?.column?.columnDef?.accessorKey ===
+                          "action" ? (
+                          <React.Fragment key={iikey}>
+                            <div className="hidden lg:flex items-center justify-end text-gray-700 dark:text-light">
+                              <ActionButtonTable
+                                item={iitem?.column?.columnDef}
+                                dataArray={rows[index]?.original}
+                                setData={setData}
+                                setItemEdit={setItemEdit}
+                              />
+                            </div>
+                          </React.Fragment>
+                        ) : (
+                          ""
+                        );
+                      })}
                     </div>
                   </div>
 
