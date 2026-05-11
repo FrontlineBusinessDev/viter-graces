@@ -11,6 +11,7 @@ import { FaFacebookMessenger } from "react-icons/fa";
 import { IoLogoWhatsapp } from "react-icons/io";
 import ModalCustomer from "./ModalCustomer";
 import ViewDetails from "./ViewDetails";
+import { AtSign, MapPin, Phone } from "lucide-react";
 
 const Customers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -122,7 +123,7 @@ const Customers = () => {
                   className="rounded-2xl border border-gray-300 bg-white shadow-sm dark:border-[#0b111e] dark:bg-[#0b111e] "
                 >
                   <div className="px-4 py-4 lg:px-5">
-                    <div className="flex flex-col gap-4 lg:grid lg:grid-cols-[40px_1.5fr_1fr_1fr_1.3fr_140px_80px] lg:items-center">
+                    <div className="flex flex-col gap-2 lg:grid lg:grid-cols-[40px_1.5fr_1fr_1fr_1.3fr_140px_80px] lg:items-center">
                       <div className="hidden lg:block text-gray-500 text-sm dark:text-light">
                         {item.id}
                       </div>
@@ -153,7 +154,7 @@ const Customers = () => {
                             </div>
 
                             <p className="text-xs text-gray-500 lg:hidden dark:text-light">
-                              #{item.id}
+                              {item.email}
                             </p>
                           </div>
                         </button>
@@ -168,24 +169,21 @@ const Customers = () => {
                         </div>
                       </div>
 
-                      <div className="text-sm text-gray-700 dark:text-light">
-                        <p className="text-xs text-gray-400 lg:hidden">Phone</p>
-                        {item.phone}
+                      <div className="text-sm text-gray-700 dark:text-light flex items-center gap-1">
+                        <span className="text-xs text-gray-400 lg:hidden">
+                          <Phone size={14} />
+                        </span>
+                        <span>{item.phone}</span>
                       </div>
 
-                      <div className="text-sm text-gray-700 wrap-break-word dark:text-light">
-                        <p className="text-xs text-gray-400 lg:hidden">Email</p>
-                        {item.email}
+                      <div className="text-sm text-gray-700 wrap-break-word dark:text-light flex items-center gap-1">
+                        <span className="text-xs text-gray-400 lg:hidden">
+                          <MapPin size={14} />
+                        </span>
+                        <span>{item.address}</span>
                       </div>
 
-                      <div className="text-sm text-gray-700 wrap-break-word dark:text-light">
-                        <p className="text-xs text-gray-400 lg:hidden">
-                          Address
-                        </p>
-                        {item.address}
-                      </div>
-
-                      <div className="flex items-center gap-3">
+                      <div className="flex items-center gap-3 justify-end ">
                         <a href={`${item.facebook}`} target="_black">
                           <FaFacebookMessenger className="text-blue-500 size-4" />
                         </a>

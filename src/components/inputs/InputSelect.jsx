@@ -151,7 +151,7 @@ export const SearchableSelectFilter = ({ column, options }) => {
       isClearable
       classNames={{
         control: ({ isFocused }) =>
-          ` w-full! min-h-full! text-sm border rounded-lg! px-1 cursor-pointer! shadow-none!
+          ` w-full! min-h-full! text-sm border rounded-lg! px-1 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
        ${isFocused ? " border-primary! " : " border-gray-300 "}
        hover:border-primary! `,
 
@@ -174,13 +174,13 @@ export const SearchableSelectFilter = ({ column, options }) => {
           "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
 
         menu: () =>
-          "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white z-50",
+          "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white dark:bg-[#0b111e]! z-50",
 
-        menuList: () => "py-1 max-h-60 overflow-auto",
+        menuList: () => "py-1 max-h-60 overflow-auto ",
 
         option: ({ isFocused, isSelected }) =>
-          ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!
-       ${isSelected ? "bg-primary! text-secondary! " : " "}
+          ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  
+       ${isSelected ? "bg-primary! text-secondary!" : " "}
        ${!isSelected && isFocused ? "bg-primary! text-secondary! " : " "}`,
       }}
     />

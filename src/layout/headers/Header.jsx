@@ -63,9 +63,11 @@ const Header = ({ menu, toggleMobileNav }) => {
             {menu}
           </h2>
           <div className="flex items-center gap-2">
-            <button className="btn--green" onClick={handleQuickOpen}>
-              <Plus size={16} /> Quick Add
-            </button>
+            <div className="hidden md:block">
+              <button className="btn--green " onClick={handleQuickOpen}>
+                <Plus size={16} /> Quick Add
+              </button>
+            </div>
             <button
               onClick={toggleDarkMode}
               className="p-3 hover:bg-primary hover:text-light rounded"

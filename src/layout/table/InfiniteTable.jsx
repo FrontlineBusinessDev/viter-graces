@@ -350,7 +350,7 @@ const InfiniteTable = ({
                       key={headerGroup?.id}
                       className="sm:table-row sticky top-9 uppercase dark:bg-[#0b111e] z-999 hidden lg:group"
                     >
-                      <th className="w-px dark:bg-[#0b111e]! "> </th>
+                      <th className="w-px  "> </th>
                       {headerGroup?.headers?.map((header) => (
                         <th
                           key={header?.id}
@@ -363,7 +363,7 @@ const InfiniteTable = ({
                           {header.column.columnDef.meta === "" ? (
                             <DebouncedInput
                               type="search"
-                              className={`bg-white m-0! w-full! text-sm border cursor-pointer! isFocused:border-primary! isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! h-8`}
+                              className={`bg-white dark:bg-[#0b111e] m-0! w-full! text-sm border cursor-pointer! isFocused:border-primary! isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! h-8`}
                               value={header.column.getFilterValue() ?? ""}
                               onChange={(value) => {
                                 setData([]);
