@@ -118,6 +118,20 @@ const Customers = () => {
       isViewItems: false,
       classTh: "",
       classTd: "",
+      id: 1,
+      name: "Gustin Meyer",
+      phone: "+63 925-165-5362",
+      email: "gutkowski@hotmail.com",
+      address: "Vintar 9611 Northern Samar",
+      facebook: "https://www.facebook.com/frontline.business",
+      whatsapp: "https://www.facebook.com/frontline.business",
+      other: "https://www.facebook.com/frontline.business",
+      order_no: "ORD-0165",
+      date: "03/07/2026",
+      paid: "100.00",
+      method: "Check",
+      total: "2100.00",
+      payment_status: "Paid",
     },
   ];
 
@@ -134,6 +148,7 @@ const Customers = () => {
           setView={setView}
           isSearch={false}
           ishaveAdd={false}
+          isDefaultMobile="customer"
         />
       </HeaderNav>
       {store.isAdd && <ModalCustomer itemEdit={itemEdit} />}

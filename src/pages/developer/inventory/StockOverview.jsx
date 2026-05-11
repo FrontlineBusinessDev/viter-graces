@@ -37,28 +37,29 @@ const StockOverview = () => {
       meta: "",
     },
     {
-      accessorKey: "contact person",
+      accessorKey: "sku",
       header: "SKU",
       classTh: "",
       classTd: "",
       meta: "",
+      isTag: true,
     },
     {
-      accessorKey: "email",
+      accessorKey: "location",
       header: "Location",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "phone",
+      accessorKey: "stock",
       header: "Current Stock",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "Threshold",
+      accessorKey: "threshold",
       header: "Threshold",
       classTh: "",
       classTd: "",
@@ -77,6 +78,31 @@ const StockOverview = () => {
       classTh: "",
       classTd: "",
       meta: "",
+    },
+  ];
+
+  const mockData = [
+    {
+      id: 1,
+      status: 1,
+      name: "Banana Chips",
+      sku: "MBP14-001",
+      location: "San Pablo City, Laguna",
+      stock: "20",
+      threshold: "13",
+      unit: "12",
+      product_owner: "Louren Rubico",
+    },
+    {
+      id: 2,
+      status: 1,
+      name: "Chips",
+      sku: "MBP14-001",
+      location: "Nagcarlan, Laguna",
+      stock: "20",
+      threshold: "13",
+      unit: "12",
+      product_owner: "Cyrene Lumabas",
     },
   ];
 
@@ -100,6 +126,9 @@ const StockOverview = () => {
           path="stock movement"
           setItemEdit={setItemEdit}
           haveFilterTable={true}
+          mockData={mockData}
+          isStatic={true}
+          isDefaultMobile={"stock movement"}
         />
       </HeaderNav>
       {store.isAdd && <ModalStockOverview itemEdit={itemEdit} />}
