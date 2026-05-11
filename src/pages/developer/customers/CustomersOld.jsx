@@ -28,7 +28,7 @@ import ModalCustomer from "./ModalCustomer";
 import ViewDetails from "./ViewDetails";
 import { AiFillMessage } from "react-icons/ai";
 
-const Customers = () => {
+const CustomersOld = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
   const [openRow, setOpenRow] = React.useState(null);
@@ -157,7 +157,7 @@ const Customers = () => {
 
   return (
     <>
-      <HeaderNav menu={"customers"} activeTab="customers">
+      <HeaderNav menu={"customersOld"} activeTab="customersOld">
         <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 ">
           <div className="flex justify-end sm:mb-0! mb-3 ">
             <AddButton value={"Customer"} onClick={handleAdd} />
@@ -443,4 +443,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default CustomersOld;
