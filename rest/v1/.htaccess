@@ -37,3 +37,10 @@ RewriteRule ^product-owner$ controllers/developer/settings/product-owner/product
 RewriteRule ^product-owner/page/([0-9]+)$ controllers/developer/settings/product-owner/page.php?start=$1 [L]
 RewriteRule ^product-owner/active/([0-9]+)$ controllers/developer/settings/product-owner/active.php?id=$1 [L] 
 RewriteRule ^product-owner/reset-password/([0-9]+)$ controllers/developer/settings/product-owner/reset-password.php?id=$1 [L] 
+
+### CUSTOMER ###
+RewriteRule ^customer$ controllers/developer/customer/customer.php [L]
+RewriteRule ^customer/([0-9]+)$ controllers/developer/customer/customer.php?id=$1 [L]
+RewriteRule ^customer/active/([0-9]+)$ controllers/developer/customer/active.php?id=$1 [L] 
+RewriteRule ^customer/page/([0-9]+)$ controllers/developer/customer/page.php?start=$1 [L]
+RewriteRule ^customer/search$ controllers/developer/customer/search.php [L]
