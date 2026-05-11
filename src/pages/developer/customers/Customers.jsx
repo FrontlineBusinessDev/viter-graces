@@ -88,7 +88,7 @@ const Customers = () => {
       other: "https://www.facebook.com/frontline.business",
       order_no: "ORD-0165",
       date: "03/07/2026",
-      paid: "2100.00",
+      paid: "100.00",
       method: "Check",
       total: "2100.00",
       payment_status: "Paid",
@@ -159,13 +159,16 @@ const Customers = () => {
                           </div>
                         </button>
 
-                        <div className="lg:hidden">
-                          <ActionButtonTable
-                            item={actionColumn}
-                            dataArray={item}
-                            setData={setData}
-                            setItemEdit={setItemEdit}
-                          />
+                        <div className="flex items-center gap-3 justify-end lg:hidden">
+                          <a href={`${item.facebook}`} target="_black">
+                            <FaFacebookMessenger className="text-blue-500 size-4" />
+                          </a>
+                          <a href={`${item.whatsapp}`} target="_black">
+                            <IoLogoWhatsapp className="text-green-500 size-4.5" />
+                          </a>
+                          <a href={`tel:${item.other}`}>
+                            <AiFillMessage className="text-green-500 size-4.5" />
+                          </a>
                         </div>
                       </div>
 
@@ -183,7 +186,7 @@ const Customers = () => {
                         <span>{item.address}</span>
                       </div>
 
-                      <div className="flex items-center gap-3 justify-end ">
+                      <div className="hidden lg:flex items-center gap-3 justify-end">
                         <a href={`${item.facebook}`} target="_black">
                           <FaFacebookMessenger className="text-blue-500 size-4" />
                         </a>
@@ -195,7 +198,7 @@ const Customers = () => {
                         </a>
                       </div>
 
-                      <div className="hidden lg:flex items-center justify-end text-gray-700 dark:text-light">
+                      <div className=" flex justify-end lg:items-center text-gray-700 dark:text-light">
                         <ActionButtonTable
                           item={actionColumn}
                           dataArray={item}
@@ -208,7 +211,7 @@ const Customers = () => {
 
                   {isOpen && (
                     <div className="border-t border-gray-400 px-4 lg:px-5 pb-4 pt-3  ">
-                      <div className="rounded-2xl border border-gray-300 bg-white dark:bg-[#0b111e] overflow-x-hidden dark:border-gray-700 max-h-[300px] ">
+                      <div className=" bg-white dark:bg-[#0b111e] overflow-x-hidden dark:border-gray-700 max-h-[300px] ">
                         {/* desktop header */}
                         <div className="hidden sticky top-0 lg:grid lg:grid-cols-7 lg:items-center border-b bg-gray-50 px-4 py-3 text-xs font-medium text-gray-500 dark:bg-[#0b111e]">
                           <div>#</div>
@@ -221,57 +224,61 @@ const Customers = () => {
                         </div>
 
                         {/* row */}
-                        <ul className="p-4 grid grid-cols-2 lg:grid-cols-7 gap-4 lg:gap-0 text-sm border-b lg:border-b-0">
-                          <li>
-                            <p className="text-xs text-gray-400 lg:hidden">#</p>
-                            1
+                        <ul className="py-4 px-0 lg:py-4 lg:px-4 border-b lg:border-b-0">
+                          {/* mobile */}
+                          <li className="lg:hidden rounded-2xl border border-gray-200 bg-gray-50/80 dark:bg-[#101827] dark:border-gray-700 p-4 space-y-3 text-sm">
+                            <div className="flex items-start justify-between gap-3">
+                              <div>
+                                <p className="font-medium text-gray-900 dark:text-light">
+                                  {item.order_no}
+                                </p>
+                                <p className="text-xs text-gray-500 dark:text-gray-400">
+                                  {item.date}
+                                </p>
+                              </div>
+
+                              <p className="font-semibold text-gray-900 dark:text-light">
+                                ₱ {item.total}
+                              </p>
+                            </div>
+
+                            <div className="flex items-center justify-between text-gray-600 dark:text-gray-300">
+                              <span>{item.method}</span>
+                              <span>₱ {item.paid}</span>
+                            </div>
+
+                            <div className="pt-3 border-t border-gray-200 dark:border-gray-700">
+                              <button
+                                className="text-green-700 hover:text-green-800 hover:underline"
+                                onClick={() => handleView(item)}
+                              >
+                                View Items
+                              </button>
+                            </div>
                           </li>
 
-                          <li>
-                            <p className="text-xs text-gray-400 lg:hidden">
-                              Order Number
-                            </p>
-                            {item.order_no}
-                          </li>
+                          {/* desktop */}
+                          <li className="hidden lg:grid lg:grid-cols-7 gap-0 text-sm">
+                            <div>1</div>
 
-                          <li>
-                            <p className="text-xs text-gray-400 lg:hidden">
-                              Date
-                            </p>
-                            {item.date}
-                          </li>
+                            <div>{item.order_no}</div>
 
-                          <li>
-                            <p className="text-xs text-gray-400 lg:hidden">
-                              Items
-                            </p>
-                            <button
-                              className="text-green-700  hover:text-green-800 hover:underline"
-                              onClick={() => handleView(item)}
-                            >
-                              View Items
-                            </button>
-                          </li>
+                            <div>{item.date}</div>
 
-                          <li>
-                            <p className="text-xs text-gray-400 lg:hidden">
-                              Paid
-                            </p>
-                            ₱ {item.paid}
-                          </li>
+                            <div>
+                              <button
+                                className="text-green-700 hover:text-green-800 hover:underline"
+                                onClick={() => handleView(item)}
+                              >
+                                View Items
+                              </button>
+                            </div>
 
-                          <li>
-                            <p className="text-xs text-gray-400 lg:hidden">
-                              Method
-                            </p>
-                            {item.method}
-                          </li>
+                            <div>₱ {item.paid}</div>
 
-                          <li className="font-semibold">
-                            <p className="text-xs text-gray-400 lg:hidden">
-                              Total
-                            </p>
-                            ₱ {item.total}
+                            <div>{item.method}</div>
+
+                            <div className="font-semibold">₱ {item.total}</div>
                           </li>
                         </ul>
                       </div>
