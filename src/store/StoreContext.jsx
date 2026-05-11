@@ -8,6 +8,7 @@ const initVal = {
   isShow: isMobileOrTablet ? false : true,
   isStatus: false,
   isAction: false,
+  isView: false,
   isAdd: false,
   isSearch: false,
   isCreatePassSuccess: false,

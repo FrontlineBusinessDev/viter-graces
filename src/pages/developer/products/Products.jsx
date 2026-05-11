@@ -142,6 +142,7 @@ const Products = () => {
           productMobile={true}
           mockData={mockData}
           isStatic={true}
+          isDefaultMobile={"product"}
         />
       </HeaderNav>
       {store.isAdd && <ModalProducts itemEdit={itemEdit} />}

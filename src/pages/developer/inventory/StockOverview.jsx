@@ -42,6 +42,7 @@ const StockOverview = () => {
       classTh: "",
       classTd: "",
       meta: "",
+      isTag: true,
     },
     {
       accessorKey: "location",
@@ -127,6 +128,7 @@ const StockOverview = () => {
           haveFilterTable={true}
           mockData={mockData}
           isStatic={true}
+          isDefaultMobile={"stock movement"}
         />
       </HeaderNav>
       {store.isAdd && <ModalStockOverview itemEdit={itemEdit} />}

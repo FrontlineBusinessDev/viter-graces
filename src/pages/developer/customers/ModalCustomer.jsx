@@ -67,6 +67,8 @@ const ModalCustomer = ({ itemEdit }) => {
     customer_whatsapp: isEmptyItem(itemEdit?.customer_whatsapp, ""),
     customer_other: isEmptyItem(itemEdit?.customer_other, ""),
     customer_notes: isEmptyItem(itemEdit?.customer_notes, ""),
+
+    customer_name_old: isEmptyItem(itemEdit?.customer_name, ""),
   };
 
   const yupSchema = Yup.object({
