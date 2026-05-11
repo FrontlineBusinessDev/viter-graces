@@ -26,6 +26,7 @@ import ExportCSVButton from "@/components/buttons/ExportCSVButton";
 import { DebouncedInput } from "@/components/inputs/InputText";
 import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
 import InfiniteSubTableMobileCard from "./InfiniteSubTableMobileCard";
+import ProductsMobile from "./ProductsMobile";
 
 const InfiniteTable = ({
   columns,
@@ -38,6 +39,9 @@ const InfiniteTable = ({
   isDefaultMobile = true,
   isSearch = true,
   ishaveAdd = true,
+  productMobile = false,
+  mockData = [],
+  isStatic = false,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [dataItem, setData] = React.useState(null);
@@ -119,6 +123,12 @@ const InfiniteTable = ({
     () => data?.pages?.flatMap((page) => page.data || []) ?? [],
     [data],
   );
+
+  // use UI-only data
+  // const tableData = useMemo(() => {
+  //   if (isStatic) return mockData;
+  //   return data?.pages?.flatMap((page) => page.data || []) ?? [];
+  // }, [data, mockData, isStatic]);
 
   // // Infinite scroll trigger
   const lastRowRef = useCallback(
@@ -221,7 +231,6 @@ const InfiniteTable = ({
           {status !== "pending" && isFetching && <TableSpinner />}
           <div className={`${className} `}>
             {/* MOBILE CARD */}
-            {/* MOBILE CARD DEFAULT */}
             {isDefaultMobile ? (
               <InfiniteDefaultTableMobileCard
                 rows={rows}
@@ -236,6 +245,12 @@ const InfiniteTable = ({
                 setItemEdit={setItemEdit}
               />
             )}
+            <ProductsMobile
+              rows={rows}
+              setData={setData}
+              setItemEdit={setItemEdit}
+              lastRowRef={lastRowRef}
+            />
             {/* TABLE */}
             <table className="overflow-auto md:border md:border-gray-300 dark:border-[#0b111e] ">
               <thead className={`relative z-50 hidden lg:table-header-group`}>
