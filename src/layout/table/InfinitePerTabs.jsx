@@ -19,6 +19,7 @@ import {
 } from "@tanstack/react-table";
 import React, { useCallback, useMemo, useRef } from "react";
 import InfiniteSubTableMobileCard from "./CustomerMobile";
+import { Plus } from "lucide-react";
 
 const InfinitePerTabs = ({
   columns,
@@ -288,6 +289,38 @@ const InfinitePerTabs = ({
 
                 {isOpen && (
                   <div className="border-t border-gray-200 px-4 lg:px-5 pb-4 pt-3  ">
+                    {ishaveAdd ? (
+                      <div className="grid lg:grid-cols-3 my-3">
+                        <div className="flex gap-2">
+                          <p>Other Contacts:</p>
+                          <div className="text-black dark:text-light">
+                            <p>Manny (+63 912-465-1234)</p>
+                            <p>Leo Reyes (+63 985-165-8965)</p>
+                          </div>
+                        </div>
+                        <div className="flex gap-2">
+                          <p>Delivery:</p>
+                          <div className="text-black dark:text-light">
+                            <p className="font-semibold">Twice a week</p>
+                            <p>(Tuesday & Thursday)</p>
+                          </div>
+                        </div>
+                        <div className="place-self-end">
+                          <button
+                            className="btn--green flex items-center py-2! "
+                            onClick={handleAdd}
+                          >
+                            <Plus size={15} />
+                            <span className="capitalize leading-0">
+                              Add Item
+                            </span>
+                          </button>
+                        </div>
+                      </div>
+                    ) : (
+                      ""
+                    )}
+
                     <InfiniteTable
                       columns={subColumnsTable}
                       className={`sm:overflow-auto max-h-[calc(93dvh-200px)] min-h-full`}
