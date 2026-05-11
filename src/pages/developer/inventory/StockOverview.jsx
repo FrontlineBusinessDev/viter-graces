@@ -37,28 +37,28 @@ const StockOverview = () => {
       meta: "",
     },
     {
-      accessorKey: "contact person",
+      accessorKey: "sku",
       header: "SKU",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "email",
+      accessorKey: "location",
       header: "Location",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "phone",
+      accessorKey: "stock",
       header: "Current Stock",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "Threshold",
+      accessorKey: "threshold",
       header: "Threshold",
       classTh: "",
       classTd: "",
@@ -80,26 +80,28 @@ const StockOverview = () => {
     },
   ];
 
-  const mockUsers = [
+  const mockData = [
     {
       id: 1,
       status: 1,
       name: "Banana Chips",
       sku: "MBP14-001",
-      category: "Chips",
-      price: "1,999.00",
-      cost: "₱1500.00",
-      stocks: "11",
+      location: "San Pablo City, Laguna",
+      stock: "20",
+      threshold: "13",
+      unit: "12",
+      product_owner: "Louren Rubico",
     },
     {
       id: 2,
-      status: 0,
+      status: 1,
       name: "Chips",
-      sku: "IP15P-001",
-      category: "Electronics",
-      price: "1,500.00",
-      cost: "₱1300.00",
-      stocks: "4",
+      sku: "MBP14-001",
+      location: "Nagcarlan, Laguna",
+      stock: "20",
+      threshold: "13",
+      unit: "12",
+      product_owner: "Cyrene Lumabas",
     },
   ];
 
@@ -123,7 +125,7 @@ const StockOverview = () => {
           path="stock movement"
           setItemEdit={setItemEdit}
           haveFilterTable={true}
-          mockData={mockUsers}
+          mockData={mockData}
           isStatic={true}
         />
       </HeaderNav>

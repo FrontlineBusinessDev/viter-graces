@@ -35,7 +35,7 @@ const ProductsMobile = ({ rows, setData, setItemEdit, lastRowRef }) => {
             {/* HEADER */}
             <div className="flex gap-2 justify-between items-center mb-3">
               <div className="flex gap-2 items-center">
-                {imageCell && (
+                {imageCell === true && (
                   <div className="w-12 h-12 bg-gray-300 rounded-sm">
                     <Image className="mx-auto p-1" size={45} />
                   </div>
@@ -43,7 +43,7 @@ const ProductsMobile = ({ rows, setData, setItemEdit, lastRowRef }) => {
                 <div className="flex flex-col">
                   <div className="flex gap-2 items-center">
                     <span
-                      className={`font-semibold text-black dark:text-light text-lg ${
+                      className={`font-semibold text-black dark:text-light text-lg  ${
                         titleCell.column.columnDef.classTd || ""
                       }`}
                     >
@@ -52,18 +52,19 @@ const ProductsMobile = ({ rows, setData, setItemEdit, lastRowRef }) => {
                         titleCell.getContext(),
                       )}
                     </span>
-                    (
+
                     <span
                       className={`font-semibold  text-xs ${
                         tagCell.column.columnDef.classTd || ""
                       }`}
                     >
+                      (
                       {flexRender(
                         tagCell.column.columnDef.cell,
                         tagCell.getContext(),
                       )}
+                      )
                     </span>
-                    )
                   </div>
                   <span
                     className={`font-semibold text-xs ${
