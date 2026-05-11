@@ -93,11 +93,22 @@ class Customer
             $sql .= "from {$this->tblCustomer} ";
             if (!empty($filterColumn)) {
                 $sql .= " where " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= " where true ";
             }
+            $sql .= ($this->column_search != "" ? "and ( customer_name like :customer_name 
+            or customer_email like :customer_email ) " : " ");
             $sql .= "order by customer_is_active desc, ";
             $sql .= "customer_name asc ";
-            $query = $this->connection->query($sql);
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                ...$this->column_search != "" ? [
+                    "customer_name" => "%{$this->column_search}%",
+                    "customer_email" => "%{$this->column_search}%",
+                ] : [],
+            ]);
         } catch (PDOException $ex) {
+
             $query = false;
         }
         return $query;
@@ -119,7 +130,11 @@ class Customer
             $sql .= "from {$this->tblCustomer} ";
             if (!empty($filterColumn)) {
                 $sql .= " where " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= " where true ";
             }
+            $sql .= ($this->column_search != "" ? "and ( customer_name like :customer_name 
+            or customer_email like :customer_email ) " : " ");
             $sql .= "order by customer_is_active desc, ";
             $sql .= "customer_name asc ";
             $sql .= "limit :start, ";
@@ -128,10 +143,13 @@ class Customer
             $query->execute([
                 "start" => $this->column_start - 1,
                 "total" => $this->column_total,
+                ...$this->column_search != "" ? [
+                    "customer_name" => "%{$this->column_search}%",
+                    "customer_email" => "%{$this->column_search}%",
+                ] : [],
             ]);
         } catch (PDOException $ex) {
 
-            returnError($ex);
             $query = false;
         }
         return $query;
@@ -196,7 +214,7 @@ class Customer
             $sql .= "customer_whatsapp = :customer_whatsapp, ";
             $sql .= "customer_other = :customer_other, ";
             $sql .= "customer_notes = :customer_notes, ";
-            $sql .= "customer_updated = :customer_updated, ";
+            $sql .= "customer_updated = :customer_updated ";
             $sql .= "where customer_aid  = :customer_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([

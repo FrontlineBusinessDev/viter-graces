@@ -7,7 +7,7 @@ import TableLoading from "@/components/spinners/TableLoading";
 import TableSpinner from "@/components/spinners/TableSpinner";
 import { apiVersion } from "@/config/config";
 import { queryDataInfinite } from "@/services/queryDataInfinite";
-import { setIsAdd } from "@/store/StoreAction";
+import { setIsAdd, setIsView } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -24,6 +24,8 @@ import ModalAction from "../modal/ModalAction";
 import TableStatus from "../TableStatus";
 import ExportCSVButton from "@/components/buttons/ExportCSVButton";
 import { DebouncedInput } from "@/components/inputs/InputText";
+import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
+import InfiniteSubTableMobileCard from "./InfiniteSubTableMobileCard";
 
 const InfiniteTable = ({
   columns,
@@ -33,6 +35,9 @@ const InfiniteTable = ({
   setItemEdit,
   haveFilterTable = false,
   hasExport = false,
+  isDefaultMobile = true,
+  isSearch = true,
+  ishaveAdd = true,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [dataItem, setData] = React.useState(null);
@@ -43,6 +48,12 @@ const InfiniteTable = ({
   const [onSearch, setOnSearch] = React.useState(false);
   const [page, setPage] = useState(1);
   const [isFetchFilterDate, setIsFetchFilterDate] = useState(false);
+
+  // ACTIONS ADD
+  const handleView = () => {
+    dispatch(setIsView(true));
+    setItemEdit(null);
+  };
 
   const searchPayload = useMemo(
     () => ({
@@ -176,144 +187,58 @@ const InfiniteTable = ({
   return (
     <>
       <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 items-center">
-        {path === "" ? (
-          ""
-        ) : (
+        {ishaveAdd ? (
           <div className="flex justify-end sm:mb-0! mb-3 ">
             <AddButton value={path} onClick={handleAdd} />
           </div>
+        ) : (
+          ""
         )}
 
         {hasExport === true ? (
-          <div className="flex justify-end sm:mb-0! ">
+          <div className="flex justify-end lg:mb-0! ">
             {hasExport === true ? <ExportCSVButton /> : ""}
           </div>
         ) : (
           ""
         )}
-
-        <div
-          className={`${haveFilterTable ? " sm:hidden " : " "} "w-full md:max-w-1/4 "`}
-        >
-          <SearchBar
-            search={search}
-            dispatch={dispatch}
-            setOnSearch={setOnSearch}
-            onSearch={onSearch}
-            label={"Search..."}
-          />
-        </div>
+        {isSearch ? (
+          <div className={`${haveFilterTable ? " lg:hidden " : " "} w-full `}>
+            <SearchBar
+              search={search}
+              dispatch={dispatch}
+              setOnSearch={setOnSearch}
+              onSearch={onSearch}
+              label={"Search..."}
+            />
+          </div>
+        ) : (
+          ""
+        )}
       </div>
       <div className="">
         <div className="relative rounded-xl md:text-center overflow-auto z-0 ">
           {status !== "pending" && isFetching && <TableSpinner />}
           <div className={`${className} `}>
             {/* MOBILE CARD */}
-            {rows?.map((row, index) => {
-              const isLastRow = index === rows?.length - 1;
-              const cells = row.getVisibleCells();
-
-              const titleCell =
-                cells.find((c) => c.column.columnDef.isMobileTitle) || cells[0];
-
-              return (
-                <div
-                  key={row.id}
-                  ref={isLastRow ? lastRowRef : null}
-                  className="sm:hidden border rounded-xl p-4 mb-4 shadow-sm"
-                >
-                  {/* HEADER */}
-                  <div className="flex justify-between items-center mb-2">
-                    <p
-                      className={`font-semibold text-lg ${
-                        titleCell.column.columnDef.classTd || ""
-                      }`}
-                    >
-                      {flexRender(
-                        titleCell.column.columnDef.cell,
-                        titleCell.getContext(),
-                      )}
-                    </p>
-
-                    {/* STATUS */}
-                    {cells.map((item, key) => {
-                      if (item.column.columnDef.header === "status") {
-                        return (
-                          <div key={key}>
-                            <TableStatus
-                              item={item.column.columnDef}
-                              dataArray={row.original}
-                            />
-                          </div>
-                        );
-                      }
-                      return null;
-                    })}
-                  </div>
-
-                  {/* OTHER FIELDS */}
-                  <div className="space-y-2">
-                    {cells.map((cell) => {
-                      const colDef = cell.column.columnDef;
-                      const accessor = colDef.accessorKey;
-
-                      // Skip title, status, action
-                      if (
-                        cell.id === titleCell.id ||
-                        colDef.header === "status" ||
-                        accessor === "action"
-                      )
-                        return null;
-
-                      const header = colDef.header;
-
-                      return (
-                        <div
-                          key={cell.id}
-                          className={`grid grid-cols-[1fr_2fr] gap-3 items-center ${isEmptyItem(
-                            colDef.classTd,
-                            "",
-                          )}`}
-                        >
-                          <p
-                            className={`text-xs text-gray-500 ${isEmptyItem(
-                              colDef.classTh,
-                              "",
-                            )}`}
-                          >
-                            {typeof header === "string" ? header : ""}
-                          </p>
-
-                          <p className="text-sm wrap-break-word min-w-[200px]">
-                            {flexRender(colDef.cell, cell.getContext())}
-                          </p>
-                        </div>
-                      );
-                    })}
-                  </div>
-
-                  {/* ACTIONS */}
-                  {cells.map((item) => {
-                    if (item.column.columnDef.accessorKey === "action") {
-                      return (
-                        <div key={item.id} className="flex gap-2 mt-3">
-                          <ActionButtonTable
-                            item={item.column.columnDef}
-                            dataArray={row.original}
-                            setData={setData}
-                            setItemEdit={setItemEdit}
-                          />
-                        </div>
-                      );
-                    }
-                    return null;
-                  })}
-                </div>
-              );
-            })}
+            {/* MOBILE CARD DEFAULT */}
+            {isDefaultMobile ? (
+              <InfiniteDefaultTableMobileCard
+                rows={rows}
+                lastRowRef={lastRowRef}
+                setData={setData}
+                setItemEdit={setItemEdit}
+              />
+            ) : (
+              <InfiniteSubTableMobileCard
+                rows={rows}
+                lastRowRef={lastRowRef}
+                setItemEdit={setItemEdit}
+              />
+            )}
             {/* TABLE */}
             <table className="overflow-auto md:border md:border-gray-300 dark:border-[#0b111e] ">
-              <thead className={`relative z-50 hidden sm:table-header-group`}>
+              <thead className={`relative z-50 hidden lg:table-header-group`}>
                 {table?.getHeaderGroups()?.map((headerGroup) => (
                   <tr
                     key={headerGroup?.id}
@@ -350,7 +275,7 @@ const InfiniteTable = ({
                   {table?.getHeaderGroups()?.map((headerGroup) => (
                     <tr
                       key={headerGroup?.id}
-                      className="sm:table-row sticky top-9 uppercase dark:bg-[#0b111e] z-999 hidden lg:group"
+                      className="lg:table-row sticky top-9 uppercase dark:bg-[#0b111e] z-999 hidden lg:group"
                     >
                       <th className="w-px  "> </th>
                       {headerGroup?.headers?.map((header) => (
@@ -388,7 +313,7 @@ const InfiniteTable = ({
 
               <tbody>
                 {(status === "pending" || rows?.length === 0) && (
-                  <tr>
+                  <tr className="lg:table-row hidden">
                     <td colSpan="100%" className="p-10">
                       {status === "pending" ? (
                         <TableLoading count={20} cols={3} />
@@ -399,7 +324,7 @@ const InfiniteTable = ({
                   </tr>
                 )}
                 {error && (
-                  <tr>
+                  <tr className="lg:table-row hidden">
                     <td colSpan="100%" className="p-10">
                       <ServerError />
                     </td>
@@ -414,7 +339,7 @@ const InfiniteTable = ({
                       <tr
                         key={row.id}
                         ref={isLastRow ? lastRowRef : null}
-                        className="hidden sm:table-row group"
+                        className="hidden lg:table-row group"
                       >
                         <td className="text-center">{index + 1}.</td>
                         {row.getVisibleCells().map((item) => (
@@ -427,6 +352,13 @@ const InfiniteTable = ({
                                 item={item?.column?.columnDef}
                                 dataArray={row.original}
                               />
+                            ) : item?.column?.columnDef?.isViewItems ? (
+                              <button
+                                className="text-green-700 hover:text-green-800 hover:underline"
+                                onClick={() => handleView(item)}
+                              >
+                                View Items
+                              </button>
                             ) : (
                               flexRender(
                                 item?.column?.columnDef?.cell,

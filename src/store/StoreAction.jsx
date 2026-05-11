@@ -54,6 +54,13 @@ export const setIsAdd = (val) => {
   };
 };
 
+export const setIsView = (val) => {
+  return {
+    type: "IS_VIEW",
+    payload: val,
+  };
+};
+
 export const setIsSearch = (val) => {
   return {
     type: "IS_SEARCH",
