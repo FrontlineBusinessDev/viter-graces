@@ -148,6 +148,7 @@ const Customers = () => {
           setView={setView}
           isSearch={false}
           ishaveAdd={false}
+          isDefaultMobile="customer"
         />
       </HeaderNav>
       {store.isAdd && <ModalCustomer itemEdit={itemEdit} />}

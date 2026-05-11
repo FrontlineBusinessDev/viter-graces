@@ -18,7 +18,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useCallback, useMemo, useRef } from "react";
-import InfiniteSubTableMobileCard from "./InfiniteSubTableMobileCard";
+import InfiniteSubTableMobileCard from "./CustomerMobile";
 
 const InfinitePerTabs = ({
   columns,
@@ -27,6 +27,7 @@ const InfinitePerTabs = ({
   setItemEdit,
   isSearch = false,
   ishaveAdd = false,
+  isDefaultMobile = "default",
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [openRow, setOpenRow] = React.useState(null);
@@ -292,9 +293,9 @@ const InfinitePerTabs = ({
                       className={`sm:overflow-auto max-h-[calc(93dvh-200px)] min-h-full`}
                       path={path}
                       setItemEdit={setItemEdit}
-                      isSearch={false}
-                      ishaveAdd={false}
-                      isDefaultMobile={false}
+                      isSearch={isSearch}
+                      ishaveAdd={ishaveAdd}
+                      isDefaultMobile={isDefaultMobile}
                     />
                   </div>
                 )}

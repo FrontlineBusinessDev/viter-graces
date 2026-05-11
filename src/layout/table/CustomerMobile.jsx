@@ -3,12 +3,7 @@ import { setIsView } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 
-const InfiniteSubTableMobileCard = ({
-  rows,
-  lastRowRef,
-  item,
-  setItemEdit,
-}) => {
+const CustomerMobile = ({ rows, lastRowRef, item, setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
   // ACTIONS ADD
@@ -81,4 +76,4 @@ const InfiniteSubTableMobileCard = ({
   );
 };
 
-export default InfiniteSubTableMobileCard;
+export default CustomerMobile;
