@@ -1,4 +1,6 @@
 import AddButton from "@/components/buttons/AddButton";
+import ExportCSVButton from "@/components/buttons/ExportCSVButton";
+import { DebouncedInput } from "@/components/inputs/InputText";
 import NoData from "@/components/NoData";
 import SearchBar from "@/components/SearchBar";
 import ServerError from "@/components/ServerError";
@@ -7,7 +9,7 @@ import TableLoading from "@/components/spinners/TableLoading";
 import TableSpinner from "@/components/spinners/TableSpinner";
 import { apiVersion } from "@/config/config";
 import { queryDataInfinite } from "@/services/queryDataInfinite";
-import { setIsAdd } from "@/store/StoreAction";
+import { setIsAdd, setIsView } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -22,8 +24,8 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import ActionButtonTable from "../ActionButtonTable";
 import ModalAction from "../modal/ModalAction";
 import TableStatus from "../TableStatus";
-import ExportCSVButton from "@/components/buttons/ExportCSVButton";
-import { DebouncedInput } from "@/components/inputs/InputText";
+import CustomerMobile from "./CustomerMobile";
+import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
 import ProductsMobile from "./ProductsMobile";
 
 const InfiniteTable = ({
@@ -34,6 +36,9 @@ const InfiniteTable = ({
   setItemEdit,
   haveFilterTable = false,
   hasExport = false,
+  isDefaultMobile = "default",
+  isSearch = true,
+  ishaveAdd = true,
   productMobile = false,
   mockData = [],
   isStatic = false,
@@ -47,6 +52,12 @@ const InfiniteTable = ({
   const [onSearch, setOnSearch] = React.useState(false);
   const [page, setPage] = useState(1);
   const [isFetchFilterDate, setIsFetchFilterDate] = useState(false);
+
+  // ACTIONS ADD
+  const handleView = () => {
+    dispatch(setIsView(true));
+    setItemEdit(null);
+  };
 
   const searchPayload = useMemo(
     () => ({
@@ -186,48 +197,63 @@ const InfiniteTable = ({
   return (
     <>
       <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 items-center">
-        {path === "" ? (
-          ""
-        ) : (
+        {ishaveAdd ? (
           <div className="flex justify-end sm:mb-0! mb-3 ">
             <AddButton value={path} onClick={handleAdd} />
           </div>
+        ) : (
+          ""
         )}
 
         {hasExport === true ? (
-          <div className="flex justify-end sm:mb-0! ">
+          <div className="flex justify-end lg:mb-0! ">
             {hasExport === true ? <ExportCSVButton /> : ""}
           </div>
         ) : (
           ""
         )}
-
-        <div
-          className={`${haveFilterTable ? " sm:hidden " : " "} "w-full md:max-w-1/4 "`}
-        >
-          <SearchBar
-            search={search}
-            dispatch={dispatch}
-            setOnSearch={setOnSearch}
-            onSearch={onSearch}
-            label={"Search..."}
-          />
-        </div>
+        {isSearch ? (
+          <div className={`${haveFilterTable ? " lg:hidden " : " "} w-full `}>
+            <SearchBar
+              search={search}
+              dispatch={dispatch}
+              setOnSearch={setOnSearch}
+              onSearch={onSearch}
+              label={"Search..."}
+            />
+          </div>
+        ) : (
+          ""
+        )}
       </div>
       <div className="">
         <div className="relative rounded-xl md:text-center overflow-auto z-0 ">
           {status !== "pending" && isFetching && <TableSpinner />}
           <div className={`${className} `}>
             {/* MOBILE CARD */}
+            <InfiniteDefaultTableMobileCard
+              rows={rows}
+              lastRowRef={lastRowRef}
+              setData={setData}
+              setItemEdit={setItemEdit}
+              isDefaultMobile={isDefaultMobile}
+            />
+            <CustomerMobile
+              rows={rows}
+              lastRowRef={lastRowRef}
+              setItemEdit={setItemEdit}
+              isDefaultMobile={isDefaultMobile}
+            />
             <ProductsMobile
               rows={rows}
               setData={setData}
               setItemEdit={setItemEdit}
               lastRowRef={lastRowRef}
+              isDefaultMobile={isDefaultMobile}
             />
             {/* TABLE */}
             <table className="overflow-auto md:border md:border-gray-300 dark:border-[#0b111e] ">
-              <thead className={`relative z-50 hidden sm:table-header-group`}>
+              <thead className={`relative z-50 hidden lg:table-header-group`}>
                 {table?.getHeaderGroups()?.map((headerGroup) => (
                   <tr
                     key={headerGroup?.id}
@@ -264,7 +290,7 @@ const InfiniteTable = ({
                   {table?.getHeaderGroups()?.map((headerGroup) => (
                     <tr
                       key={headerGroup?.id}
-                      className="sm:table-row sticky top-9 uppercase dark:bg-[#0b111e] z-999 hidden lg:group"
+                      className="lg:table-row sticky top-9 uppercase dark:bg-[#0b111e] z-999 hidden lg:group"
                     >
                       <th className="w-px  "> </th>
                       {headerGroup?.headers?.map((header) => (
@@ -302,7 +328,7 @@ const InfiniteTable = ({
 
               <tbody>
                 {(status === "pending" || rows?.length === 0) && (
-                  <tr>
+                  <tr className="lg:table-row hidden">
                     <td colSpan="100%" className="p-10">
                       {status === "pending" ? (
                         <TableLoading count={20} cols={3} />
@@ -313,7 +339,7 @@ const InfiniteTable = ({
                   </tr>
                 )}
                 {error && (
-                  <tr>
+                  <tr className="lg:table-row hidden">
                     <td colSpan="100%" className="p-10">
                       <ServerError />
                     </td>
@@ -328,7 +354,7 @@ const InfiniteTable = ({
                       <tr
                         key={row.id}
                         ref={isLastRow ? lastRowRef : null}
-                        className="hidden sm:table-row group"
+                        className="hidden lg:table-row group"
                       >
                         <td className="text-center">{index + 1}.</td>
                         {row.getVisibleCells().map((item) => (
@@ -341,6 +367,13 @@ const InfiniteTable = ({
                                 item={item?.column?.columnDef}
                                 dataArray={row.original}
                               />
+                            ) : item?.column?.columnDef?.isViewItems ? (
+                              <button
+                                className="text-green-700 hover:text-green-800 hover:underline"
+                                onClick={() => handleView(item)}
+                              >
+                                View Items
+                              </button>
                             ) : (
                               flexRender(
                                 item?.column?.columnDef?.cell,
