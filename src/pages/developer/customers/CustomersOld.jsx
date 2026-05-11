@@ -1,23 +1,22 @@
 import AddButton from "@/components/buttons/AddButton";
 import SearchBar from "@/components/SearchBar";
+import { apiVersion } from "@/config/config";
 import ActionButtonTable from "@/layout/ActionButtonTable";
 import { DefaultActionTableList } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
+import { queryDataInfinite } from "@/services/queryDataInfinite";
 import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
-import React, { useCallback, useMemo } from "react";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { MapPin, Phone } from "lucide-react";
+import React, { useMemo } from "react";
 import { AiFillMessage } from "react-icons/ai";
 import { FaFacebookMessenger } from "react-icons/fa";
 import { IoLogoWhatsapp } from "react-icons/io";
 import ModalCustomer from "./ModalCustomer";
 import ViewDetails from "./ViewDetails";
-import { AtSign, MapPin, Phone } from "lucide-react";
-import { useInfiniteQuery } from "@tanstack/react-query";
-import { queryDataInfinite } from "@/services/queryDataInfinite";
-import { apiVersion } from "@/config/config";
-import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
 
-const Customers = () => {
+const CustomersOld = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
   const [openRow, setOpenRow] = React.useState(null);
@@ -165,7 +164,7 @@ const Customers = () => {
         </div>
         <div className="py-4">
           <div className="space-y-3">
-            {rows.map((item) => {
+            {data.map((item) => {
               const isOpen = openRow === item.id;
 
               return (
@@ -340,4 +339,4 @@ const Customers = () => {
   );
 };
 
-export default Customers;
+export default CustomersOld;
