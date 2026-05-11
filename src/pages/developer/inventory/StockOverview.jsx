@@ -80,6 +80,29 @@ const StockOverview = () => {
     },
   ];
 
+  const mockUsers = [
+    {
+      id: 1,
+      status: 1,
+      name: "Banana Chips",
+      sku: "MBP14-001",
+      category: "Chips",
+      price: "1,999.00",
+      cost: "₱1500.00",
+      stocks: "11",
+    },
+    {
+      id: 2,
+      status: 0,
+      name: "Chips",
+      sku: "IP15P-001",
+      category: "Electronics",
+      price: "1,500.00",
+      cost: "₱1300.00",
+      stocks: "4",
+    },
+  ];
+
   return (
     <>
       <HeaderNav menu={"inventory"} activeTab="stock-overview">
@@ -100,6 +123,8 @@ const StockOverview = () => {
           path="stock movement"
           setItemEdit={setItemEdit}
           haveFilterTable={true}
+          mockData={mockUsers}
+          isStatic={true}
         />
       </HeaderNav>
       {store.isAdd && <ModalStockOverview itemEdit={itemEdit} />}

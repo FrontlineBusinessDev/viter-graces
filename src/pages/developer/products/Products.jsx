@@ -17,6 +17,13 @@ const Products = () => {
       classTd: "",
     },
     {
+      accessorKey: "image",
+      header: "Image",
+      classTh: "",
+      classTd: "",
+      isImage: true,
+    },
+    {
       accessorKey: "name",
       header: "Products",
       classTh: "",
@@ -28,18 +35,21 @@ const Products = () => {
       header: "SKU",
       classTh: "",
       classTd: "",
+      isTag: true,
     },
     {
       accessorKey: "category",
       header: "Category",
       classTh: "",
       classTd: "",
+      isSubTitle: true,
     },
     {
       accessorKey: "price",
       header: "Price",
       classTh: "",
       classTd: "",
+      isPrice: true,
     },
     {
       accessorKey: "cost",
@@ -90,18 +100,18 @@ const Products = () => {
   const mockUsers = [
     {
       id: 1,
-      status: "Active",
-      name: "John Doe",
+      status: 1,
+      name: "Banana Chips",
       sku: "MBP14-001",
-      category: "Electronics",
+      category: "Chips",
       price: "1,999.00",
       cost: "₱1500.00",
       stocks: "11",
     },
     {
       id: 2,
-      status: "Inactive",
-      name: "Jane Smith",
+      status: 1,
+      name: "Chips",
       sku: "IP15P-001",
       category: "Electronics",
       price: "1,500.00",
@@ -116,11 +126,11 @@ const Products = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="product"
+          path="products"
           setItemEdit={setItemEdit}
           productMobile={true}
-          // mockData={}
-          // isStatic={false}
+          mockData={mockUsers}
+          isStatic={true}
         />
       </HeaderNav>
       {store.isAdd && <ModalProducts itemEdit={itemEdit} />}
