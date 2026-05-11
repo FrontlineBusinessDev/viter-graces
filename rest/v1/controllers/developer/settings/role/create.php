@@ -8,7 +8,7 @@ $val = new Role($conn);
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
 // get should not be present
-if (array_key_exists("roleid", $_GET)) {
+if (array_key_exists("id", $_GET)) {
     checkEndpoint();
 }
 // check data

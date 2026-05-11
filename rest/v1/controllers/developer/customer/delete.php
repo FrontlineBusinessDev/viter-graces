@@ -3,23 +3,19 @@
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new Role($conn);
-// get payload
-$body = file_get_contents("php://input");
-$data = json_decode($body, true);
+$val = new Customer($conn);
 // get $_GET data
 $error = [];
 $returnData = [];
 if (array_key_exists("id", $_GET)) {
     // get data
-    $val->role_aid = $_GET['id'];
-    $column_name = strtolower($data['role_name']);
-    checkId($val->role_aid);
+    $val->customer_aid = $_GET['id'];
+    checkId($val->customer_aid);
     // delete 
-    isUserAccountAssociated($val);
+    // isUserAccountAssociated($val);
 
     $query = checkDelete($val);
-    returnSuccess($val, "Role", $query);
+    returnSuccess($val, "Customer", $query);
 }
 
 // return 404 error if endpoint not available

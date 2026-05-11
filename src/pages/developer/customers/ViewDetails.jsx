@@ -1,7 +1,5 @@
 import CloseButton from "@/components/buttons/CloseButton";
 import ExportCSVButton from "@/components/buttons/ExportCSVButton";
-import { Download } from "lucide-react";
-import React from "react";
 
 const ViewDetails = ({ setView, itemEdit }) => {
   const handleClose = () => {
@@ -99,7 +97,7 @@ const ViewDetails = ({ setView, itemEdit }) => {
             </span>
           </div>
 
-          <ExportCSVButton/>
+          <ExportCSVButton />
         </div>
       </div>
     </div>
