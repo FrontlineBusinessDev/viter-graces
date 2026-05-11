@@ -33,6 +33,7 @@ const InfiniteTable = ({
   setItemEdit,
   haveFilterTable = false,
   hasExport = false,
+  productMobile = false,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [dataItem, setData] = React.useState(null);

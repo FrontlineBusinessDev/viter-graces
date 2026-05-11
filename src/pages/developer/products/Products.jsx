@@ -118,6 +118,7 @@ const Products = () => {
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
           path="product"
           setItemEdit={setItemEdit}
+          productMobile={true}
           // mockData={}
           // isStatic={false}
         />
