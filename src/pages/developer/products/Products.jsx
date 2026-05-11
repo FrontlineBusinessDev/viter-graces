@@ -4,6 +4,8 @@ import { StoreContext } from "@/store/StoreContext";
 import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
 import React from "react";
 import ModalProducts from "./ModalProducts";
+import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 const Products = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -15,6 +17,15 @@ const Products = () => {
       header: "status",
       classTh: "w-[5rem]",
       classTd: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            options={ActiveInActiveStatus()}
+          />
+        ),
+      },
+      status_option: ActiveInActiveStatus(),
     },
     {
       accessorKey: "image",
@@ -97,7 +108,7 @@ const Products = () => {
     },
   ];
 
-  const mockUsers = [
+  const mockData = [
     {
       id: 1,
       status: 1,
@@ -129,8 +140,9 @@ const Products = () => {
           path="products"
           setItemEdit={setItemEdit}
           productMobile={true}
-          mockData={mockUsers}
+          mockData={mockData}
           isStatic={true}
+          isDefaultMobile={"product"}
         />
       </HeaderNav>
       {store.isAdd && <ModalProducts itemEdit={itemEdit} />}
