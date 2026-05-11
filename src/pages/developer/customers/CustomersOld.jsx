@@ -259,7 +259,6 @@ const CustomersOld = () => {
                                     aitem?.column?.columnDef?.cell,
                                     aitem?.getContext(),
                                   )}
-                                  sssss
                                 </p>
                               </div>
                             )}
