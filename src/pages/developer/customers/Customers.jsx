@@ -5,7 +5,7 @@ import { DefaultActionTableList } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
-import React, { useCallback, useMemo } from "react";
+import React, { useCallback, useMemo, useRef } from "react";
 import { AiFillMessage } from "react-icons/ai";
 import { FaFacebookMessenger } from "react-icons/fa";
 import { IoLogoWhatsapp } from "react-icons/io";
@@ -16,6 +16,9 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 import { queryDataInfinite } from "@/services/queryDataInfinite";
 import { apiVersion } from "@/config/config";
 import { getCoreRowModel, useReactTable } from "@tanstack/react-table";
+import NoData from "@/components/NoData";
+import TableLoading from "@/components/spinners/TableLoading";
+import ServerError from "@/components/ServerError";
 
 const Customers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -25,6 +28,9 @@ const Customers = () => {
   const search = React.useRef(null);
   const [onSearch, setOnSearch] = React.useState(false);
   const [isView, setView] = React.useState(false);
+  const observer = useRef();
+  let counter = 1;
+  let counterSubTab = 1;
 
   // ACTIONS ADD
   const handleAdd = () => {
@@ -40,31 +46,25 @@ const Customers = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "user_account_is_active",
-      header: "status",
-      classTh: "w-[5rem]",
-      classTd: "",
-    },
-    {
-      accessorKey: "name",
+      accessorKey: "customer_name",
       header: "name",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "email",
+      accessorKey: "customer_email",
       header: "email",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "phone",
+      accessorKey: "customer_phone",
       header: "phone",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "address",
+      accessorKey: "customer_address",
       header: "address",
       classTh: "",
       classTd: "",
@@ -146,6 +146,7 @@ const Customers = () => {
   });
 
   const rows = table?.getRowModel()?.rows;
+
   return (
     <>
       <HeaderNav menu={"customers"} activeTab="customers">
@@ -165,23 +166,39 @@ const Customers = () => {
         </div>
         <div className="py-4">
           <div className="space-y-3">
-            {rows.map((item) => {
+            {(status === "pending" || rows?.length === 0) && (
+              <div colSpan="100%" className="p-10">
+                {status === "pending" ? (
+                  <TableLoading count={20} cols={3} />
+                ) : (
+                  <NoData />
+                )}
+              </div>
+            )}
+            {error && (
+              <div colSpan="100%" className="p-10">
+                <ServerError />
+              </div>
+            )}
+
+            {rows?.map((item, index) => {
+              const isLastRow = index === rows?.length - 1;
               const isOpen = openRow === item.id;
 
               return (
                 <div
-                  key={item.id}
+                  key={index}
+                  ref={isLastRow ? lastRowRef : null}
                   className="rounded-2xl border border-gray-300 bg-white shadow-sm dark:border-[#0b111e] dark:bg-[#0b111e] "
                 >
                   <div className="px-4 py-4 lg:px-5">
                     <div className="flex flex-col gap-2 lg:grid lg:grid-cols-[40px_1.5fr_1fr_1fr_1.3fr_140px_80px] lg:items-center">
                       <div className="hidden lg:block text-gray-500 text-sm dark:text-light">
-                        {item.id}
+                        {counter++}
                       </div>
 
                       <div className="flex items-start justify-between gap-3 lg:contents">
-                        <button
-                          type="button"
+                        <div
                           onClick={() => setOpenRow(isOpen ? null : item.id)}
                           className="flex flex-1 items-center gap-2 text-left"
                         >
@@ -208,7 +225,7 @@ const Customers = () => {
                               {item.email}
                             </p>
                           </div>
-                        </button>
+                        </div>
 
                         <div className="lg:hidden">
                           <ActionButtonTable
