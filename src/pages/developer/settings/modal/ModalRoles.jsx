@@ -46,7 +46,9 @@ const ModalRoles = ({ itemEdit }) => {
       if (data.success) {
         dispatch(setIsAdd(false));
         dispatch(setSuccess(true));
-        dispatch(setMessage(successMsg));
+        dispatch(
+          setMessage(`Successfully ${itemEdit ? "updated" : "created"}`),
+        );
       }
       if (!data.success) {
         dispatch(setError(true));

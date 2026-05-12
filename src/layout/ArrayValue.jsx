@@ -5,6 +5,7 @@ import {
   RotateCcw,
   Trash,
 } from "lucide-react";
+import { number } from "yup";
 
 export const ActiveInActiveStatus = () => {
   return [
@@ -12,6 +13,7 @@ export const ActiveInActiveStatus = () => {
     { label: "Inactive", value: 0 },
   ];
 };
+
 // FOR TABLE ACTION
 export const DefaultActionTableList = ({ path }) => {
   return [
@@ -41,6 +43,7 @@ export const DefaultActionTableList = ({ path }) => {
     },
   ];
 };
+
 // FOR TABLE ACTION
 export const UserActionTableList = ({ path }) => {
   return [
@@ -76,6 +79,7 @@ export const UserActionTableList = ({ path }) => {
     },
   ];
 };
+
 export const EditDeleteActionTableList = ({ path }) => {
   return [
     {

@@ -11,10 +11,11 @@ const ProductsMobile = ({
   setItemEdit,
   lastRowRef,
   isDefaultMobile,
+  ishaveSubAdd = false,
 }) => {
   return (
     <>
-      {isDefaultMobile === "products" && (
+      {(isDefaultMobile === "products" || isDefaultMobile === "suppliers") && (
         <div>
           {rows?.map((row, index) => {
             const isLastRow = index === rows?.length - 1;
@@ -39,7 +40,7 @@ const ProductsMobile = ({
               <div
                 key={row.id}
                 ref={isLastRow ? lastRowRef : null}
-                className="sm:hidden border rounded-xl p-4 mb-4 shadow-sm"
+                className="lg:hidden border rounded-xl p-4 mb-4 shadow-sm"
               >
                 {/* HEADER */}
                 <div className="flex gap-2 justify-between items-center mb-3">
@@ -158,6 +159,7 @@ const ProductsMobile = ({
                           dataArray={row.original}
                           setData={setData}
                           setItemEdit={setItemEdit}
+                          ishaveSubAdd={ishaveSubAdd}
                         />
                       </div>
                     );

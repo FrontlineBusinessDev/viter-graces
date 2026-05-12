@@ -6,8 +6,9 @@ import React from "react";
 export const InputTextArea = ({
   label = "",
   required = true,
-  onChange = null,
   className = "",
+  onChange = null,
+  refVal = null,
   ...props
 }) => {
   const { dispatch } = React.useContext(StoreContext);
@@ -22,18 +23,18 @@ export const InputTextArea = ({
         </label>
       )}
       <textarea
-        className={
-          meta.touched && meta.error ? `error-show ${className}` : className
-        }
         {...field}
         {...props}
+        className={`${
+          meta.touched && meta.error ? `error-show ` : ""
+        } ${className} `}
         autoComplete="off"
         onChange={(e) => {
           onChange !== null && onChange(e);
           field.onChange(e);
-          dispatch(setError(false));
         }}
-      ></textarea>
+        ref={refVal}
+      />
       {meta.touched && meta.error ? (
         <span className="error-show">{meta.error}</span>
       ) : null}

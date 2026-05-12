@@ -5,7 +5,10 @@ import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
 import React from "react";
 import ModalProducts from "./ModalProducts";
 import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
-import { ActiveInActiveStatus } from "@/layout/ArrayValue";
+import {
+  ActiveInActiveStatus,
+  DefaultActionTableList,
+} from "@/layout/ArrayValue";
 const Products = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -76,32 +79,7 @@ const Products = () => {
     },
     {
       accessorKey: "action",
-      action_array: [
-        {
-          name: "edit",
-          path: "purchase orders",
-          icon: <Edit className="md:size-3 size-5" />,
-          isActive: 1,
-        },
-        {
-          name: "archive",
-          path: "active",
-          icon: <ArchiveRestore className="md:size-3 size-5" />,
-          isActive: 1,
-        },
-        {
-          name: "restore",
-          path: "active",
-          icon: <RotateCcw className="md:size-3 size-5" />,
-          isActive: 0,
-        },
-        {
-          name: "delete",
-          path: "purchase orders",
-          icon: <Trash className="md:size-3 size-5" />,
-          isActive: 0,
-        },
-      ],
+      action_array: DefaultActionTableList("products"),
       header: "Action",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",

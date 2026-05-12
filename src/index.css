@@ -194,7 +194,7 @@
     @apply text-xs h-[35px] rounded-lg;
   }
   textarea {
-    @apply block border border-solid border-gray-300 p-2 rounded-lg w-full h-28 bg-transparent outline-none;
+    @apply border border-solid border-gray-300 p-2 rounded-lg w-full truncate bg-transparent outline-none dark:bg-dark-mode mt-1 h-28;
   }
   label.label_login {
     @apply flex justify-center transform -translate-y-6 -translate-x-1 absolute left-3 top-[35px] px-1 z-10 isolate;
@@ -351,5 +351,16 @@
 
   .btn--outline--gray {
     @apply bg-transparent text-gray-600 dark:text-white border border-dark/50 hover:bg-primary hover:text-white inline-flex rounded-lg p-2 transition-all duration-500 font-semibold;
+  }
+
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* Firefox */
+  input[type="number"] {
+    -moz-appearance: textfield;
   }
 }

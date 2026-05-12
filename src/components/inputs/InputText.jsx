@@ -1,8 +1,6 @@
-import { setError } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { useField } from "formik";
 import React from "react";
-import { NumericFormat } from "react-number-format";
 
 export const InputNumber = ({
   label = "",
@@ -24,19 +22,20 @@ export const InputNumber = ({
           {label}
         </label>
       )}
-      <NumericFormat
+
+      <input
         {...field}
         {...props}
-        allowLeadingZeros
-        autoComplete="off"
+        type="number"
         className={`${
-          meta.touched && meta.error ? "error-show" : null
-        }  ${className}`}
+          meta.touched && meta.error ? `error-show ` : ""
+        } ${className} `}
+        autoComplete="off"
         onChange={(e) => {
           onChange !== null && onChange(e);
           field.onChange(e);
-          dispatch(setError(false));
         }}
+        ref={refVal}
       />
 
       {meta.touched && meta.error ? (

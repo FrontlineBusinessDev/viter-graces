@@ -6,11 +6,12 @@ import TableLoading from "@/components/spinners/TableLoading";
 import { apiVersion } from "@/config/config";
 import ActionButtonTable from "@/layout/ActionButtonTable";
 import ModalAction from "@/layout/modal/ModalAction";
-import InfiniteTable from "@/layout/table/InfiniteTable";
 import TableDefaultStatusDot from "@/layout/TableDefaultStatusDot";
 import { queryDataInfinite } from "@/services/queryDataInfinite";
 import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
+import { getConvertStringToJSONparseData } from "@/utilities/getConvertStringToJSONparseData";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import {
   flexRender,
@@ -18,15 +19,18 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useCallback, useMemo, useRef } from "react";
-import InfiniteSubTableMobileCard from "./CustomerMobile";
+import InfiniteSubTable from "./InfiniteSubTable";
 
 const InfinitePerTabs = ({
   columns,
   subColumnsTable,
   path,
+  subPath,
   setItemEdit,
+  setItemVal,
   isSearch = false,
   ishaveAdd = false,
+  ishaveSubAdd = true,
   isDefaultMobile = "default",
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -109,12 +113,12 @@ const InfinitePerTabs = ({
   });
 
   const rows = table?.getRowModel()?.rows;
-
+  let arrayContact = [];
   return (
     <>
       <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 ">
         <div className="flex justify-end sm:mb-0! mb-3 ">
-          <AddButton value={path} onClick={handleAdd} />
+          <AddButton value={path?.replaceAll("-", " ")} onClick={handleAdd} />
         </div>
         <div className={`w-full lg:max-w-1/4 `}>
           <SearchBar
@@ -146,6 +150,10 @@ const InfinitePerTabs = ({
           {rows?.map((item, index) => {
             const isLastRow = index === rows?.length - 1;
             const isOpen = openRow === item.id;
+            arrayContact = getConvertStringToJSONparseData(
+              rows[index]?.original?.suppliers_contact_person,
+            );
+
             return (
               <div
                 key={index}
@@ -174,7 +182,6 @@ const InfinitePerTabs = ({
                                     <span className="text-sm font-medium text-gray-800 dark:text-light">
                                       {rows[index]?.original?.name}
                                     </span>
-
                                     <svg
                                       className={`h-4 w-4 text-gray-600 dark:text-light font-bold transition-transform cursor-pointer ${
                                         isOpen ? "rotate-180" : ""
@@ -196,16 +203,52 @@ const InfinitePerTabs = ({
 
                       <div className="flex items-center gap-3 justify-end lg:hidden">
                         {item.getVisibleCells().map((bitem, bkey) => {
-                          return (
+                          return bitem?.column?.columnDef?.header ===
+                            "social" ? (
                             <React.Fragment key={bkey}>
-                              {bitem?.column?.columnDef?.header === "social" ? (
-                                <a href={`${item.facebook}`} target="_black">
+                              {isEmptyItem(
+                                rows[index]?.original?.messenger,
+                                "",
+                              ) !== "" &&
+                              bitem?.column?.columnDef?.accessorKey ===
+                                "messenger" ? (
+                                <a
+                                  href={`${bitem?.column?.columnDef?.link}`}
+                                  target="_black"
+                                >
+                                  {bitem?.column?.columnDef?.icon}
+                                </a>
+                              ) : (
+                                ""
+                              )}
+                              {isEmptyItem(
+                                rows[index]?.original?.whatsapp,
+                                "",
+                              ) !== "" &&
+                              bitem?.column?.columnDef?.accessorKey ===
+                                "whatsapp" ? (
+                                <a
+                                  href={`${bitem?.column?.columnDef?.link}`}
+                                  target="_black"
+                                >
+                                  {bitem?.column?.columnDef?.icon}
+                                </a>
+                              ) : (
+                                ""
+                              )}
+                              {isEmptyItem(rows[index]?.original?.other, "") !==
+                                "" &&
+                              bitem?.column?.columnDef?.accessorKey ===
+                                "other" ? (
+                                <a href={`${bitem?.column?.columnDef?.link}`}>
                                   {bitem?.column?.columnDef?.icon}
                                 </a>
                               ) : (
                                 ""
                               )}
                             </React.Fragment>
+                          ) : (
+                            ""
                           );
                         })}
                       </div>
@@ -250,20 +293,56 @@ const InfinitePerTabs = ({
                     })}
 
                     <div className="hidden lg:flex items-center gap-3 justify-end">
-                      {item.getVisibleCells().map((citem, ckey) => {
-                        return (
-                          <React.Fragment key={ckey}>
-                            {citem?.column?.columnDef?.header === "social" ? (
-                              <a href={`${item.facebook}`} target="_black">
-                                {citem?.column?.columnDef?.icon}
+                      {item.getVisibleCells().map((bitem, bkey) => {
+                        return bitem?.column?.columnDef?.header === "social" ? (
+                          <React.Fragment key={bkey}>
+                            {isEmptyItem(
+                              rows[index]?.original?.messenger,
+                              "",
+                            ) !== "" &&
+                            bitem?.column?.columnDef?.accessorKey ===
+                              "messenger" ? (
+                              <a
+                                href={`${bitem?.column?.columnDef?.link}`}
+                                target="_black"
+                              >
+                                {bitem?.column?.columnDef?.icon}
+                              </a>
+                            ) : (
+                              ""
+                            )}
+                            {isEmptyItem(
+                              rows[index]?.original?.whatsapp,
+                              "",
+                            ) !== "" &&
+                            bitem?.column?.columnDef?.accessorKey ===
+                              "whatsapp" ? (
+                              <a
+                                href={`${bitem?.column?.columnDef?.link}`}
+                                target="_black"
+                              >
+                                {bitem?.column?.columnDef?.icon}
+                              </a>
+                            ) : (
+                              ""
+                            )}
+                            {isEmptyItem(rows[index]?.original?.other, "") !==
+                              "" &&
+                            bitem?.column?.columnDef?.accessorKey ===
+                              "other" ? (
+                              <a href={`${bitem?.column?.columnDef?.link}`}>
+                                {bitem?.column?.columnDef?.icon}
                               </a>
                             ) : (
                               ""
                             )}
                           </React.Fragment>
+                        ) : (
+                          ""
                         );
                       })}
                     </div>
+
                     <div className=" flex justify-end lg:items-center text-gray-700 dark:text-light">
                       {item.getVisibleCells().map((fitem, fkey) => {
                         return (
@@ -288,14 +367,71 @@ const InfinitePerTabs = ({
 
                 {isOpen && (
                   <div className="border-t border-gray-200 px-4 lg:px-5 pb-4 pt-3  ">
-                    <InfiniteTable
+                    <div className="grid lg:grid-cols-3 my-3">
+                      {ishaveSubAdd ? (
+                        <>
+                          {item.getVisibleCells().map((gitem, gkey) => {
+                            return (
+                              <React.Fragment key={gkey}>
+                                {gitem?.column?.columnDef?.header ===
+                                "stringArray" ? (
+                                  <div className="flex gap-2">
+                                    <p>{gitem?.column?.columnDef?.label}:</p>
+                                    <div className="text-black dark:text-light">
+                                      {arrayContact?.map((gitem, gkey) => {
+                                        return (
+                                          <p key={gkey}>
+                                            {gitem?.contact_name}{" "}
+                                            {`(${gitem?.contact_phone})`}
+                                          </p>
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
+                              </React.Fragment>
+                            );
+                          })}
+                          {item.getVisibleCells().map((hitem, hkey) => {
+                            return (
+                              <React.Fragment key={hkey}>
+                                {hitem?.column?.columnDef?.header ===
+                                "suppliers_delivery" ? (
+                                  <div className="flex gap-2">
+                                    <p>{hitem?.column?.columnDef?.label}:</p>
+                                    <div className="text-black dark:text-light">
+                                      <p className="font-semibold">
+                                        {flexRender(
+                                          hitem?.column?.columnDef?.cell,
+                                          hitem?.getContext(),
+                                        )}
+                                      </p>
+                                    </div>
+                                  </div>
+                                ) : (
+                                  ""
+                                )}
+                              </React.Fragment>
+                            );
+                          })}
+                        </>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+                    <InfiniteSubTable
                       columns={subColumnsTable}
                       className={`sm:overflow-auto max-h-[calc(93dvh-200px)] min-h-full`}
-                      path={path}
+                      path={subPath}
+                      data={rows[index]?.original}
                       setItemEdit={setItemEdit}
                       isSearch={isSearch}
                       ishaveAdd={ishaveAdd}
+                      ishaveSubAdd={ishaveSubAdd}
                       isDefaultMobile={isDefaultMobile}
+                      setItemVal={setItemVal}
                     />
                   </div>
                 )}

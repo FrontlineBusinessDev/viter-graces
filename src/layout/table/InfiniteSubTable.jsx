@@ -21,18 +21,18 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useCallback, useMemo, useRef, useState } from "react";
-import ActionButtonTable from "../ActionButtonTable";
-import ModalAction from "../modal/ModalAction";
+import ActionButtonSubTable from "../ActionButtonSubTable";
+import ModalSubAction from "../modal/ModalSubAction";
 import TableStatus from "../TableStatus";
 import CustomerMobile from "./CustomerMobile";
 import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
 import ProductsMobile from "./ProductsMobile";
-import ModalSubAction from "../modal/ModalSubAction";
 
-const InfiniteTable = ({
+const InfiniteSubTable = ({
   columns,
   className,
   path = "",
+  data = [],
   setItemEdit,
   haveFilterTable = false,
   hasExport = false,
@@ -40,9 +40,7 @@ const InfiniteTable = ({
   isSearch = true,
   ishaveAdd = true,
   ishaveSubAdd = false,
-  productMobile = false,
-  mockData = [],
-  isStatic = false,
+  setItemVal,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [dataItem, setData] = React.useState(null);
@@ -67,7 +65,7 @@ const InfiniteTable = ({
         isEmptyItem(store?.credentials?.data?.role, "admin") === "developer"
           ? "1"
           : "0",
-      id: "",
+      id: data?.id,
     }),
     [store.isSearch],
   );
@@ -84,7 +82,7 @@ const InfiniteTable = ({
 
   // React Query infinite fetch
   const {
-    result,
+    data: result,
     error,
     fetchNextPage,
     hasNextPage,
@@ -181,14 +179,9 @@ const InfiniteTable = ({
 
   const rows = table?.getRowModel()?.rows;
 
-  // ACTIONS ADD
-  const handleAdd = () => {
-    dispatch(setIsAdd(true));
-    setItemEdit(null);
-  };
-
   // ACTIONS SUB ADD
   const handleSubAdd = () => {
+    setItemVal(data);
     dispatch(setIsSubAdd(true));
     setItemEdit(null);
   };
@@ -204,13 +197,6 @@ const InfiniteTable = ({
   return (
     <>
       <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 items-center">
-        {ishaveAdd ? (
-          <div className="flex justify-end sm:mb-0! mb-3 ">
-            <AddButton value={path?.replaceAll("-", " ")} onClick={handleAdd} />
-          </div>
-        ) : (
-          ""
-        )}
         {ishaveSubAdd ? (
           <div className="flex justify-end sm:mb-0! mb-3 ">
             <AddButton
@@ -403,12 +389,13 @@ const InfiniteTable = ({
                             {/* FOR ACTION BUTTONS */}
                             {item?.column?.columnDef?.accessorKey ===
                             "action" ? (
-                              <ActionButtonTable
+                              <ActionButtonSubTable
                                 item={item?.column?.columnDef}
                                 dataArray={row.original}
                                 setData={setData}
                                 setItemEdit={setItemEdit}
                                 ishaveSubAdd={ishaveSubAdd}
+                                setItemVal={setItemVal}
                               />
                             ) : (
                               ""
@@ -438,8 +425,8 @@ const InfiniteTable = ({
           </div>
         </div>
       </div>
-      {store.isAction && (
-        <ModalAction
+      {store.isSubAction && (
+        <ModalSubAction
           mysqlApiAction={`${apiVersion}/${path}/${dataItem?.path}`}
           msg={`Are you sure you want to ${dataItem?.action}`}
           successMsg={`${dataItem?.action} successfully.`}
@@ -451,4 +438,4 @@ const InfiniteTable = ({
   );
 };
 
-export default InfiniteTable;
+export default InfiniteSubTable;
