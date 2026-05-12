@@ -1,6 +1,6 @@
 import ModalButton from "@/components/buttons/ModalButton";
 import { InputSelectArray } from "@/components/inputs/InputSelect";
-import { InputText } from "@/components/inputs/InputText";
+import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { apiVersion } from "@/config/config";
@@ -126,9 +126,8 @@ const ModalStockOverview = ({ itemEdit }) => {
                     />
                   </div>
                   <div className="relative mt-5 mb-6">
-                    <InputText
+                    <InputNumber
                       label="Quantity"
-                      type="number"
                       name="quantity"
                       placeholder={`${itemEdit ? "Update quantity" : "Enter quantity"}`}
                       disabled={mutation.isPending}

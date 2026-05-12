@@ -27,6 +27,7 @@ import TableStatus from "../TableStatus";
 import CustomerMobile from "./CustomerMobile";
 import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
 import ProductsMobile from "./ProductsMobile";
+import { PesoSign } from "@/components/PesoSign";
 
 const InfiniteSubTable = ({
   columns,
@@ -233,6 +234,20 @@ const InfiniteSubTable = ({
         <div className="relative rounded-xl md:text-center overflow-auto z-0 ">
           {status !== "pending" && isFetching && <TableSpinner />}
           <div className={`${className} `}>
+            {(status === "pending" || rows?.length === 0) && (
+              <div className="lg:hidden p-10">
+                {status === "pending" ? (
+                  <TableLoading count={20} cols={3} />
+                ) : (
+                  <NoData />
+                )}
+              </div>
+            )}
+            {error && (
+              <div className="lg:hidden p-10">
+                <ServerError />
+              </div>
+            )}
             {/* MOBILE CARD */}
             <InfiniteDefaultTableMobileCard
               rows={rows}
@@ -381,10 +396,20 @@ const InfiniteSubTable = ({
                                 View Items
                               </button>
                             ) : (
-                              flexRender(
-                                item?.column?.columnDef?.cell,
-                                item?.getContext(),
-                              )
+                              <div className="flex items-center">
+                                {isEmptyItem(
+                                  item?.column?.columnDef?.amount,
+                                  false,
+                                ) ? (
+                                  <PesoSign />
+                                ) : (
+                                  ""
+                                )}
+                                {flexRender(
+                                  item?.column?.columnDef?.cell,
+                                  item?.getContext(),
+                                )}
+                              </div>
                             )}
                             {/* FOR ACTION BUTTONS */}
                             {item?.column?.columnDef?.accessorKey ===

@@ -335,17 +335,7 @@ const ModalSuppliers = ({ itemEdit }) => {
                                   placeholder="Price"
                                   className="input"
                                 />
-                                {/* <span className="font-semibold text-black dark:text-light">
-                                  <AmountWithPesoSign
-                                    classN={"size-3 "}
-                                    classAmnt={"font-bold "}
-                                    amount={numberWithCommasToFixed(
-                                      Number(isEmptyItem(item.price, 0)) *
-                                        Number(isEmptyItem(item.qty, 0)),
-                                      2,
-                                    )}
-                                  />
-                                </span> */}
+
                                 <button
                                   type="button"
                                   onClick={() => handleRemoveItem(index)}

@@ -1,6 +1,6 @@
 import ModalButton from "@/components/buttons/ModalButton";
 import { InputSelectArray } from "@/components/inputs/InputSelect";
-import { InputText } from "@/components/inputs/InputText";
+import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { apiVersion } from "@/config/config";
@@ -128,9 +128,8 @@ const ModalSalesOrders = ({ itemEdit }) => {
                 <Form>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="relative">
-                      <InputText
+                      <InputNumber
                         label="Order Number"
-                        type="number"
                         name="user_account_first_name"
                         placeholder={`${itemEdit ? "Update PO-149181" : "Enter PO-149181"}`}
                         disabled={mutation.isPending}
@@ -240,18 +239,16 @@ const ModalSalesOrders = ({ itemEdit }) => {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="relative mt-3">
-                      <InputText
+                      <InputNumber
                         label="Discount"
-                        type="number"
                         name="user_account_first_name"
                         placeholder={`${itemEdit ? "0" : "0"}`}
                         disabled={mutation.isPending}
                       />
                     </div>
                     <div className="relative mt-3">
-                      <InputText
+                      <InputNumber
                         label="Tax (₱)"
-                        type="number"
                         name="user_account_first_name"
                         placeholder={`${itemEdit ? "0" : "0"}`}
                         disabled={mutation.isPending}
@@ -268,7 +265,10 @@ const ModalSalesOrders = ({ itemEdit }) => {
                     </div>
                     <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end my-3 p-2">
                       <p className="flex flex-col place-self-end text-primary text-lg text-right">
-                        <span className="text-black dark:text-light text-sm">Total</span>₱ 0.00
+                        <span className="text-black dark:text-light text-sm">
+                          Total
+                        </span>
+                        ₱ 0.00
                       </p>
                     </div>
                   </div>
@@ -284,22 +284,22 @@ const ModalSalesOrders = ({ itemEdit }) => {
                   </div>
 
                   <div className="relative my-3 ">
-                      <InputSelectArray
-                        label="Received by:"
-                        type="text"
-                        name="user_account_role_id"
-                        disabled={mutation.isPending}
-                        isLoading={isLoading || isFetching}
-                        error={error}
-                        result={supplier}
-                        onChange={(e) => {
-                          props.values.user_account_role_id = e.target.value;
-                          props.values.user_account_role =
-                            e.target.options[e.target.selectedIndex].text;
-                          return e;
-                        }}
-                      />
-                    </div>
+                    <InputSelectArray
+                      label="Received by:"
+                      type="text"
+                      name="user_account_role_id"
+                      disabled={mutation.isPending}
+                      isLoading={isLoading || isFetching}
+                      error={error}
+                      result={supplier}
+                      onChange={(e) => {
+                        props.values.user_account_role_id = e.target.value;
+                        props.values.user_account_role =
+                          e.target.options[e.target.selectedIndex].text;
+                        return e;
+                      }}
+                    />
+                  </div>
 
                   {store.error && <MessageError />}
                   <div className="modal-action">

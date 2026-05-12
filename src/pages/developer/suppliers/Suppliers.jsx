@@ -140,6 +140,7 @@ const Suppliers = () => {
       classTh: "",
       classTd: "",
       isPrice: true,
+      amount: true,
     },
     {
       accessorKey: "action",

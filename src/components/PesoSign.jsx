@@ -14,3 +14,11 @@ export const AmountWithPesoSign = ({
     </span>
   );
 };
+
+export const PesoSign = () => {
+  return (
+    <PhilippinePeso
+      className={`text-right size-3 text-black dark:text-light mr-1`}
+    />
+  );
+};

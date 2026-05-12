@@ -1,5 +1,5 @@
 import ModalButton from "@/components/buttons/ModalButton";
-import { InputText } from "@/components/inputs/InputText";
+import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { apiVersion } from "@/config/config";
@@ -122,9 +122,8 @@ const ModalCustomer = ({ itemEdit }) => {
                     />
                   </div>
                   <div className="relative mt-3">
-                    <InputText
+                    <InputNumber
                       label="Phone"
-                      type="number"
                       name="customer_phone"
                       placeholder={`${itemEdit ? "Update phone" : "Enter phone"}`}
                       disabled={mutation.isPending}

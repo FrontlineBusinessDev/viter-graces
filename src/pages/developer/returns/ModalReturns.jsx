@@ -1,6 +1,6 @@
 import ModalButton from "@/components/buttons/ModalButton";
 import { InputSelect, InputSelectArray } from "@/components/inputs/InputSelect";
-import { InputText } from "@/components/inputs/InputText";
+import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { apiVersion } from "@/config/config";
@@ -163,9 +163,8 @@ const ModalReturns = ({ itemEdit }) => {
                 <Form>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="relative">
-                      <InputText
+                      <InputNumber
                         label="Return Number"
-                        type="number"
                         name="user_account_first_name"
                         placeholder={`${itemEdit ? "Update PO-149181" : "Enter RET-149181"}`}
                         disabled={mutation.isPending}

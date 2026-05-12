@@ -1,7 +1,7 @@
 import ModalButton from "@/components/buttons/ModalButton";
 import { InputPhotoUpload } from "@/components/inputs/InputFilePhoto";
 import { InputSelectArray } from "@/components/inputs/InputSelect";
-import { InputText } from "@/components/inputs/InputText";
+import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import LoadImages from "@/components/LoadImages";
 import MessageError from "@/components/MessageError";
@@ -161,22 +161,14 @@ const ModalProducts = ({ itemEdit }) => {
                         placeholder={`${itemEdit ? "Update Barcode" : "Barcode"}`}
                         disabled={mutation.isPending}
                       />
-                    </div>
+                    </div>{" "}
                     <div className="relative mt-3">
-                      <InputSelectArray
+                      <InputText
                         label="Category"
                         type="text"
-                        name="user_account_role_id"
+                        name="user_account_first_name"
+                        placeholder={`${itemEdit ? "0.00" : "0.00"}`}
                         disabled={mutation.isPending}
-                        isLoading={isLoading || isFetching}
-                        error={error}
-                        result={roles}
-                        onChange={(e) => {
-                          props.values.user_account_role_id = e.target.value;
-                          props.values.user_account_role =
-                            e.target.options[e.target.selectedIndex].text;
-                          return e;
-                        }}
                       />
                     </div>
                     <div className="relative mt-3">
@@ -197,45 +189,40 @@ const ModalProducts = ({ itemEdit }) => {
                       />
                     </div>
                     <div className="relative mt-3">
-                      <InputText
+                      <InputNumber
                         label="Cost Price"
-                        type="number"
                         name="user_account_first_name"
                         placeholder={`${itemEdit ? "0.00" : "0.00"}`}
                         disabled={mutation.isPending}
                       />
                     </div>
                     <div className="relative mt-3">
-                      <InputText
+                      <InputNumber
                         label="Selling Price"
-                        type="number"
                         name="user_account_first_name"
                         placeholder={`${itemEdit ? "0.00" : "0.00"}`}
                         disabled={mutation.isPending}
                       />
                     </div>
                     <div className="relative mt-3">
-                      <InputText
+                      <InputNumber
                         label="Stock Quantity"
-                        type="number"
                         name="user_account_first_name"
                         placeholder={`${itemEdit ? "0" : "0"}`}
                         disabled={mutation.isPending}
                       />
                     </div>
                     <div className="relative mt-3">
-                      <InputText
+                      <InputNumber
                         label="Low Stock Threshold"
-                        type="number"
                         name="user_account_first_name"
                         placeholder={`${itemEdit ? "0" : "0"}`}
                         disabled={mutation.isPending}
                       />
                     </div>
                     <div className="relative mt-3">
-                      <InputText
+                      <InputNumber
                         label="Unit"
-                        type="number"
                         name="user_account_first_name"
                         placeholder={`${itemEdit ? "pcs" : "pcs"}`}
                         disabled={mutation.isPending}

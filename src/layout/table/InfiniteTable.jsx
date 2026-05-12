@@ -2,6 +2,7 @@ import AddButton from "@/components/buttons/AddButton";
 import ExportCSVButton from "@/components/buttons/ExportCSVButton";
 import { DebouncedInput } from "@/components/inputs/InputText";
 import NoData from "@/components/NoData";
+import { PesoSign } from "@/components/PesoSign";
 import SearchBar from "@/components/SearchBar";
 import ServerError from "@/components/ServerError";
 import ButtonSpinner from "@/components/spinners/ButtonSpinner";
@@ -27,7 +28,6 @@ import TableStatus from "../TableStatus";
 import CustomerMobile from "./CustomerMobile";
 import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
 import ProductsMobile from "./ProductsMobile";
-import ModalSubAction from "../modal/ModalSubAction";
 
 const InfiniteTable = ({
   columns,
@@ -247,6 +247,20 @@ const InfiniteTable = ({
         <div className="relative rounded-xl md:text-center overflow-auto z-0 ">
           {status !== "pending" && isFetching && <TableSpinner />}
           <div className={`${className} `}>
+            {(status === "pending" || rows?.length === 0) && (
+              <div className="lg:hidden p-10">
+                {status === "pending" ? (
+                  <TableLoading count={20} cols={3} />
+                ) : (
+                  <NoData />
+                )}
+              </div>
+            )}
+            {error && (
+              <div className="lg:hidden p-10">
+                <ServerError />
+              </div>
+            )}
             {/* MOBILE CARD */}
             <InfiniteDefaultTableMobileCard
               rows={rows}
@@ -395,10 +409,20 @@ const InfiniteTable = ({
                                 View Items
                               </button>
                             ) : (
-                              flexRender(
-                                item?.column?.columnDef?.cell,
-                                item?.getContext(),
-                              )
+                              <div className="flex items-center">
+                                {isEmptyItem(
+                                  item?.column?.columnDef?.amount,
+                                  false,
+                                ) ? (
+                                  <PesoSign />
+                                ) : (
+                                  ""
+                                )}
+                                {flexRender(
+                                  item?.column?.columnDef?.cell,
+                                  item?.getContext(),
+                                )}
+                              </div>
                             )}
                             {/* FOR ACTION BUTTONS */}
                             {item?.column?.columnDef?.accessorKey ===
