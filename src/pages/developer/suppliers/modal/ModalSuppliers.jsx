@@ -1,12 +1,10 @@
 import ModalButton from "@/components/buttons/ModalButton";
-import { InputSelectArray } from "@/components/inputs/InputSelect";
-import { InputText } from "@/components/inputs/InputText";
-import { InputTextArea } from "@/components/inputs/InputTextArea";
+import { InputSelectWeeksArray } from "@/components/inputs/InputSelect";
+import { InputNumber, InputText } from "@/components/inputs/InputText";
 import MessageError from "@/components/MessageError";
-import { apiVersion, devNavUrl } from "@/config/config";
+import { apiVersion } from "@/config/config";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
-import useQueryData from "@/services/useQueryData";
 import {
   setError,
   setIsAdd,
@@ -14,6 +12,7 @@ import {
   setSuccess,
 } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
+import { getConvertStringToJSONparseData } from "@/utilities/getConvertStringToJSONparseData";
 import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -24,26 +23,29 @@ import * as Yup from "yup";
 
 const ModalSuppliers = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
+  const [itemsContact, setItemsContact] = React.useState(
+    itemEdit
+      ? getConvertStringToJSONparseData(itemEdit?.suppliers_contact_person)
+      : [],
+  );
   const [items, setItems] = React.useState([]);
-  const [itemsContact, setItemsContact] = React.useState([]);
-  const [counter, setCounter] = React.useState(0);
-  const [counterContact, setCounterContact] = React.useState(0);
 
-  const handleAddItem = () => {
-    setItems((prev) => [...prev, { id: counter }]);
-    setCounter((prev) => prev + 1);
-  };
+  const handleContactChange = (index, field, value) => {
+    const updatedContact = [...itemsContact];
 
-  const handleRemoveItem = (id) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
+    updatedContact[index][field] = value;
+
+    setItemsContact(updatedContact);
   };
 
   const handleAddItemContact = () => {
-    if (itemsContact.length >= 2) return;
-
-    setItemsContact((prev) => [...prev, { id: counterContact }]);
-
-    setCounterContact((prev) => prev + 1);
+    setItemsContact([
+      ...itemsContact,
+      {
+        contact_name: "",
+        contact_phone: "",
+      },
+    ]);
   };
 
   const handleClose = () => {
@@ -52,36 +54,27 @@ const ModalSuppliers = ({ itemEdit }) => {
 
   handleEscape(() => handleClose());
 
-  const {
-    isLoading,
-    isFetching,
-    error,
-    data: suppliers,
-  } = useQueryData(
-    `${apiVersion}/suppliers`, // endpoint
-    "get", // method
-    "suppliers", // key
-  );
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
         itemEdit
-          ? `${apiVersion}/users/${itemEdit?.id}`
-          : `${apiVersion}/users`,
+          ? `${apiVersion}/suppliers/${itemEdit?.id}`
+          : `${apiVersion}/suppliers`,
         itemEdit ? "put" : "post",
         values,
       ),
     onSuccess: (data) => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["suppliers"] });
 
       if (data.success) {
         dispatch(setIsAdd(false));
         dispatch(setSuccess(true));
-        dispatch(setMessage(successMsg));
+        dispatch(
+          setMessage(`Successfully ${itemEdit ? "updated" : "created"}`),
+        );
       }
       if (!data.success) {
         dispatch(setError(true));
@@ -90,23 +83,45 @@ const ModalSuppliers = ({ itemEdit }) => {
     },
   });
 
-  const initVal = {
-    user_account_aid: isEmptyItem(itemEdit?.user_account_aid, ""),
-    user_account_first_name: isEmptyItem(itemEdit?.user_account_first_name, ""),
-    user_account_last_name: isEmptyItem(itemEdit?.user_account_last_name, ""),
-    user_account_email: isEmptyItem(itemEdit?.user_account_email, ""),
-    user_account_role_id: isEmptyItem(itemEdit?.user_account_role_id, ""),
-    user_account_role: isEmptyItem(itemEdit?.user_account_role, ""),
+  const handleChange = (index, field, value) => {
+    const updated = [...items];
 
-    name: isEmptyItem(itemEdit?.name, ""),
-    password_link: `/create-password`,
+    updated[index][field] = value;
+
+    setItems(updated);
+  };
+
+  const handleAddItem = () => {
+    setItems([
+      ...items,
+      {
+        product_name: "",
+        price: "",
+        unit: "",
+      },
+    ]);
+  };
+
+  const handleRemoveItem = (index) => {
+    setItems(items.filter((_, i) => i !== index));
+  };
+  const initVal = {
+    suppliers_name: isEmptyItem(itemEdit?.suppliers_name, ""),
+    suppliers_email: isEmptyItem(itemEdit?.suppliers_email, ""),
+    suppliers_phone: isEmptyItem(itemEdit?.suppliers_phone, ""),
+    suppliers_address: isEmptyItem(itemEdit?.suppliers_address, ""),
+    suppliers_messenger: isEmptyItem(itemEdit?.suppliers_messenger, ""),
+    suppliers_whatsapp: isEmptyItem(itemEdit?.suppliers_whatsapp, ""),
+    suppliers_other: isEmptyItem(itemEdit?.suppliers_other, ""),
+    suppliers_delivery: isEmptyItem(itemEdit?.suppliers_delivery, ""),
+    suppliers_contact_person: "",
+    suppliers_notes: isEmptyItem(itemEdit?.suppliers_notes, ""),
+
+    suppliers_name_old: isEmptyItem(itemEdit?.suppliers_name, ""),
   };
 
   const yupSchema = Yup.object({
-    user_account_first_name: Yup.string().trim().required("Required"),
-    user_account_last_name: Yup.string().trim().required("Required"),
-    user_account_email: Yup.string().trim().required("Required"),
-    user_account_role_id: Yup.string().trim().required("Required"),
+    suppliers_name: Yup.string().trim().required("Required"),
   });
 
   React.useEffect(() => {
@@ -129,8 +144,13 @@ const ModalSuppliers = ({ itemEdit }) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
               // mutate data
-              // console.log(values);
-              mutation.mutate(values);
+              const data = {
+                ...values,
+                suppliers_contact_person: JSON.stringify(itemsContact),
+                suppliers_products: items,
+              };
+
+              mutation.mutate(data);
             }}
           >
             {(props) => {
@@ -141,36 +161,38 @@ const ModalSuppliers = ({ itemEdit }) => {
                       <InputText
                         label="Name"
                         type="text"
-                        name="user_account_first_name"
+                        name="suppliers_name"
                         placeholder={`${itemEdit ? "Update name" : "Enter name"}`}
                         disabled={mutation.isPending}
                       />
                     </div>
                     <div className="relative ">
-                      <InputText
+                      <InputNumber
                         label="Phone"
-                        type="text"
-                        name="user_account_last_name"
+                        name="suppliers_phone"
                         placeholder={`${itemEdit ? "Update phone" : "Enter phone"}`}
                         disabled={mutation.isPending}
+                        required={false}
                       />
                     </div>
                     <div className="relative mt-3">
                       <InputText
                         label="Email"
                         type="text"
-                        name="user_account_email"
+                        name="suppliers_email"
                         placeholder={`${itemEdit ? "Update user email" : "Enter new user email"}`}
                         disabled={mutation.isPending}
+                        required={false}
                       />
                     </div>
                     <div className="relative mt-3">
                       <InputText
                         label="Address"
                         type="text"
-                        name="user_account_last_name"
+                        name="suppliers_address"
                         placeholder={`${itemEdit ? "Update Address" : "Enter Address"}`}
                         disabled={mutation.isPending}
+                        required={false}
                       />
                     </div>
                   </div>
@@ -179,28 +201,31 @@ const ModalSuppliers = ({ itemEdit }) => {
                     <div className="relative mt-3">
                       <InputText
                         label="Messenger"
-                        type="number"
-                        name="user_account_email"
-                        placeholder={`${itemEdit ? "Messenger" : "Messenger"}`}
+                        type="text"
+                        name="suppliers_messenger"
+                        placeholder={`Messenger`}
                         disabled={mutation.isPending}
+                        required={false}
                       />
                     </div>
                     <div className="relative mt-3">
                       <InputText
                         label="WhatsApp"
-                        type="number"
-                        name="user_account_email"
-                        placeholder={`${itemEdit ? "WhatsApp" : "WhatsApp"}`}
+                        type="text"
+                        name="suppliers_whatsapp"
+                        placeholder={`WhatsApp`}
                         disabled={mutation.isPending}
+                        required={false}
                       />
                     </div>
                     <div className="relative mt-3">
                       <InputText
                         label="Other"
-                        type="number"
-                        name="user_account_email"
-                        placeholder={`${itemEdit ? "Other" : "Other"}`}
+                        type="text"
+                        name="suppliers_other"
+                        placeholder={`Other`}
                         disabled={mutation.isPending}
+                        required={false}
                       />
                     </div>
                   </div>
@@ -222,103 +247,131 @@ const ModalSuppliers = ({ itemEdit }) => {
                     </a>
                   </div>
 
-                  {itemsContact.map((item, index) => (
-                    <div key={item.id} className="grid grid-cols-2 gap-2 mb-3">
+                  {itemsContact.map((item, key) => (
+                    <div key={key} className="grid grid-cols-2 gap-2 mb-3">
                       <div className="relative">
-                        <InputText
-                          label={`Name ${index + 1}`}
-                          type="text"
-                          name={`contact_name_${index}`}
-                          placeholder="Enter name"
-                          disabled={mutation.isPending}
+                        <label>Contact Name</label>
+                        <input
+                          defaultValue={item?.contact_name}
+                          onChange={(e) =>
+                            handleContactChange(
+                              key,
+                              "contact_name",
+                              e.target.value || item?.contact_name,
+                            )
+                          }
                         />
                       </div>
-
                       <div className="relative">
-                        <InputText
-                          label={`Phone ${index + 1}`}
-                          type="text"
-                          name={`contact_phone_${index}`}
-                          placeholder="Enter phone"
-                          disabled={mutation.isPending}
+                        <label>Contact Phone</label>
+                        <input
+                          defaultValue={item?.contact_phone}
+                          type="number"
+                          onChange={(e) =>
+                            handleContactChange(
+                              key,
+                              "contact_phone",
+                              e.target.value || item?.contact_phone,
+                            )
+                          }
                         />
                       </div>
                     </div>
                   ))}
 
-                  <div className="flex my-7 justify-between">
-                    <label htmlFor="">Items</label>
-                    <a
-                      className="flex items-center justify-center text-black gap-2 px-3 py-1.5 bg-transparent rounded-md border-gray-300 border min-w-20 hover:bg-primary transition-all duration-300 ease-in-out hover:text-light dark:text-light cursor-pointer"
-                      onClick={handleAddItem}
-                    >
-                      <Plus size={15} />
-                      <span className="capitalize leading-0">Add Item</span>
-                    </a>
-                  </div>
-
-                  <div className="border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out ">
-                    {items.length === 0 ? (
-                      <div className="h-20 flex items-center justify-center ">
-                        <p>No Items added yet.</p>
+                  {itemEdit ? (
+                    ""
+                  ) : (
+                    <>
+                      <div className="flex my-7 justify-between">
+                        <label htmlFor="">Items</label>
+                        <a
+                          className="flex items-center justify-center text-black gap-2 px-3 py-1.5 bg-transparent rounded-md border-gray-300 border min-w-20 hover:bg-primary transition-all duration-300 ease-in-out hover:text-light dark:text-light cursor-pointer"
+                          onClick={handleAddItem}
+                        >
+                          <Plus size={15} />
+                          <span className="capitalize leading-0">Add Item</span>
+                        </a>
                       </div>
-                    ) : (
-                      <div className="flex flex-col">
-                        <ul className="hidden md:grid grid-cols-[2.2fr_1fr_2fr] px-3 mt-2 text-dark">
-                          <li>Item(s)</li>
-                          <li>Unit</li>
-                          <li>Est. Cost</li>
-                        </ul>
-                        {items.map((item, index) => (
-                          <div
-                            key={index}
-                            className="grid grid-cols-2 md:grid md:grid-cols-[12fr_1fr_1fr_1fr_1fr] gap-3 items-center p-3 mt-1"
-                          >
-                            <input
-                              type="text"
-                              placeholder="Product Name"
-                              className="input"
-                            />
-                            <input
-                              type="number"
-                              placeholder="Qty"
-                              className="input md:w-20"
-                            />
-                            <input
-                              type="number"
-                              placeholder="Price"
-                              className="input md:w-24"
-                            />
-                            <span className="font-semibold text-black dark:text-light">
-                              ₱0.00
-                            </span>
-                            <button
-                              onClick={() => handleRemoveItem(item.id)}
-                              className="text-red-500 text-xl"
-                            >
-                              ✕
-                            </button>
+                      <div className="border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out ">
+                        {items.length === 0 ? (
+                          <div className="h-20 flex items-center justify-center ">
+                            <p>No Items added yet.</p>
                           </div>
-                        ))}
+                        ) : (
+                          <div className="flex flex-col">
+                            <ul className="hidden md:grid grid-cols-[2.2fr_1fr_1fr_2rem] px-3 mt-2 text-dark">
+                              <li>Item(s)</li>
+                              <li>Unit</li>
+                              <li>Est. Cost</li>
+                            </ul>
+                            {items.map((item, index) => (
+                              <div
+                                key={index}
+                                className="grid grid-cols-2 md:grid md:grid-cols-[2.2fr_1fr_1fr_2rem] gap-2 items-center px-3 pb-3 mt-1"
+                              >
+                                <input
+                                  onChange={(e) =>
+                                    handleChange(
+                                      index,
+                                      "product_name",
+                                      e.target.value,
+                                    )
+                                  }
+                                  placeholder="Product Name"
+                                />
+                                <input
+                                  onChange={(e) =>
+                                    handleChange(index, "unit", e.target.value)
+                                  }
+                                  placeholder="Unit"
+                                  className="input"
+                                />
+                                <input
+                                  type="number"
+                                  onChange={(e) =>
+                                    handleChange(index, "price", e.target.value)
+                                  }
+                                  placeholder="Price"
+                                  className="input"
+                                />
+                                {/* <span className="font-semibold text-black dark:text-light">
+                                  <AmountWithPesoSign
+                                    classN={"size-3 "}
+                                    classAmnt={"font-bold "}
+                                    amount={numberWithCommasToFixed(
+                                      Number(isEmptyItem(item.price, 0)) *
+                                        Number(isEmptyItem(item.qty, 0)),
+                                      2,
+                                    )}
+                                  />
+                                </span> */}
+                                <button
+                                  type="button"
+                                  onClick={() => handleRemoveItem(index)}
+                                  className="text-red-500 text-xl"
+                                >
+                                  ✕
+                                </button>
+                              </div>
+                            ))}
+                          </div>
+                        )}
                       </div>
-                    )}
-                  </div>
+                    </>
+                  )}
 
                   <div className="relative mt-3">
-                    <InputText
-                      label="Delivery Date"
-                      type="date"
-                      name="user_account_email"
-                      disabled={mutation.isPending}
-                    />
-                  </div>
-                  <div className="relative mt-3">
-                    <InputTextArea
-                      label="Notes"
+                    <InputSelectWeeksArray
+                      label="Delivery"
+                      path="Weeks"
                       type="text"
-                      name="user_account_email"
-                      placeholder={`${itemEdit ? "Update notes" : "Enter notes"}`}
+                      name="suppliers_delivery"
                       disabled={mutation.isPending}
+                      onChange={(e) => {
+                        props.values.suppliers_delivery = e.target.value;
+                        return e;
+                      }}
                     />
                   </div>
 

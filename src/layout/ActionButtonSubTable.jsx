@@ -1,36 +1,11 @@
 import ActionButton from "@/components/buttons/ActionButton";
-import {
-  setIsAction,
-  setIsAdd,
-  setIsSubAction,
-  setIsSubAdd,
-} from "@/store/StoreAction";
+import { setIsSubAction, setIsSubAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import React from "react";
 
-const ActionButtonTable = ({
-  item,
-  dataArray,
-  setData,
-  setItemEdit,
-  ishaveSubAdd = false,
-}) => {
+const ActionButtonSubTable = ({ item, dataArray, setData, setItemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
-
-  // ACTIONS ACHIEVE, RESTORE AND DELETE
-  const handleAction = (val) => {
-    console.log("1523");
-    dispatch(setIsAction(true));
-    setData({
-      ...dataArray,
-      path:
-        val?.name !== "delete"
-          ? `${val?.path}/${dataArray?.id}`
-          : `${dataArray?.id}`,
-      action: val?.name,
-    });
-  };
 
   // ACTIONS SUB ACHIEVE, RESTORE AND DELETE
   const handleSubAction = (val) => {
@@ -52,13 +27,6 @@ const ActionButtonTable = ({
       ...dataArray,
     });
   };
-  // ACTIONS UPDATE
-  const handleUpdate = (val) => {
-    dispatch(setIsAdd(true));
-    setItemEdit({
-      ...dataArray,
-    });
-  };
 
   return (
     <>
@@ -69,12 +37,7 @@ const ActionButtonTable = ({
             Number(isEmptyItem(a?.isActive, 1)) ===
               Number(isEmptyItem(dataArray?.is_active, 1)) && (
               <div key={key}>
-                <ActionButton
-                  item={a}
-                  onClick={() =>
-                    ishaveSubAdd ? handleSubUpdate(a) : handleUpdate(a)
-                  }
-                />
+                <ActionButton item={a} onClick={() => handleSubUpdate(a)} />
               </div>
             )
           );
@@ -85,12 +48,7 @@ const ActionButtonTable = ({
             Number(isEmptyItem(a?.isActive, 1)) ===
               Number(isEmptyItem(dataArray?.is_active, 1)) && (
               <div key={key}>
-                <ActionButton
-                  item={a}
-                  onClick={() =>
-                    ishaveSubAdd ? handleSubAction(a) : handleAction(a)
-                  }
-                />
+                <ActionButton item={a} onClick={() => handleSubAction(a)} />
               </div>
             )
           );
@@ -100,4 +58,4 @@ const ActionButtonTable = ({
   );
 };
 
-export default ActionButtonTable;
+export default ActionButtonSubTable;

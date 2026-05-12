@@ -44,3 +44,17 @@ RewriteRule ^customer/([0-9]+)$ controllers/developer/customer/customer.php?id=$
 RewriteRule ^customer/active/([0-9]+)$ controllers/developer/customer/active.php?id=$1 [L] 
 RewriteRule ^customer/page/([0-9]+)$ controllers/developer/customer/page.php?start=$1 [L]
 RewriteRule ^customer/search$ controllers/developer/customer/search.php [L]
+
+### SUPPLIERS ###
+RewriteRule ^suppliers$ controllers/developer/suppliers/suppliers.php [L]
+RewriteRule ^suppliers/([0-9]+)$ controllers/developer/suppliers/suppliers.php?id=$1 [L]
+RewriteRule ^suppliers/active/([0-9]+)$ controllers/developer/suppliers/active.php?id=$1 [L] 
+RewriteRule ^suppliers/page/([0-9]+)$ controllers/developer/suppliers/page.php?start=$1 [L]
+RewriteRule ^suppliers/search$ controllers/developer/suppliers/search.php [L]
+
+### SUPPLIERS ###
+RewriteRule ^suppliers-product$ controllers/developer/suppliers/product/suppliers-product.php [L]
+RewriteRule ^suppliers-product/([0-9]+)$ controllers/developer/suppliers/product/suppliers-product.php?id=$1 [L] 
+RewriteRule ^suppliers-product/active/([0-9]+)$ controllers/developer/suppliers/product/active.php?id=$1 [L] 
+RewriteRule ^suppliers-product/page/([0-9]+)$ controllers/developer/suppliers/product/page.php?start=$1 [L]
+RewriteRule ^suppliers-product/search$ controllers/developer/suppliers/product/search.php [L]

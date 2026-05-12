@@ -14,6 +14,7 @@ const Customers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
   const [isView, setView] = React.useState(false);
+  const [itemVal, setItemVal] = React.useState(null);
   // Columns
   const columns = [
     {
@@ -45,22 +46,25 @@ const Customers = () => {
       classTd: "",
     },
     {
-      accessorKey: "customer_messenger",
+      accessorKey: "messenger",
       header: "social",
+      link: "https://www.facebook.com/",
       icon: <FaFacebookMessenger className="text-blue-500 size-4" />,
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "customer_whatsapp",
+      accessorKey: "whatsapp",
       header: "social",
+      link: "https://www.whatsapp.com/",
       icon: <IoLogoWhatsapp className="text-green-500 size-4.5" />,
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "customer_other",
+      accessorKey: "other",
       header: "social",
+      link: "#",
       icon: <AiFillMessage className="text-green-500 size-4.5" />,
       classTh: "",
       classTd: "",
@@ -130,16 +134,18 @@ const Customers = () => {
           path={"customer"}
           itemEdit={itemEdit}
           setItemEdit={setItemEdit}
+          setItemVal={setItemVal}
           isView={isView}
           setView={setView}
           isSearch={false}
           ishaveAdd={false}
+          ishaveSubAdd={false}
           isDefaultMobile="customer"
         />
       </HeaderNav>
       {store.isAdd && <ModalCustomer itemEdit={itemEdit} />}
 
-      {store.isView && <ViewDetails itemEdit={itemEdit} />}
+      {store.isView && <ViewDetails itemEdit={itemEdit} item={itemVal} />}
     </>
   );
 };

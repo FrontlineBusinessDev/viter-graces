@@ -88,6 +88,9 @@ class Customer
         try {
             $sql = "select *, ";
             $sql .= "customer_aid as id, ";
+            $sql .= "customer_messenger as messenger, ";
+            $sql .= "customer_whatsapp as whatsapp, ";
+            $sql .= "customer_other as other, ";
             $sql .= "customer_is_active as is_active, ";
             $sql .= "customer_name as name ";
             $sql .= "from {$this->tblCustomer} ";
@@ -125,6 +128,9 @@ class Customer
         try {
             $sql = "select *, ";
             $sql .= "customer_aid as id, ";
+            $sql .= "customer_messenger as messenger, ";
+            $sql .= "customer_whatsapp as whatsapp, ";
+            $sql .= "customer_other as other, ";
             $sql .= "customer_is_active as is_active, ";
             $sql .= "customer_name as name ";
             $sql .= "from {$this->tblCustomer} ";
@@ -160,6 +166,9 @@ class Customer
         try {
             $sql = "select *, ";
             $sql .= "customer_aid as id, ";
+            $sql .= "customer_messenger as messenger, ";
+            $sql .= "customer_whatsapp as whatsapp, ";
+            $sql .= "customer_other as other, ";
             $sql .= "customer_is_active as is_active, ";
             $sql .= "customer_name as name ";
             $sql .= "from ";
@@ -186,6 +195,9 @@ class Customer
         try {
             $sql = "select *, ";
             $sql .= "customer_aid as id, ";
+            $sql .= "customer_messenger as messenger, ";
+            $sql .= "customer_whatsapp as whatsapp, ";
+            $sql .= "customer_other as other, ";
             $sql .= "customer_is_active as is_active, ";
             $sql .= "customer_name as name ";
             $sql .= "from {$this->tblCustomer} ";

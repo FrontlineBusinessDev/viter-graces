@@ -73,7 +73,6 @@ const ModalCustomer = ({ itemEdit }) => {
 
   const yupSchema = Yup.object({
     customer_name: Yup.string().trim().required("Required"),
-    customer_email: Yup.string().trim().required("Required"),
   });
 
   React.useEffect(() => {
@@ -119,6 +118,7 @@ const ModalCustomer = ({ itemEdit }) => {
                       name="customer_email"
                       placeholder={`${itemEdit ? "Update email" : "Enter new email"}`}
                       disabled={mutation.isPending}
+                      required={false}
                     />
                   </div>
                   <div className="relative mt-3">

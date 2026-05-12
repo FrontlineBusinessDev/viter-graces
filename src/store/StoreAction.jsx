@@ -26,6 +26,13 @@ export const setIsAction = (val) => {
   };
 };
 
+export const setIsSubAction = (val) => {
+  return {
+    type: "SUB_ACTION",
+    payload: val,
+  };
+};
+
 export const setIsLogin = (val) => {
   return {
     type: "IS_LOGIN",
@@ -50,6 +57,13 @@ export const setIsResetPass = (val) => {
 export const setIsAdd = (val) => {
   return {
     type: "IS_ADD",
+    payload: val,
+  };
+};
+
+export const setIsSubAdd = (val) => {
+  return {
+    type: "IS_SUB_ADD",
     payload: val,
   };
 };
