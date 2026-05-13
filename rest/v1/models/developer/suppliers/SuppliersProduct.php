@@ -73,7 +73,11 @@ class SuppliersProduct
         $filterColumn = [];
 
         foreach ($this->filters as $item) {
-            $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+            if (is_array($item['value'])) {
+                $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
+            } else {
+                $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+            }
         }
         try {
             $sql = "select *, ";
@@ -81,14 +85,13 @@ class SuppliersProduct
             $sql .= "suppliers_product_is_active as is_active, ";
             $sql .= "suppliers_product_name as name ";
             $sql .= "from {$this->tblSuppliersProduct} ";
+            $sql .= " where suppliers_product_supplier_id = :suppliers_product_supplier_id ";
             if (!empty($filterColumn)) {
-                $sql .= " where " . implode(" and ", $filterColumn);
+                $sql .= " and " . implode(" and ", $filterColumn);
             } else {
-                $sql .= " where true ";
+                $sql .= ($this->column_search != "" ? "and suppliers_product_name like :suppliers_product_name " : " ");
             }
-            $sql .= " and suppliers_product_supplier_id = :suppliers_product_supplier_id ";
-            $sql .= ($this->column_search != "" ? "and suppliers_product_name like :suppliers_product_name " : " ");
-            $sql .= "order by suppliers_product_name asc ";
+            $sql .= " order by suppliers_product_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "suppliers_product_supplier_id" => $this->suppliers_product_supplier_id,
@@ -109,7 +112,11 @@ class SuppliersProduct
         $filterColumn = [];
 
         foreach ($this->filters as $item) {
-            $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+            if (is_array($item['value'])) {
+                $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
+            } else {
+                $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+            }
         }
         try {
             $sql = "select *, ";
@@ -117,14 +124,13 @@ class SuppliersProduct
             $sql .= "suppliers_product_is_active as is_active, ";
             $sql .= "suppliers_product_name as name ";
             $sql .= "from {$this->tblSuppliersProduct} ";
+            $sql .= " where suppliers_product_supplier_id = :suppliers_product_supplier_id ";
             if (!empty($filterColumn)) {
-                $sql .= " where " . implode(" and ", $filterColumn);
+                $sql .= " and " . implode(" and ", $filterColumn);
             } else {
-                $sql .= " where true ";
+                $sql .= ($this->column_search != "" ? "and suppliers_product_name like :suppliers_product_name " : " ");
             }
-            $sql .= " and suppliers_product_supplier_id = :suppliers_product_supplier_id ";
-            $sql .= ($this->column_search != "" ? "and suppliers_product_name like :suppliers_product_name " : " ");
-            $sql .= "order by suppliers_product_name asc ";
+            $sql .= " order by suppliers_product_name asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);

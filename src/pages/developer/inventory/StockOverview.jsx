@@ -1,11 +1,11 @@
+import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import { TriangleAlert } from "lucide-react";
 import React from "react";
 import ModalStockOverview from "./modal/ModalStockOverview";
-import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
-import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 const StockOverview = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -20,7 +20,7 @@ const StockOverview = () => {
       filterFn: "equals",
       meta: {
         filterComponent: (column) => (
-          <SearchableSelectFilter
+          <SearchableSelectFilterStatus
             column={column}
             options={ActiveInActiveStatus()}
           />

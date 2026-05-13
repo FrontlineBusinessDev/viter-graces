@@ -81,7 +81,11 @@ class ProductOwner
         $filterColumn = [];
 
         foreach ($this->filters as $item) {
-            $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+            if (is_array($item['value'])) {
+                $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
+            } else {
+                $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+            }
         }
         try {
             $sql = "select *, ";
@@ -90,15 +94,16 @@ class ProductOwner
             $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) as name ";
             $sql .= "from {$this->tblUserAccount} ";
             $sql .= "where user_account_role = 'Product Owner' ";
-            $sql .= ($this->column_search != "" ? "and (user_account_first_name like :user_account_first_name 
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and (user_account_first_name like :user_account_first_name 
                                                     or user_account_last_name like :user_account_last_name 
                                                     or CONCAT(user_account_first_name, ' ', user_account_last_name) like :name 
                                                     or CONCAT(user_account_last_name, ', ', user_account_first_name) like :fullname 
                                                     or user_account_role like :user_account_role ) " : " ");
-            if (!empty($filterColumn)) {
-                $sql .= " and " . implode(" and ", $filterColumn);
             }
-            $sql .= "order by user_account_is_active desc, ";
+            $sql .= " order by user_account_is_active desc, ";
             $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
@@ -124,7 +129,11 @@ class ProductOwner
         $filterColumn = [];
 
         foreach ($this->filters as $item) {
-            $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+            if (is_array($item['value'])) {
+                $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
+            } else {
+                $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+            }
         }
         try {
             $sql = "select *, ";
@@ -132,17 +141,17 @@ class ProductOwner
             $sql .= "user_account_is_active as is_active, ";
             $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) as name ";
             $sql .= "from {$this->tblUserAccount} ";
-            $sql .= "where true ";
-            $sql .= ($this->isDeveloper != "1" ? "and user_account_role != 'Developer'  " : " ");
-            $sql .= ($this->column_search != "" ? "and (user_account_first_name like :user_account_first_name 
+            $sql .= "where user_account_role = 'Product Owner' ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and (user_account_first_name like :user_account_first_name 
                                                     or user_account_last_name like :user_account_last_name 
                                                     or CONCAT(user_account_first_name, ' ', user_account_last_name) like :name 
                                                     or CONCAT(user_account_last_name, ', ', user_account_first_name) like :fullname 
                                                     or user_account_role like :user_account_role ) " : " ");
-            if (!empty($filterColumn)) {
-                $sql .= " and " . implode(" and ", $filterColumn);
             }
-            $sql .= "order by user_account_is_active desc, ";
+            $sql .= " order by user_account_is_active desc, ";
             $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";

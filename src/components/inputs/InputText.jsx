@@ -1,4 +1,5 @@
 import { StoreContext } from "@/store/StoreContext";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useField } from "formik";
 import React from "react";
 
@@ -93,11 +94,11 @@ export const InputMaxMinValue = ({ column }) => {
 
   return (
     <>
-      <div className="flex gap-1">
+      <div className="flex items-center gap-1">
         {/* MIN */}
         <input
           type="number"
-          value={value?.min}
+          value={value?.min ?? ""}
           placeholder="Min"
           className={`bg-white m-0! w-full! text-sm border rounded-md cursor-pointer! isFocused:border-primary!
                               isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! `}
@@ -112,11 +113,11 @@ export const InputMaxMinValue = ({ column }) => {
             column.setFilterValue(newValue);
           }}
         />
-
+        <span className="font-bold">-</span>
         {/* MAX */}
         <input
           type="number"
-          value={value?.max}
+          value={value?.max ?? ""}
           placeholder="Max"
           className={`bg-white m-0! w-full! text-sm border rounded-md cursor-pointer! isFocused:border-primary!
                               isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! `}
@@ -254,6 +255,7 @@ export const InputCode = ({ length, loading, onComplete }) => {
 export const DebouncedInput = ({
   value: initialValue,
   onChange,
+  filterFn,
   debounce = 500,
   ...props
 }) => {
@@ -272,10 +274,51 @@ export const DebouncedInput = ({
   }, [value]);
 
   return (
-    <input
-      {...props}
-      value={value ?? ""}
-      onChange={(e) => setValue(e.target.value)}
-    />
+    <>
+      {isEmptyItem(filterFn, "auto") === "auto" && (
+        <input
+          {...props}
+          value={value ?? ""}
+          onChange={(e) => setValue(e.target.value)}
+        />
+      )}
+      {isEmptyItem(filterFn, "") === "between" && (
+        <div className="flex items-center gap-1">
+          <input
+            {...props}
+            value={value?.min ?? ""}
+            type="number"
+            onChange={(e) => {
+              let min = Number(e.target.value ? Number(e.target.value) : "0");
+              let max = value?.max ?? "";
+              const newValue = {
+                ...value,
+                min,
+                max,
+              };
+              setValue(newValue);
+            }}
+            placeholder="0"
+          />
+          <span className="font-bold">-</span>
+          <input
+            {...props}
+            value={value?.max ?? ""}
+            type="number"
+            onChange={(e) => {
+              let max = Number(e.target.value ? Number(e.target.value) : "0");
+              let min = value?.min ?? "";
+              const newValue = {
+                ...value,
+                min,
+                max,
+              };
+              setValue(newValue);
+            }}
+            placeholder="max"
+          />
+        </div>
+      )}
+    </>
   );
 };

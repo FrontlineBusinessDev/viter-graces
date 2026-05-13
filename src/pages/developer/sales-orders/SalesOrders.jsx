@@ -1,11 +1,11 @@
+import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import { ArchiveRestore, Edit, Eye, RotateCcw, Trash } from "lucide-react";
 import React from "react";
 import ModalSalesOrders from "./ModalSalesOrders";
-import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
-import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import ViewSalesDetails from "./ViewSalesDetails";
 
 const SalesOrders = () => {
@@ -23,7 +23,7 @@ const SalesOrders = () => {
       filterFn: "equals",
       meta: {
         filterComponent: (column) => (
-          <SearchableSelectFilter
+          <SearchableSelectFilterStatus
             column={column}
             options={ActiveInActiveStatus()}
           />

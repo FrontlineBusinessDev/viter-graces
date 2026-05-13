@@ -5,7 +5,6 @@ import {
   RotateCcw,
   Trash,
 } from "lucide-react";
-import { number } from "yup";
 
 export const ActiveInActiveStatus = () => {
   return [

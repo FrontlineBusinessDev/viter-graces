@@ -1,10 +1,10 @@
+import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ReportsStats from "../ReportsStats";
-import { ActiveInActiveStatus } from "@/layout/ArrayValue";
-import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
 
 const SalesReports = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -20,7 +20,7 @@ const SalesReports = () => {
       filterFn: "equals",
       meta: {
         filterComponent: (column) => (
-          <SearchableSelectFilter
+          <SearchableSelectFilterStatus
             column={column}
             options={ActiveInActiveStatus()}
           />

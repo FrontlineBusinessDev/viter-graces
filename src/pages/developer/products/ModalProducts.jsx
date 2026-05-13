@@ -43,31 +43,20 @@ const ModalProducts = ({ itemEdit }) => {
     filesArrayList,
   } = useUploadMultipleFiles(`${apiVersion}/upload-multiple-files`, dispatch);
 
-  const {
-    isLoading,
-    isFetching,
-    error,
-    data: roles,
-  } = useQueryData(
-    `${apiVersion}/roles`, // endpoint
-    "get", // method
-    "roles", // key
-  );
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
         itemEdit
-          ? `${apiVersion}/users/${itemEdit?.id}`
-          : `${apiVersion}/users`,
+          ? `${apiVersion}/products/${itemEdit?.id}`
+          : `${apiVersion}/products`,
         itemEdit ? "put" : "post",
         values,
       ),
     onSuccess: (data) => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
 
       if (data.success) {
         dispatch(setIsAdd(false));
@@ -82,30 +71,43 @@ const ModalProducts = ({ itemEdit }) => {
   });
 
   const initVal = {
-    user_account_aid: isEmptyItem(itemEdit?.user_account_aid, ""),
-    user_account_first_name: isEmptyItem(itemEdit?.user_account_first_name, ""),
-    user_account_last_name: isEmptyItem(itemEdit?.user_account_last_name, ""),
-    user_account_email: isEmptyItem(itemEdit?.user_account_email, ""),
-    user_account_role_id: isEmptyItem(itemEdit?.user_account_role_id, ""),
-    user_account_role: isEmptyItem(itemEdit?.user_account_role, ""),
-
-    name: isEmptyItem(itemEdit?.name, ""),
-    password_link: `/create-password`,
+    products_name: isEmptyItem(itemEdit?.products_name, ""),
+    products_image: isEmptyItem(itemEdit?.products_image, ""),
+    // products_image: isEmptyItem(itemEdit?.products_image, []),
+    products_sku: isEmptyItem(itemEdit?.products_sku, ""),
+    products_category: isEmptyItem(itemEdit?.products_category, ""),
+    products_price: isEmptyItem(itemEdit?.products_price, ""),
+    products_cost: isEmptyItem(itemEdit?.products_cost, ""),
+    products_stocks: isEmptyItem(itemEdit?.products_stocks, ""),
+    products_owner_id: isEmptyItem(itemEdit?.products_owner_id, ""),
+    products_owner_name: isEmptyItem(itemEdit?.products_owner_name, ""),
+    products_suppliers_id: isEmptyItem(itemEdit?.products_suppliers_id, ""),
+    products_suppliers_name: isEmptyItem(itemEdit?.products_suppliers_name, ""),
+    products_sales: isEmptyItem(itemEdit?.products_sales, ""),
+    products_unit: isEmptyItem(itemEdit?.products_unit, ""),
+    products_barcode: isEmptyItem(itemEdit?.products_barcode, ""),
+    products_low_stock_threshold: isEmptyItem(
+      itemEdit?.products_low_stock_threshold,
+      "",
+    ),
+    products_description: isEmptyItem(itemEdit?.products_description, ""),
+    products_name_old: isEmptyItem(itemEdit?.products_name, ""),
+    products_image_old: isEmptyItem(itemEdit?.products_image, ""),
+    pendingDeleteFile: [],
   };
 
   const yupSchema = Yup.object({
-    user_account_first_name: Yup.string().trim().required("Required"),
-    user_account_last_name: Yup.string().trim().required("Required"),
-    user_account_email: Yup.string().trim().required("Required"),
-    user_account_role_id: Yup.string().trim().required("Required"),
+    products_name: Yup.string().trim().required("Required"),
+    products_price: Yup.string().trim().required("Required"),
+    products_low_stock_threshold: Yup.string().trim().required("Required"),
   });
 
   React.useEffect(() => {
     if (itemEdit) {
-      const files = getConvertStringToJSONparseData(itemEdit.product_photo);
+      const files = getConvertStringToJSONparseData(itemEdit.products_image);
       setFilesArrayList(files);
     }
-  }, [itemEdit?.product_photo]);
+  }, [itemEdit?.products_image]);
 
   return (
     <>
@@ -137,7 +139,7 @@ const ModalProducts = ({ itemEdit }) => {
                     <InputText
                       label="Product Name"
                       type="text"
-                      name="user_account_first_name"
+                      name="products_name"
                       placeholder={`${itemEdit ? "Update product" : "Product Name"}`}
                       disabled={mutation.isPending}
                     />
@@ -148,98 +150,103 @@ const ModalProducts = ({ itemEdit }) => {
                       <InputText
                         label="SKU"
                         type="text"
-                        name="user_account_first_name"
+                        name="products_sku"
                         placeholder={`${itemEdit ? "Update SKU code" : "SKU code"}`}
                         disabled={mutation.isPending}
+                        required={false}
                       />
                     </div>
                     <div className="relative mt-3">
                       <InputText
                         label="Barcode"
                         type="text"
-                        name="user_account_first_name"
+                        name="products_barcode"
                         placeholder={`${itemEdit ? "Update Barcode" : "Barcode"}`}
                         disabled={mutation.isPending}
+                        required={false}
                       />
-                    </div>{" "}
+                    </div>
                     <div className="relative mt-3">
                       <InputText
                         label="Category"
                         type="text"
-                        name="user_account_first_name"
-                        placeholder={`${itemEdit ? "0.00" : "0.00"}`}
+                        name="products_category"
+                        placeholder={`${itemEdit ? "Update Category" : "Category"}`}
                         disabled={mutation.isPending}
+                        required={false}
                       />
                     </div>
                     <div className="relative mt-3">
                       <InputSelectArray
-                        label="Supplier"
+                        label="Suppliers"
                         type="text"
-                        name="user_account_role_id"
-                        disabled={mutation.isPending}
-                        isLoading={isLoading || isFetching}
-                        error={error}
-                        result={roles}
+                        path="suppliers"
+                        name="products_suppliers_id"
                         onChange={(e) => {
-                          props.values.user_account_role_id = e.target.value;
-                          props.values.user_account_role =
+                          props.values.products_suppliers_id = e.target.value;
+                          props.values.products_suppliers_name =
                             e.target.options[e.target.selectedIndex].text;
                           return e;
                         }}
+                        required={false}
                       />
                     </div>
                     <div className="relative mt-3">
                       <InputNumber
                         label="Cost Price"
-                        name="user_account_first_name"
+                        name="products_cost"
                         placeholder={`${itemEdit ? "0.00" : "0.00"}`}
                         disabled={mutation.isPending}
+                        required={false}
                       />
                     </div>
                     <div className="relative mt-3">
                       <InputNumber
                         label="Selling Price"
-                        name="user_account_first_name"
+                        name="products_price"
                         placeholder={`${itemEdit ? "0.00" : "0.00"}`}
                         disabled={mutation.isPending}
                       />
                     </div>
-                    <div className="relative mt-3">
-                      <InputNumber
-                        label="Stock Quantity"
-                        name="user_account_first_name"
-                        placeholder={`${itemEdit ? "0" : "0"}`}
-                        disabled={mutation.isPending}
-                      />
-                    </div>
+                    {!itemEdit ? (
+                      <div className="relative mt-3">
+                        <InputNumber
+                          label="Stock Quantity"
+                          name="products_stocks"
+                          placeholder={`${itemEdit ? "0" : "0"}`}
+                          disabled={mutation.isPending}
+                          required={false}
+                        />
+                      </div>
+                    ) : (
+                      ""
+                    )}
                     <div className="relative mt-3">
                       <InputNumber
                         label="Low Stock Threshold"
-                        name="user_account_first_name"
+                        name="products_low_stock_threshold"
                         placeholder={`${itemEdit ? "0" : "0"}`}
                         disabled={mutation.isPending}
                       />
                     </div>
                     <div className="relative mt-3">
-                      <InputNumber
+                      <InputText
                         label="Unit"
-                        name="user_account_first_name"
+                        name="products_unit"
                         placeholder={`${itemEdit ? "pcs" : "pcs"}`}
                         disabled={mutation.isPending}
+                        required={false}
                       />
                     </div>
                     <div className="relative mt-3">
                       <InputSelectArray
                         label="Product Owner"
+                        path="product-owner/read-by-product-owner"
                         type="text"
-                        name="user_account_role_id"
-                        disabled={mutation.isPending}
-                        isLoading={isLoading || isFetching}
-                        error={error}
-                        result={roles}
+                        name="products_owner_id"
                         onChange={(e) => {
-                          props.values.user_account_role_id = e.target.value;
-                          props.values.user_account_role =
+                          props.values.products_owner_id = e.target.value;
+                          props.values.products_owner_name =
                             e.target.options[e.target.selectedIndex].text;
                           return e;
                         }}
@@ -251,9 +258,10 @@ const ModalProducts = ({ itemEdit }) => {
                     <InputTextArea
                       label="Description"
                       type="text"
-                      name="user_account_email"
+                      name="products_description"
                       placeholder={`${itemEdit ? "Update description" : "Enter description"}`}
                       disabled={mutation.isPending}
+                      required={false}
                     />
                   </div>
 
@@ -287,7 +295,7 @@ const ModalProducts = ({ itemEdit }) => {
                             e, // event
                             props, // props field
                             setFilesArrayList, // onchange file state
-                            "product_photo", // field value
+                            "products_image", // field value
                             1, // file limit
                             true,
                             200000,

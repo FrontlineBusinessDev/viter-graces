@@ -2,9 +2,8 @@
 
 // Require Response
 require_once 'Response.php';
-require "env.php";
 // Required google api vendor
-require_once __DIR__ . '/../google-api/vendor/autoload.php';
+require_once __DIR__ . '/../lib/google-api/vendor/autoload.php';
 
 use Google\Client;
 use Google\Service\Drive;

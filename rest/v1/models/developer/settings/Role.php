@@ -65,7 +65,11 @@ class Role
         $filterColumn = [];
 
         foreach ($this->filters as $item) {
-            $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+            if (is_array($item['value'])) {
+                $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
+            } else {
+                $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+            }
         }
         try {
             $sql = "select *, ";
@@ -73,10 +77,11 @@ class Role
             $sql .= "role_is_active as is_active, ";
             $sql .= "role_name as name ";
             $sql .= "from {$this->tblRole} ";
+            $sql .= " where true ";
             if (!empty($filterColumn)) {
-                $sql .= " where " . implode(" and ", $filterColumn);
+                $sql .= " and " . implode(" and ", $filterColumn);
             }
-            $sql .= "order by role_is_active desc, ";
+            $sql .= " order by role_is_active desc, ";
             $sql .= "role_name asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
@@ -91,7 +96,11 @@ class Role
         $filterColumn = [];
 
         foreach ($this->filters as $item) {
-            $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+            if (is_array($item['value'])) {
+                $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
+            } else {
+                $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+            }
         }
         try {
             $sql = "select *, ";
@@ -99,10 +108,11 @@ class Role
             $sql .= "role_is_active as is_active, ";
             $sql .= "role_name as name ";
             $sql .= "from {$this->tblRole} ";
+            $sql .= " where true ";
             if (!empty($filterColumn)) {
-                $sql .= " where " . implode(" and ", $filterColumn);
+                $sql .= " and " . implode(" and ", $filterColumn);
             }
-            $sql .= "order by role_is_active desc, ";
+            $sql .= " order by role_is_active desc, ";
             $sql .= "role_name asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
@@ -131,7 +141,7 @@ class Role
             $sql .= "where ( role_name like :role_name ";
             $sql .= "or role_description like :role_description ";
             $sql .= ") ";
-            $sql .= "order by role_is_active desc, ";
+            $sql .= " order by role_is_active desc, ";
             $sql .= "role_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([

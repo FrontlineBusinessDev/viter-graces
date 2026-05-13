@@ -8,7 +8,7 @@ import ServerError from "@/components/ServerError";
 import ButtonSpinner from "@/components/spinners/ButtonSpinner";
 import TableLoading from "@/components/spinners/TableLoading";
 import TableSpinner from "@/components/spinners/TableSpinner";
-import { apiVersion } from "@/config/config";
+import { apiVersion, devBaseImgUrl } from "@/config/config";
 import { queryDataInfinite } from "@/services/queryDataInfinite";
 import { setIsAdd, setIsSubAdd, setIsView } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
@@ -28,6 +28,7 @@ import TableStatus from "../TableStatus";
 import CustomerMobile from "./CustomerMobile";
 import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
 import ProductsMobile from "./ProductsMobile";
+import { Image } from "lucide-react";
 
 const InfiniteTable = ({
   columns,
@@ -79,12 +80,12 @@ const InfiniteTable = ({
       JSON.stringify({ searchPayload }),
       isFetchFilterDate ? JSON.stringify({ columnFilters }) : "",
     ],
-    [path, store.isSearch],
+    [path, store.isSearch, JSON.stringify({ columnFilters })],
   );
 
   // React Query infinite fetch
   const {
-    result,
+    data: result,
     error,
     fetchNextPage,
     hasNextPage,
@@ -168,9 +169,6 @@ const InfiniteTable = ({
         const rowValue = row.getValue(columnId);
         const { min, max } = value || {};
 
-        console.log("rowValue", rowValue);
-        console.log("min max", { min, max });
-
         if (min !== undefined && rowValue < min) return false;
         if (max !== undefined && rowValue > max) return false;
 
@@ -194,12 +192,15 @@ const InfiniteTable = ({
   };
 
   React.useEffect(() => {
-    if (result?.pages[0]?.total < 30) {
+    if (result?.pages[0]?.total > 30) {
+      // if (result?.pages[0]?.total < 30) {
       setIsFetchFilterDate(false);
     } else {
       setIsFetchFilterDate(true);
     }
   }, [columnFilters]);
+
+  console.log("columnFilters", isFetchFilterDate, columnFilters);
 
   return (
     <>
@@ -341,6 +342,7 @@ const InfiniteTable = ({
                               type="search"
                               className={`bg-white dark:bg-[#0b111e] m-0! w-full! text-sm border cursor-pointer! isFocused:border-primary! isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! h-8`}
                               value={header.column.getFilterValue() ?? ""}
+                              filterFn={header.column.columnDef.filterFn}
                               onChange={(value) => {
                                 setData([]);
                                 header.column.setFilterValue(
@@ -396,10 +398,29 @@ const InfiniteTable = ({
                             key={item?.id}
                             className={` ${isEmptyItem(item?.column?.columnDef?.classTd, "")} overflow-visible `}
                           >
+                            {item?.column?.columnDef?.isImage ? (
+                              <>
+                                {isEmptyItem(rowData?.img, "") !== "" ? (
+                                  <div className=" rounded-sm">
+                                    <Image className="mx-auto p-1" size={30} />
+                                  </div>
+                                ) : (
+                                  <div className="rounded-sm">
+                                    <img
+                                      src={`${devBaseImgUrl}/SideLogo.png`}
+                                      alt="picture"
+                                      className="min-w-12 w-12 m-auto"
+                                    />
+                                  </div>
+                                )}
+                              </>
+                            ) : (
+                              ""
+                            )}
                             {item?.column?.columnDef?.header === "status" ? (
                               <TableStatus
                                 item={item?.column?.columnDef}
-                                dataArray={row.original}
+                                dataArray={rowData}
                               />
                             ) : item?.column?.columnDef?.isViewItems ? (
                               <button
@@ -429,7 +450,7 @@ const InfiniteTable = ({
                             "action" ? (
                               <ActionButtonTable
                                 item={item?.column?.columnDef}
-                                dataArray={row.original}
+                                dataArray={rowData}
                                 setData={setData}
                                 setItemEdit={setItemEdit}
                                 ishaveSubAdd={ishaveSubAdd}

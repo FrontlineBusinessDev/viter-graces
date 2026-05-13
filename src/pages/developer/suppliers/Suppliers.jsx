@@ -1,3 +1,4 @@
+import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
 import {
   ActiveInActiveStatus,
   DefaultActionTableList,
@@ -12,7 +13,6 @@ import { FaFacebookMessenger } from "react-icons/fa";
 import { IoLogoWhatsapp } from "react-icons/io";
 import ModalAddItem from "./modal/ModalAddItem";
 import ModalSuppliers from "./modal/ModalSuppliers";
-import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
 
 const Suppliers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -109,7 +109,7 @@ const Suppliers = () => {
       filterFn: "equals",
       meta: {
         filterComponent: (column) => (
-          <SearchableSelectFilter
+          <SearchableSelectFilterStatus
             column={column}
             options={ActiveInActiveStatus()}
           />

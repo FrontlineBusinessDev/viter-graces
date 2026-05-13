@@ -1,14 +1,16 @@
-import HeaderNav from "@/layout/headers/HeaderNav";
-import InfiniteTable from "@/layout/table/InfiniteTable";
-import { StoreContext } from "@/store/StoreContext";
-import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
-import React from "react";
-import ModalProducts from "./ModalProducts";
-import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
+import {
+  SearchableSelectFilter,
+  SearchableSelectFilterStatus,
+} from "@/components/inputs/InputSelect";
 import {
   ActiveInActiveStatus,
   DefaultActionTableList,
 } from "@/layout/ArrayValue";
+import HeaderNav from "@/layout/headers/HeaderNav";
+import InfiniteTable from "@/layout/table/InfiniteTable";
+import { StoreContext } from "@/store/StoreContext";
+import React from "react";
+import ModalProducts from "./ModalProducts";
 const Products = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -16,13 +18,13 @@ const Products = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "status",
+      accessorKey: "products_is_active",
       header: "status",
-      classTh: "w-[5rem]",
+      classTh: "min-w-[10rem]",
       classTd: "",
       meta: {
         filterComponent: (column) => (
-          <SearchableSelectFilter
+          <SearchableSelectFilterStatus
             column={column}
             options={ActiveInActiveStatus()}
           />
@@ -31,51 +33,76 @@ const Products = () => {
       status_option: ActiveInActiveStatus(),
     },
     {
-      accessorKey: "image",
-      header: "Image",
-      classTh: "",
+      accessorKey: "products_image",
+      header: "image",
+      classTh: "text-center min-w-[5rem]",
       classTd: "",
       isImage: true,
     },
     {
-      accessorKey: "name",
+      accessorKey: "products_name",
       header: "Products",
-      classTh: "",
+      classTh: "min-w-[10rem]",
       classTd: "",
       isMobileTitle: true,
+      meta: "",
     },
     {
-      accessorKey: "sku",
+      accessorKey: "products_sku",
       header: "SKU",
-      classTh: "",
+      classTh: "min-w-[10rem]",
       classTd: "",
       isTag: true,
+      meta: "",
     },
     {
-      accessorKey: "category",
+      accessorKey: "products_category",
       header: "Category",
-      classTh: "",
+      classTh: "min-w-[10rem]",
       classTd: "",
       isSubTitle: true,
+      meta: "",
     },
     {
-      accessorKey: "price",
+      accessorKey: "products_price",
       header: "Price",
-      classTh: "",
+      classTh: "min-w-[10rem]",
       classTd: "",
+      filterFn: "between",
       isPrice: true,
+      amount: true,
+      meta: "",
     },
     {
-      accessorKey: "cost",
+      accessorKey: "products_cost",
       header: "Cost",
-      classTh: "",
+      classTh: "min-w-[10rem]",
       classTd: "",
+      filterFn: "between",
+      amount: true,
+      meta: "",
     },
     {
-      accessorKey: "stocks",
+      accessorKey: "products_stocks",
       header: "Stocks",
-      classTh: "",
+      classTh: "min-w-[10rem]",
       classTd: "",
+      filterFn: "between",
+      meta: "",
+    },
+    {
+      accessorKey: "products_owner_name",
+      header: "Products Owner ",
+      classTh: "min-w-[10rem]",
+      classTd: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="product-owner/read-by-product-owner"
+          />
+        ),
+      },
     },
     {
       accessorKey: "action",
@@ -83,29 +110,6 @@ const Products = () => {
       header: "Action",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
-    },
-  ];
-
-  const mockData = [
-    {
-      id: 1,
-      status: 1,
-      name: "Banana Chips",
-      sku: "MBP14-001",
-      category: "Chips",
-      price: "1,999.00",
-      cost: "₱1500.00",
-      stocks: "11",
-    },
-    {
-      id: 2,
-      status: 1,
-      name: "Chips",
-      sku: "IP15P-001",
-      category: "Electronics",
-      price: "1,500.00",
-      cost: "₱1300.00",
-      stocks: "4",
     },
   ];
 
@@ -118,9 +122,8 @@ const Products = () => {
           path="products"
           setItemEdit={setItemEdit}
           productMobile={true}
-          mockData={mockData}
-          isStatic={true}
-          isDefaultMobile={"product"}
+          haveFilterTable={true}
+          isDefaultMobile={"products"}
         />
       </HeaderNav>
       {store.isAdd && <ModalProducts itemEdit={itemEdit} />}

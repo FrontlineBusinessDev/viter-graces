@@ -140,7 +140,11 @@ class Suppliers
         $filterColumn = [];
 
         foreach ($this->filters as $item) {
-            $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+            if (is_array($item['value'])) {
+                $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
+            } else {
+                $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+            }
         }
         try {
             $sql = "select *, ";
@@ -151,14 +155,14 @@ class Suppliers
             $sql .= "suppliers_other as other, ";
             $sql .= "suppliers_name as name ";
             $sql .= "from {$this->tblSuppliers} ";
+            $sql .= " where true ";
             if (!empty($filterColumn)) {
-                $sql .= " where " . implode(" and ", $filterColumn);
+                $sql .= " and " . implode(" and ", $filterColumn);
             } else {
-                $sql .= " where true ";
-            }
-            $sql .= ($this->column_search != "" ? "and ( suppliers_name like :suppliers_name 
+                $sql .= ($this->column_search != "" ? "and ( suppliers_name like :suppliers_name 
             or suppliers_email like :suppliers_email ) " : " ");
-            $sql .= "order by suppliers_is_active desc, ";
+            }
+            $sql .= " order by suppliers_is_active desc, ";
             $sql .= "suppliers_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
@@ -180,7 +184,11 @@ class Suppliers
         $filterColumn = [];
 
         foreach ($this->filters as $item) {
-            $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+            if (is_array($item['value'])) {
+                $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
+            } else {
+                $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+            }
         }
         try {
             $sql = "select *, ";
@@ -191,14 +199,14 @@ class Suppliers
             $sql .= "suppliers_other as other, ";
             $sql .= "suppliers_name as name ";
             $sql .= "from {$this->tblSuppliers} ";
+            $sql .= " where true ";
             if (!empty($filterColumn)) {
-                $sql .= " where " . implode(" and ", $filterColumn);
+                $sql .= " and " . implode(" and ", $filterColumn);
             } else {
-                $sql .= " where true ";
-            }
-            $sql .= ($this->column_search != "" ? "and ( suppliers_name like :suppliers_name 
+                $sql .= ($this->column_search != "" ? "and ( suppliers_name like :suppliers_name 
             or suppliers_email like :suppliers_email ) " : " ");
-            $sql .= "order by suppliers_is_active desc, ";
+            }
+            $sql .= " order by suppliers_is_active desc, ";
             $sql .= "suppliers_name asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";

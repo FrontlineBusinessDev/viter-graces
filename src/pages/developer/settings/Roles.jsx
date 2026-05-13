@@ -1,4 +1,4 @@
-import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
+import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
 import {
   ActiveInActiveStatus,
   DefaultActionTableList,
@@ -21,7 +21,7 @@ const Roles = () => {
       filterFn: "equals",
       meta: {
         filterComponent: (column) => (
-          <SearchableSelectFilter
+          <SearchableSelectFilterStatus
             column={column}
             options={ActiveInActiveStatus()}
           />
