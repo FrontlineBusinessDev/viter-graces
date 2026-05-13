@@ -3,6 +3,7 @@ import { InputSelectWeeksArray } from "@/components/inputs/InputSelect";
 import { InputNumber, InputText } from "@/components/inputs/InputText";
 import MessageError from "@/components/MessageError";
 import { apiVersion } from "@/config/config";
+import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
 import {
@@ -122,6 +123,7 @@ const ModalSuppliers = ({ itemEdit }) => {
 
   const yupSchema = Yup.object({
     suppliers_name: Yup.string().trim().required("Required"),
+    suppliers_email: Yup.string().trim().email("Invalid email"),
   });
 
   React.useEffect(() => {
@@ -144,12 +146,17 @@ const ModalSuppliers = ({ itemEdit }) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
               // mutate data
-              const data = {
+              let data = {
+                ...ActivityLogDetails(
+                  "suppliers",
+                  itemEdit ? "update" : "create",
+                  store,
+                  values,
+                ),
                 ...values,
                 suppliers_contact_person: JSON.stringify(itemsContact),
                 suppliers_products: items,
               };
-
               mutation.mutate(data);
             }}
           >

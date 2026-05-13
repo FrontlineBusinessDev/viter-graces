@@ -4,6 +4,7 @@ $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new Suppliers($conn);
+$valActivity = new ActivityLog($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -32,6 +33,8 @@ $val->suppliers_updated = date("Y-m-d H:i:s");
 isNameExist($val, $val->suppliers_name);
 // create
 $query = checkCreate($val);
+// create activity log
+createActivityLog($valActivity, $data);
 
 $suppliers_products = $data["suppliers_products"];
 
@@ -45,6 +48,8 @@ for ($i = 0; $i < count($suppliers_products); $i++) {
     $val->suppliers_product_created = date("Y-m-d H:i:s");
     $val->suppliers_product_updated = date("Y-m-d H:i:s");
     $query = checkCreateProduct($val);
+    // create activity log 
+    createActivityLogWithPhp($valActivity, $val, "suppliers product", "create", $data);
 }
 
 returnSuccess($val, "Suppliers", $query);

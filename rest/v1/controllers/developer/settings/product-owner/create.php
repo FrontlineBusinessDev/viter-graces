@@ -5,6 +5,7 @@ $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new ProductOwner($conn);
+$valActivity = new ActivityLog($conn);
 $encrypt = new Encryption();
 // get payload
 $body = file_get_contents("php://input");
@@ -50,5 +51,7 @@ if (!$emailIsSent['mail_success']) {
 } else {
 
     $query = checkCreate($val);
+    // create activity log
+    createActivityLog($valActivity, $data);
     returnSuccess($val, "Role", $query);
 }

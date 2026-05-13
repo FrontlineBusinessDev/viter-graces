@@ -6,12 +6,16 @@ require '../../../../core/functions.php';
 require '../../../../core/Encryption.php';
 // use needed classes
 require '../../../../models/developer/settings/User.php';
+// ACTIVITY LOG DETAILS
+require '../../../../controllers/developer/activity-log/functions.php';
+require '../../../../models/developer/activity-log/ActivityLog.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new User($conn);
 $encrypt = new Encryption();
+$valActivity = new ActivityLog($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -25,6 +29,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $val->user_account_key = $data["key"];
     $val->user_account_updated = date("Y-m-d H:i:s");
     $query = checkSetPassword($val);
+    // create activity log  
+    createActivityLog($valActivity, $data);
     http_response_code(200);
     returnSuccess($val, "User Account", $query);
     // return 404 error if endpoint not available

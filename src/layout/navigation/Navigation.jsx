@@ -143,14 +143,18 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
           <div className="p-3 border-t border-gray-600">
             <div className="flex items-center gap-3 mb-3">
               <div className="bg-primary rounded-full w-10 h-10 flex items-center justify-center text-white">
-                A
+                <span>{store.credentials?.data?.nickName || ""}</span>
               </div>
 
               {(isExpanded || window.innerWidth < 640) && (
                 <div className="flex">
                   <div className="flex flex-col">
-                    <span className="text-light text-sm">Richard Santos</span>
-                    <span className="text-xs uppercase">Admin</span>
+                    <span className="text-light text-sm">
+                      {store.credentials?.data?.name || ""}
+                    </span>
+                    <span className="text-xs uppercase">
+                      {store.credentials?.data?.role || ""}
+                    </span>
                   </div>
                 </div>
               )}

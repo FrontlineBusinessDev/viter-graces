@@ -4,6 +4,7 @@ $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new Suppliers($conn);
+$valActivity = new ActivityLog($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -33,6 +34,8 @@ if (array_key_exists("id", $_GET)) {
     compareName($val, $val_name_old, $val->suppliers_name);
     // update
     $query = checkUpdate($val);
+    // create activity log
+    createActivityLog($valActivity, $data);
     returnSuccess($val, "Suppliers", $query);
 }
 

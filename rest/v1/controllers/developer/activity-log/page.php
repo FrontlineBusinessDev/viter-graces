@@ -5,12 +5,12 @@ require '../../../core/header.php';
 // use needed functions
 require '../../../core/functions.php';
 // use needed classes
-require '../../../models/developer/suppliers/Suppliers.php';
+require '../../../models/developer/activity-log/ActivityLog.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new Suppliers($conn);
+$val = new ActivityLog($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);

@@ -237,10 +237,16 @@ function tokenOther(
             $row = $result->fetch(PDO::FETCH_ASSOC);
 
             http_response_code(200);
+            $fname = mb_substr($decoded->data->data->user_account_first_name, 0, 1);
+            $lname = mb_substr($decoded->data->data->user_account_last_name, 0, 1);
+            $nickName = "$lname$fname";
+
             $returnData["data"] = array_merge(
                 (array)$row,
                 array('user_key' => $decoded->data->data->user_account_password), // data from login
                 array('role' => strtolower($decoded->data->data->user_account_role)),
+                array('nickName' => $nickName),
+                array('server_date' => date('Y-m-d'))
             );
             $returnData["count"] = $result->rowCount();
             $returnData["success"] = true;

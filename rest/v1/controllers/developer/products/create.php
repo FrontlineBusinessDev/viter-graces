@@ -1,10 +1,10 @@
 <?php
-// check database connection
-require '../../../core/google-api.php';
+// check database connection 
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new Products($conn);
+$valActivity = new ActivityLog($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -41,6 +41,11 @@ $val->products_updated = date("Y-m-d H:i:s");
 
 // check name
 isNameExist($val, $val->products_name);
+
 // create
 $query = checkCreate($val);
+
+// create activity log
+createActivityLog($valActivity, $data);
+
 returnSuccess($val, "Products", $query);

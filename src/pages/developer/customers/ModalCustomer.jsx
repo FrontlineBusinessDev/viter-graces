@@ -3,6 +3,7 @@ import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { apiVersion } from "@/config/config";
+import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
 import useQueryData from "@/services/useQueryData";
@@ -73,6 +74,7 @@ const ModalCustomer = ({ itemEdit }) => {
 
   const yupSchema = Yup.object({
     customer_name: Yup.string().trim().required("Required"),
+    customer_email: Yup.string().trim().email("Invalid email"),
   });
 
   React.useEffect(() => {
@@ -94,9 +96,18 @@ const ModalCustomer = ({ itemEdit }) => {
             validationSchema={yupSchema}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
+              let data = {
+                ...ActivityLogDetails(
+                  "customer",
+                  itemEdit ? "update" : "create",
+                  store,
+                  values,
+                ),
+                ...values,
+              };
               // mutate data
               // console.log(values);
-              mutation.mutate(values);
+              mutation.mutate(data);
             }}
           >
             {(props) => {

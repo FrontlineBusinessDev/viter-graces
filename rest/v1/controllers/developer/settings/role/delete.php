@@ -4,6 +4,7 @@ $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new Role($conn);
+$valActivity = new ActivityLog($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -19,6 +20,8 @@ if (array_key_exists("id", $_GET)) {
     isUserAccountAssociated($val);
 
     $query = checkDelete($val);
+    // create activity log
+    createActivityLog($valActivity, $data);
     returnSuccess($val, "Role", $query);
 }
 

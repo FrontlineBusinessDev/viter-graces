@@ -170,7 +170,7 @@ const InfiniteTable = ({
         const { min, max } = value || {};
 
         if (min !== undefined && rowValue < min) return false;
-        if (max !== undefined && rowValue > max) return false;
+        if (max !== "" && rowValue > max) return false;
 
         return true;
       },
@@ -192,15 +192,12 @@ const InfiniteTable = ({
   };
 
   React.useEffect(() => {
-    if (result?.pages[0]?.total > 30) {
-      // if (result?.pages[0]?.total < 30) {
+    if (result?.pages[0]?.total < 30) {
       setIsFetchFilterDate(false);
     } else {
       setIsFetchFilterDate(true);
     }
   }, [columnFilters]);
-
-  console.log("columnFilters", isFetchFilterDate, columnFilters);
 
   return (
     <>
@@ -454,6 +451,7 @@ const InfiniteTable = ({
                                 setData={setData}
                                 setItemEdit={setItemEdit}
                                 ishaveSubAdd={ishaveSubAdd}
+                                path={path}
                               />
                             ) : (
                               ""

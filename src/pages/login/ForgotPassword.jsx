@@ -15,7 +15,7 @@ import { StoreContext } from "@/store/StoreContext";
 import { setStorageRoute } from "@/utilities/setStorageRoute";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
-import { User } from "lucide-react";
+import { Check, User } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import * as Yup from "yup";
@@ -112,8 +112,8 @@ const ForgotPassword = () => {
                 validationSchema={yupSchema}
                 onSubmit={async (values, { setSubmitting, resetForm }) => {
                   // mutate data
-
                   dispatch(setError(false));
+
                   mutation.mutate(values);
                 }}
               >

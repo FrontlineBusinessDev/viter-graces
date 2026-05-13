@@ -1,7 +1,6 @@
 <?php
 
-// Require Response
-require_once 'Response.php';
+// Require Response 
 // Required google api vendor
 require_once __DIR__ . '/../lib/google-api/vendor/autoload.php';
 

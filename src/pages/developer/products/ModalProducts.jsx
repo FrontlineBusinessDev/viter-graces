@@ -5,11 +5,11 @@ import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import LoadImages from "@/components/LoadImages";
 import MessageError from "@/components/MessageError";
-import { apiVersion, devNavUrl } from "@/config/config";
+import { apiVersion } from "@/config/config";
 import useUploadMultipleFiles from "@/custom-hooks/useUploadMultipleFiles";
+import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
-import useQueryData from "@/services/useQueryData";
 import {
   setError,
   setIsAdd,
@@ -99,6 +99,7 @@ const ModalProducts = ({ itemEdit }) => {
   const yupSchema = Yup.object({
     products_name: Yup.string().trim().required("Required"),
     products_price: Yup.string().trim().required("Required"),
+    products_owner_id: Yup.string().trim().required("Required"),
     products_low_stock_threshold: Yup.string().trim().required("Required"),
   });
 
@@ -125,11 +126,20 @@ const ModalProducts = ({ itemEdit }) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
               // mutate data
-              // console.log(values);
+              let data = {
+                ...ActivityLogDetails(
+                  "products",
+                  itemEdit ? "update" : "create",
+                  store,
+                  values,
+                ),
+                ...values,
+              };
+              // console.log(data);
               setLoading(true);
               const filesUpload = await uploadMultipleFiles();
               if (filesUpload?.success) setLoading(false);
-              if (!loading) mutation.mutate(values);
+              if (!loading) mutation.mutate(data);
             }}
           >
             {(props) => {
@@ -171,7 +181,6 @@ const ModalProducts = ({ itemEdit }) => {
                         label="Category"
                         type="text"
                         name="products_category"
-                        placeholder={`${itemEdit ? "Update Category" : "Category"}`}
                         disabled={mutation.isPending}
                         required={false}
                       />

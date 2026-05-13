@@ -5,11 +5,15 @@ require '../../../core/header.php';
 require '../../../core/functions.php';
 // use needed classes
 require '../../../models/developer/customer/Customer.php';
+// ACTIVITY LOG DETAILS
+require '../../../controllers/developer/activity-log/functions.php';
+require '../../../models/developer/activity-log/ActivityLog.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new Customer($conn);
+$valActivity = new ActivityLog($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -25,6 +29,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->customer_updated = date("Y-m-d H:i:s");
         checkId($val->customer_aid);
         $query = checkActive($val);
+        // create activity log
+        createActivityLog($valActivity, $data);
         http_response_code(200);
         returnSuccess($val, "Customer", $query);
     }

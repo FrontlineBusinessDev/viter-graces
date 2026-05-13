@@ -4,8 +4,10 @@ import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import React from "react";
 
-const ActionButtonTable = ({ item, dataArray, setData, setItemEdit }) => {
+const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
   const { store, dispatch } = React.useContext(StoreContext);
+
+  console.log("path", path);
 
   // ACTIONS ACHIEVE, RESTORE AND DELETE
   const handleAction = (val) => {
@@ -16,6 +18,7 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit }) => {
         val?.name !== "delete"
           ? `${val?.path}/${dataArray?.id}`
           : `${dataArray?.id}`,
+      menu: path,
       action: val?.name,
     });
   };

@@ -2,6 +2,7 @@ import ModalButton from "@/components/buttons/ModalButton";
 import { InputText } from "@/components/inputs/InputText";
 import MessageError from "@/components/MessageError";
 import { apiVersion } from "@/config/config";
+import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
 import {
@@ -100,8 +101,17 @@ const ModalAddItem = ({ itemEdit, item, setAddItem }) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
 
+              let data = {
+                ...ActivityLogDetails(
+                  "suppliers product",
+                  itemEdit ? "update" : "create",
+                  store,
+                  values,
+                ),
+                ...values,
+              };
               // mutate data
-              mutation.mutate(values);
+              mutation.mutate(data);
             }}
           >
             {(props) => {
@@ -123,6 +133,7 @@ const ModalAddItem = ({ itemEdit, item, setAddItem }) => {
                       name="suppliers_product_unit"
                       placeholder={`${itemEdit ? "Update unit" : "Enter unit"}`}
                       disabled={mutation.isPending}
+                      required={false}
                     />
                   </div>
                   <div className="relative mb-6">

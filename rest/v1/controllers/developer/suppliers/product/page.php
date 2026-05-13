@@ -25,6 +25,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->column_search = $data["searchValue"];    // get data 
         $val->column_start = $_GET['start'];
         $val->column_total = 15;
+        $val->max = PHP_INT_MAX;
 
         // FOR MULTIPLE FILTER 
         $val->filters = $data['columnFilters'];

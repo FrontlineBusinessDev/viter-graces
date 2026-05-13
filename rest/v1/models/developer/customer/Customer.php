@@ -22,6 +22,7 @@ class Customer
     public $column_start;
     public $column_total;
     public $column_search;
+    public $max;
 
     public function __construct($db)
     {
@@ -85,7 +86,11 @@ class Customer
         foreach ($this->filters as $item) {
 
             if (is_array($item['value'])) {
-                $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
+                if (is_array($item['value']) && $item["value"]["max"] === "") {
+                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $this->max . " ";
+                } else {
+                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
+                }
             } else {
                 $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
             }
@@ -130,7 +135,11 @@ class Customer
         foreach ($this->filters as $item) {
 
             if (is_array($item['value'])) {
-                $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
+                if (is_array($item['value']) && $item["value"]["max"] === "") {
+                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $this->max . " ";
+                } else {
+                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
+                }
             } else {
                 $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
             }

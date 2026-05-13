@@ -4,6 +4,7 @@ $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new ProductOwner($conn);
+$valActivity = new ActivityLog($conn);
 // get $_GET data
 $error = [];
 $returnData = [];
@@ -30,6 +31,9 @@ if (array_key_exists("id", $_GET)) {
     compareName($val, $val_name_old, $val->column_fullname);
     // update
     $query = checkUpdate($val);
+    // create activity log
+    createActivityLog($valActivity, $data);
+    updateConnectedMenu($val);
     returnSuccess($val, "Role", $query);
 }
 

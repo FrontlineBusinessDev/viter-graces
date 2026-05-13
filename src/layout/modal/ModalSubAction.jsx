@@ -13,6 +13,7 @@ import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { CircleQuestionMark } from "lucide-react";
 import React from "react";
+import { ActivityLogDetails } from "../ArrayValue";
 
 const ModalSubAction = ({
   mysqlApiAction,
@@ -49,6 +50,7 @@ const ModalSubAction = ({
   const handleYes = async () => {
     // mutate data
     mutation.mutate({
+      ...ActivityLogDetails(item?.menu, item?.action, store, item),
       isActive: Number(isEmptyItem(item?.is_active, 0)) === 1 ? 0 : 1,
       ...item,
     });

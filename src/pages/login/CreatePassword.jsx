@@ -4,6 +4,7 @@ import ButtonSpinner from "@/components/spinners/ButtonSpinner";
 import FetchingSpinner from "@/components/spinners/FetchingSpinner";
 import { apiVersion, devNavUrl } from "@/config/config";
 import { checkRoleToRedirect } from "@/custom-hooks/login-functions";
+import { ActivityLogResetPassDetails } from "@/layout/ArrayValue";
 import PageNotFound from "@/layout/PageNotFound";
 import { queryData } from "@/services/queryData";
 import useQueryData from "@/services/useQueryData";
@@ -186,7 +187,15 @@ const CreatePassword = () => {
                 validationSchema={yupSchema}
                 onSubmit={async (values, { setSubmitting, resetForm }) => {
                   // mutate data
-                  mutation.mutate(values);
+                  let data = {
+                    ...ActivityLogResetPassDetails(
+                      "user",
+                      "forget password",
+                      key?.data[0],
+                    ),
+                    ...values,
+                  };
+                  mutation.mutate(data);
                   dispatch(setError(false));
                 }}
               >

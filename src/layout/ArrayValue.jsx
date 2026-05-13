@@ -95,3 +95,30 @@ export const EditDeleteActionTableList = ({ path }) => {
     },
   ];
 };
+
+export const ActivityLogDetails = (path, action, store, values) => {
+  const data = {
+    activity_log_menu: path,
+    activity_log_action: action,
+    activity_log_user_id: store?.credentials?.data?.id,
+    activity_log_user_name: store?.credentials?.data?.name,
+    activity_log_user_role: store?.credentials?.data?.role,
+    activity_log_description: JSON.stringify([{ values }]),
+  };
+
+  return data;
+};
+
+export const ActivityLogResetPassDetails = (path, action, values) => {
+  console.log("values", values);
+  const data = {
+    activity_log_menu: path,
+    activity_log_action: action,
+    activity_log_user_id: values?.id,
+    activity_log_user_name: values?.name,
+    activity_log_user_role: values?.role,
+    activity_log_description: "",
+  };
+
+  return data;
+};

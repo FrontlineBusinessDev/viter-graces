@@ -7,6 +7,9 @@ require '../../../../core/functions.php';
 require 'functions.php';
 // use needed classes
 require '../../../../models/developer/settings/ProductOwner.php';
+// ACTIVITY LOG DETAILS
+require '../../../../controllers/developer/activity-log/functions.php';
+require '../../../../models/developer/activity-log/ActivityLog.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
@@ -24,6 +27,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->column_start = $_GET['start'];
         $val->column_total = 15;
         $val->filters = [];
+        $val->max = PHP_INT_MAX;
 
         checkLimitId($val->column_start, $val->column_total);
 

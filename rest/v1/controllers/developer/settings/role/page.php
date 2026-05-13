@@ -23,6 +23,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     if (array_key_exists("start", $_GET)) {
         $val->column_start = $_GET['start'];
         $val->column_total = 15;
+        $val->max = PHP_INT_MAX;
 
         // FOR MULTIPLE FILTER 
         $val->filters = $data['columnFilters'];

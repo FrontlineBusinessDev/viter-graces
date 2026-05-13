@@ -4,6 +4,7 @@ import TableStatus from "../TableStatus";
 import ActionButtonTable from "../ActionButtonTable";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { Image } from "lucide-react";
+import ActionButtonSubTable from "../ActionButtonSubTable";
 
 const ProductsMobile = ({
   rows,
@@ -12,6 +13,7 @@ const ProductsMobile = ({
   lastRowRef,
   isDefaultMobile,
   ishaveSubAdd = false,
+  path = "",
 }) => {
   return (
     <>
@@ -154,12 +156,13 @@ const ProductsMobile = ({
                   if (item.column.columnDef.accessorKey === "action") {
                     return (
                       <div key={item.id} className="flex gap-2 justify-end">
-                        <ActionButtonTable
+                        <ActionButtonSubTable
                           item={item.column.columnDef}
                           dataArray={row.original}
                           setData={setData}
                           setItemEdit={setItemEdit}
                           ishaveSubAdd={ishaveSubAdd}
+                          path={path}
                         />
                       </div>
                     );

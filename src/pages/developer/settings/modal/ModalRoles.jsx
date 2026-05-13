@@ -3,6 +3,7 @@ import { InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { apiVersion } from "@/config/config";
+import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import ModalHeader from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
@@ -90,7 +91,17 @@ const ModalRoles = ({ itemEdit }) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
               // mutate data
-              mutation.mutate(values);
+              let data = {
+                ...ActivityLogDetails(
+                  "role",
+                  itemEdit ? "update" : "create",
+                  store,
+                  values,
+                ),
+                ...values,
+              };
+              // mutate data
+              mutation.mutate(data);
             }}
           >
             {(props) => {

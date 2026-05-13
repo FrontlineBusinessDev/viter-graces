@@ -9,11 +9,15 @@ require '../../../../core/Encryption.php';
 require '../../../../models/developer/settings/User.php';
 // use notification template
 require '../../../../lib/notifications/reset-password.php';
+// ACTIVITY LOG DETAILS
+require '../../../../controllers/developer/activity-log/functions.php';
+require '../../../../models/developer/activity-log/ActivityLog.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new User($conn);
+$valActivity = new ActivityLog($conn);
 $encrypt = new Encryption();
 // get payload
 $body = file_get_contents("php://input");
@@ -30,8 +34,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $val->user_account_email = trim($data["user_account_email"]);
     $password_link = "/create-password";
 
-    $query = $val->readLogin();
-    if ($query->rowCount() == 0) {
+    $queryLogin = getResultData($val->readLogin());
+    if (count($queryLogin) == 0) {
         returnError("Invalid email. Please use a registered one.");
     };
     $mail = sendEmail(
@@ -41,6 +45,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     );
 
     $query = checkResetPasswordByEmail($val);
+    // create activity log 
+    createActivityLogWithPhp($valActivity, $val, "user", "forget password", $queryLogin[0]);
     http_response_code(200);
     returnSuccess($val, "User Account", $query);
     // return 404 error if endpoint not available

@@ -3,11 +3,7 @@
 require '../../../core/header.php';
 // use needed functions
 require '../../../core/functions.php';
-require 'functions.php';
-// use needed classes
-require '../../../models/developer/suppliers/Suppliers.php';
-// ACTIVITY LOG DETAILS
-require '../../../controllers/developer/activity-log/functions.php';
+// use needed classes 
 require '../../../models/developer/activity-log/ActivityLog.php';
 
 // validate api key

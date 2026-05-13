@@ -3,16 +3,15 @@
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new Customer($conn);
-$valActivity = new ActivityLog($conn);
+$val = new ActivityLog($conn);
 // get $_GET data
 $error = [];
 $returnData = [];
 
 if (array_key_exists("id", $_GET)) {
     $val->filters = [];
-    $val->customer_aid = $_GET['id'];
-    checkId($val->customer_aid);
+    $val->activity_log_aid = $_GET['id'];
+    checkId($val->activity_log_aid);
     $query = checkReadById($val);
     http_response_code(200);
     getQueriedData($query);

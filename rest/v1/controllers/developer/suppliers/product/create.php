@@ -4,6 +4,7 @@ $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new SuppliersProduct($conn);
+$valActivity = new ActivityLog($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -27,4 +28,6 @@ $val->suppliers_product_updated = date("Y-m-d H:i:s");
 isNameExist($val, $val->suppliers_product_name);
 // create
 $query = checkCreate($val);
+// create activity log  
+createActivityLog($valActivity, $data);
 returnSuccess($val, "Suppliers Product", $query);

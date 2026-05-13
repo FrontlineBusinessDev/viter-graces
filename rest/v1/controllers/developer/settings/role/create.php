@@ -4,6 +4,7 @@ $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new Role($conn);
+$valActivity = new ActivityLog($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -24,4 +25,6 @@ $val->role_updated = date("Y-m-d H:i:s");
 isNameExist($val, $val->role_name);
 // create
 $query = checkCreate($val);
+// create activity log
+createActivityLog($valActivity, $data);
 returnSuccess($val, "Role", $query);

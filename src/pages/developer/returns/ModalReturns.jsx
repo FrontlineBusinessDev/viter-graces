@@ -103,7 +103,10 @@ const ModalReturns = ({ itemEdit }) => {
   const yupSchema = Yup.object({
     user_account_first_name: Yup.string().trim().required("Required"),
     user_account_last_name: Yup.string().trim().required("Required"),
-    user_account_email: Yup.string().trim().required("Required"),
+    user_account_email: Yup.string()
+      .trim()
+      .email("Invalid email")
+      .required("Required"),
     user_account_role_id: Yup.string().trim().required("Required"),
   });
 

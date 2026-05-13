@@ -6,10 +6,14 @@ require '../../../core/functions.php';
 // use needed classes 
 require '../../../models/developer/products/Products.php';
 // check database connection
+// ACTIVITY LOG DETAILS
+require '../../../controllers/developer/activity-log/functions.php';
+require '../../../models/developer/activity-log/ActivityLog.php';
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new Products($conn);
+$valActivity = new ActivityLog($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -34,6 +38,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->products_updated = date("Y-m-d H:i:s");
         checkId($val->products_aid);
         $query = checkActive($val);
+        // create activity log
+        createActivityLog($valActivity, $data);
         http_response_code(200);
         returnSuccess($val, "Customer", $query);
     }

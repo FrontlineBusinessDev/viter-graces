@@ -256,6 +256,7 @@ const InfiniteSubTable = ({
               setItemEdit={setItemEdit}
               isDefaultMobile={isDefaultMobile}
               ishaveSubAdd={ishaveSubAdd}
+              path={path}
             />
             <CustomerMobile
               rows={rows}
@@ -263,6 +264,7 @@ const InfiniteSubTable = ({
               setItemEdit={setItemEdit}
               isDefaultMobile={isDefaultMobile}
               ishaveSubAdd={ishaveSubAdd}
+              path={path}
             />
             <ProductsMobile
               rows={rows}
@@ -271,6 +273,7 @@ const InfiniteSubTable = ({
               lastRowRef={lastRowRef}
               isDefaultMobile={isDefaultMobile}
               ishaveSubAdd={ishaveSubAdd}
+              path={path}
             />
             {/* TABLE */}
             <table className="overflow-auto md:border md:border-gray-300 dark:border-[#0b111e] ">
@@ -421,6 +424,7 @@ const InfiniteSubTable = ({
                                 setItemEdit={setItemEdit}
                                 ishaveSubAdd={ishaveSubAdd}
                                 setItemVal={setItemVal}
+                                path={path}
                               />
                             ) : (
                               ""

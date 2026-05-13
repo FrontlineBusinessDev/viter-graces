@@ -6,11 +6,15 @@ require '../../../core/header.php';
 require '../../../core/functions.php';
 // use needed classes
 require '../../../models/developer/customer/Customer.php';
+// ACTIVITY LOG DETAILS
+require '../../../controllers/developer/activity-log/functions.php';
+require '../../../models/developer/activity-log/ActivityLog.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new Customer($conn);
+$valActivity = new ActivityLog($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -24,6 +28,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->column_search = $data["searchValue"];    // get data 
         $val->column_start = $_GET['start'];
         $val->column_total = 15;
+        $val->max = PHP_INT_MAX;
 
         // FOR MULTIPLE FILTER 
         $val->filters = $data['columnFilters'];

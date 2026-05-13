@@ -354,6 +354,7 @@ const InfinitePerTabs = ({
                                 dataArray={rows[index]?.original}
                                 setData={setData}
                                 setItemEdit={setItemEdit}
+                                path={path}
                               />
                             ) : (
                               ""

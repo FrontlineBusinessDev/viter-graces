@@ -6,6 +6,9 @@ require '../../../../core/functions.php';
 // use needed classes
 require '../../../../models/developer/settings/User.php';
 require '../../../../core/Encryption.php';
+// ACTIVITY LOG DETAILS
+require '../../../../controllers/developer/activity-log/functions.php';
+require '../../../../models/developer/activity-log/ActivityLog.php';
 
 // validate api key
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {

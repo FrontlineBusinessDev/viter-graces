@@ -11,6 +11,7 @@ const InfiniteDefaultTableMobileCard = ({
   setData,
   setItemEdit,
   isDefaultMobile,
+  path = "",
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
@@ -110,6 +111,7 @@ const InfiniteDefaultTableMobileCard = ({
                         dataArray={row.original}
                         setData={setData}
                         setItemEdit={setItemEdit}
+                        path={path}
                       />
                     </div>
                   );

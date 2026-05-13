@@ -5,11 +5,15 @@ require '../../../../core/header.php';
 require '../../../../core/functions.php';
 // use needed classes
 require '../../../../models/developer/suppliers/SuppliersProduct.php';
+// ACTIVITY LOG DETAILS
+require '../../../../controllers/developer/activity-log/functions.php';
+require '../../../../models/developer/activity-log/ActivityLog.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new SuppliersProduct($conn);
+$valActivity = new ActivityLog($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -25,6 +29,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->suppliers_product_updated = date("Y-m-d H:i:s");
         checkId($val->suppliers_product_aid);
         $query = checkActive($val);
+        // create activity log
+        createActivityLog($valActivity, $data);
         http_response_code(200);
         returnSuccess($val, "Suppliers Product", $query);
     }
