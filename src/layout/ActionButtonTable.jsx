@@ -7,8 +7,6 @@ import React from "react";
 const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
-  console.log("path", path);
-
   // ACTIONS ACHIEVE, RESTORE AND DELETE
   const handleAction = (val) => {
     dispatch(setIsAction(true));
@@ -32,7 +30,7 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
 
   return (
     <>
-      <div className="flex items-center lg:justify-end gap-3 ">
+      <div className="flex items-center justify-end gap-3 ">
         {item?.action_array?.map((a, key) => {
           return (
             isEmptyItem(a?.name, "") === "edit" &&

@@ -4,6 +4,7 @@ import { StoreContext } from "@/store/StoreContext";
 import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
 import React from "react";
 import ModalPurchaseOrder from "./modal/ModalPurchaseOrder";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 
 const PurchaseOrder = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -16,10 +17,12 @@ const PurchaseOrder = () => {
       header: "status",
       classTh: "w-[5rem]",
       classTd: "",
+      status_option: ActiveInActiveStatus(),
     },
     {
       accessorKey: "purchase_order_number",
       header: "PO Number",
+      orderNumber: "1",
       classTh: "",
       classTd: "",
     },
@@ -30,13 +33,14 @@ const PurchaseOrder = () => {
       classTd: "",
     },
     {
-      accessorKey: "purchase_order_date",
+      accessorKey: "formated_date",
       header: "Order date",
+      orderNumber: "2",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "purchase_order_expected_delivery",
+      accessorKey: "formated_delivery_date",
       header: "expected",
       classTh: "",
       classTd: "",

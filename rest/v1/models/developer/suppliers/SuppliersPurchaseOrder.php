@@ -131,6 +131,9 @@ class SuppliersPurchaseOrder
         try {
             $sql = "select *, ";
             $sql .= "purchase_order_aid as id, ";
+            $sql .= "DATE_FORMAT(purchase_order_date, '%b %d, %Y') as formated_date, ";
+            $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
+            $sql .= "purchase_order_date as total_amount, ";
             $sql .= "SUM(purchase_order_total_amount) as total_amount, ";
             $sql .= "SUM(purchase_order_payment) as total_paid, ";
             $sql .= "purchase_order_is_active as is_active, ";
@@ -183,6 +186,8 @@ class SuppliersPurchaseOrder
         try {
             $sql = "select *, ";
             $sql .= "purchase_order_aid as id, ";
+            $sql .= "DATE_FORMAT(purchase_order_date, '%b %d, %Y') as formated_date, ";
+            $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "SUM(purchase_order_total_amount) as total_amount, ";
             $sql .= "SUM(purchase_order_payment) as total_paid, ";
             $sql .= "purchase_order_is_active as is_active, ";
@@ -253,6 +258,8 @@ class SuppliersPurchaseOrder
     {
         try {
             $sql = "select *, ";
+            $sql .= "DATE_FORMAT(purchase_order_date, '%b %d, %Y') as formated_date, ";
+            $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "purchase_order_aid as id, ";
             $sql .= "purchase_order_is_active as is_active, ";
             $sql .= "purchase_order_number as name ";
@@ -274,6 +281,8 @@ class SuppliersPurchaseOrder
     {
         try {
             $sql = "select *, ";
+            $sql .= "DATE_FORMAT(purchase_order_date, '%b %d, %Y') as formated_date, ";
+            $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "purchase_order_aid as id, ";
             $sql .= "purchase_order_is_active as is_active, ";
             $sql .= "purchase_order_number as name ";

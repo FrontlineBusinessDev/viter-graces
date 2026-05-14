@@ -1,10 +1,8 @@
-import { flexRender } from "@tanstack/react-table";
-import React from "react";
-import TableStatus from "../TableStatus";
-import ActionButtonTable from "../ActionButtonTable";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { flexRender } from "@tanstack/react-table";
 import { Image } from "lucide-react";
 import ActionButtonSubTable from "../ActionButtonSubTable";
+import TableStatus from "../TableStatus";
 
 const ProductsMobile = ({
   rows,
@@ -17,7 +15,9 @@ const ProductsMobile = ({
 }) => {
   return (
     <>
-      {(isDefaultMobile === "products" || isDefaultMobile === "suppliers") && (
+      {(isDefaultMobile === "products" ||
+        isDefaultMobile === "suppliers" ||
+        isDefaultMobile === "purchase-order") && (
         <div>
           {rows?.map((row, index) => {
             const isLastRow = index === rows?.length - 1;

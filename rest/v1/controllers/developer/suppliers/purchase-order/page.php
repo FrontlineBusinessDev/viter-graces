@@ -25,10 +25,11 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->column_start = $_GET['start'];
         $val->column_total = 15;
         $val->max = PHP_INT_MAX;
+        $val->filters = $data['columnFilters'];
         $total_result_final = [];
 
         $query = checkReadLimit($val);
-        $total_result = getResultData(checkReadAll($val));
+        $total_result = checkReadAll($val);
 
         $data = getResultData($query);
 
@@ -36,13 +37,18 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
             $val->purchase_order_number = $data[$i]["purchase_order_number"];
 
-            $queryLogin = getResultData($val->readByPoNumber());
+            $queryLogin = $val->readByPoNumber();
+
+            $queryLogin = $queryLogin
+                ? getResultData($queryLogin)
+                : [];
 
             $total_result_final[] = [
                 ...$data[$i],
                 "items" => $queryLogin
             ];
         }
+
 
         http_response_code(200);
 
