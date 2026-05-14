@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 13, 2026 at 11:25 AM
+-- Generation Time: May 14, 2026 at 09:05 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -77,13 +77,16 @@ INSERT INTO `graces_activity_log` (`activity_log_aid`, `activity_log_menu`, `act
 (34, 'suppliers product', 'create', 3, 'Cyrene Lumabas', 'developer', '{\"suppliers_product_aid\":\"11\",\"suppliers_product_name\":\"aas\",\"suppliers_product_price\":\"111111\",\"suppliers_product_unit\":\"dfsdf1111\",\"suppliers_product_supplier_id\":null,\"suppliers_product_supplier_name\":null,\"suppliers_product_is_active\":null,\"suppliers_product_created\":null,\"suppliers_product_updated\":\"2026-05-13 15:41:27\",\"connection\":{},\"lastInsertedId\":null,\"tblSuppliersProduct\":\"graces_suppliers_product\",\"filters\":null,\"column_start\":null,\"column_total\":null,\"column_search\":null,\"max\":null}', '2026-05-13 15:41:27'),
 (35, 'suppliers product', 'create', 3, 'Cyrene Lumabas', 'developer', '{\"suppliers_product_aid\":\"11\",\"suppliers_product_name\":\"aas\",\"suppliers_product_price\":\"111111s\",\"suppliers_product_unit\":\"dfsdf1111\",\"suppliers_product_supplier_id\":null,\"suppliers_product_supplier_name\":null,\"suppliers_product_is_active\":null,\"suppliers_product_created\":null,\"suppliers_product_updated\":\"2026-05-13 15:41:34\",\"connection\":{},\"lastInsertedId\":null,\"tblSuppliersProduct\":\"graces_suppliers_product\",\"filters\":null,\"column_start\":null,\"column_total\":null,\"column_search\":null,\"max\":null}', '2026-05-13 15:41:34'),
 (36, 'suppliers product', 'create', 3, 'Cyrene Lumabas', 'developer', '{\"suppliers_product_aid\":\"11\",\"suppliers_product_name\":\"a\",\"suppliers_product_price\":\"111111s\",\"suppliers_product_unit\":\"dfsdf1111\",\"suppliers_product_supplier_id\":null,\"suppliers_product_supplier_name\":null,\"suppliers_product_is_active\":null,\"suppliers_product_created\":null,\"suppliers_product_updated\":\"2026-05-13 15:42:13\",\"connection\":{},\"lastInsertedId\":null,\"tblSuppliersProduct\":\"graces_suppliers_product\",\"filters\":null,\"column_start\":null,\"column_total\":null,\"column_search\":null,\"max\":null}', '2026-05-13 15:42:13'),
-(37, 'suppliers-product', 'archieve', 3, 'Cyrene Lumabas', 'developer', '[{\"values\":{\"suppliers_product_aid\":11,\"suppliers_product_name\":\"a\",\"suppliers_product_price\":\"111111s\",\"suppliers_product_unit\":\"dfsdf1111\",\"suppliers_product_supplier_id\":10,\"suppliers_product_supplier_name\":\"bb\",\"suppliers_product_is_active\":1,\"suppliers_product_created\":\"2026-05-13 15:32:14\",\"suppliers_product_updated\":\"2026-05-13 15:42:13\",\"id\":11,\"is_active\":1,\"name\":\"a\",\"path\":\"active/11\",\"menu\":\"suppliers-product\",\"action\":\"archieve\"}}]', '2026-05-13 15:43:57'),
-(38, 'suppliers-product', 'restore', 3, 'Cyrene Lumabas', 'developer', '[{\"values\":{\"suppliers_product_aid\":11,\"suppliers_product_name\":\"a\",\"suppliers_product_price\":\"111111s\",\"suppliers_product_unit\":\"dfsdf1111\",\"suppliers_product_supplier_id\":10,\"suppliers_product_supplier_name\":\"bb\",\"suppliers_product_is_active\":0,\"suppliers_product_created\":\"2026-05-13 15:32:14\",\"suppliers_product_updated\":\"2026-05-13 15:43:57\",\"id\":11,\"is_active\":0,\"name\":\"a\",\"path\":\"active/11\",\"menu\":\"suppliers-product\",\"action\":\"restore\"}}]', '2026-05-13 15:43:59'),
+(37, 'suppliers product', 'archieve', 3, 'Cyrene Lumabas', 'developer', '[{\"values\":{\"suppliers_product_aid\":11,\"suppliers_product_name\":\"a\",\"suppliers_product_price\":\"111111s\",\"suppliers_product_unit\":\"dfsdf1111\",\"suppliers_product_supplier_id\":10,\"suppliers_product_supplier_name\":\"bb\",\"suppliers_product_is_active\":1,\"suppliers_product_created\":\"2026-05-13 15:32:14\",\"suppliers_product_updated\":\"2026-05-13 15:42:13\",\"id\":11,\"is_active\":1,\"name\":\"a\",\"path\":\"active/11\",\"menu\":\"suppliers-product\",\"action\":\"archieve\"}}]', '2026-05-13 15:43:57'),
+(38, 'suppliers product', 'restore', 3, 'Cyrene Lumabas', 'developer', '[{\"values\":{\"suppliers_product_aid\":11,\"suppliers_product_name\":\"a\",\"suppliers_product_price\":\"111111s\",\"suppliers_product_unit\":\"dfsdf1111\",\"suppliers_product_supplier_id\":10,\"suppliers_product_supplier_name\":\"bb\",\"suppliers_product_is_active\":0,\"suppliers_product_created\":\"2026-05-13 15:32:14\",\"suppliers_product_updated\":\"2026-05-13 15:43:57\",\"id\":11,\"is_active\":0,\"name\":\"a\",\"path\":\"active/11\",\"menu\":\"suppliers-product\",\"action\":\"restore\"}}]', '2026-05-13 15:43:59'),
 (39, 'user', 'reset password', 3, 'Cyrene Lumabas', 'developer', '{\"user_account_aid\":\"4\",\"user_account_is_active\":null,\"user_account_first_name\":null,\"user_account_last_name\":null,\"user_account_email\":\"cyrene.lumabas@frontlinebusiness.com.ph\",\"user_account_role_id\":null,\"user_account_role\":null,\"user_account_key\":\"543e373f1ddca37d94aeabda6757f87693a321170d1c648f6c8ab4e73de34ec8\",\"user_account_password\":null,\"user_account_created\":null,\"user_account_updated\":\"2026-05-13 16:24:42\",\"isDeveloper\":null,\"connection\":{},\"lastInsertedId\":null,\"tblUserAccount\":\"graces_user_account\",\"tblActivityLog\":\"graces_activity_log\",\"tblProducts\":\"graces_products\",\"filters\":null,\"column_start\":null,\"column_total\":null,\"column_search\":null,\"column_fullname\":null,\"max\":null}', '2026-05-13 16:24:46'),
 (40, 'role', 'create', 3, 'Cyrene Lumabas', 'developer', '[{\"values\":{\"role_aid\":\"\",\"role_name\":\"aaaaa\",\"role_description\":\"aaaaa\",\"role_name_old\":\"\",\"role_description_old\":\"\"}}]', '2026-05-13 16:42:41'),
 (41, 'user', 'forget password', 4, 'Cyzai Lumabas', 'Product Owner', '{\"user_account_aid\":null,\"user_account_is_active\":null,\"user_account_first_name\":null,\"user_account_last_name\":null,\"user_account_email\":\"cyrene.lumabas@frontlinebusiness.com.ph\",\"user_account_role_id\":null,\"user_account_role\":null,\"user_account_key\":\"1106bb681c1ef57ffeff592d038d7775f1e641a874702fdf1216358c81096c7e\",\"user_account_password\":null,\"user_account_created\":null,\"user_account_updated\":\"2026-05-13 17:15:52\",\"isDeveloper\":null,\"connection\":{},\"lastInsertedId\":null,\"tblUserAccount\":\"graces_user_account\",\"tblActivityLog\":\"graces_activity_log\",\"tblProducts\":\"graces_products\",\"filters\":null,\"column_start\":null,\"column_total\":null,\"column_search\":null,\"column_fullname\":null,\"max\":null}', '2026-05-13 17:15:56'),
 (42, 'user', 'forget password', 4, 'cyzai lumabas', 'product owner', '{\"user_account_aid\":null,\"user_account_is_active\":null,\"user_account_first_name\":null,\"user_account_last_name\":null,\"user_account_email\":\"cyrene.lumabas@frontlinebusiness.com.ph\",\"user_account_role_id\":null,\"user_account_role\":null,\"user_account_key\":\"bdade39bfeb6474260ed3629aaa7e15b046e621b82ac6677d502fb85c55aef52\",\"user_account_password\":null,\"user_account_created\":null,\"user_account_updated\":\"2026-05-13 17:18:16\",\"isDeveloper\":null,\"connection\":{},\"lastInsertedId\":null,\"tblUserAccount\":\"graces_user_account\",\"tblActivityLog\":\"graces_activity_log\",\"tblProducts\":\"graces_products\",\"filters\":null,\"column_start\":null,\"column_total\":null,\"column_search\":null,\"column_fullname\":null,\"max\":null}', '2026-05-13 17:18:20'),
-(43, 'user', 'login', 3, 'cyrene lumabas', 'developer', '{\"user_account_aid\":null,\"user_account_is_active\":null,\"user_account_first_name\":null,\"user_account_last_name\":null,\"user_account_email\":\"cyrenemlumabas@gmail.com\",\"user_account_role_id\":null,\"user_account_role\":null,\"user_account_key\":null,\"user_account_password\":null,\"user_account_created\":null,\"user_account_updated\":null,\"isDeveloper\":null,\"connection\":{},\"lastInsertedId\":null,\"tblUserAccount\":\"graces_user_account\",\"tblActivityLog\":\"graces_activity_log\",\"tblProducts\":\"graces_products\",\"filters\":null,\"column_start\":null,\"column_total\":null,\"column_search\":null,\"column_fullname\":null,\"max\":null}', '2026-05-13 17:23:33');
+(43, 'user', 'login', 3, 'cyrene lumabas', 'developer', '{\"user_account_aid\":null,\"user_account_is_active\":null,\"user_account_first_name\":null,\"user_account_last_name\":null,\"user_account_email\":\"cyrenemlumabas@gmail.com\",\"user_account_role_id\":null,\"user_account_role\":null,\"user_account_key\":null,\"user_account_password\":null,\"user_account_created\":null,\"user_account_updated\":null,\"isDeveloper\":null,\"connection\":{},\"lastInsertedId\":null,\"tblUserAccount\":\"graces_user_account\",\"tblActivityLog\":\"graces_activity_log\",\"tblProducts\":\"graces_products\",\"filters\":null,\"column_start\":null,\"column_total\":null,\"column_search\":null,\"column_fullname\":null,\"max\":null}', '2026-05-13 17:23:33'),
+(44, 'purchase order', 'create', 3, 'cyrene lumabas', 'developer', '[{\"values\":{\"purchase_order_aid\":\"\",\"purchase_order_number\":\"PO-003\",\"purchase_order_supplier_id\":\"10\",\"purchase_order_supplier_name\":\"bb\",\"purchase_order_date\":\"2026-05-14\",\"purchase_order_expected_delivery\":\"2026-05-14\",\"purchase_order_total_amount\":\"\",\"purchase_order_payment\":30000,\"purchase_order_status\":\"draft\",\"purchase_order_payment_status\":\"draft\",\"purchase_order_note\":\"test data\",\"purchase_order_number_old\":\"\",\"purchase_order\":[{\"purchase_order_product_id\":\"11\",\"purchase_order_product_name\":\"a\",\"purchase_order_product_owner_id\":\"4\",\"purchase_order_product_owner_name\":\"Cyzai Lumabas\",\"purchase_order_qty\":\"100\",\"purchase_order_price\":\"10\",\"purchase_order_total_amount\":1000,\"purchase_order_total\":1000},{\"purchase_order_product_id\":\"10\",\"purchase_order_product_name\":\"asdasda\",\"purchase_order_product_owner_id\":\"4\",\"purchase_order_product_owner_name\":\"Cyzai Lumabas\",\"purchase_order_qty\":\"200\",\"purchase_order_price\":\"20\",\"id\":0,\"purchase_order_total\":4000,\"purchase_order_total_amount\":4000},{\"purchase_order_product_id\":\"11\",\"purchase_order_product_name\":\"a\",\"purchase_order_product_owner_id\":\"4\",\"purchase_order_product_owner_name\":\"Cyzai Lumabas\",\"purchase_order_qty\":\"300\",\"purchase_order_price\":\"30\",\"id\":1,\"purchase_order_total\":9000,\"purchase_order_total_amount\":9000},{\"purchase_order_product_id\":\"10\",\"purchase_order_product_name\":\"asdasda\",\"purchase_order_product_owner_id\":\"4\",\"purchase_order_product_owner_name\":\"Cyzai Lumabas\",\"purchase_order_qty\":\"400\",\"purchase_order_price\":\"40\",\"id\":2,\"purchase_order_total\":16000,\"purchase_order_total_amount\":16000}]}}]', '2026-05-14 13:03:40'),
+(45, 'purchase order', 'create', 3, 'cyrene lumabas', 'developer', '[{\"values\":{\"purchase_order_aid\":\"\",\"purchase_order_number\":\"PO-001\",\"purchase_order_supplier_id\":\"10\",\"purchase_order_supplier_name\":\"bb\",\"purchase_order_date\":\"2026-05-14\",\"purchase_order_expected_delivery\":\"2026-05-14\",\"purchase_order_total_amount\":\"\",\"purchase_order_payment\":250000,\"purchase_order_status\":\"draft\",\"purchase_order_payment_status\":\"draft\",\"purchase_order_note\":\"test data\",\"purchase_order_number_old\":\"\",\"purchase_order\":[{\"purchase_order_product_id\":\"11\",\"purchase_order_product_name\":\"a\",\"purchase_order_product_owner_id\":\"4\",\"purchase_order_product_owner_name\":\"Cyzai Lumabas\",\"purchase_order_qty\":\"100\",\"purchase_order_price\":\"10\",\"purchase_order_total_amount\":1000},{\"purchase_order_product_id\":\"10\",\"purchase_order_product_name\":\"asdasda\",\"purchase_order_product_owner_id\":\"4\",\"purchase_order_product_owner_name\":\"Cyzai Lumabas\",\"purchase_order_qty\":\"200\",\"purchase_order_price\":\"20\",\"purchase_order_total_amount\":4000,\"id\":0},{\"purchase_order_product_id\":\"11\",\"purchase_order_product_name\":\"a\",\"purchase_order_product_owner_id\":\"4\",\"purchase_order_product_owner_name\":\"Cyzai Lumabas\",\"purchase_order_qty\":\"300\",\"purchase_order_price\":\"30\",\"purchase_order_total_amount\":9000,\"id\":1},{\"purchase_order_product_id\":\"10\",\"purchase_order_product_name\":\"asdasda\",\"purchase_order_product_owner_id\":\"4\",\"purchase_order_product_owner_name\":\"Cyzai Lumabas\",\"purchase_order_qty\":\"400\",\"purchase_order_price\":\"40\",\"purchase_order_total_amount\":16000,\"id\":2},{\"purchase_order_product_id\":\"10\",\"purchase_order_product_name\":\"asdasda\",\"purchase_order_product_owner_id\":\"4\",\"purchase_order_product_owner_name\":\"Cyzai Lumabas\",\"purchase_order_qty\":\"500\",\"purchase_order_price\":\"50\",\"purchase_order_total_amount\":25000,\"id\":3}]}}]', '2026-05-14 13:11:57'),
+(46, 'purchase order', 'create', 3, 'cyrene lumabas', 'developer', '[{\"values\":{\"purchase_order_aid\":\"\",\"purchase_order_number\":\"PO-002\",\"purchase_order_supplier_id\":\"10\",\"purchase_order_supplier_name\":\"bb\",\"purchase_order_date\":\"2026-05-14\",\"purchase_order_expected_delivery\":\"2026-05-14\",\"purchase_order_total_amount\":\"\",\"purchase_order_payment\":\"0\",\"purchase_order_status\":\"draft\",\"purchase_order_payment_status\":\"draft\",\"purchase_order_note\":\"test data\",\"purchase_order_number_old\":\"\",\"purchase_order\":[{\"purchase_order_product_id\":\"11\",\"purchase_order_product_name\":\"a\",\"purchase_order_product_owner_id\":\"4\",\"purchase_order_product_owner_name\":\"Cyzai Lumabas\",\"purchase_order_qty\":\"1000\",\"purchase_order_price\":\"10\",\"purchase_order_total_amount\":10000},{\"purchase_order_product_id\":\"10\",\"purchase_order_product_name\":\"asdasda\",\"purchase_order_product_owner_id\":\"4\",\"purchase_order_product_owner_name\":\"Cyzai Lumabas\",\"purchase_order_qty\":\"2000\",\"purchase_order_price\":\"20\",\"purchase_order_total_amount\":40000,\"id\":0}]}}]', '2026-05-14 13:14:25');
 
 -- --------------------------------------------------------
 
@@ -246,6 +249,48 @@ INSERT INTO `graces_suppliers_product` (`suppliers_product_aid`, `suppliers_prod
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `graces_suppliers_purchase_order`
+--
+
+CREATE TABLE `graces_suppliers_purchase_order` (
+  `purchase_order_aid` int(11) NOT NULL,
+  `purchase_order_number` varchar(20) NOT NULL,
+  `purchase_order_supplier_id` int(11) NOT NULL,
+  `purchase_order_supplier_name` varchar(200) NOT NULL,
+  `purchase_order_date` varchar(20) NOT NULL,
+  `purchase_order_expected_delivery` varchar(20) NOT NULL,
+  `purchase_order_total_amount` varchar(20) NOT NULL,
+  `purchase_order_payment` varchar(100) NOT NULL,
+  `purchase_order_is_active` tinyint(1) NOT NULL,
+  `purchase_order_status` varchar(20) NOT NULL,
+  `purchase_order_payment_status` varchar(20) NOT NULL,
+  `purchase_order_note` text NOT NULL,
+  `purchase_order_product_id` int(11) NOT NULL,
+  `purchase_order_product_name` varchar(200) NOT NULL,
+  `purchase_order_product_owner_id` int(11) NOT NULL,
+  `purchase_order_product_owner_name` varchar(200) NOT NULL,
+  `purchase_order_qty` varchar(20) NOT NULL,
+  `purchase_order_price` varchar(20) NOT NULL,
+  `purchase_order_created` datetime NOT NULL,
+  `purchase_order_updated` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `graces_suppliers_purchase_order`
+--
+
+INSERT INTO `graces_suppliers_purchase_order` (`purchase_order_aid`, `purchase_order_number`, `purchase_order_supplier_id`, `purchase_order_supplier_name`, `purchase_order_date`, `purchase_order_expected_delivery`, `purchase_order_total_amount`, `purchase_order_payment`, `purchase_order_is_active`, `purchase_order_status`, `purchase_order_payment_status`, `purchase_order_note`, `purchase_order_product_id`, `purchase_order_product_name`, `purchase_order_product_owner_id`, `purchase_order_product_owner_name`, `purchase_order_qty`, `purchase_order_price`, `purchase_order_created`, `purchase_order_updated`) VALUES
+(1, 'PO-001', 10, 'bb', '2026-05-14', '2026-05-14', '1000', '250000', 1, 'draft', 'draft', 'test data', 11, 'a', 4, 'Cyzai Lumabas', '100', '10', '2026-05-14 13:11:57', '2026-05-14 13:11:57'),
+(2, 'PO-001', 10, 'bb', '2026-05-14', '2026-05-14', '4000', '250000', 1, 'draft', 'draft', 'test data', 10, 'asdasda', 4, 'Cyzai Lumabas', '200', '20', '2026-05-14 13:11:57', '2026-05-14 13:11:57'),
+(3, 'PO-001', 10, 'bb', '2026-05-14', '2026-05-14', '9000', '250000', 1, 'draft', 'draft', 'test data', 11, 'a', 4, 'Cyzai Lumabas', '300', '30', '2026-05-14 13:11:57', '2026-05-14 13:11:57'),
+(4, 'PO-001', 10, 'bb', '2026-05-14', '2026-05-14', '16000', '250000', 1, 'draft', 'draft', 'test data', 10, 'asdasda', 4, 'Cyzai Lumabas', '400', '40', '2026-05-14 13:11:57', '2026-05-14 13:11:57'),
+(5, 'PO-001', 10, 'bb', '2026-05-14', '2026-05-14', '25000', '250000', 1, 'draft', 'draft', 'test data', 10, 'asdasda', 4, 'Cyzai Lumabas', '500', '50', '2026-05-14 13:11:57', '2026-05-14 13:11:57'),
+(6, 'PO-002', 10, 'bb', '2026-05-14', '2026-05-14', '10000', '0', 1, 'draft', 'draft', 'test data', 11, 'a', 4, 'Cyzai Lumabas', '1000', '10', '2026-05-14 13:14:25', '2026-05-14 13:14:25'),
+(7, 'PO-002', 10, 'bb', '2026-05-14', '2026-05-14', '40000', '0', 1, 'draft', 'draft', 'test data', 10, 'asdasda', 4, 'Cyzai Lumabas', '2000', '20', '2026-05-14 13:14:25', '2026-05-14 13:14:25');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `graces_user_account`
 --
 
@@ -313,6 +358,12 @@ ALTER TABLE `graces_suppliers_product`
   ADD PRIMARY KEY (`suppliers_product_aid`);
 
 --
+-- Indexes for table `graces_suppliers_purchase_order`
+--
+ALTER TABLE `graces_suppliers_purchase_order`
+  ADD PRIMARY KEY (`purchase_order_aid`);
+
+--
 -- Indexes for table `graces_user_account`
 --
 ALTER TABLE `graces_user_account`
@@ -326,7 +377,7 @@ ALTER TABLE `graces_user_account`
 -- AUTO_INCREMENT for table `graces_activity_log`
 --
 ALTER TABLE `graces_activity_log`
-  MODIFY `activity_log_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `activity_log_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=47;
 
 --
 -- AUTO_INCREMENT for table `graces_customer`
@@ -357,6 +408,12 @@ ALTER TABLE `graces_suppliers`
 --
 ALTER TABLE `graces_suppliers_product`
   MODIFY `suppliers_product_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+
+--
+-- AUTO_INCREMENT for table `graces_suppliers_purchase_order`
+--
+ALTER TABLE `graces_suppliers_purchase_order`
+  MODIFY `purchase_order_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `graces_user_account`
