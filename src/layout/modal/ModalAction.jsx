@@ -44,7 +44,12 @@ const ModalAction = ({ mysqlApiAction, msg, successMsg, item, queryKey }) => {
   const handleYes = async () => {
     // mutate data
     mutation.mutate({
-      ...ActivityLogDetails(item?.menu, item?.action, store, item),
+      ...ActivityLogDetails(
+        item?.menu?.replaceAll("-", " "),
+        item?.action?.replaceAll("-", " "),
+        store,
+        item,
+      ),
       isActive: Number(isEmptyItem(item?.is_active, 0)) === 1 ? 0 : 1,
       ...item,
     });

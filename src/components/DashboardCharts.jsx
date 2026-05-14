@@ -1,12 +1,9 @@
 import useDarkMode from "@/custom-hooks/useDarkMode";
-import { LineChart, TrendingDown } from "lucide-react";
+import { TrendingDown } from "lucide-react";
 import React from "react";
 import {
   Area,
   AreaChart,
-  Bar,
-  ComposedChart,
-  Line,
   ResponsiveContainer,
   Tooltip,
   XAxis,

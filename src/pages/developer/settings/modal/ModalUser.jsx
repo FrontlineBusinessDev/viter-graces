@@ -123,7 +123,7 @@ const ModalUser = ({ itemEdit }) => {
                       label="Role"
                       type="text"
                       name="user_account_role_id"
-                      path="roles"
+                      path="roles/read-in-modal"
                       onChange={(e) => {
                         props.values.user_account_role_id = e.target.value;
                         props.values.user_account_role =

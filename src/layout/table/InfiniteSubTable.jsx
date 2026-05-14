@@ -124,12 +124,6 @@ const InfiniteSubTable = ({
     [result],
   );
 
-  // use UI-only data
-  // const tableData = useMemo(() => {
-  //   if (isStatic) return mockData;
-  //   return data?.pages?.flatMap((page) => page.data || []) ?? [];
-  // }, [data, mockData, isStatic]);
-
   // // Infinite scroll trigger
   const lastRowRef = useCallback(
     (node) => {
@@ -293,17 +287,6 @@ const InfiniteSubTable = ({
                           header?.column?.columnDef?.header,
                           header?.getContext(),
                         )}
-
-                        {/* <button
-                            onClick={header?.column?.getToggleSortingHandler()}
-                            className="bg-gray-100 hover:bg-white rounded-sm ml-2 "
-                          >
-                            {header?.column?.getIsSorted() !== "asc" ? (
-                              <ChevronDown />
-                            ) : (
-                              <ChevronUp />
-                            )}
-                          </button> */}
                       </th>
                     ))}
                   </tr>

@@ -1,9 +1,8 @@
+import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
 import React from "react";
-import ModalSuppliers from "./modal/ModalSuppliers";
-import HeaderNav from "@/layout/headers/HeaderNav";
 import ModalPurchaseOrder from "./modal/ModalPurchaseOrder";
 
 const PurchaseOrder = () => {
@@ -13,53 +12,57 @@ const PurchaseOrder = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "user_account_is_active",
+      accessorKey: "purchase_order_is_active",
       header: "status",
       classTh: "w-[5rem]",
       classTd: "",
     },
     {
-      accessorKey: "name",
+      accessorKey: "purchase_order_number",
       header: "PO Number",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "contact person",
+      accessorKey: "purchase_order_supplier_name",
       header: "Supplier",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "email",
+      accessorKey: "purchase_order_date",
       header: "Order date",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "phone",
+      accessorKey: "purchase_order_expected_delivery",
       header: "expected",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "address",
+      accessorKey: "total_amount",
       header: "total",
       classTh: "",
       classTd: "",
+      amount: true,
+      paid_amount: false,
     },
     {
-      accessorKey: "address",
+      accessorKey: "purchase_order_payment",
       header: "payment",
       classTh: "",
       classTd: "",
+      amount: false,
+      paid_amount: true,
     },
     {
       accessorKey: "action",
       action_array: [
         {
           name: "edit",
-          path: "purchase orders",
+          path: "purchase-order",
           icon: <Edit className="h-3 w-3" />,
           isActive: 1,
         },
@@ -77,7 +80,7 @@ const PurchaseOrder = () => {
         },
         {
           name: "delete",
-          path: "purchase orders",
+          path: "purchase-order",
           icon: <Trash className="h-3 w-3" />,
           isActive: 0,
         },
@@ -94,7 +97,7 @@ const PurchaseOrder = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="purchase orders"
+          path="purchase-order"
           setItemEdit={setItemEdit}
         />
       </HeaderNav>

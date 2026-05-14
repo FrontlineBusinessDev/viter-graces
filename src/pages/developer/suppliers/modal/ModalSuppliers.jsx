@@ -24,6 +24,8 @@ import * as Yup from "yup";
 
 const ModalSuppliers = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
+  const [counter, setCounter] = React.useState(0);
+  const [counterContact, setCounterContact] = React.useState(0);
   const [itemsContact, setItemsContact] = React.useState(
     itemEdit
       ? getConvertStringToJSONparseData(itemEdit?.suppliers_contact_person)
@@ -45,8 +47,10 @@ const ModalSuppliers = ({ itemEdit }) => {
       {
         contact_name: "",
         contact_phone: "",
+        id: counterContact,
       },
     ]);
+    setCounterContact((prev) => prev + 1);
   };
 
   const handleClose = () => {
@@ -99,8 +103,10 @@ const ModalSuppliers = ({ itemEdit }) => {
         product_name: "",
         price: "",
         unit: "",
+        id: counter,
       },
     ]);
+    setCounter((prev) => prev + 1);
   };
 
   const handleRemoveItem = (index) => {

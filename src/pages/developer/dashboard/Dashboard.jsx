@@ -1,7 +1,9 @@
 import CashflowChart from "@/components/CashflowChart";
-import DashboardOverview from "@/components/DashboardCharts";
 import ProfitLossChart from "@/components/ProfitLossChart";
 import StatCard from "@/components/StatCard";
+import DashboardOverduePayments from "@/layout/dashboard/DashboardOverduePayments";
+import DashboardRecentActivities from "@/layout/dashboard/DashboardRecentActivities";
+import DashboardSalesOverview from "@/layout/dashboard/DashboardSalesOverview";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import { setTabValue } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
@@ -65,7 +67,11 @@ const Dashboard = () => {
           />
         </div>
 
-        <DashboardOverview />
+        <div className="grid grid-cols-1 xl:grid-cols-[2fr_1fr_1fr] gap-6 py-6 ">
+          <DashboardSalesOverview />
+          <DashboardOverduePayments />
+          <DashboardRecentActivities />
+        </div>
 
         <div className="grid xl:grid-cols-2 gap-6 ">
           <CashflowChart />

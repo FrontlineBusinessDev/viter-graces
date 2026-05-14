@@ -110,7 +110,6 @@ export const ActivityLogDetails = (path, action, store, values) => {
 };
 
 export const ActivityLogResetPassDetails = (path, action, values) => {
-  console.log("values", values);
   const data = {
     activity_log_menu: path,
     activity_log_action: action,

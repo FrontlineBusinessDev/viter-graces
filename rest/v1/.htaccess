@@ -17,6 +17,8 @@ RewriteRule ^roles/([0-9]+)$ controllers/developer/settings/role/role.php?id=$1 
 RewriteRule ^roles/active/([0-9]+)$ controllers/developer/settings/role/active.php?id=$1 [L] 
 RewriteRule ^roles/page/([0-9]+)$ controllers/developer/settings/role/page.php?start=$1 [L]
 RewriteRule ^roles/search$ controllers/developer/settings/role/search.php [L]
+RewriteRule ^roles/read-in-modal/([0-9]+)$ controllers/developer/settings/role/read-in-modal.php?id=$1 [L] 
+RewriteRule ^roles/read-in-modal$ controllers/developer/settings/role/read-in-modal.php [L] 
 
 ### User ACCOUNT ###
 RewriteRule ^users$ controllers/developer/settings/user/user.php [L]
@@ -38,6 +40,8 @@ RewriteRule ^product-owner/page/([0-9]+)$ controllers/developer/settings/product
 RewriteRule ^product-owner/active/([0-9]+)$ controllers/developer/settings/product-owner/active.php?id=$1 [L] 
 RewriteRule ^product-owner/reset-password/([0-9]+)$ controllers/developer/settings/product-owner/reset-password.php?id=$1 [L] 
 RewriteRule ^product-owner/read-by-product-owner$ controllers/developer/settings/product-owner/read-by-product-owner.php [L] 
+RewriteRule ^product-owner/read-in-modal/([0-9]+)$ controllers/developer/settings/product-owner/read-in-modal.php?id=$1 [L] 
+RewriteRule ^product-owner/read-in-modal$ controllers/developer/settings/product-owner/read-in-modal.php [L] 
 
 ### CUSTOMER ###
 RewriteRule ^customer$ controllers/developer/customer/customer.php [L]
@@ -52,6 +56,8 @@ RewriteRule ^suppliers/([0-9]+)$ controllers/developer/suppliers/suppliers.php?i
 RewriteRule ^suppliers/active/([0-9]+)$ controllers/developer/suppliers/active.php?id=$1 [L] 
 RewriteRule ^suppliers/page/([0-9]+)$ controllers/developer/suppliers/page.php?start=$1 [L]
 RewriteRule ^suppliers/search$ controllers/developer/suppliers/search.php [L]
+RewriteRule ^suppliers/read-in-modal/([0-9]+)$ controllers/developer/suppliers/read-in-modal.php?id=$1 [L] 
+RewriteRule ^suppliers/read-in-modal$ controllers/developer/suppliers/read-in-modal.php [L] 
 
 ### SUPPLIERS ###
 RewriteRule ^suppliers-product$ controllers/developer/suppliers/product/suppliers-product.php [L]
@@ -59,6 +65,8 @@ RewriteRule ^suppliers-product/([0-9]+)$ controllers/developer/suppliers/product
 RewriteRule ^suppliers-product/active/([0-9]+)$ controllers/developer/suppliers/product/active.php?id=$1 [L] 
 RewriteRule ^suppliers-product/page/([0-9]+)$ controllers/developer/suppliers/product/page.php?start=$1 [L]
 RewriteRule ^suppliers-product/search$ controllers/developer/suppliers/product/search.php [L]
+RewriteRule ^suppliers-product/read-in-modal/([0-9]+)$ controllers/developer/suppliers/product/read-in-modal.php?id=$1 [L]
+RewriteRule ^suppliers-product/read-in-modal$ controllers/developer/suppliers/product/read-in-modal.php [L]
 
 ### PRODUCTS ###
 RewriteRule ^products$ controllers/developer/products/products.php [L]
@@ -66,3 +74,13 @@ RewriteRule ^products/([0-9]+)$ controllers/developer/products/products.php?id=$
 RewriteRule ^products/active/([0-9]+)$ controllers/developer/products/active.php?id=$1 [L] 
 RewriteRule ^products/page/([0-9]+)$ controllers/developer/products/page.php?start=$1 [L]
 RewriteRule ^products/search$ controllers/developer/products/search.php [L]
+ 
+### ACTIVITY LOG ###
+RewriteRule ^activity/read-with-limit$ controllers/developer/activity-log/read-with-limit.php [L] 
+
+### PURCHASE ORDER ###
+RewriteRule ^purchase-order$ controllers/developer/suppliers/purchase-order/purchase-order.php [L]
+RewriteRule ^purchase-order/([0-9]+)$ controllers/developer/suppliers/purchase-order/purchase-order.php?id=$1 [L] 
+RewriteRule ^purchase-order/active/([0-9]+)$ controllers/developer/suppliers/purchase-order/active.php?id=$1 [L] 
+RewriteRule ^purchase-order/page/([0-9]+)$ controllers/developer/suppliers/purchase-order/page.php?start=$1 [L]
+RewriteRule ^purchase-order/search$ controllers/developer/suppliers/purchase-order/search.php [L]

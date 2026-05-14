@@ -23,7 +23,14 @@ function createActivityLogWithPhp($object, $val, $menu, $action, $data)
     $object->activity_log_description = json_encode($val);
     $object->activity_log_created = date("Y-m-d H:i:s");
 
-
     // create
     checkCreate($object);
+}
+
+// Read all
+function checkReadByLimit($object)
+{
+    $query = $object->readByLimit();
+    checkQuery($query, "Empty records. (read by limit)");
+    return $query;
 }

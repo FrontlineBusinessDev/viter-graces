@@ -145,6 +145,8 @@ class ActivityLog
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
             $query->execute([
+                "start" => $this->column_start - 1,
+                "total" => $this->column_total,
                 ...$this->column_search != "" ? [
                     "activity_log_menu" => "%{$this->column_search}%",
                     "activity_log_action" => "%{$this->column_search}%",
@@ -212,6 +214,27 @@ class ActivityLog
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "activity_log_aid" => $this->activity_log_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readByLimit()
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "DATEDIFF(NOW(), activity_log_created) as days_ago, ";
+            $sql .= "activity_log_aid as id, ";
+            $sql .= "activity_log_menu as name ";
+            $sql .= "from {$this->tblActivityLog} ";
+            $sql .= "order by activity_log_aid desc ";
+            $sql .= "limit :total ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "total" => $this->column_total,
             ]);
         } catch (PDOException $ex) {
             $query = false;

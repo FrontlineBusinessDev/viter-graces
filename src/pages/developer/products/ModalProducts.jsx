@@ -189,7 +189,7 @@ const ModalProducts = ({ itemEdit }) => {
                       <InputSelectArray
                         label="Suppliers"
                         type="text"
-                        path="suppliers"
+                        path="suppliers/read-in-modal"
                         name="products_suppliers_id"
                         onChange={(e) => {
                           props.values.products_suppliers_id = e.target.value;

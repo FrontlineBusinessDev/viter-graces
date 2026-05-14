@@ -1,6 +1,5 @@
 import { apiVersion } from "@/config/config";
 import useQueryData from "@/services/useQueryData";
-import { setError } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useField } from "formik";
@@ -30,7 +29,6 @@ export const InputSelect = ({
         onChange={(e) => {
           onChange !== null && onChange(e);
           field.onChange(e);
-          dispatch(setError(false));
         }}
         autoComplete="off"
       />
@@ -47,6 +45,7 @@ export const InputSelectArray = ({
   required = true,
   onChange = null,
   path = null,
+  id = 0,
   ...props
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -59,8 +58,9 @@ export const InputSelectArray = ({
     data: result,
   } = useQueryData(
     `${apiVersion}/${path}`, // endpoint
-    "get", // method
+    "post", // method
     `${path}`, // key
+    { id: id },
   );
 
   return (
@@ -77,7 +77,6 @@ export const InputSelectArray = ({
         onChange={(e) => {
           onChange !== null && onChange(e);
           field.onChange(e);
-          dispatch(setError(false));
         }}
         autoComplete="off"
       >
@@ -112,7 +111,7 @@ export const InputSelectArray = ({
           ) : (
             <>
               {result?.data?.map((item, key) => {
-                return isEmptyItem(item?.name, "") !== "developer" ? (
+                return isEmptyItem(item?.role_code, "") !== "r_is_developer" ? (
                   <option key={key} value={item.id}>
                     {item.name}
                   </option>
@@ -166,7 +165,6 @@ export const InputSelectWeeksArray = ({
         onChange={(e) => {
           onChange !== null && onChange(e);
           field.onChange(e);
-          dispatch(setError(false));
         }}
         autoComplete="off"
       >
@@ -305,5 +303,180 @@ export const SearchableSelectFilter = ({ column, path }) => {
        ${!isSelected && isFocused ? "bg-primary! text-secondary! " : " "}`,
       }}
     />
+  );
+};
+
+export const InputSelectPaymentArray = ({
+  label,
+  required = true,
+  onChange = null,
+  path = null,
+  ...props
+}) => {
+  const { store, dispatch } = React.useContext(StoreContext);
+  const [field, meta] = useField(props);
+
+  let result = [{ name: "draft" }, { name: "paid" }, { name: "installment" }];
+
+  return (
+    <>
+      <label htmlFor={props.id || props.name}>
+        {label}
+        {required && <span className="text-alert">*</span>}
+      </label>
+
+      <select
+        {...field}
+        {...props}
+        className={`${meta.touched && meta.error ? "error-show" : null} capitalize`}
+        onChange={(e) => {
+          onChange !== null && onChange(e);
+          field.onChange(e);
+        }}
+        autoComplete="off"
+      >
+        <optgroup label={`Select a ${label}`}>
+          <option value="" hidden>
+            --
+          </option>
+
+          {result?.map((item, key) => {
+            return (
+              <option key={key} value={item.name}>
+                {item.name}
+              </option>
+            );
+          })}
+        </optgroup>
+      </select>
+
+      {meta.touched && meta.error ? (
+        <span className="error-show">{meta.error}</span>
+      ) : null}
+    </>
+  );
+};
+
+export const InputSelectStatusArray = ({
+  label,
+  required = true,
+  onChange = null,
+  path = null,
+  ...props
+}) => {
+  const { store, dispatch } = React.useContext(StoreContext);
+  const [field, meta] = useField(props);
+
+  let status = [{ name: "draft" }, { name: "active" }, { name: "inactive" }];
+
+  return (
+    <>
+      <label htmlFor={props.id || props.name}>
+        {label} {""}
+        {required && <span className="text-alert">*</span>}
+      </label>
+
+      <select
+        {...field}
+        {...props}
+        className={`${meta.touched && meta.error ? "error-show" : null} capitalize`}
+        onChange={(e) => {
+          onChange !== null && onChange(e);
+          field.onChange(e);
+        }}
+        autoComplete="off"
+      >
+        <optgroup label={`Select a ${label}`} className="capitalize">
+          <option value="" hidden>
+            --
+          </option>
+
+          {status?.map((item, key) => {
+            return (
+              <option key={key} value={item.name}>
+                {item.name}
+              </option>
+            );
+          })}
+        </optgroup>
+      </select>
+
+      {meta.touched && meta.error ? (
+        <span className="error-show">{meta.error}</span>
+      ) : null}
+    </>
+  );
+};
+
+export const InputSelectTagArray = ({
+  label = "",
+  onChange = null,
+  path = null,
+  placeholder = "",
+  className,
+  id = "0",
+}) => {
+  const { store, dispatch } = React.useContext(StoreContext);
+
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data: result,
+  } = useQueryData(
+    `${apiVersion}/${path}`, // endpoint
+    "post", // method
+    `${path}`, // key
+    { id: id },
+  );
+
+  return (
+    <>
+      {label ? (
+        <label htmlFor={label}>
+          {label}
+          {required && <span className="text-alert">*</span>}
+        </label>
+      ) : (
+        ""
+      )}
+
+      <select
+        onChange={onChange}
+        autoComplete="off"
+        id={label}
+        className={`${className}`}
+      >
+        <optgroup label={`Select a ${placeholder}`}>
+          {result?.count === 0 ? (
+            <option value="" hidden>
+              No data
+            </option>
+          ) : isLoading || isFetching ? (
+            <option value="" hidden>
+              ...Loading
+            </option>
+          ) : error ? (
+            <option value="" hidden>
+              Server Error
+            </option>
+          ) : (
+            <option value="" hidden>
+              --
+            </option>
+          )}
+
+          {result?.data?.map((item, key) => {
+            return isEmptyItem(item?.name, "") !== "developer" ? (
+              <option key={key} value={item.id}>
+                {item.name}
+              </option>
+            ) : (
+              ""
+            );
+          })}
+        </optgroup>
+      </select>
+    </>
   );
 };

@@ -13,11 +13,6 @@ const ProtectedRouteUser = ({ children }) => {
   const [isAuth, setIsAuth] = React.useState("");
   const [pageStatus, setPageStatus] = React.useState(false);
   const gracestoken = JSON.parse(localStorage.getItem("gracestoken"));
-  const currentPath =
-    location.pathname.split("/")[1] === devNavUrl.replace("/", "")
-      ? location.pathname.split("/")[2]
-      : location.pathname.split("/")[1];
-  const isRolePath = location.pathname.split("/")[2] == UrlAdmin;
 
   React.useEffect(() => {
     const fetchLogin = async () => {

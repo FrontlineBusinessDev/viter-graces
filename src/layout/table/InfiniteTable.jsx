@@ -2,7 +2,7 @@ import AddButton from "@/components/buttons/AddButton";
 import ExportCSVButton from "@/components/buttons/ExportCSVButton";
 import { DebouncedInput } from "@/components/inputs/InputText";
 import NoData from "@/components/NoData";
-import { PesoSign } from "@/components/PesoSign";
+import { AmountWithPesoSign, PesoSign } from "@/components/PesoSign";
 import SearchBar from "@/components/SearchBar";
 import ServerError from "@/components/ServerError";
 import ButtonSpinner from "@/components/spinners/ButtonSpinner";
@@ -203,14 +203,14 @@ const InfiniteTable = ({
     <>
       <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 items-center">
         {ishaveAdd ? (
-          <div className="flex justify-end sm:mb-0! mb-3 ">
+          <div className="flex justify-end sm:mb-0! mb-3 w-full ">
             <AddButton value={path?.replaceAll("-", " ")} onClick={handleAdd} />
           </div>
         ) : (
           ""
         )}
         {ishaveSubAdd ? (
-          <div className="flex justify-end sm:mb-0! mb-3 ">
+          <div className="flex justify-end sm:mb-0! mb-3  ">
             <AddButton
               value={path?.replaceAll("-", " ")}
               onClick={handleSubAdd}
@@ -382,6 +382,8 @@ const InfiniteTable = ({
                   const isLastRow = index === rows?.length - 1;
                   const rowData = row.original;
 
+                  console.log("rowData", rowData);
+
                   return (
                     <React.Fragment key={row.id}>
                       <tr
@@ -432,13 +434,25 @@ const InfiniteTable = ({
                                   item?.column?.columnDef?.amount,
                                   false,
                                 ) ? (
-                                  <PesoSign />
+                                  <AmountWithPesoSign
+                                    classN="size-3"
+                                    amount={rowData?.total_amount}
+                                  />
+                                ) : isEmptyItem(
+                                    item?.column?.columnDef?.paid_amount,
+                                    false,
+                                  ) ? (
+                                  <>
+                                    <AmountWithPesoSign
+                                      classN="size-3"
+                                      amount={rowData?.total_paid}
+                                    />
+                                  </>
                                 ) : (
-                                  ""
-                                )}
-                                {flexRender(
-                                  item?.column?.columnDef?.cell,
-                                  item?.getContext(),
+                                  flexRender(
+                                    item?.column?.columnDef?.cell,
+                                    item?.getContext(),
+                                  )
                                 )}
                               </div>
                             )}
