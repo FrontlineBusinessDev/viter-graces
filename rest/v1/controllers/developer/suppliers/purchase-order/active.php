@@ -26,7 +26,15 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         checkPayload($data);
         $val->purchase_order_aid = $_GET['id'];
         $val->purchase_order_is_active = trim($data["isActive"]);
+
+        if ((float)$val->purchase_order_is_active == 0) {
+            $val->purchase_order_status = 'inactive';
+        } else {
+            $val->purchase_order_status = 'active';
+        }
         $val->purchase_order_updated = date("Y-m-d H:i:s");
+
+
         checkId($val->purchase_order_aid);
         $query = checkActive($val);
         // create activity log

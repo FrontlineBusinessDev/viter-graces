@@ -416,11 +416,15 @@ const InfiniteTable = ({
                             ) : (
                               ""
                             )}
-                            {item?.column?.columnDef?.header === "status" ? (
-                              <TableStatus
-                                item={item?.column?.columnDef}
-                                dataArray={rowData}
-                              />
+                            {item?.column?.columnDef?.header === "status" ||
+                            item?.column?.columnDef?.header ===
+                              "payment status" ? (
+                              <>
+                                <TableStatus
+                                  item={item?.column?.columnDef}
+                                  dataArray={rowData}
+                                />
+                              </>
                             ) : item?.column?.columnDef?.isViewItems ? (
                               <button
                                 className="text-green-700 hover:text-green-800 hover:underline"

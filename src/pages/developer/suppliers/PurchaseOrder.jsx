@@ -1,10 +1,12 @@
+import {
+  ActiveInActiveStatus,
+  DefaultActionTableList,
+} from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
-import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
 import React from "react";
 import ModalPurchaseOrder from "./modal/ModalPurchaseOrder";
-import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 
 const PurchaseOrder = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -18,6 +20,7 @@ const PurchaseOrder = () => {
       classTh: "w-[5rem]",
       classTd: "",
       status_option: ActiveInActiveStatus(),
+      status_text: "purchase_order_status",
     },
     {
       accessorKey: "purchase_order_number",
@@ -62,33 +65,16 @@ const PurchaseOrder = () => {
       paid_amount: true,
     },
     {
+      accessorKey: "purchase_order_payment_status",
+      header: "payment status",
+      classTh: "w-[9rem]",
+      classTd: "",
+      status_option: ActiveInActiveStatus(),
+      status_text: "purchase_order_payment_status",
+    },
+    {
       accessorKey: "action",
-      action_array: [
-        {
-          name: "edit",
-          path: "purchase-order",
-          icon: <Edit className="h-3 w-3" />,
-          isActive: 1,
-        },
-        {
-          name: "archieve",
-          path: "active",
-          icon: <ArchiveRestore className="h-3 w-3" />,
-          isActive: 1,
-        },
-        {
-          name: "restore",
-          path: "active",
-          icon: <RotateCcw className="h-3 w-3" />,
-          isActive: 0,
-        },
-        {
-          name: "delete",
-          path: "purchase-order",
-          icon: <Trash className="h-3 w-3" />,
-          isActive: 0,
-        },
-      ],
+      action_array: DefaultActionTableList("purchase-order"),
       header: "Action",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
@@ -106,6 +92,7 @@ const PurchaseOrder = () => {
         />
       </HeaderNav>
       {store.isAdd && <ModalPurchaseOrder itemEdit={itemEdit} />}
+      {store.isView && <ModalPurchaseOrder itemEdit={itemEdit} />}
     </>
   );
 };

@@ -108,16 +108,18 @@ const InfiniteDefaultTableMobileCard = ({
               </div>
 
               {/* ACTIONS */}
-              {cells.map((item) => {
+              {cells.map((item, akey) => {
                 if (item.column.columnDef.accessorKey === "action") {
                   return (
-                    <ActionButtonTable
-                      item={item.column.columnDef}
-                      dataArray={row.original}
-                      setData={setData}
-                      setItemEdit={setItemEdit}
-                      path={path}
-                    />
+                    <div key={akey}>
+                      <ActionButtonTable
+                        item={item.column.columnDef}
+                        dataArray={row.original}
+                        setData={setData}
+                        setItemEdit={setItemEdit}
+                        path={path}
+                      />
+                    </div>
                   );
                 }
                 return null;

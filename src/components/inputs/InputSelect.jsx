@@ -414,6 +414,7 @@ export const InputSelectTagArray = ({
   path = null,
   placeholder = "",
   className,
+  defaultValue = "",
   id = "0",
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -446,6 +447,7 @@ export const InputSelectTagArray = ({
         autoComplete="off"
         id={label}
         className={`${className}`}
+        defaultValue={defaultValue}
       >
         <optgroup label={`Select a ${placeholder}`}>
           {result?.count === 0 ? (

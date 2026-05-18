@@ -12,7 +12,17 @@ const TableStatus = ({ item, dataArray }) => {
         return (
           i?.value === Number(isEmptyItem(dataArray?.is_active, 1)) && (
             <div key={key} className="capitalize">
-              <Pills variant={i?.label.toLowerCase()}>{i?.label}</Pills>
+              <Pills
+                variant={
+                  item?.status_text
+                    ? dataArray[`${item?.status_text}`].toLowerCase()
+                    : i?.label.toLowerCase()
+                }
+              >
+                {item?.status_text
+                  ? dataArray[`${item?.status_text}`]
+                  : i?.label}
+              </Pills>
             </div>
           )
         );

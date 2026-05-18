@@ -44,7 +44,7 @@ const Suppliers = () => {
     },
     {
       accessorKey: "suppliers_address",
-      header: "contact",
+      header: "address",
       icon: <MapPin size={14} />,
       classTh: "",
       classTd: "",

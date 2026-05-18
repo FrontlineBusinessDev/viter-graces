@@ -20,6 +20,7 @@ import {
 } from "@tanstack/react-table";
 import React, { useCallback, useMemo, useRef } from "react";
 import InfiniteSubTable from "./InfiniteSubTable";
+import { FaCaretDown } from "react-icons/fa";
 
 const InfinitePerTabs = ({
   columns,
@@ -160,8 +161,8 @@ const InfinitePerTabs = ({
                 ref={isLastRow ? lastRowRef : null}
                 className="rounded-2xl border border-gray-300 bg-white shadow-sm dark:border-[#0b111e] dark:bg-[#0b111e] "
               >
-                <div className="px-4 py-4 lg:px-5">
-                  <div className="flex flex-col gap-2 lg:grid lg:grid-cols-[40px_1.5fr_1fr_1fr_1.3fr_140px] lg:items-center">
+                <div className="p-2 lg:px-5">
+                  <div className="flex flex-col gap-2 lg:grid lg:grid-cols-[40px_1.5fr_1fr_1fr_1.3fr_140px] items-center">
                     <div className="hidden lg:block text-gray-500 text-sm dark:text-light">
                       {counter++}.
                     </div>
@@ -179,18 +180,14 @@ const InfinitePerTabs = ({
                               <div className="min-w-0">
                                 {aitem?.column?.columnDef?.header === "name" ? (
                                   <div className="flex items-center gap-2">
-                                    <span className="text-sm font-medium text-gray-800 dark:text-light">
+                                    <span className="text-sm font-medium text-gray-800 dark:text-light min-w-[5rem]">
                                       {rows[index]?.original?.name}
                                     </span>
-                                    <svg
+                                    <FaCaretDown
                                       className={`h-4 w-4 text-gray-600 dark:text-light font-bold transition-transform cursor-pointer ${
                                         isOpen ? "rotate-180" : ""
                                       }`}
-                                      fill="currentColor"
-                                      viewBox="0 0 20 20"
-                                    >
-                                      <path d="M5.23 7.21a.75.75 0 011.06.02L10 11.168l3.71-3.938a.75.75 0 011.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z" />
-                                    </svg>
+                                    />
                                   </div>
                                 ) : (
                                   ""
@@ -273,8 +270,14 @@ const InfinitePerTabs = ({
                     {item.getVisibleCells().map((eitem, ekey) => {
                       return (
                         <React.Fragment key={ekey}>
-                          {eitem?.column?.columnDef?.header === "contact" ? (
-                            <div className="text-sm text-gray-700 dark:text-light flex items-center gap-1">
+                          {eitem?.column?.columnDef?.header === "contact" ||
+                          eitem?.column?.columnDef?.header === "address" ? (
+                            <div className="text-sm text-gray-700 dark:text-light gap-1">
+                              <small className="capitalize">
+                                {eitem?.column?.columnDef?.header}
+                              </small>
+                              <br />
+
                               <span className="text-xs text-gray-400 lg:hidden">
                                 {eitem?.column?.columnDef?.icon}
                               </span>

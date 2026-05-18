@@ -30,17 +30,21 @@ import * as Yup from "yup";
 
 const ModalPurchaseOrder = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const [items, setItems] = React.useState([
-    {
-      purchase_order_product_id: "",
-      purchase_order_product_name: "",
-      purchase_order_product_owner_id: "",
-      purchase_order_product_owner_name: "",
-      purchase_order_qty: "",
-      purchase_order_price: "",
-      purchase_order_total_amount: 0,
-    },
-  ]);
+  const [items, setItems] = React.useState(
+    itemEdit
+      ? itemEdit?.items
+      : [
+          {
+            purchase_order_product_id: "",
+            purchase_order_product_name: "",
+            purchase_order_product_owner_id: "",
+            purchase_order_product_owner_name: "",
+            purchase_order_qty: "",
+            purchase_order_price: "",
+            purchase_order_total_amount: 0,
+          },
+        ],
+  );
   const [counter, setCounter] = React.useState(0);
 
   const handleChange = (index, field, fieldId, value, id) => {
@@ -291,6 +295,9 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                       .text,
                                   )
                                 }
+                                defaultValue={
+                                  items[index]["purchase_order_product_id"]
+                                }
                                 path={`suppliers-product/read-in-modal/${Number(props.values.purchase_order_supplier_id)}`}
                                 placeholder="Product"
                               />
@@ -305,6 +312,11 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                       .text,
                                   )
                                 }
+                                defaultValue={
+                                  items[index][
+                                    "purchase_order_product_owner_id"
+                                  ]
+                                }
                                 path={`product-owner/read-by-product-owner`}
                                 placeholder="Product"
                               />
@@ -317,6 +329,9 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                     0,
                                   );
                                 }}
+                                defaultValue={
+                                  items[index]["purchase_order_qty"]
+                                }
                                 type="number"
                                 placeholder="Qty"
                               />
@@ -329,6 +344,9 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                     0,
                                   );
                                 }}
+                                defaultValue={
+                                  items[index]["purchase_order_price"]
+                                }
                                 type="number"
                                 placeholder="Price"
                               />

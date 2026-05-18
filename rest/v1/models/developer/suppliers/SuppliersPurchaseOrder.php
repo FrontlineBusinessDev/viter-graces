@@ -136,6 +136,7 @@ class SuppliersPurchaseOrder
             $sql .= "purchase_order_date as total_amount, ";
             $sql .= "SUM(purchase_order_total_amount) as total_amount, ";
             $sql .= "SUM(purchase_order_payment) as total_paid, ";
+            $sql .= "purchase_order_status as status, ";
             $sql .= "purchase_order_is_active as is_active, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
@@ -190,6 +191,7 @@ class SuppliersPurchaseOrder
             $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "SUM(purchase_order_total_amount) as total_amount, ";
             $sql .= "SUM(purchase_order_payment) as total_paid, ";
+            $sql .= "purchase_order_status as status, ";
             $sql .= "purchase_order_is_active as is_active, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
@@ -232,6 +234,7 @@ class SuppliersPurchaseOrder
             $sql = "select *, ";
             $sql .= "purchase_order_aid as id, ";
             $sql .= "purchase_order_is_active as is_active, ";
+            $sql .= "purchase_order_status as status, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from ";
             $sql .= " {$this->tblSuppliersPurchaseOrder} ";
@@ -262,6 +265,7 @@ class SuppliersPurchaseOrder
             $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "purchase_order_aid as id, ";
             $sql .= "purchase_order_is_active as is_active, ";
+            $sql .= "purchase_order_status as status, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
             $sql .= "where purchase_order_number = :purchase_order_number ";
@@ -285,6 +289,7 @@ class SuppliersPurchaseOrder
             $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "purchase_order_aid as id, ";
             $sql .= "purchase_order_is_active as is_active, ";
+            $sql .= "purchase_order_status as status, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
             $sql .= "where purchase_order_aid = :purchase_order_aid ";
@@ -373,11 +378,13 @@ class SuppliersPurchaseOrder
         try {
             $sql = "update {$this->tblSuppliersPurchaseOrder} set ";
             $sql .= "purchase_order_is_active = :purchase_order_is_active, ";
+            $sql .= "purchase_order_status = :purchase_order_status, ";
             $sql .= "purchase_order_updated = :purchase_order_updated ";
             $sql .= "where purchase_order_aid = :purchase_order_aid  ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "purchase_order_is_active" => $this->purchase_order_is_active,
+                "purchase_order_status" => $this->purchase_order_status,
                 "purchase_order_updated" => $this->purchase_order_updated,
                 "purchase_order_aid" => $this->purchase_order_aid,
             ]);

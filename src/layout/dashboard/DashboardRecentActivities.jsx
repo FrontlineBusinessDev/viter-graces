@@ -50,7 +50,9 @@ const DashboardRecentActivities = () => {
                     ({item?.activity_log_user_role} role)
                   </span>
                   <span className="text-gray-400 text-xs">
-                    {item?.days_ago} days ago
+                    {Number(item?.days_ago) > 0
+                      ? `${item?.days_ago} days ago`
+                      : "now"}
                   </span>
                 </div>
               </li>
