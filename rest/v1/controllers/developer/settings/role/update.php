@@ -29,7 +29,8 @@ if (array_key_exists("id", $_GET)) {
     $query = checkUpdate($val);
     // create activity log
     createActivityLog($valActivity, $data);
-    $query = checkUpdateUserAccountRole($val);
+
+    updateConnectedMenu($val);
     returnSuccess($val, "Role", $query);
 }
 

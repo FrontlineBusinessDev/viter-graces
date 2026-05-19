@@ -21,6 +21,8 @@ class ProductOwner
     public $tblRole;
     public $tblActivityLog;
     public $tblProducts;
+    public $tblSuppliersPurchaseOrder;
+    public $tblSuppliersProduct;
 
     public $filters;
     public $column_start;
@@ -36,6 +38,8 @@ class ProductOwner
         $this->tblRole = "graces_roles";
         $this->tblActivityLog = "graces_activity_log";
         $this->tblProducts = "graces_products";
+        $this->tblSuppliersPurchaseOrder = "graces_suppliers_purchase_order";
+        $this->tblSuppliersProduct = "graces_suppliers_product";
     }
 
     // create
@@ -126,7 +130,6 @@ class ProductOwner
             ]);
         } catch (PDOException $ex) {
 
-            returnError($ex);
             $query = false;
         }
         return $query;
@@ -182,7 +185,6 @@ class ProductOwner
             ]);
         } catch (PDOException $ex) {
 
-            returnError($ex);
             $query = false;
         }
         return $query;
@@ -335,6 +337,42 @@ class ProductOwner
                 "products_owner_name" => $this->column_fullname,
                 "products_updated" => $this->user_account_updated,
                 "products_owner_id" => $this->user_account_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+    public function updatePurchaseOrder()
+    {
+        try {
+            $sql = "update {$this->tblSuppliersPurchaseOrder} set ";
+            $sql .= "purchase_order_product_owner_name = :purchase_order_product_owner_name, ";
+            $sql .= "purchase_order_updated = :purchase_order_updated ";
+            $sql .= "where purchase_order_product_owner_id = :purchase_order_product_owner_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "purchase_order_product_owner_name" => $this->column_fullname,
+                "purchase_order_updated" => $this->user_account_updated,
+                "purchase_order_product_owner_id" => $this->user_account_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+    public function updateSuppliersProduct()
+    {
+        try {
+            $sql = "update {$this->tblSuppliersProduct} set ";
+            $sql .= "suppliers_product_supplier_name = :suppliers_product_supplier_name, ";
+            $sql .= "suppliers_product_updated = :suppliers_product_updated ";
+            $sql .= "where suppliers_product_supplier_id = :suppliers_product_supplier_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "suppliers_product_supplier_name" => $this->column_fullname,
+                "suppliers_product_updated" => $this->user_account_updated,
+                "suppliers_product_supplier_id" => $this->user_account_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;

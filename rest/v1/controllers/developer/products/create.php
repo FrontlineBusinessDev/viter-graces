@@ -44,6 +44,7 @@ isNameExist($val, $val->products_name);
 
 // create
 $query = checkCreate($val);
+checkCreateMovementStock($val);
 
 // create activity log
 createActivityLog($valActivity, $data);

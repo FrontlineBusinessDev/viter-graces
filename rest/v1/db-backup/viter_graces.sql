@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 14, 2026 at 09:05 AM
+-- Generation Time: May 19, 2026 at 07:40 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -186,6 +186,38 @@ INSERT INTO `graces_roles` (`role_aid`, `role_is_active`, `role_code`, `role_nam
 -- --------------------------------------------------------
 
 --
+-- Table structure for table `graces_stock_movement`
+--
+
+CREATE TABLE `graces_stock_movement` (
+  `stock_movement_aid` int(11) NOT NULL,
+  `stock_movement_date` date NOT NULL,
+  `stock_movement_type` varchar(50) NOT NULL,
+  `stock_movement_status` varchar(50) NOT NULL,
+  `stock_movement_is_active` tinyint(1) NOT NULL,
+  `stock_movement_product_id` varchar(20) NOT NULL,
+  `stock_movement_product_name` varchar(200) NOT NULL,
+  `stock_movement_before_qty` varchar(20) NOT NULL,
+  `stock_movement_after_qty` varchar(20) NOT NULL,
+  `stock_movement_qty` varchar(20) NOT NULL,
+  `stock_movement_location` varchar(200) NOT NULL,
+  `stock_movement_product_owner_id` varchar(20) NOT NULL,
+  `stock_movement_product_owner_name` varchar(200) NOT NULL,
+  `stock_movement_notes` text NOT NULL,
+  `stock_movement_created` datetime NOT NULL,
+  `stock_movement_updated` datetime NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `graces_stock_movement`
+--
+
+INSERT INTO `graces_stock_movement` (`stock_movement_aid`, `stock_movement_date`, `stock_movement_type`, `stock_movement_status`, `stock_movement_is_active`, `stock_movement_product_id`, `stock_movement_product_name`, `stock_movement_before_qty`, `stock_movement_after_qty`, `stock_movement_qty`, `stock_movement_location`, `stock_movement_product_owner_id`, `stock_movement_product_owner_name`, `stock_movement_notes`, `stock_movement_created`, `stock_movement_updated`) VALUES
+(1, '2026-05-19', 'in stock', 'active', 1, '3', 'aaaaa', '0', '0', '100', '', '4', 'Cyzai Lumabas', '', '2026-05-19 12:39:22', '2026-05-19 12:39:22');
+
+-- --------------------------------------------------------
+
+--
 -- Table structure for table `graces_suppliers`
 --
 
@@ -346,6 +378,12 @@ ALTER TABLE `graces_roles`
   ADD PRIMARY KEY (`role_aid`);
 
 --
+-- Indexes for table `graces_stock_movement`
+--
+ALTER TABLE `graces_stock_movement`
+  ADD PRIMARY KEY (`stock_movement_aid`);
+
+--
 -- Indexes for table `graces_suppliers`
 --
 ALTER TABLE `graces_suppliers`
@@ -396,6 +434,12 @@ ALTER TABLE `graces_products`
 --
 ALTER TABLE `graces_roles`
   MODIFY `role_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `graces_stock_movement`
+--
+ALTER TABLE `graces_stock_movement`
+  MODIFY `stock_movement_aid` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `graces_suppliers`

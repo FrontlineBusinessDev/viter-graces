@@ -34,6 +34,7 @@ if (array_key_exists("id", $_GET)) {
     compareName($val, $val_name_old, $val->suppliers_name);
     // update
     $query = checkUpdate($val);
+    updateConnectedMenu($val);
     // create activity log
     createActivityLog($valActivity, $data);
     returnSuccess($val, "Suppliers", $query);

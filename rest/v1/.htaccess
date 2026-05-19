@@ -74,6 +74,7 @@ RewriteRule ^products/([0-9]+)$ controllers/developer/products/products.php?id=$
 RewriteRule ^products/active/([0-9]+)$ controllers/developer/products/active.php?id=$1 [L] 
 RewriteRule ^products/page/([0-9]+)$ controllers/developer/products/page.php?start=$1 [L]
 RewriteRule ^products/search$ controllers/developer/products/search.php [L]
+RewriteRule ^products/read-all-active-by-product$ controllers/developer/products/read-all-active-by-product.php [L]
  
 ### ACTIVITY LOG ###
 RewriteRule ^activity/read-with-limit$ controllers/developer/activity-log/read-with-limit.php [L] 
@@ -84,3 +85,11 @@ RewriteRule ^purchase-order/([0-9]+)$ controllers/developer/suppliers/purchase-o
 RewriteRule ^purchase-order/active/([0-9]+)$ controllers/developer/suppliers/purchase-order/active.php?id=$1 [L] 
 RewriteRule ^purchase-order/page/([0-9]+)$ controllers/developer/suppliers/purchase-order/page.php?start=$1 [L]
 RewriteRule ^purchase-order/search$ controllers/developer/suppliers/purchase-order/search.php [L]
+
+### PRODUCTS ### 
+RewriteRule ^stock-movement$ controllers/developer/stock-movement/stock-movement.php [L]
+RewriteRule ^stock-movement/([0-9]+)$ controllers/developer/stock-movement/stock-movement.php?id=$1 [L] 
+RewriteRule ^stock-movement/active/([0-9]+)$ controllers/developer/stock-movement/active.php?id=$1 [L] 
+RewriteRule ^stock-movement/page/([0-9]+)$ controllers/developer/stock-movement/page.php?start=$1 [L]
+RewriteRule ^stock-movement/search$ controllers/developer/stock-movement/search.php [L]
+

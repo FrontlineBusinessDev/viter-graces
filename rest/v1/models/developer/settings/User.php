@@ -125,7 +125,7 @@ class User
             ]);
         } catch (PDOException $ex) {
 
-            returnError($ex);
+
             $query = false;
         }
         return $query;
@@ -182,7 +182,7 @@ class User
             ]);
         } catch (PDOException $ex) {
 
-            returnError($ex);
+
             $query = false;
         }
         return $query;
@@ -234,7 +234,7 @@ class User
             ]);
         } catch (PDOException $ex) {
 
-            returnError($ex);
+
             $query = false;
         }
         return $query;
@@ -290,7 +290,7 @@ class User
             ]);
         } catch (PDOException $ex) {
 
-            returnError($ex);
+
             $query = false;
         }
         return $query;

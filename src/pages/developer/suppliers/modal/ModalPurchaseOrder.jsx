@@ -1,14 +1,13 @@
 import ModalButton from "@/components/buttons/ModalButton";
 import {
   InputSelectArray,
-  InputSelectPaymentArray,
-  InputSelectStatusArray,
+  InputSelectArrayWithOptions,
   InputSelectTagArray,
 } from "@/components/inputs/InputSelect";
 import { InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
-import { AmountWithPesoSign, PesoSign } from "@/components/PesoSign";
+import { AmountWithPesoSign } from "@/components/PesoSign";
 import { apiVersion } from "@/config/config";
 import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
@@ -172,6 +171,17 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     dispatch(setError(false));
   }, []);
 
+  let paymentOption = [
+    { id: "0", name: "draft" },
+    { id: "1", name: "paid" },
+    { id: "2", name: "installment" },
+  ];
+
+  let statusOption = [
+    { id: "0", name: "draft" },
+    { id: "1", name: "active" },
+    { id: "2", name: "inactive" },
+  ];
   return (
     <>
       <ModalWrapper
@@ -373,25 +383,29 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="relative capitalize mt-3">
-                      <InputSelectStatusArray
+                      <InputSelectArrayWithOptions
                         label="Status"
                         type="text"
                         name="purchase_order_status"
+                        defaultValue="draft"
+                        options={statusOption}
                         onChange={(e) => {
-                          props.values.purchase_order_status =
-                            e.target.options[e.target.selectedIndex].text;
+                          props.values.purchase_order_status = e.target.value;
                           return e;
                         }}
                       />
                     </div>
+
                     <div className="relative capitalize mt-3">
-                      <InputSelectPaymentArray
+                      <InputSelectArrayWithOptions
                         label="Payment Status"
                         type="text"
                         name="purchase_order_payment_status"
+                        defaultValue="draft"
+                        options={paymentOption}
                         onChange={(e) => {
                           props.values.purchase_order_payment_status =
-                            e.target.options[e.target.selectedIndex].text;
+                            e.target.value;
                           return e;
                         }}
                       />

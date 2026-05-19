@@ -275,13 +275,16 @@ export const DebouncedInput = ({
 
   return (
     <>
-      {isEmptyItem(filterFn, "auto") === "auto" && (
+      {(isEmptyItem(filterFn, "auto") === "auto" ||
+        isEmptyItem(filterFn, "auto") === "date") && (
         <input
           {...props}
+          type={isEmptyItem(filterFn, "auto") !== "date" ? "text" : "date"}
           value={value ?? ""}
           onChange={(e) => setValue(e.target.value)}
         />
       )}
+
       {isEmptyItem(filterFn, "") === "between" && (
         <div className="flex items-center gap-1">
           <input

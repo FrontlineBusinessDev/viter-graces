@@ -29,6 +29,8 @@ class Suppliers
     public $lastInsertedId;
     public $tblSuppliers;
     public $tblSuppliersProduct;
+    public $tblSuppliersPurchaseOrder;
+    public $tblProducts;
 
     public $filters;
     public $column_start;
@@ -41,6 +43,8 @@ class Suppliers
         $this->connection = $db;
         $this->tblSuppliers = "graces_suppliers";
         $this->tblSuppliersProduct = "graces_suppliers_product";
+        $this->tblSuppliersPurchaseOrder = "graces_suppliers_purchase_order";
+        $this->tblProducts = "graces_products";
     }
 
     // create
@@ -386,6 +390,64 @@ class Suppliers
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "suppliers_product_supplier_id" => "{$this->suppliers_aid}",
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
+    public function updateProductSupplier()
+    {
+        try {
+            $sql = "update {$this->tblProducts} set ";
+            $sql .= "products_suppliers_name = :products_suppliers_name, ";
+            $sql .= "products_updated = :products_updated ";
+            $sql .= "where products_suppliers_id  = :products_suppliers_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "products_suppliers_name" => $this->suppliers_name,
+                "products_updated" => $this->suppliers_updated,
+                "products_suppliers_id" => $this->suppliers_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+    // update
+    public function updateSupplierProduct()
+    {
+        try {
+            $sql = "update {$this->tblSuppliersProduct} set ";
+            $sql .= "suppliers_product_supplier_name = :suppliers_product_supplier_name, ";
+            $sql .= "suppliers_product_updated = :suppliers_product_updated ";
+            $sql .= "where suppliers_product_supplier_id = :suppliers_product_supplier_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "suppliers_product_supplier_name" => $this->suppliers_name,
+                "suppliers_product_updated" => $this->suppliers_updated,
+                "suppliers_product_supplier_id" => $this->suppliers_aid,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+    // update
+    public function updatePurchaseSupplier()
+    {
+        try {
+            $sql = "update {$this->tblSuppliersPurchaseOrder} set ";
+            $sql .= "purchase_order_supplier_name = :purchase_order_supplier_name, ";
+            $sql .= "purchase_order_updated = :purchase_order_updated ";
+            $sql .= "where purchase_order_supplier_id = :purchase_order_supplier_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "purchase_order_supplier_name" => $this->suppliers_name,
+                "purchase_order_updated" => $this->suppliers_updated,
+                "purchase_order_supplier_id" => $this->suppliers_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;

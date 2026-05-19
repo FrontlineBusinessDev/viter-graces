@@ -192,7 +192,8 @@ const InfiniteTable = ({
   };
 
   React.useEffect(() => {
-    if (result?.pages[0]?.total < 30) {
+    if (result?.pages[0]?.total > 30) {
+      // if (result?.pages[0]?.total < 30) {
       setIsFetchFilterDate(false);
     } else {
       setIsFetchFilterDate(true);
@@ -301,17 +302,6 @@ const InfiniteTable = ({
                           header?.column?.columnDef?.header,
                           header?.getContext(),
                         )}
-
-                        {/* <button
-                            onClick={header?.column?.getToggleSortingHandler()}
-                            className="bg-gray-100 hover:bg-white rounded-sm ml-2 "
-                          >
-                            {header?.column?.getIsSorted() !== "asc" ? (
-                              <ChevronDown />
-                            ) : (
-                              <ChevronUp />
-                            )}
-                          </button> */}
                       </th>
                     ))}
                   </tr>
@@ -381,8 +371,6 @@ const InfiniteTable = ({
                 {rows?.map((row, index) => {
                   const isLastRow = index === rows?.length - 1;
                   const rowData = row.original;
-
-                  console.log("rowData", rowData);
 
                   return (
                     <React.Fragment key={row.id}>

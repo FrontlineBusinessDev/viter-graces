@@ -14,3 +14,9 @@ function checkUpdateUserAccountRole($object)
     checkQuery($query, "There's a problem processing your request. (update role)");
     return $query;
 }
+
+// Update 
+function updateConnectedMenu($object)
+{
+    checkUpdateUserAccountRole($object);
+}

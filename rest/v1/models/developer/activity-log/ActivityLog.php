@@ -57,7 +57,6 @@ class ActivityLog
             ]);
             $this->lastInsertedId = $this->connection->lastInsertId();
         } catch (PDOException $ex) {
-            returnError($ex);
             $query = false;
         }
         return $query;

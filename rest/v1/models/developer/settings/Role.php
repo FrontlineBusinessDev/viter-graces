@@ -132,7 +132,6 @@ class Role
             ]);
         } catch (PDOException $ex) {
 
-            returnError($ex);
             $query = false;
         }
         return $query;

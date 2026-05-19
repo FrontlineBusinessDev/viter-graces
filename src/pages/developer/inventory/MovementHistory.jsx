@@ -1,3 +1,5 @@
+import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import { StockTypeArray } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -11,63 +13,72 @@ const MovementHistory = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "user_account_is_active",
+      accessorKey: "stock_movement_type",
       header: "Type",
-      classTh: "w-[5rem]",
+      classTh: "w-[10rem]",
       classTd: "",
-      meta: "",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={StockTypeArray()}
+          />
+        ),
+      },
     },
     {
-      accessorKey: "name",
+      accessorKey: "stock_movement_date",
       header: "Date",
       classTh: "",
       classTd: "",
+      filterFn: "date",
       meta: "",
     },
     {
-      accessorKey: "contact person",
+      accessorKey: "stock_movement_product_name",
       header: "Products",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "email",
+      accessorKey: "stock_movement_qty",
       header: "QTY",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "phone",
+      accessorKey: "stock_movement_before_qty",
       header: "Before",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "address",
+      accessorKey: "stock_movement_after_qty",
       header: "After",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "location",
+      accessorKey: "stock_movement_location",
       header: "Locations",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "product_owner",
+      accessorKey: "stock_movement_product_owner_name",
       header: "Product Owner",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "notes",
+      accessorKey: "stock_movement_notes",
       header: "Notes",
       classTh: "",
       classTd: "",
@@ -91,7 +102,7 @@ const MovementHistory = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="stock movement"
+          path="stock-movement"
           setItemEdit={setItemEdit}
           haveFilterTable={true}
         />

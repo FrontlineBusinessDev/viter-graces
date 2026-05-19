@@ -1,5 +1,5 @@
 import ModalButton from "@/components/buttons/ModalButton";
-import { InputSelectWeeksArray } from "@/components/inputs/InputSelect";
+import { InputSelectArrayWithOptions } from "@/components/inputs/InputSelect";
 import { InputNumber, InputText } from "@/components/inputs/InputText";
 import MessageError from "@/components/MessageError";
 import { apiVersion } from "@/config/config";
@@ -136,6 +136,15 @@ const ModalSuppliers = ({ itemEdit }) => {
     dispatch(setError(false));
   }, []);
 
+  let optionWeek = [
+    { id: "0", name: "Monday" },
+    { id: "1", name: "Tuesday" },
+    { id: "2", name: "Wenesday" },
+    { id: "3", name: "Thursday" },
+    { id: "4", name: "Friday" },
+    { id: "5", name: "Saturday" },
+    { id: "6", name: "Sunday" },
+  ];
   return (
     <>
       <ModalWrapper
@@ -365,12 +374,12 @@ const ModalSuppliers = ({ itemEdit }) => {
                   )}
 
                   <div className="relative mt-3">
-                    <InputSelectWeeksArray
+                    <InputSelectArrayWithOptions
                       label="Delivery"
-                      path="Weeks"
                       type="text"
                       name="suppliers_delivery"
                       disabled={mutation.isPending}
+                      options={optionWeek}
                       onChange={(e) => {
                         props.values.suppliers_delivery = e.target.value;
                         return e;

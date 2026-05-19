@@ -40,6 +40,58 @@ export const InputSelect = ({
   );
 };
 
+export const InputSelectArrayWithOptions = ({
+  label,
+  defaultValue = "",
+  required = true,
+  onChange = null,
+  path = null,
+  id = 0,
+  options = [],
+  ...props
+}) => {
+  const { store, dispatch } = React.useContext(StoreContext);
+  const [field, meta] = useField(props);
+
+  return (
+    <>
+      <label htmlFor={props.id || props.name}>
+        {label} {""}
+        {required && <span className="text-alert">*</span>}
+      </label>
+
+      <select
+        {...field}
+        {...props}
+        className={meta.touched && meta.error ? "error-show" : " capitalize"}
+        onChange={(e) => {
+          onChange !== null && onChange(e);
+          field.onChange(e);
+        }}
+        autoComplete="off"
+      >
+        <optgroup label={`Select a ${label}`}>
+          <option value={defaultValue} hidden>
+            {isEmptyItem(defaultValue, "--")}
+          </option>
+
+          {options?.map((item, key) => {
+            return (
+              <option key={key} value={item.id} className="capitalize">
+                {item.name}
+              </option>
+            );
+          })}
+        </optgroup>
+      </select>
+
+      {meta.touched && meta.error ? (
+        <span className="error-show">{meta.error}</span>
+      ) : null}
+    </>
+  );
+};
+
 export const InputSelectArray = ({
   label,
   required = true,
@@ -73,10 +125,14 @@ export const InputSelectArray = ({
       <select
         {...field}
         {...props}
-        className={meta.touched && meta.error ? "error-show" : null}
+        className={meta.touched && meta.error ? "error-show" : " capitalize"}
         onChange={(e) => {
-          onChange !== null && onChange(e);
-          field.onChange(e);
+          const selectedItem = result?.data?.find(
+            (item) => Number(item.id) === Number(e.target.value),
+          );
+
+          onChange !== null && onChange(e, selectedItem);
+          field.onChange(e, selectedItem);
         }}
         autoComplete="off"
       >
@@ -102,7 +158,7 @@ export const InputSelectArray = ({
             <>
               {result?.data?.map((item, key) => {
                 return (
-                  <option key={key} value={item.id}>
+                  <option key={key} value={item.id} className="capitalize">
                     {item.name}
                   </option>
                 );
@@ -112,7 +168,7 @@ export const InputSelectArray = ({
             <>
               {result?.data?.map((item, key) => {
                 return isEmptyItem(item?.role_code, "") !== "r_is_developer" ? (
-                  <option key={key} value={item.id}>
+                  <option key={key} value={item.id} className="capitalize">
                     {item.name}
                   </option>
                 ) : (
@@ -121,65 +177,6 @@ export const InputSelectArray = ({
               })}
             </>
           )}
-        </optgroup>
-      </select>
-
-      {meta.touched && meta.error ? (
-        <span className="error-show">{meta.error}</span>
-      ) : null}
-    </>
-  );
-};
-
-export const InputSelectWeeksArray = ({
-  label,
-  required = true,
-  onChange = null,
-  path = null,
-  ...props
-}) => {
-  const { store, dispatch } = React.useContext(StoreContext);
-  const [field, meta] = useField(props);
-
-  let weeks = [
-    { name: "Monday" },
-    { name: "Tuesday" },
-    { name: "Wenesday" },
-    { name: "Thursday" },
-    { name: "Friday" },
-    { name: "Saturday" },
-    { name: "Sunday" },
-  ];
-
-  return (
-    <>
-      <label htmlFor={props.id || props.name}>
-        {label} {""}
-        {required && <span className="text-alert">*</span>}
-      </label>
-
-      <select
-        {...field}
-        {...props}
-        className={meta.touched && meta.error ? "error-show" : null}
-        onChange={(e) => {
-          onChange !== null && onChange(e);
-          field.onChange(e);
-        }}
-        autoComplete="off"
-      >
-        <optgroup label={`Select a ${label}`}>
-          <option value="" hidden>
-            --
-          </option>
-
-          {weeks?.map((item, key) => {
-            return (
-              <option key={key} value={item.name}>
-                {item.name}
-              </option>
-            );
-          })}
         </optgroup>
       </select>
 
@@ -210,9 +207,9 @@ export const SearchableSelectFilterStatus = ({ column, options }) => {
        ${isFocused ? " border-primary! " : " border-gray-300 "}
        hover:border-primary! `,
 
-        valueContainer: () => "px-1 py-0",
+        valueContainer: () => "px-1 py-0 ",
 
-        input: () => "text-sm h-[22px]! text-gray-500! ",
+        input: () => "text-sm h-[22px]! text-gray-500!  ",
 
         placeholder: () => "text-gray-400! text-sm",
 
@@ -303,108 +300,6 @@ export const SearchableSelectFilter = ({ column, path }) => {
        ${!isSelected && isFocused ? "bg-primary! text-secondary! " : " "}`,
       }}
     />
-  );
-};
-
-export const InputSelectPaymentArray = ({
-  label,
-  required = true,
-  onChange = null,
-  path = null,
-  ...props
-}) => {
-  const { store, dispatch } = React.useContext(StoreContext);
-  const [field, meta] = useField(props);
-
-  let result = [{ name: "draft" }, { name: "paid" }, { name: "installment" }];
-
-  return (
-    <>
-      <label htmlFor={props.id || props.name}>
-        {label}
-        {required && <span className="text-alert">*</span>}
-      </label>
-
-      <select
-        {...field}
-        {...props}
-        className={`${meta.touched && meta.error ? "error-show" : null} capitalize`}
-        onChange={(e) => {
-          onChange !== null && onChange(e);
-          field.onChange(e);
-        }}
-        autoComplete="off"
-      >
-        <optgroup label={`Select a ${label}`}>
-          <option value="" hidden>
-            --
-          </option>
-
-          {result?.map((item, key) => {
-            return (
-              <option key={key} value={item.name}>
-                {item.name}
-              </option>
-            );
-          })}
-        </optgroup>
-      </select>
-
-      {meta.touched && meta.error ? (
-        <span className="error-show">{meta.error}</span>
-      ) : null}
-    </>
-  );
-};
-
-export const InputSelectStatusArray = ({
-  label,
-  required = true,
-  onChange = null,
-  path = null,
-  ...props
-}) => {
-  const { store, dispatch } = React.useContext(StoreContext);
-  const [field, meta] = useField(props);
-
-  let status = [{ name: "draft" }, { name: "active" }, { name: "inactive" }];
-
-  return (
-    <>
-      <label htmlFor={props.id || props.name}>
-        {label} {""}
-        {required && <span className="text-alert">*</span>}
-      </label>
-
-      <select
-        {...field}
-        {...props}
-        className={`${meta.touched && meta.error ? "error-show" : null} capitalize`}
-        onChange={(e) => {
-          onChange !== null && onChange(e);
-          field.onChange(e);
-        }}
-        autoComplete="off"
-      >
-        <optgroup label={`Select a ${label}`} className="capitalize">
-          <option value="" hidden>
-            --
-          </option>
-
-          {status?.map((item, key) => {
-            return (
-              <option key={key} value={item.name}>
-                {item.name}
-              </option>
-            );
-          })}
-        </optgroup>
-      </select>
-
-      {meta.touched && meta.error ? (
-        <span className="error-show">{meta.error}</span>
-      ) : null}
-    </>
   );
 };
 
