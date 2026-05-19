@@ -112,17 +112,6 @@ const ModalSalesOrders = ({ itemEdit }) => {
 
   handleEscape(() => handleClose());
 
-  const {
-    isLoading,
-    isFetching,
-    error,
-    data: supplier,
-  } = useQueryData(
-    `${apiVersion}/supplier`, // endpoint
-    "get", // method
-    "supplier", // key
-  );
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
