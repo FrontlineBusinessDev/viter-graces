@@ -136,7 +136,7 @@ export const InputSelectArray = ({
         }}
         autoComplete="off"
       >
-        <optgroup label={`Select a ${label}`}>
+        <optgroup label={`Select ${label}`}>
           {result?.count === 0 ? (
             <option value="" hidden>
               No data
@@ -338,7 +338,12 @@ export const InputSelectTagArray = ({
       )}
 
       <select
-        onChange={onChange}
+        onChange={(e) => {
+          const selectedItem = result?.data?.find(
+            (item) => Number(item.id) === Number(e.target.value),
+          );
+          onChange(e, selectedItem);
+        }}
         autoComplete="off"
         id={label}
         className={`${className}`}

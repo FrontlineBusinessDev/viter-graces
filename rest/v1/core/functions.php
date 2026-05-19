@@ -764,3 +764,34 @@ function deleteImgFile($fileName = '')
         return false;
     }
 }
+
+// check name
+function isIdNumberExist($object, $newCodeNumber)
+{
+    $query = $object->checkIdNumberExist($newCodeNumber);
+    $count = $query->rowCount();
+    checkExistence($count, "{$newCodeNumber} already exist.");
+}
+
+function setIdNumber($object, $val)
+{
+    $lastIdNumber = getResultData($object->checkLastIdNumber());
+    if (count($lastIdNumber) == 0) {
+        $newCodeNumber = $val . "001";
+        return $newCodeNumber;
+    }
+    // value number of payroll id
+    $lastPayNumber = intval(substr($lastIdNumber[0]['id_number'], 2));
+    $newCodeNumber = (int)$lastPayNumber + 1;
+    if ((int)$newCodeNumber < 10) {
+        $newCodeNumber =  $val . "00" . $newCodeNumber;
+    } elseif ((int)$lastPayNumber < 100) {
+        $newCodeNumber =  $val . "0" . $newCodeNumber;
+    } else {
+        $newCodeNumber =  $val . $newCodeNumber;
+    }
+    // CHECK IF PAYROLL ID GENERATED IS EXIST IN SPECIFIC SUBSCRIBER ID
+    isIdNumberExist($object, $newCodeNumber);
+
+    return $newCodeNumber;
+}

@@ -1,9 +1,8 @@
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
-import { ActiveInActiveStatus } from "@/layout/ArrayValue";
+import { ActionTableList, ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
-import { ArchiveRestore, Edit, Eye, RotateCcw, Trash } from "lucide-react";
 import React from "react";
 import ModalSalesOrders from "./ModalSalesOrders";
 import ViewSalesDetails from "./ViewSalesDetails";
@@ -75,38 +74,7 @@ const SalesOrders = () => {
     },
     {
       accessorKey: "action",
-      action_array: [
-        {
-          name: "view",
-          path: "suppliers",
-          icon: <Eye className="h-3 w-3" />,
-          isActive: 1,
-        },
-        {
-          name: "edit",
-          path: "suppliers",
-          icon: <Edit className="h-3 w-3" />,
-          isActive: 1,
-        },
-        {
-          name: "archieve",
-          path: "active",
-          icon: <ArchiveRestore className="h-3 w-3" />,
-          isActive: 1,
-        },
-        {
-          name: "restore",
-          path: "active",
-          icon: <RotateCcw className="h-3 w-3" />,
-          isActive: 0,
-        },
-        {
-          name: "delete",
-          path: "suppliers",
-          icon: <Trash className="h-3 w-3" />,
-          isActive: 0,
-        },
-      ],
+      action_array: ActionTableList("sales-order"),
       header: "Action",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
@@ -119,7 +87,7 @@ const SalesOrders = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="New Order"
+          path="sales-order"
           setItemEdit={setItemEdit}
           haveFilterTable={true}
         />

@@ -29,6 +29,7 @@ import CustomerMobile from "./CustomerMobile";
 import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
 import ProductsMobile from "./ProductsMobile";
 import { Image } from "lucide-react";
+import { getConvertStringToJSONparseData } from "@/utilities/getConvertStringToJSONparseData";
 
 const InfiniteTable = ({
   columns,
@@ -200,6 +201,7 @@ const InfiniteTable = ({
     }
   }, [columnFilters]);
 
+  let photo = [];
   return (
     <>
       <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 items-center">
@@ -371,6 +373,9 @@ const InfiniteTable = ({
                 {rows?.map((row, index) => {
                   const isLastRow = index === rows?.length - 1;
                   const rowData = row.original;
+                  photo = getConvertStringToJSONparseData(
+                    row.original.children_photo,
+                  );
 
                   return (
                     <React.Fragment key={row.id}>
@@ -387,15 +392,15 @@ const InfiniteTable = ({
                           >
                             {item?.column?.columnDef?.isImage ? (
                               <>
-                                {isEmptyItem(rowData?.img, "") !== "" ? (
+                                {photo?.length == 0 ? (
                                   <div className=" rounded-sm">
                                     <Image className="mx-auto p-1" size={30} />
                                   </div>
                                 ) : (
                                   <div className="rounded-sm">
                                     <img
-                                      src={`${devBaseImgUrl}/SideLogo.png`}
-                                      alt="picture"
+                                      url={photo[photo?.length - 1]}
+                                      alt={photo[photo?.length - 1]?.name}
                                       className="min-w-12 w-12 m-auto"
                                     />
                                   </div>

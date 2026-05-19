@@ -18,6 +18,8 @@ rest/v1/notifications/PHPMailer
 rest/v1/notifications/mail-config.php
 rest/v1/files-api-key
 rest/v1/core/env.php
+rest/v1/core/google-api.php 
+rest/v1/core/google-api-dwd.php
 apikey.php
 .env
 .env.production

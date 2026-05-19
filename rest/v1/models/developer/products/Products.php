@@ -23,6 +23,11 @@ class Products
     public $products_created;
     public $products_updated;
 
+    public $stock_movement_type;
+    public $stock_movement_before_qty;
+    public $stock_movement_after_qty;
+    public $stock_movement_qty;
+
     public $connection;
     public $lastInsertedId;
     public $tblProducts;
@@ -375,18 +380,22 @@ class Products
             $sql = "insert into {$this->tblStockMovements} ";
             $sql .= "( stock_movement_product_id, ";
             $sql .= "stock_movement_product_name, ";
+            $sql .= "stock_movement_type, ";
             $sql .= "stock_movement_is_active, ";
             $sql .= "stock_movement_before_qty, ";
             $sql .= "stock_movement_after_qty, ";
+            $sql .= "stock_movement_qty, ";
             $sql .= "stock_movement_product_owner_id, ";
             $sql .= "stock_movement_product_owner_name, ";
             $sql .= "stock_movement_created, ";
             $sql .= "stock_movement_updated ) values ( ";
             $sql .= ":stock_movement_product_id, ";
             $sql .= ":stock_movement_product_name, ";
+            $sql .= ":stock_movement_type, ";
             $sql .= ":stock_movement_is_active, ";
             $sql .= ":stock_movement_before_qty, ";
             $sql .= ":stock_movement_after_qty, ";
+            $sql .= ":stock_movement_qty, ";
             $sql .= ":stock_movement_product_owner_id, ";
             $sql .= ":stock_movement_product_owner_name, ";
             $sql .= ":stock_movement_created, ";
@@ -395,9 +404,11 @@ class Products
             $query->execute([
                 "stock_movement_product_id" => $this->lastInsertedId,
                 "stock_movement_product_name" => $this->products_name,
+                "stock_movement_type" => $this->stock_movement_type,
                 "stock_movement_is_active" => $this->products_is_active,
-                "stock_movement_before_qty" => $this->products_stocks,
-                "stock_movement_after_qty" => $this->products_stocks,
+                "stock_movement_before_qty" => $this->stock_movement_before_qty,
+                "stock_movement_after_qty" => $this->stock_movement_after_qty,
+                "stock_movement_qty" => $this->stock_movement_qty,
                 "stock_movement_product_owner_id" => $this->products_owner_id,
                 "stock_movement_product_owner_name" => $this->products_owner_name,
                 "stock_movement_created" => $this->products_created,
@@ -432,57 +443,6 @@ class Products
                     "products_sku" => "%{$this->column_search}%",
                     "products_owner_name" => "%{$this->column_search}%",
                 ] : [],
-            ]);
-        } catch (PDOException $ex) {
-            $query = false;
-        }
-        return $query;
-    }
-
-
-    // update
-    public function updateStockMovement()
-    {
-        try {
-            $sql = "update {$this->tblProducts} set ";
-            $sql .= "products_name = :products_name, ";
-            $sql .= "products_image = :products_image, ";
-            $sql .= "products_sku = :products_sku, ";
-            $sql .= "products_category = :products_category, ";
-            $sql .= "products_price = :products_price, ";
-            $sql .= "products_cost = :products_cost, ";
-            $sql .= "products_stocks = :products_stocks, ";
-            $sql .= "products_owner_id = :products_owner_id, ";
-            $sql .= "products_owner_name = :products_owner_name, ";
-            $sql .= "products_suppliers_id = :products_suppliers_id, ";
-            $sql .= "products_suppliers_name = :products_suppliers_name, ";
-            $sql .= "products_sales = :products_sales, ";
-            $sql .= "products_unit = :products_unit, ";
-            $sql .= "products_barcode = :products_barcode, ";
-            $sql .= "products_low_stock_threshold = :products_low_stock_threshold, ";
-            $sql .= "products_description = :products_description, ";
-            $sql .= "products_updated = :products_updated ";
-            $sql .= "where products_aid  = :products_aid ";
-            $query = $this->connection->prepare($sql);
-            $query->execute([
-                "products_name" => $this->products_name,
-                "products_image" => $this->products_image,
-                "products_sku" => $this->products_sku,
-                "products_category" => $this->products_category,
-                "products_price" => $this->products_price,
-                "products_cost" => $this->products_cost,
-                "products_stocks" => $this->products_stocks,
-                "products_owner_id" => $this->products_owner_id,
-                "products_owner_name" => $this->products_owner_name,
-                "products_suppliers_id" => $this->products_suppliers_id,
-                "products_suppliers_name" => $this->products_suppliers_name,
-                "products_sales" => $this->products_sales,
-                "products_unit" => $this->products_unit,
-                "products_barcode" => $this->products_barcode,
-                "products_low_stock_threshold" => $this->products_low_stock_threshold,
-                "products_description" => $this->products_description,
-                "products_updated" => $this->products_updated,
-                "products_aid" => $this->products_aid,
             ]);
         } catch (PDOException $ex) {
             $query = false;

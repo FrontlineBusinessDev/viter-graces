@@ -37,10 +37,15 @@ $val->products_description = $data["products_description"];
 $val->products_created = date("Y-m-d H:i:s");
 $val->products_updated = date("Y-m-d H:i:s");
 
-// $val->products_image = checkToUploadGoogleDrive($data['products_image'], '', 'Products');
+$val->products_image = checkToUploadGoogleDrive($data['products_image'], '', 'products');
 
 // check name
 isNameExist($val, $val->products_name);
+
+$val->stock_movement_type = "";
+$val->stock_movement_before_qty = 0;
+$val->stock_movement_after_qty = (float)$val->stock_movement_before_qty + (float)$val->products_stocks;
+$val->stock_movement_qty = (float)$val->products_stocks;
 
 // create
 $query = checkCreate($val);
