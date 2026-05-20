@@ -54,7 +54,7 @@ const InfiniteTable = ({
   const search = React.useRef(null);
   const [onSearch, setOnSearch] = React.useState(false);
   const [page, setPage] = useState(1);
-  const [isFetchFilterDate, setIsFetchFilterDate] = useState(false);
+  const [isFetchFilterData, setIsFetchFilterData] = useState(false);
 
   // ACTIONS ADD
   const handleView = () => {
@@ -78,8 +78,8 @@ const InfiniteTable = ({
     () => [
       path,
       store.isSearch,
-      JSON.stringify({ searchPayload }),
-      isFetchFilterDate ? JSON.stringify({ columnFilters }) : "",
+      search.current?.value || "",
+      isFetchFilterData ? columnFilters : [],
     ],
     [path, store.isSearch, JSON.stringify({ columnFilters })],
   );
@@ -102,7 +102,7 @@ const InfiniteTable = ({
         false,
         {
           ...searchPayload,
-          columnFilters: isFetchFilterDate ? columnFilters : [],
+          columnFilters: isFetchFilterData ? columnFilters : [],
         },
         "post",
       ),
@@ -116,16 +116,17 @@ const InfiniteTable = ({
 
     staleTime: 1000 * 60 * 5, // 5 mins → no refetch when revisiting
     gcTime: 1000 * 60 * 30, // keep cache for 30 mins
-    refetchOnWindowFocus: true,
     refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
+
     // enabled: !isStatic,
   });
+  const pages = result?.pages;
 
-  // // Flatten pages into single array
-  const tableData = useMemo(
-    () => result?.pages?.flatMap((page) => page.data || []) ?? [],
-    [result],
-  );
+  const tableData = useMemo(() => {
+    return pages?.flatMap((page) => page.data ?? []) ?? [];
+  }, [pages]);
 
   // use UI-only data
   // const tableData = useMemo(() => {
@@ -195,9 +196,9 @@ const InfiniteTable = ({
   React.useEffect(() => {
     if (result?.pages[0]?.total > 30) {
       // if (result?.pages[0]?.total < 30) {
-      setIsFetchFilterDate(false);
+      setIsFetchFilterData(false);
     } else {
-      setIsFetchFilterDate(true);
+      setIsFetchFilterData(true);
     }
   }, [columnFilters]);
 

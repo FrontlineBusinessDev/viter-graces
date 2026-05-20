@@ -306,6 +306,7 @@ export const SearchableSelectFilter = ({ column, path }) => {
 export const InputSelectTagArray = ({
   label = "",
   onChange = null,
+  itemEdit = null,
   path = null,
   placeholder = "",
   className,
@@ -336,7 +337,6 @@ export const InputSelectTagArray = ({
       ) : (
         ""
       )}
-
       <select
         onChange={(e) => {
           const selectedItem = result?.data?.find(
@@ -370,7 +370,7 @@ export const InputSelectTagArray = ({
 
           {result?.data?.map((item, key) => {
             return isEmptyItem(item?.name, "") !== "developer" ? (
-              <option key={key} value={item.id}>
+              <option key={key} value={Number(item.id)}>
                 {item.name}
               </option>
             ) : (
@@ -379,6 +379,91 @@ export const InputSelectTagArray = ({
           })}
         </optgroup>
       </select>
+    </>
+  );
+};
+
+export const InputSalesOrderSelectTagArray = ({
+  label = "",
+  onChange = null,
+  itemEdit = null,
+  item = null,
+  path = null,
+  placeholder = "",
+  className,
+  defaultValue = "",
+  id = "0",
+}) => {
+  const { store, dispatch } = React.useContext(StoreContext);
+
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data: result,
+  } = useQueryData(
+    `${apiVersion}/${path}`, // endpoint
+    "post", // method
+    `${path}`, // key
+    { id: id },
+  );
+
+  return (
+    <>
+      {label ? (
+        <label htmlFor={label}>
+          {label}
+          {required && <span className="text-alert">*</span>}
+        </label>
+      ) : (
+        ""
+      )}
+      {Number(isEmptyItem(item?.sales_order_aid, 0)) !== 0 ? (
+        <span>{item?.sales_order_product_name}</span>
+      ) : (
+        <select
+          onChange={(e) => {
+            const selectedItem = result?.data?.find(
+              (item) => Number(item.id) === Number(e.target.value),
+            );
+            onChange(e, selectedItem);
+          }}
+          autoComplete="off"
+          id={label}
+          className={`${className}`}
+          defaultValue={defaultValue}
+        >
+          <optgroup label={`Select a ${placeholder}`}>
+            {result?.count === 0 ? (
+              <option value="" hidden>
+                No data
+              </option>
+            ) : isLoading || isFetching ? (
+              <option value="" hidden>
+                ...Loading
+              </option>
+            ) : error ? (
+              <option value="" hidden>
+                Server Error
+              </option>
+            ) : (
+              <option value="" hidden>
+                --
+              </option>
+            )}
+
+            {result?.data?.map((item, key) => {
+              return isEmptyItem(item?.name, "") !== "developer" ? (
+                <option key={key} value={Number(item.id)}>
+                  {item.name}
+                </option>
+              ) : (
+                ""
+              );
+            })}
+          </optgroup>
+        </select>
+      )}
     </>
   );
 };

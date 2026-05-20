@@ -112,19 +112,33 @@ class SuppliersPurchaseOrder
     }
 
     // read all
-    public function readAll()
+    public function readAll($allowedColumns)
     {
         $filterColumn = [];
+        $params = [
+            ...$this->column_search != "" ? [
+                "purchase_order_number" => "%{$this->column_search}%",
+                "purchase_order_supplier_name" => "%{$this->column_search}%",
+                "purchase_order_product_owner_name" => "%{$this->column_search}%",
+                "purchase_order_product_name" => "%{$this->column_search}%",
+            ] : [],
+        ];
 
-        foreach ($this->filters as $item) {
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
             if (is_array($item['value'])) {
-                if (is_array($item['value']) && $item["value"]["max"] === "") {
-                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $this->max . " ";
-                } else {
-                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
-                }
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
             } else {
-                $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
             }
         }
         try {
@@ -152,14 +166,7 @@ class SuppliersPurchaseOrder
             $sql .= " order by purchase_order_is_active desc, ";
             $sql .= " purchase_order_aid desc ";
             $query = $this->connection->prepare($sql);
-            $query->execute([
-                ...$this->column_search != "" ? [
-                    "purchase_order_number" => "%{$this->column_search}%",
-                    "purchase_order_supplier_name" => "%{$this->column_search}%",
-                    "purchase_order_product_owner_name" => "%{$this->column_search}%",
-                    "purchase_order_product_name" => "%{$this->column_search}%",
-                ] : [],
-            ]);
+            $query->execute($params);
         } catch (PDOException $ex) {
 
             $query = false;
@@ -168,19 +175,35 @@ class SuppliersPurchaseOrder
     }
 
     // read all
-    public function readLimit()
+    public function readLimit($allowedColumns)
     {
         $filterColumn = [];
+        $params = [
+            "start" => $this->column_start - 1,
+            "total" => $this->column_total,
+            ...$this->column_search != "" ? [
+                "purchase_order_number" => "%{$this->column_search}%",
+                "purchase_order_supplier_name" => "%{$this->column_search}%",
+                "purchase_order_product_owner_name" => "%{$this->column_search}%",
+                "purchase_order_product_name" => "%{$this->column_search}%",
+            ] : [],
+        ];
 
-        foreach ($this->filters as $item) {
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
             if (is_array($item['value'])) {
-                if (is_array($item['value']) && $item["value"]["max"] === "") {
-                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $this->max . " ";
-                } else {
-                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
-                }
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
             } else {
-                $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
             }
         }
         try {
@@ -209,16 +232,7 @@ class SuppliersPurchaseOrder
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
-            $query->execute([
-                "start" => $this->column_start - 1,
-                "total" => $this->column_total,
-                ...$this->column_search != "" ? [
-                    "purchase_order_number" => "%{$this->column_search}%",
-                    "purchase_order_supplier_name" => "%{$this->column_search}%",
-                    "purchase_order_product_owner_name" => "%{$this->column_search}%",
-                    "purchase_order_product_name" => "%{$this->column_search}%",
-                ] : [],
-            ]);
+            $query->execute($params);
         } catch (PDOException $ex) {
 
             $query = false;

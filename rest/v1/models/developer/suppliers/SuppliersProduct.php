@@ -69,19 +69,31 @@ class SuppliersProduct
     }
 
     // read all
-    public function readAll()
+    public function readAll($allowedColumns)
     {
         $filterColumn = [];
+        $params = [
+            "suppliers_product_supplier_id" => $this->suppliers_product_supplier_id,
+            ...$this->column_search != "" ? [
+                "suppliers_product_name" => "%{$this->column_search}%",
+            ] : [],
+        ];
 
-        foreach ($this->filters as $item) {
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
             if (is_array($item['value'])) {
-                if (is_array($item['value']) && $item["value"]["max"] === "") {
-                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $this->max . " ";
-                } else {
-                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
-                }
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
             } else {
-                $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
             }
         }
         try {
@@ -98,12 +110,7 @@ class SuppliersProduct
             }
             $sql .= " order by suppliers_product_name asc ";
             $query = $this->connection->prepare($sql);
-            $query->execute([
-                "suppliers_product_supplier_id" => $this->suppliers_product_supplier_id,
-                ...$this->column_search != "" ? [
-                    "suppliers_product_name" => "%{$this->column_search}%",
-                ] : [],
-            ]);
+            $query->execute($params);
         } catch (PDOException $ex) {
 
             $query = false;
@@ -112,19 +119,35 @@ class SuppliersProduct
     }
 
     // read all
-    public function readLimit()
+
+    // read all
+    public function readLimit($allowedColumns)
     {
         $filterColumn = [];
+        $params = [
+            "suppliers_product_supplier_id" => $this->suppliers_product_supplier_id,
+            "start" => $this->column_start - 1,
+            "total" => $this->column_total,
+            ...$this->column_search != "" ? [
+                "suppliers_product_name" => "%{$this->column_search}%",
+            ] : [],
+        ];
 
-        foreach ($this->filters as $item) {
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
             if (is_array($item['value'])) {
-                if (is_array($item['value']) && $item["value"]["max"] === "") {
-                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $this->max . " ";
-                } else {
-                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
-                }
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
             } else {
-                $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
             }
         }
         try {
@@ -143,14 +166,7 @@ class SuppliersProduct
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
-            $query->execute([
-                "suppliers_product_supplier_id" => $this->suppliers_product_supplier_id,
-                "start" => $this->column_start - 1,
-                "total" => $this->column_total,
-                ...$this->column_search != "" ? [
-                    "suppliers_product_name" => "%{$this->column_search}%",
-                ] : [],
-            ]);
+            $query->execute($params);
         } catch (PDOException $ex) {
 
             $query = false;

@@ -20,3 +20,14 @@ function updateConnectedMenu($object)
 {
     checkUpdateUserAccountRole($object);
 }
+
+// check association
+function allowedColumns()
+{
+    $query = [
+        "role_code",
+        "role_name",
+        "role_description",
+    ];
+    return $query;
+}

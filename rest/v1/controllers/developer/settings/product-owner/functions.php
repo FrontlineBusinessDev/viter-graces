@@ -2,17 +2,17 @@
 
 
 // Read all
-function checkReadByProductOwner($object)
+function checkReadByProductOwner($object, $readByProductOwner = [])
 {
-    $query = $object->readByProductOwner();
+    $query = $object->readByProductOwner($readByProductOwner);
     checkQuery($query, "Empty records. (read All)");
     return $query;
 }
 
 // Read limit
-function checkReadByProductOwnerLimit($object)
+function checkReadByProductOwnerLimit($object, $readByProductOwner = [])
 {
-    $query = $object->readByProductOwnerLimit();
+    $query = $object->readByProductOwnerLimit($readByProductOwner);
     checkQuery($query, "Empty records. (limit)");
     return $query;
 }
@@ -53,4 +53,16 @@ function updateConnectedMenu($object)
     checkUpdateProducts($object);
     checkUpdatePurchaseOrder($object);
     checkUpdateSuppliersProduct($object);
+}
+
+// check association
+function allowedColumns()
+{
+    $query = [
+        "user_account_first_name",
+        "user_account_last_name",
+        "user_account_email",
+        "user_account_role",
+    ];
+    return $query;
 }

@@ -31,8 +31,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
         checkLimitId($val->column_start, $val->column_total);
 
-        $query = checkReadByProductOwnerLimit($val);
-        $total_result = checkReadByProductOwner($val);
+        $query = checkReadByProductOwnerLimit($val, allowedColumns());
+        $total_result = checkReadByProductOwner($val, allowedColumns());
         http_response_code(200);
 
         checkReadQuery(

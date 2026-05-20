@@ -3,6 +3,7 @@
 require '../../../core/header.php';
 // use needed functions
 require '../../../core/functions.php';
+require 'functions.php';
 require '../../../core/google-api.php';
 require '../../../models/developer/sales-order/SalesOrder.php';
 

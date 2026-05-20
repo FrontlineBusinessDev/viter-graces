@@ -25,24 +25,49 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->column_start = $_GET['start'];
         $val->column_total = 15;
         $val->max = PHP_INT_MAX;
-
+        $total_result_final = [];
         // FOR MULTIPLE FILTER 
         $val->filters = $data['columnFilters'];
         checkLimitId($val->column_start, $val->column_total);
 
         $query = checkReadLimit($val);
         $total_result = checkReadAll($val);
+
+        $data = getResultData($query);
+
+        for ($i = 0; $i < count($data); $i++) {
+
+            $val->sales_order_number = $data[$i]["sales_order_number"];
+
+            $queryLogin = $val->readBySoNumber();
+
+            $queryLogin = $queryLogin
+                ? getResultData($queryLogin)
+                : [];
+
+            $total_result_final[] = [
+                ...$data[$i],
+                "items" => $queryLogin
+            ];
+        }
+
+
         http_response_code(200);
 
-        checkReadQuery(
-            $query,
-            $total_result,
-            $val->column_total,
-            $val->column_start
-        );
 
-        // return 404 error if endpoint not available
-        checkEndpoint();
+        $response = new Response();
+        $returnData = [];
+
+        $returnData["data"] = $total_result_final;
+        $returnData["count"] = count($total_result_final);
+        $returnData["total"] = $total_result->rowCount();
+        $returnData["per_page"] = $val->column_total;
+        $returnData["page"] = (int)$val->column_start;
+        $returnData["total_pages"] = ceil($total_result->rowCount() / $val->column_total);
+        $returnData["success"] = true;
+        $response->setData($returnData);
+        $response->send();
+        exit;
     }
 }
 

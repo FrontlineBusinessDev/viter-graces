@@ -4,6 +4,7 @@
 require '../../../../core/header.php';
 // use needed functions
 require '../../../../core/functions.php';
+require 'functions.php';
 // use needed classes
 require '../../../../models/developer/suppliers/SuppliersPurchaseOrder.php';
 // check database connection
@@ -28,8 +29,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->filters = $data['columnFilters'];
         $total_result_final = [];
 
-        $query = checkReadLimit($val);
-        $total_result = checkReadAll($val);
+        $query = checkReadLimit($val, allowedColumns());
+        $total_result = checkReadAll($val, allowedColumns());
 
         $data = getResultData($query);
 
@@ -66,9 +67,6 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $response->setData($returnData);
         $response->send();
         exit;
-
-        // return 404 error if endpoint not available
-        checkEndpoint();
     }
 }
 

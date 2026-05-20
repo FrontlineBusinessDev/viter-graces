@@ -18,7 +18,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
     if (empty($_GET)) {
         $val->filters = [];
-        $query = checkReadByProductOwner($val);
+        $query = checkReadByProductOwner($val, allowedColumns());
         http_response_code(200);
         getQueriedData($query);
     }

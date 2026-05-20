@@ -288,7 +288,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                           <li> </li>
                           <li> </li>
                         </ul>
-                        {items.map((item, index) => {
+                        {items.map((a, index) => {
                           return (
                             <div
                               key={index}
@@ -305,6 +305,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                       .text,
                                   )
                                 }
+                                itemEdit={itemEdit}
                                 defaultValue={
                                   items[index]["purchase_order_product_id"]
                                 }
@@ -322,6 +323,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                       .text,
                                   )
                                 }
+                                itemEdit={itemEdit}
                                 defaultValue={
                                   items[index][
                                     "purchase_order_product_owner_id"
@@ -369,7 +371,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                 />
                               </span>
                               <button
-                                onClick={() => handleRemoveItem(item.id)}
+                                onClick={() => handleRemoveItem(a.id)}
                                 className="text-red-500 text-xl"
                               >
                                 ✕

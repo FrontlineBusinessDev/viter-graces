@@ -122,20 +122,32 @@ class Products
     }
 
     // read all
-    public function readAll()
+    public function readAll($allowedColumns)
     {
         $filterColumn = [];
+        $params = [
+            ...$this->column_search != "" ? [
+                "products_name" => "%{$this->column_search}%",
+                "products_sku" => "%{$this->column_search}%",
+                "products_owner_name" => "%{$this->column_search}%",
+            ] : [],
+        ];
 
-        foreach ($this->filters as $item) {
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
             if (is_array($item['value'])) {
-                if (is_array($item['value']) && $item["value"]["max"] === "") {
-                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $this->max . " ";
-                } else {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
 
-                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
-                }
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
             } else {
-                $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
             }
         }
         try {
@@ -155,15 +167,8 @@ class Products
             $sql .= " order by products_status desc, ";
             $sql .= "products_name asc ";
             $query = $this->connection->prepare($sql);
-            $query->execute([
-                ...$this->column_search != "" ? [
-                    "products_name" => "%{$this->column_search}%",
-                    "products_sku" => "%{$this->column_search}%",
-                    "products_owner_name" => "%{$this->column_search}%",
-                ] : [],
-            ]);
+            $query->execute($params);
         } catch (PDOException $ex) {
-
 
             $query = false;
         }
@@ -171,19 +176,34 @@ class Products
     }
 
     // read all
-    public function readLimit()
+    public function readLimit($allowedColumns)
     {
         $filterColumn = [];
+        $params = [
+            "start" => $this->column_start - 1,
+            "total" => $this->column_total,
+            ...$this->column_search != "" ? [
+                "products_name" => "%{$this->column_search}%",
+                "products_sku" => "%{$this->column_search}%",
+                "products_owner_name" => "%{$this->column_search}%",
+            ] : [],
+        ];
 
-        foreach ($this->filters as $item) {
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
             if (is_array($item['value'])) {
-                if (is_array($item['value']) && $item["value"]["max"] === "") {
-                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $this->max . " ";
-                } else {
-                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
-                }
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = " CAST($col AS UNSIGNED) BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
             } else {
-                $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
             }
         }
         try {
@@ -205,19 +225,12 @@ class Products
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
-            $query->execute([
-                "start" => $this->column_start - 1,
-                "total" => $this->column_total,
-                ...$this->column_search != "" ? [
-                    "products_name" => "%{$this->column_search}%",
-                    "products_sku" => "%{$this->column_search}%",
-                    "products_owner_name" => "%{$this->column_search}%",
-                ] : [],
-            ]);
+            $query->execute($params);
         } catch (PDOException $ex) {
 
             $query = false;
         }
+
         return $query;
     }
 

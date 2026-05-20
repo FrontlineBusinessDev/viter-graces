@@ -28,3 +28,18 @@ function updateConnectedMenu($object)
 {
     checkUpdateProductSupplier($object);
 }
+
+// check association
+function allowedColumns()
+{
+    $query = [
+        "suppliers_is_active",
+        "suppliers_name",
+        "suppliers_email",
+        "suppliers_phone",
+        "suppliers_address",
+        "suppliers_contact_person",
+        "suppliers_delivery",
+    ];
+    return $query;
+}

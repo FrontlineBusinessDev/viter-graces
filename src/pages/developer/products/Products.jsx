@@ -22,6 +22,7 @@ const Products = () => {
       header: "status",
       classTh: "min-w-[10rem]",
       classTd: "",
+      filterFn: "equals",
       meta: {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus

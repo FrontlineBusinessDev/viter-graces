@@ -48,3 +48,15 @@ function checkAssociatedByMenu($object)
     checkAssociatedByActivityLog($object);
     checkAssociatedByProducts($object);
 }
+
+// check association
+function allowedColumns()
+{
+    $query = [
+        "user_account_first_name",
+        "user_account_last_name",
+        "user_account_email",
+        "user_account_role",
+    ];
+    return $query;
+}

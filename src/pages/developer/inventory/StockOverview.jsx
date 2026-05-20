@@ -123,7 +123,7 @@ const StockOverview = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="stock movement"
+          path="stock-movement"
           setItemEdit={setItemEdit}
           haveFilterTable={true}
           mockData={mockData}

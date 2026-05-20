@@ -1,17 +1,17 @@
 import ModalButton from "@/components/buttons/ModalButton";
 import {
+  InputSalesOrderSelectTagArray,
   InputSelectArray,
   InputSelectArrayWithOptions,
-  InputSelectTagArray,
 } from "@/components/inputs/InputSelect";
 import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { AmountWithPesoSign } from "@/components/PesoSign";
 import { apiVersion } from "@/config/config";
+import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
-import useQueryData from "@/services/useQueryData";
 import {
   setError,
   setIsAdd,
@@ -30,6 +30,7 @@ import * as Yup from "yup";
 const ModalSalesOrders = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [counter, setCounter] = React.useState(0);
+  const [itemsDelete, setItemsDelete] = React.useState([]);
   const [items, setItems] = React.useState(
     itemEdit
       ? itemEdit?.items
@@ -61,9 +62,9 @@ const ModalSalesOrders = ({ itemEdit }) => {
       updated[index]["sales_order_product_owner_name"] =
         selectedItem["products_owner_name"];
       updated[index]["sales_order_price"] = selectedItem["products_price"];
-      const qty = Number(updated[index]["sales_order_qty"] || 0);
+      const qty = Number(updated[index]["sales_order_qty"] || 1);
       const price = Number(updated[index]["sales_order_price"] || 0);
-      updated[index]["total_amount"] = qty * price;
+      updated[index]["sales_order_total"] = qty * price;
     }
     updated[index][field] = value;
     updated[index][fieldId] = id;
@@ -77,10 +78,10 @@ const ModalSalesOrders = ({ itemEdit }) => {
     updated[index][field] = value;
 
     // compute row total
-    const qty = Number(updated[index]["sales_order_qty"] || 0);
+    const qty = Number(updated[index]["sales_order_qty"] || 1);
     const price = Number(updated[index]["sales_order_price"] || 0);
 
-    updated[index]["total_amount"] = qty * price;
+    updated[index]["sales_order_total"] = qty * price;
 
     setItems(updated);
   };
@@ -89,6 +90,7 @@ const ModalSalesOrders = ({ itemEdit }) => {
     setItems([
       ...items,
       {
+        sales_order_aid: 0,
         sales_order_product_id: "",
         sales_order_product_name: "",
         sales_order_product_owner_id: "",
@@ -102,8 +104,16 @@ const ModalSalesOrders = ({ itemEdit }) => {
     setCounter((prev) => prev + 1);
   };
 
-  const handleRemoveItem = (id) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
+  const handleRemoveItem = (a) => {
+    setItemsDelete([
+      ...itemsDelete,
+      {
+        sales_order_aid: isEmptyItem(a?.sales_order_aid, 0),
+        id: a.id,
+      },
+    ]);
+
+    setItems((prev) => prev.filter((item) => item.id !== a.id));
   };
 
   const handleClose = () => {
@@ -118,14 +128,14 @@ const ModalSalesOrders = ({ itemEdit }) => {
     mutationFn: (values) =>
       queryData(
         itemEdit
-          ? `${apiVersion}/users/${itemEdit?.id}`
-          : `${apiVersion}/users`,
+          ? `${apiVersion}/sales-order/${itemEdit?.id}`
+          : `${apiVersion}/sales-order`,
         itemEdit ? "put" : "post",
         values,
       ),
     onSuccess: (data) => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["sales-order"] });
 
       if (data.success) {
         dispatch(setIsAdd(false));
@@ -140,7 +150,11 @@ const ModalSalesOrders = ({ itemEdit }) => {
   });
 
   const initVal = {
-    sales_order_date: isEmptyItem(itemEdit?.sales_order_date, ""),
+    ...itemEdit,
+    sales_order_date: isEmptyItem(
+      itemEdit?.order_date,
+      store?.credentials?.data?.server_date,
+    ),
     sales_order_customer_id: isEmptyItem(itemEdit?.sales_order_customer_id, ""),
     sales_order_customer_name: isEmptyItem(
       itemEdit?.sales_order_customer_name,
@@ -158,8 +172,8 @@ const ModalSalesOrders = ({ itemEdit }) => {
     sales_order_qty: isEmptyItem(itemEdit?.sales_order_qty, ""),
     sales_order_price: isEmptyItem(itemEdit?.sales_order_price, ""),
     sales_order_total: isEmptyItem(itemEdit?.sales_order_total, ""),
-    sales_order_discount: isEmptyItem(itemEdit?.sales_order_discount, ""),
-    sales_order_tax: isEmptyItem(itemEdit?.sales_order_tax, ""),
+    sales_order_discount: isEmptyItem(itemEdit?.sales_order_discount, "0"),
+    sales_order_tax: isEmptyItem(itemEdit?.sales_order_tax, "0"),
     sales_order_paid_amount: isEmptyItem(itemEdit?.sales_order_paid_amount, ""),
     sales_order_notes: isEmptyItem(itemEdit?.sales_order_notes, ""),
     sales_order_received_by_id: isEmptyItem(
@@ -178,8 +192,14 @@ const ModalSalesOrders = ({ itemEdit }) => {
       itemEdit?.sales_order_product_owner_name,
       "",
     ),
-    sales_order_installment: isEmptyItem(itemEdit?.sales_order_installment, ""),
-    sales_order_due_date: isEmptyItem(itemEdit?.sales_order_due_date, ""),
+    sales_order_installment: isEmptyItem(
+      itemEdit?.sales_order_installment,
+      "0",
+    ),
+    sales_order_due_date: isEmptyItem(
+      itemEdit?.sales_order_due_date,
+      store?.credentials?.data?.server_date,
+    ),
   };
 
   const yupSchema = Yup.object({
@@ -207,6 +227,7 @@ const ModalSalesOrders = ({ itemEdit }) => {
         mutation={mutation}
         isOpen={true}
         handleClose={handleClose}
+        width="min-w-[35rem]!"
       >
         <div className="modal-body">
           <Formik
@@ -215,8 +236,26 @@ const ModalSalesOrders = ({ itemEdit }) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
               // mutate data
-              console.log({ ...values, items });
-              // mutation.mutate({ ...values, items });
+              let data = {
+                ...ActivityLogDetails(
+                  "sales-order",
+                  itemEdit ? "update" : "create",
+                  store,
+                  { ...values, items },
+                ),
+                ...values,
+                items,
+                itemsDelete,
+                sales_order_overall_amount: items?.reduce(
+                  (sum, item) =>
+                    sum +
+                    Number(item.sales_order_qty || 1) *
+                      Number(item.sales_order_price || 0),
+                  0,
+                ),
+              };
+              // console.log(data);
+              mutation.mutate(data);
             }}
           >
             {(props) => {
@@ -289,18 +328,18 @@ const ModalSalesOrders = ({ itemEdit }) => {
                       </div>
                     ) : (
                       <div className="flex flex-col">
-                        <ul className="hidden md:grid grid-cols-[1fr_1fr_0.6fr_0.5fr_1rem] px-3 mt-2 text-dark">
+                        <ul className="hidden md:grid grid-cols-[1fr_5rem_7rem_7rem_1rem] gap-1 px-3 mt-2 text-dark">
                           <li>Products</li>
                           <li>Quantity</li>
                           <li className="text-right">Price per pc.</li>
                         </ul>
-                        {items.map((item, index) => {
+                        {items.map((a, index) => {
                           return (
                             <div
                               key={index}
-                              className="grid grid-cols-2 md:grid md:grid-cols-[1fr_1fr_0.6fr_0.5fr_1rem] gap-3 items-center p-3 mt-1"
+                              className="grid grid-cols-2 md:grid md:grid-cols-[1fr_5rem_7rem_7rem_1rem] gap-1 items-center p-3 mt-1"
                             >
-                              <InputSelectTagArray
+                              <InputSalesOrderSelectTagArray
                                 onChange={(e, selectedItem) => {
                                   handleChange(
                                     index,
@@ -312,9 +351,9 @@ const ModalSalesOrders = ({ itemEdit }) => {
                                       .text,
                                   );
                                 }}
-                                defaultValue={
-                                  items[index]["sales_order_product_id"]
-                                }
+                                itemEdit={itemEdit}
+                                item={a}
+                                defaultValue={a["sales_order_product_id"]}
                                 path={`products/read-all-active-by-product`}
                                 placeholder="Product Name"
                               />
@@ -327,7 +366,10 @@ const ModalSalesOrders = ({ itemEdit }) => {
                                     0,
                                   );
                                 }}
-                                defaultValue={items[index]["sales_order_qty"]}
+                                defaultValue={isEmptyItem(
+                                  a["sales_order_qty"],
+                                  1,
+                                )}
                                 type="number"
                                 placeholder="Qty"
                               />
@@ -335,17 +377,18 @@ const ModalSalesOrders = ({ itemEdit }) => {
                               <span className="font-semibold text-black dark:text-light mr-2">
                                 <AmountWithPesoSign
                                   classN="size-3"
-                                  amount={items[index]["sales_order_price"]}
+                                  amount={a["sales_order_price"]}
                                 />
                               </span>
                               <span className="font-semibold text-black dark:text-light mr-2">
                                 <AmountWithPesoSign
                                   classN="size-3"
-                                  amount={items[index]["total_amount"]}
+                                  amount={a["sales_order_total"]}
                                 />
                               </span>
                               <button
-                                onClick={() => handleRemoveItem(item.id)}
+                                type="button"
+                                onClick={() => handleRemoveItem(a, index)}
                                 className="text-red-500 text-xl"
                               >
                                 ✕
@@ -406,7 +449,7 @@ const ModalSalesOrders = ({ itemEdit }) => {
                           amount={items.reduce(
                             (sum, item) =>
                               sum +
-                              Number(item.sales_order_qty || 0) *
+                              Number(item.sales_order_qty || 1) *
                                 Number(item.sales_order_price || 0),
                             0,
                           )}

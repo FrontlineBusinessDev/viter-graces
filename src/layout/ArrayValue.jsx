@@ -4,7 +4,6 @@ import {
   KeySquare,
   LucideTableOfContents,
   RotateCcw,
-  TableOfContents,
   Trash,
 } from "lucide-react";
 

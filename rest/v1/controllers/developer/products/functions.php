@@ -31,3 +31,26 @@ function updateConnectedMenu($object)
 
 
 }
+
+// check association
+function allowedColumns()
+{
+    $query = [
+        "products_is_active",
+        "products_status",
+        "products_name",
+        "products_sku",
+        "products_category",
+        "products_price",
+        "products_cost",
+        "products_stocks",
+        "products_suppliers_name",
+        "products_owner_name",
+        "products_sales",
+        "products_unit",
+        "products_barcode",
+        "products_low_stock_threshold",
+        "products_description",
+    ];
+    return $query;
+}

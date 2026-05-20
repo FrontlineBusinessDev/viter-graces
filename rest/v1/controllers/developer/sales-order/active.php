@@ -25,8 +25,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         // check data
         checkPayload($data);
         $val->sales_order_aid = $_GET['id'];
+        $val->sales_order_number = trim($data["sales_order_number"]);
         $val->sales_order_is_active = trim($data["isActive"]);
-
 
         if ($val->sales_order_is_active === 0) {
             $val->sales_order_status = "inactive";

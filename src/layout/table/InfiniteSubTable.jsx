@@ -39,7 +39,6 @@ const InfiniteSubTable = ({
   hasExport = false,
   isDefaultMobile = "default",
   isSearch = true,
-  ishaveAdd = true,
   ishaveSubAdd = false,
   setItemVal,
 }) => {
@@ -113,8 +112,9 @@ const InfiniteSubTable = ({
 
     staleTime: 1000 * 60 * 5, // 5 mins → no refetch when revisiting
     gcTime: 1000 * 60 * 30, // keep cache for 30 mins
-    refetchOnWindowFocus: true,
     refetchOnMount: false,
+    refetchOnWindowFocus: false,
+    refetchOnReconnect: false,
     // enabled: !isStatic,
   });
 

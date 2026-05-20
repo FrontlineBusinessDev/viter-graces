@@ -15,6 +15,7 @@ if (array_key_exists("id", $_GET)) {
     checkPayload($data);
     // get data
     $val->sales_order_aid = $_GET['id'];
+    $val->sales_order_number = trim($data["sales_order_number"]);
     checkId($val->sales_order_aid);
 
     $query = checkDelete($val);

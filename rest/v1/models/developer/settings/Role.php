@@ -61,19 +61,26 @@ class Role
     }
 
     // read all
-    public function readAll()
+    public function readAll($allowedColumns)
     {
         $filterColumn = [];
+        $params = [];
 
-        foreach ($this->filters as $item) {
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
             if (is_array($item['value'])) {
-                if (is_array($item['value']) && $item["value"]["max"] === "") {
-                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $this->max . " ";
-                } else {
-                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
-                }
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
             } else {
-                $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
             }
         }
         try {
@@ -88,27 +95,39 @@ class Role
             }
             $sql .= " order by role_is_active desc, ";
             $sql .= "role_name asc ";
-            $query = $this->connection->query($sql);
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
         } catch (PDOException $ex) {
+
             $query = false;
         }
         return $query;
     }
 
     // read all
-    public function readLimit()
+    public function readLimit($allowedColumns)
     {
         $filterColumn = [];
+        $params = [
+            "start" => $this->column_start - 1,
+            "total" => $this->column_total,
+        ];
 
-        foreach ($this->filters as $item) {
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
             if (is_array($item['value'])) {
-                if (is_array($item['value']) && $item["value"]["max"] === "") {
-                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $this->max . " ";
-                } else {
-                    $filterColumn[] = $item['id'] . " BETWEEN " . $item["value"]["min"] . " AND " . $item["value"]["max"] . " ";
-                }
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
             } else {
-                $filterColumn[] = $item['id'] . " LIKE '%" . $item['value'] . "%' ";
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
             }
         }
         try {
@@ -126,10 +145,7 @@ class Role
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
-            $query->execute([
-                "start" => $this->column_start - 1,
-                "total" => $this->column_total,
-            ]);
+            $query->execute($params);
         } catch (PDOException $ex) {
 
             $query = false;

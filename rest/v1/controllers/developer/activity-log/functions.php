@@ -34,3 +34,16 @@ function checkReadByLimit($object)
     checkQuery($query, "Empty records. (read by limit)");
     return $query;
 }
+
+// check association
+function allowedColumns()
+{
+    $query = [
+        "activity_log_menu",
+        "activity_log_action",
+        "activity_log_user_name",
+        "activity_log_user_role",
+        "activity_log_description",
+    ];
+    return $query;
+}

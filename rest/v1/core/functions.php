@@ -296,17 +296,17 @@ function checkReadQuery($query, $total_result, $object_total, $object_start)
 }
 
 // Read all
-function checkReadAll($object)
+function checkReadAll($object, $allowedColumns = [])
 {
-    $query = $object->readAll();
+    $query = $object->readAll($allowedColumns);
     checkQuery($query, "Empty records. (read All)");
     return $query;
 }
 
 // Read limit
-function checkReadLimit($object)
+function checkReadLimit($object, $allowedColumns = [])
 {
-    $query = $object->readLimit();
+    $query = $object->readLimit($allowedColumns);
     checkQuery($query, "Empty records. (limit)");
     return $query;
 }
@@ -776,12 +776,14 @@ function isIdNumberExist($object, $newCodeNumber)
 function setIdNumber($object, $val)
 {
     $lastIdNumber = getResultData($object->checkLastIdNumber());
+
     if (count($lastIdNumber) == 0) {
         $newCodeNumber = $val . "001";
         return $newCodeNumber;
     }
     // value number of payroll id
-    $lastPayNumber = intval(substr($lastIdNumber[0]['id_number'], 2));
+    $lastPayNumber = intval(substr($lastIdNumber[0]['id_number'], 3));
+
     $newCodeNumber = (int)$lastPayNumber + 1;
     if ((int)$newCodeNumber < 10) {
         $newCodeNumber =  $val . "00" . $newCodeNumber;

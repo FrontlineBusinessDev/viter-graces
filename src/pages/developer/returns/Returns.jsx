@@ -66,7 +66,7 @@ const Returns = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="Process Returns"
+          path="sales-order"
           setItemEdit={setItemEdit}
         />
       </HeaderNav>
