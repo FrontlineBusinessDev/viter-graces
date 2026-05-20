@@ -172,6 +172,7 @@ const InfinitePerTabs = ({
                         onClick={() => setOpenRow(isOpen ? null : item.id)}
                         className="flex flex-1 items-center gap-2 text-left"
                       >
+                        {/*  */}
                         <TableDefaultStatusDot
                           dataArray={rows[index]?.original}
                         />
