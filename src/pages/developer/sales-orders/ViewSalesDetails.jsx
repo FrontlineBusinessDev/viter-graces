@@ -1,11 +1,15 @@
 import CloseButton from "@/components/buttons/CloseButton";
+import { setIsView } from "@/store/StoreAction";
 import { Download } from "lucide-react";
 import React from "react";
 
-const ViewSalesDetails = ({ setView, itemEdit }) => {
+const ViewSalesDetails = ({ itemEdit }) => {
+  let counter = 1;
   const handleClose = () => {
-    setView(false);
+    dispatch(setIsView(true));
   };
+
+  console.log("itemEdit", itemEdit);
   return (
     <div
       className="bg-dark/50 dark:bg-dark-mode/90 fixed inset-0 z-999 flex justify-center items-center overflow-y-auto animate-fadeIn"
@@ -20,25 +24,33 @@ const ViewSalesDetails = ({ setView, itemEdit }) => {
             <CloseButton handleClose={handleClose} />
           </div>
           <h3 className="text-black dark:text-light text-lg mb-2">
-            Order Details - {itemEdit.order_no}
+            Order Details - {itemEdit.sales_order_number}
           </h3>
 
           <ul className="grid grid-cols-2 [&>li]:flex [&>li]:items-center [&>li]:gap-2 my-3">
             <li>
               <p>Customer:</p>
-              <p className="text-black dark:text-light">{itemEdit.name}</p>
+              <p className="text-black dark:text-light">
+                {itemEdit.sales_order_customer_name}
+              </p>
             </li>
             <li>
               <p>Date:</p>
-              <p className="text-black dark:text-light">{itemEdit.date}</p>
+              <p className="text-black dark:text-light">
+                {itemEdit.sales_order_date}
+              </p>
             </li>
             <li>
               <p>Received by:</p>
-              <p className="text-black dark:text-light">Alfredo</p>
+              <p className="text-black dark:text-light">
+                {itemEdit.sales_order_received_by_name}
+              </p>
             </li>
             <li>
               <p>Payment:</p>
-              <p className="text-black dark:text-light">{itemEdit.method}</p>
+              <p className="text-black dark:text-light">
+                {itemEdit.sales_order_payment_method}
+              </p>
             </li>
             <li>
               <p>Status:</p>
@@ -58,34 +70,44 @@ const ViewSalesDetails = ({ setView, itemEdit }) => {
             <div className="">
               <div className="rounded-2xl border border-gray-300 bg-white dark:bg-[#0b111e] overflow-x-hidden dark:border-gray-700 max-h-[200px]">
                 {/* desktop header */}
-                <div className="hidden sticky top-0 lg:grid lg:grid-cols-3 lg:items-center border-b bg-gray-50 px-4 py-3 text-xs font-medium text-gray-500 dark:bg-[#0b111e]">
-                  <div>#</div>
-                  <div>Product</div>
-                  <div>QTY</div>
-                  <div>Price</div>
-                  <div>Total</div>
-                </div>
-
-                {/* row */}
-                <ul className="p-4 grid grid-cols-[.5fr_1fr_1fr_1fr] lg:grid-cols-4 gap-1 text-sm">
-                  <li>
-                    <p className="text-xs text-gray-400 lg:hidden">#</p>1
-                  </li>
-
-                  <li>
-                    <p className="text-xs text-gray-400 lg:hidden">QTY</p>
-                    24
-                  </li>
-
-                  <li>
-                    <p className="text-xs text-gray-400 lg:hidden">Price</p>
-                    ₱2100.00
-                  </li>
-                  <li>
-                    <p className="text-xs text-gray-400 lg:hidden">Total</p>
-                    ₱2100.00
-                  </li>
+                <ul className="hidden sticky top-0 lg:grid lg:grid-cols-5 lg:items-center border-b bg-gray-50 px-4 py-3 text-xs font-medium text-gray-500 dark:bg-[#0b111e]">
+                  <li>#</li>
+                  <li>Product</li>
+                  <li>QTY</li>
+                  <li>Price</li>
+                  <li>Total</li>
                 </ul>
+                {itemEdit?.items?.map((aitem, akey) => {
+                  return (
+                    <ul
+                      className="p-4 grid grid-cols-[.5fr_1fr_1fr_1fr_1fr] lg:grid-cols-5 gap-1 text-sm"
+                      key={akey}
+                    >
+                      <li>
+                        <p className="text-xs text-gray-400 lg:hidden">#</p>
+                        {counter++}.
+                      </li>
+
+                      <li>
+                        <p className="text-xs text-gray-400 lg:hidden">QTY</p>
+                        {aitem?.sales_order_product_name}
+                      </li>
+                      <li>
+                        <p className="text-xs text-gray-400 lg:hidden">QTY</p>
+                        {aitem?.sales_order_qty}
+                      </li>
+
+                      <li>
+                        <p className="text-xs text-gray-400 lg:hidden">Price</p>
+                        {aitem?.sales_order_price}
+                      </li>
+                      <li>
+                        <p className="text-xs text-gray-400 lg:hidden">Total</p>
+                        {aitem?.sales_order_price}
+                      </li>
+                    </ul>
+                  );
+                })}
               </div>
             </div>
           </div>

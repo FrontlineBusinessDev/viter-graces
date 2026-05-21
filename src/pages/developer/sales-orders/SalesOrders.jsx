@@ -98,7 +98,7 @@ const SalesOrders = () => {
         />
       </HeaderNav>
       {store.isAdd && <ModalSalesOrders itemEdit={itemEdit} />}
-      {isView && <ViewSalesDetails itemEdit={itemEdit} setView={setView} />}
+      {store.isView && <ViewSalesDetails itemEdit={itemEdit} />}
     </>
   );
 };
