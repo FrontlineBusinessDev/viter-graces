@@ -182,7 +182,7 @@ const InfinitePerTabs = ({
                               <div className="min-w-0">
                                 {aitem?.column?.columnDef?.header === "name" ? (
                                   <div className="flex items-center gap-2">
-                                    <span className="text-sm font-medium text-gray-800 dark:text-light min-w-[5rem]">
+                                    <span className="text-sm font-medium text-gray-800 dark:text-light min-w-20">
                                       {rows[index]?.original?.name}
                                     </span>
                                     <FaCaretDown
