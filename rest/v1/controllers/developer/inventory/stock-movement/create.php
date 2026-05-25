@@ -23,8 +23,6 @@ $val->stock_movement_product_id = $data["stock_movement_product_id"];
 $val->stock_movement_product_name = $data["stock_movement_product_name"];
 $val->stock_movement_before_qty = 0;
 $val->stock_movement_after_qty = 0;
-// $val->stock_movement_before_qty = $data["stock_movement_before_qty"];
-// $val->stock_movement_after_qty = $data["stock_movement_after_qty"];
 $val->stock_movement_qty = $data["stock_movement_qty"];
 $val->stock_movement_location = $data["stock_movement_location"];
 $val->stock_movement_product_owner_id = $data["stock_movement_product_owner_id"];
@@ -33,6 +31,12 @@ $val->stock_movement_notes = $data["stock_movement_notes"];
 $val->stock_movement_date = date("Y-m-d");
 $val->stock_movement_created = date("Y-m-d H:i:s");
 $val->stock_movement_updated = date("Y-m-d H:i:s");
+
+$queryQty = getResultData($val->readtotalQTY());
+if (count($queryQty) > 0) {
+    $val->stock_movement_before_qty = $queryQty[0]['current_qty'];
+    $val->stock_movement_after_qty = (float)$val->stock_movement_before_qty + (float)$val->stock_movement_qty;
+};
 
 // create
 $query = checkCreate($val);

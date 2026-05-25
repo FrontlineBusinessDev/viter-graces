@@ -1,5 +1,5 @@
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
-import { ActiveInActiveStatus } from "@/layout/ArrayValue";
+import { ActiveInActiveStatus, StockTypeArray } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -10,26 +10,27 @@ const StockOverview = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
 
+  let stockArray = [{ label: "low stock", value: "low stock" }];
+
   // Columns
   const columns = [
     {
-      accessorKey: "user_account_is_active",
-      header: "status",
-      classTh: "w-[5rem]",
+      accessorKey: "stock_movement_type",
+      header: "Type",
+      classTh: "w-[10rem]",
       classTd: "",
       filterFn: "equals",
       meta: {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus
             column={column}
-            options={ActiveInActiveStatus()}
+            options={StockTypeArray()}
           />
         ),
       },
-      status_option: ActiveInActiveStatus(),
     },
     {
-      accessorKey: "name",
+      accessorKey: "stock_movement_product_name",
       header: "Products",
       classTh: "",
       classTd: "",
@@ -37,7 +38,7 @@ const StockOverview = () => {
       meta: "",
     },
     {
-      accessorKey: "sku",
+      accessorKey: "products_sku",
       header: "SKU",
       classTh: "",
       classTd: "",
@@ -45,35 +46,35 @@ const StockOverview = () => {
       isTag: true,
     },
     {
-      accessorKey: "location",
+      accessorKey: "stock_movement_location",
       header: "Location",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "stock",
+      accessorKey: "current_qty",
       header: "Current Stock",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "threshold",
+      accessorKey: "products_low_stock_threshold",
       header: "Threshold",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "unit",
+      accessorKey: "products_unit",
       header: "Unit",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "product_owner",
+      accessorKey: "stock_movement_product_owner_name",
       header: "Product Owner",
       classTh: "",
       classTd: "",
@@ -81,30 +82,7 @@ const StockOverview = () => {
     },
   ];
 
-  const mockData = [
-    {
-      id: 1,
-      status: 1,
-      name: "Banana Chips",
-      sku: "MBP14-001",
-      location: "San Pablo City, Laguna",
-      stock: "20",
-      threshold: "13",
-      unit: "12",
-      product_owner: "Louren Rubico",
-    },
-    {
-      id: 2,
-      status: 1,
-      name: "Chips",
-      sku: "MBP14-001",
-      location: "Nagcarlan, Laguna",
-      stock: "20",
-      threshold: "13",
-      unit: "12",
-      product_owner: "Cyrene Lumabas",
-    },
-  ];
+  console.log("stockArray", stockArray.push(StockTypeArray()));
 
   return (
     <>
@@ -123,11 +101,9 @@ const StockOverview = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="stock-movement"
+          path="stock-overview"
           setItemEdit={setItemEdit}
           haveFilterTable={true}
-          mockData={mockData}
-          isStatic={true}
           isDefaultMobile={"stock movement"}
         />
       </HeaderNav>

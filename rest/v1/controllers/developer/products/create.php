@@ -20,8 +20,8 @@ $val->products_is_active = 1;
 $val->products_status = 'active';
 $val->products_name = $data["products_name"];
 $val->products_image = $data["products_image"];
-$val->products_sku = $data["products_sku"];
-$val->products_category = $data["products_category"];
+$val->products_sku = "";
+$val->products_category = strtolower($data["products_category"]);
 $val->products_price = $data["products_price"];
 $val->products_cost = $data["products_cost"];
 $val->products_stocks = $data["products_stocks"];
@@ -31,19 +31,22 @@ $val->products_suppliers_id = $data["products_suppliers_id"];
 $val->products_suppliers_name = $data["products_suppliers_name"];
 $val->products_sales = $data["products_sales"];
 $val->products_unit = $data["products_unit"];
-$val->products_barcode = $data["products_barcode"];
+$val->products_barcode = mktime(date("H"), date("i"), date("s"), date("m"), date("d"), date("Y"));
 $val->products_low_stock_threshold = $data["products_low_stock_threshold"];
 $val->products_description = $data["products_description"];
 $val->products_created = date("Y-m-d H:i:s");
 $val->products_updated = date("Y-m-d H:i:s");
 
-$val->products_image = checkToUploadGoogleDrive($data['products_image'], '', 'products');
+$val->products_image = "";
+// $val->products_image = checkToUploadGoogleDrive($data['products_image'], '', 'products');
 
+$val->products_sku = setIdNumber($val, "SKU");
 // check name
 isNameExist($val, $val->products_name);
 
-$val->stock_movement_type = "";
+$val->stock_movement_type = "in stock";
 $val->stock_movement_before_qty = 0;
+$val->stock_movement_date = date("Y-m-d");
 $val->stock_movement_after_qty = (float)$val->stock_movement_before_qty + (float)$val->products_stocks;
 $val->stock_movement_qty = (float)$val->products_stocks;
 

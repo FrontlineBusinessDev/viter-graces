@@ -18,7 +18,7 @@ export const StockTypeArray = () => {
   return [
     { label: "in stock", value: "in stock" },
     { label: "purchases", value: "purchases" },
-    { label: "stock adjustments", value: "stock adjustments" },
+    { label: "stock in adjustments", value: "stock in adjustments" },
     { label: "stock out - sales", value: "stock out - sales" },
     {
       label: "stock out - reject/defective items",

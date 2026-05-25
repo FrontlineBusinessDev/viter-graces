@@ -56,7 +56,10 @@ const ModalProducts = ({ itemEdit }) => {
       ),
     onSuccess: (data) => {
       // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ["stock-movement"] });
       queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["stock-overview"] });
+      queryClient.invalidateQueries({ queryKey: ["sales-order"] });
 
       if (data.success) {
         dispatch(setIsAdd(false));
@@ -84,7 +87,7 @@ const ModalProducts = ({ itemEdit }) => {
     products_suppliers_id: isEmptyItem(itemEdit?.products_suppliers_id, ""),
     products_suppliers_name: isEmptyItem(itemEdit?.products_suppliers_name, ""),
     products_sales: isEmptyItem(itemEdit?.products_sales, ""),
-    products_unit: isEmptyItem(itemEdit?.products_unit, ""),
+    products_unit: isEmptyItem(itemEdit?.products_unit, "pcs"),
     products_barcode: isEmptyItem(itemEdit?.products_barcode, ""),
     products_low_stock_threshold: isEmptyItem(
       itemEdit?.products_low_stock_threshold,
@@ -137,9 +140,11 @@ const ModalProducts = ({ itemEdit }) => {
               };
               // console.log(data);
               setLoading(true);
-              const filesUpload = await uploadMultipleFiles();
-              if (filesUpload?.success) setLoading(false);
-              if (!loading) mutation.mutate(data);
+              mutation.mutate(data);
+
+              // const filesUpload = await uploadMultipleFiles();
+              // if (filesUpload?.success) setLoading(false);
+              // if (!loading) mutation.mutate(data);
             }}
           >
             {(props) => {
@@ -156,7 +161,7 @@ const ModalProducts = ({ itemEdit }) => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="relative mt-3">
+                    {/* <div className="relative mt-3">
                       <InputText
                         label="SKU"
                         type="text"
@@ -175,7 +180,7 @@ const ModalProducts = ({ itemEdit }) => {
                         disabled={mutation.isPending}
                         required={false}
                       />
-                    </div>
+                    </div> */}
                     <div className="relative mt-3">
                       <InputText
                         label="Category"

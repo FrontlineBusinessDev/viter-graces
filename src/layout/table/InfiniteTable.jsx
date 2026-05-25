@@ -429,23 +429,18 @@ const InfiniteTable = ({
                             ) : (
                               <div className="flex items-center">
                                 {isEmptyItem(
-                                  item?.column?.columnDef?.amount,
+                                  item?.column?.columnDef?.amount ||
+                                    item?.column?.columnDef?.paid_amount,
                                   false,
                                 ) ? (
                                   <AmountWithPesoSign
                                     classN="size-3"
-                                    amount={rowData?.total_amount}
+                                    amount={
+                                      rowData[
+                                        `${item?.column?.columnDef?.accessorKey}`
+                                      ]
+                                    }
                                   />
-                                ) : isEmptyItem(
-                                    item?.column?.columnDef?.paid_amount,
-                                    false,
-                                  ) ? (
-                                  <>
-                                    <AmountWithPesoSign
-                                      classN="size-3"
-                                      amount={rowData?.total_paid}
-                                    />
-                                  </>
                                 ) : (
                                   flexRender(
                                     item?.column?.columnDef?.cell,

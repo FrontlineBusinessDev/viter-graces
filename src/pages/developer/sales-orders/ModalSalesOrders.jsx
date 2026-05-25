@@ -135,6 +135,9 @@ const ModalSalesOrders = ({ itemEdit }) => {
       ),
     onSuccess: (data) => {
       // Invalidate and refetch
+      queryClient.invalidateQueries({ queryKey: ["stock-movement"] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["stock-overview"] });
       queryClient.invalidateQueries({ queryKey: ["sales-order"] });
 
       if (data.success) {

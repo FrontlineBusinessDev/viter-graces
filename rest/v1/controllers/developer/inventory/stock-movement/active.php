@@ -1,14 +1,14 @@
 <?php
 // set http header
-require '../../../core/header.php';
+require '../../../../core/header.php';
 // use needed functions
-require '../../../core/functions.php';
+require '../../../../core/functions.php';
 // use needed classes 
-require '../../../models/developer/stock-movement/StockMovement.php';
+require '../../../../models/developer/inventory/StockMovement.php';
 // check database connection
 // ACTIVITY LOG DETAILS
-require '../../../controllers/developer/activity-log/functions.php';
-require '../../../models/developer/activity-log/ActivityLog.php';
+require '../../../../controllers/developer/activity-log/functions.php';
+require '../../../../models/developer/activity-log/ActivityLog.php';
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes

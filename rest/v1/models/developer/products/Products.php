@@ -24,6 +24,7 @@ class Products
     public $products_updated;
 
     public $stock_movement_type;
+    public $stock_movement_date;
     public $stock_movement_before_qty;
     public $stock_movement_after_qty;
     public $stock_movement_qty;
@@ -108,7 +109,7 @@ class Products
                 "products_suppliers_name" => $this->products_suppliers_name,
                 "products_sales" => $this->products_sales,
                 "products_unit" => $this->products_unit,
-                "products_barcode" => $this->products_barcode,
+                "products_barcode" => $this->connection->lastInsertId() . $this->products_barcode,
                 "products_low_stock_threshold" => $this->products_low_stock_threshold,
                 "products_description" => $this->products_description,
                 "products_created" => $this->products_created,
@@ -394,6 +395,7 @@ class Products
             $sql .= "( stock_movement_product_id, ";
             $sql .= "stock_movement_product_name, ";
             $sql .= "stock_movement_type, ";
+            $sql .= "stock_movement_date, ";
             $sql .= "stock_movement_is_active, ";
             $sql .= "stock_movement_before_qty, ";
             $sql .= "stock_movement_after_qty, ";
@@ -405,6 +407,7 @@ class Products
             $sql .= ":stock_movement_product_id, ";
             $sql .= ":stock_movement_product_name, ";
             $sql .= ":stock_movement_type, ";
+            $sql .= ":stock_movement_date, ";
             $sql .= ":stock_movement_is_active, ";
             $sql .= ":stock_movement_before_qty, ";
             $sql .= ":stock_movement_after_qty, ";
@@ -418,6 +421,7 @@ class Products
                 "stock_movement_product_id" => $this->lastInsertedId,
                 "stock_movement_product_name" => $this->products_name,
                 "stock_movement_type" => $this->stock_movement_type,
+                "stock_movement_date" => $this->stock_movement_date,
                 "stock_movement_is_active" => $this->products_is_active,
                 "stock_movement_before_qty" => $this->stock_movement_before_qty,
                 "stock_movement_after_qty" => $this->stock_movement_after_qty,
@@ -457,6 +461,42 @@ class Products
                     "products_owner_name" => "%{$this->column_search}%",
                 ] : [],
             ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function checkIdNumberExist($newCodeNumber)
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "products_sku as id_number ";
+            $sql .= "from {$this->tblProducts} ";
+            $sql .= "where products_sku = :products_sku ";
+            $sql .= "group by products_sku ";
+            $sql .= "order by products_status desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "products_sku" => $newCodeNumber,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function checkLastIdNumber()
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "products_sku as id_number ";
+            $sql .= "from {$this->tblProducts} ";
+            $sql .= "order by products_aid desc ";
+            $sql .= "limit 1 ";
+            $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
         }

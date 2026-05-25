@@ -7,7 +7,6 @@ function isUserAccountAssociated($object)
     checkExistence($count, "You cannot delete this item because it is already associated with other module.");
 }
 
-
 // Create 
 function checkCreateMovementStock($object)
 {

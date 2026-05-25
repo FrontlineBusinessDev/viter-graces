@@ -7,6 +7,7 @@ import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { apiVersion } from "@/config/config";
+import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
 import {
@@ -46,6 +47,9 @@ const ModalStockOverview = ({ itemEdit }) => {
     onSuccess: (data) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["stock-movement"] });
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+      queryClient.invalidateQueries({ queryKey: ["stock-overview"] });
+      queryClient.invalidateQueries({ queryKey: ["sales-order"] });
 
       if (data.success) {
         dispatch(setIsAdd(false));
@@ -116,9 +120,17 @@ const ModalStockOverview = ({ itemEdit }) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
               // mutate data
-
-              // console.log("values", values);
-              mutation.mutate(values);
+              let data = {
+                ...ActivityLogDetails(
+                  "products",
+                  itemEdit ? "update" : "create",
+                  store,
+                  values,
+                ),
+                ...values,
+              };
+              // console.log(data);
+              mutation.mutate(data);
             }}
           >
             {(props) => {
@@ -126,7 +138,7 @@ const ModalStockOverview = ({ itemEdit }) => {
                 <Form>
                   <div className="relative mt-3">
                     <InputSelectArray
-                      label="Product"
+                      label="stock movement"
                       path="products/read-all-active-by-product"
                       placeholder={`${itemEdit ? "Update product" : "Enter product"}`}
                       type="text"
@@ -141,6 +153,7 @@ const ModalStockOverview = ({ itemEdit }) => {
                           e.target.options[e.target.selectedIndex].text;
                         return e;
                       }}
+                      haveOtherInfo={true}
                     />
                   </div>
                   <div className="relative mt-3">

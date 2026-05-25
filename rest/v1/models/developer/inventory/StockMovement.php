@@ -21,6 +21,8 @@ class StockMovement
     public $connection;
     public $lastInsertedId;
     public $tblMovementStock;
+    public $tblProducts;
+    public $tblSalesOrder;
 
     public $filters;
     public $column_start;
@@ -32,6 +34,8 @@ class StockMovement
     {
         $this->connection = $db;
         $this->tblMovementStock = "graces_stock_movement";
+        $this->tblProducts = "graces_products";
+        $this->tblSalesOrder = "graces_sales_order";
     }
 
     // create
@@ -136,8 +140,7 @@ class StockMovement
                 $sql .= ($this->column_search != "" ? "and ( stock_movement_product_name like :stock_movement_product_name 
             or stock_movement_product_owner_name like :stock_movement_product_owner_name ) " : " ");
             }
-            $sql .= " order by stock_movement_status desc, ";
-            $sql .= "stock_movement_product_name asc ";
+            $sql .= " order by stock_movement_aid desc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
@@ -192,14 +195,12 @@ class StockMovement
                 $sql .= ($this->column_search != "" ? "and ( stock_movement_product_name like :stock_movement_product_name 
             or stock_movement_product_owner_name like :stock_movement_product_owner_name ) " : " ");
             }
-            $sql .= " order by stock_movement_status desc, ";
-            $sql .= "stock_movement_product_name asc ";
+            $sql .= " order by stock_movement_aid desc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-            returnError($ex);
 
             $query = false;
         }
@@ -338,11 +339,16 @@ class StockMovement
     public function readtotalQTY()
     {
         try {
-            $sql = "select *, ";
-            $sql .= "SUM(stock_movement_qty) as qty, ";
-            $sql .= "from {$this->tblMovementStock} ";
-            $sql .= "where stock_movement_product_id = :stock_movement_product_id ";
-            $sql .= "group by stock_movement_product_id ";
+            $sql = "select ";
+            $sql .= "SUM(ms.stock_movement_qty) - IFNULL(SUM(so.sales_order_qty), 0) as current_qty, ";
+            $sql .= "ms.stock_movement_product_name as name ";
+            $sql .= "from {$this->tblMovementStock} as ms, ";
+            $sql .= "{$this->tblProducts} as p ";
+            $sql .= "LEFT JOIN {$this->tblSalesOrder} as so ";
+            $sql .= "ON so.sales_order_product_id = p.products_aid ";
+            $sql .= "where ms.stock_movement_product_id = p.products_aid ";
+            $sql .= "and ms.stock_movement_product_id = :stock_movement_product_id ";
+            $sql .= "group by ms.stock_movement_product_id ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "stock_movement_product_id" => $this->stock_movement_product_id,

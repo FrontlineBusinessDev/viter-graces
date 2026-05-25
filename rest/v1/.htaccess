@@ -87,13 +87,16 @@ RewriteRule ^purchase-order/page/([0-9]+)$ controllers/developer/suppliers/purch
 RewriteRule ^purchase-order/search$ controllers/developer/suppliers/purchase-order/search.php [L]
 
 ### STOCK MOVEMENT ### 
-RewriteRule ^stock-movement$ controllers/developer/stock-movement/stock-movement.php [L]
-RewriteRule ^stock-movement/([0-9]+)$ controllers/developer/stock-movement/stock-movement.php?id=$1 [L] 
-RewriteRule ^stock-movement/active/([0-9]+)$ controllers/developer/stock-movement/active.php?id=$1 [L] 
-RewriteRule ^stock-movement/page/([0-9]+)$ controllers/developer/stock-movement/page.php?start=$1 [L]
-RewriteRule ^stock-movement/search$ controllers/developer/stock-movement/search.php [L]
+RewriteRule ^stock-movement$ controllers/developer/inventory/stock-movement/stock-movement.php [L]
+RewriteRule ^stock-movement/([0-9]+)$ controllers/developer/inventory/stock-movement/stock-movement.php?id=$1 [L] 
+RewriteRule ^stock-movement/active/([0-9]+)$ controllers/developer/inventory/stock-movement/active.php?id=$1 [L] 
+RewriteRule ^stock-movement/page/([0-9]+)$ controllers/developer/inventory/stock-movement/page.php?start=$1 [L]
+RewriteRule ^stock-movement/search$ controllers/developer/inventory/stock-movement/search.php [L]
 
-### SALES ORDER ###
+### STOCK OVERVIEW ### 
+RewriteRule ^stock-overview/page/([0-9]+)$ controllers/developer/inventory/stock-overview/page.php?start=$1 [L]
+
+### SALES ORDER ### 
 RewriteRule ^sales-order$ controllers/developer/sales-order/sales-order.php [L]
 RewriteRule ^sales-order/([0-9]+)$ controllers/developer/sales-order/sales-order.php?id=$1 [L] 
 RewriteRule ^sales-order/active/([0-9]+)$ controllers/developer/sales-order/active.php?id=$1 [L] 

@@ -1,17 +1,17 @@
 <?php
 
 // set http header
-require '../../../core/header.php';
+require '../../../../core/header.php';
 // use needed functions
-require '../../../core/functions.php';
+require '../../../../core/functions.php';
 require 'functions.php';
-// use needed classes
-require '../../../models/developer/stock-movement/StockMovement.php';
+// use needed classes 
+require '../../../../models/developer/inventory/StockOverview.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new StockMovement($conn);
+$val = new StockOverview($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);

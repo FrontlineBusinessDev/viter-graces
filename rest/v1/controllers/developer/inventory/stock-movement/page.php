@@ -1,16 +1,17 @@
 <?php
 
 // set http header
-require '../../../core/header.php';
+require '../../../../core/header.php';
 // use needed functions
-require '../../../core/functions.php';
+require '../../../../core/functions.php';
+require 'functions.php';
 // use needed classes
-require '../../../models/developer/activity-log/ActivityLog.php';
+require '../../../../models/developer/inventory/StockMovement.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new ActivityLog($conn);
+$val = new StockMovement($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -30,8 +31,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->filters = $data['columnFilters'];
         checkLimitId($val->column_start, $val->column_total);
 
-        $query = checkReadLimit($val, allowedColumnsActivityLog());
-        $total_result = checkReadAll($val, allowedColumnsActivityLog());
+        $query = checkReadLimit($val, allowedColumns());
+        $total_result = checkReadAll($val, allowedColumns());
         http_response_code(200);
 
         checkReadQuery(

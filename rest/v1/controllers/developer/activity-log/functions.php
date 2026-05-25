@@ -2,8 +2,8 @@
 // check association
 function createActivityLog($object, $data)
 {
-    $object->activity_log_menu = $data["activity_log_menu"];
-    $object->activity_log_action = $data["activity_log_action"];
+    $object->activity_log_menu = strtolower($data["activity_log_menu"]);
+    $object->activity_log_action = strtolower($data["activity_log_action"]);
     $object->activity_log_user_id = $data["activity_log_user_id"];
     $object->activity_log_user_name = strtolower($data["activity_log_user_name"]);
     $object->activity_log_user_role = strtolower($data["activity_log_user_role"]);
@@ -15,8 +15,8 @@ function createActivityLog($object, $data)
 // check association
 function createActivityLogWithPhp($object, $val, $menu, $action, $data)
 {
-    $object->activity_log_menu = $menu;
-    $object->activity_log_action = $action;
+    $object->activity_log_menu = strtolower($menu);
+    $object->activity_log_action = strtolower($action);
     $object->activity_log_user_id = $data["activity_log_user_id"];
     $object->activity_log_user_name = strtolower($data["activity_log_user_name"]);
     $object->activity_log_user_role = strtolower($data["activity_log_user_role"]);
@@ -36,7 +36,7 @@ function checkReadByLimit($object)
 }
 
 // check association
-function allowedColumns()
+function allowedColumnsActivityLog()
 {
     $query = [
         "activity_log_menu",

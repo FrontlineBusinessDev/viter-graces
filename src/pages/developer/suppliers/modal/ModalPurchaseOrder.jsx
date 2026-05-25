@@ -1,5 +1,6 @@
 import ModalButton from "@/components/buttons/ModalButton";
 import {
+  InputPurchaseOrderSelectTagArray,
   InputSelectArray,
   InputSelectArrayWithOptions,
   InputSelectTagArray,
@@ -294,18 +295,20 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                               key={index}
                               className="grid grid-cols-[1fr_1fr_5rem_5rem_5rem_1rem] gap-1 items-center px-3 pb-3 mt-1"
                             >
-                              <InputSelectTagArray
-                                onChange={(e) =>
+                              <InputPurchaseOrderSelectTagArray
+                                onChange={(e, selectedItem) => {
                                   handleChange(
                                     index,
+                                    selectedItem,
                                     "purchase_order_product_id",
                                     "purchase_order_product_name",
                                     e.target.value,
                                     e.target.options[e.target.selectedIndex]
                                       .text,
-                                  )
-                                }
+                                  );
+                                }}
                                 itemEdit={itemEdit}
+                                item={a}
                                 defaultValue={
                                   items[index]["purchase_order_product_id"]
                                 }
