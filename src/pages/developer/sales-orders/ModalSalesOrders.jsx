@@ -449,13 +449,15 @@ const ModalSalesOrders = ({ itemEdit }) => {
                         </span>
                         <AmountWithPesoSign
                           classN="size-5"
-                          amount={items.reduce(
-                            (sum, item) =>
-                              sum +
-                              Number(item.sales_order_qty || 1) *
-                                Number(item.sales_order_price || 0),
-                            0,
-                          )}
+                          amount={
+                            items.reduce(
+                              (sum, item) =>
+                                sum +
+                                Number(item.sales_order_qty || 1) *
+                                  Number(item.sales_order_price || 0),
+                              0,
+                            ) - Number(props?.values?.sales_order_discount)
+                          }
                         />
                       </p>
                     </div>

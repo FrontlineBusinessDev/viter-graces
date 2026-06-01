@@ -92,6 +92,8 @@ RewriteRule ^stock-movement/([0-9]+)$ controllers/developer/inventory/stock-move
 RewriteRule ^stock-movement/active/([0-9]+)$ controllers/developer/inventory/stock-movement/active.php?id=$1 [L] 
 RewriteRule ^stock-movement/page/([0-9]+)$ controllers/developer/inventory/stock-movement/page.php?start=$1 [L]
 RewriteRule ^stock-movement/search$ controllers/developer/inventory/stock-movement/search.php [L]
+RewriteRule ^stock-movement/read-all-low-stock$ controllers/developer/inventory/stock-overview/read-all-low-stock.php [L]
+RewriteRule ^stock-movement/read-count-low-stock$ controllers/developer/inventory/stock-overview/read-count-low-stock.php [L]
 
 ### STOCK OVERVIEW ### 
 RewriteRule ^stock-overview/page/([0-9]+)$ controllers/developer/inventory/stock-overview/page.php?start=$1 [L]

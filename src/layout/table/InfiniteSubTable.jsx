@@ -24,9 +24,9 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import ActionButtonSubTable from "../ActionButtonSubTable";
 import ModalSubAction from "../modal/ModalSubAction";
 import TableStatus from "../TableStatus";
-import CustomerMobile from "./CustomerMobile";
-import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
-import ProductsMobile from "./ProductsMobile";
+import CustomerMobile from "../mobile-responsive/CustomerMobile";
+import InfiniteDefaultTableMobileCard from "../mobile-responsive/InfiniteDefaultTableMobileCard";
+import ProductsMobile from "../mobile-responsive/ProductsMobile";
 import { PesoSign } from "@/components/PesoSign";
 
 const InfiniteSubTable = ({

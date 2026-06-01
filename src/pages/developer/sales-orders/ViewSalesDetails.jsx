@@ -1,15 +1,19 @@
 import CloseButton from "@/components/buttons/CloseButton";
+import { AmountWithPesoSign } from "@/components/PesoSign";
+import Pills from "@/components/Pills";
+import TableStatus from "@/layout/TableStatus";
 import { setIsView } from "@/store/StoreAction";
+import { StoreContext } from "@/store/StoreContext";
 import { Download } from "lucide-react";
 import React from "react";
 
 const ViewSalesDetails = ({ itemEdit }) => {
+  const { store, dispatch } = React.useContext(StoreContext);
   let counter = 1;
   const handleClose = () => {
-    dispatch(setIsView(true));
+    dispatch(setIsView(false));
   };
 
-  console.log("itemEdit", itemEdit);
   return (
     <div
       className="bg-dark/50 dark:bg-dark-mode/90 fixed inset-0 z-999 flex justify-center items-center overflow-y-auto animate-fadeIn"
@@ -24,45 +28,39 @@ const ViewSalesDetails = ({ itemEdit }) => {
             <CloseButton handleClose={handleClose} />
           </div>
           <h3 className="text-black dark:text-light text-lg mb-2">
-            Order Details - {itemEdit.sales_order_number}
+            Order Details - {itemEdit?.sales_order_number}
           </h3>
 
           <ul className="grid grid-cols-2 [&>li]:flex [&>li]:items-center [&>li]:gap-2 my-3">
             <li>
               <p>Customer:</p>
               <p className="text-black dark:text-light">
-                {itemEdit.sales_order_customer_name}
+                {itemEdit?.sales_order_customer_name}
               </p>
             </li>
             <li>
               <p>Date:</p>
               <p className="text-black dark:text-light">
-                {itemEdit.sales_order_date}
+                {itemEdit?.sales_order_date}
               </p>
             </li>
             <li>
               <p>Received by:</p>
               <p className="text-black dark:text-light">
-                {itemEdit.sales_order_received_by_name}
+                {itemEdit?.sales_order_received_by_name}
               </p>
             </li>
             <li>
               <p>Payment:</p>
               <p className="text-black dark:text-light">
-                {itemEdit.sales_order_payment_method}
+                {itemEdit?.sales_order_payment_method}
               </p>
             </li>
             <li>
               <p>Status:</p>
-              <p
-                className={`inline-block px-2 py-1 text-xs rounded-full ${
-                  itemEdit?.payment_status === "Paid"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-700"
-                }`}
-              >
-                {itemEdit?.payment_status}
-              </p>
+              <Pills variant={itemEdit?.sales_order_status}>
+                {itemEdit?.sales_order_status}
+              </Pills>
             </li>
           </ul>
 
@@ -70,17 +68,17 @@ const ViewSalesDetails = ({ itemEdit }) => {
             <div className="">
               <div className="rounded-2xl border border-gray-300 bg-white dark:bg-[#0b111e] overflow-x-hidden dark:border-gray-700 max-h-[200px]">
                 {/* desktop header */}
-                <ul className="hidden sticky top-0 lg:grid lg:grid-cols-5 lg:items-center border-b bg-gray-50 px-4 py-3 text-xs font-medium text-gray-500 dark:bg-[#0b111e]">
+                <ul className="hidden sticky top-0 lg:grid lg:grid-cols-[2rem_1fr_1fr_1fr_1fr] lg:items-center border-b bg-gray-50 px-4 py-3 text-xs font-medium text-gray-500 dark:bg-[#0b111e]">
                   <li>#</li>
                   <li>Product</li>
-                  <li>QTY</li>
-                  <li>Price</li>
-                  <li>Total</li>
+                  <li className="text-center">QTY</li>
+                  <li className="text-right">Price</li>
+                  <li className="text-right">Total</li>
                 </ul>
                 {itemEdit?.items?.map((aitem, akey) => {
                   return (
                     <ul
-                      className="p-4 grid grid-cols-[.5fr_1fr_1fr_1fr_1fr] lg:grid-cols-5 gap-1 text-sm"
+                      className="p-4 grid grid-cols-[.5fr_1fr_1fr_1fr_1fr] lg:grid-cols-[2rem_1fr_1fr_1fr_1fr] gap-1 text-sm"
                       key={akey}
                     >
                       <li>
@@ -89,21 +87,30 @@ const ViewSalesDetails = ({ itemEdit }) => {
                       </li>
 
                       <li>
-                        <p className="text-xs text-gray-400 lg:hidden">QTY</p>
+                        <p className="text-xs text-gray-400 lg:hidden">
+                          Product
+                        </p>
                         {aitem?.sales_order_product_name}
                       </li>
-                      <li>
-                        <p className="text-xs text-gray-400 lg:hidden">QTY</p>
+                      <li className="text-center">
+                        <p className="text-xs text-gray-400 lg:hidden ">QTY</p>
                         {aitem?.sales_order_qty}
                       </li>
 
                       <li>
                         <p className="text-xs text-gray-400 lg:hidden">Price</p>
-                        {aitem?.sales_order_price}
+                        <AmountWithPesoSign
+                          classN="size-3"
+                          amount={`${aitem?.sales_order_price}`}
+                        />
                       </li>
                       <li>
                         <p className="text-xs text-gray-400 lg:hidden">Total</p>
-                        {aitem?.sales_order_price}
+
+                        <AmountWithPesoSign
+                          classN="size-3"
+                          amount={`${aitem?.sales_order_total}`}
+                        />
                       </li>
                     </ul>
                   );
@@ -114,14 +121,36 @@ const ViewSalesDetails = ({ itemEdit }) => {
 
           <ul className="grid grid-cols-2 my-3 [&>li]:border-b [&>li]:border-b-gray-200 gap-y-2">
             <li>Subtotal</li>
-            <li className="text-right">₱ 18,000.00</li>
+            <li className="text-right">
+              <AmountWithPesoSign
+                classN="size-3"
+                amount={`${itemEdit?.total_amount}`}
+              />
+            </li>
+            <li className=" font-bold">Discount</li>
+            <li className="text-right font-bold">
+              <AmountWithPesoSign
+                classN="size-3"
+                amount={`${itemEdit?.sales_order_discount}`}
+              />
+            </li>
             <li className=" font-bold">Total</li>
-            <li className="text-right font-bold">{itemEdit.total}</li>
+            <li className="text-right font-bold">
+              <AmountWithPesoSign
+                classN="size-3"
+                amount={`${itemEdit?.total_amount - itemEdit?.sales_order_discount}`}
+              />
+            </li>
           </ul>
 
           <div className="grid grid-cols-2 py-2 text-green-600 text-base">
             <span>Paid</span>
-            <span className="text-right">₱ {itemEdit.total}</span>
+            <span className="text-right">
+              <AmountWithPesoSign
+                classN="size-3"
+                amount={`${itemEdit?.total_paid}`}
+              />
+            </span>
           </div>
 
           <div className="my-4 place-self-center">

@@ -1,5 +1,6 @@
 const Pills = ({ children, variant = "active" }) => {
-  const base = "inline-flex items-center rounded-full px-3 py-0.5 text-xs ";
+  const base =
+    "inline-flex items-center rounded-full px-3 py-0.5 text-xs uppercase ";
   const variants = {
     active: "bg-success/20 text-success",
     inactive: "bg-gray-100 text-gray-500",
@@ -7,11 +8,14 @@ const Pills = ({ children, variant = "active" }) => {
     paid: "bg-blue-300 text-blue-700",
     warning: "bg-warning/10 text-warning",
     alert: "bg-alert/10 text-alert",
-    instock: "bg-success/20 text-success",
-    lowstock: "bg-warning/10 text-warning",
+    in_stock: "bg-success/20 text-success",
+    low_stock: "bg-warning/10 text-warning",
+    low_stock: "bg-warning/10 text-warning",
   };
 
-  return <div className={`${base} ${variants[variant]}`}>{children}</div>;
+  console.log("123", children, variant);
+
+  return <span className={`${base} ${variants[variant]}`}>{children}</span>;
 };
 
 export default Pills;

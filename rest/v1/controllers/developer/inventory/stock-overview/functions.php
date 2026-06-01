@@ -25,3 +25,19 @@ function allowedColumns()
     ];
     return $query;
 }
+
+// Read all
+function checkReadAllLowStock($object, $allowedColumns = [])
+{
+    $query = $object->readAllLowStock($allowedColumns);
+    checkQuery($query, "Empty records. (read All)");
+    return $query;
+}
+
+// Read all
+function checkReadCountLowStock($object)
+{
+    $query = $object->readCountLowStock();
+    checkQuery($query, "Empty records. (read All)");
+    return $query;
+}

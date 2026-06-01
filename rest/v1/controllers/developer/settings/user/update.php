@@ -28,9 +28,11 @@ if (array_key_exists("id", $_GET)) {
     $val->user_account_updated = date("Y-m-d H:i:s");
     $val->column_fullname = $val->user_account_first_name . " " . $val->user_account_last_name;
     $val_name_old = $data['name'];
+    $val_email_old = $data['email_old'];
 
     // check name
     compareName($val, $val_name_old, $val->column_fullname);
+    compareEmail($val, $val_email_old, $val->user_account_email);
     // update
     $query = checkUpdate($val);
     // create activity log

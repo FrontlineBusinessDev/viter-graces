@@ -8,15 +8,17 @@ const useQueryData = (
   key = "",
   fd = {},
   id = null,
-  refetchOnWindowFocus = false
+  refetchOnWindowFocus = false,
 ) => {
-  return useQuery({
-    queryKey: [key, id],
-    queryFn: async () => await queryData(endpoint, method, fd),
-    retry: false,
-    refetchOnWindowFocus: refetchOnWindowFocus,
-    cacheTime: 200,
-  });
+  return endpoint !== null
+    ? useQuery({
+        queryKey: [key, id],
+        queryFn: async () => await queryData(endpoint, method, fd),
+        retry: false,
+        refetchOnWindowFocus: refetchOnWindowFocus,
+        cacheTime: 200,
+      })
+    : "";
 };
 
 export default useQueryData;

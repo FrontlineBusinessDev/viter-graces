@@ -25,11 +25,12 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import ActionButtonTable from "../ActionButtonTable";
 import ModalAction from "../modal/ModalAction";
 import TableStatus from "../TableStatus";
-import CustomerMobile from "./CustomerMobile";
-import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
-import ProductsMobile from "./ProductsMobile";
+import CustomerMobile from "../mobile-responsive/CustomerMobile";
+import InfiniteDefaultTableMobileCard from "../mobile-responsive/InfiniteDefaultTableMobileCard";
+import ProductsMobile from "../mobile-responsive/ProductsMobile";
 import { Image } from "lucide-react";
 import { getConvertStringToJSONparseData } from "@/utilities/getConvertStringToJSONparseData";
+import MobileResponsiveList from "../mobile-responsive/MobileResponsiveList";
 
 const InfiniteTable = ({
   columns,
@@ -264,26 +265,11 @@ const InfiniteTable = ({
               </div>
             )}
             {/* MOBILE CARD */}
-            <InfiniteDefaultTableMobileCard
+            <MobileResponsiveList
               rows={rows}
               lastRowRef={lastRowRef}
               setData={setData}
               setItemEdit={setItemEdit}
-              isDefaultMobile={isDefaultMobile}
-              ishaveSubAdd={ishaveSubAdd}
-            />
-            <CustomerMobile
-              rows={rows}
-              lastRowRef={lastRowRef}
-              setItemEdit={setItemEdit}
-              isDefaultMobile={isDefaultMobile}
-              ishaveSubAdd={ishaveSubAdd}
-            />
-            <ProductsMobile
-              rows={rows}
-              setData={setData}
-              setItemEdit={setItemEdit}
-              lastRowRef={lastRowRef}
               isDefaultMobile={isDefaultMobile}
               ishaveSubAdd={ishaveSubAdd}
             />

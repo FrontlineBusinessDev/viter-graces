@@ -67,6 +67,7 @@ const ModalUser = ({ itemEdit }) => {
     user_account_role_id: isEmptyItem(itemEdit?.user_account_role_id, ""),
     user_account_role: isEmptyItem(itemEdit?.user_account_role, ""),
 
+    email_old: isEmptyItem(itemEdit?.user_account_email, ""),
     name: isEmptyItem(itemEdit?.name, ""),
     password_link: `/create-password`,
   };

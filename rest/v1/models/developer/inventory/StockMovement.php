@@ -129,6 +129,7 @@ class StockMovement
         try {
             $sql = "select *, ";
             $sql .= "stock_movement_aid as id, ";
+            $sql .= "stock_movement_type as status_text, ";
             $sql .= "stock_movement_is_active as is_active, ";
             $sql .= "DATE_FORMAT(stock_movement_date, '%b %d, %Y') as stock_movement_date, ";
             $sql .= "stock_movement_product_name as name ";
@@ -184,6 +185,7 @@ class StockMovement
         try {
             $sql = "select *, ";
             $sql .= "stock_movement_aid as id, ";
+            $sql .= "stock_movement_type as status_text, ";
             $sql .= "stock_movement_is_active as is_active, ";
             $sql .= "DATE_FORMAT(stock_movement_date, '%b %d, %Y') as stock_movement_date, ";
             $sql .= "stock_movement_product_name as name ";

@@ -10,7 +10,7 @@ export const AmountsWithPesoSign = ({
   return (
     <span className={`flex items-center justify-end ${classAmnt}`}>
       <PhilippinePeso className={`${classN} mr-1`} />
-      {numberWithCommasToFixed(isEmptyItem(amount, "0"), 2)}
+      {numberWithCommasToFixed(isEmptyItem(amount, 0), 2)}
     </span>
   );
 };
@@ -23,7 +23,7 @@ export const AmountWithPesoSign = ({
   return (
     <span className={`flex items-center justify-end ${classAmnt}`}>
       <PhilippinePeso className={`${classN} mr-1`} />
-      {numberWithCommasToFixed(isEmptyItem(amount, "0"), 2)}
+      {numberWithCommasToFixed(isEmptyItem(amount, 0), 2)}
     </span>
   );
 };
