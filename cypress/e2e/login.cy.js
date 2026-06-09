@@ -26,9 +26,9 @@ describe("Login Page", () => {
   it("should login successfully with valid credentials", () => {
     cy.intercept("POST", "**/users/login").as("loginRequest");
 
-    cy.get('input[name="user_account_email"]').type("louren.rubico@frontlinebusiness.com.ph");
+    cy.get('input[name="user_account_email"]').type(Cypress.env("email"));
 
-    cy.get('input[name="password"]').type(("Louren23!"));
+    cy.get('input[name="password"]').type(Cypress.env("password"));
 
     cy.get('button[type="submit"]').click();
 
@@ -60,11 +60,9 @@ describe("Login Page", () => {
       });
     }).as("loginRequest");
 
-    cy.get('input[name="user_account_email"]').type(
-      "louren.rubico@frontlinebusiness.com.ph",
-    );
+    cy.get('input[name="user_account_email"]').type(Cypress.env("email"));
 
-    cy.get('input[name="password"]').type("Louren23!");
+    cy.get('input[name="password"]').type(Cypress.env("password"));
 
     cy.get('button[type="submit"]').click();
 
@@ -89,10 +87,8 @@ describe("Login Page", () => {
   });
 
   it("redirects to dashboard on success", () => {
-    cy.get('input[name="user_account_email"]').type(
-      "louren.rubico@frontlinebusiness.com.ph",
-    );
-    cy.get('input[name="password"]').type("Louren23!");
+    cy.get('input[name="user_account_email"]').type(Cypress.env("email"));
+    cy.get('input[name="password"]').type(Cypress.env("password"));
     cy.get('button[type="submit"]').click();
 
     cy.url().should("include", "/dashboard");

@@ -29,7 +29,10 @@ const DashboardOverduePayments = () => {
   return (
     <>
       {/* Overdue Payments */}
-      <div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow relative">
+      <div
+        className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow relative"
+        data-testid="overdue-payments"
+      >
         <h2 className="flex gap-2 items-center font-semibold text-sm text-red-600 mb-4">
           <TrendingDown size={16} /> Overdue Payments
         </h2>

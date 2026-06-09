@@ -19,7 +19,10 @@ const DashboardRecentActivities = () => {
 
   return (
     <>
-      <div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow">
+      <div
+        className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow"
+        data-testid="recent-activities"
+      >
         <h2 className="font-semibold text-sm mb-4 text-black dark:text-light">
           Recent Activities
         </h2>
