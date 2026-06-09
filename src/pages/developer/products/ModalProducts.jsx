@@ -258,6 +258,7 @@ const ModalProducts = ({ itemEdit }) => {
                         path="product-owner/read-by-product-owner"
                         type="text"
                         name="products_owner_id"
+                        dataTestIdSelect="select-product-owner"
                         onChange={(e) => {
                           props.values.products_owner_id = e.target.value;
                           props.values.products_owner_name =
