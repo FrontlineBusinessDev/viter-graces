@@ -1,8 +1,10 @@
+import { devNavUrl } from "@/config/config";
 import { StoreContext } from "@/store/StoreContext";
 import { TrendingDown } from "lucide-react";
 import React from "react";
 const DashboardOverduePayments = () => {
   const { store, dispatch } = React.useContext(StoreContext);
+  const userRole = "developer";
   const dashboardData = {
     overduePayments: [
       {
@@ -53,7 +55,8 @@ const DashboardOverduePayments = () => {
           ))}
         </ul>
         <a
-          href="#"
+          data-testid="overdue-payment-btn-to-view"
+          href={`${devNavUrl}/${userRole}/overdue-payments`}
           className="absolute bottom-3 text-orange-500 pt-3 inline-block"
         >
           Click to view →

@@ -23,6 +23,7 @@ rest/v1/core/google-api-dwd.php
 apikey.php
 .env
 .env.production
+cypress.env.json
 
 # Editor directories and files
 .vscode/*

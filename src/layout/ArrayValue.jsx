@@ -71,24 +71,28 @@ export const DefaultActionTableList = ({ path }) => {
       path: path,
       icon: <Edit className="size-5 lg:size-4" />,
       isActive: 1,
+      testId: "action-edit",
     },
     {
       name: "archieve",
       path: "active",
       icon: <ArchiveRestore className="size-5 lg:size-4" />,
       isActive: 1,
+      testId: "action-archive",
     },
     {
       name: "restore",
       path: "active",
       icon: <RotateCcw className="size-5 lg:size-4" />,
       isActive: 0,
+      testId: "action-restore",
     },
     {
       name: "delete",
       path: path,
       icon: <Trash className="size-5 lg:size-4" />,
       isActive: 0,
+      testId: "action-delete",
     },
   ];
 };
