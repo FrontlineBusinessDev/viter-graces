@@ -23,61 +23,67 @@ const Dashboard = () => {
 
   return (
     <>
-      <HeaderNav menu={"dashboard"}>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-          <StatCard
-            title="Sales Today"
-            value="₱******"
-            subtitle="Yesterday: ₱******"
-            flipContent="₱12,450.00"
-            subTitleFlip="Yesterday: ₱10,000.00"
-            flipBg="bg-green-100 dark:bg-green-900"
-            icon={<TrendingUp className="text-green-600" size={20} />}
-            iconBg="bg-green-100 dark:bg-[#082125]"
-          />
+      <div data-testid="dashboard-page">
+        <HeaderNav menu={"dashboard"}>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+            <StatCard
+              title="Sales Today"
+              value="₱******"
+              subtitle="Yesterday: ₱******"
+              flipContent="₱12,450.00"
+              subTitleFlip="Yesterday: ₱10,000.00"
+              flipBg="bg-green-100 dark:bg-green-900"
+              icon={<TrendingUp className="text-green-600" size={20} />}
+              iconBg="bg-green-100 dark:bg-[#082125]"
+              dataTestId="sales-today-card"
+            />
 
-          <StatCard
-            title="Low Stock Alerts"
-            value="2"
-            subtitle="products below threshold"
-            button="Click to view →"
-            link=""
-            icon={<AlertTriangle className="text-orange-500" size={20} />}
-            iconBg="bg-orange-100 dark:bg-[#291518]"
-          />
+            <StatCard
+              title="Low Stock Alerts"
+              value="2"
+              subtitle="products below threshold"
+              button="Click to view →"
+              link=""
+              icon={<AlertTriangle className="text-orange-500" size={20} />}
+              iconBg="bg-orange-100 dark:bg-[#291518]"
+              dataTestId="low-stock-card"
+            />
 
-          <StatCard
-            title="Top Selling Product"
-            value="iPhone 15 Pro"
-            subtitle="2 units sold"
-            extra="₱2,198.00"
-            icon={<Trophy className="text-yellow-500" size={20} />}
-            iconBg="bg-yellow-100 dark:bg-[#281b17]"
-          />
+            <StatCard
+              title="Top Selling Product"
+              value="iPhone 15 Pro"
+              subtitle="2 units sold"
+              extra="₱2,198.00"
+              icon={<Trophy className="text-yellow-500" size={20} />}
+              iconBg="bg-yellow-100 dark:bg-[#281b17]"
+              dataTestId="top-selling-card"
+            />
 
-          <StatCard
-            title="Expenses Today"
-            value="₱******"
-            subtitle="Yesterday: ₱******"
-            flipContent="₱12,450.00"
-            subTitleFlip="Yesterday: ₱10,000.00"
-            flipBg="bg-red-100 dark:bg-red-900"
-            icon={<PhilippinePeso className="text-red-500" size={20} />}
-            iconBg="bg-red-100 dark:bg-[#2a1019]"
-          />
-        </div>
+            <StatCard
+              title="Expenses Today"
+              value="₱******"
+              subtitle="Yesterday: ₱******"
+              flipContent="₱12,450.00"
+              subTitleFlip="Yesterday: ₱10,000.00"
+              flipBg="bg-red-100 dark:bg-red-900"
+              icon={<PhilippinePeso className="text-red-500" size={20} />}
+              iconBg="bg-red-100 dark:bg-[#2a1019]"
+              dataTestId="expenses-card"
+            />
+          </div>
 
-        <div className="grid grid-cols-1 xl:grid-cols-[2fr_1fr_1fr] gap-6 py-6 ">
-          <DashboardSalesOverview />
-          <DashboardOverduePayments />
-          <DashboardRecentActivities />
-        </div>
+          <div className="grid grid-cols-1 xl:grid-cols-[2fr_1fr_1fr] gap-6 py-6 ">
+            <DashboardSalesOverview />
+            <DashboardOverduePayments />
+            <DashboardRecentActivities />
+          </div>
 
-        <div className="grid xl:grid-cols-2 gap-6 ">
-          <CashflowChart />
-          <ProfitLossChart />
-        </div>
-      </HeaderNav>
+          <div className="grid xl:grid-cols-2 gap-6 ">
+            <CashflowChart />
+            <ProfitLossChart />
+          </div>
+        </HeaderNav>
+      </div>
     </>
   );
 };

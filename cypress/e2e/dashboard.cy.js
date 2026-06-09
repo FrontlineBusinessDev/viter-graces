@@ -1,69 +1,125 @@
-describe("Dashboard", () => {
+describe("Dashboard Page", () => {
   beforeEach(() => {
-    // Login first
-    cy.visit("/portal/login");
+    cy.session("admin", () => {
+      cy.visit("/portal/login");
 
-    cy.get('input[name="user_account_email"]').type(Cypress.env("email"));
+      cy.get("input[name=user_account_email]").type(Cypress.env("email"));
 
-    cy.get('input[name="password"]').type(Cypress.env("password"));
+      cy.get("input[name=password]").type(Cypress.env("password"));
 
-    cy.get('button[type="submit"]').click();
+      cy.get("button[type=submit]").click();
 
-    // Verify login success
-    cy.url().should("not.include", "/login");
+      cy.url().should("not.include", "/login");
+    });
 
-    // Go to dashboard
+    cy.intercept("POST", "**/rest/v1/activity/read-with-limit", {
+      statusCode: 200,
+      body: {
+        data: [
+          {
+            activity_log_user_name: "John Doe",
+            activity_log_action: "created",
+            activity_log_menu: "sales",
+            activity_log_user_role: "admin",
+            days_ago: 0,
+            type: "sales",
+          },
+        ],
+      },
+    }).as("activities");
+
     cy.visit("/portal/developer/dashboard");
-  });
 
-  it("should display dashboard page", () => {
     cy.url().should("include", "/dashboard");
+
+    cy.wait("@activities");
   });
 
-  it("should display Sales Today card", () => {
-    cy.contains("Sales Today").should("be.visible");
-
-    cy.contains("Yesterday:").should("exist");
+  it("should load dashboard successfully", () => {
+    cy.get('[data-testid="dashboard-page"]').should("exist");
   });
 
-  it("should display Low Stock Alerts card", () => {
-    cy.contains("Low Stock Alerts").should("be.visible");
-
-    cy.contains("products below threshold").should("exist");
+  it("should load dashboard successfully", () => {
+    cy.get('[data-testid="dashboard-page"]').should("exist");
   });
 
-  it("should display Top Selling Product card", () => {
-    cy.contains("Top Selling Product").should("be.visible");
+  it("should display all stat cards", () => {
+    cy.get('[data-testid="sales-today-card"]').should("contain", "Sales Today");
+
+    cy.get('[data-testid="low-stock-card"]').should(
+      "contain",
+      "Low Stock Alerts",
+    );
+
+    cy.get('[data-testid="top-selling-card"]').should(
+      "contain",
+      "Top Selling Product",
+    );
+
+    cy.get('[data-testid="expenses-card"]').should("contain", "Expenses Today");
   });
 
-  it("should display Expenses Today card", () => {
-    cy.contains("Expenses Today").should("be.visible");
+  it("should display sales overview section", () => {
+    cy.get('[data-testid="sales-overview"]').should(
+      "contain",
+      "Sales Overview",
+    );
   });
 
-  it("should display Sales Overview section", () => {
-    cy.contains("Sales Overview").should("exist");
+  it("should switch sales overview timeframe", () => {
+    cy.get('[data-testid="sales-overview"]').within(() => {
+      cy.contains("button", "Monthly").click();
+
+      cy.contains("Monthly");
+
+      cy.contains("button", "Yearly").click();
+
+      cy.contains("Yearly");
+    });
   });
 
-  it("should display Overdue Payments section", () => {
-    cy.contains("Overdue Payments").should("exist");
+  it("should display overdue payments", () => {
+    cy.get('[data-testid="overdue-payments"]').should(
+      "contain",
+      "Overdue Payments",
+    );
+
+    cy.contains("Carol Williams");
+    cy.contains("Juan Dela Cruz");
+    cy.contains("Robert Samson");
   });
 
-  it("should display Recent Activities section", () => {
-    cy.contains("Recent Activities").should("exist");
+  it("should display recent activities section", () => {
+    cy.get('[data-testid="recent-activities"]').should(
+      "contain",
+      "Recent Activities",
+    );
   });
 
-  it("should display Cashflow Chart", () => {
-    cy.get("canvas").should("exist");
+  it("should display cashflow chart", () => {
+    cy.get('[data-testid="cashflow-chart"]').should("contain", "Cashflow");
   });
 
-  it("should display Profit & Loss Chart", () => {
-    cy.get("canvas").should("have.length.at.least", 2);
+  it("should switch cashflow timeframe", () => {
+    cy.get('[data-testid="cashflow-chart"]').within(() => {
+      cy.contains("button", "Monthly").click();
+
+      cy.contains("button", "Yearly").click();
+    });
   });
 
-  it("should load all dashboard widgets", () => {
-    cy.contains("Sales Today").should("exist");
-    cy.contains("Low Stock Alerts").should("exist");
-    cy.contains("Top Selling Product").should("exist");
-    cy.contains("Expenses Today").should("exist");
+  it("should display profit and loss chart", () => {
+    cy.get('[data-testid="profit-loss-chart"]').should(
+      "contain",
+      "Profit & Loss",
+    );
+  });
+
+  it("should switch profit and loss timeframe", () => {
+    cy.get('[data-testid="profit-loss-chart"]').within(() => {
+      cy.contains("button", "Monthly").click();
+
+      cy.contains("button", "Yearly").click();
+    });
   });
 });

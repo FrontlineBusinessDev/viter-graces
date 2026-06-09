@@ -56,7 +56,10 @@ export default function CashflowChart() {
 
   return (
     <>
-      <div className="bg-white dark:bg-gray-900 rounded-xl p-4 shadow">
+      <div
+        className="bg-white dark:bg-gray-900 rounded-xl p-4 shadow"
+        data-testid="cashflow-chart"
+      >
         <div className="flex justify-between mb-4">
           <h2 className="font-semibold text-black text-sm dark:text-light">
             Cashflow
@@ -66,8 +69,11 @@ export default function CashflowChart() {
               <button
                 key={frame}
                 onClick={() => setTimeframe(frame)}
+                data-testid={`timeframe-${frame.toLowerCase()}`}
                 className={`px-3 py-1 rounded-lg ${
-                  timeframe === frame ? "bg-primary text-white" : "bg-gray-200 text-gray-700"
+                  timeframe === frame
+                    ? "bg-primary text-white"
+                    : "bg-gray-200 text-gray-700"
                 }`}
               >
                 {frame}

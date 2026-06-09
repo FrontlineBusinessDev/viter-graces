@@ -18,6 +18,7 @@ const ModalButton = ({
         disabled={disabled}
         className={`${type === "submit" ? "btn-modal-submit" : "btn-modal-cancel"}`}
         onClick={type !== "submit" ? handleClose : undefined}
+        data-testid={`${type === "submit" && "save-product-btn"}`}
       >
         {loading ? <ButtonSpinner /> : " "}
         <span className="">
