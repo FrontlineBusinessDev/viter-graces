@@ -15,6 +15,7 @@ describe("Products Module - CRUD Flow", () => {
     cy.visit("/portal/developer/products");
   });
 
+  // CREATE
   it("Create product", () => {
     cy.get('[data-testid="add-product-btn"]').click();
 
@@ -27,27 +28,62 @@ describe("Products Module - CRUD Flow", () => {
     cy.get('input[name="products_low_stock_threshold"]').type("5");
     cy.get('input[name="products_category"]').type("Test food");
     cy.get('input[name="products_stocks"]').type("30");
+    cy.get('textarea[name="products_description"]').type(
+      "This is test product",
+    );
+
+    // CUSTOM Supplier dropdown
+    cy.get('[data-testid="select-supplier"]').select("Supplier 2");
 
     // CUSTOM Product Owner dropdown
-    cy.contains("Product Owner").click();
-    cy.get('[data-testid="select-product-owner"]').select("Cyzai Lumabas");
-    // cy.contains("").click();
-
-    // OR replace "option" with actual name like:
-    // cy.contains("John Doe").click();
+    cy.get('[data-testid="select-product-owner"]').select("Isobel Rubico");
 
     cy.intercept("POST", "**/products").as("createProduct");
 
     cy.get('[data-testid="save-product-btn"]').click();
 
-    // cy.intercept("GET", "**/products/page/1**").as("getProducts");
-
     cy.wait("@createProduct");
-    // cy.wait("@getProducts");
 
     cy.contains("Cypress Product", { timeout: 15000 }).should("exist");
   });
 
+  // UPDATE
+  it("Update product", () => {
+    cy.contains("Cypress Product")
+      .closest('[data-testid="table-row"]')
+      .within(() => {
+        cy.get('[data-testid="action-edit"]').click();
+      });
+
+    cy.get('input[name="products_name"]', { timeout: 10000 })
+      .should("be.visible")
+      .type("Cypress Product");
+
+    cy.get('input[name="products_price"]').type("200");
+    cy.get('input[name="products_cost"]').type("90");
+    cy.get('input[name="products_low_stock_threshold"]').type("9");
+    cy.get('input[name="products_category"]').type("Test foodss");
+    cy.get('input[name="products_stocks"]').type("10");
+    cy.get('textarea[name="products_description"]').type(
+      "This is test product Updated",
+    );
+
+    // CUSTOM Supplier dropdown
+    cy.get('[data-testid="select-supplier"]').select("Supplier 2");
+
+    // CUSTOM Product Owner dropdown
+    cy.get('[data-testid="select-product-owner"]').select("Isobel Rubico");
+
+    cy.intercept("PUT", "**/products").as("createProduct");
+
+    cy.get('[data-testid="save-product-btn"]').click();
+
+    cy.wait("@createProduct");
+
+    cy.contains("Cypress Product", { timeout: 15000 }).should("exist");
+  });
+
+  // ARCHIVE
   it("Archive product", () => {
     cy.contains("Cypress Product")
       .parents("tr")
@@ -58,6 +94,7 @@ describe("Products Module - CRUD Flow", () => {
     cy.contains("Archived successfully").should("exist");
   });
 
+  // RESTORE
   it("Restore product", () => {
     cy.contains("Archived").click();
 
@@ -70,6 +107,7 @@ describe("Products Module - CRUD Flow", () => {
     cy.contains("Restored successfully").should("exist");
   });
 
+  // DELETE
   it("Delete product", () => {
     cy.contains("Cypress Product")
       .parent()
