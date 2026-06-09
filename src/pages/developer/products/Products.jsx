@@ -101,6 +101,7 @@ const Products = () => {
           <SearchableSelectFilter
             column={column}
             path="product-owner/read-by-product-owner"
+            
           />
         ),
       },
@@ -125,6 +126,7 @@ const Products = () => {
           productMobile={true}
           haveFilterTable={true}
           isDefaultMobile={"products"}
+          dataTestidAddButton="add-product-btn"
         />
       </HeaderNav>
       {store.isAdd && <ModalProducts itemEdit={itemEdit} />}

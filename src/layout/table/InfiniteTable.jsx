@@ -46,6 +46,7 @@ const InfiniteTable = ({
   productMobile = false,
   mockData = [],
   isStatic = false,
+  dataTestidAddButton,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [dataItem, setData] = React.useState(null);
@@ -209,7 +210,11 @@ const InfiniteTable = ({
       <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 items-center">
         {ishaveAdd ? (
           <div className="flex justify-end sm:mb-0! mb-3 w-full ">
-            <AddButton value={path?.replaceAll("-", " ")} onClick={handleAdd} />
+            <AddButton
+              value={path?.replaceAll("-", " ")}
+              onClick={handleAdd}
+              testId={dataTestidAddButton}
+            />
           </div>
         ) : (
           ""
@@ -219,6 +224,7 @@ const InfiniteTable = ({
             <AddButton
               value={path?.replaceAll("-", " ")}
               onClick={handleSubAdd}
+              testId={dataTestidAddButton}
             />
           </div>
         ) : (

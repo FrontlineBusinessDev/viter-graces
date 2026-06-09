@@ -13,12 +13,16 @@ const StatCard = ({
   flipContent,
   subTitleFlip,
   flipBg,
+  dataTestId,
 }) => {
   const isFlippable = !!flipContent;
 
   return (
     <>
-      <div className="group [perspective:1000px] w-full ">
+      <div
+        className="group [perspective:1000px] w-full "
+        data-testid={dataTestId}
+      >
         <div
           className={`relative transition-transform duration-500 [transform-style:preserve-3d] ${
             isFlippable ? "group-hover:[transform:rotateY(180deg)]" : ""

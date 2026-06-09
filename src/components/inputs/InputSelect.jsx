@@ -99,6 +99,7 @@ export const InputSelectArray = ({
   path = null,
   id = 0,
   haveOtherInfo = false,
+  dataTestIdSelect,
   ...props
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -136,6 +137,7 @@ export const InputSelectArray = ({
           field.onChange(e, selectedItem);
         }}
         autoComplete="off"
+        data-testid={dataTestIdSelect}
       >
         <optgroup label={`Select ${label}`}>
           {result?.count === 0 ? (

@@ -51,7 +51,10 @@ const DashboardSalesOverview = () => {
 
   return (
     <>
-      <div className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow">
+      <div
+        className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow"
+        data-testid="sales-overview"
+      >
         <div className="flex justify-between items-center mb-4">
           <h2 className="font-semibold text-sm text-black dark:text-light">
             Sales Overview
@@ -61,6 +64,7 @@ const DashboardSalesOverview = () => {
               <button
                 key={frame}
                 onClick={() => setTimeframe(frame)}
+                data-testid={`timeframe-${frame.toLowerCase()}`}
                 className={`px-3 py-1 rounded-lg ${
                   timeframe === frame
                     ? "bg-green-600 text-white"
