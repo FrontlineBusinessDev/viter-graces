@@ -98,6 +98,7 @@ const StockOverview = () => {
           setItemEdit={setItemEdit}
           haveFilterTable={true}
           isDefaultMobile={"stock movement"}
+          
         />
       </HeaderNav>
       {store.isAdd && <ModalStockOverview itemEdit={itemEdit} />}
