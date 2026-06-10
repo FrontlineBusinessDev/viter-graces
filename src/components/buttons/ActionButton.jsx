@@ -8,7 +8,7 @@ const ActionButton = ({ item, onClick = (e) => e }) => {
         className="tooltip-action-table capitalize z-0!"
         data-tooltip={item.name}
         onClick={onClick}
-        data-testid={item.name}
+        data-testid={`action-${item.name}`}
       >
         {item.icon}
       </button>

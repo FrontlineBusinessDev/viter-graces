@@ -154,6 +154,7 @@ const ModalStockOverview = ({ itemEdit }) => {
                         return e;
                       }}
                       haveOtherInfo={true}
+                      dataTestIdSelect="select-stock-movement"
                     />
                   </div>
                   <div className="relative mt-3">
@@ -168,6 +169,7 @@ const ModalStockOverview = ({ itemEdit }) => {
                         props.values.stock_movement_type = e.target.value;
                         return e;
                       }}
+                      dataTestIdSelect="select-movement-type"
                     />
                   </div>
 
