@@ -94,9 +94,12 @@ RUN a2enmod rewrite headers \
  && sed -ri 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf
 
 COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
-COPY apache/.htaccess /var/www/html/.htaccess
 
-COPY --from=frontend /app/dist/ /var/www/html/
+RUN mkdir -p /var/www/html/portal
+
+COPY --from=frontend /app/dist/ /var/www/html/portal/
+COPY apache/.htaccess /var/www/html/portal/.htaccess
+
 COPY rest/ /var/www/html/rest/
 
 RUN docker-php-ext-install pdo pdo_mysql mysqli \
