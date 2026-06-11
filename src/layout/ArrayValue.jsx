@@ -14,14 +14,6 @@ export const ActiveInActiveStatus = () => {
   ];
 };
 
-export const ActiveInActiveLowstockStatus = () => {
-  return [
-    { label: "Active", value: 1 },
-    { label: "Inactive", value: 0 },
-    { label: "Low Stock", value: "low-stock" },
-  ];
-};
-
 export const StockTypeArray = () => {
   return [
     { label: "in stock", value: "in stock" },

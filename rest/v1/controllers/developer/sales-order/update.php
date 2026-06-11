@@ -59,8 +59,11 @@ if (array_key_exists("id", $_GET)) {
 
         $val->lastInsertedId = $val->sales_order_product_id;
         $val->stock_movement_type = "stock out - sales";
-        $val->stock_movement_before_qty = 0;
-        $val->stock_movement_after_qty = (float)$val->stock_movement_before_qty + (float)$val->sales_order_qty;
+        $queryQty = getResultData($val->readtotalQTY());
+        if (count($queryQty) > 0) {
+            $val->stock_movement_before_qty = $queryQty[0]['current_qty'] + (float)$val->sales_order_qty;
+            $val->stock_movement_after_qty = $queryQty[0]['current_qty'];
+        };
         $val->stock_movement_qty = (float)$val->sales_order_qty;
 
         $query = checkCreateMovementStock($val);

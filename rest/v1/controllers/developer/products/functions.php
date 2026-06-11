@@ -22,6 +22,13 @@ function checkReadAllActiveByName($object)
     checkQuery($query, "Empty records. (read all active by name)");
     return $query;
 }
+// Read all
+function checkReadAllThatHaveStock($object)
+{
+    $query = $object->readAllThatHaveStock();
+    checkQuery($query, "Empty records. (read all that have stock)");
+    return $query;
+}
 
 // Update 
 function updateConnectedMenu($object)

@@ -147,6 +147,7 @@ class StockOverview
                 continue;
             }
             $col = $item['id'];
+
             if (is_array($item['value'])) {
                 $params["min$i"] = (float) $item['value']['min'];
                 $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
@@ -154,25 +155,7 @@ class StockOverview
                 $params["max$i"] = $item['value']['max'] === ""
                     ? (float) $this->max
                     : (float) $item['value']['max'];
-            }
-            if ($item['value'] == 'low-stock') {
-                $filterColumn[] = "
-                SUM(
-                CASE
-                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
-                        THEN ms.stock_movement_qty
-
-                    WHEN ms.stock_movement_type IN (
-                        'purchases',
-                        'stock out - reject/defective items'
-                    )
-                        THEN -ms.stock_movement_qty
-
-                    ELSE 0
-                END
-            ) - IFNULL(so.order_qty, 0) <= p.products_low_stock_threshold ";
-            }
-            if (!is_array($item['value']) && is_array($item['value']) != 'low-stock') {
+            } else {
                 $filterColumn[] = "$col LIKE :search$i";
                 $params["search$i"] = "%" . trim($item['value']) . "%";
             }
@@ -241,10 +224,10 @@ class StockOverview
             $sql .= "WHERE 1=1 ";
 
             if (!empty($filterColumn)) {
-                $sql .= " AND " . implode(" AND ", $filterColumn);
+                $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != ""
-                    ? "AND (
+                    ? "and (
                     ms.stock_movement_product_name LIKE :stock_movement_product_name
                     OR ms.stock_movement_product_owner_name LIKE :stock_movement_product_owner_name
                ) "
@@ -303,26 +286,7 @@ class StockOverview
                 $params["max$i"] = $item['value']['max'] === ""
                     ? (float) $this->max
                     : (float) $item['value']['max'];
-            }
-            if ($item['value'] == 'low-stock') {
-
-                $filterColumn[] = "
-                SUM(
-                CASE
-                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
-                        THEN ms.stock_movement_qty
-
-                    WHEN ms.stock_movement_type IN (
-                        'purchases',
-                        'stock out - reject/defective items'
-                    )
-                        THEN -ms.stock_movement_qty
-
-                    ELSE 0
-                END
-            ) - IFNULL(so.order_qty, 0) <= p.products_low_stock_threshold ";
-            }
-            if (!is_array($item['value']) && is_array($item['value']) != 'low-stock') {
+            } else {
                 $filterColumn[] = "$col LIKE :search$i";
                 $params["search$i"] = "%" . trim($item['value']) . "%";
             }
@@ -391,10 +355,10 @@ class StockOverview
             $sql .= "WHERE 1=1 ";
 
             if (!empty($filterColumn)) {
-                $sql .= " AND " . implode(" AND ", $filterColumn);
+                $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != ""
-                    ? "AND (
+                    ? "and (
                     ms.stock_movement_product_name LIKE :stock_movement_product_name
                     OR ms.stock_movement_product_owner_name LIKE :stock_movement_product_owner_name
                ) "
@@ -425,144 +389,7 @@ class StockOverview
 
             $query = false;
         }
- 
+
         return $query;
     }
-    // // read all
-    // public function readAll($allowedColumns)
-    // {
-    //     $filterColumn = [];
-    //     $params = [
-    //         ...$this->column_search != "" ? [
-    //             "stock_movement_product_name" => "%{$this->column_search}%",
-    //             "stock_movement_product_owner_name" => "%{$this->column_search}%",
-    //         ] : [],
-    //     ];
-
-    //     foreach ($this->filters as $i => $item) {
-    //         if (!in_array($item['id'], $allowedColumns, true)) {
-    //             continue;
-    //         }
-    //         $col = $item['id'];
-    //         if (is_array($item['value'])) {
-    //             $params["min$i"] = (float) $item['value']['min'];
-    //             $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
-
-    //             $params["max$i"] = $item['value']['max'] === ""
-    //                 ? (float) $this->max
-    //                 : (float) $item['value']['max'];
-    //         } else {
-    //             $filterColumn[] = "$col LIKE :search$i";
-    //             $params["search$i"] = "%" . trim($item['value']) . "%";
-    //         }
-    //     }
-    //     try {
-    //         $sql = "select ms.*, ";
-    //         $sql .= "p.products_low_stock_threshold, ";
-    //         $sql .= "p.products_sku, ";
-    //         $sql .= "p.products_unit, ";
-    //         $sql .= "p.products_status, ";
-    //         $sql .= "so.order_qty, ";
-    //         $sql .= "SUM(ms.stock_movement_qty) as stock_qty, ";
-    //         $sql .= "SUM(ms.stock_movement_qty) - IFNULL(so.order_qty, 0) as current_qty, ";
-    //         $sql .= "ms.stock_movement_is_active as is_active, ";
-    //         $sql .= "DATE_FORMAT(ms.stock_movement_date, '%b %d, %Y') as stock_movement_date, ";
-    //         $sql .= "ms.stock_movement_product_name as name ";
-    //         $sql .= "from {$this->tblMovementStock} as ms, ";
-    //         $sql .= "{$this->tblProducts} as p ";
-    //         $sql .= "LEFT JOIN (SELECT sales_order_product_id, SUM(sales_order_qty) AS ";
-    //         $sql .= " order_qty FROM {$this->tblSalesOrder} GROUP BY sales_order_product_id ) as so ";
-    //         $sql .= "ON so.sales_order_product_id = p.products_aid ";
-    //         $sql .= "where ms.stock_movement_product_id = p.products_aid ";
-    //         $sql .= "and ( ms.stock_movement_type = 'in stock' ";
-    //         $sql .= "or ms.stock_movement_type = 'stock in adjustments' ) ";
-    //         if (!empty($filterColumn)) {
-    //             $sql .= " and " . implode(" and ", $filterColumn);
-    //         } else {
-    //             $sql .= ($this->column_search != "" ? "and ( ms.stock_movement_product_name like :stock_movement_product_name 
-    //         or ms.stock_movement_product_owner_name like :stock_movement_product_owner_name ) " : " ");
-    //         }
-    //         $sql .= "GROUP BY p.products_aid ";
-    //         $sql .= "order by ms.stock_movement_status desc, ";
-    //         $sql .= "ms.stock_movement_product_name asc ";
-    //         $query = $this->connection->prepare($sql);
-    //         $query->execute($params);
-    //     } catch (PDOException $ex) {
-
-    //         $query = false;
-    //     }
-
-    //     return $query;
-    // }
-
-    // // read all
-    // public function readLimit($allowedColumns)
-    // {
-    //     $filterColumn = [];
-    //     $params = [
-    //         "start" => $this->column_start - 1,
-    //         "total" => $this->column_total,
-    //         ...$this->column_search != "" ? [
-    //             "stock_movement_product_name" => "%{$this->column_search}%",
-    //             "stock_movement_product_owner_name" => "%{$this->column_search}%",
-    //         ] : [],
-    //     ];
-
-    //     foreach ($this->filters as $i => $item) {
-    //         if (!in_array($item['id'], $allowedColumns, true)) {
-    //             continue;
-    //         }
-    //         $col = $item['id'];
-    //         if (is_array($item['value'])) {
-    //             $params["min$i"] = (float) $item['value']['min'];
-    //             $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
-
-    //             $params["max$i"] = $item['value']['max'] === ""
-    //                 ? (float) $this->max
-    //                 : (float) $item['value']['max'];
-    //         } else {
-    //             $filterColumn[] = "$col LIKE :search$i";
-    //             $params["search$i"] = "%" . trim($item['value']) . "%";
-    //         }
-    //     }
-    //     try {
-    //         $sql = "select ms.*, ";
-    //         $sql .= "p.products_low_stock_threshold, ";
-    //         $sql .= "p.products_sku, ";
-    //         $sql .= "p.products_unit, ";
-    //         $sql .= "p.products_status, ";
-    //         $sql .= "so.order_qty, ";
-    //         $sql .= "SUM(ms.stock_movement_qty) as stock_qty, ";
-    //         $sql .= "SUM(ms.stock_movement_qty) - IFNULL(so.order_qty, 0) as current_qty, ";
-    //         $sql .= "ms.stock_movement_is_active as is_active, ";
-    //         $sql .= "DATE_FORMAT(ms.stock_movement_date, '%b %d, %Y') as stock_movement_date, ";
-    //         $sql .= "ms.stock_movement_product_name as name ";
-    //         $sql .= "from {$this->tblMovementStock} as ms, ";
-    //         $sql .= "{$this->tblProducts} as p ";
-    //         $sql .= "LEFT JOIN (SELECT sales_order_product_id, SUM(sales_order_qty) AS ";
-    //         $sql .= " order_qty FROM {$this->tblSalesOrder} GROUP BY sales_order_product_id ) as so ";
-    //         $sql .= "ON so.sales_order_product_id = p.products_aid ";
-    //         $sql .= "where ms.stock_movement_product_id = p.products_aid ";
-    //         $sql .= "and ( ms.stock_movement_type = 'in stock' ";
-    //         $sql .= "or ms.stock_movement_type = 'stock in adjustments' ) ";
-    //         if (!empty($filterColumn)) {
-    //             $sql .= " and " . implode(" and ", $filterColumn);
-    //         } else {
-    //             $sql .= ($this->column_search != "" ? "and ( ms.stock_movement_product_name like :stock_movement_product_name 
-    //         or ms.stock_movement_product_owner_name like :stock_movement_product_owner_name ) " : " ");
-    //         }
-    //         $sql .= "GROUP BY p.products_aid ";
-    //         $sql .= "order by ms.stock_movement_status desc, ";
-    //         $sql .= "ms.stock_movement_product_name asc ";
-    //         $sql .= "limit :start, ";
-    //         $sql .= ":total ";
-    //         $query = $this->connection->prepare($sql);
-    //         $query->execute($params);
-    //     } catch (PDOException $ex) {
-    //         returnError($ex);
-
-    //         $query = false;
-    //     }
-    //     return $query;
-    // }
 }

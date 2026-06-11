@@ -400,10 +400,9 @@ class StockMovement
              ) AS so
              ON so.sales_order_product_id = p.products_aid ";
 
-            $sql .= "WHERE ms.stock_movement_product_id = :stock_movement_product_id ";
-            $sql .= "GROUP BY p.products_aid ";
-
-            $sql .= "ORDER BY
+            $sql .= " WHERE ms.stock_movement_product_id = :stock_movement_product_id ";
+            $sql .= " GROUP BY p.products_aid ";
+            $sql .= " ORDER BY
                 ms.stock_movement_status DESC,
                 ms.stock_movement_product_name ASC ";
 

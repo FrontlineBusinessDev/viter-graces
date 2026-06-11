@@ -24,6 +24,22 @@ function checkReadAllActiveByName($object)
     return $query;
 }
 
+// Read all
+function checkReadSalesToday($object)
+{
+    $query = $object->readSalesToday();
+    checkQuery($query, "Empty records. (read sales today)");
+    return $query;
+}
+
+// Read all
+function checkReadTopSellingProduct($object)
+{
+    $query = $object->readTopSellingProduct();
+    checkQuery($query, "Empty records. (read top selling product)");
+    return $query;
+}
+
 // Delete 
 function checkDeleteById($object)
 {

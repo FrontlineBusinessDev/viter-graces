@@ -540,8 +540,8 @@ export const InputSalesOrderSelectTagArray = ({
 
             {result?.data?.map((item, key) => {
               return (
-                <option key={key} value={Number(item.id)}>
-                  {item.name}
+                <option key={key} value={Number(item.id)} id={item.name}>
+                  {item.name} ({item.current_qty} qty)
                 </option>
               );
             })}
