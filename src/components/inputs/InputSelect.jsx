@@ -190,6 +190,87 @@ export const InputSelectArray = ({
   );
 };
 
+export const InputSelectCustomerArray = ({
+  label,
+  required = true,
+  onChange = null,
+  path = null,
+  id = 0,
+  haveOtherInfo = false,
+  dataTestIdSelect,
+  ...props
+}) => {
+  const { store, dispatch } = React.useContext(StoreContext);
+  const [field, meta] = useField(props);
+
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data: result,
+  } = useQueryData(
+    `${apiVersion}/${path}`, // endpoint
+    "post", // method
+    `${path}`, // key
+    { id: id },
+  );
+
+  return (
+    <>
+      <label htmlFor={props.id || props.name}>
+        {label} {""}
+        {required && <span className="text-alert">*</span>}
+      </label>
+
+      <select
+        {...field}
+        {...props}
+        className={meta.touched && meta.error ? "error-show" : " capitalize"}
+        onChange={(e) => {
+          const selectedItem = result?.data?.find(
+            (item) => Number(item.id) === Number(e.target.value),
+          );
+
+          onChange !== null && onChange(e, selectedItem);
+          field.onChange(e, selectedItem);
+        }}
+        autoComplete="off"
+        data-testid={dataTestIdSelect}
+      >
+        <optgroup label={`Select ${label}`}>
+          {result?.count === 0 ? (
+            <option value="" hidden>
+              --
+            </option>
+          ) : isLoading || isFetching ? (
+            <option value="" hidden>
+              ...Loading
+            </option>
+          ) : error ? (
+            <option value="" hidden>
+              Server Error
+            </option>
+          ) : (
+            <option value="">--</option>
+          )}
+
+          {result?.data?.map((item, key) => {
+            return (
+              <option key={key} value={item.id} className="capitalize">
+                {item.name}
+              </option>
+            );
+          })}
+        </optgroup>
+      </select>
+
+      {meta.touched && meta.error ? (
+        <span className="error-show">{meta.error}</span>
+      ) : null}
+    </>
+  );
+};
+
 export const SearchableSelectFilterStatus = ({ column, options }) => {
   const value = column.getFilterValue();
   const selected = options.find((opt) => opt.value === value) || null;
@@ -315,6 +396,7 @@ export const InputSelectTagArray = ({
   className,
   defaultValue = "",
   id = "0",
+  required = true,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
@@ -396,6 +478,7 @@ export const InputSalesOrderSelectTagArray = ({
   className,
   defaultValue = "",
   id = "0",
+  required = true,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
@@ -479,6 +562,7 @@ export const InputPurchaseOrderSelectTagArray = ({
   className,
   defaultValue = "",
   id = "0",
+  required = true,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 

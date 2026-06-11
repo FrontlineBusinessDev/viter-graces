@@ -35,7 +35,13 @@ $val->stock_movement_updated = date("Y-m-d H:i:s");
 $queryQty = getResultData($val->readtotalQTY());
 if (count($queryQty) > 0) {
     $val->stock_movement_before_qty = $queryQty[0]['current_qty'];
-    $val->stock_movement_after_qty = (float)$val->stock_movement_before_qty + (float)$val->stock_movement_qty;
+    if ($val->stock_movement_type == 'purchases' || $val->stock_movement_type == 'stock out - reject/defective items') {
+
+        $val->stock_movement_after_qty = (float)$val->stock_movement_before_qty - (float)$val->stock_movement_qty;
+    } else {
+
+        $val->stock_movement_after_qty = (float)$val->stock_movement_before_qty + (float)$val->stock_movement_qty;
+    }
 };
 
 // create

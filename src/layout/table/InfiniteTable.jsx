@@ -47,6 +47,7 @@ const InfiniteTable = ({
   mockData = [],
   isStatic = false,
   dataTestidAddButton,
+  defaultSearch = false,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [dataItem, setData] = React.useState(null);
@@ -116,11 +117,12 @@ const InfiniteTable = ({
       return undefined;
     },
 
-    staleTime: 1000 * 60 * 5, // 5 mins → no refetch when revisiting
-    gcTime: 1000 * 60 * 30, // keep cache for 30 mins
-    refetchOnMount: false,
     refetchOnWindowFocus: true,
-    refetchOnReconnect: false,
+    // staleTime: 1000 * 60 * 5, // 5 mins → no refetch when revisiting
+    // gcTime: 1000 * 60 * 30, // keep cache for 30 mins
+    // refetchOnMount: true,
+    // refetchOnWindowFocus: true,
+    // refetchOnReconnect: true,
 
     // enabled: !isStatic,
   });
@@ -196,7 +198,7 @@ const InfiniteTable = ({
   };
 
   React.useEffect(() => {
-    if (result?.pages[0]?.total > 30) {
+    if (result?.pages[0]?.total > 30 && !defaultSearch) {
       // if (result?.pages[0]?.total < 30) {
       setIsFetchFilterData(false);
     } else {
