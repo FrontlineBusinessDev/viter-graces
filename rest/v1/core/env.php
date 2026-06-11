@@ -3,19 +3,24 @@
 // THIS IS FOR USING THE ROOT .ENV
 require_once __DIR__ . '/../lib/bootstrap.php';
 
-define("WEB_APP_API_KEY", getenv('VITE_APP_DEV_KEY'));
+// echo var_dump($_ENV);
+// echo var_dump($_ENV['WEB_APP_API_KEY']);
+// echo getenv('WEB_APP_API_KEY');
+// exit;
+
+define("WEB_APP_API_KEY", $_ENV['WEB_APP_API_KEY']);
 // LOCAL
-define("DB_HOST", getenv('DB_HOST'));
-define("DB_NAME", getenv('DB_NAME'));
-define("DB_USERNAME", getenv('DB_USERNAME'));
-define("DB_PASSWORD", getenv('DB_PASSWORD'));
+define("DB_HOST", $_ENV['DB_HOST']);
+define("DB_NAME", $_ENV['DB_NAME']);
+define("DB_USERNAME", $_ENV['DB_USERNAME']);
+define("DB_PASSWORD", $_ENV['DB_PASSWORD']);
 
 // GOOGLE APIS
-define("GOOGLE_API_SUBJECT_EMIAL", getenv("GOOGLE_API_SUBJECT_EMAIL"));
-define("GOOGLE_API_DIRECTORY_PATH", __DIR__ . getenv("GOOGLE_API_DIRECTORY_PATH"));
+define("GOOGLE_API_SUBJECT_EMIAL", $_ENV["GOOGLE_API_SUBJECT_EMAIL"]);
+define("GOOGLE_API_DIRECTORY_PATH", __DIR__ . $_ENV["GOOGLE_API_DIRECTORY_PATH"]);
 define("GOOGLE_AUTH_DRIVE", 'https://www.googleapis.com/auth/drive');
 
-define("UPLOAD_MULTIPLE_PATH", getenv("UPLOAD_MULTIPLE_PATH"));
+define("UPLOAD_MULTIPLE_PATH", $_ENV["UPLOAD_MULTIPLE_PATH"]);
 
 // define("USERNAME", "noreply@hris.frontlinebusiness.com.ph");
 // define("PASSWORD", "b@11551gfN4b");
@@ -69,7 +74,7 @@ define("UPLOAD_MULTIPLE_PATH", getenv("UPLOAD_MULTIPLE_PATH"));
 // define("USERNAME", "noreply@hris.frontlinebusiness.com.ph");
 // define("PASSWORD", "b@11551gfN4b");
 
-define("WEB_APP_AMAZON_SPACE_STORAGE_BUCKET", 'KEY_BUCKET');
-define("WEB_APP_AMAZON_SPACE_STORAGE_REGION", 'KEY_REGION');
-define("WEB_APP_AMAZON_SPACE_STORAGE_KEY", 'KEY_KEY');
-define("WEB_APP_AMAZON_SPACE_STORAGE_SECRET", 'KEY_SECRET');
+define("WEB_APP_AMAZON_SPACE_STORAGE_BUCKET", $_ENV["WEB_APP_AMAZON_SPACE_STORAGE_BUCKET"]);
+define("WEB_APP_AMAZON_SPACE_STORAGE_REGION", $_ENV["WEB_APP_AMAZON_SPACE_STORAGE_REGION"]);
+define("WEB_APP_AMAZON_SPACE_STORAGE_KEY", $_ENV["WEB_APP_AMAZON_SPACE_STORAGE_KEY"]);
+define("WEB_APP_AMAZON_SPACE_STORAGE_SECRET", $_ENV["WEB_APP_AMAZON_SPACE_STORAGE_SECRET"]);

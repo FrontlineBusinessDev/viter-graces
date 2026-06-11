@@ -7,7 +7,7 @@ $uri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
  */
 if (str_starts_with($uri, '/rest/v1')) {
 
-    require __DIR__ . '/../rest/v1/core/bootstrap.php'; 
+    require __DIR__ . '/../rest/v1/core/bootstrap.php';
     // or your main entry file inside core
 
     exit;
