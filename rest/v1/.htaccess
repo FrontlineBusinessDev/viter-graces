@@ -2,16 +2,31 @@ RewriteEngine On
 # use for authentication
 RewriteCond %{HTTP:Authorization} ^(.+)$
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
 
-# api should not go to REACT
+# RewriteBase /react-vite/viter-graces/
+
+# =========================
+# 1. DO NOT touch API routes
+# =========================
 RewriteCond %{REQUEST_URI} ^/rest/ [NC]
 RewriteRule ^ - [L]
-# react fallback
-RewriteRile ^ /dist/index.html [L]
 
-Header set Access-Control-Allow-Origin *
+# =========================
+# 2. Serve existing files/folders normally
+# =========================
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
+RewriteRule ^ - [L]
+
+# =========================
+# 3. React fallback (SPA routing)
+# =========================
+RewriteRule ^ /dist/index.html [L]
+
+# =========================
+# CORS (optional)
+# =========================
+Header set Access-Control-Allow-Origin "*"
 
 #################################### ALL FOR DEVELOPER #################################
 ### FOR UPLOAD PHOTO ###
