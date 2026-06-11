@@ -1,13 +1,11 @@
+Options -MultiViews
 RewriteEngine On
+RewriteBase /portal/
 
 # Serve real files/dirs as-is
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# Don't rewrite REST API calls
-RewriteCond %{REQUEST_URI} ^/rest/
-RewriteRule ^ - [L]
-
-# All other /portal/* routes → React index.html
-RewriteRule ^ /portal/index.html [L]
+# All other routes → React index.html
+RewriteRule ^ index.html [L]
