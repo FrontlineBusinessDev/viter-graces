@@ -22,7 +22,9 @@ rest/v1/core/google-api.php
 rest/v1/core/google-api-dwd.php
 apikey.php
 .env
+.env.local
 .env.production
+.env.staging
 
 # Editor directories and files
 .vscode/*
