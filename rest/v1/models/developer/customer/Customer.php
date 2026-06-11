@@ -388,6 +388,21 @@ class Customer
     }
 
     // read all
+    public function readWalkInCustomer()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblCustomer} ";
+            $sql .= " where customer_is_walk_in_customer = '1' ";
+            $sql .= " order by customer_aid desc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
     public function readAllCutomer()
     {
         try {

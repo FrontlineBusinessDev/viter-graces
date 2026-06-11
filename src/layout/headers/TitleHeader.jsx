@@ -6,7 +6,7 @@ import { titleHeaderTab } from "./function-header";
 
 const TitleHeader = ({}) => {
   const { store } = React.useContext(StoreContext);
-  const userRole = "developer";
+  const userRole = store.credentials?.data?.role;
 
   const location = useLocation();
   const currentTab = location.pathname.split("/")[3];

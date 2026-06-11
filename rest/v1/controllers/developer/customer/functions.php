@@ -29,6 +29,14 @@ function checkReadAllActive($object, $allowedColumns = [])
     return $query;
 }
 
+// Read all
+function checkReadWalkInCustomer($object)
+{
+    $query = $object->readWalkInCustomer();
+    checkQuery($query, "Empty records. (readWalkInCustomer)");
+    return $query;
+}
+
 // Create 
 function checkCreateWalkInCustomer($object)
 {

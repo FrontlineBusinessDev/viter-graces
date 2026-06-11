@@ -23,13 +23,13 @@ const DashboardLowStockAlert = ({ path = "", id = 0 }) => {
     <>
       {error ? (
         <ServerError />
-      ) : isLoading || isFetching ? (
+      ) : isLoading || isFetching || result?.count === 0 ? (
         <StatCard
           title="Low Stock Alerts"
           value="0"
           subtitle="products below threshold"
           button="Click to view →"
-          link=""
+          link="low-stock"
           icon={<AlertTriangle className="text-orange-500" size={20} />}
           iconBg="bg-orange-100 dark:bg-[#291518]"
           dataTestId="low-stock-card"
@@ -41,7 +41,7 @@ const DashboardLowStockAlert = ({ path = "", id = 0 }) => {
           value={isEmptyItem(result?.data[0]?.data_count, "")}
           subtitle="products below threshold"
           button="Click to view →"
-          link=""
+          link="low-stock"
           icon={<AlertTriangle className="text-orange-500" size={20} />}
           iconBg="bg-orange-100 dark:bg-[#291518]"
           dataTestId="low-stock-card"

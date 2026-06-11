@@ -1,16 +1,11 @@
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
-import {
-  ActiveInActiveLowstockStatus,
-  ActiveInActiveStatus,
-  StockTypeArray,
-} from "@/layout/ArrayValue";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
+import WarningBanner from "@/layout/WarningBanner";
 import { StoreContext } from "@/store/StoreContext";
-import { TriangleAlert } from "lucide-react";
 import React from "react";
 import ModalStockOverview from "./modal/ModalStockOverview";
-import WarningBanner from "@/layout/WarningBanner";
 const StockOverview = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -29,11 +24,11 @@ const StockOverview = () => {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus
             column={column}
-            options={ActiveInActiveLowstockStatus()}
+            options={ActiveInActiveStatus()}
           />
         ),
       },
-      status_option: ActiveInActiveLowstockStatus(),
+      status_option: ActiveInActiveStatus(),
     },
     {
       accessorKey: "stock_movement_product_name",

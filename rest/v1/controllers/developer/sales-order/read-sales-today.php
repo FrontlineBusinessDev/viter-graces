@@ -6,18 +6,21 @@ require '../../../core/header.php';
 require '../../../core/functions.php';
 require 'functions.php';
 // use needed classes
-require '../../../models/developer/products/Products.php';
+require '../../../models/developer/sales-order/SalesOrder.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new Products($conn);
+$val = new SalesOrder($conn);
 // validate api key
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
 
+    $val->date_today = date("Y-m-d H:i:s");
+    $val->date_yesterday = date('Y-m-d', strtotime('-1 day'));
+
     $val->filters = [];
-    $query = checkReadAllThatHaveStock($val);
+    $query = checkReadSalesToday($val);
     http_response_code(200);
     getQueriedData($query);
 }

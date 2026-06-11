@@ -198,7 +198,7 @@ const InfiniteTable = ({
   };
 
   React.useEffect(() => {
-    if (result?.pages[0]?.total > 30 && !defaultSearch) {
+    if (result?.pages[0]?.total > 30) {
       // if (result?.pages[0]?.total < 30) {
       setIsFetchFilterData(false);
     } else {
@@ -207,6 +207,7 @@ const InfiniteTable = ({
   }, [columnFilters]);
 
   let photo = [];
+
   return (
     <>
       <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 items-center">

@@ -1,6 +1,9 @@
 import { Eye, EyeOff } from "lucide-react";
 import React from "react";
 import TableLoading from "./spinners/TableLoading";
+import { Link } from "react-router-dom";
+import { devNavUrl } from "@/config/config";
+import { StoreContext } from "@/store/StoreContext";
 
 const StatCard = ({
   title,
@@ -17,7 +20,9 @@ const StatCard = ({
   dataTestId,
   loading = false,
 }) => {
+  const { store } = React.useContext(StoreContext);
   const isFlippable = !!flipContent;
+  const userRole = store.credentials?.data?.role;
 
   return (
     <>
@@ -64,9 +69,12 @@ const StatCard = ({
                   )}
 
                   {button && (
-                    <a href={link} className="text-sm text-orange-600 mt-1">
+                    <Link
+                      to={`${devNavUrl}/${userRole}/${link}`}
+                      className="text-sm text-orange-600 mt-1"
+                    >
                       {button}
-                    </a>
+                    </Link>
                   )}
                 </div>
 

@@ -17,8 +17,7 @@ import React from "react";
 
 export const getNavList = () => {
   const { store, dispatch } = React.useContext(StoreContext);
-  // const userRole = store.credentials?.data?.role_code;
-  const userRole = "developer";
+  const userRole = store.credentials?.data?.role;
   const onClickNav = () => {
     dispatch(setIsSearch(false));
   };

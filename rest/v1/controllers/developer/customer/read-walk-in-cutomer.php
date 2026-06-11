@@ -6,20 +6,24 @@ require '../../../core/header.php';
 require '../../../core/functions.php';
 require 'functions.php';
 // use needed classes
-require '../../../models/developer/products/Products.php';
+require '../../../models/developer/customer/Customer.php';
+// ACTIVITY LOG DETAILS
+require '../../../controllers/developer/activity-log/functions.php';
+require '../../../models/developer/activity-log/ActivityLog.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new Products($conn);
+$val = new Customer($conn);
+$valActivity = new ActivityLog($conn);
 // validate api key
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
-
-    $val->filters = [];
-    $query = checkReadAllThatHaveStock($val);
-    http_response_code(200);
-    getQueriedData($query);
+    if (empty($_GET)) {
+        $query = checkReadWalkInCustomer($val);
+        http_response_code(200);
+        getQueriedData($query);
+    }
 }
 
 http_response_code(200);
