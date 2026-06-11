@@ -1,6 +1,7 @@
 import CashflowChart from "@/components/CashflowChart";
 import ProfitLossChart from "@/components/ProfitLossChart";
 import StatCard from "@/components/StatCard";
+import DashboardLowStockAlert from "@/layout/dashboard/DashboardLowStockAlert";
 import DashboardOverduePayments from "@/layout/dashboard/DashboardOverduePayments";
 import DashboardRecentActivities from "@/layout/dashboard/DashboardRecentActivities";
 import DashboardSalesOverview from "@/layout/dashboard/DashboardSalesOverview";
@@ -37,17 +38,7 @@ const Dashboard = () => {
               iconBg="bg-green-100 dark:bg-[#082125]"
               dataTestId="sales-today-card"
             />
-
-            <StatCard
-              title="Low Stock Alerts"
-              value="2"
-              subtitle="products below threshold"
-              button="Click to view →"
-              link=""
-              icon={<AlertTriangle className="text-orange-500" size={20} />}
-              iconBg="bg-orange-100 dark:bg-[#291518]"
-              dataTestId="low-stock-card"
-            />
+            <DashboardLowStockAlert path="stock-movement/read-count-low-stock" />
 
             <StatCard
               title="Top Selling Product"

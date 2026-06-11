@@ -154,7 +154,25 @@ class StockOverview
                 $params["max$i"] = $item['value']['max'] === ""
                     ? (float) $this->max
                     : (float) $item['value']['max'];
-            } else {
+            }
+            if ($item['value'] == 'low-stock') {
+                $filterColumn[] = "
+                SUM(
+                CASE
+                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
+                        THEN ms.stock_movement_qty
+
+                    WHEN ms.stock_movement_type IN (
+                        'purchases',
+                        'stock out - reject/defective items'
+                    )
+                        THEN -ms.stock_movement_qty
+
+                    ELSE 0
+                END
+            ) - IFNULL(so.order_qty, 0) <= p.products_low_stock_threshold ";
+            }
+            if (!is_array($item['value']) && is_array($item['value']) != 'low-stock') {
                 $filterColumn[] = "$col LIKE :search$i";
                 $params["search$i"] = "%" . trim($item['value']) . "%";
             }
@@ -234,10 +252,21 @@ class StockOverview
             }
 
             $sql .= "GROUP BY p.products_aid ";
-
             $sql .= "ORDER BY
-                ms.stock_movement_status DESC,
-                ms.stock_movement_product_name ASC ";
+                SUM(
+                CASE
+                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
+                        THEN ms.stock_movement_qty
+
+                    WHEN ms.stock_movement_type IN (
+                        'purchases',
+                        'stock out - reject/defective items'
+                    )
+                        THEN -ms.stock_movement_qty
+
+                    ELSE 0
+                END
+            ) - IFNULL(so.order_qty, 0) ASC ";
 
             $query = $this->connection->prepare($sql);
             $query->execute($params);
@@ -266,6 +295,7 @@ class StockOverview
                 continue;
             }
             $col = $item['id'];
+
             if (is_array($item['value'])) {
                 $params["min$i"] = (float) $item['value']['min'];
                 $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
@@ -273,7 +303,26 @@ class StockOverview
                 $params["max$i"] = $item['value']['max'] === ""
                     ? (float) $this->max
                     : (float) $item['value']['max'];
-            } else {
+            }
+            if ($item['value'] == 'low-stock') {
+
+                $filterColumn[] = "
+                SUM(
+                CASE
+                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
+                        THEN ms.stock_movement_qty
+
+                    WHEN ms.stock_movement_type IN (
+                        'purchases',
+                        'stock out - reject/defective items'
+                    )
+                        THEN -ms.stock_movement_qty
+
+                    ELSE 0
+                END
+            ) - IFNULL(so.order_qty, 0) <= p.products_low_stock_threshold ";
+            }
+            if (!is_array($item['value']) && is_array($item['value']) != 'low-stock') {
                 $filterColumn[] = "$col LIKE :search$i";
                 $params["search$i"] = "%" . trim($item['value']) . "%";
             }
@@ -353,10 +402,21 @@ class StockOverview
             }
 
             $sql .= "GROUP BY p.products_aid ";
-
             $sql .= "ORDER BY
-                ms.stock_movement_status DESC,
-                ms.stock_movement_product_name ASC ";
+                SUM(
+                CASE
+                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
+                        THEN ms.stock_movement_qty
+
+                    WHEN ms.stock_movement_type IN (
+                        'purchases',
+                        'stock out - reject/defective items'
+                    )
+                        THEN -ms.stock_movement_qty
+
+                    ELSE 0
+                END
+            ) - IFNULL(so.order_qty, 0) ASC ";
             $sql .= "limit :start, :total ";
 
             $query = $this->connection->prepare($sql);
@@ -365,6 +425,7 @@ class StockOverview
 
             $query = false;
         }
+ 
         return $query;
     }
     // // read all

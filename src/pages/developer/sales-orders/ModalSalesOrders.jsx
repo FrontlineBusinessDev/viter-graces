@@ -3,6 +3,7 @@ import {
   InputSalesOrderSelectTagArray,
   InputSelectArray,
   InputSelectArrayWithOptions,
+  InputSelectCustomerArray,
 } from "@/components/inputs/InputSelect";
 import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
@@ -274,9 +275,9 @@ const ModalSalesOrders = ({ itemEdit }) => {
                       />
                     </div>
                     <div className="relative">
-                      <InputSelectArray
+                      <InputSelectCustomerArray
                         label="Customer"
-                        path="product-owner/read-by-product-owner"
+                        path="customer/read-all-by-active"
                         type="text"
                         name="sales_order_customer_id"
                         onChange={(e) => {
