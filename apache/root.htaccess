@@ -1,4 +1,0 @@
-RewriteEngine On
-
-# Redirect bare root to /portal/
-RewriteRule ^$ /portal/ [R=302,L]

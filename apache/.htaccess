@@ -9,5 +9,5 @@ RewriteRule ^ - [L]
 RewriteCond %{REQUEST_URI} ^/rest/
 RewriteRule ^ - [L]
 
-# All other routes → React index.html (inside /portal/)
+# All other /portal/* routes → React index.html
 RewriteRule ^ /portal/index.html [L]
