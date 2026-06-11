@@ -1,4 +1,4 @@
 RewriteEngine On
 
-RewriteCond %{HTTP_HOST} ^.*$
+# Redirect bare root to /portal/
 RewriteRule ^$ /portal/ [R=302,L]
