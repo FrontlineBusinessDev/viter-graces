@@ -43,7 +43,42 @@
 
 # EXPOSE 80
 
-# ---------- Frontend build ----------
+# # ---------- Frontend build ----------
+# FROM node:20-alpine AS frontend
+# WORKDIR /app
+
+# COPY package*.json ./
+# RUN npm ci
+
+# COPY . .
+# RUN npm run build
+
+# # ---------- Apache + PHP runtime ----------
+# FROM php:8.3-apache
+
+# # Enable rewrite module for .htaccess
+# RUN a2enmod rewrite headers
+
+# # Make Apache listen on 8080 for App Platform
+# RUN sed -ri 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf \
+#  && sed -ri 's/:80>/:8080>/' /etc/apache2/sites-available/000-default.conf
+
+# # Copy your built UI
+# COPY --from=frontend /app/dist/ /var/www/html/
+
+# # Copy PHP API
+# COPY rest/ /var/www/html/rest/
+
+# # Copy Apache config
+# COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+# COPY apache/.htaccess /var/www/html/.htaccess
+
+# EXPOSE 8080
+
+# RUN echo "ServerName localhost" >> /etc/apache2/apache2.conf
+
+# CMD ["apache2-foreground"]
+
 FROM node:20-alpine AS frontend
 WORKDIR /app
 
@@ -53,25 +88,19 @@ RUN npm ci
 COPY . .
 RUN npm run build
 
-# ---------- Apache + PHP runtime ----------
 FROM php:8.3-apache
 
-# Enable rewrite module for .htaccess
-RUN a2enmod rewrite headers
+RUN a2enmod rewrite headers \
+ && sed -ri 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf
 
-# Make Apache listen on 8080 for App Platform
-RUN sed -ri 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf \
- && sed -ri 's/:80>/:8080>/' /etc/apache2/sites-available/000-default.conf
-
-# Copy your built UI
-COPY --from=frontend /app/dist/ /var/www/html/
-
-# Copy PHP API
-COPY rest/ /var/www/html/rest/
-
-# Copy Apache config
 COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 COPY apache/.htaccess /var/www/html/.htaccess
+
+COPY --from=frontend /app/dist/ /var/www/html/
+COPY rest/ /var/www/html/rest/
+
+RUN docker-php-ext-install pdo pdo_mysql mysqli \
+ && chown -R www-data:www-data /var/www/html
 
 EXPOSE 8080
 
