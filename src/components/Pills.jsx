@@ -10,7 +10,6 @@ const Pills = ({ children, variant = "active" }) => {
     alert: "bg-alert/10 text-alert",
     in_stock: "bg-success/20 text-success",
     low_stock: "bg-warning/10 text-warning",
-    low_stock: "bg-warning/10 text-warning",
   };
 
   console.log("123", children, variant);
