@@ -1,2 +1,4 @@
 RewriteEngine On
-RewriteRule ^$ /portal/ [R=301,L]
+
+RewriteCond %{HTTP_HOST} ^.*$
+RewriteRule ^$ /portal/ [R=302,L]

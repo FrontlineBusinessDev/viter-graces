@@ -6,7 +6,7 @@ import { defineConfig } from "vite";
 // https://vite.dev/config/
 export default defineConfig({
   plugins: [react(), tailwindcss()],
-  base: "/portal/", // prod
+  base: "/portal", // prod
   // base: "/aw2025", // local
   build: {
     chunkSizeWarningLimit: 15000,
