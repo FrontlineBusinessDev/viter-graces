@@ -1,5 +1,4 @@
 RewriteEngine On
-RewriteBase /
 # use for authentication
 RewriteCond %{HTTP:Authorization} ^(.+)$
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
@@ -10,7 +9,8 @@ Header set Access-Control-Allow-Origin *
 
 #################################### ALL FOR DEVELOPER #################################
 ### FOR UPLOAD PHOTO ###
-RewriteRule ^upload-multiple-files$ core/upload-multiple-files.php [L]  
+RewriteRule ^upload-multiple-files$ core/upload-multiple-files.php [L]
+RewriteRule ^test-api$ controllers/test-api.php [L]
 
 ### ROLES ###
 RewriteRule ^roles$ controllers/developer/settings/role/role.php [L]
