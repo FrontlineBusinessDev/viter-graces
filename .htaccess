@@ -1,5 +1,7 @@
 RewriteEngine On
-RewriteBase /portal/
+
+# force root to portal
+RewriteRule ^$ /portal/ [R=302,L]
 
 # If file or directory exists, serve it
 RewriteCond %{REQUEST_FILENAME} -f [OR]
