@@ -98,7 +98,7 @@ COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 RUN mkdir -p /var/www/html/portal
 
 COPY --from=frontend /app/dist/ /var/www/html/portal/
-COPY apache/.htaccess /var/www/html/portal/.htaccess
+COPY apache/root.htaccess /var/www/html/.htaccess
 
 COPY rest/ /var/www/html/rest/
 
