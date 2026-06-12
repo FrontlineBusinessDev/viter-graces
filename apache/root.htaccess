@@ -1,13 +1,1 @@
-RewriteEngine On
-
-# Redirect bare root to /portal/
-RedirectMatch ^/$ /portal/
-
-# Redirect /login to /portal/login
-RedirectMatch ^/login$ /portal/login
-
-# Redirect anything not starting with /portal or /rest to /portal/
-RewriteCond %{REQUEST_URI} !^/portal
-RewriteCond %{REQUEST_URI} !^/rest
-RewriteCond %{REQUEST_URI} !^/favicon
-RewriteRule ^(.*)$ /portal/$1 [R=302,L]
+# intentionally empty
