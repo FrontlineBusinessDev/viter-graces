@@ -1,7 +1,12 @@
 FROM node:20-alpine AS frontend
 WORKDIR /app
+# This ensures .env.production changes invalidate cache
+COPY .env.production .env.production
 COPY package*.json ./
 RUN npm ci
+# Bust cache on every deploy
+ARG CACHEBUST=1
+RUN echo "Cache bust: $CACHEBUST"
 COPY . .
 RUN npm run build
 
