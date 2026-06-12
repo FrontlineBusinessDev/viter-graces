@@ -204,7 +204,8 @@ function loginAccess(
         $returnData["message"] = "Access granted.";
         $response->setData($returnData);
         $response->send();
-        return $returnData;
+        exit;
+        // return $returnData;
     } else {
         $response->setSuccess(false);
         $error["count"] = 0;
@@ -214,9 +215,9 @@ function loginAccess(
         $response->send();
         exit;
     }
-    checkEndpoint();
-    http_response_code(200);
-    checkAccess();
+    // checkEndpoint();
+    // http_response_code(200);
+    // checkAccess();
 }
 
 // Token for other user
