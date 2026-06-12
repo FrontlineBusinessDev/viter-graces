@@ -254,7 +254,8 @@ function tokenOther(
             $returnData["message"] = "Access granted.";
             $response->setData($returnData);
             $response->send();
-            return $returnData;
+            exit;
+            // return $returnData;
         } catch (Exception $ex) {
             $response->setSuccess(false);
             $error["count"] = 0;
@@ -273,9 +274,9 @@ function tokenOther(
         $response->send();
         exit;
     }
-    checkEndpoint();
-    http_response_code(200);
-    checkAccess();
+    // checkEndpoint();
+    // http_response_code(200);
+    // checkAccess();
 }
 
 // Read
