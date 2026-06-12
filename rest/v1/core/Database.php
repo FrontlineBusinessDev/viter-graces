@@ -12,6 +12,7 @@ class Database
         $dbname = DB_NAME;
         $username = DB_USERNAME;
         $password = DB_PASSWORD;
+        $port = DB_PORT;
         try {
             if (self::$dbConnection !== null) {
                 return self::$dbConnection;
@@ -21,7 +22,7 @@ class Database
             //     self::$dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
             //     self::$dbConnection->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
             // } 
-            $dsn = "mysql:host={$host};dbname={$dbname};charset=utf8mb4";
+            $dsn = "mysql:host={$host};port={$port};dbname={$dbname};charset=utf8mb4";
             $isProduction = getenv('APP_ENV') === 'production';
             $options = [
                 PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
