@@ -2,32 +2,51 @@ FROM node:20-alpine AS frontend
 WORKDIR /app
 COPY package*.json ./
 RUN npm ci
-# Bust cache on every deploy
-ARG CACHEBUST=1
-RUN echo "Cache bust: $CACHEBUST"
 COPY . .
+# Declare every VITE var as ARG so Docker passes them through
+ARG VITE_APP_DEV_API_URL
+ARG VITE_APP_DEV_BASE_URL
+ARG VITE_APP_DEV_BASE_IMG_URL
+ARG VITE_APP_DEV_API_VERSION
+ARG VITE_APP_DEV_NAV_URL
+ARG VITE_APP_DEV_URL_DEVELOPER
+ARG VITE_APP_DEV_URL_ADMIN
+ARG VITE_APP_DEV_KEY
+ARG VITE_APP_DEV_TIME_ZONE
+ARG VITE_APP_DEV_GOOGLE_RECAPTHA_SITE_KEY
+ARG VITE_APP_DEV_GOOGLE_THUMBNAIL_LINK
+ARG VITE_APP_DEV_GOOGLE_HD_VIEW_LINK
+ARG VITE_APP_DEV_GOOGLE_VIEW_LINK
+ARG VITE_APP_DEV_URL_WEBSITE_PATH
+
+# Convert ARGs to ENV so Vite's import.meta.env can read them
+ENV VITE_APP_DEV_API_URL=$VITE_APP_DEV_API_URL
+ENV VITE_APP_DEV_BASE_URL=$VITE_APP_DEV_BASE_URL
+ENV VITE_APP_DEV_BASE_IMG_URL=$VITE_APP_DEV_BASE_IMG_URL
+ENV VITE_APP_DEV_API_VERSION=$VITE_APP_DEV_API_VERSION
+ENV VITE_APP_DEV_NAV_URL=$VITE_APP_DEV_NAV_URL
+ENV VITE_APP_DEV_URL_DEVELOPER=$VITE_APP_DEV_URL_DEVELOPER
+ENV VITE_APP_DEV_URL_ADMIN=$VITE_APP_DEV_URL_ADMIN
+ENV VITE_APP_DEV_KEY=$VITE_APP_DEV_KEY
+ENV VITE_APP_DEV_TIME_ZONE=$VITE_APP_DEV_TIME_ZONE
+ENV VITE_APP_DEV_GOOGLE_RECAPTHA_SITE_KEY=$VITE_APP_DEV_GOOGLE_RECAPTHA_SITE_KEY
+ENV VITE_APP_DEV_GOOGLE_THUMBNAIL_LINK=$VITE_APP_DEV_GOOGLE_THUMBNAIL_LINK
+ENV VITE_APP_DEV_GOOGLE_HD_VIEW_LINK=$VITE_APP_DEV_GOOGLE_HD_VIEW_LINK
+ENV VITE_APP_DEV_GOOGLE_VIEW_LINK=$VITE_APP_DEV_GOOGLE_VIEW_LINK
+ENV VITE_APP_DEV_URL_WEBSITE_PATH=$VITE_APP_DEV_URL_WEBSITE_PATH
 RUN npm run build
-
 FROM php:8.3-apache
-
 RUN a2enmod rewrite headers \
  && sed -ri 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf
-
 COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
-
 RUN mkdir -p /var/www/html/portal
 COPY --from=frontend /app/dist/ /var/www/html/portal/
-
 # Empty root .htaccess
 COPY apache/root.htaccess /var/www/html/.htaccess
-
 # SPA .htaccess inside /portal/
 COPY apache/.htaccess /var/www/html/portal/.htaccess
-
 COPY rest/ /var/www/html/rest/
-
 RUN docker-php-ext-install pdo pdo_mysql mysqli \
  && chown -R www-data:www-data /var/www/html
-
 EXPOSE 8080
 CMD ["apache2-foreground"]
