@@ -36,6 +36,8 @@ const CreatePassword = () => {
   const [isSuccess, setIsSuccess] = React.useState(false);
   const paramKey = getUrlParam().get("key");
 
+  console.log("paramKey", paramKey);
+
   const { isLoading, data: key } = useQueryData(
     `${apiVersion}/users/key/${paramKey}`, // endpoint
     "get", // method
