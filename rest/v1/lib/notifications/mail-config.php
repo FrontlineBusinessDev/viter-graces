@@ -19,5 +19,5 @@ define("SMTPSECURE", "ssl");
 // define("ROOT_DOMAIN", "http://localhost:5173/portal");
 // define("IMAGES_URL", "http://localhost:5173/portal/img");
 
-define("ROOT_DOMAIN", $_ENV['VITE_APP_DEV_BASE_URL'] . $_ENV['VITE_APP_DEV_API_VERSION']);
-define("IMAGES_URL", $_ENV['VITE_APP_DEV_BASE_URL'] . $_ENV['VITE_APP_DEV_API_VERSION'] . "/img");
+define("ROOT_DOMAIN", $_ENV['VITE_APP_DEV_BASE_URL']);
+define("IMAGES_URL", $_ENV['VITE_APP_DEV_BASE_URL'] . "/img");
