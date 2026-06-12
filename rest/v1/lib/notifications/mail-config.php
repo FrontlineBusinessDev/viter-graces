@@ -1,5 +1,5 @@
 <?php
-require_once '../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 define("USERNAME", "noreply@hris.frontlinebusiness.com.ph");
 define("PASSWORD", "b@11551gfN4b");
