@@ -1,4 +1,6 @@
 <?php
+require_once '../bootstrap.php';
+
 define("USERNAME", "noreply@hris.frontlinebusiness.com.ph");
 define("PASSWORD", "b@11551gfN4b");
 define("FROM", "Grace's ");
@@ -14,9 +16,8 @@ define("SMTPSECURE", "ssl");
 
 
 // // local
-define("ROOT_DOMAIN", "http://localhost:5173/portal");
-define("IMAGES_URL", "http://localhost:5173/portal/img");
+// define("ROOT_DOMAIN", "http://localhost:5173/portal");
+// define("IMAGES_URL", "http://localhost:5173/portal/img");
 
-// online
-// define("ROOT_DOMAIN", "https://worldfocusinc.com/giving");
-// define("IMAGES_URL", "https://worldfocusinc.com/giving/img");
+define("ROOT_DOMAIN", $_ENV['VITE_APP_DEV_BASE_URL'] . $_ENV['VITE_APP_DEV_API_VERSION']);
+define("IMAGES_URL", $_ENV['VITE_APP_DEV_BASE_URL'] . $_ENV['VITE_APP_DEV_API_VERSION'] . "/img");
