@@ -10,7 +10,7 @@ const HeaderNav = ({ children, menu, submenu, activeTab = "" }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
   const toggleMobileNav = () => setMobileNavOpen(!mobileNavOpen);
-
+  // console.log("activeTab", activeTab);
   React.useEffect(() => {
     dispatch(setTabValue(activeTab));
   }, [menu]);

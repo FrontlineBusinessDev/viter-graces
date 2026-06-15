@@ -12,7 +12,7 @@ import { getNavList } from "./function-nav";
 const Navigation = ({ menu, submenu, mobileNavOpen }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const userRole = store.credentials?.data?.role;
-  const link = "portal";
+  const link = "";
   const navWrapperRef = useRef(null);
   const hoverTimeout = useRef(null);
   const [hoverText, setHoverText] = React.useState("");
