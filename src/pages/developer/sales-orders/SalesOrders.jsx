@@ -6,6 +6,8 @@ import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalSalesOrders from "./ModalSalesOrders";
 import ViewSalesDetails from "./ViewSalesDetails";
+import { apiVersion } from "@/config/config";
+import useQueryData from "@/services/useQueryData";
 
 const SalesOrders = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -86,6 +88,12 @@ const SalesOrders = () => {
     },
   ];
 
+  const { data: result } = useQueryData(
+    `${apiVersion}/customer/read-walk-in-cutomer`, // endpoint
+    "get", // method
+    `customer`, // key
+  );
+
   return (
     <>
       <HeaderNav menu={"sales orders"} activeTab="sales-orders">
@@ -97,7 +105,9 @@ const SalesOrders = () => {
           haveFilterTable={true}
         />
       </HeaderNav>
-      {store.isAdd && <ModalSalesOrders itemEdit={itemEdit} />}
+      {store.isAdd && (
+        <ModalSalesOrders itemEdit={itemEdit} cutomer={result?.data[0]} />
+      )}
       {store.isView && <ViewSalesDetails itemEdit={itemEdit} />}
     </>
   );

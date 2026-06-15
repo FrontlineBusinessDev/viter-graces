@@ -33,10 +33,15 @@ class SalesOrder
     public $stock_movement_qty;
     public $stock_movement_type;
 
+    public $date_today;
+    public $date_yesterday;
+
     public $connection;
     public $lastInsertedId;
     public $tblSalesOrder;
     public $tblStockMovements;
+    public $tblMovementStock;
+    public $tblProducts;
 
     public $filters;
     public $column_start;
@@ -49,6 +54,8 @@ class SalesOrder
         $this->connection = $db;
         $this->tblSalesOrder = "graces_sales_order";
         $this->tblStockMovements = "graces_stock_movement";
+        $this->tblMovementStock = "graces_stock_movement";
+        $this->tblProducts = "graces_products";
     }
 
     // create
@@ -557,6 +564,140 @@ class SalesOrder
         } catch (PDOException $ex) {
             $query = false;
         }
+        return $query;
+    }
+
+
+    // read all
+    public function readtotalQTY()
+    {
+        try {
+            $sql = "select ms.*, ";
+            $sql .= "p.products_low_stock_threshold, ";
+            $sql .= "p.products_sku, ";
+            $sql .= "p.products_unit, ";
+            $sql .= "p.products_status, ";
+            $sql .= "so.order_qty, ";
+            $sql .= "p.products_aid, ";
+            $sql .= "DATE_FORMAT(ms.stock_movement_date, '%b %d, %Y') as stock_movement_date, ";
+            $sql .= "ms.stock_movement_product_name AS name, ";
+            $sql .= "ms.stock_movement_is_active AS is_active, ";
+            $sql .= "IFNULL(so.order_qty, 0) AS order_qty, ";
+
+            // Total stock quantity
+            $sql .= "SUM(
+                CASE
+                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
+                        THEN ms.stock_movement_qty
+
+                    WHEN ms.stock_movement_type IN (
+                        'purchases',
+                        'stock out - reject/defective items'
+                    )
+                        THEN -ms.stock_movement_qty
+
+                    ELSE 0
+                END
+            ) AS stock_qty, ";
+
+            // Current quantity after sales orders
+            $sql .= "SUM(
+                CASE
+                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
+                        THEN ms.stock_movement_qty
+
+                    WHEN ms.stock_movement_type IN (
+                        'purchases',
+                        'stock out - reject/defective items'
+                    )
+                        THEN -ms.stock_movement_qty
+
+                    ELSE 0
+                END
+            ) - IFNULL(so.order_qty, 0) AS current_qty, ";
+
+            $sql .= "DATE_FORMAT(MAX(ms.stock_movement_date), '%b %d, %Y') AS stock_movement_date ";
+
+            $sql .= "FROM {$this->tblMovementStock} AS ms ";
+
+            $sql .= "INNER JOIN {$this->tblProducts} AS p ";
+            $sql .= "ON ms.stock_movement_product_id = p.products_aid ";
+
+            $sql .= "LEFT JOIN (
+                SELECT
+                    sales_order_product_id,
+                    SUM(sales_order_qty) AS order_qty
+                FROM {$this->tblSalesOrder}
+                GROUP BY sales_order_product_id
+             ) AS so
+             ON so.sales_order_product_id = p.products_aid ";
+
+            $sql .= " WHERE ms.stock_movement_product_id = :stock_movement_product_id ";
+            $sql .= " GROUP BY p.products_aid ";
+            $sql .= " ORDER BY
+                ms.stock_movement_status DESC,
+                ms.stock_movement_product_name ASC ";
+
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "stock_movement_product_id" => $this->sales_order_product_id,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+
+        return $query;
+    }
+    public function readSalesToday()
+    {
+        try {
+            $sql = " select DATE(sales_order_date) AS sales_date, ";
+            $sql .= "sales_order_product_name AS product_name, ";
+            $sql .= " SUM(sales_order_total) AS total_sales, ";
+            $sql .= " SUM(sales_order_qty) AS total_qty ";
+            $sql .= " FROM {$this->tblSalesOrder}";
+            $sql .= " WHERE DATE(sales_order_date) IN ";
+            $sql .= " ( DATE(:date_today), DATE(:date_yesterday) )";
+            $sql .= "GROUP BY DATE(sales_order_date)";
+            $sql .= "ORDER BY sales_date DESC";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "date_today" => $this->date_today,
+                "date_yesterday" => $this->date_yesterday,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+
+        return $query;
+    }
+
+    public function readTopSellingProduct()
+    {
+        try {
+            $sql = "select * from ( ";
+            $sql .= "select sales_order_product_id, ";
+            $sql .= "sales_order_product_name AS product_name, ";
+            $sql .= "SUM(sales_order_qty) AS qty, ";
+            $sql .= "SUM(sales_order_total) AS total_amount, ";
+            $sql .= "ROW_NUMBER() OVER ( ORDER BY ";
+            $sql .= "SUM(sales_order_total) DESC, ";
+            $sql .= "SUM(sales_order_qty) DESC ";
+            $sql .= ") AS rn ";
+            $sql .= "FROM {$this->tblSalesOrder} ";
+            $sql .= "WHERE DATE(sales_order_date) = DATE(:date_today) ";
+            $sql .= "GROUP BY ";
+            $sql .= "sales_order_product_id, ";
+            $sql .= "sales_order_product_name ) ranked ";
+            $sql .= "WHERE rn = 1 ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "date_today" => $this->date_today,
+            ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+
         return $query;
     }
 }

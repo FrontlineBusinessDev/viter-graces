@@ -99,11 +99,14 @@ const ModalStockOverview = ({ itemEdit }) => {
   }, []);
 
   let typeOption = [
-    { id: "0", name: "in stock" },
-    { id: "1", name: "purchases" },
-    { id: "2", name: "stock adjustments" },
-    { id: "3", name: "stock out - sales" },
-    { id: "4", name: "stock out - reject/defective items" },
+    { id: "in stock", name: "in stock" },
+    { id: "purchases", name: "purchases" },
+    { id: "stock in adjustments", name: "stock in adjustments" },
+    // { id: "stock out - sales", name: "stock out - sales" },
+    {
+      id: "stock out - reject/defective items",
+      name: "stock out - reject/defective items",
+    },
   ];
   return (
     <>

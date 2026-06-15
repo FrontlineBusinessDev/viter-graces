@@ -14,7 +14,7 @@ function checkApiKey()
     $un_pw = explode(":", base64_decode($auth_array[1]));
     $un = $un_pw[0];
 
-    if ($un !== $apiKey["graces_key"]) {
+    if ($un !== $apiKey) {
         $response = new Response();
         $error = [];
         $response->setSuccess(false);
@@ -204,7 +204,8 @@ function loginAccess(
         $returnData["message"] = "Access granted.";
         $response->setData($returnData);
         $response->send();
-        return $returnData;
+        exit;
+        // return $returnData;
     } else {
         $response->setSuccess(false);
         $error["count"] = 0;
@@ -214,9 +215,9 @@ function loginAccess(
         $response->send();
         exit;
     }
-    checkEndpoint();
-    http_response_code(200);
-    checkAccess();
+    // checkEndpoint();
+    // http_response_code(200);
+    // checkAccess();
 }
 
 // Token for other user
@@ -253,7 +254,8 @@ function tokenOther(
             $returnData["message"] = "Access granted.";
             $response->setData($returnData);
             $response->send();
-            return $returnData;
+            exit;
+            // return $returnData;
         } catch (Exception $ex) {
             $response->setSuccess(false);
             $error["count"] = 0;
@@ -272,9 +274,9 @@ function tokenOther(
         $response->send();
         exit;
     }
-    checkEndpoint();
-    http_response_code(200);
-    checkAccess();
+    // checkEndpoint();
+    // http_response_code(200);
+    // checkAccess();
 }
 
 // Read

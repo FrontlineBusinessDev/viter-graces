@@ -2,14 +2,17 @@ RewriteEngine On
 # use for authentication
 RewriteCond %{HTTP:Authorization} ^(.+)$
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
 
-Header set Access-Control-Allow-Origin *
+RewriteCond %{REQUEST_URI} ^/rest/ [NC]
+
+Header set Access-Control-Allow-Origin "*"
 
 #################################### ALL FOR DEVELOPER #################################
 ### FOR UPLOAD PHOTO ###
-RewriteRule ^upload-multiple-files$ core/upload-multiple-files.php [L]  
+RewriteRule ^upload-multiple-files$ core/upload-multiple-files.php [L]
+RewriteRule ^test-api$ controllers/test-api.php [L]
 
 ### ROLES ###
 RewriteRule ^roles$ controllers/developer/settings/role/role.php [L]
@@ -49,8 +52,10 @@ RewriteRule ^customer/([0-9]+)$ controllers/developer/customer/customer.php?id=$
 RewriteRule ^customer/active/([0-9]+)$ controllers/developer/customer/active.php?id=$1 [L] 
 RewriteRule ^customer/page/([0-9]+)$ controllers/developer/customer/page.php?start=$1 [L]
 RewriteRule ^customer/search$ controllers/developer/customer/search.php [L]
+RewriteRule ^customer/read-all-by-active$ controllers/developer/customer/read-all-by-active.php [L]
+RewriteRule ^customer/read-walk-in-cutomer$ controllers/developer/customer/read-walk-in-cutomer.php [L]
 
-### SUPPLIERS ###
+### SUPPLIERS ### 
 RewriteRule ^suppliers$ controllers/developer/suppliers/suppliers.php [L]
 RewriteRule ^suppliers/([0-9]+)$ controllers/developer/suppliers/suppliers.php?id=$1 [L]
 RewriteRule ^suppliers/active/([0-9]+)$ controllers/developer/suppliers/active.php?id=$1 [L] 
@@ -75,8 +80,9 @@ RewriteRule ^products/active/([0-9]+)$ controllers/developer/products/active.php
 RewriteRule ^products/page/([0-9]+)$ controllers/developer/products/page.php?start=$1 [L]
 RewriteRule ^products/search$ controllers/developer/products/search.php [L]
 RewriteRule ^products/read-all-active-by-product$ controllers/developer/products/read-all-active-by-product.php [L]
+RewriteRule ^products/read-all-product-that-have-stock$ controllers/developer/products/read-all-product-that-have-stock.php [L]
 
-### ACTIVITY LOG ###
+### ACTIVITY LOG ### 
 RewriteRule ^activity/read-with-limit$ controllers/developer/activity-log/read-with-limit.php [L] 
 
 ### PURCHASE ORDER ###
@@ -105,4 +111,6 @@ RewriteRule ^sales-order/active/([0-9]+)$ controllers/developer/sales-order/acti
 RewriteRule ^sales-order/page/([0-9]+)$ controllers/developer/sales-order/page.php?start=$1 [L]
 RewriteRule ^sales-order/search$ controllers/developer/sales-order/search.php [L]
 RewriteRule ^sales-order/read-all-active-by-product$ controllers/developer/sales-order/read-all-active-by-product.php [L]
+RewriteRule ^sales-order/read-sales-today$ controllers/developer/sales-order/read-sales-today.php [L]
+RewriteRule ^sales-order/read-top-selling-product$ controllers/developer/sales-order/read-top-selling-product.php [L]
  

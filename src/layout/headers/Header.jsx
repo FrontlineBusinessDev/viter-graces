@@ -1,7 +1,9 @@
+import ScreenSpinner from "@/components/spinners/ScreenSpinner";
+import { devNavUrl } from "@/config/config";
 import useDarkMode from "@/custom-hooks/useDarkMode";
 import { StoreContext } from "@/store/StoreContext";
+import { checkLocalStorage } from "@/utilities/CheckLocalStorage";
 import {
-  Bell,
   LucideLogOut,
   Menu,
   Moon,
@@ -15,9 +17,9 @@ import {
   X,
 } from "lucide-react";
 import React from "react";
-import Navigation from "../navigation/Navigation";
 
 const Header = ({ menu, toggleMobileNav }) => {
+  const [loading, setLoading] = React.useState(false);
   const { store, dispatch } = React.useContext(StoreContext);
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [openQuick, setOpenQuick] = React.useState(false);
@@ -43,6 +45,17 @@ const Header = ({ menu, toggleMobileNav }) => {
     };
   }, []);
 
+  const handleLogout = () => {
+    setLoading(true);
+    setTimeout(() => {
+      if (checkLocalStorage() !== null) {
+        localStorage.removeItem("gracestoken");
+        window.location.replace(`${devNavUrl}/login`);
+        return;
+      }
+      setLoading(false);
+    }, 1500);
+  };
   return (
     <>
       <div
@@ -79,13 +92,16 @@ const Header = ({ menu, toggleMobileNav }) => {
               )}
             </button>
 
-            <button className="p-3 hover:bg-primary hover:text-light rounded">
+            <button
+              className="p-3 hover:bg-primary hover:text-light rounded"
+              onClick={() => handleLogout()}
+            >
               <LucideLogOut size={16} />
             </button>
           </div>
         </div>
       </div>
-
+      {loading && <ScreenSpinner />}
       <div
         className={`dropdown ${openQuick ? "active" : "inactive"}  p-2 min-w-[191px] overflow-hidden rounded-xl fixed right-23 border border-gray-200 bg-light dark:bg-gray-900 z-999 transition-all ease-in-out duration-200 transform -translate-x-1 block shadow-2xl`}
         ref={menuRef}
