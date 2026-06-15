@@ -24,7 +24,7 @@ import * as Yup from "yup";
 const ModalCustomer = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
-  console.log("itemEdit", itemEdit);
+  // console.log("itemEdit", itemEdit);
 
   const handleClose = () => {
     dispatch(setIsAdd(false));

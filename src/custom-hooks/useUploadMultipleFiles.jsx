@@ -131,7 +131,7 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
       const filterExcessFileSize = Array.from(e.target.files).filter(
         (item) => Number(item.size) > Number(sizeLimitKb),
       );
-      console.log(filterExcessFileSize);
+      // console.log(filterExcessFileSize);
       if (filterExcessFileSize?.length > 0) {
         dispatch(setError(true));
         dispatch(

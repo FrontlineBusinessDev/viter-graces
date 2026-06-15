@@ -1,0 +1,6 @@
+name: inventory-app
+services:
+  - name: web
+    dockerfile_path: Dockerfile
+    source_dir: /
+    http_port: 80

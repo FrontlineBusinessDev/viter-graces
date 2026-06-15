@@ -1,4 +1,7 @@
 <?php
+
+require_once __DIR__ . '/../lib/bootstrap.php';
+
 define("WEB_APP_API_KEY", '');
 // LOCAL 
 define("DB_HOST", '');
