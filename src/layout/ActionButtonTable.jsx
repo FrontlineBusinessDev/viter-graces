@@ -4,7 +4,14 @@ import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import React from "react";
 
-const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
+const ActionButtonTable = ({
+  item,
+  dataArray,
+  setData,
+  setItemEdit,
+  path,
+  testId,
+}) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
   // ACTIONS ACHIEVE, RESTORE AND DELETE
@@ -44,7 +51,11 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
             Number(isEmptyItem(a?.isActive, 1)) ===
               Number(isEmptyItem(dataArray?.is_active, 1)) && (
               <div key={akey}>
-                <ActionButton item={a} onClick={() => handleView(a)} />
+                <ActionButton
+                  item={a}
+                  onClick={() => handleView(a)}
+                  data-testid={a.testId}
+                />
               </div>
             )
           );
@@ -55,7 +66,11 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
             Number(isEmptyItem(a?.isActive, 1)) ===
               Number(isEmptyItem(dataArray?.is_active, 1)) && (
               <div key={akey}>
-                <ActionButton item={a} onClick={() => handleUpdate(a)} />
+                <ActionButton
+                  item={a}
+                  onClick={() => handleUpdate(a)}
+                  data-testid={a.testId}
+                />
               </div>
             )
           );
@@ -67,7 +82,11 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
             Number(isEmptyItem(b?.isActive, 1)) ===
               Number(isEmptyItem(dataArray?.is_active, 1)) && (
               <div key={bkey}>
-                <ActionButton item={b} onClick={() => handleAction(b)} />
+                <ActionButton
+                  item={b}
+                  onClick={() => handleAction(b)}
+                  data-testid={b.testId}
+                />
               </div>
             )
           );

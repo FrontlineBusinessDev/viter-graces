@@ -48,6 +48,7 @@ export const InputSelectArrayWithOptions = ({
   path = null,
   id = 0,
   options = [],
+  dataTestIdSelect,
   ...props
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -69,6 +70,7 @@ export const InputSelectArrayWithOptions = ({
           field.onChange(e);
         }}
         autoComplete="off"
+        data-testid={dataTestIdSelect}
       >
         <optgroup label={`Select a ${label}`}>
           <option value={defaultValue} hidden>
@@ -276,54 +278,57 @@ export const SearchableSelectFilterStatus = ({ column, options }) => {
   const selected = options.find((opt) => opt.value === value) || null;
 
   return (
-    <Select
-      placeholder="--"
-      options={options}
-      value={selected}
-      onChange={(option) => {
-        const value = option ? option.value : undefined;
-        column.setFilterValue(value);
-      }}
-      isClearable
-      classNames={{
-        control: ({ isFocused }) =>
-          ` w-full! min-h-full! text-sm border rounded-lg! px-1 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
-       ${isFocused ? " border-primary! " : " border-gray-300 "}
-       hover:border-primary! `,
+    <div data-testid={testFilterStatusId}>
+      <Select
+        classNamePrefix="react-select"
+        placeholder="--"
+        options={options}
+        value={selected}
+        onChange={(option) => {
+          const value = option ? option.value : undefined;
+          column.setFilterValue(value);
+        }}
+        isClearable
+        classNames={{
+          control: ({ isFocused }) =>
+            ` w-full! min-h-full! text-sm border rounded-lg! px-1 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
+         ${isFocused ? " border-primary! " : " border-gray-300 "}
+         hover:border-primary! `,
 
-        valueContainer: () => "px-1 py-0 ",
+          valueContainer: () => "px-1 py-0 ",
 
-        input: () => "text-sm h-[22px]! text-gray-500!  ",
+          input: () => "text-sm h-[22px]! text-gray-500!  ",
 
-        placeholder: () => "text-gray-400! text-sm",
+          placeholder: () => "text-gray-400! text-sm",
 
-        singleValue: () => "normal-case! text-sm text-gray-500! ",
+          singleValue: () => "normal-case! text-sm text-gray-500! ",
 
-        indicatorsContainer: () => "",
+          indicatorsContainer: () => "",
 
-        indicatorSeparator: () => "w-0!",
+          indicatorSeparator: () => "w-0!",
 
-        dropdownIndicator: () =>
-          "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
+          dropdownIndicator: () =>
+            "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
 
-        clearIndicator: () =>
-          "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
+          clearIndicator: () =>
+            "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
 
-        menu: () =>
-          "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white dark:bg-[#0b111e]! z-50",
+          menu: () =>
+            "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white dark:bg-[#0b111e]! z-50",
 
-        menuList: () => "py-1 max-h-60 overflow-auto ",
+          menuList: () => "py-1 max-h-60 overflow-auto ",
 
-        option: ({ isFocused, isSelected }) =>
-          ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  
-       ${isSelected ? "bg-primary! text-secondary!" : " "}
-       ${!isSelected && isFocused ? "bg-primary! text-secondary! " : " "}`,
-      }}
-    />
+          option: ({ isFocused, isSelected }) =>
+            ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  
+         ${isSelected ? "bg-primary! text-secondary!" : " "}
+         ${!isSelected && isFocused ? "bg-primary! text-secondary! " : " "}`,
+        }}
+      />
+    </div>
   );
 };
 
-export const SearchableSelectFilter = ({ column, path }) => {
+export const SearchableSelectFilter = ({ column, path, testFilterId }) => {
   const value = column.getFilterValue();
 
   const { data: result } = useQueryData(
@@ -340,50 +345,52 @@ export const SearchableSelectFilter = ({ column, path }) => {
   const selected = options?.find((opt) => opt.value === value) || null;
 
   return (
-    <Select
-      placeholder="--"
-      options={options}
-      value={selected}
-      onChange={(option) => {
-        const value = option ? option.value : undefined;
-        column.setFilterValue(value);
-      }}
-      isClearable
-      classNames={{
-        control: ({ isFocused }) =>
-          ` w-full! min-h-full! text-sm border rounded-lg! px-1 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
-       ${isFocused ? " border-primary! " : " border-gray-300 "}
-       hover:border-primary! `,
+    <div data-testid={testFilterId}>
+      <Select
+        placeholder="--"
+        options={options}
+        value={selected}
+        onChange={(option) => {
+          const value = option ? option.value : undefined;
+          column.setFilterValue(value);
+        }}
+        isClearable
+        classNames={{
+          control: ({ isFocused }) =>
+            ` w-full! min-h-full! text-sm border rounded-lg! px-1 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
+         ${isFocused ? " border-primary! " : " border-gray-300 "}
+         hover:border-primary! `,
 
-        valueContainer: () => "px-1 py-0",
+          valueContainer: () => "px-1 py-0",
 
-        input: () => "text-sm h-[22px]! text-gray-500! ",
+          input: () => "text-sm h-[22px]! text-gray-500! ",
 
-        placeholder: () => "text-gray-400! text-sm",
+          placeholder: () => "text-gray-400! text-sm",
 
-        singleValue: () => "normal-case! text-sm text-gray-500! ",
+          singleValue: () => "normal-case! text-sm text-gray-500! ",
 
-        indicatorsContainer: () => "",
+          indicatorsContainer: () => "",
 
-        indicatorSeparator: () => "w-0!",
+          indicatorSeparator: () => "w-0!",
 
-        dropdownIndicator: () =>
-          "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
+          dropdownIndicator: () =>
+            "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
 
-        clearIndicator: () =>
-          "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
+          clearIndicator: () =>
+            "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
 
-        menu: () =>
-          "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white dark:bg-[#0b111e]! z-50",
+          menu: () =>
+            "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white dark:bg-[#0b111e]! z-50",
 
-        menuList: () => "py-1 max-h-60 overflow-auto ",
+          menuList: () => "py-1 max-h-60 overflow-auto ",
 
-        option: ({ isFocused, isSelected }) =>
-          ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  
-       ${isSelected ? "bg-primary! text-secondary!" : " "}
-       ${!isSelected && isFocused ? "bg-primary! text-secondary! " : " "}`,
-      }}
-    />
+          option: ({ isFocused, isSelected }) =>
+            ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  
+         ${isSelected ? "bg-primary! text-secondary!" : " "}
+         ${!isSelected && isFocused ? "bg-primary! text-secondary! " : " "}`,
+        }}
+      />
+    </div>
   );
 };
 
