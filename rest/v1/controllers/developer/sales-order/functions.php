@@ -48,6 +48,22 @@ function checkDeleteById($object)
     return $query;
 }
 
+// Read all
+function checkReadByCustomerId($object, $allowedColumns = [])
+{
+    $query = $object->readByCustomerId($allowedColumns);
+    checkQuery($query, "Empty records. (read All)");
+    return $query;
+}
+
+// Read limit
+function checkReadLimitByCustomerId($object, $allowedColumns = [])
+{
+    $query = $object->readLimitByCustomerId($allowedColumns);
+    checkQuery($query, "Empty records. (limit)");
+    return $query;
+}
+
 // Update 
 function updateConnectedMenu($object)
 {

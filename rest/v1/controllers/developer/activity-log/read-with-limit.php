@@ -26,7 +26,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
     if (empty($_GET)) {
 
-        $queryCustomer = getResultData($valCustomer->readAllCutomer());
+        $queryCustomer = getResultData($valCustomer->readWalkInCustomer());
         if (count($queryCustomer) == 0) {
             checkCreateWalkInCustomer($valCustomer);
         }
