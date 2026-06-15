@@ -5,7 +5,8 @@ RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 
-RewriteCond %{REQUEST_URI} ^/rest/ [NC]
+# IMPORTANT: base path for API
+RewriteBase /rest/v1/
 
 Header set Access-Control-Allow-Origin "*"
 
