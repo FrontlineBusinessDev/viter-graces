@@ -1,7 +1,7 @@
 describe("Dashboard Page", () => {
   beforeEach(() => {
     cy.session("admin", () => {
-      cy.visit("/portal/login");
+      cy.visit("/login");
 
       cy.get("input[name=user_account_email]").type(Cypress.env("email"));
 
@@ -28,7 +28,7 @@ describe("Dashboard Page", () => {
       },
     }).as("activities");
 
-    cy.visit("/portal/developer/dashboard");
+    cy.visit("/developer/dashboard");
 
     cy.url().should("include", "/dashboard");
 

@@ -1,7 +1,7 @@
 describe("Movement History Module - Create", () => {
   beforeEach(() => {
     cy.session("admin", () => {
-      cy.visit("/portal/login");
+      cy.visit("/login");
 
       cy.get("input[name=user_account_email]").type(Cypress.env("email"));
 
@@ -12,7 +12,7 @@ describe("Movement History Module - Create", () => {
       cy.url().should("not.include", "/login");
     });
 
-    cy.visit("/portal/developer/movement-history");
+    cy.visit("/developer/movement-history");
   });
 
   it("Create stock movement", () => {

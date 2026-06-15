@@ -13,6 +13,7 @@ class ActivityLog
     public $connection;
     public $lastInsertedId;
     public $tblActivityLog;
+    public $tblCustomer;
 
     public $filters;
     public $column_start;
@@ -24,6 +25,7 @@ class ActivityLog
     {
         $this->connection = $db;
         $this->tblActivityLog = "graces_activity_log";
+        $this->tblCustomer = "graces_customer";
     }
 
     // create

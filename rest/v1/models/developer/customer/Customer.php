@@ -14,6 +14,8 @@ class Customer
     public $customer_created;
     public $customer_updated;
 
+    public $customer_is_walk_in_customer;
+
     public $connection;
     public $lastInsertedId;
     public $tblCustomer;
@@ -73,6 +75,61 @@ class Customer
             ]);
             $this->lastInsertedId = $this->connection->lastInsertId();
         } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readAllActive($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            ...$this->column_search != "" ? [
+                "customer_name" => "%{$this->column_search}%",
+                "customer_email" => "%{$this->column_search}%",
+            ] : [],
+        ];
+
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
+            if (is_array($item['value'])) {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
+            }
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "customer_aid as id, ";
+            $sql .= "customer_messenger as messenger, ";
+            $sql .= "customer_whatsapp as whatsapp, ";
+            $sql .= "customer_other as other, ";
+            $sql .= "customer_is_active as is_active, ";
+            $sql .= "customer_name as name ";
+            $sql .= "from {$this->tblCustomer} ";
+            $sql .= " where customer_is_active = '1' ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? " and ( customer_name like :customer_name 
+            or customer_email like :customer_email ) " : " ");
+            }
+            $sql .= " order by customer_is_active desc, ";
+            $sql .= " customer_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+
             $query = false;
         }
         return $query;
@@ -324,6 +381,65 @@ class Customer
             $query->execute([
                 "customer_name" => "{$this->customer_name}",
             ]);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readWalkInCustomer()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblCustomer} ";
+            $sql .= " where customer_is_walk_in_customer = '1' ";
+            $sql .= " order by customer_aid desc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readAllCutomer()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblCustomer} ";
+            $sql .= " order by customer_aid desc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            $query = false;
+        }
+        return $query;
+    }
+
+    // create
+    public function createWalkInCustomer()
+    {
+        try {
+            $sql = "insert into {$this->tblCustomer} ";
+            $sql .= "( customer_is_active, ";
+            $sql .= "customer_is_walk_in_customer, ";
+            $sql .= "customer_name, ";
+            $sql .= "customer_created, ";
+            $sql .= "customer_updated ) values ( ";
+            $sql .= ":customer_is_active, ";
+            $sql .= ":customer_is_walk_in_customer, ";
+            $sql .= ":customer_name, ";
+            $sql .= ":customer_created, ";
+            $sql .= ":customer_updated ) ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "customer_is_active" => $this->customer_is_active,
+                "customer_is_walk_in_customer" => $this->customer_is_walk_in_customer,
+                "customer_name" => $this->customer_name,
+                "customer_created" => $this->customer_created,
+                "customer_updated" => $this->customer_updated,
+            ]);
+            $this->lastInsertedId = $this->connection->lastInsertId();
         } catch (PDOException $ex) {
             $query = false;
         }
