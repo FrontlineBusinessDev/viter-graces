@@ -27,6 +27,8 @@ const TitleHeader = ({}) => {
     (tab) => tab.title_tab === currentTab,
   );
 
+  console.log("currentHeader", currentHeader);
+
   const formatText = (text) => text.replace(/-/g, " ");
 
   return (
