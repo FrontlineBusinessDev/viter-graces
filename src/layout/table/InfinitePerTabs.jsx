@@ -48,6 +48,11 @@ const InfinitePerTabs = ({
     setItemEdit(null);
   };
 
+  const queryKey = useMemo(
+    () => [path, store.isSearch],
+    [path, store.isSearch],
+  );
+
   // React Query infinite fetch
   const {
     data,
@@ -58,7 +63,7 @@ const InfinitePerTabs = ({
     isFetchingNextPage,
     status,
   } = useInfiniteQuery({
-    queryKey: [path, search.current?.value],
+    queryKey,
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
         null,
@@ -74,12 +79,12 @@ const InfinitePerTabs = ({
       }
       return undefined;
     },
-
-    staleTime: 1000 * 60 * 5, // 5 mins → no refetch when revisiting
-    gcTime: 1000 * 60 * 30, // keep cache for 30 mins
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    refetchOnWindowFocus: true,
+    // staleTime: 1000 * 60 * 5, // 5 mins → no refetch when revisiting
+    // gcTime: 1000 * 60 * 30, // keep cache for 30 mins
+    // refetchOnMount: false,
+    // refetchOnWindowFocus: false,
+    // refetchOnReconnect: false,
     // enabled: !isStatic,
   });
 
