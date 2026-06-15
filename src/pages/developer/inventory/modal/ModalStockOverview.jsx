@@ -138,7 +138,7 @@ const ModalStockOverview = ({ itemEdit }) => {
                 <Form>
                   <div className="relative mt-3">
                     <InputSelectArray
-                      label="stock movement"
+                      label="Stock movement"
                       path="products/read-all-active-by-product"
                       placeholder={`${itemEdit ? "Update product" : "Enter product"}`}
                       type="text"
