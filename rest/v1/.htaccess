@@ -2,14 +2,17 @@ RewriteEngine On
 # use for authentication
 RewriteCond %{HTTP:Authorization} ^(.+)$
 RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
-RewriteCond %{REQUEST_FILENAME} !-d
-RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} -f [OR]
+RewriteCond %{REQUEST_FILENAME} -d
 
-Header set Access-Control-Allow-Origin *
+RewriteCond %{REQUEST_URI} ^/rest/ [NC]
+
+Header set Access-Control-Allow-Origin "*"
 
 #################################### ALL FOR DEVELOPER #################################
 ### FOR UPLOAD PHOTO ###
-RewriteRule ^upload-multiple-files$ core/upload-multiple-files.php [L]  
+RewriteRule ^upload-multiple-files$ core/upload-multiple-files.php [L]
+RewriteRule ^test-api$ controllers/test-api.php [L]
 
 ### ROLES ###
 RewriteRule ^roles$ controllers/developer/settings/role/role.php [L]
