@@ -35,30 +35,35 @@ export const ActionTableList = ({ path }) => {
       path: path,
       icon: <LucideTableOfContents className="size-5 lg:size-4" />,
       isActive: 1,
+      testId: "action-view",
     },
     {
       name: "edit",
       path: path,
       icon: <Edit className="size-5 lg:size-4" />,
       isActive: 1,
+      testId: "action-edit",
     },
     {
-      name: "archieve",
+      name: "archive",
       path: "active",
       icon: <ArchiveRestore className="size-5 lg:size-4" />,
       isActive: 1,
+      testId: "action-archive",
     },
     {
       name: "restore",
       path: "active",
       icon: <RotateCcw className="size-5 lg:size-4" />,
       isActive: 0,
+      testId: "action-restore",
     },
     {
       name: "delete",
       path: path,
       icon: <Trash className="size-5 lg:size-4" />,
       isActive: 0,
+      testId: "action-delete",
     },
   ];
 };
@@ -71,24 +76,28 @@ export const DefaultActionTableList = ({ path }) => {
       path: path,
       icon: <Edit className="size-5 lg:size-4" />,
       isActive: 1,
+      testId: "action-edit",
     },
     {
-      name: "archieve",
+      name: "archive",
       path: "active",
       icon: <ArchiveRestore className="size-5 lg:size-4" />,
       isActive: 1,
+      testId: "action-archive",
     },
     {
       name: "restore",
       path: "active",
       icon: <RotateCcw className="size-5 lg:size-4" />,
       isActive: 0,
+      testId: "action-restore",
     },
     {
       name: "delete",
       path: path,
       icon: <Trash className="size-5 lg:size-4" />,
       isActive: 0,
+      testId: "action-delete",
     },
   ];
 };
@@ -101,30 +110,35 @@ export const UserActionTableList = ({ path }) => {
       path: path,
       icon: <Edit className="size-5 lg:size-4" />,
       isActive: 1,
+      testId: "action-edit",
     },
     {
-      name: "archieve",
+      name: "archive",
       path: "active",
       icon: <ArchiveRestore className="size-5 lg:size-4" />,
       isActive: 1,
+      testId: "action-archive",
     },
     {
       name: "reset",
       path: "reset-password",
       icon: <KeySquare className="size-5 lg:size-4" />,
       isActive: 1,
+      testId: "action-reset",
     },
     {
       name: "restore",
       path: "active",
       icon: <RotateCcw className="size-5 lg:size-4" />,
       isActive: 0,
+      testId: "action-restore",
     },
     {
       name: "delete",
       path: path,
       icon: <Trash className="size-5 lg:size-4" />,
       isActive: 0,
+      testId: "action-delete",
     },
   ];
 };
@@ -136,12 +150,14 @@ export const EditDeleteActionTableList = ({ path }) => {
       path: path,
       icon: <Edit className="size-5 lg:size-4" />,
       isActive: 1,
+      testId: "action-edit",
     },
     {
       name: "delete",
       path: path,
       icon: <Trash className="size-5 lg:size-4" />,
       isActive: 1,
+      testId: "action-delete",
     },
   ];
 };

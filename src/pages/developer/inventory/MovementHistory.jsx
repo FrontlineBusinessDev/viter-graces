@@ -100,6 +100,7 @@ const MovementHistory = () => {
           path="stock-movement"
           setItemEdit={setItemEdit}
           haveFilterTable={true}
+          dataTestidAddButton="add-stocks-btn"
         />
       </HeaderNav>
       {store.isAdd && <ModalStockOverview itemEdit={itemEdit} />}

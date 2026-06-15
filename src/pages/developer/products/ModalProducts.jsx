@@ -196,6 +196,7 @@ const ModalProducts = ({ itemEdit }) => {
                         type="text"
                         path="suppliers/read-in-modal"
                         name="products_suppliers_id"
+                        dataTestIdSelect="select-supplier"
                         onChange={(e) => {
                           props.values.products_suppliers_id = e.target.value;
                           props.values.products_suppliers_name =
