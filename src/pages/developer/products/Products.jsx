@@ -28,6 +28,7 @@ const Products = () => {
           <SearchableSelectFilterStatus
             column={column}
             options={ActiveInActiveStatus()}
+            testFilterStatusId={"filter-status"}
           />
         ),
       },
@@ -101,7 +102,7 @@ const Products = () => {
           <SearchableSelectFilter
             column={column}
             path="product-owner/read-by-product-owner"
-            
+            testFilterId={"filter-owner"}
           />
         ),
       },

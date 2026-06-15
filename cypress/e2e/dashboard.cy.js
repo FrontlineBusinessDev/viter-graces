@@ -87,6 +87,10 @@ describe("Dashboard Page", () => {
     cy.contains("Carol Williams");
     cy.contains("Juan Dela Cruz");
     cy.contains("Robert Samson");
+
+    cy.get('[data-testid="overdue-payment-btn-to-view"]')
+      .should("contain", "Click to view")
+      .click();
   });
 
   it("should display recent activities section", () => {
