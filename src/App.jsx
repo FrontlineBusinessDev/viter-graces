@@ -19,7 +19,7 @@ function App() {
       ...routesDeveloper,
     ],
     {
-      basename: "/portal",
+      basename: "/",
     },
   );
 

@@ -9,7 +9,8 @@ const TitleHeader = ({}) => {
   const userRole = store.credentials?.data?.role;
 
   const location = useLocation();
-  const currentTab = location.pathname.split("/")[3];
+  const currentTab = location.pathname.split("/")[2];
+  console.log("currentTab", currentTab);
 
   const currentHeader = titleHeaderTab().find((item) => {
     const hasTabs = item.array_tab.length > 0;
@@ -27,6 +28,7 @@ const TitleHeader = ({}) => {
     (tab) => tab.title_tab === currentTab,
   );
 
+  console.log("titleHeaderTab", titleHeaderTab());
   console.log("currentHeader", currentHeader);
 
   const formatText = (text) => text.replace(/-/g, " ");
