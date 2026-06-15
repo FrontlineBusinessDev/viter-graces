@@ -3,6 +3,7 @@ import {
   InputSalesOrderSelectTagArray,
   InputSelectArray,
   InputSelectArrayWithOptions,
+  InputSelectCustomerArray,
 } from "@/components/inputs/InputSelect";
 import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
@@ -27,7 +28,7 @@ import { Plus } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
 
-const ModalSalesOrders = ({ itemEdit }) => {
+const ModalSalesOrders = ({ itemEdit, cutomer }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [counter, setCounter] = React.useState(0);
   const [itemsDelete, setItemsDelete] = React.useState([]);
@@ -59,6 +60,7 @@ const ModalSalesOrders = ({ itemEdit }) => {
     if (selectedItem !== "") {
       updated[index]["sales_order_product_owner_id"] =
         selectedItem["products_owner_id"];
+      updated[index]["current_qty"] = selectedItem["current_qty"];
       updated[index]["sales_order_product_owner_name"] =
         selectedItem["products_owner_name"];
       updated[index]["sales_order_price"] = selectedItem["products_price"];
@@ -158,10 +160,13 @@ const ModalSalesOrders = ({ itemEdit }) => {
       itemEdit?.order_date,
       store?.credentials?.data?.server_date,
     ),
-    sales_order_customer_id: isEmptyItem(itemEdit?.sales_order_customer_id, ""),
+    sales_order_customer_id: isEmptyItem(
+      itemEdit?.sales_order_customer_id,
+      isEmptyItem(cutomer?.customer_aid, ""),
+    ),
     sales_order_customer_name: isEmptyItem(
       itemEdit?.sales_order_customer_name,
-      "",
+      isEmptyItem(cutomer?.customer_name, ""),
     ),
     sales_order_payment_method: isEmptyItem(
       itemEdit?.sales_order_payment_method,
@@ -181,11 +186,11 @@ const ModalSalesOrders = ({ itemEdit }) => {
     sales_order_notes: isEmptyItem(itemEdit?.sales_order_notes, ""),
     sales_order_received_by_id: isEmptyItem(
       itemEdit?.sales_order_received_by_id,
-      "",
+      store.credentials?.data?.user_account_aid,
     ),
     sales_order_received_by_name: isEmptyItem(
       itemEdit?.sales_order_received_by_name,
-      "",
+      store.credentials?.data?.name,
     ),
     sales_order_product_owner_id: isEmptyItem(
       itemEdit?.sales_order_product_owner_id,
@@ -238,6 +243,21 @@ const ModalSalesOrders = ({ itemEdit }) => {
             validationSchema={yupSchema}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
+              const invalidItem = items.find(
+                (item) =>
+                  Number(item.current_qty) < Number(item.sales_order_qty),
+              );
+
+              if (invalidItem) {
+                dispatch(setError(true));
+                dispatch(
+                  setMessage(
+                    `Insufficient stock for ${invalidItem.sales_order_product_name}. Available: ${invalidItem.current_qty}, Requested: ${invalidItem.sales_order_qty}`,
+                  ),
+                );
+                return;
+              }
+
               // mutate data
               let data = {
                 ...ActivityLogDetails(
@@ -274,9 +294,9 @@ const ModalSalesOrders = ({ itemEdit }) => {
                       />
                     </div>
                     <div className="relative">
-                      <InputSelectArray
+                      <InputSelectCustomerArray
                         label="Customer"
-                        path="product-owner/read-by-product-owner"
+                        path="customer/read-all-by-active"
                         type="text"
                         name="sales_order_customer_id"
                         onChange={(e) => {
@@ -350,14 +370,13 @@ const ModalSalesOrders = ({ itemEdit }) => {
                                     "sales_order_product_id",
                                     "sales_order_product_name",
                                     e.target.value,
-                                    e.target.options[e.target.selectedIndex]
-                                      .text,
+                                    e.target.options[e.target.selectedIndex].id,
                                   );
                                 }}
                                 itemEdit={itemEdit}
                                 item={a}
                                 defaultValue={a["sales_order_product_id"]}
-                                path={`products/read-all-active-by-product`}
+                                path={`products/read-all-product-that-have-stock`}
                                 placeholder="Product Name"
                               />
                               <input

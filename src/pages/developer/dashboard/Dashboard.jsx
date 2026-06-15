@@ -1,9 +1,12 @@
 import CashflowChart from "@/components/CashflowChart";
 import ProfitLossChart from "@/components/ProfitLossChart";
 import StatCard from "@/components/StatCard";
+import DashboardLowStockAlert from "@/layout/dashboard/DashboardLowStockAlert";
 import DashboardOverduePayments from "@/layout/dashboard/DashboardOverduePayments";
 import DashboardRecentActivities from "@/layout/dashboard/DashboardRecentActivities";
 import DashboardSalesOverview from "@/layout/dashboard/DashboardSalesOverview";
+import DashboardSalesToday from "@/layout/dashboard/DashboardSalesToday";
+import DashboardTopSellingProduct from "@/layout/dashboard/DashboardTopSellingProduct";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import { setTabValue } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
@@ -26,38 +29,9 @@ const Dashboard = () => {
       <div data-testid="dashboard-page">
         <HeaderNav menu={"dashboard"}>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
-            <StatCard
-              title="Sales Today"
-              value="₱******"
-              subtitle="Yesterday: ₱******"
-              flipContent="₱12,450.00"
-              subTitleFlip="Yesterday: ₱10,000.00"
-              flipBg="bg-green-100 dark:bg-green-900"
-              icon={<TrendingUp className="text-green-600" size={20} />}
-              iconBg="bg-green-100 dark:bg-[#082125]"
-              dataTestId="sales-today-card"
-            />
-
-            <StatCard
-              title="Low Stock Alerts"
-              value="2"
-              subtitle="products below threshold"
-              button="Click to view →"
-              link=""
-              icon={<AlertTriangle className="text-orange-500" size={20} />}
-              iconBg="bg-orange-100 dark:bg-[#291518]"
-              dataTestId="low-stock-card"
-            />
-
-            <StatCard
-              title="Top Selling Product"
-              value="iPhone 15 Pro"
-              subtitle="2 units sold"
-              extra="₱2,198.00"
-              icon={<Trophy className="text-yellow-500" size={20} />}
-              iconBg="bg-yellow-100 dark:bg-[#281b17]"
-              dataTestId="top-selling-card"
-            />
+            <DashboardSalesToday path="sales-order/read-sales-today" />
+            <DashboardLowStockAlert path="stock-movement/read-count-low-stock" />
+            <DashboardTopSellingProduct path="sales-order/read-top-selling-product" />
 
             <StatCard
               title="Expenses Today"

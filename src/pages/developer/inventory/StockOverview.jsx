@@ -1,12 +1,11 @@
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
-import { ActiveInActiveStatus, StockTypeArray } from "@/layout/ArrayValue";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
+import WarningBanner from "@/layout/WarningBanner";
 import { StoreContext } from "@/store/StoreContext";
-import { TriangleAlert } from "lucide-react";
 import React from "react";
 import ModalStockOverview from "./modal/ModalStockOverview";
-import WarningBanner from "@/layout/WarningBanner";
 const StockOverview = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -16,8 +15,8 @@ const StockOverview = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "stock_movement_type",
-      header: "Type",
+      accessorKey: "stock_movement_is_active",
+      header: "status",
       classTh: "w-[10rem]",
       classTd: "",
       filterFn: "equals",
@@ -25,10 +24,11 @@ const StockOverview = () => {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus
             column={column}
-            options={StockTypeArray()}
+            options={ActiveInActiveStatus()}
           />
         ),
       },
+      status_option: ActiveInActiveStatus(),
     },
     {
       accessorKey: "stock_movement_product_name",
@@ -63,7 +63,8 @@ const StockOverview = () => {
     {
       accessorKey: "products_low_stock_threshold",
       header: "Threshold",
-      classTh: "",
+      filterFn: "between",
+      classTh: "min-w-[10rem]",
       classTd: "",
       meta: "",
     },
@@ -98,7 +99,7 @@ const StockOverview = () => {
           setItemEdit={setItemEdit}
           haveFilterTable={true}
           isDefaultMobile={"stock movement"}
-          
+          defaultSearch={true}
         />
       </HeaderNav>
       {store.isAdd && <ModalStockOverview itemEdit={itemEdit} />}

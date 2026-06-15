@@ -17,7 +17,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
 
     $val->filters = [];
-    $query = checkReadAllActiveByName($val);
+    $query = checkReadAllThatHaveStock($val);
     http_response_code(200);
     getQueriedData($query);
 }

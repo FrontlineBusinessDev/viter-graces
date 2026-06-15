@@ -13,16 +13,18 @@ dist-ssr
 *.local
 
 #API
-rest/v1/lib  
+# rest/v1/lib  
 rest/v1/notifications/PHPMailer
 rest/v1/notifications/mail-config.php
 rest/v1/files-api-key
-rest/v1/core/env.php
+# rest/v1/core/env.php
 rest/v1/core/google-api.php 
 rest/v1/core/google-api-dwd.php
 apikey.php
 .env
+.env.local
 .env.production
+.env.staging
 cypress.env.json
 
 # Editor directories and files

@@ -9,14 +9,19 @@ import { ThemeProvider } from "./store/ThemeContext.jsx";
 function App() {
   const queryClient = new QueryClient();
 
-  const router = createBrowserRouter([
+  const router = createBrowserRouter(
+    [
+      {
+        path: "*",
+        element: <PageNotFound />,
+      },
+      ...routesAccess,
+      ...routesDeveloper,
+    ],
     {
-      path: "*",
-      element: <PageNotFound />
+      basename: "/",
     },
-    ...routesAccess,
-    ...routesDeveloper,
-  ]);
+  );
 
   return (
     <>
