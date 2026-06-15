@@ -1,7 +1,7 @@
 describe("Dashboard Page", () => {
   beforeEach(() => {
     cy.session("admin", () => {
-      cy.visit("/portal/login");
+      cy.visit("/login");
 
       cy.get("input[name=user_account_email]").type(Cypress.env("email"));
 
@@ -28,7 +28,7 @@ describe("Dashboard Page", () => {
       },
     }).as("activities");
 
-    cy.visit("/portal/developer/dashboard");
+    cy.visit("/developer/dashboard");
 
     cy.url().should("include", "/dashboard");
 
@@ -87,6 +87,10 @@ describe("Dashboard Page", () => {
     cy.contains("Carol Williams");
     cy.contains("Juan Dela Cruz");
     cy.contains("Robert Samson");
+
+    cy.get('[data-testid="overdue-payment-btn-to-view"]')
+      .should("contain", "Click to view")
+      .click();
   });
 
   it("should display recent activities section", () => {
