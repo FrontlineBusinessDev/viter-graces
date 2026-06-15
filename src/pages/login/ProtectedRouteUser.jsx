@@ -52,7 +52,7 @@ const ProtectedRouteUser = ({ children }) => {
         delete login.data.user_account_role_id;
         delete login.data.user_account_new_email;
         delete login.data.user_account_is_active;
-        console.log(login);
+        // console.log(login);
       }
     };
 

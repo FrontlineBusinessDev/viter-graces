@@ -42,8 +42,8 @@ const CreatePassword = () => {
     "users", // key
   );
 
-  console.log("paramKey", paramKey);
-  console.log("key", key);
+  // console.log("paramKey", paramKey);
+  // console.log("key", key);
 
   const togglePassword = (val = "") => {
     if (val !== "new") {
