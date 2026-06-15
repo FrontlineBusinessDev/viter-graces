@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "viter-fbs-v2",
+  "private_key_id": "e8d262de3f192250ffbf0dfb218c1c63a9118837",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDvdTXLQIXP2Zh5\nmFbekZCLZddq11EmFYWRFaYDySUXDn7S+ecrBEXa7WSMeXYYFmcXuxhLZ5wuNOyo\nYCgl5K8qU8i8Sm2SRqQ5acBifgxjAfcsrWZXj5FCAmu7ZvLA+aoSBJzjrqwpzKx1\nWlIF/r0jdB5bpP5zAixL3AVgOzqxBtes22r5XuHBYmU47WCB5B03+iNdkGmSl4CA\nW2qVLEvSzrcUstzsAIp9u4d2WLXhZTr8s6zWOK6PEE7u4WBYjphUyioz0I1yOWN4\nUNsVxjNsZeVB4uypOjaHlLAxv/tnkKpx/F+Y4dAlwY03wYUlOYb93NCebn9+R2k3\nkPTbnuIXAgMBAAECggEAWioTQF4iRJpVbGutQg8jkymczHEY8DMoYPH62fASVDU0\nEfLhVXQ9bWr38mEF05oT5X6gbjwsNcXd2qSiWWpbfp+ftS59RZft3GRyeWOm/FzQ\nGnWMVKoNcwKAWEcyXvFjVXeBL8Yks3SK94Ez42gBBemCSNW+rcWCsmm9aHfE6MTF\nVENJxrBnw+Ch6BvDNpqOGhlg8Hk0G237x9qcQ5RfFhm62tWx6II443xGpx6xpU22\nKbWE3Ne6WywppcihGfEiTc0gDf37ZlQYUMz630lJgvy9Almm771dclsXgZIkqhgA\nmn2Xdh87vs3puSAXx+3eppJ2dEjEImO/ZXcj8bhI6QKBgQD7ktQT6hV1rNn2rEnU\nHl3bztNjXSeF8wvBH0jqGnLCcRsAOdk4zQZc8t9kcT0IC9a0+BpGLQZDw+9icICD\nT6n7kv3DQda1LWAebDoXISxNEntjQ5PcS8jFU4cnu/P17UOm9piAv9kGVegvilae\nA2YoiuYCN6GMlt/TKlA8OlH0dQKBgQDzq8786NwInxWamaa9gYn2S8RiDk83wAQC\n9RMU42mzmVxQQp2r5kAtgQNkBQAzXmhCXVI9Vl/6VGHOC+M+1c8QG0fIMK/FKCDV\nXzE2VjgbHFf0MJhlHeYok99Je57UZU6n5Rl362uXjKD/kvyI1Pp7wEp7oTmPhOI4\nRK+i2Jd62wKBgBgEt6zDD5NxkknDvzS6RXnD8FivPyPBxaCFjR+UsNoxlENcQony\nwSXEpmFfklUfVDto6JFEoTF9FnDOjuZ6h58WNJYcxhP8Jg4hhRZKO4GMPy2F+Sry\nLVPxmpjHkA4tveTF7F92cZDySL2pNoXViz5ZrIYPq6PRj8MIaiql4sc1AoGBAOMk\n8VrJJvPSeC0ZtllJe/XgQzy04huyHwsysYrzQwFsoKUgtCIeDQ1eCm8eSkWYZ9AV\ndig/cFDGgDW21ysn3FHDXHK9D9zVv2WnyxQ/4yVCkqrK8gSwjnCdB7RUTIbpuRzB\nb7BeAHnRWfNkbYyQHL9nTQdaD3I+CTMytBc1mF+pAoGAId+hQaAKVZ9zjzuV1lg7\nuwpxF921PTbCfHEYzw9uBMRVaC9e6ClNqj8Dh2SJH4IQiGYUvttHhfTXFpEGcI1j\nqwXESODlTbKpL23tMDBz06OBUrI2nyveFt/xB8tEC997zuixENjyreLkeRNfnGv7\nWsYG/H8A4xs2hAhKQdzbvOM=\n-----END PRIVATE KEY-----\n",
+  "client_email": "viter-fbs-v2@viter-fbs-v2.iam.gserviceaccount.com",
+  "client_id": "112426468720512710052",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/viter-fbs-v2%40viter-fbs-v2.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

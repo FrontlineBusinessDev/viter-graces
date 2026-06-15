@@ -4,6 +4,7 @@
 // Required google api vendor  
 require_once 'Response.php';
 // Required google api vendor
+require_once __DIR__ . '/../lib/bootstrap.php';
 require_once __DIR__ . '/../lib/google-api/vendor/autoload.php';
 
 use Google\Client;
@@ -38,7 +39,12 @@ function getDirectoryPath()
 }
 
 // GOOGLE API KEY
-putenv('GOOGLE_APPLICATION_CREDENTIALS=' . __DIR__ . '/../google-api/google-key.json'); // production 
+// TO ECHO API KEY AND ENCODE IT IN BASE64TEXT 
+// echo base64_encode(file_get_contents(__DIR__ . '/../lib/google-api/google-key.json'));
+$json = base64_decode(getenv('GOOGLE_APPLICATION_CREDENTIALS_JSON_BASE64')); // decode the base 64 string
+file_put_contents('/tmp/google.json', $json); // tmp file it
+putenv("GOOGLE_APPLICATION_CREDENTIALS=/tmp/google.json"); // production
+// putenv('GOOGLE_APPLICATION_CREDENTIALS=' . __DIR__ . '/../lib/google-api/google-key.json'); // production 
 
 function getClientService()
 {

@@ -6,7 +6,8 @@ export const devApiUrl = import.meta.env.VITE_APP_DEV_API_URL || "";
 export const devBaseImgUrl = import.meta.env.VITE_APP_DEV_BASE_IMG_URL;
 export const devBaseUrl = import.meta.env.VITE_APP_DEV_BASE_URL;
 export const devWebUrl = import.meta.env.VITE_APP_DEV_VITE_APP_DEV_APP_ROOT;
-export const devNavUrl = import.meta.env.VITE_APP_DEV_NAV_URL;
+// export const devNavUrl = import.meta.env.VITE_APP_DEV_NAV_URL;
+export const devNavUrl = "";
 
 export const setTimeZone = import.meta.env.VITE_APP_DEV_TIME_ZONE;
 export const UrlDeveloper = import.meta.env.VITE_APP_DEV_URL_DEVELOPER;
