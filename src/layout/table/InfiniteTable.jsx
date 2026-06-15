@@ -379,6 +379,7 @@ const InfiniteTable = ({
                         key={row.id}
                         ref={isLastRow ? lastRowRef : null}
                         className="hidden lg:table-row group"
+                        data-testid="table-row"
                       >
                         <td className="text-center">{index + 1}.</td>
                         {row.getVisibleCells().map((item) => (
@@ -454,6 +455,7 @@ const InfiniteTable = ({
                                 setItemEdit={setItemEdit}
                                 ishaveSubAdd={ishaveSubAdd}
                                 path={path}
+                                testId
                               />
                             ) : (
                               ""

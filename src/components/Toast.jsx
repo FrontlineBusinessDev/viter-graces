@@ -20,8 +20,8 @@ const Toast = ({ variant = "info", ...props }) => {
       border: "border-l-2 border-info",
     },
     success: {
-      title: "Success",
-      message: "this is success message",
+      title: store.message || "Success",
+      message: store.message || "this is success message",
       icon: <CheckCircle className="stroke-success" size={16} />,
       style: "bg-success/20",
       border: "border-l-2 border-success",
@@ -39,7 +39,7 @@ const Toast = ({ variant = "info", ...props }) => {
       icon: <CircleX className="stroke-alert" size={16} />,
       style: "bg-alert/20",
       border: "border-l-2 border-alert",
-    }
+    },
   };
 
   const handleClose = () => {
@@ -59,6 +59,7 @@ const Toast = ({ variant = "info", ...props }) => {
       className={`fixed top-2 left-1/2 -translate-x-1/2 flex items-center gap-2 py-1.5 px-2 bg-light rounded-r-sm border-y border-r 
         border-y-line border-r-line z-99 
         ${variants[variant]?.border}`}
+      data-testid="toast"
     >
       <div
         className={`size-8 rounded-full grid place-content-center ${variants[variant]?.style}`}
@@ -66,10 +67,16 @@ const Toast = ({ variant = "info", ...props }) => {
         {variants[variant]?.icon}
       </div>
       <div className="w-60 pt-1">
-        <h5 className="leading-4 font-bold text-sm mb-0.5">
+        <h5
+          className="leading-4 font-bold text-sm mb-0.5 capitalize"
+          data-testid="toast-title"
+        >
           {variants[variant]?.title}
         </h5>
-        <p className="opacity-70 mb-0 text-xs whitespace-nowrap">
+        <p
+          className="opacity-70 mb-0 text-xs whitespace-nowrap"
+          data-testid="toast-message"
+        >
           {variants[variant]?.message}
         </p>
       </div>
