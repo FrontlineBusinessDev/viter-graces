@@ -5,7 +5,7 @@ import React from "react";
 
 const TableStatus = ({ item, dataArray }) => {
   const { store, dispatch } = React.useContext(StoreContext);
-  console.log("item", dataArray);
+  // console.log("item", dataArray);
   return (
     <>
       {isEmptyItem(item?.status_option, "") !== "" ? (

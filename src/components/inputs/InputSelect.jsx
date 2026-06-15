@@ -273,7 +273,11 @@ export const InputSelectCustomerArray = ({
   );
 };
 
-export const SearchableSelectFilterStatus = ({ column, options }) => {
+export const SearchableSelectFilterStatus = ({
+  column,
+  options,
+  testFilterStatusId,
+}) => {
   const value = column.getFilterValue();
   const selected = options.find((opt) => opt.value === value) || null;
 
