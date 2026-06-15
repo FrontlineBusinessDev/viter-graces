@@ -25,6 +25,7 @@ apikey.php
 .env.local
 .env.production
 .env.staging
+cypress.env.json
 
 # Editor directories and files
 .vscode/*

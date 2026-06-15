@@ -19,7 +19,7 @@ const SearchBar = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     let val = search.current.value;
-    console.log("val", val);
+    // console.log("val", val);
 
     if (val === " " || val === "") {
       setOnSearch(!onSearch);
