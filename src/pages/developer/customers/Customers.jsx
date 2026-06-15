@@ -82,14 +82,14 @@ const Customers = () => {
   // SUB Columns Tables
   const subColumnsTable = [
     {
-      accessorKey: "customer_name",
+      accessorKey: "sales_order_number",
       header: "Order Number",
       isViewItems: false,
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "customer_email",
+      accessorKey: "sales_order_date",
       header: "Date",
       isViewItems: false,
       classTh: "",
@@ -103,21 +103,23 @@ const Customers = () => {
       classTd: "",
     },
     {
-      accessorKey: "customer_address",
+      accessorKey: "total_paid",
+      amount: true,
       header: "Paid",
       isViewItems: false,
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "customer_messenger",
+      accessorKey: "sales_order_payment_method",
       header: "Method",
       isViewItems: false,
       classTh: "",
-      classTd: "",
+      classTd: " uppercase ",
     },
     {
-      accessorKey: "customer_whatsapp",
+      accessorKey: "total_amount",
+      amount: true,
       header: "Total",
       isViewItems: false,
       classTh: "",
@@ -132,6 +134,7 @@ const Customers = () => {
           columns={columns}
           subColumnsTable={subColumnsTable}
           path={"customer"}
+          subPath={"sales-order/page-by-cutomer-id"}
           itemEdit={itemEdit}
           setItemEdit={setItemEdit}
           setItemVal={setItemVal}
