@@ -1,6 +1,6 @@
 describe("Login Page", () => {
   beforeEach(() => {
-    cy.visit("/portal/login");
+    cy.visit("/login");
   });
 
   it("should display login page correctly", () => {
