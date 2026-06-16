@@ -24,15 +24,28 @@ const StatCard = ({
   const isFlippable = !!flipContent;
   const userRole = store.credentials?.data?.role;
 
+  const [flipped, setFlipped] = React.useState(false);
+
+  const handleClick = () => {
+    if (window.innerWidth < 768) {
+      setFlipped(!flipped);
+    }
+  };
+
   return (
     <>
       <div
         className="group [perspective:1000px] w-full "
         data-testid={dataTestId}
+        onClick={handleClick}
       >
         <div
           className={`relative transition-transform duration-500 [transform-style:preserve-3d] ${
-            isFlippable ? "group-hover:[transform:rotateY(180deg)]" : ""
+            isFlippable
+              ? flipped
+                ? "[transform:rotateY(180deg)]"
+                : "md:group-hover:[transform:rotateY(180deg)]"
+              : ""
           }`}
         >
           {loading ? (
@@ -84,7 +97,7 @@ const StatCard = ({
               {/* BACK */}
               {isFlippable && (
                 <div
-                  className={`absolute inset-0 ${flipBg} rounded-xl p-5 shadow-sm flex justify-between items-start w-full border border-transparent [transform:rotateY(180deg)] [backface-visibility:hidden]`}
+                  className={`absolute inset-0 ${flipBg} rounded-xl p-5 shadow-sm flex justify-between items-start w-full border border-transparent [transform:rotateY(180deg)] [backface-visibility:hidden] `}
                 >
                   <div>
                     <div className="flex gap-2">

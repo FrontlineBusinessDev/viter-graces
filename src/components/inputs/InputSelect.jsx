@@ -282,8 +282,9 @@ export const SearchableSelectFilterStatus = ({
   const selected = options.find((opt) => opt.value === value) || null;
 
   return (
-    <div data-testid={testFilterStatusId}>
+    <div data-testid="filter-status-btn">
       <Select
+        data-testid={testFilterStatusId}
         classNamePrefix="react-select"
         placeholder="--"
         options={options}
@@ -352,6 +353,7 @@ export const SearchableSelectFilter = ({ column, path, testFilterId }) => {
     <div data-testid={testFilterId}>
       <Select
         placeholder="--"
+        classNamePrefix="react-select"
         options={options}
         value={selected}
         onChange={(option) => {
