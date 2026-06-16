@@ -22,6 +22,9 @@ class SuppliersPurchaseOrder
     public $purchase_order_created;
     public $purchase_order_updated;
 
+    public $date_yesterday;
+    public $date_today;
+
     public $connection;
     public $lastInsertedId;
     public $tblSuppliersPurchaseOrder;
@@ -105,7 +108,7 @@ class SuppliersPurchaseOrder
             ]);
             $this->lastInsertedId = $this->connection->lastInsertId();
         } catch (PDOException $ex) {
-
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -168,7 +171,7 @@ class SuppliersPurchaseOrder
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -234,7 +237,7 @@ class SuppliersPurchaseOrder
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
 
@@ -264,6 +267,7 @@ class SuppliersPurchaseOrder
                 "purchase_order_product_name" => "%{$this->column_search}%",
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -288,6 +292,7 @@ class SuppliersPurchaseOrder
                 "purchase_order_number" => $this->purchase_order_number,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -312,6 +317,7 @@ class SuppliersPurchaseOrder
                 "purchase_order_aid" => $this->purchase_order_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -364,6 +370,7 @@ class SuppliersPurchaseOrder
                 "purchase_order_aid" => $this->purchase_order_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -380,6 +387,7 @@ class SuppliersPurchaseOrder
                 "purchase_order_aid" => $this->purchase_order_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -402,6 +410,7 @@ class SuppliersPurchaseOrder
                 "purchase_order_aid" => $this->purchase_order_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -418,8 +427,33 @@ class SuppliersPurchaseOrder
                 "purchase_order_number" => "{$this->purchase_order_number}",
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
+        return $query;
+    }
+
+    public function readExpensesToday()
+    {
+        try {
+            $sql = "select DATE(purchase_order_date) AS sales_date, ";
+            $sql .= "SUM(purchase_order_total_amount) AS total_sales, ";
+            $sql .= "SUM(purchase_order_qty) AS total_qty ";
+            $sql .= "from {$this->tblSuppliersPurchaseOrder}";
+            $sql .= "where DATE(purchase_order_date) = DATE(:date_today) ";
+            $sql .= "and DATE(purchase_order_date) = DATE(:date_yesterday) ";
+            $sql .= "GROUP BY DATE(purchase_order_date) ";
+            $sql .= "ORDER BY DATE(purchase_order_date) DESC";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "date_today" => $this->date_today,
+                "date_yesterday" => $this->date_yesterday,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
         return $query;
     }
 }
