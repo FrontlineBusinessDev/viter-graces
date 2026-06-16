@@ -53,9 +53,10 @@ const InfiniteSubTable = ({
   const [isFetchFilterDate, setIsFetchFilterDate] = useState(false);
 
   // ACTIONS ADD
-  const handleView = () => {
+  const handleView = (item, itemView) => {
     dispatch(setIsView(true));
-    setItemEdit(null);
+    setItemEdit(item);
+    setItemVal(itemView?.items);
   };
 
   const searchPayload = useMemo(
@@ -312,6 +313,9 @@ const InfiniteSubTable = ({
                           {header.column.columnDef.meta === "" ? (
                             <DebouncedInput
                               type="search"
+                              cypressTesting={
+                                header.column.columnDef.accessorKey
+                              }
                               className={`bg-white dark:bg-[#0b111e] m-0! w-full! text-sm border cursor-pointer! isFocused:border-primary! isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! h-8`}
                               value={header.column.getFilterValue() ?? ""}
                               onChange={(value) => {
@@ -377,7 +381,7 @@ const InfiniteSubTable = ({
                             ) : item?.column?.columnDef?.isViewItems ? (
                               <button
                                 className="text-green-700 hover:text-green-800 hover:underline"
-                                onClick={() => handleView(item)}
+                                onClick={() => handleView(item, row.original)}
                               >
                                 View Items
                               </button>
@@ -413,7 +417,6 @@ const InfiniteSubTable = ({
                                 setData={setData}
                                 setItemEdit={setItemEdit}
                                 ishaveSubAdd={ishaveSubAdd}
-                                setItemVal={setItemVal}
                                 path={path}
                               />
                             ) : (
