@@ -23,7 +23,7 @@ describe("Products Module - CRUD Flow", () => {
     cy.get('textarea[name="products_description"]').type(
       "This is test product",
     );
-
+    
     // CUSTOM Supplier dropdown
     cy.get('[data-testid="select-supplier"]').select(1);
 
