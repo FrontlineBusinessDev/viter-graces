@@ -8,6 +8,7 @@ const CloseButton = ({ handleClose = (e) => e, disabled = false }) => {
         className="absolute top-3 right-2 cursor-pointer hover:bg-primary/20 hover:rounded-sm"
         onClick={handleClose}
         disabled={disabled}
+        data-testid="close-btn"
       >
         <X className="text-primary text-lg" />
       </button>

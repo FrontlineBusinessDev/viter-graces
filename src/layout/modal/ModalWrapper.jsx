@@ -30,6 +30,7 @@ const ModalWrapper = ({
               <CloseButton
                 handleClose={handleClose}
                 disabled={mutation.isPending}
+               
               />
               <h3 className="text-dark dark:text-light text-sm">
                 {itemEdit ? "Update" : "Add New"} {val}
