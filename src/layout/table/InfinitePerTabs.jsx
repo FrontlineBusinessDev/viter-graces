@@ -186,7 +186,10 @@ const InfinitePerTabs = ({
                             <React.Fragment key={akey}>
                               <div className="min-w-0">
                                 {aitem?.column?.columnDef?.header === "name" ? (
-                                  <div className="flex items-center gap-2">
+                                  <div
+                                    className="flex items-center gap-2 cursor-pointer"
+                                    data-testid="button-open-customer-tab"
+                                  >
                                     <span className="text-sm font-medium text-gray-800 dark:text-light min-w-20">
                                       {rows[index]?.original?.name}
                                     </span>
