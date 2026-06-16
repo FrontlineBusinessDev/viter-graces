@@ -125,6 +125,7 @@ class Customer
             or customer_email like :customer_email ) " : " ");
             }
             $sql .= " order by customer_is_active desc, ";
+            $sql .= " customer_is_walk_in_customer desc, ";
             $sql .= " customer_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
@@ -180,6 +181,7 @@ class Customer
             or customer_email like :customer_email ) " : " ");
             }
             $sql .= " order by customer_is_active desc, ";
+            $sql .= " customer_is_walk_in_customer desc, ";
             $sql .= " customer_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
@@ -237,6 +239,7 @@ class Customer
             or customer_email like :customer_email ) " : " ");
             }
             $sql .= " order by customer_is_active desc, ";
+            $sql .= " customer_is_walk_in_customer desc, ";
             $sql .= " customer_name asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
@@ -265,6 +268,7 @@ class Customer
             $sql .= "or customer_email like :customer_email ";
             $sql .= ") ";
             $sql .= "order by customer_is_active desc, ";
+            $sql .= " customer_is_walk_in_customer desc, ";
             $sql .= "customer_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
@@ -290,7 +294,9 @@ class Customer
             $sql .= "customer_name as name ";
             $sql .= "from {$this->tblCustomer} ";
             $sql .= "where customer_aid = :customer_aid ";
-            $sql .= "order by customer_name asc ";
+            $sql .= "order by customer_is_active desc, ";
+            $sql .= "customer_is_walk_in_customer desc, ";
+            $sql .= "customer_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "customer_aid" => $this->customer_aid,
@@ -408,7 +414,9 @@ class Customer
         try {
             $sql = "select * ";
             $sql .= "from {$this->tblCustomer} ";
-            $sql .= " order by customer_aid desc ";
+            $sql .= "order by customer_is_active desc, ";
+            $sql .= "customer_is_walk_in_customer desc, ";
+            $sql .= "customer_name asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             $query = false;
