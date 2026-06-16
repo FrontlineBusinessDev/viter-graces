@@ -161,7 +161,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
   };
 
   const yupSchema = Yup.object({
-    purchase_order_number: Yup.string().trim().required("Required"),
+    // purchase_order_number: Yup.string().trim().required("Required"),
     purchase_order_supplier_id: Yup.string().trim().required("Required"),
     purchase_order_date: Yup.string().trim().required("Required"),
     purchase_order_expected_delivery: Yup.string().trim().required("Required"),
@@ -188,7 +188,11 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
   return (
     <>
       <ModalWrapper
-        val="Purchase Order"
+        val={
+          itemEdit
+            ? `${itemEdit ? itemEdit?.purchase_order_number : ""}`
+            : "Purchase Order"
+        }
         itemEdit={itemEdit}
         mutation={mutation}
         isOpen={true}
@@ -221,7 +225,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
               return (
                 <Form>
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="relative">
+                    {/* <div className="relative">
                       <InputText
                         label="PO Number"
                         type="text"
@@ -229,7 +233,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         placeholder={`${itemEdit ? "Update PO number" : "Enter new PO number"}`}
                         disabled={mutation.isPending}
                       />
-                    </div>
+                    </div> */}
                     <div className="relative">
                       <InputSelectArray
                         label="Suppliers"

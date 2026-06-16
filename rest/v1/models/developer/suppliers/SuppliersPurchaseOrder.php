@@ -145,15 +145,28 @@ class SuppliersPurchaseOrder
             }
         }
         try {
-            $sql = "select *, ";
-            $sql .= "DATE_FORMAT(purchase_order_date, '%b %d, %Y') as formated_date, ";
-            $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
-            $sql .= "purchase_order_date as total_amount, ";
-            $sql .= "SUM(purchase_order_total_amount) as total_amount, ";
-            $sql .= "SUM(purchase_order_payment) as total_paid, ";
-            $sql .= "purchase_order_status as status, ";
-            $sql .= "purchase_order_is_active as is_active, ";
-            $sql .= "purchase_order_number as name ";
+            $sql = "select ";
+            $sql .= "MAX(DATE_FORMAT(purchase_order_date, '%b %d, %Y')) as formated_date, ";
+            $sql .= "MAX(DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y')) as formated_delivery_date, ";
+            $sql .= "MAX(purchase_order_date) as purchase_order_date, ";
+            $sql .= "SUM(purchase_order_total_amount) as purchase_order_total_amount, ";
+            $sql .= "SUM(purchase_order_payment) as purchase_order_payment, ";
+            $sql .= "MAX(purchase_order_status) as status, ";
+            $sql .= "MAX(purchase_order_is_active) as is_active, ";
+            $sql .= "MAX(purchase_order_aid) as purchase_order_aid, ";
+            $sql .= "MAX(purchase_order_number) as purchase_order_number, ";
+            $sql .= "MAX(purchase_order_supplier_name) as purchase_order_supplier_name, ";
+            $sql .= "MAX(purchase_order_date) as purchase_order_date, ";
+            $sql .= "MAX(purchase_order_expected_delivery) as purchase_order_expected_delivery, ";
+            $sql .= "MAX(purchase_order_is_active) as purchase_order_is_active, ";
+            $sql .= "MAX(purchase_order_status) as purchase_order_status, ";
+            $sql .= "MAX(purchase_order_payment_status) as purchase_order_payment_status, ";
+            $sql .= "MAX(purchase_order_note) as purchase_order_note, ";
+            $sql .= "MAX(purchase_order_product_name) as purchase_order_product_name, ";
+            $sql .= "MAX(purchase_order_product_owner_name) as purchase_order_product_owner_name, ";
+            $sql .= "MAX(purchase_order_qty) as purchase_order_qty, ";
+            $sql .= "MAX(purchase_order_price) as purchase_order_price, ";
+            $sql .= "MAX(purchase_order_number) as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
             $sql .= " where true ";
             if (!empty($filterColumn)) {
@@ -209,14 +222,28 @@ class SuppliersPurchaseOrder
             }
         }
         try {
-            $sql = "select *, ";
-            $sql .= "DATE_FORMAT(purchase_order_date, '%b %d, %Y') as formated_date, ";
-            $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
-            $sql .= "SUM(purchase_order_total_amount) as total_amount, ";
-            $sql .= "SUM(purchase_order_payment) as total_paid, ";
-            $sql .= "purchase_order_status as status, ";
-            $sql .= "purchase_order_is_active as is_active, ";
-            $sql .= "purchase_order_number as name ";
+            $sql = "select ";
+            $sql .= "MAX(DATE_FORMAT(purchase_order_date, '%b %d, %Y')) as formated_date, ";
+            $sql .= "MAX(DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y')) as formated_delivery_date, ";
+            $sql .= "MAX(purchase_order_date) as purchase_order_date, ";
+            $sql .= "SUM(purchase_order_total_amount) as purchase_order_total_amount, ";
+            $sql .= "SUM(purchase_order_payment) as purchase_order_payment, ";
+            $sql .= "MAX(purchase_order_status) as status, ";
+            $sql .= "MAX(purchase_order_is_active) as is_active, ";
+            $sql .= "MAX(purchase_order_aid) as purchase_order_aid, ";
+            $sql .= "MAX(purchase_order_number) as purchase_order_number, ";
+            $sql .= "MAX(purchase_order_supplier_name) as purchase_order_supplier_name, ";
+            $sql .= "MAX(purchase_order_date) as purchase_order_date, ";
+            $sql .= "MAX(purchase_order_expected_delivery) as purchase_order_expected_delivery, ";
+            $sql .= "MAX(purchase_order_is_active) as purchase_order_is_active, ";
+            $sql .= "MAX(purchase_order_status) as purchase_order_status, ";
+            $sql .= "MAX(purchase_order_payment_status) as purchase_order_payment_status, ";
+            $sql .= "MAX(purchase_order_note) as purchase_order_note, ";
+            $sql .= "MAX(purchase_order_product_name) as purchase_order_product_name, ";
+            $sql .= "MAX(purchase_order_product_owner_name) as purchase_order_product_owner_name, ";
+            $sql .= "MAX(purchase_order_qty) as purchase_order_qty, ";
+            $sql .= "MAX(purchase_order_price) as purchase_order_price, ";
+            $sql .= "MAX(purchase_order_number) as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
             $sql .= " where true ";
             if (!empty($filterColumn)) {
@@ -239,35 +266,6 @@ class SuppliersPurchaseOrder
             $query = false;
         }
 
-        return $query;
-    }
-
-    public function search()
-    {
-        try {
-            $sql = "select *, ";
-            $sql .= "purchase_order_aid as id, ";
-            $sql .= "purchase_order_is_active as is_active, ";
-            $sql .= "purchase_order_status as status, ";
-            $sql .= "purchase_order_number as name ";
-            $sql .= "from ";
-            $sql .= " {$this->tblSuppliersPurchaseOrder} ";
-            $sql .= "where (purchase_order_number like :purchase_order_number ";
-            $sql .= "or purchase_order_supplier_name like :purchase_order_supplier_name  ";
-            $sql .= "or purchase_order_product_owner_name like :purchase_order_product_owner_name  ";
-            $sql .= "or purchase_order_product_name like :purchase_order_product_name)  ";
-            $sql .= "order by suppliers_product_name asc ";
-            $query = $this->connection->prepare($sql);
-            $query->execute([
-                "purchase_order_number" => "%{$this->column_search}%",
-                "purchase_order_supplier_name" => "%{$this->column_search}%",
-                "purchase_order_product_owner_name" => "%{$this->column_search}%",
-                "purchase_order_product_name" => "%{$this->column_search}%",
-            ]);
-        } catch (PDOException $ex) {
-            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
-            $query = false;
-        }
         return $query;
     }
 
@@ -456,7 +454,7 @@ class SuppliersPurchaseOrder
     }
 
     // read all
-    public function checkIdNumberExist()
+    public function checkLastIdNumber()
     {
         try {
             $sql = "select *, ";
@@ -465,6 +463,28 @@ class SuppliersPurchaseOrder
             $sql .= "order by purchase_order_aid desc ";
             $sql .= "limit 1 ";
             $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function checkIdNumberExist($newCodeNumber)
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "purchase_order_number as id_number ";
+            $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
+            $sql .= "where purchase_order_number = :purchase_order_number ";
+            $sql .= "group by purchase_order_number ";
+            $sql .= "order by purchase_order_status desc, ";
+            $sql .= "purchase_order_date asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "purchase_order_number" => $newCodeNumber,
+            ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
