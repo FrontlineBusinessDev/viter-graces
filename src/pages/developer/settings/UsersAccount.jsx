@@ -51,6 +51,7 @@ const UsersAccount = () => {
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)] `}
           path="users"
           setItemEdit={setItemEdit}
+          dataTestidAddButton="add-users-btn"
         />
       </HeaderNav>
       {store.isAdd && <ModalUser itemEdit={itemEdit} />}
