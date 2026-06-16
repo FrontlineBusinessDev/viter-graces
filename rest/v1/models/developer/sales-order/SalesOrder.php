@@ -143,6 +143,7 @@ class SalesOrder
             ]);
             $this->lastInsertedId = $this->connection->lastInsertId();
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -265,7 +266,7 @@ class SalesOrder
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -388,7 +389,7 @@ class SalesOrder
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -416,6 +417,7 @@ class SalesOrder
                 "sales_order_price" => "%{$this->column_search}%",
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -438,6 +440,7 @@ class SalesOrder
                 "sales_order_aid" => $this->sales_order_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -490,6 +493,7 @@ class SalesOrder
                 "sales_order_aid" => $this->sales_order_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -512,6 +516,7 @@ class SalesOrder
                 "sales_order_number" => $this->sales_order_number,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -528,6 +533,7 @@ class SalesOrder
                 "sales_order_number" => $this->sales_order_number,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -544,6 +550,7 @@ class SalesOrder
                 "sales_order_aid" => $this->sales_order_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -594,6 +601,7 @@ class SalesOrder
                 "stock_movement_updated" => $this->sales_order_updated,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
 
@@ -626,6 +634,7 @@ class SalesOrder
                 ] : [],
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -647,6 +656,7 @@ class SalesOrder
                 "sales_order_number" => $newCodeNumber,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -663,6 +673,7 @@ class SalesOrder
             $sql .= "limit 1 ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -685,6 +696,7 @@ class SalesOrder
                 "sales_order_number" => $this->sales_order_number,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -766,6 +778,7 @@ class SalesOrder
                 "stock_movement_product_id" => $this->sales_order_product_id,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
 
@@ -789,6 +802,7 @@ class SalesOrder
                 "date_yesterday" => $this->date_yesterday,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
 
@@ -818,6 +832,7 @@ class SalesOrder
                 "date_today" => $this->date_today,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
 

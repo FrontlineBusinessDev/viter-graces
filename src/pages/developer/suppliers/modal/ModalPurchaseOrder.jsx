@@ -45,6 +45,8 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
           },
         ],
   );
+
+  console.log(items, itemEdit?.items);
   const [counter, setCounter] = React.useState(0);
 
   const handleChange = (index, field, fieldId, value, id) => {
@@ -422,6 +424,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         label="Paid Amount"
                         type="number"
                         name="purchase_order_payment"
+                        placeholder="0"
                         disabled={mutation.isPending}
                       />
                     </div>

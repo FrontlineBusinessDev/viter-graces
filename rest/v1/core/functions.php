@@ -799,3 +799,25 @@ function setIdNumber($object, $val)
 
     return $newCodeNumber;
 }
+
+function logError(
+    string $message,
+    ?string $filePath = null,
+    array $extra = []
+): void {
+    $log = [
+        'level' => 'ERROR',
+        'datetime' => date('c'), // ISO 8601
+        'file' => $filePath,
+        'message' => $message,
+    ];
+
+    if (!empty($extra)) {
+        $log['extra'] = $extra;
+    }
+
+    file_put_contents(
+        'php://stderr',
+        json_encode($log, JSON_UNESCAPED_SLASHES) . PHP_EOL
+    );
+}

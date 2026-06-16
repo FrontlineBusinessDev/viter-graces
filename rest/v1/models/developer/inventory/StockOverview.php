@@ -99,7 +99,7 @@ class StockOverview
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
 
@@ -126,6 +126,7 @@ class StockOverview
             $sql .= "HAVING current_qty <= p.products_low_stock_threshold ) as low_stock ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -254,6 +255,7 @@ class StockOverview
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
 
@@ -386,7 +388,8 @@ class StockOverview
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-
+            // FOR LOG ERROR IN DIGITALOCEAN
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
 
