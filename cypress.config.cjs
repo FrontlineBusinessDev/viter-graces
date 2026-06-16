@@ -7,5 +7,7 @@ module.exports = defineConfig({
     viewportHeight: 720,
     video: false,
     screenshotOnRunFailure: true,
+    supportFile: "cypress/support/e2e.js",
+    specPattern: "cypress/e2e/**/*.cy.js",
   },
 });

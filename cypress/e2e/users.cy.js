@@ -1,15 +1,7 @@
 describe("Users Module - CRUD Flow", () => {
   beforeEach(() => {
     cy.session("admin", () => {
-      cy.visit("/login");
-
-      cy.get("input[name=user_account_email]").type(Cypress.env("email"));
-
-      cy.get("input[name=password]").type(Cypress.env("password"));
-
-      cy.get("button[type=submit]").click();
-
-      cy.url().should("not.include", "/login");
+      cy.login();
     });
 
     cy.visit("/developer/users");
@@ -19,7 +11,37 @@ describe("Users Module - CRUD Flow", () => {
   it("Creates a new user account", () => {
     cy.get('[data-testid="add-users-btn"]').click();
 
-    cy.get('[data-testid="user_account_role_id"]').select(1);
-    cy.get('input[name="user_account_first_name"]').type("Jamie");
+    cy.get('[data-testid="select-role"]').select(1);
+    cy.get('input[name="user_account_first_name"]').type("Herlyn");
+    cy.get('input[name="user_account_last_name"]').type("Mae");
+    cy.get('input[name="user_account_email"]').type(
+      "herlyn.torres@frontlinebusiness.com.ph",
+    );
+
+    cy.get('[data-testid="false"]').click();
+
+    cy.get('[data-testid="add-users-btn"]').click();
+
+    cy.get('[data-testid="select-role"]').select(1);
+    cy.get('input[name="user_account_first_name"]').type("Herlyn");
+    cy.get('input[name="user_account_last_name"]').type("Mae");
+    cy.get('input[name="user_account_email"]').type(
+      "herlyn.torres@frontlinebusiness.com.ph",
+    );
+    cy.get('[data-testid="close-btn"]').click();
+
+    cy.get('[data-testid="add-users-btn"]').click();
+
+    cy.get('[data-testid="select-role"]').select(2);
+    cy.get('input[name="user_account_first_name"]').type("Herlyn");
+    cy.get('input[name="user_account_last_name"]').type("Mae");
+    cy.get('input[name="user_account_email"]').type(
+      "herlyn.torres@frontlinebusiness.com.ph",
+    );
+
+    cy.get('[data-testid="save-product-btn"]').click();
   });
+
+  //UPDATE
+  
 });
