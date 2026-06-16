@@ -94,7 +94,7 @@ const Products = () => {
     },
     {
       accessorKey: "products_owner_name",
-      header: "Products Owner ",
+      header: "Product Owner ",
       classTh: "min-w-[10rem]",
       classTd: "",
       meta: {
