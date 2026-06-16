@@ -456,7 +456,7 @@ class SuppliersPurchaseOrder
     }
 
     // read all
-    public function checkLastIdNumber()
+    public function checkIdNumberExist()
     {
         try {
             $sql = "select *, ";
