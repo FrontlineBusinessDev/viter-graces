@@ -1,4 +1,4 @@
-import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import { SearchableSelectFilter, SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
 import { StockTypeArray } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
@@ -76,7 +76,15 @@ const MovementHistory = () => {
       header: "Product Owner",
       classTh: "",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="product-owner/read-by-product-owner"
+            testFilterId={"filter-owner"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "stock_movement_notes",
