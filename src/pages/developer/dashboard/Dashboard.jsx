@@ -1,6 +1,7 @@
 import CashflowChart from "@/components/CashflowChart";
 import ProfitLossChart from "@/components/ProfitLossChart";
 import StatCard from "@/components/StatCard";
+import DashboardExpensesToday from "@/layout/dashboard/DashboardExpensesToday";
 import DashboardLowStockAlert from "@/layout/dashboard/DashboardLowStockAlert";
 import DashboardOverduePayments from "@/layout/dashboard/DashboardOverduePayments";
 import DashboardRecentActivities from "@/layout/dashboard/DashboardRecentActivities";
@@ -10,12 +11,7 @@ import DashboardTopSellingProduct from "@/layout/dashboard/DashboardTopSellingPr
 import HeaderNav from "@/layout/headers/HeaderNav";
 import { setTabValue } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
-import {
-  AlertTriangle,
-  PhilippinePeso,
-  TrendingUp,
-  Trophy,
-} from "lucide-react";
+import { PhilippinePeso } from "lucide-react";
 import React from "react";
 const Dashboard = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -32,18 +28,7 @@ const Dashboard = () => {
             <DashboardSalesToday path="sales-order/read-sales-today" />
             <DashboardLowStockAlert path="stock-movement/read-count-low-stock" />
             <DashboardTopSellingProduct path="sales-order/read-top-selling-product" />
-
-            <StatCard
-              title="Expenses Today"
-              value="₱******"
-              subtitle="Yesterday: ₱******"
-              flipContent="₱12,450.00"
-              subTitleFlip="Yesterday: ₱10,000.00"
-              flipBg="bg-red-100 dark:bg-red-900"
-              icon={<PhilippinePeso className="text-red-500" size={20} />}
-              iconBg="bg-red-100 dark:bg-[#2a1019]"
-              dataTestId="expenses-card"
-            />
+            <DashboardExpensesToday path="sales-order/read-top-selling-product" />
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-[2fr_1fr_1fr] gap-6 py-6 ">

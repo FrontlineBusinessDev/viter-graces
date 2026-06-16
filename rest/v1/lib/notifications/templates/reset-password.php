@@ -2,7 +2,7 @@
 
 function getHtmlResetPassword(
   $password_link,
-  $name,
+  $email,
   $key,
   $ROOT_DOMAIN,
   $IMAGES_URL
@@ -43,7 +43,7 @@ function getHtmlResetPassword(
       <div>
         <img
           src="' . $IMAGES_URL . '/SideLogo.png"
-          alt="wfs"
+          alt="graces-logo"
           style="max-width: 150px"
         />
       </div>
@@ -64,10 +64,9 @@ function getHtmlResetPassword(
           </p>
         </div>
         <div style="padding: 10px 0px">
-          <p style="margin: 5px 0px 15px 0px">Hi There ' . $name . ',</p>
-          <p style="margin-bottom: 5px">
+          <p style="margin: 5px 0px 15px 0px">
             We received a request to reset the password for your account
-            <span style="">juandelacruz@graces.com</span> Tap the button below
+            <span style="">' . $email . '</span> Tap the button below
             to set a new password and regain access.
           </p>
 

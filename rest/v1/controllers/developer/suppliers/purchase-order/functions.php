@@ -6,6 +6,15 @@ function isUserAccountAssociated($object)
     $count = $query->rowCount();
     checkExistence($count, "You cannot delete this item because it is already associated with other module.");
 }
+
+// Read all
+function checkReadExpensesToday($object)
+{
+    $query = $object->readExpensesToday();
+    checkQuery($query, "Empty records. (read sales today)");
+    return $query;
+}
+
 // check association
 function allowedColumns()
 {
