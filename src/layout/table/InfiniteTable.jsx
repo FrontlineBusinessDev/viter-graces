@@ -325,6 +325,9 @@ const InfiniteTable = ({
                           {header.column.columnDef.meta === "" ? (
                             <DebouncedInput
                               type="search"
+                              cypressTesting={
+                                header.column.columnDef.accessorKey
+                              }
                               className={`bg-white dark:bg-[#0b111e] m-0! w-full! text-sm border cursor-pointer! isFocused:border-primary! isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! h-8`}
                               value={header.column.getFilterValue() ?? ""}
                               filterFn={header.column.columnDef.filterFn}
