@@ -6,11 +6,15 @@ import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import React from "react";
 
-const ViewDetails = ({ itemEdit }) => {
+const ViewDetails = ({ itemEdit, item }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const handleClose = () => {
     dispatch(setIsView(false));
   };
+
+  console.log("item", item);
+  console.log("itemEdit", itemEdit);
+
   return (
     <div
       className="bg-dark/50 dark:bg-dark-mode/90 fixed inset-0 z-999 flex justify-center items-center overflow-y-auto animate-fadeIn"
