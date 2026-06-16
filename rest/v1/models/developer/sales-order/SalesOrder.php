@@ -774,13 +774,13 @@ class SalesOrder
     public function readSalesToday()
     {
         try {
-            $sql = " select DATE(sales_order_date) AS sales_date, ";
+            $sql = "select DATE(sales_order_date) AS sales_date, ";
             $sql .= "sales_order_product_name AS product_name, ";
-            $sql .= " SUM(sales_order_total) AS total_sales, ";
-            $sql .= " SUM(sales_order_qty) AS total_qty ";
-            $sql .= " FROM {$this->tblSalesOrder}";
-            $sql .= " WHERE DATE(sales_order_date) IN ";
-            $sql .= " ( DATE(:date_today), DATE(:date_yesterday) )";
+            $sql .= "SUM(sales_order_total) AS total_sales, ";
+            $sql .= "SUM(sales_order_qty) AS total_qty ";
+            $sql .= "from {$this->tblSalesOrder}";
+            $sql .= "where DATE(sales_order_date) = DATE(:date_today) ";
+            $sql .= "and DATE(sales_order_date) = DATE(:date_yesterday) ";
             $sql .= "GROUP BY DATE(sales_order_date)";
             $sql .= "ORDER BY sales_date DESC";
             $query = $this->connection->prepare($sql);
