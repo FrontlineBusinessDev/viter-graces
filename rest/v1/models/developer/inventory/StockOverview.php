@@ -216,7 +216,7 @@ class StockOverview
 
             $sql .= "LEFT JOIN (
                 SELECT
-                    sales_order_product_id,
+                    MAX(sales_order_product_id),
                     SUM(sales_order_qty) AS order_qty
                 FROM {$this->tblSalesOrder}
                 GROUP BY sales_order_product_id
@@ -333,7 +333,7 @@ class StockOverview
             $sql .= "ON ms.stock_movement_product_id = p.products_aid ";
             $sql .= "LEFT JOIN (
                 SELECT
-                    sales_order_product_id,
+                    MAX(sales_order_product_id),
                     SUM(sales_order_qty) AS order_qty
                 FROM {$this->tblSalesOrder}
                 GROUP BY sales_order_product_id
