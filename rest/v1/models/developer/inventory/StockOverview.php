@@ -386,7 +386,7 @@ class StockOverview
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-
+            returnError($ex);
             $query = false;
         }
 
