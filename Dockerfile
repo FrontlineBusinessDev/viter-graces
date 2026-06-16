@@ -48,5 +48,7 @@ COPY apache/.htaccess /var/www/html/.htaccess
 COPY rest/ /var/www/html/rest/
 RUN docker-php-ext-install pdo pdo_mysql mysqli \
  && chown -R www-data:www-data /var/www/html
+RUN echo "log_errors = On" >> /usr/local/etc/php/conf.d/error-logging.ini \
+&& echo "error_log = /proc/self/fd/2" >> /usr/local/etc/php/conf.d/error-logging.ini
 EXPOSE 8080
 CMD ["apache2-foreground"]

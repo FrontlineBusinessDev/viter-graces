@@ -203,7 +203,7 @@ class StockMovement
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-
+            logError($ex->getMessage(),$ex->getFile(), ['line' => $ex->getLine(),'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
