@@ -254,6 +254,7 @@ export const InputCode = ({ length, loading, onComplete }) => {
 
 export const DebouncedInput = ({
   value: initialValue,
+  cypressTesting = "",
   onChange,
   filterFn,
   debounce = 500,
@@ -282,6 +283,7 @@ export const DebouncedInput = ({
           type={isEmptyItem(filterFn, "auto") !== "date" ? "text" : "date"}
           value={value ?? ""}
           onChange={(e) => setValue(e.target.value)}
+          data-testid={cypressTesting}
         />
       )}
 
@@ -301,6 +303,7 @@ export const DebouncedInput = ({
               };
               setValue(newValue);
             }}
+            data-testid={cypressTesting}
             placeholder="0"
           />
           <span className="font-bold">-</span>
@@ -318,6 +321,7 @@ export const DebouncedInput = ({
               };
               setValue(newValue);
             }}
+            data-testid={cypressTesting}
             placeholder="max"
           />
         </div>
