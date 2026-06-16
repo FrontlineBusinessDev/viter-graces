@@ -146,7 +146,6 @@ class SuppliersPurchaseOrder
         }
         try {
             $sql = "select *, ";
-            $sql .= "purchase_order_aid as id, ";
             $sql .= "DATE_FORMAT(purchase_order_date, '%b %d, %Y') as formated_date, ";
             $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "purchase_order_date as total_amount, ";
@@ -211,7 +210,6 @@ class SuppliersPurchaseOrder
         }
         try {
             $sql = "select *, ";
-            $sql .= "purchase_order_aid as id, ";
             $sql .= "DATE_FORMAT(purchase_order_date, '%b %d, %Y') as formated_date, ";
             $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "SUM(purchase_order_total_amount) as total_amount, ";
@@ -229,9 +227,9 @@ class SuppliersPurchaseOrder
                 or purchase_order_product_owner_name like :purchase_order_product_owner_name 
                 or purchase_order_product_name like :purchase_order_product_name) " : " ");
             }
-            $sql .= " group by purchase_order_number ";
-            $sql .= " order by purchase_order_is_active desc, ";
-            $sql .= " purchase_order_aid desc ";
+            $sql .= "group by purchase_order_number ";
+            $sql .= "order by purchase_order_is_active desc, ";
+            $sql .= "purchase_order_aid desc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -454,6 +452,23 @@ class SuppliersPurchaseOrder
             $query = false;
         }
 
+        return $query;
+    }
+
+    // read all
+    public function checkLastIdNumber()
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "purchase_order_number as id_number ";
+            $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
+            $sql .= "order by purchase_order_aid desc ";
+            $sql .= "limit 1 ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
         return $query;
     }
 }
