@@ -27,7 +27,7 @@ import TableStatus from "../TableStatus";
 import CustomerMobile from "../mobile-responsive/CustomerMobile";
 import InfiniteDefaultTableMobileCard from "../mobile-responsive/InfiniteDefaultTableMobileCard";
 import ProductsMobile from "../mobile-responsive/ProductsMobile";
-import { PesoSign } from "@/components/PesoSign";
+import { AmountWithPesoSign, PesoSign } from "@/components/PesoSign";
 
 const InfiniteSubTable = ({
   columns,
@@ -94,7 +94,7 @@ const InfiniteSubTable = ({
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
         null,
-        `${apiVersion}/${path}/page/${pageParam}`,
+        `${apiVersion}/${path}/${pageParam}`,
         false,
         {
           ...searchPayload,
@@ -109,12 +109,12 @@ const InfiniteSubTable = ({
       }
       return undefined;
     },
-
-    staleTime: 1000 * 60 * 5, // 5 mins → no refetch when revisiting
-    gcTime: 1000 * 60 * 30, // keep cache for 30 mins
-    refetchOnMount: false,
-    refetchOnWindowFocus: false,
-    refetchOnReconnect: false,
+    refetchOnWindowFocus: true,
+    // staleTime: 1000 * 60 * 5, // 5 mins → no refetch when revisiting
+    // gcTime: 1000 * 60 * 30, // keep cache for 30 mins
+    // refetchOnMount: false,
+    // refetchOnWindowFocus: false,
+    // refetchOnReconnect: false,
     // enabled: !isStatic,
   });
 
@@ -384,16 +384,23 @@ const InfiniteSubTable = ({
                             ) : (
                               <div className="flex items-center">
                                 {isEmptyItem(
-                                  item?.column?.columnDef?.amount,
+                                  item?.column?.columnDef?.amount ||
+                                    item?.column?.columnDef?.paid_amount,
                                   false,
                                 ) ? (
-                                  <PesoSign />
+                                  <AmountWithPesoSign
+                                    classN="size-3"
+                                    amount={
+                                      rowData[
+                                        `${item?.column?.columnDef?.accessorKey}`
+                                      ]
+                                    }
+                                  />
                                 ) : (
-                                  ""
-                                )}
-                                {flexRender(
-                                  item?.column?.columnDef?.cell,
-                                  item?.getContext(),
+                                  flexRender(
+                                    item?.column?.columnDef?.cell,
+                                    item?.getContext(),
+                                  )
                                 )}
                               </div>
                             )}
