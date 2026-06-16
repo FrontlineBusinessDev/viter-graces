@@ -14,6 +14,7 @@ import React from "react";
 
 export const titleHeaderTab = () => {
   const { store, dispatch } = React.useContext(StoreContext);
+
   const onClickTab = () => {
     dispatch(setIsSearch(false));
   };
@@ -174,12 +175,12 @@ export const titleHeaderTab = () => {
           description_tab: "Manage user accounts and access.",
           on_click: onClickTab,
         },
-        {
-          icon: <UserCog className="size-4 mr-1" />,
-          title_tab: "roles",
-          description_tab: "Define roles and permissions.",
-          on_click: onClickTab,
-        },
+        // {
+        //   icon: <UserCog className="size-4 mr-1" />,
+        //   title_tab: "roles",
+        //   description_tab: "Define roles and permissions.",
+        //   on_click: onClickTab,
+        // },
         {
           icon: <Building2 className="size-4 mr-1" />,
           title_tab: "product-owner",
