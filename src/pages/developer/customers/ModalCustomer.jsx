@@ -120,6 +120,7 @@ const ModalCustomer = ({ itemEdit }) => {
                       name="customer_name"
                       placeholder={`${itemEdit ? "Update name" : "Enter name"}`}
                       disabled={mutation.isPending}
+                      data-testid="customer-name"
                     />
                   </div>
                   <div className="relative mt-3">
@@ -130,6 +131,7 @@ const ModalCustomer = ({ itemEdit }) => {
                       placeholder={`${itemEdit ? "Update email" : "Enter new email"}`}
                       disabled={mutation.isPending}
                       required={false}
+                      data-testid="customer-email"
                     />
                   </div>
                   <div className="relative mt-3">
@@ -137,6 +139,7 @@ const ModalCustomer = ({ itemEdit }) => {
                       label="Phone"
                       name="customer_phone"
                       placeholder={`${itemEdit ? "Update phone" : "Enter phone"}`}
+                      data-testid="customer-phone"
                       disabled={mutation.isPending}
                       required={false}
                     />
@@ -146,6 +149,7 @@ const ModalCustomer = ({ itemEdit }) => {
                       label="Address"
                       type="text"
                       name="customer_address"
+                      data-testid="customer-address"
                       placeholder={`${itemEdit ? "Update address" : "Enter address"}`}
                       disabled={mutation.isPending}
                       required={false}
@@ -156,6 +160,7 @@ const ModalCustomer = ({ itemEdit }) => {
                       label="Messenger"
                       type="text"
                       name="customer_messenger"
+                      data-testid="customer-messenger"
                       placeholder={`${itemEdit ? "Update Messenger" : "Enter new Messenger"}`}
                       disabled={mutation.isPending}
                       required={false}
@@ -166,6 +171,7 @@ const ModalCustomer = ({ itemEdit }) => {
                       label="Whatsapp"
                       type="text"
                       name="customer_whatsapp"
+                      data-testid="customer-whatsapp"
                       placeholder={`${itemEdit ? "Update Whatsapp" : "Enter new Whatsapp"}`}
                       disabled={mutation.isPending}
                       required={false}
@@ -176,6 +182,7 @@ const ModalCustomer = ({ itemEdit }) => {
                       label="Other"
                       type="text"
                       name="customer_other"
+                      data-testid="customer-other"
                       placeholder={`${itemEdit ? "Update Other" : "Enter new Other"}`}
                       disabled={mutation.isPending}
                       required={false}
@@ -186,6 +193,7 @@ const ModalCustomer = ({ itemEdit }) => {
                       label="Notes"
                       type="text"
                       name="customer_notes"
+                      data-testid="customer-notes"
                       placeholder={`${itemEdit ? "Update notes" : "Enter notes"}`}
                       disabled={mutation.isPending}
                       required={false}
@@ -197,6 +205,7 @@ const ModalCustomer = ({ itemEdit }) => {
                     <ModalButton
                       disabled={mutation.isPending}
                       loading={mutation.isPending}
+                      data-testid="button-cancel"
                       itemEdit={itemEdit}
                       type="button"
                       handleClose={handleClose}
@@ -205,6 +214,7 @@ const ModalCustomer = ({ itemEdit }) => {
                       disabled={mutation.isPending}
                       loading={mutation.isPending}
                       itemEdit={itemEdit}
+                      data-testid="button-submit"
                       type="submit"
                     />
                   </div>
