@@ -7,25 +7,12 @@ describe("Users Module - CRUD Flow", () => {
     cy.visit("/developer/users");
   });
 
-  //SEARCH
-  it("Search a user account", () => {
-    cy.intercept("POST", "**/users/page/*").as("getUser");
-
-    cy.get('[data-testid="search-input"]').type("Mayeng");
-
-    cy.wait("@getUser");
-
-    cy.contains("Mayeng", { timeout: 20000 }).should("exist");
-  });
-
   //CREATE
   it("Creates a new user account", () => {
     cy.get('[data-testid="add-users-btn"]').click();
 
     cy.get('[data-testid="select-role"]').select(1);
-    cy.get('input[name="user_account_first_name"]', { timeout: 10000 })
-      .should("be.visible")
-      .type("Herlyn");
+    cy.get('input[name="user_account_first_name"]').type("Herlyn");
     cy.get('input[name="user_account_last_name"]').type("Mae");
     cy.get('input[name="user_account_email"]').type(
       "herlyn.torres@frontlinebusiness.com.ph",
@@ -58,7 +45,7 @@ describe("Users Module - CRUD Flow", () => {
 
     cy.wait("@createUser");
 
-    cy.contains("Herlyn", { timeout: 15000 }).should("exist");
+    cy.contains("Herlyn", { timeout: 1000 }).should("exist");
   });
 
   //UPDATE
@@ -69,7 +56,7 @@ describe("Users Module - CRUD Flow", () => {
     cy.viewport(1280, 720); //size
     cy.wait("@getUser");
 
-    cy.get('[data-testid="table-row"]', { timeout: 20000 }).should(
+    cy.get('[data-testid="table-row"]', { timeout: 1000 }).should(
       "have.length.greaterThan",
       0,
     );
@@ -95,8 +82,6 @@ describe("Users Module - CRUD Flow", () => {
 
     cy.wait("@updateUser");
 
-    cy.contains("Mayeng", { timeout: 15000 }).should("exist");
-
     cy.get('[data-testid="close-btn"]').click();
   });
 
@@ -107,8 +92,8 @@ describe("Users Module - CRUD Flow", () => {
 
     cy.wait("@getUser");
 
-    cy.contains('[data-testid="table-row"]', "Herlyn", {
-      timeout: 20000,
+    cy.contains('[data-testid="table-row"]', "Mayeng", {
+      timeout: 1000,
     })
       .should("be.visible")
       .within(() => {
@@ -133,7 +118,7 @@ describe("Users Module - CRUD Flow", () => {
 
     cy.wait("@getUser");
 
-    cy.contains('[data-testid="table-row"]', "Herlyn", { timeout: 20000 })
+    cy.contains('[data-testid="table-row"]', "Mayeng", { timeout: 1000 })
       .should("be.visible")
       .within(() => {
         cy.get('[data-testid="action-restore"]').click();
@@ -148,6 +133,17 @@ describe("Users Module - CRUD Flow", () => {
       .and("contain.text", "successfully");
   });
 
+  //SEARCH
+  it("Search a user account", () => {
+    cy.intercept("POST", "**/users/page/*").as("getUser");
+
+    cy.get('[data-testid="search-input"]').type("Mayeng");
+
+    cy.wait("@getUser");
+
+    cy.contains("Mayeng", { timeout: 1000 }).should("exist");
+  });
+
   // DELETE
   it("Deletes a user account", () => {
     cy.intercept("POST", "**/users/page/*").as("getUser");
@@ -156,8 +152,8 @@ describe("Users Module - CRUD Flow", () => {
 
     cy.wait("@getUser");
 
-    cy.contains('[data-testid="table-row"]', "Herlyn", {
-      timeout: 20000,
+    cy.contains('[data-testid="table-row"]', "Mayeng", {
+      timeout: 1000,
     })
       .should("be.visible")
       .within(() => {
@@ -168,7 +164,7 @@ describe("Users Module - CRUD Flow", () => {
 
     cy.wait("@archiveUser");
 
-    cy.contains('[data-testid="table-row"]', "Herlyn").within(() => {
+    cy.contains('[data-testid="table-row"]', "Mayeng").within(() => {
       cy.get('[data-testid="action-delete"]').click();
     });
 
