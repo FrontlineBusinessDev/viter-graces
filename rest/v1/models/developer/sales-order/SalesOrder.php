@@ -179,14 +179,36 @@ class SalesOrder
             }
         }
         try {
-            $sql = "select *, ";
-            $sql .= "sales_order_overall_amount as total_amount, ";
-            $sql .= "sales_order_paid_amount as total_paid, ";
-            $sql .= "sales_order_aid as id, ";
-            $sql .= "sales_order_is_active as is_active, ";
-            $sql .= "sales_order_date as order_date, ";
-            $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
-            $sql .= "sales_order_customer_name as name ";
+            $sql = "select ";
+            $sql .= "MAX(sales_order_status) as sales_order_status, ";
+            $sql .= "MAX(sales_order_number) as sales_order_number, ";
+            $sql .= "MAX(sales_order_date) as sales_order_date, ";
+            $sql .= "MAX(sales_order_customer_id) as sales_order_customer_id, ";
+            $sql .= "MAX(sales_order_customer_name) as sales_order_customer_name, ";
+            $sql .= "MAX(sales_order_payment_method) as sales_order_payment_method, ";
+            $sql .= "MAX(sales_order_product_id) as sales_order_product_id, ";
+            $sql .= "MAX(sales_order_product_name) as sales_order_product_name, ";
+            $sql .= "MAX(sales_order_price) as sales_order_price, ";
+            $sql .= "MAX(sales_order_qty) as sales_order_qty, ";
+            $sql .= "MAX(sales_order_total) as sales_order_total, ";
+            $sql .= "MAX(sales_order_overall_amount) as sales_order_overall_amount, ";
+            $sql .= "MAX(sales_order_discount) as sales_order_discount, ";
+            $sql .= "MAX(sales_order_tax) as sales_order_tax, ";
+            $sql .= "MAX(sales_order_paid_amount) as sales_order_paid_amount, ";
+            $sql .= "MAX(sales_order_notes) as sales_order_notes, ";
+            $sql .= "MAX(sales_order_received_by_id) as sales_order_received_by_id, ";
+            $sql .= "MAX(sales_order_received_by_name) as sales_order_received_by_name, ";
+            $sql .= "MAX(sales_order_product_owner_id) as sales_order_product_owner_id, ";
+            $sql .= "MAX(sales_order_product_owner_name) as sales_order_product_owner_name, ";
+            $sql .= "MAX(sales_order_installment) as sales_order_installment, ";
+            $sql .= "MAX(sales_order_due_date) as sales_order_due_date, ";
+            $sql .= "MAX(sales_order_overall_amount) as total_amount, ";
+            $sql .= "MAX(sales_order_paid_amount) as total_paid, ";
+            $sql .= "MAX(sales_order_aid) as id, ";
+            $sql .= "MAX(sales_order_is_active) as is_active, ";
+            $sql .= "MAX(sales_order_date) as order_date, ";
+            $sql .= "DATE_FORMAT(MAX(sales_order_date), '%b %d, %Y') as sales_order_date, ";
+            $sql .= "MAX(sales_order_customer_name) as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";
             if (!empty($filterColumn)) {
@@ -241,14 +263,36 @@ class SalesOrder
             }
         }
         try {
-            $sql = "select *, ";
-            $sql .= "sales_order_overall_amount as total_amount, ";
-            $sql .= "sales_order_paid_amount as total_paid, ";
-            $sql .= "sales_order_aid as id, ";
-            $sql .= "sales_order_is_active as is_active, ";
-            $sql .= "sales_order_date as order_date, ";
-            $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
-            $sql .= "sales_order_customer_name as name ";
+            $sql = "select ";
+            $sql .= "MAX(sales_order_status) as sales_order_status, ";
+            $sql .= "MAX(sales_order_number) as sales_order_number, ";
+            $sql .= "MAX(sales_order_date) as sales_order_date, ";
+            $sql .= "MAX(sales_order_customer_id) as sales_order_customer_id, ";
+            $sql .= "MAX(sales_order_customer_name) as sales_order_customer_name, ";
+            $sql .= "MAX(sales_order_payment_method) as sales_order_payment_method, ";
+            $sql .= "MAX(sales_order_product_id) as sales_order_product_id, ";
+            $sql .= "MAX(sales_order_product_name) as sales_order_product_name, ";
+            $sql .= "MAX(sales_order_price) as sales_order_price, ";
+            $sql .= "MAX(sales_order_qty) as sales_order_qty, ";
+            $sql .= "MAX(sales_order_total) as sales_order_total, ";
+            $sql .= "MAX(sales_order_overall_amount) as sales_order_overall_amount, ";
+            $sql .= "MAX(sales_order_discount) as sales_order_discount, ";
+            $sql .= "MAX(sales_order_tax) as sales_order_tax, ";
+            $sql .= "MAX(sales_order_paid_amount) as sales_order_paid_amount, ";
+            $sql .= "MAX(sales_order_notes) as sales_order_notes, ";
+            $sql .= "MAX(sales_order_received_by_id) as sales_order_received_by_id, ";
+            $sql .= "MAX(sales_order_received_by_name) as sales_order_received_by_name, ";
+            $sql .= "MAX(sales_order_product_owner_id) as sales_order_product_owner_id, ";
+            $sql .= "MAX(sales_order_product_owner_name) as sales_order_product_owner_name, ";
+            $sql .= "MAX(sales_order_installment) as sales_order_installment, ";
+            $sql .= "MAX(sales_order_due_date) as sales_order_due_date, ";
+            $sql .= "MAX(sales_order_overall_amount) as total_amount, ";
+            $sql .= "MAX(sales_order_paid_amount) as total_paid, ";
+            $sql .= "MAX(sales_order_aid) as id, ";
+            $sql .= "MAX(sales_order_is_active) as is_active, ";
+            $sql .= "MAX(sales_order_date) as order_date, ";
+            $sql .= "DATE_FORMAT(MAX(sales_order_date), '%b %d, %Y') as sales_order_date, ";
+            $sql .= "MAX(sales_order_customer_name) as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";
             if (!empty($filterColumn)) {
@@ -266,6 +310,7 @@ class SalesOrder
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
+            returnError($ex);
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
@@ -325,8 +370,7 @@ class SalesOrder
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-
-
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
