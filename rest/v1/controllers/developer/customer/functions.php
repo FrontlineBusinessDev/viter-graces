@@ -43,11 +43,10 @@ function checkCreateWalkInCustomer($object)
     $object->customer_name = "Walk in customer";
     $object->customer_is_active = 1;
     $object->customer_is_walk_in_customer = 1;
-    $object->customer_email = "";
     $object->customer_created = date("Y-m-d H:i:s");
     $object->customer_updated = date("Y-m-d H:i:s");
 
     $query = $object->createWalkInCustomer();
-    checkQuery($query, "There's a problem processing your request. (create walk in customer)");
+    checkQuery($query, "There's a problem processing your request. (create walk in customer data.)");
     return $query;
 }
