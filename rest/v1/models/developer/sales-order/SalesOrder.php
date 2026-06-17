@@ -833,7 +833,7 @@ class SalesOrder
             $sql .= "SUM(sales_order_total) AS total_sales, ";
             $sql .= "SUM(sales_order_qty) AS total_qty ";
             $sql .= "from {$this->tblSalesOrder}";
-            $sql .= "where DATE(sales_order_date) in (DATE(:date_today), DATE(:date_yesterday) ";
+            $sql .= "where DATE(sales_order_date) in (DATE(:date_today), DATE(:date_yesterday)) ";
             $sql .= "group by DATE(sales_order_date) ";
             $sql .= "order by sales_date desc ";
             $query = $this->connection->prepare($sql);
