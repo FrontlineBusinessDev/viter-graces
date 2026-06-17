@@ -56,15 +56,15 @@ const StatCard = ({
               </h2>
 
               {subtitle && (
-                <p className="text-sm text-gray-400 mt-1 dark:text-gray-300">
+                <div className="text-sm text-gray-400 mt-1 dark:text-gray-300">
                   {loading ? (
-                    <span className="bg-white dark:bg-gray-900 w-full h-[15px]">
+                    <div className="bg-white dark:bg-gray-900 w-full h-[15px]">
                       <TableLoading count={1} cols={1} />
-                    </span>
+                    </div>
                   ) : (
-                    <>{subtitle}</>
+                    <p>{subtitle}</p>
                   )}
-                </p>
+                </div>
               )}
 
               {extra && <p className="text-sm text-green-600 mt-1">{extra}</p>}
