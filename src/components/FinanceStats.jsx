@@ -1,5 +1,4 @@
-import { TrendingUp } from "lucide-react";
-import React from "react";
+import TableLoading from "./spinners/TableLoading";
 
 const FinanceStats = ({
   title,
@@ -8,6 +7,7 @@ const FinanceStats = ({
   className,
   icon,
   iconBg = "bg-gray-100",
+  loading = false,
 }) => {
   return (
     <div
@@ -21,7 +21,13 @@ const FinanceStats = ({
         <h2
           className={`text-lg font-semibold ${valueColor} mt-1 dark:text-light`}
         >
-          {value}
+          {loading ? (
+            <span className="bg-white dark:bg-gray-900 w-full h-[15px]">
+              <TableLoading count={1} cols={1} />
+            </span>
+          ) : (
+            <>{value}</>
+          )}
         </h2>
       </div>
     </div>
