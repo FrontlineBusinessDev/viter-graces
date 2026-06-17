@@ -377,10 +377,10 @@ class Role
     public function updateUserAccountRole()
     {
         try {
-            $sql = "update {$this->tblRole} set ";
+            $sql = "update {$this->tblUserAccount} set ";
             $sql .= "user_account_role = :user_account_role, ";
             $sql .= "user_account_updated = :user_account_updated ";
-            $sql .= "where user_account_role_id  = :user_account_role_id ";
+            $sql .= "where user_account_role_id = :user_account_role_id ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "user_account_role" => $this->role_name,
