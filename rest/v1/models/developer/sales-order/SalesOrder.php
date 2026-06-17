@@ -154,11 +154,11 @@ class SalesOrder
     {
         $filterColumn = [];
         $params = [
-            ...$this->column_search != "" ? [
+            ...($this->column_search != "" ? [
                 "sales_order_customer_name" => "%{$this->column_search}%",
                 "sales_order_customer_id" => "%{$this->column_search}%",
                 "sales_order_price" => "%{$this->column_search}%",
-            ] : [],
+            ] : []),
         ];
 
         foreach ($this->filters as $i => $item) {
@@ -180,9 +180,8 @@ class SalesOrder
         }
         try {
             $sql = "select ";
+            $sql .= "sales_order_number, ";
             $sql .= "MAX(sales_order_status) as sales_order_status, ";
-            $sql .= "MAX(sales_order_number) as sales_order_number, ";
-            $sql .= "MAX(sales_order_date) as sales_order_date, ";
             $sql .= "MAX(sales_order_customer_id) as sales_order_customer_id, ";
             $sql .= "MAX(sales_order_customer_name) as sales_order_customer_name, ";
             $sql .= "MAX(sales_order_payment_method) as sales_order_payment_method, ";
@@ -219,7 +218,7 @@ class SalesOrder
             or sales_order_customer_id like :sales_order_customer_id ) " : " ");
             }
             $sql .= " group by sales_order_number ";
-            $sql .= " order by sales_order_is_active desc, ";
+            $sql .= " order by MAX(sales_order_is_active) desc, ";
             $sql .= "sales_order_number desc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
@@ -238,11 +237,11 @@ class SalesOrder
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
-            ...$this->column_search != "" ? [
+            ...($this->column_search != "" ? [
                 "sales_order_date" => "%{$this->column_search}%",
                 "sales_order_customer_id" => "%{$this->column_search}%",
                 "sales_order_price" => "%{$this->column_search}%",
-            ] : [],
+            ] : []),
         ];
 
         foreach ($this->filters as $i => $item) {
@@ -264,9 +263,8 @@ class SalesOrder
         }
         try {
             $sql = "select ";
+            $sql .= "sales_order_number, ";
             $sql .= "MAX(sales_order_status) as sales_order_status, ";
-            $sql .= "MAX(sales_order_number) as sales_order_number, ";
-            $sql .= "MAX(sales_order_date) as sales_order_date, ";
             $sql .= "MAX(sales_order_customer_id) as sales_order_customer_id, ";
             $sql .= "MAX(sales_order_customer_name) as sales_order_customer_name, ";
             $sql .= "MAX(sales_order_payment_method) as sales_order_payment_method, ";
@@ -303,7 +301,7 @@ class SalesOrder
             or sales_order_customer_id like :sales_order_customer_id ) " : " ");
             }
             $sql .= " group by sales_order_number ";
-            $sql .= " order by sales_order_is_active desc, ";
+            $sql .= " order by MAX(sales_order_is_active) desc, ";
             $sql .= "sales_order_number desc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
