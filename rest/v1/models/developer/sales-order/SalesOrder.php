@@ -835,8 +835,8 @@ class SalesOrder
             $sql .= "from {$this->tblSalesOrder}";
             $sql .= "where DATE(sales_order_date) = DATE(:date_today) ";
             $sql .= "and DATE(sales_order_date) = DATE(:date_yesterday) ";
-            $sql .= "GROUP BY DATE(sales_order_date)";
-            $sql .= "ORDER BY sales_date DESC";
+            $sql .= "group by DATE(sales_order_date) ";
+            $sql .= "order by sales_date desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "date_today" => $this->date_today,
@@ -855,19 +855,19 @@ class SalesOrder
         try {
             $sql = "select * from ( ";
             $sql .= "select sales_order_product_id, ";
-            $sql .= "sales_order_product_name AS product_name, ";
-            $sql .= "SUM(sales_order_qty) AS qty, ";
-            $sql .= "SUM(sales_order_total) AS total_amount, ";
-            $sql .= "ROW_NUMBER() OVER ( ORDER BY ";
-            $sql .= "SUM(sales_order_total) DESC, ";
-            $sql .= "SUM(sales_order_qty) DESC ";
+            $sql .= "sales_order_product_name as product_name, ";
+            $sql .= "SUM(sales_order_qty) as qty, ";
+            $sql .= "SUM(sales_order_total) as total_amount, ";
+            $sql .= "ROW_NUMBER() OVER ( order by ";
+            $sql .= "SUM(sales_order_total) desc, ";
+            $sql .= "SUM(sales_order_qty) desc ";
             $sql .= ") AS rn ";
-            $sql .= "FROM {$this->tblSalesOrder} ";
-            $sql .= "WHERE DATE(sales_order_date) = DATE(:date_today) ";
-            $sql .= "GROUP BY ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= "where DATE(sales_order_date) = DATE(:date_today) ";
+            $sql .= "c";
             $sql .= "sales_order_product_id, ";
             $sql .= "sales_order_product_name ) ranked ";
-            $sql .= "WHERE rn = 1 ";
+            $sql .= "where rn = 1 ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "date_today" => $this->date_today,
