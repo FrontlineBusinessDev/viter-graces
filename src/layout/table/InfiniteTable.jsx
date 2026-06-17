@@ -251,7 +251,7 @@ const InfiniteTable = ({
       </div>
       <div className="">
         <div className="relative rounded-xl md:text-center overflow-auto z-0 ">
-          {status !== "pending" && isFetching && <TableSpinner />}
+          {/* {status !== "pending" && isFetching && <TableSpinner />} */}
           <div className={`${className} `}>
             {(status === "pending" || rows?.length === 0) && (
               <div className="lg:hidden p-10">
