@@ -1,4 +1,4 @@
-describe("Users Module - CRUD Flow", () => {
+describe("Users Module - CRUD and Search Flow", () => {
   beforeEach(() => {
     cy.session("admin", () => {
       cy.login();
