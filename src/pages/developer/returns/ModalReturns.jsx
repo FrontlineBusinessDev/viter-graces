@@ -42,6 +42,7 @@ const ModalReturns = ({ itemEdit }) => {
 
   const handleClose = () => {
     dispatch(setIsAdd(false));
+    dispatch(setError(false));
   };
 
   handleEscape(() => handleClose());

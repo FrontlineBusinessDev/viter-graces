@@ -6,7 +6,7 @@ RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 
 # IMPORTANT: base path for API
-RewriteBase /rest/v1/
+# RewriteBase /rest/v1/
 
 Header set Access-Control-Allow-Origin "*"
 
@@ -83,15 +83,16 @@ RewriteRule ^products/search$ controllers/developer/products/search.php [L]
 RewriteRule ^products/read-all-active-by-product$ controllers/developer/products/read-all-active-by-product.php [L]
 RewriteRule ^products/read-all-product-that-have-stock$ controllers/developer/products/read-all-product-that-have-stock.php [L]
 
-### ACTIVITY LOG ### 
+### ACTIVITY LOG ###
 RewriteRule ^activity/read-with-limit$ controllers/developer/activity-log/read-with-limit.php [L] 
 
-### PURCHASE ORDER ###
+### PURCHASE ORDER ### 
 RewriteRule ^purchase-order$ controllers/developer/suppliers/purchase-order/purchase-order.php [L]
 RewriteRule ^purchase-order/([0-9]+)$ controllers/developer/suppliers/purchase-order/purchase-order.php?id=$1 [L] 
 RewriteRule ^purchase-order/active/([0-9]+)$ controllers/developer/suppliers/purchase-order/active.php?id=$1 [L] 
 RewriteRule ^purchase-order/page/([0-9]+)$ controllers/developer/suppliers/purchase-order/page.php?start=$1 [L]
 RewriteRule ^purchase-order/search$ controllers/developer/suppliers/purchase-order/search.php [L]
+RewriteRule ^purchase-order/read-expenses-today$ controllers/developer/suppliers/purchase-order/read-expenses-today.php [L]
 
 ### STOCK MOVEMENT ### 
 RewriteRule ^stock-movement$ controllers/developer/inventory/stock-movement/stock-movement.php [L]
@@ -115,4 +116,5 @@ RewriteRule ^sales-order/read-all-active-by-product$ controllers/developer/sales
 RewriteRule ^sales-order/read-sales-today$ controllers/developer/sales-order/read-sales-today.php [L]
 RewriteRule ^sales-order/read-top-selling-product$ controllers/developer/sales-order/read-top-selling-product.php [L]
 RewriteRule ^sales-order/page-by-cutomer-id/([0-9]+)$ controllers/developer/sales-order/page-by-cutomer-id.php?start=$1 [L]
+RewriteRule ^sales-order/page-all-sales-order/page/([0-9]+)$ controllers/developer/sales-order/page-all-sales-order.php?start=$1 [L]
  

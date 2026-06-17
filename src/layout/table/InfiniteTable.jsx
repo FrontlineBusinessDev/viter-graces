@@ -2,16 +2,17 @@ import AddButton from "@/components/buttons/AddButton";
 import ExportCSVButton from "@/components/buttons/ExportCSVButton";
 import { DebouncedInput } from "@/components/inputs/InputText";
 import NoData from "@/components/NoData";
-import { AmountWithPesoSign, PesoSign } from "@/components/PesoSign";
+import { AmountWithPesoSign } from "@/components/PesoSign";
 import SearchBar from "@/components/SearchBar";
 import ServerError from "@/components/ServerError";
 import ButtonSpinner from "@/components/spinners/ButtonSpinner";
 import TableLoading from "@/components/spinners/TableLoading";
 import TableSpinner from "@/components/spinners/TableSpinner";
-import { apiVersion, devBaseImgUrl } from "@/config/config";
+import { apiVersion } from "@/config/config";
 import { queryDataInfinite } from "@/services/queryDataInfinite";
 import { setIsAdd, setIsSubAdd, setIsView } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
+import { getConvertStringToJSONparseData } from "@/utilities/getConvertStringToJSONparseData";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import {
@@ -21,16 +22,12 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
+import { Image } from "lucide-react";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import ActionButtonTable from "../ActionButtonTable";
+import MobileResponsiveList from "../mobile-responsive/MobileResponsiveList";
 import ModalAction from "../modal/ModalAction";
 import TableStatus from "../TableStatus";
-import CustomerMobile from "../mobile-responsive/CustomerMobile";
-import InfiniteDefaultTableMobileCard from "../mobile-responsive/InfiniteDefaultTableMobileCard";
-import ProductsMobile from "../mobile-responsive/ProductsMobile";
-import { Image } from "lucide-react";
-import { getConvertStringToJSONparseData } from "@/utilities/getConvertStringToJSONparseData";
-import MobileResponsiveList from "../mobile-responsive/MobileResponsiveList";
 
 const InfiniteTable = ({
   columns,
@@ -43,11 +40,8 @@ const InfiniteTable = ({
   isSearch = true,
   ishaveAdd = true,
   ishaveSubAdd = false,
-  productMobile = false,
-  mockData = [],
-  isStatic = false,
   dataTestidAddButton,
-  defaultSearch = false,
+  refetchOnWindowFocus = false,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [dataItem, setData] = React.useState(null);
@@ -117,7 +111,7 @@ const InfiniteTable = ({
       return undefined;
     },
 
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: refetchOnWindowFocus,
     // staleTime: 1000 * 60 * 5, // 5 mins → no refetch when revisiting
     // gcTime: 1000 * 60 * 30, // keep cache for 30 mins
     // refetchOnMount: true,
@@ -235,7 +229,7 @@ const InfiniteTable = ({
         )}
 
         {hasExport === true ? (
-          <div className="flex justify-end lg:mb-0! ">
+          <div className="flex justify-end lg:mb-0! w-40 ">
             {hasExport === true ? <ExportCSVButton /> : ""}
           </div>
         ) : (
@@ -257,7 +251,7 @@ const InfiniteTable = ({
       </div>
       <div className="">
         <div className="relative rounded-xl md:text-center overflow-auto z-0 ">
-          {status !== "pending" && isFetching && <TableSpinner />}
+          {/* {status !== "pending" && isFetching && <TableSpinner />} */}
           <div className={`${className} `}>
             {(status === "pending" || rows?.length === 0) && (
               <div className="lg:hidden p-10">
@@ -312,7 +306,7 @@ const InfiniteTable = ({
                       key={headerGroup?.id}
                       className="lg:table-row sticky top-9 uppercase dark:bg-[#0b111e] z-999 hidden lg:group"
                     >
-                      <th className="w-px  "> </th>
+                      <th className="w-px  ">{/* {rows?.length} */}</th>
                       {headerGroup?.headers?.map((header) => (
                         <th
                           key={header?.id}

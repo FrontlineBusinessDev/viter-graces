@@ -99,7 +99,7 @@ class StockOverview
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
 
@@ -126,268 +126,310 @@ class StockOverview
             $sql .= "HAVING current_qty <= p.products_low_stock_threshold ) as low_stock ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
     }
+
 
     // read all
     public function readAll($allowedColumns)
     {
         $filterColumn = [];
         $params = [
-            ...$this->column_search != "" ? [
-                "stock_movement_product_name" => "%{$this->column_search}%",
-                "stock_movement_product_owner_name" => "%{$this->column_search}%",
-            ] : [],
+            ...(
+                $this->column_search != ""
+                ? [
+                    "stock_movement_product_name" => "%{$this->column_search}%",
+                    "stock_movement_product_owner_name" => "%{$this->column_search}%",
+                ]
+                : []
+            ),
         ];
 
         foreach ($this->filters as $i => $item) {
             if (!in_array($item['id'], $allowedColumns, true)) {
                 continue;
             }
+
             $col = $item['id'];
 
             if (is_array($item['value'])) {
                 $params["min$i"] = (float) $item['value']['min'];
-                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
 
                 $params["max$i"] = $item['value']['max'] === ""
                     ? (float) $this->max
                     : (float) $item['value']['max'];
+
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
             } else {
                 $filterColumn[] = "$col LIKE :search$i";
                 $params["search$i"] = "%" . trim($item['value']) . "%";
             }
         }
+
         try {
-            $sql = "select ms.*, ";
-            $sql .= "p.products_low_stock_threshold, ";
-            $sql .= "p.products_sku, ";
-            $sql .= "p.products_unit, ";
-            $sql .= "p.products_status, ";
-            $sql .= "so.order_qty, ";
-            $sql .= "p.products_aid, ";
-            $sql .= "DATE_FORMAT(ms.stock_movement_date, '%b %d, %Y') as stock_movement_date, ";
-            $sql .= "ms.stock_movement_product_name AS name, ";
-            $sql .= "ms.stock_movement_is_active AS is_active, ";
-            $sql .= "IFNULL(so.order_qty, 0) AS order_qty, ";
+            $sql = "select ";
+            $sql .= "MAX(p.products_low_stock_threshold) as products_low_stock_threshold, ";
+            $sql .= "MAX(p.products_sku) as products_sku, ";
+            $sql .= "MAX(p.products_unit) as products_unit, ";
+            $sql .= "MAX(p.products_status) as products_status, ";
+            $sql .= "MAX(p.products_aid) as products_aid, ";
+            $sql .= "MAX(ms.stock_movement_product_name) as name, ";
+            $sql .= "MAX(ms.stock_movement_is_active) as is_active, ";
+            $sql .= "MAX(ms.stock_movement_product_name) as stock_movement_product_name, ";
+            $sql .= "MAX(ms.stock_movement_product_owner_name) as stock_movement_product_owner_name, ";
+            $sql .= "DATE_FORMAT(MAX(ms.stock_movement_date), '%b %d, %Y') AS stock_movement_date, ";
 
             // Total stock quantity
-            $sql .= "SUM(
+            $sql .= "
+            SUM(
                 CASE
-                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
-                        THEN ms.stock_movement_qty
+                    WHEN ms.stock_movement_type IN (
+                        'in stock',
+                        'stock in adjustments'
+                    )
+                    THEN ms.stock_movement_qty
 
                     WHEN ms.stock_movement_type IN (
                         'purchases',
                         'stock out - reject/defective items'
                     )
-                        THEN -ms.stock_movement_qty
+                    THEN -ms.stock_movement_qty
 
                     ELSE 0
                 END
-            ) AS stock_qty, ";
+            ) AS stock_qty,
+        ";
 
-            // Current quantity after sales orders
-            $sql .= "SUM(
-                CASE
-                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
+            $sql .= "
+            MAX(IFNULL(so.order_qty, 0)) AS order_qty,
+        ";
+
+            // Current quantity
+            $sql .= "
+            (
+                SUM(
+                    CASE
+                        WHEN ms.stock_movement_type IN (
+                            'in stock',
+                            'purchases',
+                            'stock in adjustments'
+                        )
                         THEN ms.stock_movement_qty
 
-                    WHEN ms.stock_movement_type IN (
-                        'purchases',
-                        'stock out - reject/defective items'
-                    )
+                        WHEN ms.stock_movement_type IN (
+                            'purchases',
+                            'stock out - reject/defective items'
+                        )
                         THEN -ms.stock_movement_qty
 
-                    ELSE 0
-                END
-            ) - IFNULL(so.order_qty, 0) AS current_qty, ";
+                        ELSE 0
+                    END
+                ) - MAX(IFNULL(so.order_qty, 0))
+            ) AS current_qty
+        ";
 
-            $sql .= "DATE_FORMAT(MAX(ms.stock_movement_date), '%b %d, %Y') AS stock_movement_date ";
+            $sql .= "from {$this->tblMovementStock} AS ms ";
 
-            $sql .= "FROM {$this->tblMovementStock} AS ms ";
+            $sql .= "
+            INNER JOIN {$this->tblProducts} AS p
+                ON ms.stock_movement_product_id = p.products_aid
+        ";
 
-            $sql .= "INNER JOIN {$this->tblProducts} AS p ";
-            $sql .= "ON ms.stock_movement_product_id = p.products_aid ";
-
-            $sql .= "LEFT JOIN (
-                SELECT
+            $sql .= "
+            LEFT JOIN (
+                select
                     sales_order_product_id,
                     SUM(sales_order_qty) AS order_qty
-                FROM {$this->tblSalesOrder}
-                GROUP BY sales_order_product_id
-             ) AS so
-             ON so.sales_order_product_id = p.products_aid ";
+                from {$this->tblSalesOrder}
+                group by sales_order_product_id
+            ) AS so
+                ON so.sales_order_product_id = p.products_aid
+        ";
 
             $sql .= "WHERE 1=1 ";
 
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
-            } else {
-                $sql .= ($this->column_search != ""
-                    ? "and (
+            } elseif ($this->column_search !== "") {
+                $sql .= "
+                and (
                     ms.stock_movement_product_name LIKE :stock_movement_product_name
                     OR ms.stock_movement_product_owner_name LIKE :stock_movement_product_owner_name
-               ) "
-                    : "");
+                )
+            ";
             }
 
-            $sql .= "GROUP BY p.products_aid ";
-            $sql .= "ORDER BY
-                SUM(
-                CASE
-                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
-                        THEN ms.stock_movement_qty
-
-                    WHEN ms.stock_movement_type IN (
-                        'purchases',
-                        'stock out - reject/defective items'
-                    )
-                        THEN -ms.stock_movement_qty
-
-                    ELSE 0
-                END
-            ) - IFNULL(so.order_qty, 0) ASC ";
+            $sql .= " group by p.products_aid ";
+            $sql .= " order by p.products_aid ";
 
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
+            logError(
+                $ex->getMessage(),
+                $ex->getFile(),
+                [
+                    'line' => $ex->getLine(),
+                    'code' => $ex->getCode()
+                ]
+            );
+
             $query = false;
         }
 
         return $query;
     }
 
-    // read all
     public function readLimit($allowedColumns)
     {
         $filterColumn = [];
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
-            ...$this->column_search != "" ? [
-                "stock_movement_product_name" => "%{$this->column_search}%",
-                "stock_movement_product_owner_name" => "%{$this->column_search}%",
-            ] : [],
+            ...(
+                $this->column_search != ""
+                ? [
+                    "stock_movement_product_name" => "%{$this->column_search}%",
+                    "stock_movement_product_owner_name" => "%{$this->column_search}%",
+                ]
+                : []
+            ),
         ];
 
         foreach ($this->filters as $i => $item) {
             if (!in_array($item['id'], $allowedColumns, true)) {
                 continue;
             }
+
             $col = $item['id'];
 
             if (is_array($item['value'])) {
                 $params["min$i"] = (float) $item['value']['min'];
-                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
 
                 $params["max$i"] = $item['value']['max'] === ""
                     ? (float) $this->max
                     : (float) $item['value']['max'];
+
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
             } else {
                 $filterColumn[] = "$col LIKE :search$i";
                 $params["search$i"] = "%" . trim($item['value']) . "%";
             }
         }
+
         try {
-            $sql = "select ms.*, ";
-            $sql .= "p.products_low_stock_threshold, ";
-            $sql .= "p.products_sku, ";
-            $sql .= "p.products_unit, ";
-            $sql .= "p.products_status, ";
-            $sql .= "so.order_qty, ";
-            $sql .= "p.products_aid, ";
-            $sql .= "DATE_FORMAT(ms.stock_movement_date, '%b %d, %Y') as stock_movement_date, ";
-            $sql .= "ms.stock_movement_product_name AS name, ";
-            $sql .= "ms.stock_movement_is_active AS is_active, ";
-            $sql .= "IFNULL(so.order_qty, 0) AS order_qty, ";
+            $sql = "select ";
+            $sql .= "MAX(p.products_low_stock_threshold) AS products_low_stock_threshold, ";
+            $sql .= "MAX(p.products_sku) AS products_sku, ";
+            $sql .= "MAX(p.products_unit) AS products_unit, ";
+            $sql .= "MAX(p.products_status) AS products_status, ";
+            $sql .= "MAX(p.products_aid) AS products_aid, ";
+            $sql .= "MAX(ms.stock_movement_product_name) AS name, ";
+            $sql .= "MAX(ms.stock_movement_is_active) AS is_active, ";
+            $sql .= "MAX(ms.stock_movement_product_name) as stock_movement_product_name, ";
+            $sql .= "MAX(ms.stock_movement_product_owner_name) as stock_movement_product_owner_name, ";
+            $sql .= "DATE_FORMAT(MAX(ms.stock_movement_date), '%b %d, %Y') AS stock_movement_date, ";
 
             // Total stock quantity
-            $sql .= "SUM(
+            $sql .= "
+            SUM(
                 CASE
-                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
-                        THEN ms.stock_movement_qty
+                    WHEN ms.stock_movement_type IN (
+                        'in stock',
+                        'stock in adjustments'
+                    )
+                    THEN ms.stock_movement_qty
 
                     WHEN ms.stock_movement_type IN (
                         'purchases',
                         'stock out - reject/defective items'
                     )
-                        THEN -ms.stock_movement_qty
+                    THEN -ms.stock_movement_qty
 
                     ELSE 0
                 END
-            ) AS stock_qty, ";
+            ) AS stock_qty,
+        ";
 
-            // Current quantity after sales orders
-            $sql .= "SUM(
-                CASE
-                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
+            $sql .= "
+            MAX(IFNULL(so.order_qty, 0)) AS order_qty,
+        ";
+
+            // Current quantity
+            $sql .= "
+            (
+                SUM(
+                    CASE
+                        WHEN ms.stock_movement_type IN (
+                            'in stock',
+                            'purchases',
+                            'stock in adjustments'
+                        )
                         THEN ms.stock_movement_qty
 
-                    WHEN ms.stock_movement_type IN (
-                        'purchases', 
-                        'stock out - reject/defective items'
-                    )
+                        WHEN ms.stock_movement_type IN (
+                            'purchases',
+                            'stock out - reject/defective items'
+                        )
                         THEN -ms.stock_movement_qty
 
-                    ELSE 0
-                END
-            ) - IFNULL(so.order_qty, 0) AS current_qty, ";
+                        ELSE 0
+                    END
+                ) - MAX(IFNULL(so.order_qty, 0))
+            ) AS current_qty
+        ";
 
-            $sql .= "DATE_FORMAT(MAX(ms.stock_movement_date), '%b %d, %Y') AS stock_movement_date ";
+            $sql .= "from {$this->tblMovementStock} AS ms ";
 
-            $sql .= "FROM {$this->tblMovementStock} AS ms ";
+            $sql .= "
+            INNER JOIN {$this->tblProducts} AS p
+                ON ms.stock_movement_product_id = p.products_aid
+        ";
 
-            $sql .= "INNER JOIN {$this->tblProducts} AS p ";
-            $sql .= "ON ms.stock_movement_product_id = p.products_aid ";
-
-            $sql .= "LEFT JOIN (
-                SELECT
+            $sql .= "
+            LEFT JOIN (
+                select
                     sales_order_product_id,
                     SUM(sales_order_qty) AS order_qty
-                FROM {$this->tblSalesOrder}
-                GROUP BY sales_order_product_id
-             ) AS so
-             ON so.sales_order_product_id = p.products_aid ";
+                from {$this->tblSalesOrder}
+                group by sales_order_product_id
+            ) AS so
+                ON so.sales_order_product_id = p.products_aid
+        ";
 
-            $sql .= "WHERE 1=1 ";
+            $sql .= "where 1=1 ";
 
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
-            } else {
-                $sql .= ($this->column_search != ""
-                    ? "and (
+            } elseif ($this->column_search !== "") {
+                $sql .= "
+                and (
                     ms.stock_movement_product_name LIKE :stock_movement_product_name
                     OR ms.stock_movement_product_owner_name LIKE :stock_movement_product_owner_name
-               ) "
-                    : "");
+                )
+            ";
             }
 
-            $sql .= "GROUP BY p.products_aid ";
-            $sql .= "ORDER BY
-                SUM(
-                CASE
-                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
-                        THEN ms.stock_movement_qty
-
-                    WHEN ms.stock_movement_type IN (
-                        'purchases',
-                        'stock out - reject/defective items'
-                    )
-                        THEN -ms.stock_movement_qty
-
-                    ELSE 0
-                END
-            ) - IFNULL(so.order_qty, 0) ASC ";
-            $sql .= "limit :start, :total ";
+            $sql .= " group by p.products_aid ";
+            $sql .= " order by p.products_aid ";
+            $sql .= "limit :start, ";
+            $sql .= ":total ";
 
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-            // FOR LOG ERROR IN DIGITALOCEAN
-            logError($ex->getMessage(),$ex->getFile(), ['line' => $ex->getLine(),'code' => $ex->getCode()]);
+            logError(
+                $ex->getMessage(),
+                $ex->getFile(),
+                [
+                    'line' => $ex->getLine(),
+                    'code' => $ex->getCode()
+                ]
+            );
+
             $query = false;
         }
 

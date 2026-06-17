@@ -40,6 +40,7 @@ class Customer
             $sql .= "( customer_is_active, ";
             $sql .= "customer_name, ";
             $sql .= "customer_email, ";
+            $sql .= "customer_is_walk_in_customer, ";
             $sql .= "customer_phone, ";
             $sql .= "customer_address, ";
             $sql .= "customer_messenger, ";
@@ -51,6 +52,7 @@ class Customer
             $sql .= ":customer_is_active, ";
             $sql .= ":customer_name, ";
             $sql .= ":customer_email, ";
+            $sql .= ":customer_is_walk_in_customer, ";
             $sql .= ":customer_phone, ";
             $sql .= ":customer_address, ";
             $sql .= ":customer_messenger, ";
@@ -64,6 +66,7 @@ class Customer
                 "customer_is_active" => $this->customer_is_active,
                 "customer_name" => $this->customer_name,
                 "customer_email" => $this->customer_email,
+                "customer_is_walk_in_customer" => $this->customer_is_walk_in_customer,
                 "customer_phone" => $this->customer_phone,
                 "customer_address" => $this->customer_address,
                 "customer_messenger" => $this->customer_messenger,
@@ -75,6 +78,7 @@ class Customer
             ]);
             $this->lastInsertedId = $this->connection->lastInsertId();
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -130,7 +134,7 @@ class Customer
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -186,7 +190,7 @@ class Customer
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -246,7 +250,7 @@ class Customer
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -276,6 +280,7 @@ class Customer
                 "customer_email" => "%{$this->column_search}%",
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -302,6 +307,7 @@ class Customer
                 "customer_aid" => $this->customer_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -336,6 +342,7 @@ class Customer
                 "customer_aid" => $this->customer_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -356,6 +363,7 @@ class Customer
                 "customer_aid" => $this->customer_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -372,6 +380,7 @@ class Customer
                 "customer_aid" => $this->customer_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -388,6 +397,7 @@ class Customer
                 "customer_name" => "{$this->customer_name}",
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -403,6 +413,7 @@ class Customer
             $sql .= " order by customer_aid desc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -419,6 +430,7 @@ class Customer
             $sql .= "customer_name asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -447,8 +459,8 @@ class Customer
                 "customer_created" => $this->customer_created,
                 "customer_updated" => $this->customer_updated,
             ]);
-            $this->lastInsertedId = $this->connection->lastInsertId();
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
