@@ -17,7 +17,7 @@ $val = new SuppliersPurchaseOrder($conn);
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
 
-    $val->date_today = date("Y-m-d H:i:s");
+    $val->date_today = date("Y-m-d");
     $val->date_yesterday = date('Y-m-d', strtotime('-1 day'));
 
     $val->filters = [];

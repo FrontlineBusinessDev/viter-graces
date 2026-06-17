@@ -1,5 +1,9 @@
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
-import { ActionTableList, ActiveInActiveStatus } from "@/layout/ArrayValue";
+import {
+  ActionTableList,
+  ActiveInActiveStatus,
+  PaymentStatus,
+} from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -17,7 +21,7 @@ const SalesOrders = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "sales_order_is_active",
+      accessorKey: "sales_order_status",
       header: "status",
       classTh: "min-w-[8rem]",
       classTd: "",
@@ -26,11 +30,11 @@ const SalesOrders = () => {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus
             column={column}
-            options={ActiveInActiveStatus()}
+            options={PaymentStatus()}
           />
         ),
       },
-      status_option: ActiveInActiveStatus(),
+      status_option: PaymentStatus(),
     },
     {
       accessorKey: "sales_order_number",

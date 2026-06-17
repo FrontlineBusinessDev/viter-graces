@@ -181,6 +181,7 @@ class SalesOrder
         try {
             $sql = "select ";
             $sql .= "sales_order_number, ";
+            $sql .= "MAX(sales_order_status) as is_status, ";
             $sql .= "MAX(sales_order_status) as sales_order_status, ";
             $sql .= "MAX(sales_order_customer_id) as sales_order_customer_id, ";
             $sql .= "MAX(sales_order_customer_name) as sales_order_customer_name, ";
@@ -264,6 +265,7 @@ class SalesOrder
         try {
             $sql = "select ";
             $sql .= "sales_order_number, ";
+            $sql .= "MAX(sales_order_status) as is_status, ";
             $sql .= "MAX(sales_order_status) as sales_order_status, ";
             $sql .= "MAX(sales_order_customer_id) as sales_order_customer_id, ";
             $sql .= "MAX(sales_order_customer_name) as sales_order_customer_name, ";
@@ -825,18 +827,18 @@ class SalesOrder
 
         return $query;
     }
+
+
     public function readSalesToday()
     {
         try {
             $sql = "select DATE(sales_order_date) AS sales_date, ";
-            $sql .= "sales_order_product_name AS product_name, ";
             $sql .= "SUM(sales_order_total) AS total_sales, ";
             $sql .= "SUM(sales_order_qty) AS total_qty ";
-            $sql .= "from {$this->tblSalesOrder}";
-            $sql .= "where DATE(sales_order_date) = DATE(:date_today) ";
-            $sql .= "and DATE(sales_order_date) = DATE(:date_yesterday) ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= "where DATE(sales_order_date) in (DATE(:date_today), DATE(:date_yesterday)) ";
             $sql .= "group by DATE(sales_order_date) ";
-            $sql .= "order by sales_date desc ";
+            $sql .= "order by DATE(sales_date) desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "date_today" => $this->date_today,
@@ -849,6 +851,7 @@ class SalesOrder
 
         return $query;
     }
+
 
     public function readTopSellingProduct()
     {
