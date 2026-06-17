@@ -56,7 +56,7 @@ const InfiniteSubTable = ({
   const handleView = (item, itemView) => {
     dispatch(setIsView(true));
     setItemEdit(item);
-    setItemVal(itemView?.items);
+    setItemVal(itemView);
   };
 
   const searchPayload = useMemo(

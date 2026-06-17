@@ -79,6 +79,7 @@ class ProductOwner
             ]);
             $this->lastInsertedId = $this->connection->lastInsertId();
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -136,7 +137,7 @@ class ProductOwner
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -198,7 +199,7 @@ class ProductOwner
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -223,6 +224,7 @@ class ProductOwner
                 "user_account_aid" => $this->user_account_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -240,6 +242,7 @@ class ProductOwner
             $sql .= "order by role_name asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -260,6 +263,7 @@ class ProductOwner
                 "user_account_aid" => $this->user_account_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -278,6 +282,7 @@ class ProductOwner
                 "user_account_email" => $this->user_account_email,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -298,6 +303,7 @@ class ProductOwner
                 "user_account_aid" => $this->user_account_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -315,6 +321,7 @@ class ProductOwner
                 "name" => "{$this->column_fullname}",
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -335,6 +342,7 @@ class ProductOwner
                 "activity_log_user_id" => $this->user_account_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -353,6 +361,7 @@ class ProductOwner
                 "products_owner_id" => $this->user_account_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -371,6 +380,7 @@ class ProductOwner
                 "purchase_order_product_owner_id" => $this->user_account_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
@@ -389,6 +399,7 @@ class ProductOwner
                 "suppliers_product_supplier_id" => $this->user_account_aid,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;

@@ -235,7 +235,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
         mutation={mutation}
         isOpen={true}
         handleClose={handleClose}
-        width="min-w-[35rem]!"
+        width="min-w-[50rem]!"
       >
         <div className="modal-body">
           <Formik

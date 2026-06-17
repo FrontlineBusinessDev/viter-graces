@@ -14,8 +14,7 @@ if (array_key_exists("id", $_GET)) {
 }
 // check data
 checkPayload($data);
-// get data
-$val->purchase_order_number = checkIndex($data, "purchase_order_number");
+// get data 
 $val->purchase_order_supplier_id = $data["purchase_order_supplier_id"];
 $val->purchase_order_supplier_name = $data["purchase_order_supplier_name"];
 $val->purchase_order_date = $data["purchase_order_date"];
@@ -28,9 +27,10 @@ $val->purchase_order_note = $data["purchase_order_note"];
 $val->purchase_order_created = date("Y-m-d H:i:s");
 $val->purchase_order_updated = date("Y-m-d H:i:s");
 
+$val->purchase_order_number = setIdNumber($val, "PO-");
+
 $purchase_order = $data["purchase_order"];
-// check name
-isNameExist($val, $val->purchase_order_number);
+// check name 
 
 for ($i = 0; $i < count($purchase_order); $i++) {
     $val->purchase_order_product_id = $purchase_order[$i]["purchase_order_product_id"];
