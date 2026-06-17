@@ -1,7 +1,7 @@
 import { apiVersion } from "@/config/config";
 import useQueryData from "@/services/useQueryData";
 import { StoreContext } from "@/store/StoreContext";
-import React from "react";
+import React, { useMemo } from "react";
 const DashboardRecentActivities = () => {
   const { store, dispatch } = React.useContext(StoreContext);
 
@@ -17,6 +17,10 @@ const DashboardRecentActivities = () => {
     { limit: 6 },
   );
 
+  const valData = useMemo(() => {
+    return result?.data;
+  }, [result]);
+
   return (
     <>
       <div
@@ -27,7 +31,7 @@ const DashboardRecentActivities = () => {
           Recent Activities
         </h2>
         <ul className="space-y-3">
-          {result?.data?.map((item, key) => {
+          {valData?.map((item, key) => {
             return (
               <li key={key} className="flex flex-col">
                 <div className="flex items-center gap-3 capitalize">
