@@ -48,14 +48,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
         ],
   );
 
-  const handleChange = (
-    index,
-    selectedItem = "",
-    field,
-    fieldId,
-    value,
-    id,
-  ) => {
+  const handleChange = (index, selectedItem = "", fieldId, field) => {
     const updated = [...items];
     if (selectedItem !== "") {
       updated[index]["sales_order_product_owner_id"] =
@@ -68,8 +61,8 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
       const price = Number(updated[index]["sales_order_price"] || 0);
       updated[index]["sales_order_total"] = qty * price;
     }
-    updated[index][field] = value;
-    updated[index][fieldId] = id;
+    updated[index][field] = selectedItem["name"];
+    updated[index][fieldId] = selectedItem["id"];
 
     setItems(updated);
   };
@@ -228,6 +221,8 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
     { id: "2", name: "online transaction" },
     { id: "3", name: "mutiple payment" },
   ];
+
+  console.log("setItems", items);
   return (
     <>
       <ModalWrapper
@@ -375,15 +370,11 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
                                     selectedItem,
                                     "sales_order_product_id",
                                     "sales_order_product_name",
-                                    e.target.value,
-                                    e.target.options[e.target.selectedIndex].id,
                                   );
                                 }}
-                                itemEdit={itemEdit}
                                 item={a}
-                                defaultValue={a["sales_order_product_id"]}
                                 path={`products/read-all-product-that-have-stock`}
-                                placeholder="Product Name"
+                                testFilterId="sales_order_product_name"
                               />
                               <input
                                 onChange={(e) => {
