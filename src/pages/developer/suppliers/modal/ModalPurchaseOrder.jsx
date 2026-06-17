@@ -45,6 +45,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
           },
         ],
   );
+
   const [counter, setCounter] = React.useState(0);
 
   const handleChange = (index, field, fieldId, value, id) => {
@@ -99,6 +100,8 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
 
   const queryClient = useQueryClient();
 
+  console.log("itemEdit", itemEdit);
+
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
@@ -143,8 +146,11 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
       itemEdit?.purchase_order_expected_delivery,
       store?.credentials?.data?.server_date,
     ),
-    purchase_order_total_amount: isEmptyItem(itemEdit?.total_amount, ""),
-    purchase_order_payment: isEmptyItem(itemEdit?.total_paid, "0"),
+    purchase_order_total_amount: isEmptyItem(
+      itemEdit?.purchase_order_total_amount,
+      "",
+    ),
+    purchase_order_payment: isEmptyItem(itemEdit?.purchase_order_payment, ""),
     purchase_order_status: isEmptyItem(
       itemEdit?.purchase_order_status,
       "draft",
@@ -159,13 +165,11 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
   };
 
   const yupSchema = Yup.object({
-    purchase_order_number: Yup.string().trim().required("Required"),
     purchase_order_supplier_id: Yup.string().trim().required("Required"),
     purchase_order_date: Yup.string().trim().required("Required"),
     purchase_order_expected_delivery: Yup.string().trim().required("Required"),
     purchase_order_status: Yup.string().trim().required("Required"),
     purchase_order_payment_status: Yup.string().trim().required("Required"),
-    purchase_order_payment: Yup.string().trim().required("Required"),
   });
 
   React.useEffect(() => {
@@ -186,7 +190,11 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
   return (
     <>
       <ModalWrapper
-        val="Purchase Order"
+        val={
+          itemEdit
+            ? `${itemEdit ? itemEdit?.purchase_order_number : ""}`
+            : "Purchase Order"
+        }
         itemEdit={itemEdit}
         mutation={mutation}
         isOpen={true}
@@ -210,6 +218,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                 ),
                 ...values,
                 purchase_order: items,
+                purchase_order_payment: Number(values?.purchase_order_payment),
               };
 
               mutation.mutate(data);
@@ -219,7 +228,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
               return (
                 <Form>
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="relative">
+                    {/* <div className="relative">
                       <InputText
                         label="PO Number"
                         type="text"
@@ -227,7 +236,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         placeholder={`${itemEdit ? "Update PO number" : "Enter new PO number"}`}
                         disabled={mutation.isPending}
                       />
-                    </div>
+                    </div> */}
                     <div className="relative">
                       <InputSelectArray
                         label="Suppliers"
@@ -303,8 +312,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                     "purchase_order_product_id",
                                     "purchase_order_product_name",
                                     e.target.value,
-                                    e.target.options[e.target.selectedIndex]
-                                      .text,
+                                    e.target.options[e.target.selectedIndex].id,
                                   );
                                 }}
                                 itemEdit={itemEdit}
@@ -422,6 +430,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         label="Paid Amount"
                         type="number"
                         name="purchase_order_payment"
+                        placeholder="0"
                         disabled={mutation.isPending}
                       />
                     </div>

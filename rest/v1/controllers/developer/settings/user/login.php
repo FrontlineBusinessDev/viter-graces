@@ -11,6 +11,9 @@ require '../../../../models/developer/settings/User.php';
 require '../../../../controllers/developer/activity-log/functions.php';
 require '../../../../models/developer/activity-log/ActivityLog.php';
 
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 // check database connection
 $conn = null;
 $conn = checkDbConnection();

@@ -525,6 +525,8 @@ export const InputSalesOrderSelectTagArray = ({
             const selectedItem = result?.data?.find(
               (item) => Number(item.id) === Number(e.target.value),
             );
+
+            console.log("selectedItemselectedItem", selectedItem);
             onChange(e, selectedItem);
           }}
           autoComplete="off"

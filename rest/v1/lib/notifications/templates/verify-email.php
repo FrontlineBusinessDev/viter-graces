@@ -43,7 +43,7 @@ function getHtmlVerifyEmail(
       <div>
         <img
           src="' . $IMAGES_URL . '/SideLogo.png"
-          alt="wfs"
+          alt="graces-logo"
           style="max-width: 150px"
         />
       </div>
