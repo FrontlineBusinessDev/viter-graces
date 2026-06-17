@@ -181,8 +181,8 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
     sales_order_qty: isEmptyItem(itemEdit?.sales_order_qty, "1"),
     sales_order_price: isEmptyItem(itemEdit?.sales_order_price, ""),
     sales_order_total: isEmptyItem(itemEdit?.sales_order_total, ""),
-    sales_order_discount: isEmptyItem(itemEdit?.sales_order_discount, "0"),
-    sales_order_tax: isEmptyItem(itemEdit?.sales_order_tax, "0"),
+    sales_order_discount: isEmptyItem(itemEdit?.sales_order_discount, ""),
+    sales_order_tax: isEmptyItem(itemEdit?.sales_order_tax, ""),
     sales_order_paid_amount: isEmptyItem(itemEdit?.sales_order_paid_amount, ""),
     sales_order_notes: isEmptyItem(itemEdit?.sales_order_notes, ""),
     sales_order_received_by_id: isEmptyItem(
@@ -268,15 +268,20 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
                   { ...values, items },
                 ),
                 ...values,
+                sales_order_discount: Number(values?.sales_order_discount),
+                sales_order_tax: Number(values?.sales_order_tax),
                 items,
                 itemsDelete,
-                sales_order_overall_amount: items?.reduce(
-                  (sum, item) =>
-                    sum +
-                    Number(item.sales_order_qty || 1) *
-                      Number(item.sales_order_price || 0),
-                  0,
-                ),
+                sales_order_overall_amount:
+                  items?.reduce(
+                    (sum, item) =>
+                      sum +
+                      Number(item.sales_order_qty || 1) *
+                        Number(item.sales_order_price || 0),
+                    0,
+                  ) +
+                  Number(values.sales_order_tax) -
+                  Number(values.sales_order_discount),
               };
               // console.log(data);
               mutation.mutate(data);
@@ -470,13 +475,15 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
                         <AmountWithPesoSign
                           classN="size-5"
                           amount={
-                            items.reduce(
+                            items?.reduce(
                               (sum, item) =>
                                 sum +
                                 Number(item.sales_order_qty || 1) *
                                   Number(item.sales_order_price || 0),
                               0,
-                            ) - Number(props?.values?.sales_order_discount)
+                            ) +
+                            Number(props?.values?.sales_order_tax) -
+                            Number(props?.values?.sales_order_discount)
                           }
                         />
                       </p>
