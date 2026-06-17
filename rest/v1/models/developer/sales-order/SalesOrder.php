@@ -832,7 +832,7 @@ class SalesOrder
             $sql .= "sales_order_product_name AS product_name, ";
             $sql .= "SUM(sales_order_total) AS total_sales, ";
             $sql .= "SUM(sales_order_qty) AS total_qty ";
-            $sql .= "from {$this->tblSalesOrder}";
+            $sql .= "from {$this->tblSalesOrder} ";
             $sql .= "where DATE(sales_order_date) in (DATE(:date_today), DATE(:date_yesterday)) ";
             $sql .= "group by DATE(sales_order_date) ";
             $sql .= "order by sales_date desc ";
@@ -842,6 +842,7 @@ class SalesOrder
                 "date_yesterday" => $this->date_yesterday,
             ]);
         } catch (PDOException $ex) {
+            returnError($ex);
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
