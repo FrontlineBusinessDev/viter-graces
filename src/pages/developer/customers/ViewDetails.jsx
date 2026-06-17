@@ -1,6 +1,8 @@
 import CloseButton from "@/components/buttons/CloseButton";
 import ExportCSVButton from "@/components/buttons/ExportCSVButton";
 import { AmountWithPesoSign } from "@/components/PesoSign";
+import Pills from "@/components/Pills";
+import TableStatus from "@/layout/TableStatus";
 import { setIsView } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
@@ -13,7 +15,6 @@ const ViewDetails = ({ itemEdit, item }) => {
   };
 
   console.log("item", item);
-  console.log("itemEdit", itemEdit);
 
   return (
     <div
@@ -29,41 +30,33 @@ const ViewDetails = ({ itemEdit, item }) => {
             <CloseButton handleClose={handleClose} />
           </div>
           <h3 className="text-black dark:text-light text-lg mb-2">
-            Order Details - {isEmptyItem(itemEdit?.order_no, "")}
+            Order Details - {isEmptyItem(item?.sales_order_number, "")}
           </h3>
 
           <ul className="grid grid-cols-2 [&>li]:flex [&>li]:items-center [&>li]:gap-2 my-3">
             <li>
               <p>Customer:</p>
               <p className="text-black dark:text-light">
-                {isEmptyItem(itemEdit?.name, "")}
+                {isEmptyItem(item?.name, "")}
               </p>
             </li>
             <li className="justify-end">
               <p>Date:</p>
               <p className="text-black dark:text-light">
-                {isEmptyItem(itemEdit?.date, "--")}
+                {isEmptyItem(item?.sales_order_date, "--")}
               </p>
             </li>
             <li>
               <p>Payment:</p>
               <p className="text-black dark:text-light">
-                {isEmptyItem(itemEdit?.method, "")}
+                {isEmptyItem(item?.sales_order_payment_method, "")}
               </p>
             </li>
             <li className="justify-end">
               <p>Status:</p>
-              <p
-                className={`inline-block px-2 py-1 text-xs rounded-full ${isEmptyItem(
-                  itemEdit?.payment_status,
-                  "",
-                )} === "Paid"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-700"
-                }`}
-              >
-                {isEmptyItem(itemEdit?.payment_status, "--")}
-              </p>
+              <Pills variant={item?.sales_order_status}>
+                {item?.sales_order_status}
+              </Pills>
             </li>
           </ul>
 
@@ -71,30 +64,43 @@ const ViewDetails = ({ itemEdit, item }) => {
             <div className="">
               <div className="rounded-2xl border border-gray-300 bg-white dark:bg-[#0b111e] overflow-x-hidden dark:border-gray-700 max-h-[200px]">
                 {/* desktop header */}
-                <ul className="hidden sticky top-0 lg:grid lg:grid-cols-3 lg:items-center border-b bg-gray-50 px-4 py-3 text-xs font-medium text-gray-500 dark:bg-[#0b111e]">
+                <ul className="hidden sticky top-0 lg:grid lg:grid-cols-[2rem_1fr_1fr] lg:items-center border-b bg-gray-50 px-4 py-3 text-xs font-medium text-gray-500 dark:bg-[#0b111e]">
                   <li>#</li>
                   <li>Product</li>
                   <li className="text-right!">Amount</li>
                 </ul>
 
                 {/* row */}
-                <ul className="p-4 grid grid-cols-[.5fr_1fr_1fr] lg:grid-cols-3 gap-1 text-sm">
-                  <li>
-                    <p className="text-xs text-gray-400 lg:hidden">#</p>1.
-                  </li>
+                {item?.items?.map((item, key) => {
+                  return (
+                    <ul
+                      className="p-4 grid grid-cols-[2rem_1fr_1fr] gap-1 text-sm"
+                      key={key}
+                    >
+                      <li>
+                        <p className="text-xs text-gray-400 lg:hidden">#</p>
+                        {key + 1}.
+                      </li>
 
-                  <li>
-                    <p className="text-xs text-gray-400 lg:hidden">Product</p>
-                    Banana Chips
-                  </li>
+                      <li>
+                        <p className="text-xs text-gray-400 lg:hidden">
+                          Product
+                        </p>
+                        {item?.sales_order_product_name}
+                      </li>
 
-                  <li>
-                    <p className="text-xs text-right! text-gray-400 lg:hidden">
-                      Amount
-                    </p>
-                    <AmountWithPesoSign classN={"size-3"} amount="0" />
-                  </li>
-                </ul>
+                      <li>
+                        <p className="text-xs text-right! text-gray-400 lg:hidden">
+                          Amount
+                        </p>
+                        <AmountWithPesoSign
+                          classN={"size-3"}
+                          amount={item?.sales_order_total}
+                        />
+                      </li>
+                    </ul>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -105,16 +111,18 @@ const ViewDetails = ({ itemEdit, item }) => {
               <AmountWithPesoSign
                 classN={"size-3 "}
                 classAmnt={"text-green-600 "}
-                amount="0"
+                amount={item?.total_amount}
               />
-              {isEmptyItem(itemEdit?.total, "")}
             </li>
             <li>Balance</li>
             <li className="text-right text-red-600 font-bold">
               <AmountWithPesoSign
                 classN={"size-3 "}
                 classAmnt={"text-red-600 "}
-                amount="0"
+                amount={
+                  Number(isEmptyItem(item?.total_amount, 0)) -
+                  Number(isEmptyItem(item?.total_paid, 0))
+                }
               />
             </li>
           </ul>
@@ -125,7 +133,11 @@ const ViewDetails = ({ itemEdit, item }) => {
             </span>
             <AmountWithPesoSign
               classPS={"size-3"}
-              amount="0"
+              amount={
+                Number(isEmptyItem(item?.total_amount, 0)) -
+                Number(isEmptyItem(item?.total_paid, 0)) +
+                Number(isEmptyItem(item?.total_paid, 0))
+              }
               classAmnt="font-bold text-lg text-black dark:text-light"
             />
           </div>

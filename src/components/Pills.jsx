@@ -12,8 +12,6 @@ const Pills = ({ children, variant = "active" }) => {
     low_stock: "bg-warning/10 text-warning",
   };
 
-  // console.log("123", children, variant);
-
   return <span className={`${base} ${variants[variant]}`}>{children}</span>;
 };
 

@@ -1,11 +1,20 @@
 Options -MultiViews
 RewriteEngine On
-RewriteBase /portal/
 
-# Serve real files/dirs as-is
+# -----------------------------
+# 1. ALWAYS IGNORE REST API
+# -----------------------------
+RewriteCond %{REQUEST_URI} ^/rest/ [NC]
+RewriteRule ^ - [L]
+
+# -----------------------------
+# 2. Serve real files/folders normally
+# -----------------------------
 RewriteCond %{REQUEST_FILENAME} -f [OR]
 RewriteCond %{REQUEST_FILENAME} -d
 RewriteRule ^ - [L]
 
-# All other routes → React index.html
+# -----------------------------
+# 3. SPA fallback ONLY for frontend
+# -----------------------------
 RewriteRule ^ index.html [L]

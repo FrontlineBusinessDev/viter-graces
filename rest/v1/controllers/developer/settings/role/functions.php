@@ -11,7 +11,7 @@ function isUserAccountAssociated($object)
 function checkUpdateUserAccountRole($object)
 {
     $query = $object->updateUserAccountRole();
-    checkQuery($query, "There's a problem processing your request. (update role)");
+    checkQuery($query, "There's a problem processing your request. (update role account)");
     return $query;
 }
 
