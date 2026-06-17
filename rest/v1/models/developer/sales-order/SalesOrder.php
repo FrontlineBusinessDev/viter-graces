@@ -181,6 +181,7 @@ class SalesOrder
         try {
             $sql = "select ";
             $sql .= "sales_order_number, ";
+            $sql .= "MAX(sales_order_status) as is_status, ";
             $sql .= "MAX(sales_order_status) as sales_order_status, ";
             $sql .= "MAX(sales_order_customer_id) as sales_order_customer_id, ";
             $sql .= "MAX(sales_order_customer_name) as sales_order_customer_name, ";
@@ -264,6 +265,7 @@ class SalesOrder
         try {
             $sql = "select ";
             $sql .= "sales_order_number, ";
+            $sql .= "MAX(sales_order_status) as is_status, ";
             $sql .= "MAX(sales_order_status) as sales_order_status, ";
             $sql .= "MAX(sales_order_customer_id) as sales_order_customer_id, ";
             $sql .= "MAX(sales_order_customer_name) as sales_order_customer_name, ";
