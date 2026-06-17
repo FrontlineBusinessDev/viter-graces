@@ -28,7 +28,7 @@ const Dashboard = () => {
             <DashboardSalesToday path="sales-order/read-sales-today" />
             <DashboardLowStockAlert path="stock-movement/read-count-low-stock" />
             <DashboardTopSellingProduct path="sales-order/read-top-selling-product" />
-            <DashboardExpensesToday path="sales-order/read-top-selling-product" />
+            <DashboardExpensesToday path="purchase-order/read-expenses-today" />
           </div>
 
           <div className="grid grid-cols-1 xl:grid-cols-[2fr_1fr_1fr] gap-6 py-6 ">
