@@ -14,6 +14,7 @@ import React from "react";
 
 export const titleHeaderTab = () => {
   const { store, dispatch } = React.useContext(StoreContext);
+
   const onClickTab = () => {
     dispatch(setIsSearch(false));
   };

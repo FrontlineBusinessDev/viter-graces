@@ -14,13 +14,13 @@
 RewriteEngine On
 
 # Redirect bare root to /portal/
-RedirectMatch ^/$ /portal/
+# RedirectMatch ^/$ /portal/
 
 # Redirect /login to /portal/login
-RedirectMatch ^/login$ /portal/login
+# RedirectMatch ^/login$ /portal/login
 
-# Redirect anything not starting with /portal or /rest to /portal/
-RewriteCond %{REQUEST_URI} !^/portal
+# Redirect anything not starting with / or /rest to /
+RewriteCond %{REQUEST_URI} !^/
 RewriteCond %{REQUEST_URI} !^/rest
 RewriteCond %{REQUEST_URI} !^/favicon
-RewriteRule ^(.*)$ /portal/$1 [R=302,L]
+RewriteRule ^(.*)$ /$1 [R=302,L]
