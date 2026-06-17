@@ -864,7 +864,7 @@ class SalesOrder
             $sql .= ") AS rn ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= "where DATE(sales_order_date) = DATE(:date_today) ";
-            $sql .= "c";
+            $sql .= "group by ";
             $sql .= "sales_order_product_id, ";
             $sql .= "sales_order_product_name ) ranked ";
             $sql .= "where rn = 1 ";
