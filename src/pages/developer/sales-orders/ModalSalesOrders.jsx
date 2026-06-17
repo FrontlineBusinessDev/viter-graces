@@ -68,7 +68,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
       const price = Number(updated[index]["sales_order_price"] || 0);
       updated[index]["sales_order_total"] = qty * price;
     }
-    console.log("selectedItem", selectedItem);
     updated[index][field] = value;
     updated[index][fieldId] = id;
 
@@ -210,8 +209,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
       store?.credentials?.data?.server_date,
     ),
   };
-
-  console.log("items", items);
 
   const yupSchema = Yup.object({
     sales_order_date: Yup.string().trim().required("Required"),
