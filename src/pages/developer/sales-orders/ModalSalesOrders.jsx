@@ -68,6 +68,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
       const price = Number(updated[index]["sales_order_price"] || 0);
       updated[index]["sales_order_total"] = qty * price;
     }
+    console.log("selectedItem", selectedItem);
     updated[index][field] = value;
     updated[index][fieldId] = id;
 
@@ -210,6 +211,8 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
     ),
   };
 
+  console.log("items", items);
+
   const yupSchema = Yup.object({
     sales_order_date: Yup.string().trim().required("Required"),
     sales_order_customer_id: Yup.string().trim().required("Required"),
@@ -235,7 +238,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
         mutation={mutation}
         isOpen={true}
         handleClose={handleClose}
-        width="min-w-[35rem]!"
+        width="min-w-[50rem]!"
       >
         <div className="modal-body">
           <Formik
