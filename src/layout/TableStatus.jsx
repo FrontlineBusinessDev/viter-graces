@@ -5,13 +5,14 @@ import React from "react";
 
 const TableStatus = ({ item, dataArray }) => {
   const { store, dispatch } = React.useContext(StoreContext);
-  // console.log("item", dataArray);
+  console.log("item", dataArray, item?.status_option);
   return (
     <>
       {isEmptyItem(item?.status_option, "") !== "" ? (
         item?.status_option?.map((i, key) => {
           return (
-            i?.value === Number(isEmptyItem(dataArray?.is_active, 1)) && (
+            (i?.value === Number(isEmptyItem(dataArray?.is_active, 1)) ||
+              i?.value === isEmptyItem(dataArray?.is_status, "")) && (
               <div key={key} className="">
                 <Pills
                   variant={

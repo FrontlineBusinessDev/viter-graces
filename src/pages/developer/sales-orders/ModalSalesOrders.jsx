@@ -120,6 +120,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
 
   const handleClose = () => {
     dispatch(setIsAdd(false));
+    dispatch(setError(false));
   };
 
   handleEscape(() => handleClose());
