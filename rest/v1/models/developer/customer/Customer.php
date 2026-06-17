@@ -458,6 +458,7 @@ class Customer
             ]);
             $this->lastInsertedId = $this->connection->lastInsertId();
         } catch (PDOException $ex) {
+            returnError($ex);
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
