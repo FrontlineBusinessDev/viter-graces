@@ -438,12 +438,11 @@ class SuppliersPurchaseOrder
     public function readExpensesToday()
     {
         try {
-            $sql = "select DATE(purchase_order_date) AS sales_date, ";
-            $sql .= "SUM(purchase_order_total_amount) AS total_sales, ";
+            $sql = "select DATE(purchase_order_date) AS expenses_date, ";
+            $sql .= "SUM(purchase_order_total_amount) AS total_expenses, ";
             $sql .= "SUM(purchase_order_qty) AS total_qty ";
-            $sql .= "from {$this->tblSuppliersPurchaseOrder}";
-            $sql .= "where DATE(purchase_order_date) = DATE(:date_today) ";
-            $sql .= "and DATE(purchase_order_date) = DATE(:date_yesterday) ";
+            $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
+            $sql .= "where DATE(purchase_order_date) in (DATE(:date_today), DATE(:date_yesterday)) ";
             $sql .= "group by DATE(purchase_order_date) ";
             $sql .= "order by DATE(purchase_order_date) desc ";
             $query = $this->connection->prepare($sql);
