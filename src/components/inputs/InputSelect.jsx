@@ -479,31 +479,112 @@ export const InputSelectTagArray = ({
   );
 };
 
+//   label = "",
+//   onChange = null,
+//   itemEdit = null,
+//   item = null,
+//   path = null,
+//   placeholder = "",
+//   className,
+//   defaultValue = "",
+//   id = "0",
+//   required = true,
+// }) => {
+//   const { store, dispatch } = React.useContext(StoreContext);
+
+//   const {
+//     isLoading,
+//     isFetching,
+//     error,
+//     data: result,
+//   } = useQueryData(
+//     `${apiVersion}/${path}`, // endpoint
+//     "post", // method
+//     `${path}`, // key
+//     { id: id },
+//   );
+
+//   return (
+//     <>
+//       {label ? (
+//         <label htmlFor={label}>
+//           {label}
+//           {required && <span className="text-alert">*</span>}
+//         </label>
+//       ) : (
+//         ""
+//       )}
+//       {Number(isEmptyItem(item?.sales_order_aid, 0)) !== 0 ? (
+//         <span>{item?.sales_order_product_name}</span>
+//       ) : (
+//         <select
+//           onChange={(e) => {
+//             const selectedItem = result?.data?.find(
+//               (item) => Number(item.id) === Number(e.target.value),
+//             );
+
+//             console.log("selectedItemselectedItem", selectedItem);
+//             onChange(e, selectedItem);
+//           }}
+//           autoComplete="off"
+//           id={label}
+//           className={`${className}`}
+//           defaultValue={defaultValue}
+//         >
+//           <optgroup label={`Select a ${placeholder}`}>
+//             {result?.count === 0 ? (
+//               <option value="" hidden>
+//                 No data
+//               </option>
+//             ) : isLoading || isFetching ? (
+//               <option value="" hidden>
+//                 ...Loading
+//               </option>
+//             ) : error ? (
+//               <option value="" hidden>
+//                 Server Error
+//               </option>
+//             ) : (
+//               <option value="" hidden>
+//                 --
+//               </option>
+//             )}
+
+//             {result?.data?.map((item, key) => {
+//               return (
+//                 <option key={key} value={Number(item.id)} id={item.name}>
+//                   {item.name} ({item.current_qty} qty)
+//                 </option>
+//               );
+//             })}
+//           </optgroup>
+//         </select>
+//       )}
+//     </>
+//   );
+// };
+
 export const InputSalesOrderSelectTagArray = ({
   label = "",
   onChange = null,
-  itemEdit = null,
   item = null,
   path = null,
-  placeholder = "",
-  className,
-  defaultValue = "",
-  id = "0",
   required = true,
+  testFilterId = "",
 }) => {
-  const { store, dispatch } = React.useContext(StoreContext);
-
-  const {
-    isLoading,
-    isFetching,
-    error,
-    data: result,
-  } = useQueryData(
+  const { data: result } = useQueryData(
     `${apiVersion}/${path}`, // endpoint
-    "post", // method
+    "get", // method
     `${path}`, // key
-    { id: id },
   );
+  const [selected, setSelected] = React.useState("");
+  const options =
+    result?.data?.map((item) => ({
+      id: item.id,
+      value: item.name,
+      label: `${item.name} (${item.current_qty})`,
+      ...item,
+    })) || [];
 
   return (
     <>
@@ -518,48 +599,62 @@ export const InputSalesOrderSelectTagArray = ({
       {Number(isEmptyItem(item?.sales_order_aid, 0)) !== 0 ? (
         <span>{item?.sales_order_product_name}</span>
       ) : (
-        <select
-          onChange={(e) => {
-            const selectedItem = result?.data?.find(
-              (item) => Number(item.id) === Number(e.target.value),
-            );
+        <div data-testid={testFilterId}>
+          <Select
+            placeholder="--"
+            options={options}
+            value={selected}
+            onChange={(e) => {
+              if (!e) {
+                setSelected(null);
+                onChange(null, null);
+                return;
+              }
 
-            console.log("selectedItemselectedItem", selectedItem);
-            onChange(e, selectedItem);
-          }}
-          autoComplete="off"
-          id={label}
-          className={`${className}`}
-          defaultValue={defaultValue}
-        >
-          <optgroup label={`Select a ${placeholder}`}>
-            {result?.count === 0 ? (
-              <option value="" hidden>
-                No data
-              </option>
-            ) : isLoading || isFetching ? (
-              <option value="" hidden>
-                ...Loading
-              </option>
-            ) : error ? (
-              <option value="" hidden>
-                Server Error
-              </option>
-            ) : (
-              <option value="" hidden>
-                --
-              </option>
-            )}
-
-            {result?.data?.map((item, key) => {
-              return (
-                <option key={key} value={Number(item.id)} id={item.name}>
-                  {item.name} ({item.current_qty} qty)
-                </option>
+              const selectedItem = result?.data?.find(
+                (item) => Number(item.id) === Number(e.id),
               );
-            })}
-          </optgroup>
-        </select>
+
+              setSelected(e);
+              onChange(e, selectedItem);
+            }}
+            isClearable
+            classNames={{
+              control: ({ isFocused }) =>
+                ` w-full! min-h-full! text-sm border rounded-lg! px-1 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
+         ${isFocused ? " border-primary! " : " border-gray-300 "}
+         hover:border-primary! `,
+
+              valueContainer: () => "px-1 py-0",
+
+              input: () => "text-sm h-[22px]! text-gray-500! ",
+
+              placeholder: () => "text-gray-400! text-sm",
+
+              singleValue: () => "normal-case! text-sm text-gray-500! ",
+
+              indicatorsContainer: () => "",
+
+              indicatorSeparator: () => "w-0!",
+
+              dropdownIndicator: () =>
+                "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
+
+              clearIndicator: () =>
+                "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
+
+              menu: () =>
+                "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white dark:bg-[#0b111e]! z-50",
+
+              menuList: () => "py-1 max-h-60 overflow-auto ",
+
+              option: ({ isFocused, isSelected }) =>
+                ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  
+         ${isSelected ? "bg-primary! text-secondary!" : " "}
+         ${!isSelected && isFocused ? "bg-primary! text-secondary! " : " "}`,
+            }}
+          />
+        </div>
       )}
     </>
   );
