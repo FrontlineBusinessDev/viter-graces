@@ -17,7 +17,7 @@ checkPayload($data);
 // get data
 
 $val->sales_order_is_active = 1;
-$val->sales_order_status = 'active';
+$val->sales_order_status = 'paid';
 $val->sales_order_date = $data["sales_order_date"];
 $val->sales_order_customer_id = $data["sales_order_customer_id"];
 $val->sales_order_customer_name = $data["sales_order_customer_name"];
@@ -33,6 +33,14 @@ $val->sales_order_due_date = $data["sales_order_due_date"];
 $val->sales_order_overall_amount = $data["sales_order_overall_amount"];
 $val->sales_order_created = date("Y-m-d H:i:s");
 $val->sales_order_updated = date("Y-m-d H:i:s");
+
+if ((float)$val->sales_order_paid_amount < (float)$val->sales_order_overall_amount) {
+    $val->sales_order_status = 'partial';
+}
+
+if ((float)$val->sales_order_paid_amount == 0) {
+    $val->sales_order_status = 'unpaid';
+}
 
 $val->sales_order_number = setIdNumber($val, "ORD");
 

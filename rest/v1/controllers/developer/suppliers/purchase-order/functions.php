@@ -11,7 +11,7 @@ function isUserAccountAssociated($object)
 function checkReadExpensesToday($object)
 {
     $query = $object->readExpensesToday();
-    checkQuery($query, "Empty records. (read sales today)");
+    checkQuery($query, "Empty records. (read expenses today)");
     return $query;
 }
 

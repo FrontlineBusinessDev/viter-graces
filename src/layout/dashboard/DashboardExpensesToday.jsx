@@ -39,8 +39,8 @@ const DashboardExpensesToday = ({ path = "", id = 0 }) => {
           title="Expenses Today"
           value="₱******"
           subtitle="Yesterday: ₱******"
-          flipContent={`₱${numberWithCommasToFixed(result?.data[0]?.total_amount, 2)}`}
-          subTitleFlip={`Yesterday: ₱${numberWithCommasToFixed(result?.data[1]?.total_amount, 2)}`}
+          flipContent={`₱${numberWithCommasToFixed(result?.data[0]?.total_expenses, 2)}`}
+          subTitleFlip={`Yesterday: ₱${numberWithCommasToFixed(result?.data[1]?.total_expenses, 2)}`}
           flipBg="bg-red-100 dark:bg-red-900"
           icon={<PhilippinePeso className="text-red-500" size={20} />}
           iconBg="bg-red-100 dark:bg-[#2a1019]"
