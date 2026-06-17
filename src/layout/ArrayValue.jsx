@@ -14,6 +14,14 @@ export const ActiveInActiveStatus = () => {
   ];
 };
 
+export const PaymentStatus = () => {
+  return [
+    { label: "unpaid", value: "unpaid" },
+    { label: "paid", value: "paid" },
+    { label: "partial", value: "partial" },
+  ];
+};
+
 export const StockTypeArray = () => {
   return [
     { label: "in stock", value: "in stock" },
