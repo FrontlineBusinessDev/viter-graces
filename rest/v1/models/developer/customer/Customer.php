@@ -456,11 +456,12 @@ class Customer
                 "customer_created" => $this->customer_created,
                 "customer_updated" => $this->customer_updated,
             ]);
-            $this->lastInsertedId = $this->connection->lastInsertId();
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
+
+        returnError($this);
         return $query;
     }
 }

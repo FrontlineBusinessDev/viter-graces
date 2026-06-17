@@ -46,7 +46,6 @@ function checkCreateWalkInCustomer($object)
     $object->customer_created = date("Y-m-d H:i:s");
     $object->customer_updated = date("Y-m-d H:i:s");
 
-    returnError($object);
 
     $query = $object->createWalkInCustomer();
     checkQuery($query, "There's a problem processing your request. (create walk in customer data.)");
