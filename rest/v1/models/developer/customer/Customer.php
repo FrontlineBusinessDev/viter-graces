@@ -460,8 +460,7 @@ class Customer
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
-
-        returnError($this);
+        returnError($ex);
         return $query;
     }
 }
