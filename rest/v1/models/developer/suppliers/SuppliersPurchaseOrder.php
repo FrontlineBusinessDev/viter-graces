@@ -155,6 +155,7 @@ class SuppliersPurchaseOrder
             $sql .= "MAX(purchase_order_is_active) as is_active, ";
             $sql .= "MAX(purchase_order_aid) as purchase_order_aid, ";
             $sql .= "MAX(purchase_order_number) as purchase_order_number, ";
+            $sql .= "MAX(purchase_order_supplier_id) as purchase_order_supplier_id, ";
             $sql .= "MAX(purchase_order_supplier_name) as purchase_order_supplier_name, ";
             $sql .= "MAX(purchase_order_date) as purchase_order_date, ";
             $sql .= "MAX(purchase_order_expected_delivery) as purchase_order_expected_delivery, ";
@@ -162,7 +163,9 @@ class SuppliersPurchaseOrder
             $sql .= "MAX(purchase_order_status) as purchase_order_status, ";
             $sql .= "MAX(purchase_order_payment_status) as purchase_order_payment_status, ";
             $sql .= "MAX(purchase_order_note) as purchase_order_note, ";
+            $sql .= "MAX(purchase_order_product_id) as purchase_order_product_id, ";
             $sql .= "MAX(purchase_order_product_name) as purchase_order_product_name, ";
+            $sql .= "MAX(purchase_order_product_owner_id) as purchase_order_product_owner_id, ";
             $sql .= "MAX(purchase_order_product_owner_name) as purchase_order_product_owner_name, ";
             $sql .= "MAX(purchase_order_qty) as purchase_order_qty, ";
             $sql .= "MAX(purchase_order_price) as purchase_order_price, ";
@@ -232,6 +235,7 @@ class SuppliersPurchaseOrder
             $sql .= "MAX(purchase_order_is_active) as is_active, ";
             $sql .= "MAX(purchase_order_aid) as purchase_order_aid, ";
             $sql .= "MAX(purchase_order_number) as purchase_order_number, ";
+            $sql .= "MAX(purchase_order_supplier_id) as purchase_order_supplier_id, ";
             $sql .= "MAX(purchase_order_supplier_name) as purchase_order_supplier_name, ";
             $sql .= "MAX(purchase_order_date) as purchase_order_date, ";
             $sql .= "MAX(purchase_order_expected_delivery) as purchase_order_expected_delivery, ";
@@ -239,7 +243,9 @@ class SuppliersPurchaseOrder
             $sql .= "MAX(purchase_order_status) as purchase_order_status, ";
             $sql .= "MAX(purchase_order_payment_status) as purchase_order_payment_status, ";
             $sql .= "MAX(purchase_order_note) as purchase_order_note, ";
+            $sql .= "MAX(purchase_order_product_id) as purchase_order_product_id, ";
             $sql .= "MAX(purchase_order_product_name) as purchase_order_product_name, ";
+            $sql .= "MAX(purchase_order_product_owner_id) as purchase_order_product_owner_id, ";
             $sql .= "MAX(purchase_order_product_owner_name) as purchase_order_product_owner_name, ";
             $sql .= "MAX(purchase_order_qty) as purchase_order_qty, ";
             $sql .= "MAX(purchase_order_price) as purchase_order_price, ";
@@ -438,8 +444,8 @@ class SuppliersPurchaseOrder
             $sql .= "from {$this->tblSuppliersPurchaseOrder}";
             $sql .= "where DATE(purchase_order_date) = DATE(:date_today) ";
             $sql .= "and DATE(purchase_order_date) = DATE(:date_yesterday) ";
-            $sql .= "GROUP BY DATE(purchase_order_date) ";
-            $sql .= "ORDER BY DATE(purchase_order_date) DESC";
+            $sql .= "group by DATE(purchase_order_date) ";
+            $sql .= "order by DATE(purchase_order_date) desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "date_today" => $this->date_today,

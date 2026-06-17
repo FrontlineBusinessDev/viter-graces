@@ -83,7 +83,7 @@ RewriteRule ^products/search$ controllers/developer/products/search.php [L]
 RewriteRule ^products/read-all-active-by-product$ controllers/developer/products/read-all-active-by-product.php [L]
 RewriteRule ^products/read-all-product-that-have-stock$ controllers/developer/products/read-all-product-that-have-stock.php [L]
 
-### ACTIVITY LOG ### 
+### ACTIVITY LOG ###
 RewriteRule ^activity/read-with-limit$ controllers/developer/activity-log/read-with-limit.php [L] 
 
 ### PURCHASE ORDER ###
@@ -92,6 +92,7 @@ RewriteRule ^purchase-order/([0-9]+)$ controllers/developer/suppliers/purchase-o
 RewriteRule ^purchase-order/active/([0-9]+)$ controllers/developer/suppliers/purchase-order/active.php?id=$1 [L] 
 RewriteRule ^purchase-order/page/([0-9]+)$ controllers/developer/suppliers/purchase-order/page.php?start=$1 [L]
 RewriteRule ^purchase-order/search$ controllers/developer/suppliers/purchase-order/search.php [L]
+RewriteRule ^purchase-order/read-expenses-today$ controllers/developer/suppliers/purchase-order/read-expenses-today.php [L]
 
 ### STOCK MOVEMENT ### 
 RewriteRule ^stock-movement$ controllers/developer/inventory/stock-movement/stock-movement.php [L]
