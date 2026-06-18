@@ -6,12 +6,12 @@ require '../../../core/header.php';
 require '../../../core/functions.php';
 require 'functions.php';
 // use needed classes
-require '../../../models/developer/sales-order/SalesOrder.php';
+require '../../../models/developer/report/ReportSalesOrder.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new SalesOrder($conn);
+$val = new ReportSalesOrder($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);

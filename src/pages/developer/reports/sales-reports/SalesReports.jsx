@@ -8,7 +8,8 @@ import ReportsStats from "../ReportsStats";
 
 const SalesReports = () => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const [itemEdit, setItemEdit] = React.useState(null);
+  const [searchValue, setSearchValue] = React.useState("");
+  const [filterColumns, setFilterColumns] = React.useState([]);
 
   // Columns
   const columns = [
@@ -86,13 +87,14 @@ const SalesReports = () => {
   return (
     <>
       <HeaderNav menu={"reports"} activeTab="sales-reports">
-        <ReportsStats />
+        <ReportsStats searchValue={searchValue} filterColumns={filterColumns} />
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="sales-order/page-all-sales-order"
+          path="report-sales-order/page-all-sales-order"
           hasExport={true}
-          setItemEdit={setItemEdit}
+          setSearchValue={setSearchValue}
+          setFilterColumns={setFilterColumns}
           haveFilterTable={true}
           ishaveAdd={false}
         />

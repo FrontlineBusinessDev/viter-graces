@@ -31,6 +31,7 @@ $val->sales_order_received_by_name = $data["sales_order_received_by_name"];
 $val->sales_order_installment = $data["sales_order_installment"];
 $val->sales_order_due_date = $data["sales_order_due_date"];
 $val->sales_order_overall_amount = $data["sales_order_overall_amount"];
+$val->sales_order_total_amount = $data["sales_order_total_amount"];
 $val->sales_order_created = date("Y-m-d H:i:s");
 $val->sales_order_updated = date("Y-m-d H:i:s");
 

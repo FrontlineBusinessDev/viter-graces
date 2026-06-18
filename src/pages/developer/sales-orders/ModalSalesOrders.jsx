@@ -277,6 +277,14 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
                   ) +
                   Number(values.sales_order_tax) -
                   Number(values.sales_order_discount),
+                itemsDelete,
+                sales_order_total_amount: items?.reduce(
+                  (sum, item) =>
+                    sum +
+                    Number(item.sales_order_qty || 1) *
+                      Number(item.sales_order_price || 0),
+                  0,
+                ),
               };
               // console.log(data);
               mutation.mutate(data);

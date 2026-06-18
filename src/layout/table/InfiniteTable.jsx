@@ -7,7 +7,6 @@ import SearchBar from "@/components/SearchBar";
 import ServerError from "@/components/ServerError";
 import ButtonSpinner from "@/components/spinners/ButtonSpinner";
 import TableLoading from "@/components/spinners/TableLoading";
-import TableSpinner from "@/components/spinners/TableSpinner";
 import { apiVersion } from "@/config/config";
 import { queryDataInfinite } from "@/services/queryDataInfinite";
 import { setIsAdd, setIsSubAdd, setIsView } from "@/store/StoreAction";
@@ -33,7 +32,9 @@ const InfiniteTable = ({
   columns,
   className,
   path = "",
-  setItemEdit,
+  setItemEdit = () => {},
+  setSearchValue = () => {},
+  setFilterColumns = () => {},
   haveFilterTable = false,
   hasExport = false,
   isDefaultMobile = "default",
@@ -198,6 +199,8 @@ const InfiniteTable = ({
     } else {
       setIsFetchFilterData(true);
     }
+    setSearchValue(search.current?.value || "");
+    setFilterColumns(columnFilters);
   }, [columnFilters]);
 
   let photo = [];
