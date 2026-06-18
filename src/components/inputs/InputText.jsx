@@ -303,7 +303,7 @@ export const DebouncedInput = ({
               };
               setValue(newValue);
             }}
-            data-testid={cypressTesting}
+            data-testid={`${cypressTesting}_min`}
             placeholder="0"
           />
           <span className="font-bold">-</span>
@@ -321,7 +321,7 @@ export const DebouncedInput = ({
               };
               setValue(newValue);
             }}
-            data-testid={cypressTesting}
+            data-testid={`${cypressTesting}_max`}
             placeholder="max"
           />
         </div>
