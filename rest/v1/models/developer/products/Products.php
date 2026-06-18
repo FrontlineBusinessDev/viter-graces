@@ -245,84 +245,6 @@ class Products
 
         return $query;
     }
-    //     public function readAllThatHaveStock()
-    //     {
-    //         $params = [
-    //             "stock_movement_product_name" => "%{$this->column_search}%",
-    //             "stock_movement_product_owner_name" => "%{$this->column_search}%",
-    //         ];
-
-    //         try {
-    //             $sql = "select *, ";
-    //             $sql .= "products_aid as id, ";
-    //             $sql .= "products_is_active as is_active, ";
-    //             $sql .= "products_name as name, ";
-    //             $sql .= "IFNULL(so.order_qty, 0) AS order_qty, ";
-
-    //             // Total stock quantity
-    //             $sql .= "SUM(
-    //                 CASE
-    //                     WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
-    //                         THEN ms.stock_movement_qty
-
-    //                     WHEN ms.stock_movement_type IN (
-    //                         'purchases',
-    //                         'stock out - reject/defective items'
-    //                     )
-    //                         THEN -ms.stock_movement_qty
-
-    //                     ELSE 0
-    //                 END
-    //             ) AS stock_qty, ";
-
-    //             // Current quantity after sales orders
-    //             $sql .= "SUM(
-    //                 CASE
-    //                     WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
-    //                         THEN ms.stock_movement_qty
-
-    //                     WHEN ms.stock_movement_type IN (
-    //                         'purchases',
-    //                         'stock out - reject/defective items'
-    //                     )
-    //                         THEN -ms.stock_movement_qty
-
-    //                     ELSE 0
-    //                 END
-    //             ) - IFNULL(so.order_qty, 0) AS current_qty, ";
-
-    //             $sql .= "DATE_FORMAT(MAX(ms.stock_movement_date), '%b %d, %Y') AS stock_movement_date ";
-
-    //             $sql .= "FROM {$this->tblMovementStock} AS ms ";
-
-    //             $sql .= "INNER JOIN {$this->tblProducts} AS p ";
-    //             $sql .= "ON ms.stock_movement_product_id = p.products_aid ";
-
-    //             $sql .= "LEFT JOIN (
-    //                 SELECT
-    //                     sales_order_product_id,
-    //                     SUM(sales_order_qty) AS order_qty
-    //                 FROM {$this->tblSalesOrder}
-    //                 GROUP BY sales_order_product_id
-    //              ) AS so
-    //              ON so.sales_order_product_id = p.products_aid ";
-    //             $sql .= "WHERE (
-    //                     ms.stock_movement_product_name LIKE :stock_movement_product_name
-    //                     OR ms.stock_movement_product_owner_name LIKE :stock_movement_product_owner_name
-    //                ) ";
-    //             $sql .= "GROUP BY p.products_aid 
-    // HAVING current_qty > 0 ";
-    //             $sql .= "ORDER BY p.products_unit asc ";
-    //             $query = $this->connection->prepare($sql);
-    //             $query->execute($params);
-    //         } catch (PDOException $ex) {
-    //             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
-    //             $query = false;
-    //         }
-
-    //         return $query;
-    //     }
-
 
     // read all
     public function readAll($allowedColumns)
@@ -333,6 +255,7 @@ class Products
                 "products_name" => "%{$this->column_search}%",
                 "products_sku" => "%{$this->column_search}%",
                 "products_owner_name" => "%{$this->column_search}%",
+                "products_suppliers_name" => "%{$this->column_search}%",
             ] : [],
         ];
 
@@ -365,6 +288,7 @@ class Products
             } else {
                 $sql .= ($this->column_search != "" ? "and ( products_name like :products_name 
             or products_owner_name like :products_owner_name 
+            or products_suppliers_name like :products_suppliers_name 
             or products_sku like :products_sku ) " : " ");
             }
             $sql .= " order by products_status desc, ";
@@ -389,6 +313,7 @@ class Products
                 "products_name" => "%{$this->column_search}%",
                 "products_sku" => "%{$this->column_search}%",
                 "products_owner_name" => "%{$this->column_search}%",
+                "products_suppliers_name" => "%{$this->column_search}%",
             ] : [],
         ];
 
@@ -421,6 +346,7 @@ class Products
             } else {
                 $sql .= ($this->column_search != "" ? "and ( products_name like :products_name 
             or products_owner_name like :products_owner_name 
+            or products_suppliers_name like :products_suppliers_name 
             or products_sku like :products_sku ) " : " ");
             }
             $sql .= " order by products_status desc, ";

@@ -3,6 +3,7 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ReportsStats from "../ReportsStats";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 
 const StockLevels = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -11,45 +12,46 @@ const StockLevels = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "status",
-      header: "Status",
+      accessorKey: "products_status",
+      header: "status",
       classTh: "w-[8rem]",
       classTd: "",
+      status_option: ActiveInActiveStatus(),
     },
     {
-      accessorKey: "products",
-      header: "Products",
+      accessorKey: "products_name",
+      header: "products",
       classTh: "",
-      classTd: "",
+      classTd: "capitalize ",
       isMobileTitle: true,
     },
     {
-      accessorKey: "sku",
-      header: "SKU",
+      accessorKey: "products_sku",
+      header: "sku",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "category",
-      header: "Category",
+      accessorKey: "products_unit",
+      header: "category",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "stock",
-      header: "Stock",
+      accessorKey: "current_qty",
+      header: "stock",
+      classTh: "",
+      classTd: "uppercase ",
+    },
+    {
+      accessorKey: "products_price",
+      header: "price",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "price",
-      header: "Price",
-      classTh: "",
-      classTd: "",
-    },
-    {
-      accessorKey: "location",
-      header: "Location",
+      accessorKey: "stock_movement_location",
+      header: "location",
       classTh: "",
       classTd: "",
     },
@@ -62,9 +64,11 @@ const StockLevels = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path=""
+          path="stock-overview"
           hasExport={true}
           setItemEdit={setItemEdit}
+          haveFilterTable={true}
+          ishaveAdd={false}
         />
       </HeaderNav>
     </>

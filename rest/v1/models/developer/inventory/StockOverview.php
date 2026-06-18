@@ -175,7 +175,10 @@ class StockOverview
             $sql .= "MAX(p.products_sku) as products_sku, ";
             $sql .= "MAX(p.products_unit) as products_unit, ";
             $sql .= "MAX(p.products_status) as products_status, ";
+            $sql .= "MAX(p.products_price) as products_price, ";
+            $sql .= "MAX(p.products_name) as products_name, ";
             $sql .= "MAX(p.products_aid) as products_aid, ";
+            $sql .= "MAX(ms.stock_movement_location) AS stock_movement_location, ";
             $sql .= "MAX(ms.stock_movement_product_name) as name, ";
             $sql .= "MAX(ms.stock_movement_is_active) as is_active, ";
             $sql .= "MAX(ms.stock_movement_product_name) as stock_movement_product_name, ";
@@ -208,8 +211,6 @@ class StockOverview
             $sql .= "
             MAX(IFNULL(so.order_qty, 0)) AS order_qty,
         ";
-
-            // Current quantity
             $sql .= "
             (
                 SUM(
@@ -233,7 +234,6 @@ class StockOverview
                 ) - MAX(IFNULL(so.order_qty, 0))
             ) AS current_qty
         ";
-
             $sql .= "from {$this->tblMovementStock} AS ms ";
 
             $sql .= "
@@ -329,7 +329,10 @@ class StockOverview
             $sql .= "MAX(p.products_sku) AS products_sku, ";
             $sql .= "MAX(p.products_unit) AS products_unit, ";
             $sql .= "MAX(p.products_status) AS products_status, ";
+            $sql .= "MAX(p.products_price) as products_price, ";
+            $sql .= "MAX(p.products_name) as products_name, ";
             $sql .= "MAX(p.products_aid) AS products_aid, ";
+            $sql .= "MAX(ms.stock_movement_location) AS stock_movement_location, ";
             $sql .= "MAX(ms.stock_movement_product_name) AS name, ";
             $sql .= "MAX(ms.stock_movement_is_active) AS is_active, ";
             $sql .= "MAX(ms.stock_movement_product_name) as stock_movement_product_name, ";
