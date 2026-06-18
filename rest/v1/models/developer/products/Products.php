@@ -640,4 +640,40 @@ class Products
         }
         return $query;
     }
+
+    // read all
+    public function checkAssociationSaleOrder()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= "where sales_order_product_id = :sales_order_product_id ";
+            $sql .= "order by sales_order_product_id desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_order_product_id" => $this->products_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // delete
+    public function deleteMovementStock()
+    {
+        try {
+            $sql = "delete from {$this->tblStockMovements} ";
+            $sql .= "where stock_movement_product_id = :stock_movement_product_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "stock_movement_product_id" => $this->products_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
 }

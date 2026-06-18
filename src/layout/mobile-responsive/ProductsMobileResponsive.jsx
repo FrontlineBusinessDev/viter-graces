@@ -1,10 +1,7 @@
-import { isEmptyItem } from "@/utilities/isEmptyItem";
-import { flexRender } from "@tanstack/react-table";
-import { Image } from "lucide-react";
-import ActionButtonSubTable from "../ActionButtonSubTable";
-import TableStatus from "../TableStatus";
+import { AmountWithPesoSign } from "@/components/PesoSign";
 import Pills from "@/components/Pills";
-import { AmountWithPesoSign, PesoSign } from "@/components/PesoSign";
+import { Image } from "lucide-react";
+import ActionButtonMobile from "../ActionButtonMobile";
 
 const ProductsMobileResponsive = ({
   rows,
@@ -96,25 +93,15 @@ const ProductsMobileResponsive = ({
                     </p>
                   </div>
                 </div>
-
-                {/* ACTIONS */}
-                {/* {cells.map((item) => {
-                  if (item.column.columnDef.accessorKey === "action") {
-                    return (
-                      <div key={item.id} className="flex gap-2 justify-end">
-                        <ActionButtonSubTable
-                          item={item.column.columnDef}
-                          dataArray={row.original}
-                          setData={setData}
-                          setItemEdit={setItemEdit}
-                          ishaveSubAdd={ishaveSubAdd}
-                          path={path}
-                        />
-                      </div>
-                    );
-                  }
-                  return null;
-                })} */}
+                <div className="flex gap-2 justify-end">
+                  <ActionButtonMobile
+                    dataArray={rowData}
+                    setData={setData}
+                    setItemEdit={setItemEdit}
+                    ishaveSubAdd={ishaveSubAdd}
+                    path={path}
+                  />
+                </div>
               </div>
             );
           })}
