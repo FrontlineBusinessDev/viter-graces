@@ -47,6 +47,7 @@ const ProductOwner = () => {
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
           path="product-owner"
           setItemEdit={setItemEdit}
+          dataTestidAddButton="add-product-owner-btn"
         />
       </HeaderNav>
       {store.isAdd && <ModalProductOwner itemEdit={itemEdit} />}
