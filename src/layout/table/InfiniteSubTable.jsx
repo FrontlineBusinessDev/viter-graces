@@ -2,6 +2,7 @@ import AddButton from "@/components/buttons/AddButton";
 import ExportCSVButton from "@/components/buttons/ExportCSVButton";
 import { DebouncedInput } from "@/components/inputs/InputText";
 import NoData from "@/components/NoData";
+import { AmountWithPesoSign } from "@/components/PesoSign";
 import SearchBar from "@/components/SearchBar";
 import ServerError from "@/components/ServerError";
 import ButtonSpinner from "@/components/spinners/ButtonSpinner";
@@ -9,7 +10,7 @@ import TableLoading from "@/components/spinners/TableLoading";
 import TableSpinner from "@/components/spinners/TableSpinner";
 import { apiVersion } from "@/config/config";
 import { queryDataInfinite } from "@/services/queryDataInfinite";
-import { setIsAdd, setIsSubAdd, setIsView } from "@/store/StoreAction";
+import { setIsSubAdd, setIsView } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useInfiniteQuery } from "@tanstack/react-query";
@@ -22,17 +23,15 @@ import {
 } from "@tanstack/react-table";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import ActionButtonSubTable from "../ActionButtonSubTable";
+import MobileResponsiveList from "../mobile-responsive/MobileResponsiveList";
 import ModalSubAction from "../modal/ModalSubAction";
 import TableStatus from "../TableStatus";
-import CustomerMobile from "../mobile-responsive/CustomerMobile";
-import InfiniteDefaultTableMobileCard from "../mobile-responsive/InfiniteDefaultTableMobileCard";
-import ProductsMobile from "../mobile-responsive/ProductsMobile";
-import { AmountWithPesoSign, PesoSign } from "@/components/PesoSign";
 
 const InfiniteSubTable = ({
   columns,
   className,
   path = "",
+  subPath = "",
   data = [],
   setItemEdit,
   haveFilterTable = false,
@@ -95,7 +94,7 @@ const InfiniteSubTable = ({
     queryFn: async ({ pageParam = 1 }) =>
       await queryDataInfinite(
         null,
-        `${apiVersion}/${path}/${pageParam}`,
+        `${apiVersion}/${path}/page-by-id/${pageParam}`,
         false,
         {
           ...searchPayload,
@@ -243,32 +242,16 @@ const InfiniteSubTable = ({
                 <ServerError />
               </div>
             )}
+
             {/* MOBILE CARD */}
-            <InfiniteDefaultTableMobileCard
+            <MobileResponsiveList
               rows={rows}
               lastRowRef={lastRowRef}
               setData={setData}
               setItemEdit={setItemEdit}
+              setItemVal={setItemVal}
               isDefaultMobile={isDefaultMobile}
               ishaveSubAdd={ishaveSubAdd}
-              path={path}
-            />
-            <CustomerMobile
-              rows={rows}
-              lastRowRef={lastRowRef}
-              setItemEdit={setItemEdit}
-              isDefaultMobile={isDefaultMobile}
-              ishaveSubAdd={ishaveSubAdd}
-              path={path}
-            />
-            <ProductsMobile
-              rows={rows}
-              setData={setData}
-              setItemEdit={setItemEdit}
-              lastRowRef={lastRowRef}
-              isDefaultMobile={isDefaultMobile}
-              ishaveSubAdd={ishaveSubAdd}
-              path={path}
             />
             {/* TABLE */}
             <table className="overflow-auto md:border md:border-gray-300 dark:border-[#0b111e] ">

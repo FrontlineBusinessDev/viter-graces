@@ -1,4 +1,8 @@
-import { DefaultActionTableList } from "@/layout/ArrayValue";
+import {
+  DefaultActionTableList,
+  EditDeleteActionTableList,
+  PaymentStatus,
+} from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfinitePerTabs from "@/layout/table/InfinitePerTabs";
 import { StoreContext } from "@/store/StoreContext";
@@ -9,6 +13,7 @@ import { FaFacebookMessenger } from "react-icons/fa";
 import { IoLogoWhatsapp } from "react-icons/io";
 import ModalCustomer from "./ModalCustomer";
 import ViewDetails from "./ViewDetails";
+import ModalSalesOrders from "./ModalSalesOrders";
 
 const Customers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -82,6 +87,13 @@ const Customers = () => {
   // SUB Columns Tables
   const subColumnsTable = [
     {
+      accessorKey: "sales_order_status",
+      header: "status",
+      classTh: "",
+      classTd: "",
+      status_option: PaymentStatus(),
+    },
+    {
       accessorKey: "sales_order_number",
       header: "Order Number",
       isViewItems: false,
@@ -125,6 +137,14 @@ const Customers = () => {
       classTh: "",
       classTd: "",
     },
+    {
+      accessorKey: "action",
+      action_array: EditDeleteActionTableList("sales-order"),
+      header: "Action",
+      icon: "",
+      classTh: "text-center w-[7rem]",
+      classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
+    },
   ];
 
   return (
@@ -134,7 +154,7 @@ const Customers = () => {
           columns={columns}
           subColumnsTable={subColumnsTable}
           path={"customer"}
-          subPath={"sales-order/page-by-cutomer-id"}
+          subPath={"sales-order"}
           itemEdit={itemEdit}
           setItemEdit={setItemEdit}
           setItemVal={setItemVal}
@@ -147,6 +167,7 @@ const Customers = () => {
         />
       </HeaderNav>
       {store.isAdd && <ModalCustomer itemEdit={itemEdit} />}
+      {store.isSubAdd && <ModalSalesOrders itemEdit={itemEdit} />}
 
       {store.isView && <ViewDetails itemEdit={itemEdit} item={itemVal} />}
     </>

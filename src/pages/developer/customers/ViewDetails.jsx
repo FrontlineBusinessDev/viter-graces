@@ -2,13 +2,12 @@ import CloseButton from "@/components/buttons/CloseButton";
 import ExportCSVButton from "@/components/buttons/ExportCSVButton";
 import { AmountWithPesoSign } from "@/components/PesoSign";
 import Pills from "@/components/Pills";
-import TableStatus from "@/layout/TableStatus";
 import { setIsView } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import React from "react";
 
-const ViewDetails = ({ itemEdit, item }) => {
+const ViewDetails = ({ item }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const handleClose = () => {
     dispatch(setIsView(false));
@@ -64,7 +63,7 @@ const ViewDetails = ({ itemEdit, item }) => {
             <div className="">
               <div className="rounded-2xl border border-gray-300 bg-white dark:bg-[#0b111e] overflow-x-hidden dark:border-gray-700 max-h-[200px]">
                 {/* desktop header */}
-                <ul className="hidden sticky top-0 lg:grid lg:grid-cols-[2rem_1fr_1fr] lg:items-center border-b bg-gray-50 px-4 py-3 text-xs font-medium text-gray-500 dark:bg-[#0b111e]">
+                <ul className="sticky font-bold top-0 grid grid-cols-[2rem_1fr_1fr] gap-1 items-center border-b bg-gray-50 px-4 py-3 text-xs text-gray-500 dark:bg-[#0b111e]">
                   <li>#</li>
                   <li>Product</li>
                   <li className="text-right!">Amount</li>
@@ -74,25 +73,14 @@ const ViewDetails = ({ itemEdit, item }) => {
                 {item?.items?.map((item, key) => {
                   return (
                     <ul
-                      className="p-4 grid grid-cols-[2rem_1fr_1fr] gap-1 text-sm"
+                      className={`px-4 grid grid-cols-[2rem_1fr_1fr] gap-1 text-sm ${key === 0 ? " pt-4 " : " pt-1 "} last:pb-4`}
                       key={key}
                     >
-                      <li>
-                        <p className="text-xs text-gray-400 lg:hidden">#</p>
-                        {key + 1}.
-                      </li>
+                      <li>{key + 1}.</li>
+
+                      <li>{item?.sales_order_product_name}</li>
 
                       <li>
-                        <p className="text-xs text-gray-400 lg:hidden">
-                          Product
-                        </p>
-                        {item?.sales_order_product_name}
-                      </li>
-
-                      <li>
-                        <p className="text-xs text-right! text-gray-400 lg:hidden">
-                          Amount
-                        </p>
                         <AmountWithPesoSign
                           classN={"size-3"}
                           amount={item?.sales_order_total}
