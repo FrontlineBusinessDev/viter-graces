@@ -56,7 +56,7 @@ const Toast = ({ variant = "info", ...props }) => {
 
   return (
     <div
-      className={`fixed top-2 left-1/2 -translate-x-1/2 flex items-center gap-2 py-1.5 px-2 bg-light rounded-r-sm border-y border-r 
+      className={`fixed top-2 left-1/2 -translate-x-1/2 flex items-center gap-2 py-1.5 px-2 bg-light dark:bg-dark-mode rounded-r-sm border-y border-r 
         border-y-line border-r-line z-99 
         ${variants[variant]?.border}`}
       data-testid="toast"

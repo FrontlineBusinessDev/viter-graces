@@ -73,6 +73,7 @@ const Roles = () => {
           path="roles"
           setItemEdit={setItemEdit}
           haveFilterTable={true}
+          dataTestidAddButton="add-roles-btn"
         />
       </HeaderNav>
       {store.isAdd && <ModalRoles itemEdit={itemEdit} />}

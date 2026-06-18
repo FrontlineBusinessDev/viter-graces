@@ -52,6 +52,7 @@ const SearchBar = ({
           className="text-xs py-0 h-[30px] pl-8 rounded-lg"
           ref={search}
           onChange={(e) => handleChange(e, search)}
+          data-testid="search-input"
         />
       </div>
     </form>
