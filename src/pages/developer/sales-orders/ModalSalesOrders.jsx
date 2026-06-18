@@ -48,14 +48,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
         ],
   );
 
-  const handleChange = (
-    index,
-    selectedItem = "",
-    field,
-    fieldId,
-    value,
-    id,
-  ) => {
+  const handleChange = (index, selectedItem = "", fieldId, field) => {
     const updated = [...items];
     if (selectedItem !== "") {
       updated[index]["sales_order_product_owner_id"] =
@@ -68,8 +61,8 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
       const price = Number(updated[index]["sales_order_price"] || 0);
       updated[index]["sales_order_total"] = qty * price;
     }
-    updated[index][field] = value;
-    updated[index][fieldId] = id;
+    updated[index][field] = selectedItem["name"];
+    updated[index][fieldId] = selectedItem["id"];
 
     setItems(updated);
   };
@@ -181,8 +174,8 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
     sales_order_qty: isEmptyItem(itemEdit?.sales_order_qty, "1"),
     sales_order_price: isEmptyItem(itemEdit?.sales_order_price, ""),
     sales_order_total: isEmptyItem(itemEdit?.sales_order_total, ""),
-    sales_order_discount: isEmptyItem(itemEdit?.sales_order_discount, "0"),
-    sales_order_tax: isEmptyItem(itemEdit?.sales_order_tax, "0"),
+    sales_order_discount: isEmptyItem(itemEdit?.sales_order_discount, ""),
+    sales_order_tax: isEmptyItem(itemEdit?.sales_order_tax, ""),
     sales_order_paid_amount: isEmptyItem(itemEdit?.sales_order_paid_amount, ""),
     sales_order_notes: isEmptyItem(itemEdit?.sales_order_notes, ""),
     sales_order_received_by_id: isEmptyItem(
@@ -228,6 +221,8 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
     { id: "2", name: "online transaction" },
     { id: "3", name: "mutiple payment" },
   ];
+
+  console.log("setItems", items);
   return (
     <>
       <ModalWrapper
@@ -268,9 +263,22 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
                   { ...values, items },
                 ),
                 ...values,
+                sales_order_discount: Number(values?.sales_order_discount),
+                sales_order_tax: Number(values?.sales_order_tax),
                 items,
                 itemsDelete,
-                sales_order_overall_amount: items?.reduce(
+                sales_order_overall_amount:
+                  items?.reduce(
+                    (sum, item) =>
+                      sum +
+                      Number(item.sales_order_qty || 1) *
+                        Number(item.sales_order_price || 0),
+                    0,
+                  ) +
+                  Number(values.sales_order_tax) -
+                  Number(values.sales_order_discount),
+                itemsDelete,
+                sales_order_total_amount: items?.reduce(
                   (sum, item) =>
                     sum +
                     Number(item.sales_order_qty || 1) *
@@ -370,15 +378,11 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
                                     selectedItem,
                                     "sales_order_product_id",
                                     "sales_order_product_name",
-                                    e.target.value,
-                                    e.target.options[e.target.selectedIndex].id,
                                   );
                                 }}
-                                itemEdit={itemEdit}
                                 item={a}
-                                defaultValue={a["sales_order_product_id"]}
                                 path={`products/read-all-product-that-have-stock`}
-                                placeholder="Product Name"
+                                testFilterId="sales_order_product_name"
                               />
                               <input
                                 onChange={(e) => {
@@ -470,13 +474,15 @@ const ModalSalesOrders = ({ itemEdit, cutomer }) => {
                         <AmountWithPesoSign
                           classN="size-5"
                           amount={
-                            items.reduce(
+                            items?.reduce(
                               (sum, item) =>
                                 sum +
                                 Number(item.sales_order_qty || 1) *
                                   Number(item.sales_order_price || 0),
                               0,
-                            ) - Number(props?.values?.sales_order_discount)
+                            ) +
+                            Number(props?.values?.sales_order_tax) -
+                            Number(props?.values?.sales_order_discount)
                           }
                         />
                       </p>

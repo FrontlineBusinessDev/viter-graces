@@ -280,7 +280,7 @@ export const DebouncedInput = ({
         isEmptyItem(filterFn, "auto") === "date") && (
         <input
           {...props}
-          type={isEmptyItem(filterFn, "auto") !== "date" ? "text" : "date"}
+          type={isEmptyItem(filterFn, "auto") !== "date" ? "search" : "date"}
           value={value ?? ""}
           onChange={(e) => setValue(e.target.value)}
           data-testid={cypressTesting}
