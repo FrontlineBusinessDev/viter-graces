@@ -106,6 +106,7 @@ const StockOverview = () => {
           path="stock-overview"
           setItemEdit={setItemEdit}
           haveFilterTable={true}
+          ishaveAdd={false}
           isDefaultMobile={"stock movement"}
           defaultSearch={true}
           refetchOnWindowFocus={true}

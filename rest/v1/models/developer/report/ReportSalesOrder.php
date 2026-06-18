@@ -42,6 +42,7 @@ class ReportSalesOrder
     public $tblStockMovements;
     public $tblMovementStock;
     public $tblProducts;
+    public $tblSuppliersPurchaseOrder;
 
     public $filters;
     public $column_start;
@@ -56,6 +57,7 @@ class ReportSalesOrder
         $this->tblStockMovements = "graces_stock_movement";
         $this->tblMovementStock = "graces_stock_movement";
         $this->tblProducts = "graces_products";
+        $this->tblSuppliersPurchaseOrder = "graces_suppliers_purchase_order";
     }
 
     // read all
@@ -245,6 +247,21 @@ class ReportSalesOrder
             $query = false;
         }
 
+        return $query;
+    }
+
+    public function readAllExpensesAmount()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
+            $sql .= "where purchase_order_status = 'paid' ";
+            $sql .= "order by purchase_order_aid ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
         return $query;
     }
 }
