@@ -1,16 +1,26 @@
 <?php
-// Read all
-function checkReadAllSalesOrder($object, $allowedColumns = [])
-{
-    $query = $object->readAllSalesOrder($allowedColumns);
-    checkQuery($query, "Empty records. (checkReadAllSalesOrder)");
-    return $query;
-}
+
 // Read all
 function checkReadAllSalesOrderAmount($object, $allowedColumns = [])
 {
     $query = $object->readAllSalesOrderAmount($allowedColumns);
     checkQuery($query, "Empty records. (readAllSalesOrderAmount)");
+    return $query;
+}
+
+// Read all
+function checkReadAllExpensesAmount($object, $allowedColumns = [])
+{
+    $query = $object->readAllExpensesAmount($allowedColumns);
+    checkQuery($query, "Empty records. (readAllExpensesAmount)");
+    return $query;
+}
+
+// Read all
+function checkReadAllSalesOrder($object, $allowedColumns = [])
+{
+    $query = $object->readAllSalesOrder($allowedColumns);
+    checkQuery($query, "Empty records. (checkReadAllSalesOrder)");
     return $query;
 }
 

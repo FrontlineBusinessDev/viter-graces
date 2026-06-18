@@ -28,7 +28,7 @@ const ReportTotalSalesOrders = ({
   const valDataQty = useMemo(() => {
     if (!result?.count) return "0";
 
-    return isEmptyItem(result?.data?.[0]?.tota_qty, "0");
+    return isEmptyItem(result?.data?.[0]?.total_qty, "0");
   }, [result]);
 
   const valDataTotalSales = useMemo(() => {
