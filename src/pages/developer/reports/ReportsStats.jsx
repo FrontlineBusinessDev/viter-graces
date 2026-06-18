@@ -1,7 +1,6 @@
 import ReportLowStockItems from "@/layout/sales-reports/ReportLowStockItems";
-import ReportNetRevenue from "@/layout/sales-reports/ReportNetRevenue";
-import ReportTotalSalesOrders from "@/layout/sales-reports/ReportTotalSalesOrders";
 import ReportTotalReturns from "@/layout/sales-reports/ReportTotalReturns";
+import ReportTotalSalesOrders from "@/layout/sales-reports/ReportTotalSalesOrders";
 
 const ReportsStats = ({ searchValue = "", filterColumns }) => {
   return (

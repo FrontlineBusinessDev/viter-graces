@@ -25,20 +25,40 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $val->filters = $data['columnFilters'];
     $total_result_final = [];
     $query = checkReadAllSalesOrderAmount($val, allowedColumns());
+    $queryExpenses = checkReadAllExpensesAmount($val, allowedColumns());
 
     $dataSet = getResultData($query);
+    $querySetExpenses = getResultData($queryExpenses);
+
+    $val->filters = [];
+    $val->column_search = "";    // get data 
+    $queryTotalAllAmount = checkReadAllSalesOrderAmount($val, allowedColumns());
+    $querySetAllAmount = getResultData($queryTotalAllAmount);
+
 
     if (count($dataSet) > 0) {
-        $totalSales = array_sum(array_column($dataSet, 'sales_order_overall_amount'));
+        $totalExpenses = array_sum(array_column($querySetExpenses, 'purchase_order_price'));
+        $totalAllSales = array_sum(array_column($querySetAllAmount, 'sales_order_total'));
+        $totalSales = array_sum(array_column($dataSet, 'sales_order_total'));
+
+        $totalAllDiscount = array_sum(array_column($querySetAllAmount, 'sales_order_discount'));
+        $totalDiscount = array_sum(array_column($dataSet, 'sales_order_discount'));
+
+        $totalAllTax = array_sum(array_column($querySetAllAmount, 'sales_order_tax'));
+        $totalTax = array_sum(array_column($dataSet, 'sales_order_tax'));
+
         $totalQty = array_sum(array_column($dataSet, 'sales_order_qty'));
 
+
+        $totalAllSalesAmount = ((float)$totalAllSales + (float)$totalAllTax) - (float)$totalAllDiscount - (float)$totalExpenses;
+        $totalAmount = ((float)$totalSales + (float)$totalTax) - (float)$totalDiscount;
+
         $total_result_final[] = [
-            'total_sales' => $totalSales,
+            'total_sales' => $totalAmount,
             'total_qty' => $totalQty,
-            'net_revenue' => $totalQty
+            'net_revenue' => $totalAllSalesAmount
         ];
     }
-    returnError($total_result_final);
 
     http_response_code(200);
 
