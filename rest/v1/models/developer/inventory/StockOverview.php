@@ -188,13 +188,15 @@ class StockOverview
                 CASE
                     WHEN ms.stock_movement_type IN (
                         'in stock',
+                            'purchases',
                         'stock in adjustments'
                     )
                     THEN ms.stock_movement_qty
 
                     WHEN ms.stock_movement_type IN (
                         'purchases',
-                        'stock out - reject/defective items'
+                        'stock out - reject/defective items',
+                        'stock out - return item'
                     )
                     THEN -ms.stock_movement_qty
 
@@ -221,7 +223,8 @@ class StockOverview
 
                         WHEN ms.stock_movement_type IN (
                             'purchases',
-                            'stock out - reject/defective items'
+                            'stock out - reject/defective items',
+                        'stock out - return item'
                         )
                         THEN -ms.stock_movement_qty
 
@@ -339,13 +342,15 @@ class StockOverview
                 CASE
                     WHEN ms.stock_movement_type IN (
                         'in stock',
+                        'purchases',
                         'stock in adjustments'
                     )
                     THEN ms.stock_movement_qty
 
                     WHEN ms.stock_movement_type IN (
                         'purchases',
-                        'stock out - reject/defective items'
+                        'stock out - reject/defective items',
+                        'stock out - return item'
                     )
                     THEN -ms.stock_movement_qty
 
@@ -372,7 +377,8 @@ class StockOverview
 
                         WHEN ms.stock_movement_type IN (
                             'purchases',
-                            'stock out - reject/defective items'
+                            'stock out - reject/defective items',
+                        'stock out - return item'
                         )
                         THEN -ms.stock_movement_qty
 

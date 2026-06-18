@@ -40,6 +40,7 @@ class Customer
             $sql .= "( customer_is_active, ";
             $sql .= "customer_name, ";
             $sql .= "customer_email, ";
+            $sql .= "customer_is_walk_in_customer, ";
             $sql .= "customer_phone, ";
             $sql .= "customer_address, ";
             $sql .= "customer_messenger, ";
@@ -51,6 +52,7 @@ class Customer
             $sql .= ":customer_is_active, ";
             $sql .= ":customer_name, ";
             $sql .= ":customer_email, ";
+            $sql .= ":customer_is_walk_in_customer, ";
             $sql .= ":customer_phone, ";
             $sql .= ":customer_address, ";
             $sql .= ":customer_messenger, ";
@@ -64,6 +66,7 @@ class Customer
                 "customer_is_active" => $this->customer_is_active,
                 "customer_name" => $this->customer_name,
                 "customer_email" => $this->customer_email,
+                "customer_is_walk_in_customer" => $this->customer_is_walk_in_customer,
                 "customer_phone" => $this->customer_phone,
                 "customer_address" => $this->customer_address,
                 "customer_messenger" => $this->customer_messenger,
@@ -460,7 +463,6 @@ class Customer
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
-        returnError($ex);
         return $query;
     }
 }

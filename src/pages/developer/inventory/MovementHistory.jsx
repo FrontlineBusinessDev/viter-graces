@@ -15,7 +15,7 @@ const MovementHistory = () => {
   const columns = [
     {
       accessorKey: "stock_movement_type",
-      header: "status",
+      header: "movement status",
       classTh: "w-[10rem]",
       classTd: "",
       filterFn: "equals",

@@ -361,12 +361,12 @@ class StockMovement
             // Total stock quantity
             $sql .= "SUM(
                 CASE
-                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
+                    WHEN ms.stock_movement_type IN ('in stock','purchases', 'stock in adjustments')
                         THEN ms.stock_movement_qty
 
-                    WHEN ms.stock_movement_type IN (
-                        'purchases',
-                        'stock out - reject/defective items'
+                    WHEN ms.stock_movement_type IN ( 'purchases',
+                        'stock out - reject/defective items',
+                        'stock out - return item'
                     )
                         THEN -ms.stock_movement_qty
 
@@ -377,12 +377,11 @@ class StockMovement
             // Current quantity after sales orders
             $sql .= "SUM(
                 CASE
-                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
-                        THEN ms.stock_movement_qty
-
-                    WHEN ms.stock_movement_type IN (
-                        'purchases',
-                        'stock out - reject/defective items'
+                    WHEN ms.stock_movement_type IN ('in stock','purchases', 'stock in adjustments')
+                        THEN ms.stock_movement_qty 
+                    WHEN ms.stock_movement_type IN ( 'purchases',
+                        'stock out - reject/defective items',
+                        'stock out - return item'
                     )
                         THEN -ms.stock_movement_qty
 

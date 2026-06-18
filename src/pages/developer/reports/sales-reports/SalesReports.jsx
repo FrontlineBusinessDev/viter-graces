@@ -1,5 +1,5 @@
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
-import { ActiveInActiveStatus } from "@/layout/ArrayValue";
+import { PaymentStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -8,73 +8,77 @@ import ReportsStats from "../ReportsStats";
 
 const SalesReports = () => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const [itemEdit, setItemEdit] = React.useState(null);
+  const [searchValue, setSearchValue] = React.useState("");
+  const [filterColumns, setFilterColumns] = React.useState([]);
 
   // Columns
   const columns = [
     {
-      accessorKey: "status",
-      header: "Status",
-      classTh: "w-[8rem]",
+      accessorKey: "sales_order_status",
+      header: "status",
+      classTh: "min-w-20",
       classTd: "",
       filterFn: "equals",
       meta: {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus
             column={column}
-            options={ActiveInActiveStatus()}
+            options={PaymentStatus()}
           />
         ),
       },
-      status_option: ActiveInActiveStatus(),
+      status_option: PaymentStatus(),
     },
     {
-      accessorKey: "order_no",
-      header: "Order #",
-      classTh: "",
+      accessorKey: "sales_order_number",
+      header: "order #",
+      classTh: "min-w-20 ",
       classTd: "",
       isMobileTitle: true,
       meta: "",
     },
     {
-      accessorKey: "item",
-      header: "Item",
-      classTh: "",
+      accessorKey: "sales_order_product_name",
+      header: "item",
+      classTh: "min-w-40 ",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "date",
-      header: "Date",
-      classTh: "",
+      accessorKey: "sales_order_date",
+      header: "date",
+      classTh: "min-w-40 ",
+      filterFn: "date",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "customer",
-      header: "Customer",
-      classTh: "",
+      accessorKey: "sales_order_customer_name",
+      header: "customer",
+      classTh: "min-w-40 ",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "amount",
-      header: "Amount",
-      classTh: "",
+      accessorKey: "sales_order_price",
+      header: "amount",
+      amount: true,
+      filterFn: "between",
+      classTh: "min-w-40 ",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "method",
-      header: "Method",
-      classTh: "",
+      accessorKey: "sales_order_payment_method",
+      header: "method",
+      classTh: "min-w-40 ",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "product_owner",
-      header: "Product Owner",
-      classTh: "",
+      accessorKey: "sales_order_product_owner_name",
+      header: "product owner",
+      classTh: "min-w-40 ",
       classTd: "",
       meta: "",
     },
@@ -83,14 +87,16 @@ const SalesReports = () => {
   return (
     <>
       <HeaderNav menu={"reports"} activeTab="sales-reports">
-        <ReportsStats />
+        <ReportsStats searchValue={searchValue} filterColumns={filterColumns} />
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path=""
+          path="report-sales-order/page-all-sales-order"
           hasExport={true}
-          setItemEdit={setItemEdit}
+          setSearchValue={setSearchValue}
+          setFilterColumns={setFilterColumns}
           haveFilterTable={true}
+          ishaveAdd={false}
         />
       </HeaderNav>
     </>

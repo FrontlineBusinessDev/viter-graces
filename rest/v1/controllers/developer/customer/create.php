@@ -24,6 +24,7 @@ $val->customer_whatsapp = $data["customer_whatsapp"];
 $val->customer_other = $data["customer_other"];
 $val->customer_notes = $data["customer_notes"];
 $val->customer_is_active = 1;
+$val->customer_is_walk_in_customer = 0;
 $val->customer_created = date("Y-m-d H:i:s");
 $val->customer_updated = date("Y-m-d H:i:s");
 // check name
