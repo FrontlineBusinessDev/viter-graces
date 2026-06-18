@@ -3,6 +3,7 @@ import { InputSelectArray } from "@/components/inputs/InputSelect";
 import { InputText } from "@/components/inputs/InputText";
 import MessageError from "@/components/MessageError";
 import { apiVersion, devNavUrl } from "@/config/config";
+import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
 import useQueryData from "@/services/useQueryData";
@@ -98,8 +99,17 @@ const ModalProductOwner = ({ itemEdit }) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
               // mutate data
-              // console.log(values);
-              mutation.mutate(values);
+              let data = {
+                ...ActivityLogDetails(
+                  "user",
+                  itemEdit ? "update" : "create",
+                  store,
+                  values,
+                ),
+                ...values,
+              };
+              // mutate data
+              mutation.mutate(data);
             }}
           >
             {(props) => {
