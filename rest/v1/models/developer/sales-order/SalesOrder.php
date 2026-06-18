@@ -365,6 +365,7 @@ class SalesOrder
             $sql .= "sales_order_paid_amount as total_paid, ";
             $sql .= "sales_order_aid as id, ";
             $sql .= "sales_order_is_active as is_active, ";
+            $sql .= "sales_order_status as is_status, ";
             $sql .= "sales_order_date as order_date, ";
             $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
             $sql .= "sales_order_customer_name as name ";
@@ -431,6 +432,7 @@ class SalesOrder
             $sql .= "sales_order_paid_amount as total_paid, ";
             $sql .= "sales_order_aid as id, ";
             $sql .= "sales_order_is_active as is_active, ";
+            $sql .= "sales_order_status as is_status, ";
             $sql .= "sales_order_date as order_date, ";
             $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
             $sql .= "sales_order_customer_name as name ";
@@ -533,6 +535,7 @@ class SalesOrder
             $sql .= "sales_order_received_by_name = :sales_order_received_by_name, ";
             $sql .= "sales_order_overall_amount = :sales_order_overall_amount, ";
             $sql .= "sales_order_total_amount = :sales_order_total_amount, ";
+            $sql .= "sales_order_status = :sales_order_status, ";
             $sql .= "sales_order_updated = :sales_order_updated ";
             $sql .= "where sales_order_aid  = :sales_order_aid ";
             $query = $this->connection->prepare($sql);
@@ -555,6 +558,7 @@ class SalesOrder
                 "sales_order_received_by_name" => $this->sales_order_received_by_name,
                 "sales_order_overall_amount" => $this->sales_order_overall_amount,
                 "sales_order_total_amount" => $this->sales_order_total_amount,
+                "sales_order_status" => $this->sales_order_status,
                 "sales_order_updated" => $this->sales_order_updated,
                 "sales_order_aid" => $this->sales_order_aid,
             ]);

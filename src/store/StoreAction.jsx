@@ -33,6 +33,13 @@ export const setIsSubAction = (val) => {
   };
 };
 
+export const setIsSubUpdate = (val) => {
+  return {
+    type: "SUB_UPDATE",
+    payload: val,
+  };
+};
+
 export const setIsLogin = (val) => {
   return {
     type: "IS_LOGIN",

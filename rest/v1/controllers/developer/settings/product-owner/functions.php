@@ -44,6 +44,13 @@ function checkUpdateSuppliersProduct($object)
     checkQuery($query, "There's a problem processing your request. (Update Suppliers Product)");
     return $query;
 }
+// Update 
+function checkUpdateSalesOrder($object)
+{
+    $query = $object->updateSalesOrder();
+    checkQuery($query, "There's a problem processing your request. (Update Sales Order)");
+    return $query;
+}
 
 
 // Reset password
@@ -52,7 +59,8 @@ function updateConnectedMenu($object)
     checkUpdateActivityLog($object);
     checkUpdateProducts($object);
     checkUpdatePurchaseOrder($object);
-    checkUpdateSuppliersProduct($object);
+    // checkUpdateSuppliersProduct($object);
+    checkUpdateSalesOrder($object);
 }
 
 // check association

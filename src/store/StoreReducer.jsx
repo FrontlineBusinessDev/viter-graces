@@ -90,6 +90,12 @@ export const StoreReducer = (state, action) => {
         isSubAction: action.payload,
       };
 
+    case "SUB_UPDATE":
+      return {
+        ...state,
+        isSubUpdate: action.payload,
+      };
+
     case "IS_LOGIN":
       return {
         ...state,

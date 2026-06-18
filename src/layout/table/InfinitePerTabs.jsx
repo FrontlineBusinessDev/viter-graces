@@ -21,6 +21,8 @@ import {
 import React, { useCallback, useMemo, useRef } from "react";
 import InfiniteSubTable from "./InfiniteSubTable";
 import { FaCaretDown } from "react-icons/fa";
+import ActionButtonMobile from "../ActionButtonMobile";
+import InfinitePerTabsMobile from "./InfinitePerTabsMobile";
 
 const InfinitePerTabs = ({
   columns,
@@ -41,6 +43,7 @@ const InfinitePerTabs = ({
   const [onSearch, setOnSearch] = React.useState(false);
   const observer = useRef();
   let counter = 1;
+  let counterMobile = 1;
 
   // ACTIONS ADD
   const handleAdd = () => {
@@ -168,9 +171,9 @@ const InfinitePerTabs = ({
                 className="rounded-2xl border border-gray-300 bg-white shadow-sm dark:border-[#0b111e] dark:bg-[#0b111e] "
               >
                 <div className="p-2 lg:px-5">
-                  <div className="flex flex-col gap-2 lg:grid lg:grid-cols-[40px_1.5fr_1fr_1fr_1.3fr_140px] items-center">
+                  <div className="hidden gap-2 lg:grid lg:grid-cols-[40px_1.5fr_1fr_1fr_1.3fr_140px] items-center">
                     <div className="hidden lg:block text-gray-500 text-sm dark:text-light">
-                      {counter++}.
+                      <span>{counter++}.</span>
                     </div>
                     <div className="flex items-start justify-between gap-3 lg:contents">
                       <div
@@ -190,7 +193,7 @@ const InfinitePerTabs = ({
                                     className="flex items-center gap-2 cursor-pointer"
                                     data-testid="button-open-customer-tab"
                                   >
-                                    <span className="text-sm font-medium text-gray-800 dark:text-light min-w-20">
+                                    <span className="text-sm font-medium text-gray-800 dark:text-light min-w-40">
                                       {rows[index]?.original?.name}
                                     </span>
                                     <FaCaretDown
@@ -377,13 +380,25 @@ const InfinitePerTabs = ({
                       })}
                     </div>
                   </div>
+
+                  {/* MOBILE RESPONSIVE */}
+                  <InfinitePerTabsMobile
+                    item={item}
+                    rows={rows}
+                    path={path}
+                    index={index}
+                    setItemEdit={setItemEdit}
+                    setData={setData}
+                    isOpen={isOpen}
+                    setOpenRow={setOpenRow}
+                  />
                 </div>
 
                 {isOpen && (
                   <div className="border-t border-gray-200 px-4 lg:px-5 pb-4 pt-3  ">
-                    <div className="grid lg:grid-cols-3 my-3">
-                      {ishaveSubAdd ? (
-                        <>
+                    {ishaveSubAdd ? (
+                      <>
+                        <div className="grid lg:grid-cols-3 my-3">
                           {item.getVisibleCells().map((gitem, gkey) => {
                             return (
                               <React.Fragment key={gkey}>
@@ -430,11 +445,11 @@ const InfinitePerTabs = ({
                               </React.Fragment>
                             );
                           })}
-                        </>
-                      ) : (
-                        ""
-                      )}
-                    </div>
+                        </div>
+                      </>
+                    ) : (
+                      ""
+                    )}
                     <InfiniteSubTable
                       columns={subColumnsTable}
                       className={`sm:overflow-auto max-h-[calc(93dvh-200px)] min-h-full`}
