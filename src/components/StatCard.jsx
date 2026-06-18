@@ -40,11 +40,11 @@ const StatCard = ({
         onClick={handleClick}
       >
         <div
-          className={`relative transition-transform duration-500 [transform-style:preserve-3d] ${
+          className={`relative transition-transform duration-500 transform-3d ${
             isFlippable
               ? flipped
-                ? "[transform:rotateY(180deg)]"
-                : "md:group-hover:[transform:rotateY(180deg)]"
+                ? "transform-[rotateY(180deg)]"
+                : "md:group-hover:transform-[rotateY(180deg)]"
               : ""
           }`}
         >
