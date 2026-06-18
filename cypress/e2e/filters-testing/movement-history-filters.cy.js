@@ -95,4 +95,17 @@ describe("Movement History Module - Filters", () => {
 
     cy.get(".react-select__clear-indicator").click();
   });
+
+   //SEARCH
+  it("Search a product", () => {
+    cy.viewport(390, 844); // iphone 13 viewport
+
+    cy.intercept("POST", "**/stock-movement/page/*").as("getStockMovement");
+
+    cy.get('[data-testid="search-input"]').type("Banana{enter}");
+
+    cy.wait("@getStockMovement");
+
+    cy.contains("Banana", { timeout: 1000 }).should("exist");
+  });
 });

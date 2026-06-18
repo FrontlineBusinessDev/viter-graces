@@ -15,7 +15,7 @@ import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
 import {
   setError,
-  setIsAdd,
+  setIsSubAdd,
   setMessage,
   setSuccess,
 } from "@/store/StoreAction";
@@ -28,7 +28,7 @@ import { Plus } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
 
-const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
+const ModalSalesOrders = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [counter, setCounter] = React.useState(0);
   const [itemsDelete, setItemsDelete] = React.useState([]);
@@ -112,7 +112,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   };
 
   const handleClose = () => {
-    dispatch(setIsAdd(false));
+    dispatch(setIsSubAdd(false));
     dispatch(setError(false));
   };
 
@@ -137,7 +137,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
       queryClient.invalidateQueries({ queryKey: ["sales-order"] });
 
       if (data.success) {
-        dispatch(setIsAdd(false));
+        dispatch(setIsSubAdd(false));
         dispatch(setSuccess(true));
         dispatch(setMessage(successMsg));
       }
@@ -154,13 +154,10 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
       itemEdit?.order_date,
       store?.credentials?.data?.server_date,
     ),
-    sales_order_customer_id: isEmptyItem(
-      itemEdit?.sales_order_customer_id,
-      isEmptyItem(cutomer?.customer_aid, ""),
-    ),
+    sales_order_customer_id: isEmptyItem(itemEdit?.sales_order_customer_id, ""),
     sales_order_customer_name: isEmptyItem(
       itemEdit?.sales_order_customer_name,
-      isEmptyItem(cutomer?.customer_name, ""),
+      "",
     ),
     sales_order_payment_method: isEmptyItem(
       itemEdit?.sales_order_payment_method,
@@ -222,11 +219,10 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     { id: "3", name: "mutiple payment" },
   ];
 
-  console.log("setItems", items);
   return (
     <>
       <ModalWrapper
-        val="Sales Order"
+        val={`${isEmptyItem(itemEdit?.sales_order_customer_name, "")} (${isEmptyItem(itemEdit?.sales_order_number, "")})`}
         itemEdit={itemEdit}
         mutation={mutation}
         isOpen={true}
@@ -302,20 +298,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         disabled={mutation.isPending}
                       />
                     </div>
-                    <div className="relative">
-                      <InputSelectCustomerArray
-                        label="Customer"
-                        path="customer/read-all-by-active"
-                        type="text"
-                        name="sales_order_customer_id"
-                        onChange={(e) => {
-                          props.values.sales_order_customer_id = e.target.value;
-                          props.values.sales_order_customer_name =
-                            e.target.options[e.target.selectedIndex].text;
-                          return e;
-                        }}
-                      />
-                    </div>
+
                     <div className="relative">
                       <InputSelectArrayWithOptions
                         label="Payment Method"

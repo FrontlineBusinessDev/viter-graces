@@ -404,4 +404,23 @@ class ProductOwner
         }
         return $query;
     }
+    public function updateSalesOrder()
+    {
+        try {
+            $sql = "update {$this->tblSuppliersProduct} set ";
+            $sql .= "sales_order_product_owner_name = :sales_order_product_owner_name, ";
+            $sql .= "sales_order_updated = :sales_order_updated ";
+            $sql .= "where sales_order_product_owner_id = :sales_order_product_owner_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_order_product_owner_name" => $this->column_fullname,
+                "sales_order_updated" => $this->user_account_updated,
+                "sales_order_product_owner_id" => $this->user_account_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
 }

@@ -4,14 +4,7 @@ import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import React from "react";
 
-const ActionButtonTable = ({
-  item,
-  dataArray,
-  setData,
-  setItemEdit,
-  path,
-  testId,
-}) => {
+const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
   // ACTIONS ACHIEVE, RESTORE AND DELETE

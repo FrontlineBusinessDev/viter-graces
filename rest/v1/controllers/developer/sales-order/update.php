@@ -17,7 +17,7 @@ if (array_key_exists("id", $_GET)) {
     // get data
 
     $val->sales_order_is_active = 1;
-    $val->sales_order_status = 'active';
+    $val->sales_order_status = $data["sales_order_status"];
     $val->sales_order_date = $data["sales_order_date"];
     $val->sales_order_customer_id = $data["sales_order_customer_id"];
     $val->sales_order_customer_name = $data["sales_order_customer_name"];
@@ -39,6 +39,10 @@ if (array_key_exists("id", $_GET)) {
     $ordersItems = $data["items"];
     $itemsDelete = $data["itemsDelete"];
     // create
+
+    if ((float)$val->sales_order_paid_amount < (float)$val->sales_order_overall_amount) {
+        $val->sales_order_status = 'partial';
+    }
 
     for ($i = 0; $i < count($ordersItems); $i++) {
 
