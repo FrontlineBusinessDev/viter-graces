@@ -159,4 +159,18 @@ describe("Product Module - Filters", () => {
 
     cy.get(".react-select__clear-indicator").click();
   });
+
+  //SEARCH
+  it("Search a product", () => {
+    cy.viewport(390, 844); // iphone 13 viewport
+
+    cy.intercept("POST", "**/products/page/*").as("getProducts");
+
+    cy.get('[data-testid="search-input"]').type("Cassava{enter}");
+
+    cy.wait("@getProducts");
+
+    cy.contains("Cassava", { timeout: 1000 }).should("exist");
+  });
+
 });
