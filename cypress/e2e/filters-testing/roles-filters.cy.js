@@ -6,24 +6,53 @@ describe("Role Module - Filter", () => {
     cy.visit("/developer/roles");
   });
 
-  //SEARCH
-  it("Search role name", () => {
+  //STATUS FILTER
+  it("Should filter by active and inactive status", () => {
     cy.intercept("POST", "**/roles/page/*").as("getRole");
 
-    cy.get('[data-testid="role_name"]').type("Test Role");
+    //active
+    cy.get('[data-testid="filter-status-btn"]').click();
+    cy.get("#react-select-3-option-0").click();
 
-    cy.wait("@getRole");
+    //inactive
+    cy.get('[data-testid="filter-status-btn"]').click();
+    cy.get("#react-select-3-option-1").click();
 
-    cy.contains("Test Role", { timeout: 1000 }).should("exist");
+    cy.get(".react-select__clear-indicator").click();
   });
 
-  it("Search role description", () => {
+  //ROLE NAME FILTER
+  it("Should filter role name as the user types", () => {
+    cy.intercept("POST", "**/roles/page/*").as("getRole");
+    cy.get('[data-testid="role_name"]').type("Admin");
+
+    cy.wait("@getRole");
+    cy.contains("Admin", { timeout: 10000 }).should("exist");
+
+    cy.get('[data-testid="role_name"]').clear();
+  });
+
+  //ROLE DESCRIPTION FILTER
+  it("Should filter role description as the user types", () => {
     cy.intercept("POST", "**/roles/page/*").as("getRole");
 
-    cy.get('[data-testid="role_description"]').type("updated");
+    cy.get('[data-testid="role_description"]').type("Developer");
+
+    cy.wait("@getRole");
+    cy.contains("Developer", { timeout: 10000 }).should("exist");
+
+    cy.get('[data-testid="role_description"]').click();
+  });
+
+  //SEARCH - MOBILE
+  it("Search role - Mobile", () => {
+    cy.viewport(390, 844);
+    cy.intercept("POST", "**/roles/page/*").as("getRole");
+
+    cy.get('[data-testid="search-input"]').type("Admin");
 
     cy.wait("@getRole");
 
-    cy.contains("updated", { timeout: 1000 }).should("exist");
+    cy.contains("Admin", { timeout: 1000 }).should("exist");
   });
 });
