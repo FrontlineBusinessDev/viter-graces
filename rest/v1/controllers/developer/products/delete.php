@@ -16,8 +16,10 @@ if (array_key_exists("id", $_GET)) {
     // get data
     $val->products_aid = $_GET['id'];
     checkId($val->products_aid);
+    isAssociatedWithOtherModule($val);
 
     $query = checkDelete($val);
+    $query = checkDeleteMovementStock($val);
     // create activity log
     createActivityLog($valActivity, $data);
     returnSuccess($val, "Customer", $query);

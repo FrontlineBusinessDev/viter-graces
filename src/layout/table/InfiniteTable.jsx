@@ -455,7 +455,6 @@ const InfiniteTable = ({
                                 setItemEdit={setItemEdit}
                                 ishaveSubAdd={ishaveSubAdd}
                                 path={path}
-                                testId
                               />
                             ) : (
                               ""

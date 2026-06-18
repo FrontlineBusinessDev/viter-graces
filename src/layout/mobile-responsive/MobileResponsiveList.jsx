@@ -1,4 +1,4 @@
-import CustomerMobile from "./CustomerMobile";
+import CustomerMobileReponsive from "./CustomerMobileReponsive";
 import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
 import ProductsMobileResponsive from "./ProductsMobileResponsive";
 
@@ -7,6 +7,7 @@ const MobileResponsiveList = ({
   lastRowRef,
   setData = "",
   setItemEdit,
+  setItemVal,
   isDefaultMobile = "default",
   ishaveSubAdd = false,
 }) => {
@@ -21,19 +22,19 @@ const MobileResponsiveList = ({
         isDefaultMobile={isDefaultMobile}
         ishaveSubAdd={ishaveSubAdd}
       />
+      {/* CUSTOMER RESPONSIVE */}
+      <CustomerMobileReponsive
+        rows={rows}
+        setItemEdit={setItemEdit}
+        setItemVal={setItemVal}
+        setData={setData}
+        isDefaultMobile={isDefaultMobile}
+      />
       {/* DEFAULT RESPONSIVE */}
       <InfiniteDefaultTableMobileCard
         rows={rows}
         lastRowRef={lastRowRef}
         setData={setData}
-        setItemEdit={setItemEdit}
-        isDefaultMobile={isDefaultMobile}
-        ishaveSubAdd={ishaveSubAdd}
-      />
-      {/* CUSTOMER RESPONSIVE */}
-      <CustomerMobile
-        rows={rows}
-        lastRowRef={lastRowRef}
         setItemEdit={setItemEdit}
         isDefaultMobile={isDefaultMobile}
         ishaveSubAdd={ishaveSubAdd}
