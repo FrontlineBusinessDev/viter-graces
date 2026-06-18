@@ -38,6 +38,22 @@ function updateConnectedMenu($object)
 
 }
 
+// Delete 
+function checkDeleteMovementStock($object)
+{
+    $query = $object->deleteMovementStock();
+    checkQuery($query, "There's a problem processing your request. (deleteMovementStock)");
+    return $query;
+}
+// check association
+function isAssociatedWithOtherModule($object)
+{
+    $query = $object->checkAssociationSaleOrder();
+    $count = $query->rowCount();
+    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
+}
+
+
 // check association
 function allowedColumns()
 {

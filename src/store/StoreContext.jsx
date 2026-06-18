@@ -9,6 +9,7 @@ const initVal = {
   isStatus: false,
   isAction: false,
   isSubAction: false,
+  isSubUpdate: false,
   isView: false,
   isAdd: false,
   isSubAdd: false,

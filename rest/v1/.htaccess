@@ -69,7 +69,7 @@ RewriteRule ^suppliers/read-in-modal$ controllers/developer/suppliers/read-in-mo
 RewriteRule ^suppliers-product$ controllers/developer/suppliers/product/suppliers-product.php [L]
 RewriteRule ^suppliers-product/([0-9]+)$ controllers/developer/suppliers/product/suppliers-product.php?id=$1 [L] 
 RewriteRule ^suppliers-product/active/([0-9]+)$ controllers/developer/suppliers/product/active.php?id=$1 [L] 
-RewriteRule ^suppliers-product/page/([0-9]+)$ controllers/developer/suppliers/product/page.php?start=$1 [L]
+RewriteRule ^suppliers-product/page-by-id/([0-9]+)$ controllers/developer/suppliers/product/page.php?start=$1 [L]
 RewriteRule ^suppliers-product/search$ controllers/developer/suppliers/product/search.php [L]
 RewriteRule ^suppliers-product/read-in-modal/([0-9]+)$ controllers/developer/suppliers/product/read-in-modal.php?id=$1 [L]
 RewriteRule ^suppliers-product/read-in-modal$ controllers/developer/suppliers/product/read-in-modal.php [L]
@@ -115,7 +115,7 @@ RewriteRule ^sales-order/search$ controllers/developer/sales-order/search.php [L
 RewriteRule ^sales-order/read-all-active-by-product$ controllers/developer/sales-order/read-all-active-by-product.php [L]
 RewriteRule ^sales-order/read-sales-today$ controllers/developer/sales-order/read-sales-today.php [L]
 RewriteRule ^sales-order/read-top-selling-product$ controllers/developer/sales-order/read-top-selling-product.php [L]
-RewriteRule ^sales-order/page-by-cutomer-id/([0-9]+)$ controllers/developer/sales-order/page-by-cutomer-id.php?start=$1 [L]
+RewriteRule ^sales-order/page-by-id/([0-9]+)$ controllers/developer/sales-order/page-by-cutomer-id.php?start=$1 [L]
  
 ### REPORT SALES ORDER ###
 RewriteRule ^report-sales-order/page-all-sales-order/page/([0-9]+)$ controllers/developer/reports/page-all-sales-order.php?start=$1 [L]

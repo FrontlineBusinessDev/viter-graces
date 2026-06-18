@@ -158,7 +158,7 @@ const Suppliers = () => {
           columns={columns}
           subColumnsTable={subColumnsTable}
           path={"suppliers"}
-          subPath={"suppliers-product/page"}
+          subPath={"suppliers-product"}
           itemEdit={itemEdit}
           setItemEdit={setItemEdit}
           setItemVal={setItemVal}
