@@ -1,6 +1,6 @@
 import CustomerMobile from "./CustomerMobile";
 import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
-import ProductsMobile from "./ProductsMobile";
+import ProductsMobileResponsive from "./ProductsMobileResponsive";
 
 const MobileResponsiveList = ({
   rows,
@@ -12,6 +12,15 @@ const MobileResponsiveList = ({
 }) => {
   return (
     <>
+      {/* PRODUCT RESPONSIVE */}
+      <ProductsMobileResponsive
+        rows={rows}
+        setData={setData}
+        setItemEdit={setItemEdit}
+        lastRowRef={lastRowRef}
+        isDefaultMobile={isDefaultMobile}
+        ishaveSubAdd={ishaveSubAdd}
+      />
       {/* DEFAULT RESPONSIVE */}
       <InfiniteDefaultTableMobileCard
         rows={rows}
@@ -26,15 +35,6 @@ const MobileResponsiveList = ({
         rows={rows}
         lastRowRef={lastRowRef}
         setItemEdit={setItemEdit}
-        isDefaultMobile={isDefaultMobile}
-        ishaveSubAdd={ishaveSubAdd}
-      />
-      {/* PRODUCT RESPONSIVE */}
-      <ProductsMobile
-        rows={rows}
-        setData={setData}
-        setItemEdit={setItemEdit}
-        lastRowRef={lastRowRef}
         isDefaultMobile={isDefaultMobile}
         ishaveSubAdd={ishaveSubAdd}
       />
