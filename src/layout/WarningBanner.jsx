@@ -4,6 +4,7 @@ import { apiVersion } from "@/config/config";
 import useQueryData from "@/services/useQueryData";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { TriangleAlert } from "lucide-react";
+import { useMemo } from "react";
 
 const WarningBanner = ({ path = "", text = "", id = 0, description = "" }) => {
   const {
@@ -17,6 +18,13 @@ const WarningBanner = ({ path = "", text = "", id = 0, description = "" }) => {
     `${path}`, // key
     { id: id },
   );
+
+  const valData = useMemo(() => {
+    if (!result?.count) return "0.00";
+
+    return result?.data;
+  }, [result]);
+
   return (
     <>
       {path === "" && description !== "" ? (
@@ -28,16 +36,19 @@ const WarningBanner = ({ path = "", text = "", id = 0, description = "" }) => {
         </div>
       ) : error ? (
         <ServerError />
-      ) : isLoading || isFetching ? (
-        <TableLoading count={2} cols={1} />
-      ) : result?.count > 0 ? (
+      ) : valData?.length > 0 ? (
         <div className="bg-orange-100 text-orange-600 dark:bg-orange-200 dark:text-orange-300 border border-orange-300 rounded-xl px-3 py-2 my-2  ">
           <div className="flex items-center gap-2">
             <TriangleAlert size={14} className="place-self-start mt-0.5" />
-            <p className="dark:text-orange-600 mb-0 ">
-              <span className="dark:text-orange-600 font-bold ">
-                {isEmptyItem(result?.data[0]?.data_count, "")} {text}{" "}
-              </span>
+            <p className="dark:text-orange-600 mb-0 flex font-bold ">
+              {isLoading ? (
+                <TableLoading count={1} cols={1} />
+              ) : (
+                <span className="mr-1">
+                  {isEmptyItem(valData[0]?.data_count, "")}{" "}
+                </span>
+              )}
+              {text}
               {description}
             </p>
           </div>

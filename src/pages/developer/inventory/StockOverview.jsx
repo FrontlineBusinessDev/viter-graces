@@ -100,6 +100,7 @@ const StockOverview = () => {
           haveFilterTable={true}
           isDefaultMobile={"stock movement"}
           defaultSearch={true}
+          refetchOnWindowFocus={true}
         />
       </HeaderNav>
       {store.isAdd && <ModalStockOverview itemEdit={itemEdit} />}
