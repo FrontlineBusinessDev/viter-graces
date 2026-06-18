@@ -86,7 +86,7 @@ RewriteRule ^products/read-all-product-that-have-stock$ controllers/developer/pr
 ### ACTIVITY LOG ###
 RewriteRule ^activity/read-with-limit$ controllers/developer/activity-log/read-with-limit.php [L] 
 
-### PURCHASE ORDER ###
+### PURCHASE ORDER ### 
 RewriteRule ^purchase-order$ controllers/developer/suppliers/purchase-order/purchase-order.php [L]
 RewriteRule ^purchase-order/([0-9]+)$ controllers/developer/suppliers/purchase-order/purchase-order.php?id=$1 [L] 
 RewriteRule ^purchase-order/active/([0-9]+)$ controllers/developer/suppliers/purchase-order/active.php?id=$1 [L] 
@@ -106,7 +106,7 @@ RewriteRule ^stock-movement/read-count-low-stock$ controllers/developer/inventor
 ### STOCK OVERVIEW ### 
 RewriteRule ^stock-overview/page/([0-9]+)$ controllers/developer/inventory/stock-overview/page.php?start=$1 [L]
 
-### SALES ORDER ### 
+### SALES ORDER ###  rest/v1/controllers/developer/reports/page-all-sales-order.php
 RewriteRule ^sales-order$ controllers/developer/sales-order/sales-order.php [L]
 RewriteRule ^sales-order/([0-9]+)$ controllers/developer/sales-order/sales-order.php?id=$1 [L] 
 RewriteRule ^sales-order/active/([0-9]+)$ controllers/developer/sales-order/active.php?id=$1 [L] 
@@ -117,3 +117,6 @@ RewriteRule ^sales-order/read-sales-today$ controllers/developer/sales-order/rea
 RewriteRule ^sales-order/read-top-selling-product$ controllers/developer/sales-order/read-top-selling-product.php [L]
 RewriteRule ^sales-order/page-by-cutomer-id/([0-9]+)$ controllers/developer/sales-order/page-by-cutomer-id.php?start=$1 [L]
  
+### REPORT SALES ORDER ###
+RewriteRule ^report-sales-order/page-all-sales-order/page/([0-9]+)$ controllers/developer/reports/page-all-sales-order.php?start=$1 [L]
+RewriteRule ^report-sales-order/read-all-total-sales-amount$ controllers/developer/reports/read-all-total-sales-amount.php [L]
