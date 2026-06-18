@@ -3,10 +3,10 @@ import ServerError from "@/components/ServerError";
 import { apiVersion } from "@/config/config";
 import useQueryData from "@/services/useQueryData";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
-import { TriangleAlert } from "lucide-react";
+import { RotateCcw } from "lucide-react";
 import { useMemo } from "react";
 
-const ReportLowStockItems = ({
+const ReportTotalReturns = ({
   path = "",
   id = 0,
   searchValue = "",
@@ -36,11 +36,11 @@ const ReportLowStockItems = ({
         <ServerError />
       ) : (
         <FinanceStats
-          title="Low Stock Items"
+          title="Total Returns"
           value={lowStockCount}
-          icon={<TriangleAlert className="text-orange-600" size={20} />}
-          iconBg="bg-orange-100 dark:bg-[#082125]"
-          valueColor="text-orange-600"
+          icon={<RotateCcw className="text-purple-600" size={20} />}
+          iconBg="bg-purple-100 dark:bg-[#082125]"
+          valueColor="text-purple-600"
           className="flex gap-3 items-start h-22!"
           loading={isLoading}
         />
@@ -49,4 +49,4 @@ const ReportLowStockItems = ({
   );
 };
 
-export default ReportLowStockItems;
+export default ReportTotalReturns;

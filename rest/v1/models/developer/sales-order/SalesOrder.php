@@ -25,6 +25,7 @@ class SalesOrder
     public $sales_order_installment;
     public $sales_order_due_date;
     public $sales_order_overall_amount;
+    public $sales_order_total_amount;
     public $sales_order_created;
     public $sales_order_updated;
 
@@ -86,6 +87,7 @@ class SalesOrder
             $sql .= "sales_order_installment, ";
             $sql .= "sales_order_due_date, ";
             $sql .= "sales_order_overall_amount, ";
+            $sql .= "sales_order_total_amount, ";
             $sql .= "sales_order_created, ";
             $sql .= "sales_order_updated ) values ( ";
             $sql .= ":sales_order_status, ";
@@ -111,6 +113,7 @@ class SalesOrder
             $sql .= ":sales_order_installment, ";
             $sql .= ":sales_order_due_date, ";
             $sql .= ":sales_order_overall_amount, ";
+            $sql .= ":sales_order_total_amount, ";
             $sql .= ":sales_order_created, ";
             $sql .= ":sales_order_updated ) ";
             $query = $this->connection->prepare($sql);
@@ -138,6 +141,7 @@ class SalesOrder
                 "sales_order_installment" => $this->sales_order_installment,
                 "sales_order_due_date" => $this->sales_order_due_date,
                 "sales_order_overall_amount" => $this->sales_order_overall_amount,
+                "sales_order_total_amount" => $this->sales_order_total_amount,
                 "sales_order_created" => $this->sales_order_created,
                 "sales_order_updated" => $this->sales_order_updated,
             ]);
@@ -528,6 +532,7 @@ class SalesOrder
             $sql .= "sales_order_received_by_id = :sales_order_received_by_id, ";
             $sql .= "sales_order_received_by_name = :sales_order_received_by_name, ";
             $sql .= "sales_order_overall_amount = :sales_order_overall_amount, ";
+            $sql .= "sales_order_total_amount = :sales_order_total_amount, ";
             $sql .= "sales_order_updated = :sales_order_updated ";
             $sql .= "where sales_order_aid  = :sales_order_aid ";
             $query = $this->connection->prepare($sql);
@@ -549,6 +554,7 @@ class SalesOrder
                 "sales_order_received_by_id" => $this->sales_order_received_by_id,
                 "sales_order_received_by_name" => $this->sales_order_received_by_name,
                 "sales_order_overall_amount" => $this->sales_order_overall_amount,
+                "sales_order_total_amount" => $this->sales_order_total_amount,
                 "sales_order_updated" => $this->sales_order_updated,
                 "sales_order_aid" => $this->sales_order_aid,
             ]);
