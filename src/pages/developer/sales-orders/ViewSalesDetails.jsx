@@ -13,6 +13,9 @@ const ViewSalesDetails = ({ itemEdit }) => {
     dispatch(setIsView(false));
   };
 
+  let total_balance =
+    Number(itemEdit?.total_amount) - Number(itemEdit?.total_paid);
+
   return (
     <div
       className="bg-dark/50 dark:bg-dark-mode/90 fixed inset-0 z-999 flex justify-center items-center overflow-y-auto animate-fadeIn"
@@ -173,7 +176,7 @@ const ViewSalesDetails = ({ itemEdit }) => {
             <li className="text-right font-bold">
               <AmountWithPesoSign
                 classN="size-3"
-                amount={`${Number(itemEdit?.total_amount) - Number(itemEdit?.total_paid)}`}
+                amount={`${Number(total_balance) < 0 ? "0.00" : total_balance}`}
               />
             </li>
           </ul>
