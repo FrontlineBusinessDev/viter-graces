@@ -51,7 +51,7 @@ const Customers = () => {
       classTd: "",
     },
     {
-      accessorKey: "messenger",
+      accessorKey: "customer_messenger",
       header: "social",
       link: "https://www.facebook.com/",
       icon: <FaFacebookMessenger className="text-blue-500 size-4" />,
@@ -59,7 +59,7 @@ const Customers = () => {
       classTd: "",
     },
     {
-      accessorKey: "whatsapp",
+      accessorKey: "customer_whatsapp",
       header: "social",
       link: "https://www.whatsapp.com/",
       icon: <IoLogoWhatsapp className="text-green-500 size-4.5" />,
@@ -67,7 +67,7 @@ const Customers = () => {
       classTd: "",
     },
     {
-      accessorKey: "other",
+      accessorKey: "customer_other",
       header: "social",
       link: "#",
       icon: <AiFillMessage className="text-green-500 size-4.5" />,
@@ -163,6 +163,7 @@ const Customers = () => {
           isSearch={false}
           ishaveAdd={false}
           ishaveSubAdd={false}
+          dataTestidAddButton="add-customer-btn"
         />
       </HeaderNav>
       {store.isAdd && <ModalCustomer itemEdit={itemEdit} />}
