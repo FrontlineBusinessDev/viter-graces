@@ -60,7 +60,9 @@ const Header = ({ menu, toggleMobileNav }) => {
     <>
       <div
         className={` overflow-x-hidden ${
-          !store.isNavFullShow ? "md:ml-10 md:pl-12 " : " md:pl-[260px] "
+          !store.isNavFullShow
+            ? "sm:ml-10 sm:pl-12 "
+            : "sm:pl-60 md:pl-[260px] "
         } transition-all ease-in duration-200  sm:pr-6 pr-0 bg-light py-2 shadow-xs border-b border-gray-300 dark:border-gray-600 dark:bg-gray-900 sticky top-0 z-50`}
       >
         {/* Mobile Navigation */}
