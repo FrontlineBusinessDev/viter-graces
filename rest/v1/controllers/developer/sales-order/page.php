@@ -51,9 +51,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
             ];
         }
 
-
         http_response_code(200);
-
 
         $response = new Response();
         $returnData = [];
