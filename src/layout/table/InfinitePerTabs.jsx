@@ -35,6 +35,7 @@ const InfinitePerTabs = ({
   ishaveAdd = false,
   ishaveSubAdd = true,
   isDefaultMobile = "default",
+  dataTestidAddButton,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [openRow, setOpenRow] = React.useState(null);
@@ -128,7 +129,11 @@ const InfinitePerTabs = ({
     <>
       <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 ">
         <div className="flex justify-end sm:mb-0! mb-3 ">
-          <AddButton value={path?.replaceAll("-", " ")} onClick={handleAdd} />
+          <AddButton
+            value={path?.replaceAll("-", " ")}
+            onClick={handleAdd}
+            testId={dataTestidAddButton}
+          />
         </div>
         <div className={`w-full lg:max-w-1/4 `}>
           <SearchBar
@@ -169,6 +174,7 @@ const InfinitePerTabs = ({
                 key={index}
                 ref={isLastRow ? lastRowRef : null}
                 className="rounded-2xl border border-gray-300 bg-white shadow-sm dark:border-[#0b111e] dark:bg-[#0b111e] "
+                data-testid="table-row"
               >
                 <div className="p-2 lg:px-5">
                   <div className="hidden gap-2 lg:grid lg:grid-cols-[40px_1.5fr_1fr_1fr_1.3fr_140px] items-center">
@@ -221,7 +227,7 @@ const InfinitePerTabs = ({
                                 "",
                               ) !== "" &&
                               bitem?.column?.columnDef?.accessorKey ===
-                                "messenger" ? (
+                                "customer_messenger" ? (
                                 <a
                                   href={`${bitem?.column?.columnDef?.link}`}
                                   target="_black"
@@ -236,7 +242,7 @@ const InfinitePerTabs = ({
                                 "",
                               ) !== "" &&
                               bitem?.column?.columnDef?.accessorKey ===
-                                "whatsapp" ? (
+                                "customer_whatsapp" ? (
                                 <a
                                   href={`${bitem?.column?.columnDef?.link}`}
                                   target="_black"
@@ -249,7 +255,7 @@ const InfinitePerTabs = ({
                               {isEmptyItem(rows[index]?.original?.other, "") !==
                                 "" &&
                               bitem?.column?.columnDef?.accessorKey ===
-                                "other" ? (
+                                "customer_other" ? (
                                 <a href={`${bitem?.column?.columnDef?.link}`}>
                                   {bitem?.column?.columnDef?.icon}
                                 </a>
@@ -317,7 +323,7 @@ const InfinitePerTabs = ({
                               "",
                             ) !== "" &&
                             bitem?.column?.columnDef?.accessorKey ===
-                              "messenger" ? (
+                              "customer_messenger" ? (
                               <a
                                 href={`${bitem?.column?.columnDef?.link}`}
                                 target="_black"
@@ -332,7 +338,7 @@ const InfinitePerTabs = ({
                               "",
                             ) !== "" &&
                             bitem?.column?.columnDef?.accessorKey ===
-                              "whatsapp" ? (
+                              "customer_whatsapp" ? (
                               <a
                                 href={`${bitem?.column?.columnDef?.link}`}
                                 target="_black"
@@ -345,7 +351,7 @@ const InfinitePerTabs = ({
                             {isEmptyItem(rows[index]?.original?.other, "") !==
                               "" &&
                             bitem?.column?.columnDef?.accessorKey ===
-                              "other" ? (
+                              "customer_other" ? (
                               <a href={`${bitem?.column?.columnDef?.link}`}>
                                 {bitem?.column?.columnDef?.icon}
                               </a>
