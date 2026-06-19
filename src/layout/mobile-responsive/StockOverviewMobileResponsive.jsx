@@ -3,7 +3,7 @@ import Pills from "@/components/Pills";
 import { Image } from "lucide-react";
 import ActionButtonMobile from "../ActionButtonMobile";
 
-const OverviewMobileResponsive = ({
+const StockOverviewMobileResponsive = ({
   rows,
   setData,
   setItemEdit,
@@ -18,6 +18,7 @@ const OverviewMobileResponsive = ({
         <div>
           {rows?.map((row, index) => {
             const rowData = row.original;
+            console.log("rowData", rowData);
 
             return (
               <div
@@ -39,7 +40,7 @@ const OverviewMobileResponsive = ({
                       </span>
                     </div>
                     <span className={`font-semibold text-left text-xs `}>
-                      {rowData?.products_owner_name}
+                      {rowData?.stock_movement_product_owner_name}
                     </span>
                   </div>
 
@@ -50,16 +51,17 @@ const OverviewMobileResponsive = ({
                 </div>
 
                 {/* OTHER FIELDS */}
-                <div className="border-t border-gray-200 py-2 gap-5 flex flex-wrap justify-between">
-                  <div className=" ">
-                    <p className={`text-left! text-xs text-gray-500 `}>
-                      Supplier
-                    </p>
-                    <p className="text-sm wrap-break-word font-semibold">
-                      {rowData?.products_suppliers_name}
-                    </p>
-                  </div>
-                  <div className="  ">
+                <ul className="border-t border-gray-200 py-2 gap-5 flex ">
+                  <li className="">
+                    <small className={`text-left! text-xs text-gray-500 `}>
+                      Current Stock
+                    </small>
+                    <br />
+                    <span className="text-[40px] wrap-break-word font-bold">
+                      {rowData?.current_qty}
+                    </span>
+                  </li>
+                  <li className="  ">
                     <p className={`text-left! text-xs text-gray-500 `}>
                       Category
                     </p>
@@ -67,27 +69,8 @@ const OverviewMobileResponsive = ({
                     <p className="text-left! text-sm wrap-break-word font-semibold capitalize ">
                       {rowData?.products_category}
                     </p>
-                  </div>
-                  <div className="">
-                    <p className={`text-left! text-xs text-gray-500 `}>Price</p>
-
-                    <p className="text-sm wrap-break-word font-semibold">
-                      <AmountWithPesoSign
-                        classN="size-3"
-                        amount={rowData?.products_price}
-                      />
-                    </p>
-                  </div>
-                  <div className="">
-                    <p className={`text-left! text-xs text-gray-500 `}>
-                      Threshold
-                    </p>
-
-                    <p className="text-sm wrap-break-word font-semibold">
-                      {rowData?.products_low_stock_threshold}
-                    </p>
-                  </div>
-                </div>
+                  </li>
+                </ul>
                 <div className="flex gap-2 justify-end">
                   <ActionButtonMobile
                     dataArray={rowData}
@@ -106,4 +89,4 @@ const OverviewMobileResponsive = ({
   );
 };
 
-export default OverviewMobileResponsive;
+export default StockOverviewMobileResponsive;
