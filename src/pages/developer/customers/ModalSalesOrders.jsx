@@ -226,7 +226,7 @@ const ModalSalesOrders = ({ itemEdit }) => {
         itemEdit={itemEdit}
         mutation={mutation}
         isOpen={true}
-        // handleClose={handleClose}
+        handleClose={handleClose}
         width="min-w-[50rem]!"
       >
         <div className="modal-body">
