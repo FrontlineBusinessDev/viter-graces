@@ -187,10 +187,10 @@ const InfinitePerTabs = ({
                         {item.getVisibleCells().map((aitem, akey) => {
                           return (
                             <React.Fragment key={akey}>
-                              <div className="min-w-0">
+                              <div className="min-w-0 hover:underline">
                                 {aitem?.column?.columnDef?.header === "name" ? (
                                   <div
-                                    className="flex items-center gap-2 cursor-pointer"
+                                    className="flex items-center gap-2 cursor-pointer "
                                     data-testid="button-open-customer-tab"
                                   >
                                     <span className="text-sm font-medium text-gray-800 dark:text-light min-w-40">
