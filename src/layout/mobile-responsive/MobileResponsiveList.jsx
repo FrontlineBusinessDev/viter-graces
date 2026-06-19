@@ -1,7 +1,7 @@
 import CustomerMobileReponsive from "./CustomerMobileReponsive";
 import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
-import OverviewMobileResponsive from "./OverviewMobileResponsive";
 import ProductsMobileResponsive from "./ProductsMobileResponsive";
+import StockOverviewMobileResponsive from "./StockOverviewMobileResponsive";
 
 const MobileResponsiveList = ({
   rows,
@@ -32,7 +32,7 @@ const MobileResponsiveList = ({
         isDefaultMobile={isDefaultMobile}
       />
       {/* STOCK OVERVIEW RESPONSIVE */}
-      <OverviewMobileResponsive
+      <StockOverviewMobileResponsive
         rows={rows}
         setItemEdit={setItemEdit}
         setItemVal={setItemVal}
