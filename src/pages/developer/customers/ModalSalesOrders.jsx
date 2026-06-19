@@ -226,7 +226,7 @@ const ModalSalesOrders = ({ itemEdit }) => {
         itemEdit={itemEdit}
         mutation={mutation}
         isOpen={true}
-        handleClose={handleClose}
+        // handleClose={handleClose}
         width="min-w-[50rem]!"
       >
         <div className="modal-body">
@@ -273,7 +273,6 @@ const ModalSalesOrders = ({ itemEdit }) => {
                   ) +
                   Number(values.sales_order_tax) -
                   Number(values.sales_order_discount),
-                itemsDelete,
                 sales_order_total_amount: items?.reduce(
                   (sum, item) =>
                     sum +
