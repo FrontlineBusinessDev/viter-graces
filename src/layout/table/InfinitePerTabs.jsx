@@ -19,10 +19,9 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useCallback, useMemo, useRef } from "react";
-import InfiniteSubTable from "./InfiniteSubTable";
 import { FaCaretDown } from "react-icons/fa";
-import ActionButtonMobile from "../ActionButtonMobile";
 import InfinitePerTabsMobile from "./InfinitePerTabsMobile";
+import InfiniteSubTable from "./InfiniteSubTable";
 
 const InfinitePerTabs = ({
   columns,
@@ -34,7 +33,6 @@ const InfinitePerTabs = ({
   isSearch = false,
   ishaveAdd = false,
   ishaveSubAdd = true,
-  isDefaultMobile = "default",
   dataTestidAddButton,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -401,7 +399,103 @@ const InfinitePerTabs = ({
                 </div>
 
                 {isOpen && (
-                  <div className="border-t border-gray-200 px-4 lg:px-5 pb-4 pt-3  ">
+                  <div className="border-t border-gray-200 px-4 lg:px-5 pb-4 ">
+                    <div className="ml-5 lg:hidden grid grid-cols-4 items-center mt-2">
+                      {item.getVisibleCells().map((ditem, dkey) => {
+                        return (
+                          <React.Fragment key={dkey}>
+                            {ditem?.column?.columnDef?.header ===
+                            "second_column" ? (
+                              <p className="text-xs text-gray-500 lg:hidden dark:text-light mb-0">
+                                <small className="">Email </small>
+                                <br />
+                                {flexRender(
+                                  ditem?.column?.columnDef?.cell,
+                                  ditem?.getContext(),
+                                )}
+                              </p>
+                            ) : (
+                              ""
+                            )}
+                          </React.Fragment>
+                        );
+                      })}
+                      {item.getVisibleCells().map((eitem, ekey) => {
+                        return (
+                          <React.Fragment key={ekey}>
+                            {eitem?.column?.columnDef?.header === "contact" ||
+                            eitem?.column?.columnDef?.header === "address" ? (
+                              <div className="text-sm text-gray-700 dark:text-light gap-1">
+                                <small className="capitalize ">
+                                  {eitem?.column?.columnDef?.header}
+                                </small>
+                                <br />
+                                <span className="text-xs">
+                                  {flexRender(
+                                    eitem?.column?.columnDef?.cell,
+                                    eitem?.getContext(),
+                                  )}
+                                </span>
+                              </div>
+                            ) : (
+                              ""
+                            )}
+                          </React.Fragment>
+                        );
+                      })}
+                      <div className="flex items-center gap-3 justify-end w-full">
+                        {item.getVisibleCells().map((bitem, bkey) => {
+                          return bitem?.column?.columnDef?.header ===
+                            "social" ? (
+                            <React.Fragment key={bkey}>
+                              {isEmptyItem(
+                                rows[index]?.original?.messenger,
+                                "",
+                              ) !== "" &&
+                              bitem?.column?.columnDef?.accessorKey ===
+                                "messenger" ? (
+                                <a
+                                  href={`${bitem?.column?.columnDef?.link}`}
+                                  target="_black"
+                                >
+                                  {bitem?.column?.columnDef?.icon}
+                                </a>
+                              ) : (
+                                ""
+                              )}
+                              {isEmptyItem(
+                                rows[index]?.original?.whatsapp,
+                                "",
+                              ) !== "" &&
+                              bitem?.column?.columnDef?.accessorKey ===
+                                "whatsapp" ? (
+                                <a
+                                  href={`${bitem?.column?.columnDef?.link}`}
+                                  target="_black"
+                                >
+                                  {bitem?.column?.columnDef?.icon}
+                                </a>
+                              ) : (
+                                ""
+                              )}
+                              {isEmptyItem(rows[index]?.original?.other, "") !==
+                                "" &&
+                              bitem?.column?.columnDef?.accessorKey ===
+                                "other" ? (
+                                <a href={`${bitem?.column?.columnDef?.link}`}>
+                                  {bitem?.column?.columnDef?.icon}
+                                </a>
+                              ) : (
+                                ""
+                              )}
+                            </React.Fragment>
+                          ) : (
+                            ""
+                          );
+                        })}
+                      </div>
+                    </div>
+
                     {ishaveSubAdd ? (
                       <>
                         <div className="grid lg:grid-cols-3 my-3">
@@ -464,7 +558,7 @@ const InfinitePerTabs = ({
                       setItemEdit={setItemEdit}
                       isSearch={isSearch}
                       ishaveSubAdd={ishaveSubAdd}
-                      isDefaultMobile={isDefaultMobile}
+                      isDefaultMobile={path}
                       setItemVal={setItemVal}
                     />
                   </div>

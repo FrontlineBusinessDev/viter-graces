@@ -163,7 +163,6 @@ const Customers = () => {
           isSearch={false}
           ishaveAdd={false}
           ishaveSubAdd={false}
-          isDefaultMobile="customer"
           dataTestidAddButton="add-customer-btn"
         />
       </HeaderNav>

@@ -118,7 +118,6 @@ const CustomerMobileReponsive = ({
                               name: "delete",
                               path: "sales-order",
                               isActive: 0,
-                              name: "delete",
                             },
                             rowData,
                           )

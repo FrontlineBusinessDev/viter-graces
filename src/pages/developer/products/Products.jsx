@@ -126,7 +126,6 @@ const Products = () => {
           setItemEdit={setItemEdit}
           productMobile={true}
           haveFilterTable={true}
-          isDefaultMobile={"products"}
           dataTestidAddButton="add-product-btn"
         />
       </HeaderNav>

@@ -36,7 +36,7 @@ const InfiniteSubTable = ({
   setItemEdit,
   haveFilterTable = false,
   hasExport = false,
-  isDefaultMobile = "default",
+  isDefaultMobile = "",
   isSearch = true,
   ishaveSubAdd = false,
   setItemVal,

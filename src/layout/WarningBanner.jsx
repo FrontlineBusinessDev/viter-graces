@@ -40,7 +40,7 @@ const WarningBanner = ({ path = "", text = "", id = 0, description = "" }) => {
         <div className="bg-orange-100 text-orange-600 dark:bg-orange-200 dark:text-orange-300 border border-orange-300 rounded-xl px-3 py-2 my-2  ">
           <div className="flex items-center gap-2">
             <TriangleAlert size={14} className="place-self-start mt-0.5" />
-            <p className="dark:text-orange-600 mb-0 flex font-bold ">
+            <div className="dark:text-orange-600 mb-0 flex font-bold ">
               {isLoading ? (
                 <TableLoading count={1} cols={1} />
               ) : (
@@ -48,9 +48,9 @@ const WarningBanner = ({ path = "", text = "", id = 0, description = "" }) => {
                   {isEmptyItem(valData[0]?.data_count, "")}{" "}
                 </span>
               )}
-              {text}
-              {description}
-            </p>
+              <span>{text}</span>
+              <span>{description}</span>
+            </div>
           </div>
         </div>
       ) : (
