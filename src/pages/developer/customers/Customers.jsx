@@ -45,7 +45,7 @@ const Customers = () => {
     },
     {
       accessorKey: "customer_address",
-      header: "contact",
+      header: "address",
       icon: <MapPin size={14} />,
       classTh: "",
       classTd: "",
@@ -163,7 +163,6 @@ const Customers = () => {
           isSearch={false}
           ishaveAdd={false}
           ishaveSubAdd={false}
-          isDefaultMobile="customer"
         />
       </HeaderNav>
       {store.isAdd && <ModalCustomer itemEdit={itemEdit} />}

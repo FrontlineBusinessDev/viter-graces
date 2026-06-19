@@ -8,7 +8,7 @@ const MobileResponsiveList = ({
   setData = "",
   setItemEdit,
   setItemVal,
-  isDefaultMobile = "default",
+  isDefaultMobile = "",
   ishaveSubAdd = false,
 }) => {
   return (

@@ -1,8 +1,5 @@
 import CloseButton from "@/components/buttons/CloseButton";
-import ModalButton from "@/components/buttons/ModalButton";
-import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
-import { handleEscape } from "@/utilities/handleEscape";
 import React from "react";
 
 const ModalWrapper = ({
@@ -11,7 +8,7 @@ const ModalWrapper = ({
   mutation,
   children,
   width = "min-w-[350px]",
-  handleClose,
+  handleClose = "",
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
@@ -30,7 +27,6 @@ const ModalWrapper = ({
               <CloseButton
                 handleClose={handleClose}
                 disabled={mutation.isPending}
-               
               />
               <h3 className="text-dark dark:text-light text-sm">
                 {itemEdit ? "Update" : "Add New"} {val}

@@ -17,7 +17,7 @@ const InfiniteDefaultTableMobileCard = ({
 
   return (
     <>
-      {isDefaultMobile === "default" &&
+      {isDefaultMobile === "" &&
         rows?.map((row, index) => {
           const rowData = row.original;
           const isLastRow = index === rows?.length - 1;
