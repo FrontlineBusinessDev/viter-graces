@@ -209,6 +209,7 @@ class SalesOrder
             $sql .= "MAX(sales_order_installment) as sales_order_installment, ";
             $sql .= "MAX(sales_order_due_date) as sales_order_due_date, ";
             $sql .= "MAX(sales_order_overall_amount) as total_amount, ";
+            $sql .= "MAX(sales_order_total_amount) as total_sub_amount, ";
             $sql .= "MAX(sales_order_paid_amount) as total_paid, ";
             $sql .= "MAX(sales_order_aid) as id, ";
             $sql .= "MAX(sales_order_is_active) as is_active, ";
@@ -296,6 +297,7 @@ class SalesOrder
             $sql .= "MAX(sales_order_installment) as sales_order_installment, ";
             $sql .= "MAX(sales_order_due_date) as sales_order_due_date, ";
             $sql .= "MAX(sales_order_overall_amount) as total_amount, ";
+            $sql .= "MAX(sales_order_total_amount) as total_sub_amount, ";
             $sql .= "MAX(sales_order_paid_amount) as total_paid, ";
             $sql .= "MAX(sales_order_aid) as id, ";
             $sql .= "MAX(sales_order_is_active) as is_active, ";

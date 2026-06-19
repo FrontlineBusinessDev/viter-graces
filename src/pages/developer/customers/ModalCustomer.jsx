@@ -89,7 +89,7 @@ const ModalCustomer = ({ itemEdit }) => {
         itemEdit={itemEdit}
         mutation={mutation}
         isOpen={true}
-        // handleClose={handleClose}
+        handleClose={handleClose}
       >
         <div className="modal-body">
           <Formik

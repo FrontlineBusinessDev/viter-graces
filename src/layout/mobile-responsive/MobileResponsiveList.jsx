@@ -1,5 +1,6 @@
 import CustomerMobileReponsive from "./CustomerMobileReponsive";
 import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
+import OverviewMobileResponsive from "./OverviewMobileResponsive";
 import ProductsMobileResponsive from "./ProductsMobileResponsive";
 
 const MobileResponsiveList = ({
@@ -24,6 +25,14 @@ const MobileResponsiveList = ({
       />
       {/* CUSTOMER RESPONSIVE */}
       <CustomerMobileReponsive
+        rows={rows}
+        setItemEdit={setItemEdit}
+        setItemVal={setItemVal}
+        setData={setData}
+        isDefaultMobile={isDefaultMobile}
+      />
+      {/* STOCK OVERVIEW RESPONSIVE */}
+      <OverviewMobileResponsive
         rows={rows}
         setItemEdit={setItemEdit}
         setItemVal={setItemVal}

@@ -42,6 +42,15 @@ if (array_key_exists("id", $_GET)) {
 
     if ((float)$val->sales_order_paid_amount < (float)$val->sales_order_overall_amount) {
         $val->sales_order_status = 'partial';
+    } else {
+
+        $val->sales_order_status = 'paid';
+    }
+
+    if ((float)$val->sales_order_paid_amount > (float)$val->sales_order_overall_amount) {
+        $val->sales_order_paid_amount = $data["sales_order_overall_amount"];
+    } else {
+        $val->sales_order_paid_amount = $data["sales_order_paid_amount"];
     }
 
     for ($i = 0; $i < count($ordersItems); $i++) {

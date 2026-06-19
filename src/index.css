@@ -191,7 +191,7 @@
     @apply border border-solid border-gray-300 p-2 rounded-lg w-full truncate bg-transparent outline-none dark:bg-dark-mode mt-1;
   }
   select {
-    @apply text-xs h-[35px] rounded-lg;
+    @apply text-xs h-[38px] rounded-lg;
   }
   textarea {
     @apply border border-solid border-gray-300 p-2 rounded-lg w-full truncate bg-transparent outline-none dark:bg-dark-mode mt-1 h-28;
