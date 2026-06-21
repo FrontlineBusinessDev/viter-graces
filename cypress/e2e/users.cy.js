@@ -231,7 +231,7 @@ describe("Users Module - CRUD and Search Flow", () => {
   it("Search a user account ", () => {
     cy.intercept("POST", "**/users/page/*").as("getUser");
 
-    cy.get('[data-testid="search-input"]').type("Lumabas");
+    cy.get('[data-testid="search-input"]').type("Lumabas{enter}");
 
     cy.wait("@getUser");
 

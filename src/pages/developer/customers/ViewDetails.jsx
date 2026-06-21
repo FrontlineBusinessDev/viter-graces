@@ -13,12 +13,10 @@ const ViewDetails = ({ item }) => {
     dispatch(setIsView(false));
   };
 
-  console.log("item", item);
-
   return (
     <div
       className="bg-dark/50 dark:bg-dark-mode/90 fixed inset-0 z-999 flex justify-center items-center overflow-y-auto animate-fadeIn"
-      onClick={handleClose}
+      // onClick={handleClose}
     >
       <div
         className={`p-1 min-w-[350px] animate-slideUp w-full max-w-lg my-10`}

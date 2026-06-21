@@ -28,12 +28,11 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->products_is_active = trim($data["isActive"]);
 
 
-        if ($val->products_is_active === 0) {
+        if ((float)$val->products_is_active == 0) {
             $val->products_status = "inactive";
         } else {
             $val->products_status = "active";
         }
-
 
         $val->products_updated = date("Y-m-d H:i:s");
         checkId($val->products_aid);

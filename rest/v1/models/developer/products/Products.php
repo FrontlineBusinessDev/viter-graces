@@ -291,7 +291,7 @@ class Products
             or products_suppliers_name like :products_suppliers_name 
             or products_sku like :products_sku ) " : " ");
             }
-            $sql .= " order by products_status desc, ";
+            $sql .= " order by products_is_active desc, ";
             $sql .= "products_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
@@ -349,7 +349,7 @@ class Products
             or products_suppliers_name like :products_suppliers_name 
             or products_sku like :products_sku ) " : " ");
             }
-            $sql .= " order by products_status desc, ";
+            $sql .= " order by products_is_active desc, ";
             $sql .= "products_name asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
