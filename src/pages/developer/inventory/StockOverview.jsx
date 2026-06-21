@@ -1,4 +1,7 @@
-import { SearchableSelectFilter, SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import {
+  SearchableSelectFilter,
+  SearchableSelectFilterStatus,
+} from "@/components/inputs/InputSelect";
 import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
@@ -81,14 +84,14 @@ const StockOverview = () => {
       classTh: "min-w-[10rem]",
       classTd: "",
       meta: {
-              filterComponent: (column) => (
-                <SearchableSelectFilter
-                  column={column}
-                  path="product-owner/read-by-product-owner"
-                  testFilterId={"filter-owner"}
-                />
-              ),
-            },
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="product-owner/read-by-product-owner"
+            testFilterId={"filter-owner"}
+          />
+        ),
+      },
     },
   ];
 

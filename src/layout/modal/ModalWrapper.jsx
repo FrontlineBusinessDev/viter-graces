@@ -1,8 +1,5 @@
 import CloseButton from "@/components/buttons/CloseButton";
-import ModalButton from "@/components/buttons/ModalButton";
-import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
-import { handleEscape } from "@/utilities/handleEscape";
 import React from "react";
 
 const ModalWrapper = ({
@@ -11,7 +8,7 @@ const ModalWrapper = ({
   mutation,
   children,
   width = "min-w-[350px]",
-  handleClose,
+  handleClose = "",
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
@@ -19,7 +16,7 @@ const ModalWrapper = ({
     <>
       <div
         className="bg-dark/50 dark:bg-dark-mode/90 fixed inset-0 z-999 flex justify-center items-center overflow-y-auto animate-fadeIn"
-        onClick={handleClose}
+        // onClick={handleClose}
       >
         <div
           className={`p-1 ${width} animate-slideUp w-full max-w-lg my-10`}
@@ -30,7 +27,6 @@ const ModalWrapper = ({
               <CloseButton
                 handleClose={handleClose}
                 disabled={mutation.isPending}
-               
               />
               <h3 className="text-dark dark:text-light text-sm">
                 {itemEdit ? "Update" : "Add New"} {val}

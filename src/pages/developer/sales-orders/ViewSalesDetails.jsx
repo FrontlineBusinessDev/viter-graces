@@ -1,7 +1,6 @@
 import CloseButton from "@/components/buttons/CloseButton";
 import { AmountWithPesoSign } from "@/components/PesoSign";
 import Pills from "@/components/Pills";
-import TableStatus from "@/layout/TableStatus";
 import { setIsView } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { Download } from "lucide-react";
@@ -13,6 +12,9 @@ const ViewSalesDetails = ({ itemEdit }) => {
   const handleClose = () => {
     dispatch(setIsView(false));
   };
+
+  let total_balance =
+    Number(itemEdit?.total_amount) - Number(itemEdit?.total_paid);
 
   return (
     <div
@@ -78,7 +80,7 @@ const ViewSalesDetails = ({ itemEdit }) => {
                 {itemEdit?.items?.map((aitem, akey) => {
                   return (
                     <ul
-                      className="p-4 grid grid-cols-[.5fr_1fr_1fr_1fr_1fr] lg:grid-cols-[2rem_1fr_1fr_1fr_1fr] gap-1 text-sm"
+                      className={`${akey === 0 ? " pt-3 " : " pt-1 "} px-4 grid grid-cols-[.5fr_1fr_1fr_1fr_1fr] lg:grid-cols-[2rem_1fr_1fr_1fr_1fr] gap-1 text-sm last:pb-3`}
                       key={akey}
                     >
                       <li>
@@ -119,39 +121,65 @@ const ViewSalesDetails = ({ itemEdit }) => {
             </div>
           </div>
 
-          <ul className="grid grid-cols-2 my-3 [&>li]:border-b [&>li]:border-b-gray-200 gap-y-2">
-            <li>Subtotal</li>
+          <ul className="grid grid-cols-2 my-3 [&>li]:border-b [&>li]:border-b-gray-200 ">
+            <li className="">
+              <small>Subtotal</small>
+            </li>
             <li className="text-right">
+              <small>
+                <AmountWithPesoSign
+                  classN="size-3"
+                  amount={`${itemEdit?.total_sub_amount}`}
+                />
+              </small>
+            </li>
+            <li className="">
+              <small>Tax</small>
+            </li>
+            <li className="text-right">
+              <small>
+                <AmountWithPesoSign
+                  classN="size-3"
+                  amount={`${itemEdit?.sales_order_tax}`}
+                />
+              </small>
+            </li>
+            <li className="">
+              <small>Discount</small>
+            </li>
+            <li className="text-right">
+              <small>
+                <AmountWithPesoSign
+                  classN="size-3"
+                  amount={`${itemEdit?.sales_order_discount}`}
+                />
+              </small>
+            </li>
+          </ul>
+
+          <ul className="grid grid-cols-2 mb-3 [&>li]:border-b [&>li]:border-b-gray-200 gap-y-1">
+            <li className=" font-bold">Total</li>
+            <li className="text-right font-bold">
               <AmountWithPesoSign
                 classN="size-3"
                 amount={`${itemEdit?.total_amount}`}
               />
             </li>
-            <li className=" font-bold">Discount</li>
+            <li className="text-green-500 font-bold">Paid</li>
             <li className="text-right font-bold">
-              <AmountWithPesoSign
-                classN="size-3"
-                amount={`${itemEdit?.sales_order_discount}`}
-              />
-            </li>
-            <li className=" font-bold">Total</li>
-            <li className="text-right font-bold">
-              <AmountWithPesoSign
-                classN="size-3"
-                amount={`${itemEdit?.total_amount - itemEdit?.sales_order_discount}`}
-              />
-            </li>
-          </ul>
-
-          <div className="grid grid-cols-2 py-2 text-green-600 text-base">
-            <span>Paid</span>
-            <span className="text-right">
               <AmountWithPesoSign
                 classN="size-3"
                 amount={`${itemEdit?.total_paid}`}
               />
-            </span>
-          </div>
+            </li>
+            <li className="text-red-500 font-bold">Balance</li>
+            <li className="text-right font-bold">
+              <AmountWithPesoSign
+                classN="size-3"
+                amount={`${Number(total_balance) < 0 ? "0.00" : total_balance}`}
+              />
+            </li>
+          </ul>
 
           <div className="my-4 place-self-center">
             <button className="btn--outline--gray flex items-center gap-2">

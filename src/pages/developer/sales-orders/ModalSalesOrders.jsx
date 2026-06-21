@@ -222,6 +222,12 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     { id: "3", name: "mutiple payment" },
   ];
 
+  let taxOption = [
+    { id: "0", name: "--" },
+    { id: "1.12", name: "inclusive" },
+    { id: "12", name: "enclusive" },
+  ];
+
   console.log("setItems", items);
   return (
     <>
@@ -429,14 +435,19 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
 
                   <div className="grid grid-cols-2 gap-4">
                     <div className="relative mt-3">
-                      <InputNumber
-                        label="Tax (₱)"
-                        name="sales_order_tax"
-                        placeholder={`${itemEdit ? "0" : "0"}`}
-                        disabled={mutation.isPending}
-                        required={false}
+                      <InputSelectArrayWithOptions
+                        label="Tax"
+                        type="sales_order_tax"
+                        name="sales_order_payment_method"
+                        defaultValue="--"
+                        options={taxOption}
+                        onChange={(e) => {
+                          props.values.sales_order_payment_method = e.target.id;
+                          return e;
+                        }}
                       />
                     </div>
+
                     <div className="relative mt-3">
                       <InputNumber
                         label="Amount Paid"

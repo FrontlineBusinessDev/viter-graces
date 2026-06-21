@@ -37,7 +37,6 @@ const InfiniteTable = ({
   setFilterColumns = () => {},
   haveFilterTable = false,
   hasExport = false,
-  isDefaultMobile = "default",
   isSearch = true,
   ishaveAdd = true,
   ishaveSubAdd = false,
@@ -276,7 +275,7 @@ const InfiniteTable = ({
               lastRowRef={lastRowRef}
               setData={setData}
               setItemEdit={setItemEdit}
-              isDefaultMobile={isDefaultMobile}
+              isDefaultMobile={path}
               ishaveSubAdd={ishaveSubAdd}
             />
             {/* TABLE */}
