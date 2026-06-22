@@ -48,4 +48,36 @@ describe("Product Owner - CRUD and Search Flow", () => {
 
     cy.contains("Herlyn", { timeout: 1000 }).should("exist");
   });
+
+  // UPDATE
+  it("Update product owner", () => {
+    //cancel btn
+
+    cy.intercept("POST", "**/product-owner/page*").as("getProductOwner");
+    cy.viewport(1280, 720);
+    cy.wait("@getProductOwner");
+
+    cy.get('[data-testid="table-row]', { timeout: 1000 }).should(
+      "have.length.greaterThan",
+      0,
+    );
+
+    cy.get('[data-testid="table-row"]')
+      .contains("Herlyn")
+      .parents('[data-testid="table-row]')
+      .within(() => {
+        cy.get('[data-testid="action-edit"]').click();
+      });
+
+    cy.get('input[name="user_account_first_name"]')
+      .should("be.visible")
+      .clear()
+      .type("Mayeng");
+    cy.get('input[name="user_account_last_name"]').clear().type("Mendoza");
+    cy.get('input[name="user_account_emai"]')
+      .clear()
+      .type("torresherlynmae@gmail.com");
+
+    cy.get('[data-testid="false"]').click();
+  });
 });
