@@ -3,7 +3,7 @@ import Pills from "@/components/Pills";
 import { Image } from "lucide-react";
 import ActionButtonMobile from "../ActionButtonMobile";
 
-const ProductsMobileResponsive = ({
+const StockOverviewMobileResponsive = ({
   rows,
   setData,
   setItemEdit,
@@ -14,7 +14,7 @@ const ProductsMobileResponsive = ({
 }) => {
   return (
     <>
-      {isDefaultMobile === "products" && (
+      {isDefaultMobile === "stock-overview" && (
         <div>
           {rows?.map((row, index) => {
             const rowData = row.original;
@@ -25,27 +25,25 @@ const ProductsMobileResponsive = ({
                 className="lg:hidden border rounded-xl p-4 mb-4 shadow-sm"
               >
                 {/* HEADER */}
-                <div className="flex flex-wrap gap-2 justify-between items-center border-b border-gray-200 pb-3 ">
-                  <div className="flex gap-2 items-center">
-                    <div className="w-12 h-12 bg-gray-300 rounded-sm">
-                      <Image className="mx-auto p-1" size={45} />
-                    </div>
-                    <div className="flex flex-col">
-                      <div className="flex sm:gap-2 flex-wrap items-center">
-                        <span
-                          className={`font-semibold text-black dark:text-light text-lg capitalize`}
-                        >
-                          {rowData?.products_name}
-                        </span>
+                <div className="flex gap-2 justify-between items-center border-b border-gray-200 pb-3 ">
+                  <div className="flex flex-col">
+                    <div className="flex sm:gap-2 flex-wrap items-center">
+                      <span
+                        className={`font-semibold text-black dark:text-light text-lg capitalize`}
+                      >
+                        {rowData?.products_name}
+                      </span>
 
-                        <span className={`font-semibold text-xs `}>
-                          ({rowData?.products_sku})
-                        </span>
-                      </div>
-                      <span className={`font-semibold text-left text-xs `}>
-                        {rowData?.products_owner_name}
+                      <span className={`font-semibold text-xs `}>
+                        ({rowData?.products_sku})
                       </span>
                     </div>
+                    <span className={`font-semibold text-left text-xs `}>
+                      {rowData?.stock_movement_product_owner_name}
+                    </span>
+                    <span className={`font-semibold text-left text-xs `}>
+                      {rowData?.stock_movement_location}
+                    </span>
                   </div>
 
                   {/* STATUS */}
@@ -53,44 +51,37 @@ const ProductsMobileResponsive = ({
                     {rowData?.products_status}
                   </Pills>
                 </div>
-
                 {/* OTHER FIELDS */}
-
                 <div className="flex flex-wrap justify-between items-end">
                   <ul className="py-2 gap-2 sm:gap-5  ">
                     <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2 min-w-15`}>
-                        Supplier:
+                      <span className={`text-gray-500 mr-2 min-w-19`}>
+                        Unit:
                       </span>
                       <span className="wrap-break-word font-semibold">
-                        {rowData?.products_suppliers_name}
+                        {rowData?.products_unit}
                       </span>
                     </li>
                     <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2 min-w-15`}>
-                        Category:
+                      <span className={`text-gray-500 mr-2`}>
+                        Current stock:
                       </span>
                       <span className="wrap-break-word font-semibold ">
-                        {rowData?.products_category}
-                      </span>
-                    </li>
-                    <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2 min-w-15`}>
-                        Price:
-                      </span>
-                      <span className="wrap-break-word font-semibold">
                         <AmountWithPesoSign
                           classN="size-3"
-                          amount={rowData?.products_price}
+                          amount={rowData?.current_qty}
                         />
                       </span>
                     </li>
                     <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2 min-w-15`}>
-                        Threshold:
+                      <span className={`text-gray-500 mr-2 min-w-19`}>
+                        Threshold:{" "}
                       </span>
                       <span className="wrap-break-word font-semibold">
-                        {rowData?.products_low_stock_threshold}
+                        <AmountWithPesoSign
+                          classN="size-3"
+                          amount={`${Number(rowData?.products_low_stock_threshold)}`}
+                        />
                       </span>
                     </li>
                   </ul>
@@ -113,4 +104,4 @@ const ProductsMobileResponsive = ({
   );
 };
 
-export default ProductsMobileResponsive;
+export default StockOverviewMobileResponsive;

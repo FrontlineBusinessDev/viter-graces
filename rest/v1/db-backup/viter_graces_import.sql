@@ -181,7 +181,7 @@ CREATE TABLE `graces_sales_order` (
   `sales_order_product_owner_name` varchar(200) NOT NULL,
   `sales_order_installment` varchar(20) NOT NULL,
   `sales_order_due_date` varchar(20) NOT NULL,
-  `sales_order_overall_amount` varchar(20) NOT NULL,
+  `sales_order_total_payable_amount` varchar(20) NOT NULL,
   `sales_order_created` datetime NOT NULL,
   `sales_order_updated` datetime NOT NULL,
   PRIMARY KEY (`sales_order_aid`)
@@ -191,7 +191,7 @@ CREATE TABLE `graces_sales_order` (
 -- Dumping data for table `graces_sales_order`
 --
 
-INSERT INTO `graces_sales_order` (`sales_order_aid`, `sales_order_status`, `sales_order_is_active`, `sales_order_number`, `sales_order_date`, `sales_order_customer_id`, `sales_order_customer_name`, `sales_order_payment_method`, `sales_order_product_id`, `sales_order_product_name`, `sales_order_qty`, `sales_order_price`, `sales_order_total`, `sales_order_discount`, `sales_order_tax`, `sales_order_paid_amount`, `sales_order_notes`, `sales_order_received_by_id`, `sales_order_received_by_name`, `sales_order_product_owner_id`, `sales_order_product_owner_name`, `sales_order_installment`, `sales_order_due_date`, `sales_order_overall_amount`, `sales_order_created`, `sales_order_updated`) VALUES
+INSERT INTO `graces_sales_order` (`sales_order_aid`, `sales_order_status`, `sales_order_is_active`, `sales_order_number`, `sales_order_date`, `sales_order_customer_id`, `sales_order_customer_name`, `sales_order_payment_method`, `sales_order_product_id`, `sales_order_product_name`, `sales_order_qty`, `sales_order_price`, `sales_order_total`, `sales_order_discount`, `sales_order_tax`, `sales_order_paid_amount`, `sales_order_notes`, `sales_order_received_by_id`, `sales_order_received_by_name`, `sales_order_product_owner_id`, `sales_order_product_owner_name`, `sales_order_installment`, `sales_order_due_date`, `sales_order_total_payable_amount`, `sales_order_created`, `sales_order_updated`) VALUES
 (1, 'active', 1, 'ORD001', '2026-05-25', 4, 'Cyzai Lumabas', 'cash', 1, 'Banana chips', '1', '10', '10', '0', '0', '10', '', 4, 'Cyzai Lumabas', 4, 'Cyzai Lumabas', '0', '2026-05-25', '10', '2026-05-25 15:40:23', '2026-05-25 15:40:23');
 
 -- --------------------------------------------------------

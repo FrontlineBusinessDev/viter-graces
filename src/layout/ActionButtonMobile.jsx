@@ -1,10 +1,17 @@
 import ActionButton from "@/components/buttons/ActionButton";
 import { setIsAction, setIsAdd, setIsView } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
 import React from "react";
 
-const ActionButtonMobile = ({ dataArray, setData, setItemEdit, path }) => {
+const ActionButtonMobile = ({
+  dataArray,
+  setData,
+  setItemEdit,
+  path,
+  itemVal = [],
+}) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
   // ACTIONS ACHIEVE, RESTORE AND DELETE
@@ -38,6 +45,21 @@ const ActionButtonMobile = ({ dataArray, setData, setItemEdit, path }) => {
   return (
     <>
       <div className="flex items-center justify-end gap-3 ">
+        {itemVal?.map((a, akey) => {
+          return (
+            isEmptyItem(a?.name, "") === "view" &&
+            Number(isEmptyItem(a?.isActive, 1)) ===
+              Number(isEmptyItem(dataArray?.is_active, 1)) && (
+              <div key={akey}>
+                <ActionButton
+                  item={a}
+                  onClick={() => handleView(a)}
+                  data-testid={a.testId}
+                />
+              </div>
+            )
+          );
+        })}
         {dataArray?.is_active > 0 ? (
           <>
             <ActionButton
