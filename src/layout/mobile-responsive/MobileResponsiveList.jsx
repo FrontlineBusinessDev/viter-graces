@@ -3,6 +3,7 @@ import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
 import MovementMobileResponsive from "./MovementMobileResponsive";
 import ProductsMobileResponsive from "./ProductsMobileResponsive";
 import SalesOrderMobileResponsive from "./SalesOrderMobileResponsive";
+import SalesReportMobileResponsive from "./SalesReportMobileResponsive";
 import StockOverviewMobileResponsive from "./StockOverviewMobileResponsive";
 
 const MobileResponsiveList = ({
@@ -43,6 +44,14 @@ const MobileResponsiveList = ({
       />
       {/* MOVEMENT HISTORY RESPONSIVE */}
       <MovementMobileResponsive
+        rows={rows}
+        setItemEdit={setItemEdit}
+        setItemVal={setItemVal}
+        setData={setData}
+        isDefaultMobile={isDefaultMobile}
+      />
+      {/* MOVEMENT HISTORY RESPONSIVE */}
+      <SalesReportMobileResponsive
         rows={rows}
         setItemEdit={setItemEdit}
         setItemVal={setItemVal}

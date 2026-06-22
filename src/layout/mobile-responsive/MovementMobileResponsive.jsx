@@ -42,7 +42,7 @@ const MovementMobileResponsive = ({
                   </ul>
 
                   {/* STATUS */}
-                  <ul>
+                  <ul className="text-left ">
                     <li className="mb-0 capitalize">
                       {rowData?.stock_movement_type}
                     </li>
