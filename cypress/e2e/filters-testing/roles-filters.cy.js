@@ -49,7 +49,7 @@ describe("Role Module - Filter", () => {
     cy.viewport(390, 844);
     cy.intercept("POST", "**/roles/page/*").as("getRole");
 
-    cy.get('[data-testid="search-input"]').type("Admin");
+    cy.get('[data-testid="search-input"]').type("Admin{enter}");
 
     cy.wait("@getRole");
 
