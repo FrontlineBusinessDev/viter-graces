@@ -54,7 +54,7 @@ const ViewSalesDetails = ({ itemEdit }) => {
             </li>
             <li>
               <p>Payment:</p>
-              <p className="text-black dark:text-light">
+              <p className="text-black dark:text-light capitalize">
                 {itemEdit?.sales_order_payment_method}
               </p>
             </li>
@@ -140,7 +140,7 @@ const ViewSalesDetails = ({ itemEdit }) => {
               <small>
                 <AmountWithPesoSign
                   classN="size-3"
-                  amount={`${itemEdit?.sales_order_tax}`}
+                  amount={`${itemEdit?.sales_order_tax_amount}`}
                 />
               </small>
             </li>
