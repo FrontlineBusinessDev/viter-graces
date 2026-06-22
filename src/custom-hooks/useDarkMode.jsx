@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 
 const useDarkMode = () => {
   const [darkMode, setDarkMode] = useState(() => {
-    return document.documentElement.classList.contains("dark");
+    return localStorage.getItem("theme") === "dark";
   });
 
   useEffect(() => {
@@ -17,16 +17,7 @@ const useDarkMode = () => {
     });
   };
 
-  const useSystemMode = () => {
-    localStorage.removeItem("theme");
-
-    const systemDark = window.matchMedia(
-      "(prefers-color-scheme: dark)",
-    ).matches;
-    setDarkMode(systemDark);
-  };
-
-  return { darkMode, toggleDarkMode, useSystemMode };
+  return { darkMode, toggleDarkMode };
 };
 
 export default useDarkMode;
