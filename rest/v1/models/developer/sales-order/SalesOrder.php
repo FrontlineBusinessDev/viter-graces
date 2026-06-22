@@ -24,8 +24,9 @@ class SalesOrder
     public $sales_order_product_owner_name;
     public $sales_order_installment;
     public $sales_order_due_date;
-    public $sales_order_overall_amount;
+    public $sales_order_total_payable_amount;
     public $sales_order_total_amount;
+    public $sales_order_tax_amount;
     public $sales_order_created;
     public $sales_order_updated;
 
@@ -86,8 +87,9 @@ class SalesOrder
             $sql .= "sales_order_product_owner_name, ";
             $sql .= "sales_order_installment, ";
             $sql .= "sales_order_due_date, ";
-            $sql .= "sales_order_overall_amount, ";
+            $sql .= "sales_order_total_payable_amount, ";
             $sql .= "sales_order_total_amount, ";
+            $sql .= "sales_order_tax_amount, ";
             $sql .= "sales_order_created, ";
             $sql .= "sales_order_updated ) values ( ";
             $sql .= ":sales_order_status, ";
@@ -112,8 +114,9 @@ class SalesOrder
             $sql .= ":sales_order_product_owner_name, ";
             $sql .= ":sales_order_installment, ";
             $sql .= ":sales_order_due_date, ";
-            $sql .= ":sales_order_overall_amount, ";
+            $sql .= ":sales_order_total_payable_amount, ";
             $sql .= ":sales_order_total_amount, ";
+            $sql .= ":sales_order_tax_amount, ";
             $sql .= ":sales_order_created, ";
             $sql .= ":sales_order_updated ) ";
             $query = $this->connection->prepare($sql);
@@ -140,8 +143,9 @@ class SalesOrder
                 "sales_order_product_owner_name" => $this->sales_order_product_owner_name,
                 "sales_order_installment" => $this->sales_order_installment,
                 "sales_order_due_date" => $this->sales_order_due_date,
-                "sales_order_overall_amount" => $this->sales_order_overall_amount,
+                "sales_order_total_payable_amount" => $this->sales_order_total_payable_amount,
                 "sales_order_total_amount" => $this->sales_order_total_amount,
+                "sales_order_tax_amount" => $this->sales_order_tax_amount,
                 "sales_order_created" => $this->sales_order_created,
                 "sales_order_updated" => $this->sales_order_updated,
             ]);
@@ -185,36 +189,16 @@ class SalesOrder
             }
         }
         try {
-            $sql = "select ";
+            $sql = "select *, ";
             $sql .= "sales_order_number, ";
             $sql .= "MAX(sales_order_status) as is_status, ";
-            $sql .= "MAX(sales_order_status) as sales_order_status, ";
-            $sql .= "MAX(sales_order_customer_id) as sales_order_customer_id, ";
-            $sql .= "MAX(sales_order_customer_name) as sales_order_customer_name, ";
-            $sql .= "MAX(sales_order_payment_method) as sales_order_payment_method, ";
-            $sql .= "MAX(sales_order_product_id) as sales_order_product_id, ";
-            $sql .= "MAX(sales_order_product_name) as sales_order_product_name, ";
-            $sql .= "MAX(sales_order_price) as sales_order_price, ";
-            $sql .= "MAX(sales_order_qty) as sales_order_qty, ";
-            $sql .= "MAX(sales_order_total) as sales_order_total, ";
-            $sql .= "MAX(sales_order_overall_amount) as sales_order_overall_amount, ";
-            $sql .= "MAX(sales_order_discount) as sales_order_discount, ";
-            $sql .= "MAX(sales_order_tax) as sales_order_tax, ";
-            $sql .= "MAX(sales_order_paid_amount) as sales_order_paid_amount, ";
-            $sql .= "MAX(sales_order_notes) as sales_order_notes, ";
-            $sql .= "MAX(sales_order_received_by_id) as sales_order_received_by_id, ";
-            $sql .= "MAX(sales_order_received_by_name) as sales_order_received_by_name, ";
-            $sql .= "MAX(sales_order_product_owner_id) as sales_order_product_owner_id, ";
-            $sql .= "MAX(sales_order_product_owner_name) as sales_order_product_owner_name, ";
-            $sql .= "MAX(sales_order_installment) as sales_order_installment, ";
-            $sql .= "MAX(sales_order_due_date) as sales_order_due_date, ";
-            $sql .= "MAX(sales_order_overall_amount) as total_amount, ";
+            $sql .= "MAX(sales_order_total_payable_amount) as total_amount, ";
             $sql .= "MAX(sales_order_total_amount) as total_sub_amount, ";
             $sql .= "MAX(sales_order_paid_amount) as total_paid, ";
             $sql .= "MAX(sales_order_aid) as id, ";
             $sql .= "MAX(sales_order_is_active) as is_active, ";
             $sql .= "MAX(sales_order_date) as order_date, ";
-            $sql .= "DATE_FORMAT(MAX(sales_order_date), '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(MAX(sales_order_date), '%b %d, %Y') as order_date, ";
             $sql .= "MAX(sales_order_customer_name) as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";
@@ -273,30 +257,10 @@ class SalesOrder
             }
         }
         try {
-            $sql = "select ";
+            $sql = "select *, ";
             $sql .= "sales_order_number, ";
             $sql .= "MAX(sales_order_status) as is_status, ";
-            $sql .= "MAX(sales_order_status) as sales_order_status, ";
-            $sql .= "MAX(sales_order_customer_id) as sales_order_customer_id, ";
-            $sql .= "MAX(sales_order_customer_name) as sales_order_customer_name, ";
-            $sql .= "MAX(sales_order_payment_method) as sales_order_payment_method, ";
-            $sql .= "MAX(sales_order_product_id) as sales_order_product_id, ";
-            $sql .= "MAX(sales_order_product_name) as sales_order_product_name, ";
-            $sql .= "MAX(sales_order_price) as sales_order_price, ";
-            $sql .= "MAX(sales_order_qty) as sales_order_qty, ";
-            $sql .= "MAX(sales_order_total) as sales_order_total, ";
-            $sql .= "MAX(sales_order_overall_amount) as sales_order_overall_amount, ";
-            $sql .= "MAX(sales_order_discount) as sales_order_discount, ";
-            $sql .= "MAX(sales_order_tax) as sales_order_tax, ";
-            $sql .= "MAX(sales_order_paid_amount) as sales_order_paid_amount, ";
-            $sql .= "MAX(sales_order_notes) as sales_order_notes, ";
-            $sql .= "MAX(sales_order_received_by_id) as sales_order_received_by_id, ";
-            $sql .= "MAX(sales_order_received_by_name) as sales_order_received_by_name, ";
-            $sql .= "MAX(sales_order_product_owner_id) as sales_order_product_owner_id, ";
-            $sql .= "MAX(sales_order_product_owner_name) as sales_order_product_owner_name, ";
-            $sql .= "MAX(sales_order_installment) as sales_order_installment, ";
-            $sql .= "MAX(sales_order_due_date) as sales_order_due_date, ";
-            $sql .= "MAX(sales_order_overall_amount) as total_amount, ";
+            $sql .= "MAX(sales_order_total_payable_amount) as total_amount, ";
             $sql .= "MAX(sales_order_total_amount) as total_sub_amount, ";
             $sql .= "MAX(sales_order_paid_amount) as total_paid, ";
             $sql .= "MAX(sales_order_aid) as id, ";
@@ -363,7 +327,7 @@ class SalesOrder
         }
         try {
             $sql = "select *, ";
-            $sql .= "sales_order_overall_amount as total_amount, ";
+            $sql .= "sales_order_total_payable_amount as total_amount, ";
             $sql .= "sales_order_paid_amount as total_paid, ";
             $sql .= "sales_order_aid as id, ";
             $sql .= "sales_order_is_active as is_active, ";
@@ -430,7 +394,7 @@ class SalesOrder
         }
         try {
             $sql = "select *, ";
-            $sql .= "sales_order_overall_amount as total_amount, ";
+            $sql .= "sales_order_total_payable_amount as total_amount, ";
             $sql .= "sales_order_paid_amount as total_paid, ";
             $sql .= "sales_order_aid as id, ";
             $sql .= "sales_order_is_active as is_active, ";
@@ -535,9 +499,10 @@ class SalesOrder
             $sql .= "sales_order_notes = :sales_order_notes, ";
             $sql .= "sales_order_received_by_id = :sales_order_received_by_id, ";
             $sql .= "sales_order_received_by_name = :sales_order_received_by_name, ";
-            $sql .= "sales_order_overall_amount = :sales_order_overall_amount, ";
+            $sql .= "sales_order_total_payable_amount = :sales_order_total_payable_amount, ";
             $sql .= "sales_order_total_amount = :sales_order_total_amount, ";
             $sql .= "sales_order_status = :sales_order_status, ";
+            $sql .= "sales_order_tax_amount = :sales_order_tax_amount, ";
             $sql .= "sales_order_updated = :sales_order_updated ";
             $sql .= "where sales_order_aid  = :sales_order_aid ";
             $query = $this->connection->prepare($sql);
@@ -558,9 +523,10 @@ class SalesOrder
                 "sales_order_notes" => $this->sales_order_notes,
                 "sales_order_received_by_id" => $this->sales_order_received_by_id,
                 "sales_order_received_by_name" => $this->sales_order_received_by_name,
-                "sales_order_overall_amount" => $this->sales_order_overall_amount,
+                "sales_order_total_payable_amount" => $this->sales_order_total_payable_amount,
                 "sales_order_total_amount" => $this->sales_order_total_amount,
                 "sales_order_status" => $this->sales_order_status,
+                "sales_order_tax_amount" => $this->sales_order_tax_amount,
                 "sales_order_updated" => $this->sales_order_updated,
                 "sales_order_aid" => $this->sales_order_aid,
             ]);
