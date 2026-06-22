@@ -25,7 +25,7 @@ const ProductsMobileResponsive = ({
                 className="lg:hidden border rounded-xl p-4 mb-4 shadow-sm"
               >
                 {/* HEADER */}
-                <div className="flex gap-2 justify-between items-center mb-3">
+                <div className="flex flex-wrap gap-2 justify-between items-center border-b border-gray-200 pb-3 ">
                   <div className="flex gap-2 items-center">
                     <div className="w-12 h-12 bg-gray-300 rounded-sm">
                       <Image className="mx-auto p-1" size={45} />
@@ -55,52 +55,54 @@ const ProductsMobileResponsive = ({
                 </div>
 
                 {/* OTHER FIELDS */}
-                <div className="border-t border-gray-200 py-2 gap-5 flex flex-wrap justify-between">
+
+                <div className="flex flex-wrap justify-between items-end">
+                  <ul className="py-2 gap-2 sm:gap-5  ">
+                    <li className="flex text-left! text-xs">
+                      <span className={`text-gray-500 mr-2 min-w-15`}>
+                        Supplier:
+                      </span>
+                      <span className="wrap-break-word font-semibold">
+                        {rowData?.products_suppliers_name}
+                      </span>
+                    </li>
+                    <li className="flex text-left! text-xs">
+                      <span className={`text-gray-500 mr-2 min-w-15`}>
+                        Category:
+                      </span>
+                      <span className="wrap-break-word font-semibold ">
+                        {rowData?.products_category}
+                      </span>
+                    </li>
+                    <li className="flex text-left! text-xs">
+                      <span className={`text-gray-500 mr-2 min-w-15`}>
+                        Price:
+                      </span>
+                      <span className="wrap-break-word font-semibold">
+                        <AmountWithPesoSign
+                          classN="size-3"
+                          amount={rowData?.products_price}
+                        />
+                      </span>
+                    </li>
+                    <li className="flex text-left! text-xs">
+                      <span className={`text-gray-500 mr-2 min-w-15`}>
+                        Threshold:
+                      </span>
+                      <span className="wrap-break-word font-semibold">
+                        {rowData?.products_low_stock_threshold}
+                      </span>
+                    </li>
+                  </ul>
                   <div className=" ">
-                    <p className={`text-left! text-xs text-gray-500 `}>
-                      Supplier
-                    </p>
-                    <p className="text-sm wrap-break-word font-semibold">
-                      {rowData?.products_suppliers_name}
-                    </p>
+                    <ActionButtonMobile
+                      dataArray={rowData}
+                      setData={setData}
+                      setItemEdit={setItemEdit}
+                      ishaveSubAdd={ishaveSubAdd}
+                      path={path}
+                    />
                   </div>
-                  <div className="  ">
-                    <p className={`text-left! text-xs text-gray-500 `}>
-                      Category
-                    </p>
-
-                    <p className="text-left! text-sm wrap-break-word font-semibold capitalize ">
-                      {rowData?.products_category}
-                    </p>
-                  </div>
-                  <div className="">
-                    <p className={`text-left! text-xs text-gray-500 `}>Price</p>
-
-                    <p className="text-sm wrap-break-word font-semibold">
-                      <AmountWithPesoSign
-                        classN="size-3"
-                        amount={rowData?.products_price}
-                      />
-                    </p>
-                  </div>
-                  <div className="">
-                    <p className={`text-left! text-xs text-gray-500 `}>
-                      Threshold
-                    </p>
-
-                    <p className="text-sm wrap-break-word font-semibold">
-                      {rowData?.products_low_stock_threshold}
-                    </p>
-                  </div>
-                </div>
-                <div className="flex gap-2 justify-end">
-                  <ActionButtonMobile
-                    dataArray={rowData}
-                    setData={setData}
-                    setItemEdit={setItemEdit}
-                    ishaveSubAdd={ishaveSubAdd}
-                    path={path}
-                  />
                 </div>
               </div>
             );

@@ -79,7 +79,12 @@ export const InputSelectArrayWithOptions = ({
 
           {options?.map((item, key) => {
             return (
-              <option key={key} value={item.id} className="capitalize">
+              <option
+                key={key}
+                value={item.id}
+                id={item.name}
+                className="capitalize"
+              >
                 {item.name}
               </option>
             );

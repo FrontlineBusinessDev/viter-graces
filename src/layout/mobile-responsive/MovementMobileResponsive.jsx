@@ -1,9 +1,8 @@
 import { AmountWithPesoSign } from "@/components/PesoSign";
 import Pills from "@/components/Pills";
-import { Image } from "lucide-react";
 import ActionButtonMobile from "../ActionButtonMobile";
 
-const StockOverviewMobileResponsive = ({
+const MovementMobileResponsive = ({
   rows,
   setData,
   setItemEdit,
@@ -14,7 +13,7 @@ const StockOverviewMobileResponsive = ({
 }) => {
   return (
     <>
-      {isDefaultMobile === "stock-overview" && (
+      {isDefaultMobile === "stock-movement" && (
         <div>
           {rows?.map((row, index) => {
             const rowData = row.original;
@@ -26,62 +25,55 @@ const StockOverviewMobileResponsive = ({
               >
                 {/* HEADER */}
                 <div className="flex gap-2 justify-between items-center border-b border-gray-200 pb-3 ">
-                  <div className="flex flex-col">
-                    <div className="flex sm:gap-2 flex-wrap items-center">
+                  <ul className="flex flex-col">
+                    <li className="flex sm:gap-2 flex-wrap items-center">
                       <span
                         className={`font-semibold text-black dark:text-light text-lg capitalize`}
                       >
-                        {rowData?.products_name}
+                        {rowData?.stock_movement_product_name}
                       </span>
-
-                      <span className={`font-semibold text-xs `}>
-                        ({rowData?.products_sku})
-                      </span>
-                    </div>
-                    <span className={`font-semibold text-left text-xs `}>
+                    </li>
+                    <li className={`font-semibold text-left text-xs `}>
                       {rowData?.stock_movement_product_owner_name}
-                    </span>
-                    <span className={`font-semibold text-left text-xs `}>
+                    </li>
+                    <li className={`font-semibold text-left text-xs `}>
                       {rowData?.stock_movement_location}
-                    </span>
-                  </div>
+                    </li>
+                  </ul>
 
                   {/* STATUS */}
-                  <Pills variant={rowData?.products_status}>
-                    {rowData?.products_status}
-                  </Pills>
+                  <ul>
+                    <li className="mb-0 capitalize">
+                      {rowData?.stock_movement_type}
+                    </li>
+                    <li className="mb-0">{rowData?.stock_movement_date}</li>
+                  </ul>
                 </div>
                 {/* OTHER FIELDS */}
                 <div className="flex flex-wrap justify-between items-end">
                   <ul className="py-2 gap-2 sm:gap-5  ">
                     <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2 min-w-19`}>
-                        Unit:
+                      <span className={`text-gray-500 mr-2 min-w-12`}>
+                        Quantity:
                       </span>
                       <span className="wrap-break-word font-semibold">
-                        {rowData?.products_unit}
+                        {rowData?.stock_movement_qty}
                       </span>
                     </li>
                     <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2`}>
-                        Current stock:
+                      <span className={`text-gray-500 mr-2 min-w-12`}>
+                        Before:
                       </span>
                       <span className="wrap-break-word font-semibold ">
-                        <AmountWithPesoSign
-                          classN="size-3"
-                          amount={rowData?.current_qty}
-                        />
+                        {rowData?.stock_movement_before_qty}
                       </span>
                     </li>
                     <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2 min-w-19`}>
-                        Threshold:{" "}
+                      <span className={`text-gray-500 mr-2 min-w-12`}>
+                        After:
                       </span>
                       <span className="wrap-break-word font-semibold">
-                        <AmountWithPesoSign
-                          classN="size-3"
-                          amount={`${Number(rowData?.products_low_stock_threshold)}`}
-                        />
+                        {rowData?.stock_movement_after_qty}
                       </span>
                     </li>
                   </ul>
@@ -104,4 +96,4 @@ const StockOverviewMobileResponsive = ({
   );
 };
 
-export default StockOverviewMobileResponsive;
+export default MovementMobileResponsive;
