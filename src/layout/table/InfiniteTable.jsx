@@ -195,7 +195,7 @@ const InfiniteTable = ({
 
   return (
     <>
-      <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 items-center">
+      <div className="md:flex md:justify-between flex-row-reverse my-3 gap-4 items-center">
         {ishaveAdd ? (
           <div className="flex justify-end sm:mb-0! mb-3 w-full ">
             <AddButton
@@ -220,7 +220,7 @@ const InfiniteTable = ({
         )}
 
         {hasExport === true ? (
-          <div className="flex justify-end lg:mb-0! w-40 ">
+          <div className="flex md:justify-end lg:mb-0! w-70 ">
             {hasExport === true ? <ExportCSVButton /> : ""}
           </div>
         ) : (
