@@ -198,7 +198,7 @@ class SalesOrder
             $sql .= "MAX(sales_order_aid) as id, ";
             $sql .= "MAX(sales_order_is_active) as is_active, ";
             $sql .= "MAX(sales_order_date) as order_date, ";
-            $sql .= "DATE_FORMAT(MAX(sales_order_date), '%b %d, %Y') as order_date, ";
+            $sql .= "DATE_FORMAT(MAX(sales_order_date), '%b %d, %Y') as sales_order_date, ";
             $sql .= "MAX(sales_order_customer_name) as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";
@@ -266,7 +266,7 @@ class SalesOrder
             $sql .= "MAX(sales_order_aid) as id, ";
             $sql .= "MAX(sales_order_is_active) as is_active, ";
             $sql .= "MAX(sales_order_date) as order_date, ";
-            $sql .= "DATE_FORMAT(MAX(sales_order_date), '%b %d, %Y') as sales_order_date, ";
+            // $sql .= "DATE_FORMAT(MAX(sales_order_date), '%b %d, %Y') as sales_order_date, ";
             $sql .= "MAX(sales_order_customer_name) as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";

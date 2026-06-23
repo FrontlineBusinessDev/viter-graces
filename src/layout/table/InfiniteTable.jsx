@@ -51,7 +51,6 @@ const InfiniteTable = ({
   const search = React.useRef(null);
   const [onSearch, setOnSearch] = React.useState(false);
   const [page, setPage] = useState(1);
-  const [isFetchFilterData, setIsFetchFilterData] = useState(false);
 
   // ACTIONS ADD
   const handleView = () => {
@@ -72,12 +71,7 @@ const InfiniteTable = ({
   );
 
   const queryKey = useMemo(
-    () => [
-      path,
-      store.isSearch,
-      search.current?.value || "",
-      isFetchFilterData ? columnFilters : [],
-    ],
+    () => [path, store.isSearch, search.current?.value || "", columnFilters],
     [path, store.isSearch, JSON.stringify({ columnFilters })],
   );
 
@@ -99,7 +93,7 @@ const InfiniteTable = ({
         false,
         {
           ...searchPayload,
-          columnFilters: isFetchFilterData ? columnFilters : [],
+          columnFilters: columnFilters,
         },
         "post",
       ),
@@ -179,6 +173,7 @@ const InfiniteTable = ({
 
   const rows = table?.getRowModel()?.rows;
 
+  console.log("columnFilters", columnFilters);
   // ACTIONS ADD
   const handleAdd = () => {
     dispatch(setIsAdd(true));
@@ -192,12 +187,6 @@ const InfiniteTable = ({
   };
 
   React.useEffect(() => {
-    if (result?.pages[0]?.total > 30) {
-      // if (result?.pages[0]?.total < 30) {
-      setIsFetchFilterData(false);
-    } else {
-      setIsFetchFilterData(true);
-    }
     setSearchValue(search.current?.value || "");
     setFilterColumns(columnFilters);
   }, [columnFilters]);
@@ -206,7 +195,7 @@ const InfiniteTable = ({
 
   return (
     <>
-      <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 items-center">
+      <div className="md:flex md:justify-between flex-row-reverse my-3 gap-4 items-center">
         {ishaveAdd ? (
           <div className="flex justify-end sm:mb-0! mb-3 w-full ">
             <AddButton
@@ -231,7 +220,7 @@ const InfiniteTable = ({
         )}
 
         {hasExport === true ? (
-          <div className="flex justify-end lg:mb-0! w-40 ">
+          <div className="flex md:justify-end lg:mb-0! w-70 ">
             {hasExport === true ? <ExportCSVButton /> : ""}
           </div>
         ) : (

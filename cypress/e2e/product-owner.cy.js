@@ -7,7 +7,7 @@ describe("Product Owner - CRUD and Search Flow", () => {
     cy.visit("developer/product-owner");
   });
 
-  //CREATE
+  // CREATE
   it("Creates a new product owner", () => {
     //cancel
     cy.get('[data-testid="add-product-owner-btn"]').click();
@@ -52,19 +52,50 @@ describe("Product Owner - CRUD and Search Flow", () => {
   // UPDATE
   it("Update product owner", () => {
     //cancel btn
-
     cy.intercept("POST", "**/product-owner/page*").as("getProductOwner");
-    cy.viewport(1280, 720);
-    cy.wait("@getProductOwner");
 
-    cy.get('[data-testid="table-row]', { timeout: 1000 }).should(
+    cy.viewport(1280, 720);
+
+    cy.get('[data-testid="table-row"]', { timeout: 10000 }).should(
       "have.length.greaterThan",
       0,
     );
 
     cy.get('[data-testid="table-row"]')
       .contains("Herlyn")
-      .parents('[data-testid="table-row]')
+      .parents('[data-testid="table-row"]')
+      .within(() => {
+        cy.get('[data-testid="action-edit"]').click();
+      });
+
+    cy.get('input[name="user_account_first_name"]')
+      .should("be.visible")
+      .clear()
+      .type("Mayeng");
+
+    cy.get('input[name="user_account_last_name"]').clear().type("Mendoza");
+
+    cy.get('input[name="user_account_email"]')
+      .clear()
+      .type("torresherlynmae@gmail.com");
+
+    cy.get('[data-testid="false"]').click();
+
+    // save btn
+    cy.intercept("POST", "**/product-owner/page*").as("getProductOwner");
+    cy.intercept("PUT", "**/product-owner/**").as("updateProductOwner");
+
+    cy.viewport(1280, 720); //size
+    // cy.wait("@getProductOwner");
+
+    cy.get('[data-testid="table-row"]', { timeout: 1000 }).should(
+      "have.length.greaterThan",
+      0,
+    );
+
+    cy.get('[data-testid="table-row"]')
+      .contains("Herlyn")
+      .parents('[data-testid="table-row"]')
       .within(() => {
         cy.get('[data-testid="action-edit"]').click();
       });
@@ -74,10 +105,156 @@ describe("Product Owner - CRUD and Search Flow", () => {
       .clear()
       .type("Mayeng");
     cy.get('input[name="user_account_last_name"]').clear().type("Mendoza");
-    cy.get('input[name="user_account_emai"]')
+    cy.get('input[name="user_account_email"]')
       .clear()
       .type("torresherlynmae@gmail.com");
 
-    cy.get('[data-testid="false"]').click();
+    cy.get('[data-testid="save-product-btn"]').click();
+
+    cy.wait("@updateProductOwner");
+
+    //close btn
+    cy.intercept("POST", "**/product-owner/page*").as("getProductOwner");
+
+    cy.viewport(1280, 720);
+
+    cy.get('[data-testid="table-row"]', { timeout: 10000 }).should(
+      "have.length.greaterThan",
+      0,
+    );
+
+    cy.get('[data-testid="table-row"]')
+      .contains("Mayeng")
+      .parents('[data-testid="table-row"]')
+      .within(() => {
+        cy.get('[data-testid="action-edit"]').click();
+      });
+
+    cy.get('input[name="user_account_first_name"]')
+      .should("be.visible")
+      .clear()
+      .type("Herlyn");
+
+    cy.get('input[name="user_account_last_name"]').clear().type("Torres");
+
+    cy.get('input[name="user_account_email"]')
+      .clear()
+      .type("herlyn.torres@frontlinebusiness.com.ph");
+
+    cy.get('[data-testid="close-btn"]').click();
+  });
+
+  // ARCHIVE
+  it("Archive product owner", () => {
+    //cancel btn
+    cy.intercept("POST", "**/product-owner/page/*").as("getProductOwner");
+    cy.wait("@getProductOwner");
+
+    cy.contains('[data-testid="table-row"]', "Mayeng", { timeout: 1000 })
+      .should("be.visible")
+      .within(() => {
+        cy.get('[data-testid="action-archive"]').click();
+      });
+
+    cy.contains("button", "Cancel").click();
+
+    //confirm
+    cy.intercept("POST", "**/product-owner/page/*").as("getProductOwner");
+    cy.intercept("PUT", "**/product-owner/**").as("archiveProductOwner");
+    cy.wait("@getProductOwner");
+
+    cy.contains('[data-testid="table-row"]', "Mayeng", { timeout: 1000 })
+      .should("be.visible")
+      .within(() => {
+        cy.get('[data-testid="action-archive"]').click();
+      });
+
+    cy.contains("button", "Confirm").click();
+
+    cy.wait("@archiveProductOwner")
+      .its("response.statusCode")
+      .should("eq", 200);
+
+    cy.get('[data-testid="toast-message"]')
+      .should("be.visible")
+      .and("contain.text", "successfully");
+  });
+
+  // RESTORE
+  it("Restore product owner", () => {
+    //cancel btn
+    cy.intercept("POST", "**/product-owner/page/*").as("getProductOwner");
+    cy.wait("@getProductOwner");
+
+    cy.contains('[data-testid="table-row"]', "Mayeng", { timeout: 1000 })
+      .should("be.visible")
+      .within(() => {
+        cy.get('[data-testid="action-restore"]').click();
+      });
+
+    cy.contains("button", "Cancel").click();
+
+    //confirm
+    cy.intercept("POST", "**/product-owner/page/*").as("getProductOwner");
+    cy.intercept("PUT", "**/product-owner/**").as("restoreProductOwner");
+    cy.wait("@getProductOwner");
+
+    cy.contains('[data-testid="table-row"]', "Mayeng", { timeout: 1000 })
+      .should("be.visible")
+      .within(() => {
+        cy.get('[data-testid="action-restore"]').click();
+      });
+
+    cy.contains("button", "Confirm").click();
+
+    cy.wait("@restoreProductOwner")
+      .its("response.statusCode")
+      .should("eq", 200);
+
+    cy.get('[data-testid="toast-message"]')
+      .should("be.visible")
+      .and("contain.text", "successfully");
+  });
+
+  //SEARCH
+  it("Search a user account ", () => {
+    cy.intercept("POST", "**/product-owner/page/*").as("getProductOwner");
+
+    cy.get('[data-testid="search-input"]').type("Lumabas{enter}");
+
+    cy.wait("@getProductOwner");
+
+    cy.contains("Lumabas", { timeout: 1000 }).should("exist");
+  });
+
+  // DELETE
+  it("Delete product owner", () => {
+    cy.intercept("POST", "**/product-owner/page/*").as("getProductOwner");
+    cy.intercept("PUT", "**/product-owner/**").as("archiveProductOwner");
+    cy.intercept("DELETE", "**/product-owner/**").as("deleteProductOwner");
+
+    cy.wait("@getProductOwner");
+
+    cy.contains('[data-testid="table-row"]', "Mayeng", {
+      timeout: 1000,
+    })
+      .should("be.visible")
+      .within(() => {
+        cy.get('[data-testid="action-archive"]').click();
+      });
+
+    cy.contains("button", "Confirm").click();
+
+    cy.wait("@archiveProductOwner");
+
+    cy.contains('[data-testid="table-row"]', "Mayeng").within(() => {
+      cy.get('[data-testid="action-delete"]').click();
+    });
+
+    cy.contains("button", "Confirm").click();
+
+    cy.wait("@deleteProductOwner")
+      .its("response.statusCode")
+      .should("equal", 200);
   });
 });
