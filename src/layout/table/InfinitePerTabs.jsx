@@ -175,160 +175,161 @@ const InfinitePerTabs = ({
                 data-testid="table-row"
               >
                 <div className="p-2 lg:px-5">
-                  <div className="hidden gap-2 lg:flex justify-between items-center">
-                    <div className="text-gray-500 text-sm dark:text-light">
+                  <div className="hidden gap-2 lg:flex items-center">
+                    <div className="text-gray-500 text-sm dark:text-light ">
                       <span>{counter++}.</span>
                     </div>
-                    <div className="flex items-start justify-between gap-3 ">
-                      <div
-                        onClick={() => setOpenRow(isOpen ? null : item.id)}
-                        className="flex flex-1 items-center gap-2 text-left"
-                      >
-                        <TableDefaultStatusDot
-                          dataArray={rows[index]?.original}
-                        />
-                        {item.getVisibleCells().map((aitem, akey) => {
-                          return (
-                            <React.Fragment key={akey}>
-                              <div className="hover:underline">
-                                {aitem?.column?.columnDef?.header === "name" ? (
-                                  <div
-                                    className="flex items-center gap-2 cursor-pointer "
-                                    data-testid="button-open-customer-tab"
-                                  >
-                                    <span className="text-sm font-medium text-gray-800 dark:text-light min-w-40">
-                                      {rows[index]?.original?.name}
-                                    </span>
-                                    <FaCaretDown
-                                      className={`h-4 w-4 text-gray-600 dark:text-light font-bold transition-transform cursor-pointer ${
-                                        isOpen ? "rotate-180" : ""
-                                      }`}
-                                    />
-                                  </div>
-                                ) : (
-                                  ""
+                    <div
+                      onClick={() => setOpenRow(isOpen ? null : item.id)}
+                      className="flex items-center gap-2 text-left"
+                    >
+                      <TableDefaultStatusDot
+                        dataArray={rows[index]?.original}
+                      />
+                      {item.getVisibleCells().map((aitem, akey) => {
+                        return (
+                          <React.Fragment key={akey}>
+                            <div className="hover:underline">
+                              {aitem?.column?.columnDef?.header === "name" ? (
+                                <div
+                                  className="flex items-center gap-2 cursor-pointer "
+                                  data-testid="button-open-customer-tab"
+                                >
+                                  <span className="text-sm font-medium text-gray-800 dark:text-light min-w-40">
+                                    {rows[index]?.original?.name}
+                                  </span>
+                                  <FaCaretDown
+                                    className={`h-4 w-4 text-gray-600 dark:text-light font-bold transition-transform cursor-pointer ${
+                                      isOpen ? "rotate-180" : ""
+                                    }`}
+                                  />
+                                </div>
+                              ) : (
+                                ""
+                              )}
+                            </div>
+                          </React.Fragment>
+                        );
+                      })}
+                    </div>
+                    <div className="flex justify-between gap-5 w-full">
+                      {item.getVisibleCells().map((ditem, dkey) => {
+                        return (
+                          <React.Fragment key={dkey}>
+                            {ditem?.column?.columnDef?.header ===
+                            "second_column" ? (
+                              <p className="text-xs text-gray-500 lg:hidden dark:text-light">
+                                {flexRender(
+                                  ditem?.column?.columnDef?.cell,
+                                  ditem?.getContext(),
                                 )}
+                              </p>
+                            ) : (
+                              ""
+                            )}
+                          </React.Fragment>
+                        );
+                      })}
+                      {item.getVisibleCells().map((eitem, ekey) => {
+                        return (
+                          <React.Fragment key={ekey}>
+                            {eitem?.column?.columnDef?.header === "contact" ||
+                            eitem?.column?.columnDef?.header === "address" ? (
+                              <div className="text-sm text-gray-700 dark:text-light gap-1">
+                                <small className="capitalize">
+                                  {eitem?.column?.columnDef?.header}
+                                </small>
+                                <br />
+
+                                <span className="text-xs text-gray-400 lg:hidden">
+                                  {eitem?.column?.columnDef?.icon}
+                                </span>
+                                <span>
+                                  {flexRender(
+                                    eitem?.column?.columnDef?.cell,
+                                    eitem?.getContext(),
+                                  )}
+                                </span>
                               </div>
+                            ) : (
+                              ""
+                            )}
+                          </React.Fragment>
+                        );
+                      })}
+
+                      <div className="flex items-center gap-3 justify-end ">
+                        {item.getVisibleCells().map((bitem, bkey) => {
+                          return bitem?.column?.columnDef?.header ===
+                            "social" ? (
+                            <React.Fragment key={bkey}>
+                              {isEmptyItem(
+                                rows[index]?.original?.messenger,
+                                "",
+                              ) !== "" &&
+                              bitem?.column?.columnDef?.accessorKey ===
+                                "messenger" ? (
+                                <a
+                                  href={`${bitem?.column?.columnDef?.link}`}
+                                  target="_black"
+                                >
+                                  {bitem?.column?.columnDef?.icon}
+                                </a>
+                              ) : (
+                                ""
+                              )}
+                              {isEmptyItem(
+                                rows[index]?.original?.whatsapp,
+                                "",
+                              ) !== "" &&
+                              bitem?.column?.columnDef?.accessorKey ===
+                                "whatsapp" ? (
+                                <a
+                                  href={`${bitem?.column?.columnDef?.link}`}
+                                  target="_black"
+                                >
+                                  {bitem?.column?.columnDef?.icon}
+                                </a>
+                              ) : (
+                                ""
+                              )}
+                              {isEmptyItem(rows[index]?.original?.other, "") !==
+                                "" &&
+                              bitem?.column?.columnDef?.accessorKey ===
+                                "other" ? (
+                                <a href={`${bitem?.column?.columnDef?.link}`}>
+                                  {bitem?.column?.columnDef?.icon}
+                                </a>
+                              ) : (
+                                ""
+                              )}
+                            </React.Fragment>
+                          ) : (
+                            ""
+                          );
+                        })}
+                      </div>
+                      <div className=" flex justify-end lg:items-center text-gray-700 dark:text-light">
+                        {item.getVisibleCells().map((fitem, fkey) => {
+                          return (
+                            <React.Fragment key={fkey}>
+                              {fitem?.column?.columnDef?.accessorKey ===
+                              "action" ? (
+                                <ActionButtonTable
+                                  item={fitem?.column?.columnDef}
+                                  dataArray={rows[index]?.original}
+                                  setData={setData}
+                                  setItemEdit={setItemEdit}
+                                  path={path}
+                                />
+                              ) : (
+                                ""
+                              )}
                             </React.Fragment>
                           );
                         })}
                       </div>
-                    </div>
-                    {item.getVisibleCells().map((ditem, dkey) => {
-                      return (
-                        <React.Fragment key={dkey}>
-                          {ditem?.column?.columnDef?.header ===
-                          "second_column" ? (
-                            <p className="text-xs text-gray-500 lg:hidden dark:text-light">
-                              {flexRender(
-                                ditem?.column?.columnDef?.cell,
-                                ditem?.getContext(),
-                              )}
-                            </p>
-                          ) : (
-                            ""
-                          )}
-                        </React.Fragment>
-                      );
-                    })}
-                    {item.getVisibleCells().map((eitem, ekey) => {
-                      return (
-                        <React.Fragment key={ekey}>
-                          {eitem?.column?.columnDef?.header === "contact" ||
-                          eitem?.column?.columnDef?.header === "address" ? (
-                            <div className="text-sm text-gray-700 dark:text-light gap-1">
-                              <small className="capitalize">
-                                {eitem?.column?.columnDef?.header}
-                              </small>
-                              <br />
-
-                              <span className="text-xs text-gray-400 lg:hidden">
-                                {eitem?.column?.columnDef?.icon}
-                              </span>
-                              <span>
-                                {flexRender(
-                                  eitem?.column?.columnDef?.cell,
-                                  eitem?.getContext(),
-                                )}
-                              </span>
-                            </div>
-                          ) : (
-                            ""
-                          )}
-                        </React.Fragment>
-                      );
-                    })}
-
-                    <div className="flex items-center gap-3 justify-end ">
-                      {item.getVisibleCells().map((bitem, bkey) => {
-                        return bitem?.column?.columnDef?.header === "social" ? (
-                          <React.Fragment key={bkey}>
-                            {isEmptyItem(
-                              rows[index]?.original?.messenger,
-                              "",
-                            ) !== "" &&
-                            bitem?.column?.columnDef?.accessorKey ===
-                              "messenger" ? (
-                              <a
-                                href={`${bitem?.column?.columnDef?.link}`}
-                                target="_black"
-                              >
-                                {bitem?.column?.columnDef?.icon}
-                              </a>
-                            ) : (
-                              ""
-                            )}
-                            {isEmptyItem(
-                              rows[index]?.original?.whatsapp,
-                              "",
-                            ) !== "" &&
-                            bitem?.column?.columnDef?.accessorKey ===
-                              "whatsapp" ? (
-                              <a
-                                href={`${bitem?.column?.columnDef?.link}`}
-                                target="_black"
-                              >
-                                {bitem?.column?.columnDef?.icon}
-                              </a>
-                            ) : (
-                              ""
-                            )}
-                            {isEmptyItem(rows[index]?.original?.other, "") !==
-                              "" &&
-                            bitem?.column?.columnDef?.accessorKey ===
-                              "other" ? (
-                              <a href={`${bitem?.column?.columnDef?.link}`}>
-                                {bitem?.column?.columnDef?.icon}
-                              </a>
-                            ) : (
-                              ""
-                            )}
-                          </React.Fragment>
-                        ) : (
-                          ""
-                        );
-                      })}
-                    </div>
-                    <div className=" flex justify-end lg:items-center text-gray-700 dark:text-light">
-                      {item.getVisibleCells().map((fitem, fkey) => {
-                        return (
-                          <React.Fragment key={fkey}>
-                            {fitem?.column?.columnDef?.accessorKey ===
-                            "action" ? (
-                              <ActionButtonTable
-                                item={fitem?.column?.columnDef}
-                                dataArray={rows[index]?.original}
-                                setData={setData}
-                                setItemEdit={setItemEdit}
-                                path={path}
-                              />
-                            ) : (
-                              ""
-                            )}
-                          </React.Fragment>
-                        );
-                      })}
-                    </div>
+                    </div>{" "}
                   </div>
 
                   {/* MOBILE RESPONSIVE */}
