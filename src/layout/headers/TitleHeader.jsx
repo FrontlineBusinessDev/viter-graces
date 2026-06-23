@@ -48,7 +48,6 @@ const TitleHeader = ({}) => {
               <ul className="flex flex-wrap gap-2 items-center">
                 {currentHeader.array_tab.map((itemTab, key) => {
                   const isActive = store.tabValue === itemTab?.title_tab;
-
                   return (
                     <Link
                       to={`${devNavUrl}/${userRole}/${itemTab.title_tab}`}
