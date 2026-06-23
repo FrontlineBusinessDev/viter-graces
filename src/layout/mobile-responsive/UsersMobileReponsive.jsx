@@ -3,7 +3,7 @@ import Pills from "@/components/Pills";
 import { Image } from "lucide-react";
 import ActionButtonMobile from "../ActionButtonMobile";
 
-const PurchaseOrderMobileReponsive = ({
+const UsersMobileReponsive = ({
   rows,
   setData,
   setItemEdit,
@@ -14,7 +14,7 @@ const PurchaseOrderMobileReponsive = ({
 }) => {
   return (
     <>
-      {isDefaultMobile === "purchase-order" && (
+      {isDefaultMobile === "users" && (
         <div>
           {rows?.map((row, index) => {
             const rowData = row.original;
@@ -110,4 +110,4 @@ const PurchaseOrderMobileReponsive = ({
   );
 };
 
-export default PurchaseOrderMobileReponsive;
+export default UsersMobileReponsive;
