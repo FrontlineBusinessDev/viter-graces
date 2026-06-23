@@ -1,9 +1,7 @@
-import { AmountWithPesoSign } from "@/components/PesoSign";
 import Pills from "@/components/Pills";
-import { Image } from "lucide-react";
 import ActionButtonMobile from "../ActionButtonMobile";
 
-const UsersMobileReponsive = ({
+const ProductOwnerMobileReponsive = ({
   rows,
   setData,
   setItemEdit,
@@ -12,7 +10,7 @@ const UsersMobileReponsive = ({
 }) => {
   return (
     <>
-      {isDefaultMobile === "users" && (
+      {isDefaultMobile === "product-owner" && (
         <div>
           {rows?.map((row, index) => {
             const rowData = row.original;
@@ -69,4 +67,4 @@ const UsersMobileReponsive = ({
   );
 };
 
-export default UsersMobileReponsive;
+export default ProductOwnerMobileReponsive;

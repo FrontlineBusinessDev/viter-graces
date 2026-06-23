@@ -49,7 +49,6 @@ const SupplierMobileReponsive = ({
         rows?.map((row, index) => {
           const rowData = row.original;
 
-          console.log("rowData", rowData);
           const is_status =
             Number(rowData?.is_active) > 0 ? "active" : "inactive";
           return (
