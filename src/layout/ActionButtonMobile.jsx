@@ -2,7 +2,13 @@ import ActionButton from "@/components/buttons/ActionButton";
 import { setIsAction, setIsAdd, setIsView } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
-import { ArchiveRestore, Edit, RotateCcw, Trash } from "lucide-react";
+import {
+  ArchiveRestore,
+  Edit,
+  KeySquare,
+  RotateCcw,
+  Trash,
+} from "lucide-react";
 import React from "react";
 
 const ActionButtonMobile = ({
@@ -13,6 +19,8 @@ const ActionButtonMobile = ({
   itemVal = [],
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
+
+  console.log("path", path);
 
   // ACTIONS ACHIEVE, RESTORE AND DELETE
   const handleAction = (val) => {
@@ -101,6 +109,30 @@ const ActionButtonMobile = ({
               }
               data-testid={"action-archive"}
             />
+            {path === "users" && (
+              <div>
+                <ActionButton
+                  item={{
+                    ...dataArray,
+                    name: "reset",
+                    path: "reset-password",
+                    icon: <KeySquare className="size-5 lg:size-4" />,
+                    isActive: 1,
+                    testId: "action-reset",
+                  }}
+                  onClick={() =>
+                    handleAction({
+                      ...dataArray,
+                      name: "reset",
+                      path: "reset-password",
+                      isActive: 1,
+                      testId: "action-reset",
+                    })
+                  }
+                  data-testid={"action-reset"}
+                />
+              </div>
+            )}
           </>
         ) : (
           <>
