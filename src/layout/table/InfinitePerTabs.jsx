@@ -400,14 +400,16 @@ const InfinitePerTabs = ({
 
                 {isOpen && (
                   <div className="border-t border-gray-200 px-4 lg:px-5 pb-4 ">
-                    <div className="ml-5 lg:hidden grid grid-cols-4 items-center mt-2">
+                    <div className=" lg:hidden grid grid-cols-3 gap-3 mt-2">
                       {item.getVisibleCells().map((ditem, dkey) => {
                         return (
                           <React.Fragment key={dkey}>
                             {ditem?.column?.columnDef?.header ===
                             "second_column" ? (
-                              <p className="text-xs text-gray-500 lg:hidden dark:text-light mb-0">
-                                <small className="">Email </small>
+                              <p className="text-xs text-gray-500 lg:hidden dark:text-light mb-0 wrap-break-word">
+                                <small className="font-bold text-xs uppercase">
+                                  Email{" "}
+                                </small>
                                 <br />
                                 {flexRender(
                                   ditem?.column?.columnDef?.cell,
@@ -426,11 +428,11 @@ const InfinitePerTabs = ({
                             {eitem?.column?.columnDef?.header === "contact" ||
                             eitem?.column?.columnDef?.header === "address" ? (
                               <div className="text-sm text-gray-700 dark:text-light gap-1">
-                                <small className="capitalize ">
+                                <small className="uppercase font-bold text-xs">
                                   {eitem?.column?.columnDef?.header}
                                 </small>
                                 <br />
-                                <span className="text-xs">
+                                <span className="text-xs wrap-break-word">
                                   {flexRender(
                                     eitem?.column?.columnDef?.cell,
                                     eitem?.getContext(),
