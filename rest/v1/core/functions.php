@@ -245,7 +245,7 @@ function tokenOther(
             $returnData["data"] = array_merge(
                 (array)$row,
                 array('user_key' => $decoded->data->data->user_account_password), // data from login
-                array('role' => strtolower($decoded->data->data->user_account_role)),
+                array('role' => strtolower(str_replace(' ', '_', $decoded->data->data->user_account_role))),
                 array('nickName' => $nickName),
                 array('server_date' => date('Y-m-d'))
             );

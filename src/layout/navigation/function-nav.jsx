@@ -42,7 +42,8 @@ export const getNavList = () => {
       isOpenSubmenu: "",
       on_click: onClickNav,
       subList: [],
-      roles: ["admin", "product_owner", "cashier", "developer"],
+      // roles: ["admin", "product_owner", "cashier", "developer"],
+      roles: ["admin", "developer"],
       title_tab: "",
     },
     {
@@ -53,7 +54,8 @@ export const getNavList = () => {
       isOpenSubmenu: "",
       on_click: onClickNav,
       subList: [],
-      roles: ["admin", "product_owner", "developer"],
+      // roles: ["admin", "product_owner", "developer"],
+      roles: ["admin", "developer"],
       title_tab: "",
     },
     {
@@ -64,7 +66,8 @@ export const getNavList = () => {
       isOpenSubmenu: "",
       on_click: onClickNav,
       subList: [],
-      roles: ["admin", "product_owner", "cashier", "developer"],
+      // roles: ["admin", "product_owner", "cashier", "developer"],
+      roles: ["admin", "developer"],
       title_tab: "",
     },
     {
@@ -124,7 +127,7 @@ export const getNavList = () => {
       on_click: onClickNav,
       subList: [],
       // roles: ["admin", "product_owner", "cashier", "developer"],
-      roles: ["developer"],
+      roles: ["admin", "developer"],
       title_tab: "",
     },
     {
