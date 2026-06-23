@@ -14,6 +14,13 @@ export const ActiveInActiveStatus = () => {
   ];
 };
 
+export const ActiveInActiveWordsStatus = () => {
+  return [
+    { label: "active", value: "active" },
+    { label: "inactive", value: "inactive" },
+  ];
+};
+
 export const PaymentStatus = () => {
   return [
     { label: "unpaid", value: "unpaid" },

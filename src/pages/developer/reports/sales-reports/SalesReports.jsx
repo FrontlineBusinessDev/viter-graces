@@ -16,7 +16,7 @@ const SalesReports = () => {
     {
       accessorKey: "sales_order_status",
       header: "status",
-      classTh: "min-w-20",
+      classTh: "min-w-40",
       classTd: "",
       filterFn: "equals",
       meta: {
@@ -90,7 +90,7 @@ const SalesReports = () => {
         <ReportsStats searchValue={searchValue} filterColumns={filterColumns} />
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(82dvh-230px)] h-[calc(97dvh-250px)]`}
           path="report-sales-order/page-all-sales-order"
           hasExport={true}
           setSearchValue={setSearchValue}

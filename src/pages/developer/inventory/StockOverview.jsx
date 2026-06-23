@@ -59,6 +59,7 @@ const StockOverview = () => {
     {
       accessorKey: "current_qty",
       header: "Current Stock",
+      filterFn: "between",
       classTh: "",
       classTd: "",
       meta: "",
