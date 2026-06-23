@@ -51,7 +51,6 @@ const InfiniteTable = ({
   const search = React.useRef(null);
   const [onSearch, setOnSearch] = React.useState(false);
   const [page, setPage] = useState(1);
-  const [isFetchFilterData, setIsFetchFilterData] = useState(false);
 
   // ACTIONS ADD
   const handleView = () => {
@@ -72,12 +71,7 @@ const InfiniteTable = ({
   );
 
   const queryKey = useMemo(
-    () => [
-      path,
-      store.isSearch,
-      search.current?.value || "",
-      isFetchFilterData ? columnFilters : [],
-    ],
+    () => [path, store.isSearch, search.current?.value || "", columnFilters],
     [path, store.isSearch, JSON.stringify({ columnFilters })],
   );
 
@@ -99,7 +93,7 @@ const InfiniteTable = ({
         false,
         {
           ...searchPayload,
-          columnFilters: isFetchFilterData ? columnFilters : [],
+          columnFilters: columnFilters,
         },
         "post",
       ),
@@ -179,6 +173,7 @@ const InfiniteTable = ({
 
   const rows = table?.getRowModel()?.rows;
 
+  console.log("columnFilters", columnFilters);
   // ACTIONS ADD
   const handleAdd = () => {
     dispatch(setIsAdd(true));
@@ -192,12 +187,6 @@ const InfiniteTable = ({
   };
 
   React.useEffect(() => {
-    if (result?.pages[0]?.total > 30) {
-      // if (result?.pages[0]?.total < 30) {
-      setIsFetchFilterData(false);
-    } else {
-      setIsFetchFilterData(true);
-    }
     setSearchValue(search.current?.value || "");
     setFilterColumns(columnFilters);
   }, [columnFilters]);

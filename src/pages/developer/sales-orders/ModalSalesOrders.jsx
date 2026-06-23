@@ -179,8 +179,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     sales_order_tax_amount: isEmptyItem(itemEdit?.sales_order_tax_amount, "0"),
     sales_order_paid_amount: isEmptyItem(itemEdit?.sales_order_paid_amount, ""),
     sales_order_notes: isEmptyItem(itemEdit?.sales_order_notes, ""),
-    tax_inclusive: 0,
-    tax_enclusive: 0,
     sales_order_received_by_id: isEmptyItem(
       itemEdit?.sales_order_received_by_id,
       store.credentials?.data?.user_account_aid,
@@ -275,7 +273,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                 sales_order_discount: Number(values?.sales_order_discount),
                 items,
                 itemsDelete,
-                itemsDelete,
               };
               console.log(data);
               mutation.mutate(data);
@@ -301,31 +298,25 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
               // COMPUTATION OF INCLUSIVE TAX
               if (Number(props.values.sales_order_tax) === 1.12) {
                 props.values.sales_order_tax_amount =
-                  (Number(props.values.sales_order_total_amount) -
-                    Number(props.values.sales_order_discount)) /
-                  1.12;
+                  Number(props.values.sales_order_total_payable_amount) -
+                  Number(props.values.sales_order_total_payable_amount) / 1.12;
               }
+
               // COMPUTATION OF EXCLUSIVE TAX
               if (Number(props.values.sales_order_tax) === 0.12) {
                 props.values.sales_order_tax_amount =
-                  (Number(props.values.sales_order_total_amount) -
-                    Number(props.values.sales_order_discount)) *
-                  0.12;
+                  Number(props.values.sales_order_total_payable_amount) * 0.12;
+
                 props.values.sales_order_total_payable_amount =
-                  items?.reduce(
-                    (sum, item) =>
-                      sum +
-                      Number(item.sales_order_qty || 1) *
-                        Number(item.sales_order_price || 0),
-                    0,
-                  ) +
-                  Number(props.values.sales_order_tax_amount) -
-                  Number(props.values.sales_order_discount);
+                  Number(props.values.sales_order_total_payable_amount) +
+                  Number(props.values.sales_order_tax_amount);
               }
 
               if (Number(props.values.sales_order_tax) === 0) {
                 props.values.sales_order_tax_amount = 0;
               }
+
+              console.log("123", props.values);
               return (
                 <Form>
                   <div className="grid grid-cols-2 gap-4">
@@ -514,11 +505,9 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         </span>
                         <AmountWithPesoSign
                           classN="size-5"
-                          amount={
-                            Number(props?.values?.sales_order_total_amount) +
-                            Number(props?.values?.sales_order_tax_amount) -
-                            Number(props?.values?.sales_order_discount)
-                          }
+                          amount={Number(
+                            props?.values?.sales_order_total_payable_amount,
+                          )}
                         />
                       </p>
                     </div>

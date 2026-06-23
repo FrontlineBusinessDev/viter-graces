@@ -111,6 +111,7 @@ const ResetPassword = () => {
   };
 
   React.useEffect(() => {
+    localStorage.removeItem("gracestoken");
     dispatch(setError(false));
     dispatch(setSuccess(false));
     dispatch(setMessage(""));
