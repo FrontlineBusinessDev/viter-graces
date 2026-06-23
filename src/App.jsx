@@ -17,6 +17,7 @@ function App() {
       },
       ...routesAccess,
       ...routesDeveloper,
+      ...routesAdmin,
     ],
     {
       basename: "/",
