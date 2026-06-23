@@ -15,7 +15,7 @@ const TitleHeader = ({}) => {
   const currentHeader = titleHeaderTab().find((item) => {
     const hasTabs = item.array_tab.length > 0;
 
-    // if (!item.roles?.includes(userRole)) return false;
+    if (!item.roles?.includes(userRole)) return false;
 
     if (hasTabs) {
       return item.array_tab.some((tab) => tab.title_tab === currentTab);
@@ -48,7 +48,6 @@ const TitleHeader = ({}) => {
               <ul className="flex flex-wrap gap-2 items-center">
                 {currentHeader.array_tab.map((itemTab, key) => {
                   const isActive = store.tabValue === itemTab?.title_tab;
-
                   return (
                     <Link
                       to={`${devNavUrl}/${userRole}/${itemTab.title_tab}`}

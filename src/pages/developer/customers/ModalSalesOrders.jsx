@@ -227,7 +227,7 @@ const ModalSalesOrders = ({ itemEdit }) => {
         mutation={mutation}
         isOpen={true}
         handleClose={handleClose}
-        width="min-w-[50rem]!"
+        width="lg:min-w-[50rem]!"
       >
         <div className="modal-body">
           <Formik
@@ -342,7 +342,7 @@ const ModalSalesOrders = ({ itemEdit }) => {
                       </div>
                     ) : (
                       <div className="flex flex-col">
-                        <ul className="hidden md:grid grid-cols-[1fr_5rem_7rem_7rem_1rem] gap-1 px-3 mt-2 text-dark">
+                        <ul className="grid grid-cols-[1fr_.5fr_.5fr_.5fr_1rem] md:grid md:grid-cols-[1fr_5rem_7rem_7rem_1rem] gap-1 px-3 mt-2 text-dark">
                           <li>Products</li>
                           <li>Quantity</li>
                           <li className="text-right">Price per pc.</li>
@@ -351,7 +351,7 @@ const ModalSalesOrders = ({ itemEdit }) => {
                           return (
                             <div
                               key={index}
-                              className="grid grid-cols-2 md:grid md:grid-cols-[1fr_5rem_7rem_7rem_1rem] gap-1 items-center p-3 mt-1"
+                              className="grid grid-cols-[1fr_.5fr_.5fr_.5fr_1rem] md:grid md:grid-cols-[1fr_5rem_7rem_7rem_1rem] gap-1 items-center p-3 mt-1"
                             >
                               <InputSalesOrderSelectTagArray
                                 onChange={(e, selectedItem) => {

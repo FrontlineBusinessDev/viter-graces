@@ -42,7 +42,8 @@ export const getNavList = () => {
       isOpenSubmenu: "",
       on_click: onClickNav,
       subList: [],
-      roles: ["admin", "product_owner", "cashier", "developer"],
+      // roles: ["admin", "product_owner", "cashier", "developer"],
+      roles: ["admin", "developer"],
       title_tab: "",
     },
     {
@@ -53,7 +54,8 @@ export const getNavList = () => {
       isOpenSubmenu: "",
       on_click: onClickNav,
       subList: [],
-      roles: ["admin", "product_owner", "developer"],
+      // roles: ["admin", "product_owner", "developer"],
+      roles: ["admin", "developer"],
       title_tab: "",
     },
     {
@@ -64,7 +66,8 @@ export const getNavList = () => {
       isOpenSubmenu: "",
       on_click: onClickNav,
       subList: [],
-      roles: ["admin", "product_owner", "cashier", "developer"],
+      // roles: ["admin", "product_owner", "cashier", "developer"],
+      roles: ["admin", "developer"],
       title_tab: "",
     },
     {
@@ -75,7 +78,8 @@ export const getNavList = () => {
       isOpenSubmenu: "",
       on_click: onClickNav,
       subList: [],
-      roles: ["admin", "product_owner", "cashier", "developer"],
+      // roles: ["admin", "product_owner", "cashier", "developer"],
+      roles: ["developer"],
       title_tab: "",
     },
     {
@@ -86,7 +90,8 @@ export const getNavList = () => {
       isOpenSubmenu: "",
       on_click: onClickNav,
       subList: [],
-      roles: ["admin", "product_owner", "cashier", "developer"],
+      // roles: ["admin", "product_owner", "cashier", "developer"],
+      roles: ["developer"],
       title_tab: "",
     },
     {
@@ -97,7 +102,8 @@ export const getNavList = () => {
       isOpenSubmenu: "",
       on_click: onClickNav,
       subList: [],
-      roles: ["admin", "product_owner", "developer"],
+      // roles: ["admin", "product_owner", "developer"],
+      roles: ["developer"],
       title_tab: "",
     },
     {
@@ -108,7 +114,8 @@ export const getNavList = () => {
       isOpenSubmenu: "",
       on_click: onClickNav,
       subList: [],
-      roles: ["admin", "product_owner", "cashier", "developer"],
+      // roles: ["admin", "product_owner", "cashier", "developer"],
+      roles: ["developer"],
       title_tab: "",
     },
     {
@@ -119,7 +126,8 @@ export const getNavList = () => {
       isOpenSubmenu: "",
       on_click: onClickNav,
       subList: [],
-      roles: ["admin", "product_owner", "cashier", "developer"],
+      // roles: ["admin", "product_owner", "cashier", "developer"],
+      roles: ["admin", "developer"],
       title_tab: "",
     },
     {
@@ -133,47 +141,6 @@ export const getNavList = () => {
       roles: ["admin", "developer"],
       title_tab: "user",
     },
-    // {
-    //   label: "Settings",
-    //   icon: <Settings className="size-5" />,
-    //   menu: "settings",
-    //   path: `${devNavUrl}/${userRole}/`,
-    //   isOpenSubmenu: store.isSettingsOpen,
-    //   on_click: handleSettingsOpen,
-    //   sub_name: "Settings",
-    //   subList: [
-    //     {
-    //       name: "Users",
-    //       path: `${devNavUrl}/${userRole}/settings/users`,
-    //       submenu: "users",
-    //     },
-    //     {
-    //       name: "Category",
-    //       path: `${devNavUrl}/${userRole}/settings/category`,
-    //       submenu: "category",
-    //     },
-    //     {
-    //       name: "Designation",
-    //       path: `${devNavUrl}/${userRole}/settings/designation`,
-    //       submenu: "designation",
-    //     },
-    //     {
-    //       name: "Community",
-    //       path: `${devNavUrl}/${userRole}/settings/community `,
-    //       submenu: "community",
-    //     },
-    //     {
-    //       name: "Notification",
-    //       path: `${devNavUrl}/${userRole}/settings/notification`,
-    //       submenu: "notification",
-    //     },
-    //     {
-    //       name: "Receipt Template",
-    //       path: `${devNavUrl}/${userRole}/settings/receipt-template`,
-    //       submenu: "receipt-template",
-    //     },
-    //   ],
-    // },
   ];
 
   return navItems;
