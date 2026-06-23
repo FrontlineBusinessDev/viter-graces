@@ -423,4 +423,21 @@ class ProductOwner
         }
         return $query;
     }
+
+    // delete
+    public function delete()
+    {
+        try {
+            $sql = "delete from {$this->tblUserAccount} ";
+            $sql .= "where user_account_aid = :user_account_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "user_account_aid" => $this->user_account_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
 }

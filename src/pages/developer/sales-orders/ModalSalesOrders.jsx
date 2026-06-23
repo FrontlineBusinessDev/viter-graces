@@ -273,7 +273,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                 sales_order_discount: Number(values?.sales_order_discount),
                 items,
                 itemsDelete,
-                itemsDelete,
               };
               console.log(data);
               mutation.mutate(data);
