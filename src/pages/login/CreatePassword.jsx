@@ -42,9 +42,6 @@ const CreatePassword = () => {
     "users", // key
   );
 
-  // console.log("paramKey", paramKey);
-  // console.log("key", key);
-
   const togglePassword = (val = "") => {
     if (val !== "new") {
       setPasswordShown(!passwordShown);
@@ -131,6 +128,7 @@ const CreatePassword = () => {
   };
 
   React.useEffect(() => {
+    localStorage.removeItem("gracestoken");
     dispatch(setError(false));
     dispatch(setSuccess(false));
     dispatch(setMessage(""));
