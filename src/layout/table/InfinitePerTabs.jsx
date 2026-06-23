@@ -214,58 +214,6 @@ const InfinitePerTabs = ({
                           );
                         })}
                       </div>
-
-                      <div className="flex items-center gap-3 justify-end lg:hidden">
-                        {item.getVisibleCells().map((bitem, bkey) => {
-                          return bitem?.column?.columnDef?.header ===
-                            "social" ? (
-                            <React.Fragment key={bkey}>
-                              {isEmptyItem(
-                                rows[index]?.original?.messenger,
-                                "",
-                              ) !== "" &&
-                              bitem?.column?.columnDef?.accessorKey ===
-                                "customer_messenger" ? (
-                                <a
-                                  href={`${bitem?.column?.columnDef?.link}`}
-                                  target="_black"
-                                >
-                                  {bitem?.column?.columnDef?.icon}
-                                </a>
-                              ) : (
-                                ""
-                              )}
-                              {isEmptyItem(
-                                rows[index]?.original?.whatsapp,
-                                "",
-                              ) !== "" &&
-                              bitem?.column?.columnDef?.accessorKey ===
-                                "customer_whatsapp" ? (
-                                <a
-                                  href={`${bitem?.column?.columnDef?.link}`}
-                                  target="_black"
-                                >
-                                  {bitem?.column?.columnDef?.icon}
-                                </a>
-                              ) : (
-                                ""
-                              )}
-                              {isEmptyItem(rows[index]?.original?.other, "") !==
-                                "" &&
-                              bitem?.column?.columnDef?.accessorKey ===
-                                "customer_other" ? (
-                                <a href={`${bitem?.column?.columnDef?.link}`}>
-                                  {bitem?.column?.columnDef?.icon}
-                                </a>
-                              ) : (
-                                ""
-                              )}
-                            </React.Fragment>
-                          ) : (
-                            ""
-                          );
-                        })}
-                      </div>
                     </div>
                     {item.getVisibleCells().map((ditem, dkey) => {
                       return (
@@ -313,20 +261,20 @@ const InfinitePerTabs = ({
                     })}
 
                     <div className="hidden lg:flex items-center gap-3 justify-end">
-                      {item.getVisibleCells().map((bitem, bkey) => {
-                        return bitem?.column?.columnDef?.header === "social" ? (
-                          <React.Fragment key={bkey}>
+                      {item.getVisibleCells().map((fitem, fkey) => {
+                        return fitem?.column?.columnDef?.header === "social" ? (
+                          <React.Fragment key={fkey}>
                             {isEmptyItem(
                               rows[index]?.original?.messenger,
                               "",
                             ) !== "" &&
-                            bitem?.column?.columnDef?.accessorKey ===
+                            fitem?.column?.columnDef?.accessorKey ===
                               "customer_messenger" ? (
                               <a
-                                href={`${bitem?.column?.columnDef?.link}`}
+                                href={`${fitem?.column?.columnDef?.link}`}
                                 target="_black"
                               >
-                                {bitem?.column?.columnDef?.icon}
+                                {fitem?.column?.columnDef?.icon}
                               </a>
                             ) : (
                               ""
@@ -335,23 +283,23 @@ const InfinitePerTabs = ({
                               rows[index]?.original?.whatsapp,
                               "",
                             ) !== "" &&
-                            bitem?.column?.columnDef?.accessorKey ===
+                            fitem?.column?.columnDef?.accessorKey ===
                               "customer_whatsapp" ? (
                               <a
-                                href={`${bitem?.column?.columnDef?.link}`}
+                                href={`${fitem?.column?.columnDef?.link}`}
                                 target="_black"
                               >
-                                {bitem?.column?.columnDef?.icon}
+                                {fitem?.column?.columnDef?.icon}
                               </a>
                             ) : (
                               ""
                             )}
                             {isEmptyItem(rows[index]?.original?.other, "") !==
                               "" &&
-                            bitem?.column?.columnDef?.accessorKey ===
+                            fitem?.column?.columnDef?.accessorKey ===
                               "customer_other" ? (
-                              <a href={`${bitem?.column?.columnDef?.link}`}>
-                                {bitem?.column?.columnDef?.icon}
+                              <a href={`${fitem?.column?.columnDef?.link}`}>
+                                {fitem?.column?.columnDef?.icon}
                               </a>
                             ) : (
                               ""

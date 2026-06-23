@@ -7,6 +7,7 @@ import SalesOrderMobileResponsive from "./SalesOrderMobileResponsive";
 import SalesReportMobileResponsive from "./SalesReportMobileResponsive";
 import StockOverviewMobileResponsive from "./StockOverviewMobileResponsive";
 import SupplierMobileReponsive from "./SupplierMobileReponsive";
+import UsersMobileReponsive from "./UsersMobileReponsive";
 
 const MobileResponsiveList = ({
   rows,
@@ -79,10 +80,20 @@ const MobileResponsiveList = ({
       {/* PURCHASE ORDER RESPONSIVE */}
       <PurchaseOrderMobileReponsive
         rows={rows}
-        setItemEdit={setItemEdit}
-        setItemVal={setItemVal}
         setData={setData}
+        setItemEdit={setItemEdit}
+        lastRowRef={lastRowRef}
         isDefaultMobile={isDefaultMobile}
+        ishaveSubAdd={ishaveSubAdd}
+      />
+      {/* USERS RESPONSIVE */}
+      <UsersMobileReponsive
+        rows={rows}
+        setData={setData}
+        setItemEdit={setItemEdit}
+        lastRowRef={lastRowRef}
+        isDefaultMobile={isDefaultMobile}
+        ishaveSubAdd={ishaveSubAdd}
       />
       {/* DEFAULT RESPONSIVE */}
       <InfiniteDefaultTableMobileCard

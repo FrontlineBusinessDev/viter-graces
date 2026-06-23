@@ -31,7 +31,7 @@ const SupplierMobileReponsive = ({
         val?.name !== "delete"
           ? `${val?.path}/${dataArray?.id}`
           : `${dataArray?.id}`,
-      menu: "sales-order",
+      menu: "suppliers-product",
       action: val?.name,
     });
   };
@@ -83,7 +83,7 @@ const SupplierMobileReponsive = ({
                         item={{
                           ...rowData,
                           name: "edit",
-                          path: "sales-order",
+                          path: "suppliers-product",
                           isActive: 1,
                           testId: "action-edit",
                           icon: <Edit className="size-5 lg:size-4" />,
@@ -92,7 +92,7 @@ const SupplierMobileReponsive = ({
                           handleUpdate({
                             ...rowData,
                             name: "edit",
-                            path: "sales-order",
+                            path: "suppliers-product",
                             isActive: 1,
                           })
                         }
@@ -102,7 +102,7 @@ const SupplierMobileReponsive = ({
                         item={{
                           ...rowData,
                           name: "delete",
-                          path: "sales-order",
+                          path: "suppliers-product",
                           isActive: 1,
                           testId: "action-delete",
                           icon: <Trash className="size-5 lg:size-4" />,
@@ -112,7 +112,7 @@ const SupplierMobileReponsive = ({
                             {
                               ...rowData,
                               name: "delete",
-                              path: "sales-order",
+                              path: "suppliers-product",
                               isActive: 0,
                             },
                             rowData,
