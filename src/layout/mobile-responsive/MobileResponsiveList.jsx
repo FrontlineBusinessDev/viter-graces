@@ -5,6 +5,7 @@ import ProductsMobileResponsive from "./ProductsMobileResponsive";
 import SalesOrderMobileResponsive from "./SalesOrderMobileResponsive";
 import SalesReportMobileResponsive from "./SalesReportMobileResponsive";
 import StockOverviewMobileResponsive from "./StockOverviewMobileResponsive";
+import SupplierMobileReponsive from "./SupplierMobileReponsive";
 
 const MobileResponsiveList = ({
   rows,
@@ -60,6 +61,14 @@ const MobileResponsiveList = ({
       />
       {/* SALES ORDER RESPONSIVE */}
       <SalesOrderMobileResponsive
+        rows={rows}
+        setItemEdit={setItemEdit}
+        setItemVal={setItemVal}
+        setData={setData}
+        isDefaultMobile={isDefaultMobile}
+      />
+      {/* SALES ORDER RESPONSIVE */}
+      <SupplierMobileReponsive
         rows={rows}
         setItemEdit={setItemEdit}
         setItemVal={setItemVal}
