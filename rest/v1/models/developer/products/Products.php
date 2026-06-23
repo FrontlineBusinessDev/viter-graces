@@ -566,7 +566,6 @@ class Products
                 "stock_movement_updated" => $this->products_updated,
             ]);
         } catch (PDOException $ex) {
-            returnError($ex);
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
