@@ -1,9 +1,10 @@
+import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import { ActiveInActiveWordsStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ReportsStats from "../ReportsStats";
-import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 
 const StockLevels = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -14,13 +15,24 @@ const StockLevels = () => {
     {
       accessorKey: "products_status",
       header: "status",
-      classTh: "w-[8rem]",
+      classTh: "w-[10rem]! p-0!",
       classTd: "",
-      status_option: ActiveInActiveStatus(),
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={ActiveInActiveWordsStatus()}
+          />
+        ),
+      },
+      status_option: ActiveInActiveWordsStatus(),
     },
     {
       accessorKey: "products_name",
       header: "products",
+      filterFn: "",
+      meta: "",
       classTh: "",
       classTd: "capitalize ",
       isMobileTitle: true,
@@ -28,30 +40,40 @@ const StockLevels = () => {
     {
       accessorKey: "products_sku",
       header: "sku",
+      filterFn: "",
+      meta: "",
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "products_unit",
       header: "category",
+      filterFn: "",
+      meta: "",
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "current_qty",
       header: "stock",
+      filterFn: "between",
+      meta: "",
       classTh: "",
       classTd: "uppercase ",
     },
     {
       accessorKey: "products_price",
       header: "price",
+      filterFn: "between",
+      meta: "",
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "stock_movement_location",
       header: "location",
+      filterFn: "",
+      meta: "",
       classTh: "",
       classTd: "",
     },
@@ -63,7 +85,7 @@ const StockLevels = () => {
         <ReportsStats />
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(82dvh-230px)] h-[calc(97dvh-250px)]`}
           path="stock-overview"
           hasExport={true}
           setItemEdit={setItemEdit}

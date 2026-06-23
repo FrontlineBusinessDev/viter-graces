@@ -23,6 +23,7 @@ class ProductOwner
     public $tblProducts;
     public $tblSuppliersPurchaseOrder;
     public $tblSuppliersProduct;
+    public $tblSalesOrder;
 
     public $filters;
     public $column_start;
@@ -40,6 +41,7 @@ class ProductOwner
         $this->tblProducts = "graces_products";
         $this->tblSuppliersPurchaseOrder = "graces_suppliers_purchase_order";
         $this->tblSuppliersProduct = "graces_suppliers_product";
+        $this->tblSalesOrder = "graces_sales_order";
     }
 
     // create
@@ -407,7 +409,7 @@ class ProductOwner
     public function updateSalesOrder()
     {
         try {
-            $sql = "update {$this->tblSuppliersProduct} set ";
+            $sql = "update {$this->tblSalesOrder} set ";
             $sql .= "sales_order_product_owner_name = :sales_order_product_owner_name, ";
             $sql .= "sales_order_updated = :sales_order_updated ";
             $sql .= "where sales_order_product_owner_id = :sales_order_product_owner_id ";
