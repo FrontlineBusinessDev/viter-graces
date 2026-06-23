@@ -51,7 +51,7 @@ const Customers = () => {
       classTd: "",
     },
     {
-      accessorKey: "customer_messenger",
+      accessorKey: "messenger",
       header: "social",
       link: "https://www.facebook.com/",
       icon: <FaFacebookMessenger className="text-blue-500 size-4" />,
@@ -59,7 +59,7 @@ const Customers = () => {
       classTd: "",
     },
     {
-      accessorKey: "customer_whatsapp",
+      accessorKey: "whatsapp",
       header: "social",
       link: "https://www.whatsapp.com/",
       icon: <IoLogoWhatsapp className="text-green-500 size-4.5" />,
@@ -67,7 +67,7 @@ const Customers = () => {
       classTd: "",
     },
     {
-      accessorKey: "customer_other",
+      accessorKey: "other",
       header: "social",
       link: "#",
       icon: <AiFillMessage className="text-green-500 size-4.5" />,
