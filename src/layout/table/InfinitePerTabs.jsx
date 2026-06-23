@@ -134,7 +134,6 @@ const InfinitePerTabs = ({
           />
         </div>
         <div className={`w-full lg:max-w-1/4 `}>
-          fr_140px]
           <SearchBar
             search={search}
             dispatch={dispatch}
@@ -414,7 +413,7 @@ const InfinitePerTabs = ({
                           </React.Fragment>
                         );
                       })}
-                      <p className="text-xs text-gray-500 lg:hidden dark:text-light mb-0 wrap-break-word">
+                      <div className="text-xs text-gray-500 lg:hidden dark:text-light mb-0 wrap-break-word">
                         <small className="font-bold text-xs uppercase text-[9px]">
                           SOCIAL MEDIA{" "}
                         </small>
@@ -472,7 +471,7 @@ const InfinitePerTabs = ({
                             );
                           })}
                         </span>
-                      </p>
+                      </div>
 
                       {ishaveSubAdd ? (
                         <>
@@ -480,12 +479,12 @@ const InfinitePerTabs = ({
                             return bitem?.column?.columnDef?.header ===
                               "stringArray" ? (
                               <React.Fragment key={bkey}>
-                                <p className="text-xs text-gray-500 lg:hidden dark:text-light mb-0 wrap-break-word">
+                                <div className="text-xs text-gray-500 lg:hidden dark:text-light mb-0 wrap-break-word">
                                   <small className="font-bold text-xs uppercase  text-[9px]">
                                     {bitem?.column?.columnDef?.label}
                                   </small>
                                   <br />
-                                  <span className="flex gap-3">
+                                  <div className="flex gap-3">
                                     {arrayContact?.map((gitem, gkey) => {
                                       return (
                                         <p key={gkey}>
@@ -494,8 +493,8 @@ const InfinitePerTabs = ({
                                         </p>
                                       );
                                     })}
-                                  </span>
-                                </p>
+                                  </div>
+                                </div>
                               </React.Fragment>
                             ) : (
                               ""
