@@ -5,6 +5,9 @@ import { routesAccess } from "./routes/RoutesAccess";
 import { routesDeveloper } from "./routes/RoutesDeveloper";
 import { StoreProvider } from "./store/StoreContext";
 import { ThemeProvider } from "./store/ThemeContext.jsx";
+import { routesAdmin } from "./routes/RoutesAdmin";
+import { routesCashier } from "./routes/ProductCashier";
+import { routesProductOwner } from "./routes/RoutesProductOwner";
 
 function App() {
   const queryClient = new QueryClient();
@@ -17,6 +20,9 @@ function App() {
       },
       ...routesAccess,
       ...routesDeveloper,
+      ...routesAdmin,
+      ...routesCashier,
+      ...routesProductOwner,
     ],
     {
       basename: "/",

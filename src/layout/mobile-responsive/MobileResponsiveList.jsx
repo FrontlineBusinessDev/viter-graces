@@ -2,8 +2,12 @@ import CustomerMobileReponsive from "./CustomerMobileReponsive";
 import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
 import MovementMobileResponsive from "./MovementMobileResponsive";
 import ProductsMobileResponsive from "./ProductsMobileResponsive";
+import PurchaseOrderMobileReponsive from "./PurchaseOrderMobileReponsive";
 import SalesOrderMobileResponsive from "./SalesOrderMobileResponsive";
+import SalesReportMobileResponsive from "./SalesReportMobileResponsive";
 import StockOverviewMobileResponsive from "./StockOverviewMobileResponsive";
+import SupplierMobileReponsive from "./SupplierMobileReponsive";
+import UsersMobileReponsive from "./UsersMobileReponsive";
 
 const MobileResponsiveList = ({
   rows,
@@ -49,6 +53,14 @@ const MobileResponsiveList = ({
         setData={setData}
         isDefaultMobile={isDefaultMobile}
       />
+      {/* MOVEMENT HISTORY RESPONSIVE */}
+      <SalesReportMobileResponsive
+        rows={rows}
+        setItemEdit={setItemEdit}
+        setItemVal={setItemVal}
+        setData={setData}
+        isDefaultMobile={isDefaultMobile}
+      />
       {/* SALES ORDER RESPONSIVE */}
       <SalesOrderMobileResponsive
         rows={rows}
@@ -56,6 +68,32 @@ const MobileResponsiveList = ({
         setItemVal={setItemVal}
         setData={setData}
         isDefaultMobile={isDefaultMobile}
+      />
+      {/* SUPPLIER RESPONSIVE */}
+      <SupplierMobileReponsive
+        rows={rows}
+        setItemEdit={setItemEdit}
+        setItemVal={setItemVal}
+        setData={setData}
+        isDefaultMobile={isDefaultMobile}
+      />
+      {/* PURCHASE ORDER RESPONSIVE */}
+      <PurchaseOrderMobileReponsive
+        rows={rows}
+        setData={setData}
+        setItemEdit={setItemEdit}
+        lastRowRef={lastRowRef}
+        isDefaultMobile={isDefaultMobile}
+        ishaveSubAdd={ishaveSubAdd}
+      />
+      {/* USERS RESPONSIVE */}
+      <UsersMobileReponsive
+        rows={rows}
+        setData={setData}
+        setItemEdit={setItemEdit}
+        lastRowRef={lastRowRef}
+        isDefaultMobile={isDefaultMobile}
+        ishaveSubAdd={ishaveSubAdd}
       />
       {/* DEFAULT RESPONSIVE */}
       <InfiniteDefaultTableMobileCard
