@@ -94,6 +94,7 @@ const ModalProducts = ({ itemEdit }) => {
     products_sales: isEmptyItem(itemEdit?.products_sales, ""),
     products_unit: isEmptyItem(itemEdit?.products_unit, "pcs"),
     products_barcode: isEmptyItem(itemEdit?.products_barcode, ""),
+    stock_movement_location: "",
     products_low_stock_threshold: isEmptyItem(
       itemEdit?.products_low_stock_threshold,
       "",
@@ -108,6 +109,7 @@ const ModalProducts = ({ itemEdit }) => {
     products_name: Yup.string().trim().required("Required"),
     products_price: Yup.string().trim().required("Required"),
     products_owner_id: Yup.string().trim().required("Required"),
+    products_unit: Yup.string().trim().required("Required"),
     products_low_stock_threshold: Yup.string().trim().required("Required"),
   });
 
@@ -166,26 +168,6 @@ const ModalProducts = ({ itemEdit }) => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-4">
-                    {/* <div className="relative mt-3">
-                      <InputText
-                        label="SKU"
-                        type="text"
-                        name="products_sku"
-                        placeholder={`${itemEdit ? "Update SKU code" : "SKU code"}`}
-                        disabled={mutation.isPending}
-                        required={false}
-                      />
-                    </div>
-                    <div className="relative mt-3">
-                      <InputText
-                        label="Barcode"
-                        type="text"
-                        name="products_barcode"
-                        placeholder={`${itemEdit ? "Update Barcode" : "Barcode"}`}
-                        disabled={mutation.isPending}
-                        required={false}
-                      />
-                    </div> */}
                     <div className="relative mt-3">
                       <InputText
                         label="Category"
@@ -255,7 +237,7 @@ const ModalProducts = ({ itemEdit }) => {
                         name="products_unit"
                         placeholder={`${itemEdit ? "pcs" : "pcs"}`}
                         disabled={mutation.isPending}
-                        required={false}
+                        required={true}
                       />
                     </div>
                     <div className="relative mt-3">
@@ -273,6 +255,19 @@ const ModalProducts = ({ itemEdit }) => {
                         }}
                       />
                     </div>
+                    {itemEdit ? (
+                      ""
+                    ) : (
+                      <div className="relative mt-3">
+                        <InputText
+                          label="Location"
+                          type="text"
+                          name="stock_movement_location"
+                          disabled={mutation.isPending}
+                          required={false}
+                        />
+                      </div>
+                    )}
                   </div>
 
                   <div className="relative mt-3">
