@@ -1,17 +1,13 @@
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
-import {
-  ActionTableList,
-  ActiveInActiveStatus,
-  PaymentStatus,
-} from "@/layout/ArrayValue";
+import { apiVersion } from "@/config/config";
+import { ActionTableList, ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
+import useQueryData from "@/services/useQueryData";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalSalesOrders from "./ModalSalesOrders";
 import ViewSalesDetails from "./ViewSalesDetails";
-import { apiVersion } from "@/config/config";
-import useQueryData from "@/services/useQueryData";
 
 const SalesOrders = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -30,11 +26,11 @@ const SalesOrders = () => {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus
             column={column}
-            options={PaymentStatus()}
+            options={ActiveInActiveStatus("payment-status")}
           />
         ),
       },
-      status_option: PaymentStatus(),
+      status_option: ActiveInActiveStatus("payment-status"),
     },
     {
       accessorKey: "sales_order_number",

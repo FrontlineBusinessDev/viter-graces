@@ -31,6 +31,7 @@ export const InputSelect = ({
           field.onChange(e);
         }}
         autoComplete="off"
+        data-testid={props.name}
       />
 
       {meta.touched && meta.error ? (

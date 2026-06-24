@@ -35,6 +35,7 @@ export const InputCheckbox = ({
               field.onChange(e);
               dispatch(setError(false));
             }}
+            data-testid={props.name}
           />
           <span className="pointer-events-none absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 text-white opacity-0 transition-opacity peer-checked:opacity-100">
             <Check className="h-3 w-3" />

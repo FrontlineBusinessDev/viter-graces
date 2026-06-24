@@ -18,8 +18,8 @@ const StockOverview = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "stock_movement_is_active",
-      header: "status",
+      accessorKey: "inventory_status",
+      header: "",
       classTh: "w-[10rem]",
       classTd: "",
       filterFn: "equals",
@@ -27,11 +27,11 @@ const StockOverview = () => {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus
             column={column}
-            options={ActiveInActiveStatus()}
+            options={ActiveInActiveStatus("stock-overview")}
           />
         ),
       },
-      status_option: ActiveInActiveStatus(),
+      status_option: ActiveInActiveStatus("stock-overview"),
     },
     {
       accessorKey: "stock_movement_product_name",

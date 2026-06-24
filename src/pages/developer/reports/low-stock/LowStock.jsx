@@ -1,5 +1,5 @@
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
-import { ActiveInActiveWordsStatus } from "@/layout/ArrayValue";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -21,11 +21,11 @@ const LowStock = () => {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus
             column={column}
-            options={ActiveInActiveWordsStatus()}
+            options={ActiveInActiveStatus("default-status-words")}
           />
         ),
       },
-      status_option: ActiveInActiveWordsStatus(),
+      status_option: ActiveInActiveStatus("default-status-words"),
     },
     {
       accessorKey: "products_name",

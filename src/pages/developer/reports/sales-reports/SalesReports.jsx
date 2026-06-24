@@ -1,5 +1,5 @@
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
-import { PaymentStatus } from "@/layout/ArrayValue";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -23,11 +23,11 @@ const SalesReports = () => {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus
             column={column}
-            options={PaymentStatus()}
+            options={ActiveInActiveStatus("payment-status")}
           />
         ),
       },
-      status_option: PaymentStatus(),
+      status_option: ActiveInActiveStatus("payment-status"),
     },
     {
       accessorKey: "sales_order_number",
