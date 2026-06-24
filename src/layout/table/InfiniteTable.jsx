@@ -70,17 +70,10 @@ const InfiniteTable = ({
     [store.isSearch],
   );
 
-  // const queryKey = useMemo(
-  //   () => [path, store.isSearch, search.current?.value || "", columnFilters],
-  //   [path, store.isSearch, JSON.stringify({ columnFilters })],
-  // );
-
-  const queryKey = [
-    path,
-    store.isSearch,
-    search.current?.value || "",
-    JSON.stringify({ columnFilters }),
-  ];
+  const queryKey = useMemo(
+    () => [path, store.isSearch, search.current?.value || "", columnFilters],
+    [path, store.isSearch, JSON.stringify({ columnFilters })],
+  );
 
   // React Query infinite fetch
   const {
@@ -127,12 +120,6 @@ const InfiniteTable = ({
     return pages?.flatMap((page) => page.data ?? []) ?? [];
   }, [pages]);
 
-  // use UI-only data
-  // const tableData = useMemo(() => {
-  //   if (isStatic) return mockData;
-  //   return data?.pages?.flatMap((page) => page.data || []) ?? [];
-  // }, [data, mockData, isStatic]);
-
   // // Infinite scroll trigger
   const lastRowRef = useCallback(
     (node) => {
@@ -150,6 +137,8 @@ const InfiniteTable = ({
     },
     [isFetchingNextPage, hasNextPage, fetchNextPage],
   );
+
+  console.log("isFetchingNextPage", isFetchingNextPage);
 
   // Table instance
   const table = useReactTable({

@@ -17,7 +17,6 @@ const SalesReportMobileResponsive = ({
         <div>
           {rows?.map((row, index) => {
             const rowData = row.original;
-            console.log("rowData", rowData);
 
             return (
               <div
