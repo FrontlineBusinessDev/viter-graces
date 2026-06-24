@@ -322,7 +322,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                 items,
                 itemsDelete,
               };
-              console.log(data);
               mutation.mutate(data);
             }}
           >

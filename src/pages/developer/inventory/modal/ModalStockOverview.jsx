@@ -137,7 +137,6 @@ const ModalStockOverview = ({ itemEdit }) => {
                 ),
                 ...values,
               };
-              // console.log(data);
               mutation.mutate(data);
             }}
           >

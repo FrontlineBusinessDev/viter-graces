@@ -31,7 +31,6 @@ const WarningBanner = ({
     return result?.data;
   }, [result]);
 
-  console.log("valData", result?.data);
   return (
     <>
       {path === "" && description !== "" ? (

@@ -101,8 +101,6 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
 
   const queryClient = useQueryClient();
 
-  console.log("itemEdit", itemEdit);
-
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(

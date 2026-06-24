@@ -20,7 +20,7 @@ const Products = () => {
     {
       accessorKey: "products_is_active",
       header: "status",
-      classTh: "min-w-[10rem]",
+      classTh: "min-w-[8rem]",
       classTd: "",
       filterFn: "equals",
       meta: {

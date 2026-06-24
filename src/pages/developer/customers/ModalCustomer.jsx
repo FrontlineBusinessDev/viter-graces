@@ -24,8 +24,6 @@ import * as Yup from "yup";
 const ModalCustomer = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
-  // console.log("itemEdit", itemEdit);
-
   const handleClose = () => {
     dispatch(setIsAdd(false));
     dispatch(setError(false));
@@ -110,8 +108,6 @@ const ModalCustomer = ({ itemEdit }) => {
                 ),
                 ...values,
               };
-              // mutate data
-              // console.log(values);
               mutation.mutate(data);
             }}
           >
