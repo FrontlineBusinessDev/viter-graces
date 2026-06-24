@@ -185,11 +185,6 @@ const InfiniteTable = ({
     setItemEdit(null);
   };
 
-  React.useEffect(() => {
-    setSearchValue(search.current?.value || "");
-    setFilterColumns(columnFilters);
-  }, [columnFilters]);
-
   let photo = [];
 
   return (
