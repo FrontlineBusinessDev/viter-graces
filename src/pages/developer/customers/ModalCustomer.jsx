@@ -51,7 +51,11 @@ const ModalCustomer = ({ itemEdit }) => {
       if (data.success) {
         dispatch(setIsAdd(false));
         dispatch(setSuccess(true));
-        dispatch(setMessage(successMsg));
+        dispatch(
+          setMessage(
+            itemEdit ? "Updated successfully." : "Created successfully.",
+          ),
+        );
       }
       if (!data.success) {
         dispatch(setError(true));
@@ -156,38 +160,40 @@ const ModalCustomer = ({ itemEdit }) => {
                       required={false}
                     />
                   </div>
-                  <div className="relative mt-3">
-                    <InputText
-                      label="Messenger"
-                      type="text"
-                      name="customer_messenger"
-                      data-testid="customer-messenger"
-                      placeholder={`${itemEdit ? "Update Messenger" : "Enter new Messenger"}`}
-                      disabled={mutation.isPending}
-                      required={false}
-                    />
-                  </div>
-                  <div className="relative mt-3">
-                    <InputText
-                      label="Whatsapp"
-                      type="text"
-                      name="customer_whatsapp"
-                      data-testid="customer-whatsapp"
-                      placeholder={`${itemEdit ? "Update Whatsapp" : "Enter new Whatsapp"}`}
-                      disabled={mutation.isPending}
-                      required={false}
-                    />
-                  </div>
-                  <div className="relative mt-3">
-                    <InputText
-                      label="Other"
-                      type="text"
-                      name="customer_other"
-                      data-testid="customer-other"
-                      placeholder={`${itemEdit ? "Update Other" : "Enter new Other"}`}
-                      disabled={mutation.isPending}
-                      required={false}
-                    />
+                  <div className="grid lg:grid-cols-3 mt-3 gap-2">
+                    <div className="relative">
+                      <InputText
+                        label="Messenger"
+                        type="text"
+                        name="customer_messenger"
+                        data-testid="customer-messenger"
+                        placeholder={`${itemEdit ? "Update Messenger" : "Enter new Messenger"}`}
+                        disabled={mutation.isPending}
+                        required={false}
+                      />
+                    </div>
+                    <div className="relative  ">
+                      <InputText
+                        label="Whatsapp"
+                        type="text"
+                        name="customer_whatsapp"
+                        data-testid="customer-whatsapp"
+                        placeholder={`${itemEdit ? "Update Whatsapp" : "Enter new Whatsapp"}`}
+                        disabled={mutation.isPending}
+                        required={false}
+                      />
+                    </div>
+                    <div className="relative  ">
+                      <InputText
+                        label="Other"
+                        type="text"
+                        name="customer_other"
+                        data-testid="customer-other"
+                        placeholder={`${itemEdit ? "Update Other" : "Enter new Other"}`}
+                        disabled={mutation.isPending}
+                        required={false}
+                      />
+                    </div>
                   </div>
                   <div className="relative mt-3">
                     <InputTextArea

@@ -15,12 +15,12 @@ const PurchaseOrder = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "purchase_order_is_active",
-      header: "status",
-      classTh: "w-[5rem]",
+      accessorKey: "purchase_order_payment_status",
+      header: "payment status",
+      classTh: "w-[9rem]",
       classTd: "",
       status_option: ActiveInActiveStatus(),
-      status_text: "purchase_order_status",
+      status_text: "purchase_order_payment_status",
     },
     {
       accessorKey: "purchase_order_number",
@@ -65,14 +65,6 @@ const PurchaseOrder = () => {
       paid_amount: true,
     },
     {
-      accessorKey: "purchase_order_payment_status",
-      header: "payment status",
-      classTh: "w-[9rem]",
-      classTd: "",
-      status_option: ActiveInActiveStatus(),
-      status_text: "purchase_order_payment_status",
-    },
-    {
       accessorKey: "action",
       action_array: DefaultActionTableList("purchase-order"),
       header: "Action",
@@ -86,7 +78,7 @@ const PurchaseOrder = () => {
       <HeaderNav menu={"suppliers"} activeTab="purchase-orders">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
           path="purchase-order"
           setItemEdit={setItemEdit}
         />

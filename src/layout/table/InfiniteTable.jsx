@@ -27,6 +27,7 @@ import ActionButtonTable from "../ActionButtonTable";
 import MobileResponsiveList from "../mobile-responsive/MobileResponsiveList";
 import ModalAction from "../modal/ModalAction";
 import TableStatus from "../TableStatus";
+import { renderCellContent } from "./function-table";
 
 const InfiniteTable = ({
   columns,
@@ -97,14 +98,12 @@ const InfiniteTable = ({
         },
         "post",
       ),
-
     getNextPageParam: (lastPage) => {
       if (lastPage.page < lastPage.total) {
         return lastPage.page + lastPage.count;
       }
-      return undefined;
+      return;
     },
-
     refetchOnWindowFocus: refetchOnWindowFocus,
     // staleTime: 1000 * 60 * 5, // 5 mins → no refetch when revisiting
     // gcTime: 1000 * 60 * 30, // keep cache for 30 mins
@@ -120,28 +119,38 @@ const InfiniteTable = ({
     return pages?.flatMap((page) => page.data ?? []) ?? [];
   }, [pages]);
 
-  // use UI-only data
-  // const tableData = useMemo(() => {
-  //   if (isStatic) return mockData;
-  //   return data?.pages?.flatMap((page) => page.data || []) ?? [];
-  // }, [data, mockData, isStatic]);
-
   // // Infinite scroll trigger
+  // const lastRowRef = useCallback(
+  //   (node) => {
+  //     if (isFetchingNextPage) return;
+
+  //     if (observer.current) observer.current.disconnect();
+
+  //     observer.current = new IntersectionObserver((entries) => {
+  //       if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+  //         fetchNextPage();
+  //       }
+  //     });
+
+  //     if (node) observer.current.observe(node);
+  //   },
+  //   [isFetchingNextPage, hasNextPage, fetchNextPage],
+  // );
   const lastRowRef = useCallback(
     (node) => {
-      if (isFetchingNextPage) return;
+      if (!node) return;
 
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+        if (entries[0].isIntersecting && hasNextPage) {
           fetchNextPage();
         }
       });
 
-      if (node) observer.current.observe(node);
+      observer.current.observe(node);
     },
-    [isFetchingNextPage, hasNextPage, fetchNextPage],
+    [hasNextPage, fetchNextPage],
   );
 
   // Table instance
@@ -173,7 +182,6 @@ const InfiniteTable = ({
 
   const rows = table?.getRowModel()?.rows;
 
-  console.log("columnFilters", columnFilters);
   // ACTIONS ADD
   const handleAdd = () => {
     dispatch(setIsAdd(true));
@@ -186,17 +194,17 @@ const InfiniteTable = ({
     setItemEdit(null);
   };
 
-  React.useEffect(() => {
-    setSearchValue(search.current?.value || "");
-    setFilterColumns(columnFilters);
-  }, [columnFilters]);
-
   let photo = [];
 
+  const renderEmptyState = () => {
+    if (status === "pending") return <TableLoading count={20} cols={3} />;
+
+    return <NoData />;
+  };
   return (
     <>
-      <div className="md:flex md:justify-between flex-row-reverse my-3 gap-4 items-center">
-        {ishaveAdd ? (
+      <div className="md:flex md:justify-between flex-row-reverse my-2 gap-4 items-center">
+        {ishaveAdd && (
           <div className="flex justify-end sm:mb-0! mb-3 w-full ">
             <AddButton
               value={path?.replaceAll("-", " ")}
@@ -204,10 +212,8 @@ const InfiniteTable = ({
               testId={dataTestidAddButton}
             />
           </div>
-        ) : (
-          ""
         )}
-        {ishaveSubAdd ? (
+        {ishaveSubAdd && (
           <div className="flex justify-end sm:mb-0! mb-3  ">
             <AddButton
               value={path?.replaceAll("-", " ")}
@@ -215,18 +221,14 @@ const InfiniteTable = ({
               testId={dataTestidAddButton}
             />
           </div>
-        ) : (
-          ""
         )}
 
-        {hasExport === true ? (
+        {hasExport && (
           <div className="flex md:justify-end lg:mb-0! w-70 ">
-            {hasExport === true ? <ExportCSVButton /> : ""}
+            <ExportCSVButton />
           </div>
-        ) : (
-          ""
         )}
-        {isSearch ? (
+        {isSearch && (
           <div className={`${haveFilterTable ? " lg:hidden " : " "} w-full `}>
             <SearchBar
               search={search}
@@ -236,22 +238,13 @@ const InfiniteTable = ({
               label={"Search..."}
             />
           </div>
-        ) : (
-          ""
         )}
       </div>
       <div className="">
         <div className="relative rounded-xl md:text-center overflow-auto z-0 ">
-          {/* {status !== "pending" && isFetching && <TableSpinner />} */}
           <div className={`${className} `}>
             {(status === "pending" || rows?.length === 0) && (
-              <div className="lg:hidden p-10">
-                {status === "pending" ? (
-                  <TableLoading count={20} cols={3} />
-                ) : (
-                  <NoData />
-                )}
-              </div>
+              <div className="lg:hidden p-10">{renderEmptyState()}</div>
             )}
             {error && (
               <div className="lg:hidden p-10">
@@ -268,7 +261,7 @@ const InfiniteTable = ({
               ishaveSubAdd={ishaveSubAdd}
             />
             {/* TABLE */}
-            <table className="overflow-auto md:border md:border-gray-300 dark:border-[#0b111e] ">
+            <table className="overflow-visible md:border md:border-gray-300 dark:border-[#0b111e] ">
               <thead className={`relative z-50 hidden lg:table-header-group`}>
                 {table?.getHeaderGroups()?.map((headerGroup) => (
                   <tr
@@ -291,11 +284,11 @@ const InfiniteTable = ({
                 ))}
               </thead>
               {haveFilterTable ? (
-                <thead className={`relative border-0!`}>
+                <thead className={`relative border-0! z-50`}>
                   {table?.getHeaderGroups()?.map((headerGroup) => (
                     <tr
                       key={headerGroup?.id}
-                      className="lg:table-row sticky top-9 uppercase dark:bg-[#0b111e] z-999 hidden lg:group"
+                      className="lg:table-row sticky top-9 uppercase dark:bg-[#0b111e] hidden lg:group"
                     >
                       <th className="w-px  ">{/* {rows?.length} */}</th>
                       {headerGroup?.headers?.map((header) => (
@@ -369,73 +362,18 @@ const InfiniteTable = ({
                         className="hidden lg:table-row group"
                         data-testid="table-row"
                       >
-                        <td className="text-center">{index + 1}.</td>
+                        <td className="text-center last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
+                          {index + 1}.
+                        </td>
                         {row.getVisibleCells().map((item) => (
                           <td
                             key={item?.id}
-                            className={` ${isEmptyItem(item?.column?.columnDef?.classTd, "")} overflow-visible `}
+                            className={` ${isEmptyItem(item?.column?.columnDef?.classTd, "")} `}
                           >
-                            {item?.column?.columnDef?.isImage ? (
-                              <>
-                                {photo?.length == 0 ? (
-                                  <div className=" rounded-sm">
-                                    <Image className="mx-auto p-1" size={30} />
-                                  </div>
-                                ) : (
-                                  <div className="rounded-sm">
-                                    <img
-                                      url={photo[photo?.length - 1]}
-                                      alt={photo[photo?.length - 1]?.name}
-                                      className="min-w-12 w-12 m-auto"
-                                    />
-                                  </div>
-                                )}
-                              </>
-                            ) : (
-                              ""
-                            )}
-                            {item?.column?.columnDef?.header === "status" ||
-                            item?.column?.columnDef?.header ===
-                              "payment status" ? (
-                              <>
-                                <TableStatus
-                                  item={item?.column?.columnDef}
-                                  dataArray={rowData}
-                                />
-                              </>
-                            ) : item?.column?.columnDef?.isViewItems ? (
-                              <button
-                                className="text-green-700 hover:text-green-800 hover:underline"
-                                onClick={() => handleView(item)}
-                              >
-                                View Items
-                              </button>
-                            ) : (
-                              <div className="flex items-center">
-                                {isEmptyItem(
-                                  item?.column?.columnDef?.amount ||
-                                    item?.column?.columnDef?.paid_amount,
-                                  false,
-                                ) ? (
-                                  <AmountWithPesoSign
-                                    classN="size-3"
-                                    amount={
-                                      rowData[
-                                        `${item?.column?.columnDef?.accessorKey}`
-                                      ]
-                                    }
-                                  />
-                                ) : (
-                                  flexRender(
-                                    item?.column?.columnDef?.cell,
-                                    item?.getContext(),
-                                  )
-                                )}
-                              </div>
-                            )}
+                            {renderCellContent(item, rowData)}
                             {/* FOR ACTION BUTTONS */}
                             {item?.column?.columnDef?.accessorKey ===
-                            "action" ? (
+                              "action" && (
                               <ActionButtonTable
                                 item={item?.column?.columnDef}
                                 dataArray={rowData}
@@ -444,8 +382,6 @@ const InfiniteTable = ({
                                 ishaveSubAdd={ishaveSubAdd}
                                 path={path}
                               />
-                            ) : (
-                              ""
                             )}
                           </td>
                         ))}

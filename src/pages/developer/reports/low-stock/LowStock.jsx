@@ -1,3 +1,5 @@
+import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -6,50 +8,71 @@ import ReportsStats from "../ReportsStats";
 
 const LowStock = () => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const [itemEdit, setItemEdit] = React.useState(null);
 
   // Columns
   const columns = [
     {
-      accessorKey: "status",
-      header: "Status",
-      classTh: "w-[8rem]",
+      accessorKey: "products_status",
+      header: "status",
+      classTh: "w-[10rem]! p-0!",
       classTd: "",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={ActiveInActiveStatus("default-status-words")}
+          />
+        ),
+      },
+      status_option: ActiveInActiveStatus("default-status-words"),
     },
     {
-      accessorKey: "products",
-      header: "Products",
+      accessorKey: "products_name",
+      header: "products",
+      filterFn: "",
+      meta: "",
       classTh: "",
-      classTd: "",
+      classTd: "capitalize ",
       isMobileTitle: true,
     },
     {
-      accessorKey: "sku",
-      header: "SKU",
+      accessorKey: "products_sku",
+      header: "sku",
+      filterFn: "",
+      meta: "",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "category",
-      header: "Category",
+      accessorKey: "products_unit",
+      header: "category",
+      filterFn: "",
+      meta: "",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "stock",
-      header: "Stock",
+      accessorKey: "current_qty",
+      header: "stock",
+      filterFn: "between",
+      meta: "",
+      classTh: "",
+      classTd: "uppercase ",
+    },
+    {
+      accessorKey: "products_price",
+      header: "price",
+      filterFn: "between",
+      meta: "",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "price",
-      header: "Price",
-      classTh: "",
-      classTd: "",
-    },
-    {
-      accessorKey: "location",
-      header: "Location",
+      accessorKey: "stock_movement_location",
+      header: "location",
+      filterFn: "",
+      meta: "",
       classTh: "",
       classTd: "",
     },
@@ -61,10 +84,11 @@ const LowStock = () => {
         <ReportsStats />
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path=""
+          className={`sm:overflow-auto sm:h-[calc(82dvh-230px)] h-[calc(97dvh-250px)]`}
+          path="report-sales-order/page-all-low-stock"
           hasExport={true}
-          setItemEdit={setItemEdit}
+          haveFilterTable={true}
+          ishaveAdd={false}
         />
       </HeaderNav>
     </>

@@ -27,13 +27,21 @@ class SalesOrder
     public $sales_order_total_payable_amount;
     public $sales_order_total_amount;
     public $sales_order_tax_amount;
+    public $sales_order_total_balance_amount;
     public $sales_order_created;
     public $sales_order_updated;
+
+    public $installmet_payment_code;
+    public $installmet_payment_due_date;
+    public $installmet_payment_code_number;
+    public $installmet_payment_method;
+    public $installmet_payment_amount;
 
     public $stock_movement_before_qty;
     public $stock_movement_after_qty;
     public $stock_movement_qty;
     public $stock_movement_type;
+    public $stock_movement_status;
 
     public $date_today;
     public $date_yesterday;
@@ -44,6 +52,7 @@ class SalesOrder
     public $tblStockMovements;
     public $tblMovementStock;
     public $tblProducts;
+    public $tblInstallmetPayment;
 
     public $filters;
     public $column_start;
@@ -58,6 +67,7 @@ class SalesOrder
         $this->tblStockMovements = "graces_stock_movement";
         $this->tblMovementStock = "graces_stock_movement";
         $this->tblProducts = "graces_products";
+        $this->tblInstallmetPayment = "graces_installmet_payment";
     }
 
     // create
@@ -90,6 +100,7 @@ class SalesOrder
             $sql .= "sales_order_total_payable_amount, ";
             $sql .= "sales_order_total_amount, ";
             $sql .= "sales_order_tax_amount, ";
+            $sql .= "sales_order_total_balance_amount, ";
             $sql .= "sales_order_created, ";
             $sql .= "sales_order_updated ) values ( ";
             $sql .= ":sales_order_status, ";
@@ -117,6 +128,7 @@ class SalesOrder
             $sql .= ":sales_order_total_payable_amount, ";
             $sql .= ":sales_order_total_amount, ";
             $sql .= ":sales_order_tax_amount, ";
+            $sql .= ":sales_order_total_balance_amount, ";
             $sql .= ":sales_order_created, ";
             $sql .= ":sales_order_updated ) ";
             $query = $this->connection->prepare($sql);
@@ -146,11 +158,14 @@ class SalesOrder
                 "sales_order_total_payable_amount" => $this->sales_order_total_payable_amount,
                 "sales_order_total_amount" => $this->sales_order_total_amount,
                 "sales_order_tax_amount" => $this->sales_order_tax_amount,
+                "sales_order_total_balance_amount" => $this->sales_order_total_balance_amount,
                 "sales_order_created" => $this->sales_order_created,
                 "sales_order_updated" => $this->sales_order_updated,
             ]);
             $this->lastInsertedId = $this->connection->lastInsertId();
         } catch (PDOException $ex) {
+
+            returnError($ex);
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
@@ -266,7 +281,7 @@ class SalesOrder
             $sql .= "MAX(sales_order_aid) as id, ";
             $sql .= "MAX(sales_order_is_active) as is_active, ";
             $sql .= "MAX(sales_order_date) as order_date, ";
-            // $sql .= "DATE_FORMAT(MAX(sales_order_date), '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(MAX(sales_order_date), '%b %d, %Y') as sales_order_date, ";
             $sql .= "MAX(sales_order_customer_name) as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";
@@ -503,6 +518,7 @@ class SalesOrder
             $sql .= "sales_order_total_amount = :sales_order_total_amount, ";
             $sql .= "sales_order_status = :sales_order_status, ";
             $sql .= "sales_order_tax_amount = :sales_order_tax_amount, ";
+            $sql .= "sales_order_total_balance_amount = :sales_order_total_balance_amount, ";
             $sql .= "sales_order_updated = :sales_order_updated ";
             $sql .= "where sales_order_aid  = :sales_order_aid ";
             $query = $this->connection->prepare($sql);
@@ -527,6 +543,7 @@ class SalesOrder
                 "sales_order_total_amount" => $this->sales_order_total_amount,
                 "sales_order_status" => $this->sales_order_status,
                 "sales_order_tax_amount" => $this->sales_order_tax_amount,
+                "sales_order_total_balance_amount" => $this->sales_order_total_balance_amount,
                 "sales_order_updated" => $this->sales_order_updated,
                 "sales_order_aid" => $this->sales_order_aid,
             ]);
@@ -603,6 +620,7 @@ class SalesOrder
             $sql .= "stock_movement_product_name, ";
             $sql .= "stock_movement_date, ";
             $sql .= "stock_movement_type, ";
+            $sql .= "stock_movement_status, ";
             $sql .= "stock_movement_is_active, ";
             $sql .= "stock_movement_before_qty, ";
             $sql .= "stock_movement_after_qty, ";
@@ -615,6 +633,7 @@ class SalesOrder
             $sql .= ":stock_movement_product_name, ";
             $sql .= ":stock_movement_date, ";
             $sql .= ":stock_movement_type, ";
+            $sql .= ":stock_movement_status, ";
             $sql .= ":stock_movement_is_active, ";
             $sql .= ":stock_movement_before_qty, ";
             $sql .= ":stock_movement_after_qty, ";
@@ -629,6 +648,7 @@ class SalesOrder
                 "stock_movement_product_name" => $this->sales_order_product_name,
                 "stock_movement_date" => $this->sales_order_date,
                 "stock_movement_type" => $this->stock_movement_type,
+                "stock_movement_status" => $this->stock_movement_status,
                 "stock_movement_is_active" => $this->sales_order_is_active,
                 "stock_movement_before_qty" => $this->stock_movement_before_qty,
                 "stock_movement_after_qty" => $this->stock_movement_after_qty,
@@ -646,6 +666,45 @@ class SalesOrder
         return $query;
     }
 
+    // Create Movement Stock
+    public function createInstallment()
+    {
+        try {
+            $sql = "insert into {$this->tblInstallmetPayment} ";
+            $sql .= "( installmet_payment_code_id, ";
+            $sql .= "installmet_payment_code, ";
+            $sql .= "installmet_payment_due_date, ";
+            $sql .= "installmet_payment_code_number, ";
+            $sql .= "installmet_payment_amount, ";
+            $sql .= "installmet_payment_method, ";
+            $sql .= "installmet_payment_created, ";
+            $sql .= "installmet_payment_updated ) values ( ";
+            $sql .= ":installmet_payment_code_id, ";
+            $sql .= ":installmet_payment_code, ";
+            $sql .= ":installmet_payment_due_date, ";
+            $sql .= ":installmet_payment_code_number, ";
+            $sql .= ":installmet_payment_amount, ";
+            $sql .= ":installmet_payment_method, ";
+            $sql .= ":installmet_payment_created, ";
+            $sql .= ":installmet_payment_updated ) ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "installmet_payment_code_id" => $this->lastInsertedId,
+                "installmet_payment_code" => $this->installmet_payment_code,
+                "installmet_payment_due_date" => $this->installmet_payment_due_date,
+                "installmet_payment_code_number" => $this->installmet_payment_code_number,
+                "installmet_payment_amount" => $this->installmet_payment_amount,
+                "installmet_payment_method" => $this->installmet_payment_method,
+                "installmet_payment_created" => $this->sales_order_created,
+                "installmet_payment_updated" => $this->sales_order_updated,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
 
     // read all
     public function readAllActiveByName()

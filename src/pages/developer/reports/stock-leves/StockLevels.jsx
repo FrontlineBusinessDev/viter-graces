@@ -1,5 +1,5 @@
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
-import { ActiveInActiveWordsStatus } from "@/layout/ArrayValue";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -8,7 +8,6 @@ import ReportsStats from "../ReportsStats";
 
 const StockLevels = () => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const [itemEdit, setItemEdit] = React.useState(null);
 
   // Columns
   const columns = [
@@ -22,11 +21,11 @@ const StockLevels = () => {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus
             column={column}
-            options={ActiveInActiveWordsStatus()}
+            options={ActiveInActiveStatus("default-status-words")}
           />
         ),
       },
-      status_option: ActiveInActiveWordsStatus(),
+      status_option: ActiveInActiveStatus("default-status-words"),
     },
     {
       accessorKey: "products_name",
@@ -86,9 +85,8 @@ const StockLevels = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(82dvh-230px)] h-[calc(97dvh-250px)]`}
-          path="stock-overview"
+          path="report-sales-order/page-stock-level"
           hasExport={true}
-          setItemEdit={setItemEdit}
           haveFilterTable={true}
           ishaveAdd={false}
         />

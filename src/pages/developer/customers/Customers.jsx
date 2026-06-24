@@ -1,7 +1,7 @@
 import {
+  ActiveInActiveStatus,
   DefaultActionTableList,
   EditDeleteActionTableList,
-  PaymentStatus,
 } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfinitePerTabs from "@/layout/table/InfinitePerTabs";
@@ -12,8 +12,8 @@ import { AiFillMessage } from "react-icons/ai";
 import { FaFacebookMessenger } from "react-icons/fa";
 import { IoLogoWhatsapp } from "react-icons/io";
 import ModalCustomer from "./ModalCustomer";
-import ViewDetails from "./ViewDetails";
 import ModalSalesOrders from "./ModalSalesOrders";
+import ViewDetails from "./ViewDetails";
 
 const Customers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -91,7 +91,7 @@ const Customers = () => {
       header: "status",
       classTh: "",
       classTd: "",
-      status_option: PaymentStatus(),
+      status_option: ActiveInActiveStatus("payment-status"),
     },
     {
       accessorKey: "sales_order_number",
