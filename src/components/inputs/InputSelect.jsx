@@ -18,7 +18,7 @@ export const InputSelect = ({
   return (
     <>
       <label htmlFor={props.id || props.name}>
-        {required && <span className="text-alert">*</span>}
+        {required && <span className="text-red-500">*</span>}
         {label}
       </label>
 
@@ -57,8 +57,8 @@ export const InputSelectArrayWithOptions = ({
   return (
     <>
       <label htmlFor={props.id || props.name}>
-        {label} {""}
-        {required && <span className="text-alert">*</span>}
+        {required && <span className="text-red-500">*</span>}
+        {label}
       </label>
 
       <select
@@ -132,8 +132,8 @@ export const InputSelectArray = ({
   return (
     <>
       <label htmlFor={props.id || props.name}>
-        {label} {""}
-        {required && <span className="text-alert">*</span>}
+        {required && <span className="text-red-500">*</span>}
+        {label}
       </label>
 
       <select
@@ -230,8 +230,8 @@ export const InputSelectCustomerArray = ({
   return (
     <>
       <label htmlFor={props.id || props.name}>
-        {label} {""}
-        {required && <span className="text-alert">*</span>}
+        {required && <span className="text-red-500">*</span>}
+        {label}
       </label>
 
       <select
@@ -439,8 +439,8 @@ export const InputSelectTagArray = ({
     <>
       {label ? (
         <label htmlFor={label}>
+          {required && <span className="text-red-500">*</span>}
           {label}
-          {required && <span className="text-alert">*</span>}
         </label>
       ) : (
         ""
@@ -491,91 +491,6 @@ export const InputSelectTagArray = ({
   );
 };
 
-//   label = "",
-//   onChange = null,
-//   itemEdit = null,
-//   item = null,
-//   path = null,
-//   placeholder = "",
-//   className,
-//   defaultValue = "",
-//   id = "0",
-//   required = true,
-// }) => {
-//   const { store, dispatch } = React.useContext(StoreContext);
-
-//   const {
-//     isLoading,
-//     isFetching,
-//     error,
-//     data: result,
-//   } = useQueryData(
-//     `${apiVersion}/${path}`, // endpoint
-//     "post", // method
-//     `${path}`, // key
-//     { id: id },
-//   );
-
-//   return (
-//     <>
-//       {label ? (
-//         <label htmlFor={label}>
-//           {label}
-//           {required && <span className="text-alert">*</span>}
-//         </label>
-//       ) : (
-//         ""
-//       )}
-//       {Number(isEmptyItem(item?.sales_order_aid, 0)) !== 0 ? (
-//         <span>{item?.sales_order_product_name}</span>
-//       ) : (
-//         <select
-//           onChange={(e) => {
-//             const selectedItem = result?.data?.find(
-//               (item) => Number(item.id) === Number(e.target.value),
-//             );
-
-//             console.log("selectedItemselectedItem", selectedItem);
-//             onChange(e, selectedItem);
-//           }}
-//           autoComplete="off"
-//           id={label}
-//           className={`${className}`}
-//           defaultValue={defaultValue}
-//         >
-//           <optgroup label={`Select a ${placeholder}`}>
-//             {result?.count === 0 ? (
-//               <option value="" hidden>
-//                 No data
-//               </option>
-//             ) : isLoading || isFetching ? (
-//               <option value="" hidden>
-//                 ...Loading
-//               </option>
-//             ) : error ? (
-//               <option value="" hidden>
-//                 Server Error
-//               </option>
-//             ) : (
-//               <option value="" hidden>
-//                 --
-//               </option>
-//             )}
-
-//             {result?.data?.map((item, key) => {
-//               return (
-//                 <option key={key} value={Number(item.id)} id={item.name}>
-//                   {item.name} ({item.current_qty} qty)
-//                 </option>
-//               );
-//             })}
-//           </optgroup>
-//         </select>
-//       )}
-//     </>
-//   );
-// };
-
 export const InputSalesOrderSelectTagArray = ({
   label = "",
   onChange = null,
@@ -602,8 +517,8 @@ export const InputSalesOrderSelectTagArray = ({
     <>
       {label ? (
         <label htmlFor={label}>
+          {required && <span className="text-red-500">*</span>}
           {label}
-          {required && <span className="text-alert">*</span>}
         </label>
       ) : (
         ""
@@ -702,8 +617,8 @@ export const InputPurchaseOrderSelectTagArray = ({
     <>
       {label ? (
         <label htmlFor={label}>
+          {required && <span className="text-red-500">*</span>}
           {label}
-          {required && <span className="text-alert">*</span>}
         </label>
       ) : (
         ""

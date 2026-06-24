@@ -107,7 +107,7 @@ const StockOverview = () => {
         />
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
           path="stock-overview"
           setItemEdit={setItemEdit}
           haveFilterTable={true}

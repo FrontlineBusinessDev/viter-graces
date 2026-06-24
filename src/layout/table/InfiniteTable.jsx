@@ -98,11 +98,11 @@ const InfiniteTable = ({
         "post",
       ),
     getNextPageParam: (lastPage) => {
-      return lastPage.page < lastPage.totalPages
-        ? lastPage.page + 1
-        : undefined;
+      if (lastPage.page < lastPage.total) {
+        return lastPage.page + lastPage.count;
+      }
+      return;
     },
-
     refetchOnWindowFocus: refetchOnWindowFocus,
     // staleTime: 1000 * 60 * 5, // 5 mins → no refetch when revisiting
     // gcTime: 1000 * 60 * 30, // keep cache for 30 mins
@@ -119,24 +119,38 @@ const InfiniteTable = ({
   }, [pages]);
 
   // // Infinite scroll trigger
+  // const lastRowRef = useCallback(
+  //   (node) => {
+  //     if (isFetchingNextPage) return;
+
+  //     if (observer.current) observer.current.disconnect();
+
+  //     observer.current = new IntersectionObserver((entries) => {
+  //       if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+  //         fetchNextPage();
+  //       }
+  //     });
+
+  //     if (node) observer.current.observe(node);
+  //   },
+  //   [isFetchingNextPage, hasNextPage, fetchNextPage],
+  // );
   const lastRowRef = useCallback(
     (node) => {
-      if (isFetchingNextPage) return;
+      if (!node) return;
 
       if (observer.current) observer.current.disconnect();
 
       observer.current = new IntersectionObserver((entries) => {
-        if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
+        if (entries[0].isIntersecting && hasNextPage) {
           fetchNextPage();
         }
       });
 
-      if (node) observer.current.observe(node);
+      observer.current.observe(node);
     },
-    [isFetchingNextPage, hasNextPage, fetchNextPage],
+    [hasNextPage, fetchNextPage],
   );
-
-  console.log("isFetchingNextPage", isFetchingNextPage);
 
   // Table instance
   const table = useReactTable({
@@ -183,7 +197,7 @@ const InfiniteTable = ({
 
   return (
     <>
-      <div className="md:flex md:justify-between flex-row-reverse my-3 gap-4 items-center">
+      <div className="md:flex md:justify-between flex-row-reverse my-2 gap-4 items-center">
         {ishaveAdd ? (
           <div className="flex justify-end sm:mb-0! mb-3 w-full ">
             <AddButton
@@ -256,7 +270,7 @@ const InfiniteTable = ({
               ishaveSubAdd={ishaveSubAdd}
             />
             {/* TABLE */}
-            <table className="overflow-auto md:border md:border-gray-300 dark:border-[#0b111e] ">
+            <table className="overflow-visible md:border md:border-gray-300 dark:border-[#0b111e] ">
               <thead className={`relative z-50 hidden lg:table-header-group`}>
                 {table?.getHeaderGroups()?.map((headerGroup) => (
                   <tr
@@ -279,11 +293,11 @@ const InfiniteTable = ({
                 ))}
               </thead>
               {haveFilterTable ? (
-                <thead className={`relative border-0!`}>
+                <thead className={`relative border-0! z-50`}>
                   {table?.getHeaderGroups()?.map((headerGroup) => (
                     <tr
                       key={headerGroup?.id}
-                      className="lg:table-row sticky top-9 uppercase dark:bg-[#0b111e] z-999 hidden lg:group"
+                      className="lg:table-row sticky top-9 uppercase dark:bg-[#0b111e] hidden lg:group"
                     >
                       <th className="w-px  ">{/* {rows?.length} */}</th>
                       {headerGroup?.headers?.map((header) => (
@@ -357,11 +371,13 @@ const InfiniteTable = ({
                         className="hidden lg:table-row group"
                         data-testid="table-row"
                       >
-                        <td className="text-center">{index + 1}.</td>
+                        <td className="text-center last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
+                          {index + 1}.
+                        </td>
                         {row.getVisibleCells().map((item) => (
                           <td
                             key={item?.id}
-                            className={` ${isEmptyItem(item?.column?.columnDef?.classTd, "")} overflow-visible `}
+                            className={` ${isEmptyItem(item?.column?.columnDef?.classTd, "")} `}
                           >
                             {item?.column?.columnDef?.isImage ? (
                               <>

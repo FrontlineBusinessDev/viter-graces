@@ -14,7 +14,6 @@ const CashSales = () => {
       header: "Status",
       classTh: "w-[5rem]",
       classTd: "",
-      
     },
     {
       accessorKey: "order_no",
@@ -54,7 +53,7 @@ const CashSales = () => {
       <HeaderNav menu={"finance"} activeTab="cash-sales">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
           path=""
           setItemEdit={setItemEdit}
         />

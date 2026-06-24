@@ -19,7 +19,7 @@ export const InputNumber = ({
     <>
       {label !== "" && (
         <label htmlFor={props.id || props.name}>
-          {required && <span className="text-alert">*</span>}
+          {required && <span className="text-red-500">*</span>}
           {label}
         </label>
       )}
@@ -62,8 +62,8 @@ export const InputText = ({
     <>
       {label !== "" ? (
         <label htmlFor={props.id || props.name}>
+          {required && <span className="text-red-500"> *</span>}
           {label}
-          {required && <span className="text-alert"> *</span>}
         </label>
       ) : (
         ""
