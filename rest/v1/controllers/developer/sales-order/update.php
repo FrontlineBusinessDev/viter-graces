@@ -33,6 +33,7 @@ if (array_key_exists("id", $_GET)) {
     $val->sales_order_total_payable_amount = $data["sales_order_total_payable_amount"];
     $val->sales_order_total_amount = $data["sales_order_total_amount"];
     $val->sales_order_tax_amount = $data["sales_order_tax_amount"];
+    $val->sales_order_total_balance_amount = max(0, $data["sales_order_total_balance_amount"]);
     $val->sales_order_created = date("Y-m-d H:i:s");
     $val->sales_order_updated = date("Y-m-d H:i:s");
     $val->sales_order_number = $data["sales_order_number"];

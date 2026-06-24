@@ -14,7 +14,9 @@ const StockOverviewMobileResponsive = ({
 }) => {
   return (
     <>
-      {isDefaultMobile === "stock-overview" && (
+      {(isDefaultMobile === "stock-overview" ||
+        isDefaultMobile === "report-sales-order/page-stock-level" ||
+        isDefaultMobile === "report-sales-order/page-all-low-stock") && (
         <div>
           {rows?.map((row, index) => {
             const rowData = row.original;
@@ -67,10 +69,7 @@ const StockOverviewMobileResponsive = ({
                         Current stock:
                       </span>
                       <span className="wrap-break-word font-semibold ">
-                        <AmountWithPesoSign
-                          classN="size-3"
-                          amount={rowData?.current_qty}
-                        />
+                        {rowData?.current_qty}
                       </span>
                     </li>
                     <li className="flex text-left! text-xs">
@@ -78,10 +77,7 @@ const StockOverviewMobileResponsive = ({
                         Threshold:{" "}
                       </span>
                       <span className="wrap-break-word font-semibold">
-                        <AmountWithPesoSign
-                          classN="size-3"
-                          amount={`${Number(rowData?.products_low_stock_threshold)}`}
-                        />
+                        {rowData?.products_low_stock_threshold}
                       </span>
                     </li>
                   </ul>

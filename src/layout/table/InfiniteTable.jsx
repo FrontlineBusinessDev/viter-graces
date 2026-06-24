@@ -173,7 +173,6 @@ const InfiniteTable = ({
 
   const rows = table?.getRowModel()?.rows;
 
-  console.log("columnFilters", columnFilters);
   // ACTIONS ADD
   const handleAdd = () => {
     dispatch(setIsAdd(true));

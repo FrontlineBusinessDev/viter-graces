@@ -13,7 +13,9 @@ const MovementMobileResponsive = ({
 }) => {
   return (
     <>
-      {isDefaultMobile === "stock-movement" && (
+      {(isDefaultMobile === "stock-movement" ||
+        isDefaultMobile ===
+          "report-sales-order/page-all-inventory-movement") && (
         <div>
           {rows?.map((row, index) => {
             const rowData = row.original;

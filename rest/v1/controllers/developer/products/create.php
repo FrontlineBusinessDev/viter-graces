@@ -45,6 +45,7 @@ $val->products_sku = setIdNumber($val, "SKU");
 isNameExist($val, $val->products_name);
 
 $val->stock_movement_type = "in stock";
+$val->stock_movement_status = "active";
 $val->stock_movement_before_qty = 0;
 $val->stock_movement_date = date("Y-m-d");
 $val->stock_movement_after_qty = (float)$val->stock_movement_before_qty + (float)$val->products_stocks;

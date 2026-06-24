@@ -8,7 +8,6 @@ import ReportsStats from "../ReportsStats";
 
 const StockLevels = () => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const [itemEdit, setItemEdit] = React.useState(null);
 
   // Columns
   const columns = [
@@ -86,9 +85,8 @@ const StockLevels = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(82dvh-230px)] h-[calc(97dvh-250px)]`}
-          path="stock-overview"
+          path="report-sales-order/page-stock-level"
           hasExport={true}
-          setItemEdit={setItemEdit}
           haveFilterTable={true}
           ishaveAdd={false}
         />

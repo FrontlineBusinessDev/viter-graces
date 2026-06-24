@@ -634,7 +634,7 @@ export const InputSalesOrderSelectTagArray = ({
 
               valueContainer: () => "px-1 py-0",
 
-              input: () => "text-sm h-[22px]! text-gray-500! ",
+              input: () => "text-sm h-[27px]! text-gray-500! ",
 
               placeholder: () => "text-gray-400! text-sm",
 
