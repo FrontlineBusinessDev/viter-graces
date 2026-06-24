@@ -20,7 +20,7 @@ const ActionButtonMobile = ({
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
-  console.log("path", path);
+  // console.log("path", path);
 
   // ACTIONS ACHIEVE, RESTORE AND DELETE
   const handleAction = (val) => {

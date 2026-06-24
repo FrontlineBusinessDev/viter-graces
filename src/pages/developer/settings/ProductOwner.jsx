@@ -44,7 +44,7 @@ const ProductOwner = () => {
       <HeaderNav menu={"settings"} activeTab="product-owner">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
           path="product-owner"
           setItemEdit={setItemEdit}
           dataTestidAddButton="add-product-owner-btn"

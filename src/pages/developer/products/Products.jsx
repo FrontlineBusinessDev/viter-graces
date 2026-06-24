@@ -121,7 +121,7 @@ const Products = () => {
       <HeaderNav menu={"products"} activeTab="products">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
           path="products"
           setItemEdit={setItemEdit}
           productMobile={true}

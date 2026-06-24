@@ -5,7 +5,7 @@ const ActionButton = ({ item, onClick = (e) => e }) => {
     <>
       <button
         type="button"
-        className="tooltip-action-table capitalize z-0!"
+        className="tooltip-action-table capitalize "
         data-tooltip={item.name}
         onClick={onClick}
         data-testid={`action-${item.name}`}

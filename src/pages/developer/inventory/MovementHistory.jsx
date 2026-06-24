@@ -2,14 +2,13 @@ import {
   SearchableSelectFilter,
   SearchableSelectFilterStatus,
 } from "@/components/inputs/InputSelect";
-import { StockTypeArray } from "@/layout/ArrayValue";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
+import WarningBanner from "@/layout/WarningBanner";
 import { StoreContext } from "@/store/StoreContext";
-import { TriangleAlert } from "lucide-react";
 import React from "react";
 import ModalStockOverview from "./modal/ModalStockOverview";
-import WarningBanner from "@/layout/WarningBanner";
 const MovementHistory = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -20,13 +19,13 @@ const MovementHistory = () => {
       accessorKey: "stock_movement_type",
       header: "movement status",
       classTh: "w-[10rem]",
-      classTd: "",
+      classTd: " uppercase ",
       filterFn: "equals",
       meta: {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus
             column={column}
-            options={StockTypeArray()}
+            options={ActiveInActiveStatus("stock-type-status")}
           />
         ),
       },
@@ -101,13 +100,14 @@ const MovementHistory = () => {
     <>
       <HeaderNav menu={"inventory"} activeTab="movement-history">
         <WarningBanner
-          path="stock-movement/read-count-low-stock"
+          path="stock-movement/read-all-low-stock"
           text="products"
-          description="are below low stock threshold: Cassava chips (C), Kropek."
+          description="are below low stock threshold: "
+          isLowStock={true}
         />
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
           path="stock-movement"
           setItemEdit={setItemEdit}
           haveFilterTable={true}

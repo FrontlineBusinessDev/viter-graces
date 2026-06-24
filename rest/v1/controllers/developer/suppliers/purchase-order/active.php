@@ -29,8 +29,10 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
         if ((float)$val->purchase_order_is_active == 0) {
             $val->purchase_order_status = 'inactive';
+            $val->purchase_order_payment_status = 'inactive';
         } else {
             $val->purchase_order_status = 'active';
+            $val->purchase_order_payment_status = 'draft';
         }
         $val->purchase_order_updated = date("Y-m-d H:i:s");
 

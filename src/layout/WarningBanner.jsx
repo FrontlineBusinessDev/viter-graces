@@ -6,7 +6,13 @@ import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { TriangleAlert } from "lucide-react";
 import { useMemo } from "react";
 
-const WarningBanner = ({ path = "", text = "", id = 0, description = "" }) => {
+const WarningBanner = ({
+  path = "",
+  text = "",
+  id = 0,
+  description = "",
+  isLowStock = false,
+}) => {
   const {
     isLoading,
     isFetching,
@@ -20,20 +26,22 @@ const WarningBanner = ({ path = "", text = "", id = 0, description = "" }) => {
   );
 
   const valData = useMemo(() => {
-    if (!result?.count) return "0.00";
+    if (!result?.count) return [];
 
     return result?.data;
   }, [result]);
 
+  console.log("valData", result?.data);
   return (
     <>
       {path === "" && description !== "" ? (
-        <div className="bg-orange-100 text-orange-600 dark:bg-orange-200 dark:text-orange-300 border border-orange-300 rounded-xl px-3 py-2 my-2  ">
-          <div className="flex items-center gap-2">
-            <TriangleAlert size={14} className="place-self-start mt-0.5" />
-            <p className="dark:text-orange-600 mb-0 ">{description}</p>
-          </div>
-        </div>
+        // <div className="bg-orange-100 text-orange-600 dark:bg-orange-200 dark:text-orange-300 border border-orange-300 rounded-xl px-3 py-2 my-2  ">
+        //   <div className="flex items-center gap-2">
+        //     <TriangleAlert size={14} className="place-self-start mt-0.5" />
+        //     <p className="dark:text-orange-600 mb-0 ">{description}</p>
+        //   </div>
+        // </div>
+        ""
       ) : error ? (
         <ServerError />
       ) : valData?.length > 0 ? (
@@ -44,12 +52,21 @@ const WarningBanner = ({ path = "", text = "", id = 0, description = "" }) => {
               {isLoading ? (
                 <TableLoading count={1} cols={1} />
               ) : (
-                <span className="mr-1">
-                  {isEmptyItem(valData[0]?.data_count, "")}{" "}
-                </span>
+                <span className="mr-1">{isEmptyItem(valData?.length, "")}</span>
               )}
               <span>{text}</span>
-              <span>{description}</span>
+              {description}
+              {isLowStock ? (
+                <>
+                  {isLowStock && (
+                    <span className="ml-1">
+                      {valData.map((item) => item.name).join(", ")}.
+                    </span>
+                  )}
+                </>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>

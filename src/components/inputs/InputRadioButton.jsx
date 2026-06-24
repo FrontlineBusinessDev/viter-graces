@@ -28,6 +28,7 @@ export const InputRadioButton = ({ label, onChange = null, ...props }) => {
               field.onChange(e);
               dispatch(setError(false));
             }}
+            data-testid={props.name}
           />
           <div className="pointer-events-none absolute top-2/4 left-2/4 -translate-y-2/4 -translate-x-2/4 text-accent opacity-0 transition-opacity peer-checked:opacity-100 peer-hover:opacity-100">
             <CircleCheck className="h-3.5 w-3.5 fill-current" />

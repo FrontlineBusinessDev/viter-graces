@@ -32,6 +32,71 @@ function checkReadAllSalesOrderLimit($object, $allowedColumns = [])
     return $query;
 }
 
+// Read all
+function checkReadAllStockLevel($object, $allowedColumns = [])
+{
+    $query = $object->readAllStockLevel($allowedColumns);
+    checkQuery($query, "Empty records. (checkReadAllStockLevel)");
+    return $query;
+}
+
+// Read limit
+function checkReadAllStockLevelLimit($object, $allowedColumns = [])
+{
+    $query = $object->readAllStockLevelLimit($allowedColumns);
+    checkQuery($query, "Empty records. (limit)");
+    return $query;
+}
+
+// Read all
+function checkReadAllLowStock($object, $allowedColumns = [])
+{
+    $query = $object->readAllLowStock($allowedColumns);
+    checkQuery($query, "Empty records. (checkReadAllLowStock)");
+    return $query;
+}
+
+// Read limit
+function checkReadAllLowStockLimit($object, $allowedColumns = [])
+{
+    $query = $object->readAllLowStockLimit($allowedColumns);
+    checkQuery($query, "Empty records. (limit)");
+    return $query;
+}
+
+// Read all
+function checkReadAllInventoryMovement($object, $allowedColumns = [])
+{
+    $query = $object->readAllInventoryMovement($allowedColumns);
+    checkQuery($query, "Empty records. (checkReadAllInventoryMovement)");
+    return $query;
+}
+
+// Read limit
+function checkReadAllInventoryMovementLimit($object, $allowedColumns = [])
+{
+    $query = $object->readAllInventoryMovementLimit($allowedColumns);
+    checkQuery($query, "Empty records. (limit)");
+    return $query;
+}
+
+// Read all
+function checkReadAllExpenses($object, $allowedColumns = [])
+{
+    $query = $object->readAllExpenses($allowedColumns);
+    checkQuery($query, "Empty records. (checkReadAllExpenses)");
+    return $query;
+}
+
+// Read limit
+function checkReadAllExpensesLimit($object, $allowedColumns = [])
+{
+    $query = $object->readAllExpensesLimit($allowedColumns);
+    checkQuery($query, "Empty records. (limit)");
+    return $query;
+}
+
+
 // check association
 function allowedColumns()
 {

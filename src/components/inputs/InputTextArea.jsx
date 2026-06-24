@@ -18,8 +18,8 @@ export const InputTextArea = ({
     <>
       {label !== "" && (
         <label htmlFor={props.id || props.name}>
+          {required && <span className="text-red-500">*</span>}
           {label}
-          {required && <span className="text-alert"> *</span>}
         </label>
       )}
       <textarea
@@ -34,6 +34,7 @@ export const InputTextArea = ({
           field.onChange(e);
         }}
         ref={refVal}
+        data-testid={props.name}
       />
       {meta.touched && meta.error ? (
         <span className="error-show">{meta.error}</span>

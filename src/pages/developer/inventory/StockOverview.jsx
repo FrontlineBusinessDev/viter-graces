@@ -18,8 +18,8 @@ const StockOverview = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "stock_movement_is_active",
-      header: "status",
+      accessorKey: "inventory_status",
+      header: "",
       classTh: "w-[10rem]",
       classTd: "",
       filterFn: "equals",
@@ -27,11 +27,11 @@ const StockOverview = () => {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus
             column={column}
-            options={ActiveInActiveStatus()}
+            options={ActiveInActiveStatus("stock-overview")}
           />
         ),
       },
-      status_option: ActiveInActiveStatus(),
+      status_option: ActiveInActiveStatus("stock-overview"),
     },
     {
       accessorKey: "stock_movement_product_name",
@@ -100,13 +100,14 @@ const StockOverview = () => {
     <>
       <HeaderNav menu={"inventory"} activeTab="stock-overview">
         <WarningBanner
-          path="stock-movement/read-count-low-stock"
+          path="stock-movement/read-all-low-stock"
           text="products"
-          description="are below low stock threshold: Cassava chips (C), Kropek."
+          description="are below low stock threshold: "
+          isLowStock={true}
         />
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
           path="stock-overview"
           setItemEdit={setItemEdit}
           haveFilterTable={true}

@@ -23,6 +23,8 @@ class Products
     public $products_created;
     public $products_updated;
 
+    public $stock_movement_status;
+    public $stock_movement_location;
     public $stock_movement_type;
     public $stock_movement_date;
     public $stock_movement_before_qty;
@@ -529,6 +531,8 @@ class Products
             $sql .= "( stock_movement_product_id, ";
             $sql .= "stock_movement_product_name, ";
             $sql .= "stock_movement_type, ";
+            $sql .= "stock_movement_location, ";
+            $sql .= "stock_movement_status, ";
             $sql .= "stock_movement_date, ";
             $sql .= "stock_movement_is_active, ";
             $sql .= "stock_movement_before_qty, ";
@@ -541,6 +545,8 @@ class Products
             $sql .= ":stock_movement_product_id, ";
             $sql .= ":stock_movement_product_name, ";
             $sql .= ":stock_movement_type, ";
+            $sql .= ":stock_movement_location, ";
+            $sql .= ":stock_movement_status, ";
             $sql .= ":stock_movement_date, ";
             $sql .= ":stock_movement_is_active, ";
             $sql .= ":stock_movement_before_qty, ";
@@ -555,6 +561,8 @@ class Products
                 "stock_movement_product_id" => $this->lastInsertedId,
                 "stock_movement_product_name" => $this->products_name,
                 "stock_movement_type" => $this->stock_movement_type,
+                "stock_movement_location" => $this->stock_movement_location,
+                "stock_movement_status" => $this->stock_movement_status,
                 "stock_movement_date" => $this->stock_movement_date,
                 "stock_movement_is_active" => $this->products_is_active,
                 "stock_movement_before_qty" => $this->stock_movement_before_qty,
@@ -566,6 +574,7 @@ class Products
                 "stock_movement_updated" => $this->products_updated,
             ]);
         } catch (PDOException $ex) {
+            returnError($ex);
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }

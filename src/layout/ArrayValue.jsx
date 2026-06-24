@@ -7,39 +7,54 @@ import {
   Trash,
 } from "lucide-react";
 
-export const ActiveInActiveStatus = () => {
-  return [
-    { label: "Active", value: 1 },
-    { label: "Inactive", value: 0 },
-  ];
-};
-
-export const ActiveInActiveWordsStatus = () => {
-  return [
-    { label: "active", value: "active" },
-    { label: "inactive", value: "inactive" },
-  ];
-};
-
-export const PaymentStatus = () => {
-  return [
-    { label: "unpaid", value: "unpaid" },
-    { label: "paid", value: "paid" },
-    { label: "partial", value: "partial" },
-  ];
-};
-
-export const StockTypeArray = () => {
-  return [
-    { label: "in stock", value: "in stock" },
-    { label: "purchases", value: "purchases" },
-    { label: "stock in adjustments", value: "stock in adjustments" },
-    { label: "stock out - sales", value: "stock out - sales" },
+export const ActiveInActiveStatus = (val = "default-status") => {
+  const result = [
     {
-      label: "stock out - reject/defective items",
-      value: "stock out - reject/defective items",
+      name: "default-status",
+      status: [
+        { label: "Active", value: 1 },
+        { label: "Inactive", value: 0 },
+      ],
+    },
+    {
+      name: "stock-overview",
+      status: [
+        { label: "out of stock", value: "out of stock" },
+        { label: "in stock", value: "in stock" },
+        { label: "low stock", value: "low stock" },
+      ],
+    },
+    {
+      name: "default-status-words",
+      status: [
+        { label: "active", value: "active" },
+        { label: "inactive", value: "inactive" },
+      ],
+    },
+    {
+      name: "payment-status",
+      status: [
+        { label: "unpaid", value: "unpaid" },
+        { label: "paid", value: "paid" },
+        { label: "partial", value: "partial" },
+      ],
+    },
+    {
+      name: "stock-type-status",
+      status: [
+        { label: "IN STOCK", value: "in stock" },
+        { label: "PURCHASES", value: "purchases" },
+        { label: "STOCK IN ADJUSTMENTS", value: "stock in adjustments" },
+        { label: "STOCK OUT - SALES", value: "stock out - sales" },
+        {
+          label: "STOCK OUT - REJECT/DEFECTIVE ITEMS",
+          value: "stock out - reject/defective items",
+        },
+      ],
     },
   ];
+
+  return result.find((item) => item.name === val)?.status ?? [];
 };
 
 // FOR TABLE ACTION

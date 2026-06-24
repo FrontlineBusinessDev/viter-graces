@@ -11,17 +11,18 @@ function isUserAccountAssociated($object)
 function allowedColumns()
 {
     $query = [
-        "ms.stock_movement_date",
-        "ms.stock_movement_type",
-        "ms.stock_movement_status",
-        "ms.stock_movement_is_active",
-        "ms.stock_movement_product_name",
-        "ms.stock_movement_before_qty",
-        "ms.stock_movement_after_qty",
-        "ms.stock_movement_qty",
-        "ms.stock_movement_location",
-        "ms.stock_movement_product_owner_name",
-        "ms.stock_movement_notes",
+        "stock_movement_date",
+        "stock_movement_type",
+        "stock_movement_status",
+        "stock_movement_is_active",
+        "stock_movement_product_name",
+        "stock_movement_before_qty",
+        "stock_movement_after_qty",
+        "stock_movement_qty",
+        "stock_movement_location",
+        "stock_movement_product_owner_name",
+        "stock_movement_notes",
+        "inventory_status"
     ];
     return $query;
 }

@@ -33,8 +33,10 @@ $val->sales_order_due_date = $data["sales_order_due_date"];
 $val->sales_order_total_payable_amount = $data["sales_order_total_payable_amount"];
 $val->sales_order_total_amount = $data["sales_order_total_amount"];
 $val->sales_order_tax_amount = $data["sales_order_tax_amount"];
+$val->sales_order_total_balance_amount = max(0, $data["sales_order_total_balance_amount"]); // not accepting negative
 $val->sales_order_created = date("Y-m-d H:i:s");
 $val->sales_order_updated = date("Y-m-d H:i:s");
+$val->stock_movement_status = "active";
 
 if ((float)$val->sales_order_paid_amount < (float)$val->sales_order_total_payable_amount) {
     $val->sales_order_status = 'partial';
@@ -48,8 +50,7 @@ $val->sales_order_number = setIdNumber($val, "ORD");
 
 $ordersItems = $data["items"];
 $ordersItemsDelete = $data["itemsDelete"];
-// create
-
+// CREATE STOCK MOVEMENT
 for ($i = 0; $i < count($ordersItems); $i++) {
 
     $val->sales_order_product_id = $ordersItems[$i]["sales_order_product_id"];
@@ -71,6 +72,21 @@ for ($i = 0; $i < count($ordersItems); $i++) {
     $val->stock_movement_qty = (float)$val->sales_order_qty;
 
     checkCreateMovementStock($val);
+}
+
+$installmentItems = $data["installmentItems"];
+$installmentItemsDelete = $data["installmentItemsDelete"];
+
+if (count($installmentItems) > 0) {
+    // CREATE INSTALLMENT PAYMENT
+    for ($a = 0; $a < count($installmentItems); $a++) {
+        $val->installmet_payment_code = $installmentItems[$a]["installmet_payment_code"];
+        $val->installmet_payment_due_date = $installmentItems[$a]["installmet_payment_due_date"];
+        $val->installmet_payment_code_number = $val->sales_order_number;
+        $val->installmet_payment_method = "";
+        $val->installmet_payment_amount = $installmentItems[$a]["installmet_payment_amount"];
+        $query = checkCreateInstallment($val);
+    }
 }
 
 // create activity log

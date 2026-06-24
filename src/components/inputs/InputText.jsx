@@ -19,7 +19,7 @@ export const InputNumber = ({
     <>
       {label !== "" && (
         <label htmlFor={props.id || props.name}>
-          {required && <span className="text-alert">*</span>}
+          {required && <span className="text-red-500">*</span>}
           {label}
         </label>
       )}
@@ -37,6 +37,7 @@ export const InputNumber = ({
           field.onChange(e);
         }}
         ref={refVal}
+        data-testid={props.name}
       />
 
       {meta.touched && meta.error ? (
@@ -62,8 +63,8 @@ export const InputText = ({
     <>
       {label !== "" ? (
         <label htmlFor={props.id || props.name}>
+          {required && <span className="text-red-500"> *</span>}
           {label}
-          {required && <span className="text-alert"> *</span>}
         </label>
       ) : (
         ""
@@ -80,6 +81,7 @@ export const InputText = ({
           field.onChange(e);
         }}
         ref={refVal}
+        data-testid={props.name}
       />
 
       {meta.touched && meta.error ? (
@@ -89,7 +91,7 @@ export const InputText = ({
   );
 };
 
-export const InputMaxMinValue = ({ column }) => {
+export const InputMaxMinValue = ({ column, cypressTesting = "" }) => {
   let value = column.getFilterValue() || { min: 0, max: "" };
 
   return (
@@ -100,6 +102,7 @@ export const InputMaxMinValue = ({ column }) => {
           type="number"
           value={value?.min ?? ""}
           placeholder="Min"
+          data-testid={`${cypressTesting}_min`}
           className={`bg-white m-0! w-full! text-sm border rounded-md cursor-pointer! isFocused:border-primary!
                               isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! `}
           onChange={(e) => {
@@ -119,6 +122,7 @@ export const InputMaxMinValue = ({ column }) => {
           type="number"
           value={value?.max ?? ""}
           placeholder="Max"
+          data-testid={`${cypressTesting}_max`}
           className={`bg-white m-0! w-full! text-sm border rounded-md cursor-pointer! isFocused:border-primary!
                               isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! `}
           onChange={(e) => {
@@ -162,6 +166,7 @@ export const InputLogin = ({
           onChange !== null && onChange(e);
           field.onChange(e);
         }}
+        data-testid={props.name}
         ref={refVal}
       />
       <label htmlFor={props.id || props.name} className="label_login">
@@ -241,6 +246,7 @@ export const InputCode = ({ length, loading, onComplete }) => {
                 onChange={(e) => processInput(e, idx)}
                 onKeyUp={(e) => onKeyUp(e, idx)}
                 ref={(ref) => inputs.current.push(ref)}
+                data-testid={props.name}
                 placeholder="⚬"
                 className="block w-9.5 text-center border-gray-200 rounded-md sm:text-sm focus:border-blue-500 focus:ring-blue-500 disabled:opacity-50 disabled:pointer-events-none"
               />
@@ -294,7 +300,7 @@ export const DebouncedInput = ({
             value={value?.min ?? ""}
             type="number"
             onChange={(e) => {
-              let min = Number(e.target.value ? Number(e.target.value) : "0");
+              let min = e.target.value ? Number(e.target.value) : "";
               let max = value?.max ?? "";
               const newValue = {
                 ...value,

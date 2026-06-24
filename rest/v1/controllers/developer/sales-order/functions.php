@@ -7,12 +7,19 @@ function isUserAccountAssociated($object)
     checkExistence($count, "You cannot delete this item because it is already associated with other module.");
 }
 
-
 // Create 
 function checkCreateMovementStock($object)
 {
     $query = $object->createMovementStock();
     checkQuery($query, "There's a problem processing your request. (Create Movement Stock)");
+    return $query;
+}
+
+// Create 
+function checkCreateInstallment($object)
+{
+    $query = $object->createInstallment();
+    checkQuery($query, "There's a problem processing your request. (Create Installment)");
     return $query;
 }
 
