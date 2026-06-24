@@ -156,7 +156,7 @@ export const InputSelectArray = ({
             <option value="" hidden>
               No data
             </option>
-          ) : isLoading || isFetching ? (
+          ) : isLoading ? (
             <option value="" hidden>
               ...Loading
             </option>
