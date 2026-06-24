@@ -2,7 +2,7 @@ import {
   SearchableSelectFilter,
   SearchableSelectFilterStatus,
 } from "@/components/inputs/InputSelect";
-import { StockTypeArray } from "@/layout/ArrayValue";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import WarningBanner from "@/layout/WarningBanner";
@@ -25,7 +25,7 @@ const MovementHistory = () => {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus
             column={column}
-            options={StockTypeArray()}
+            options={ActiveInActiveStatus("stock-type-status")}
           />
         ),
       },

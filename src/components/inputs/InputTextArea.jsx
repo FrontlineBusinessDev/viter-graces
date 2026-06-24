@@ -34,6 +34,7 @@ export const InputTextArea = ({
           field.onChange(e);
         }}
         ref={refVal}
+        data-testid={props.name}
       />
       {meta.touched && meta.error ? (
         <span className="error-show">{meta.error}</span>

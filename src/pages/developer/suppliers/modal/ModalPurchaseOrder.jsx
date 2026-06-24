@@ -173,7 +173,6 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     purchase_order_supplier_id: Yup.string().trim().required("Required"),
     purchase_order_date: Yup.string().trim().required("Required"),
     purchase_order_expected_delivery: Yup.string().trim().required("Required"),
-    purchase_order_status: Yup.string().trim().required("Required"),
     purchase_order_payment_status: Yup.string().trim().required("Required"),
   });
 
@@ -187,11 +186,6 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     { id: "2", name: "installment" },
   ];
 
-  let statusOption = [
-    { id: "0", name: "draft" },
-    { id: "1", name: "active" },
-    { id: "2", name: "inactive" },
-  ];
   return (
     <>
       <ModalWrapper
@@ -402,20 +396,6 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                   <div className="grid grid-cols-2 gap-4">
                     <div className="relative capitalize mt-3">
                       <InputSelectArrayWithOptions
-                        label="Status"
-                        type="text"
-                        name="purchase_order_status"
-                        defaultValue="draft"
-                        options={statusOption}
-                        onChange={(e) => {
-                          props.values.purchase_order_status = e.target.value;
-                          return e;
-                        }}
-                      />
-                    </div>
-
-                    <div className="relative capitalize mt-3">
-                      <InputSelectArrayWithOptions
                         label="Payment Status"
                         type="text"
                         name="purchase_order_payment_status"
@@ -428,9 +408,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         }}
                       />
                     </div>
-                  </div>
-                  <div className="grid grid-cols-2 items items-center gap-2">
-                    <div className="relative">
+                    <div className="relative   mt-3">
                       <InputText
                         label="Paid Amount"
                         type="number"
@@ -439,6 +417,9 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         disabled={mutation.isPending}
                       />
                     </div>
+                  </div>
+                  <div className="grid grid-cols-2 items items-center gap-2">
+                    <div className="relative"></div>
                     <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end my-5 p-2">
                       <p className="flex flex-col place-self-end text-primary text-lg text-right">
                         <span className="text-black dark:text-light text-sm">

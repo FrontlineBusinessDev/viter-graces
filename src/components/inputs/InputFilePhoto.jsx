@@ -7,7 +7,7 @@ export const InputPhotoUpload = ({ label, ...props }) => {
   const [field, meta] = useField(props);
   return (
     <>
-      <input {...field} {...props} />
+      <input {...field} {...props} data-testid={props.name} />
       {meta.touched && meta.error ? (
         <span className="error--msg">{meta.error}</span>
       ) : null}
@@ -20,7 +20,7 @@ export const InputFileUpload = ({ label, ...props }) => {
   const [field, meta] = useField(props);
   return (
     <>
-      <input {...field} {...props} />
+      <input {...field} {...props} data-testid={props.name} />
       {meta.touched && meta.error ? (
         <span className="error--msg">{meta.error}</span>
       ) : null}
