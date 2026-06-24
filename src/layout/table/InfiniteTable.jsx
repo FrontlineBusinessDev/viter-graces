@@ -138,7 +138,12 @@ const InfiniteTable = ({
     [isFetchingNextPage, hasNextPage, fetchNextPage],
   );
 
-  console.log("isFetchingNextPage", isFetchingNextPage);
+  console.log(
+    "isFetchingNextPage",
+    isFetchingNextPage,
+    hasNextPage,
+    fetchNextPage,
+  );
 
   // Table instance
   const table = useReactTable({
