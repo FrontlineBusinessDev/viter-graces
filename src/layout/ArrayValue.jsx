@@ -31,12 +31,12 @@ export const PaymentStatus = () => {
 
 export const StockTypeArray = () => {
   return [
-    { label: "in stock", value: "in stock" },
-    { label: "purchases", value: "purchases" },
-    { label: "stock in adjustments", value: "stock in adjustments" },
-    { label: "stock out - sales", value: "stock out - sales" },
+    { label: "IN STOCK", value: "in stock" },
+    { label: "PURCHASES", value: "purchases" },
+    { label: "STOCK IN ADJUSTMENTS", value: "stock in adjustments" },
+    { label: "STOCK OUT - SALES", value: "stock out - sales" },
     {
-      label: "stock out - reject/defective items",
+      label: "STOCK OUT - REJECT/DEFECTIVE ITEMS",
       value: "stock out - reject/defective items",
     },
   ];

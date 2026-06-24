@@ -181,6 +181,7 @@ class StockOverview
             $sql .= "MAX(ms.stock_movement_location) AS stock_movement_location, ";
             $sql .= "MAX(ms.stock_movement_product_name) as name, ";
             $sql .= "MAX(ms.stock_movement_is_active) as is_active, ";
+            $sql .= "MAX(ms.stock_movement_is_active) as stock_movement_is_active, ";
             $sql .= "MAX(ms.stock_movement_product_name) as stock_movement_product_name, ";
             $sql .= "MAX(ms.stock_movement_product_owner_name) as stock_movement_product_owner_name, ";
             $sql .= "DATE_FORMAT(MAX(ms.stock_movement_date), '%b %d, %Y') AS stock_movement_date, ";
@@ -335,6 +336,7 @@ class StockOverview
             $sql .= "MAX(ms.stock_movement_location) AS stock_movement_location, ";
             $sql .= "MAX(ms.stock_movement_product_name) AS name, ";
             $sql .= "MAX(ms.stock_movement_is_active) AS is_active, ";
+            $sql .= "MAX(ms.stock_movement_is_active) as stock_movement_is_active, ";
             $sql .= "MAX(ms.stock_movement_product_name) as stock_movement_product_name, ";
             $sql .= "MAX(ms.stock_movement_product_owner_name) as stock_movement_product_owner_name, ";
             $sql .= "DATE_FORMAT(MAX(ms.stock_movement_date), '%b %d, %Y') AS stock_movement_date, ";
