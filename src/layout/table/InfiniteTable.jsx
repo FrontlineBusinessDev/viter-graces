@@ -70,10 +70,17 @@ const InfiniteTable = ({
     [store.isSearch],
   );
 
-  const queryKey = useMemo(
-    () => [path, store.isSearch, search.current?.value || "", columnFilters],
-    [path, store.isSearch, JSON.stringify({ columnFilters })],
-  );
+  // const queryKey = useMemo(
+  //   () => [path, store.isSearch, search.current?.value || "", columnFilters],
+  //   [path, store.isSearch, JSON.stringify({ columnFilters })],
+  // );
+
+  const queryKey = [
+    path,
+    store.isSearch,
+    search.current?.value || "",
+    JSON.stringify({ columnFilters }),
+  ];
 
   // React Query infinite fetch
   const {
