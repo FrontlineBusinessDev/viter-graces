@@ -21,13 +21,8 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
     });
   };
 
-  console.log("dataArray", dataArray);
   // ACTIONS UPDATE
   const handleUpdate = (val) => {
-    console.log("val", {
-      ...val,
-      ...dataArray,
-    });
     dispatch(setIsAdd(true));
     setItemEdit({
       ...val,

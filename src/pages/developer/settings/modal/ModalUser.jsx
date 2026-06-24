@@ -103,7 +103,6 @@ const ModalUser = ({ itemEdit }) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
               // mutate data
-              // console.log(values);
               let data = {
                 ...ActivityLogDetails(
                   "user",

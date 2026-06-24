@@ -161,9 +161,6 @@ const InfiniteSubTable = ({
         const rowValue = row.getValue(columnId);
         const { min, max } = value || {};
 
-        // console.log("rowValue", rowValue);
-        // console.log("min max", { min, max });
-
         if (min !== undefined && rowValue < min) return false;
         if (max !== undefined && rowValue > max) return false;
 

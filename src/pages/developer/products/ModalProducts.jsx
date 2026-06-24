@@ -145,7 +145,6 @@ const ModalProducts = ({ itemEdit }) => {
                 ),
                 ...values,
               };
-              // console.log(data);
               setLoading(true);
               mutation.mutate(data);
 

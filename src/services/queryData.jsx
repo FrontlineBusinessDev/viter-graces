@@ -1,8 +1,6 @@
 import { devApiUrl, devKey } from "@/config/config";
 
 export const queryData = (endpoint, method = "get", fd = {}) => {
-  // console.log("endpoint", endpoint);
-  // console.log("devApiUrl", devApiUrl);
   let url = devApiUrl + endpoint;
   let username = devKey;
   let password = "";

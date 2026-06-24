@@ -57,8 +57,6 @@ const ModalAddItem = ({ itemEdit, item, setAddItem }) => {
     },
   });
 
-  // console.log("item", item);
-
   const initVal = {
     suppliers_product_aid: isEmptyItem(itemEdit?.suppliers_product_aid, ""),
     suppliers_product_name: isEmptyItem(itemEdit?.suppliers_product_name, ""),
