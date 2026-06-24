@@ -294,7 +294,7 @@ export const DebouncedInput = ({
             value={value?.min ?? ""}
             type="number"
             onChange={(e) => {
-              let min = Number(e.target.value ? Number(e.target.value) : "0");
+              let min = e.target.value ? Number(e.target.value) : "";
               let max = value?.max ?? "";
               const newValue = {
                 ...value,
