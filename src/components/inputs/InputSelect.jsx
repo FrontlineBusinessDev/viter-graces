@@ -3,7 +3,7 @@ import useQueryData from "@/services/useQueryData";
 import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useField } from "formik";
-import React from "react";
+import React, { useMemo } from "react";
 import Select from "react-select";
 
 export const InputSelect = ({
@@ -124,6 +124,11 @@ export const InputSelectArray = ({
     { id: id },
   );
 
+  const valData = useMemo(() => {
+    if (!result?.count) return [];
+
+    return result?.data;
+  }, [result]);
   return (
     <>
       <label htmlFor={props.id || props.name}>
@@ -166,7 +171,7 @@ export const InputSelectArray = ({
           )}
           {store.credentials?.data?.role === "developer" ? (
             <>
-              {result?.data?.map((item, key) => {
+              {valData?.map((item, key) => {
                 return (
                   <option key={key} value={item.id} className="capitalize">
                     {item.name}
@@ -176,7 +181,7 @@ export const InputSelectArray = ({
             </>
           ) : (
             <>
-              {result?.data?.map((item, key) => {
+              {valData?.map((item, key) => {
                 return isEmptyItem(item?.role_code, "") !== "r_is_developer" ? (
                   <option key={key} value={item.id} className="capitalize">
                     {item.name}

@@ -97,12 +97,10 @@ const InfiniteTable = ({
         },
         "post",
       ),
-
     getNextPageParam: (lastPage) => {
-      if (lastPage.page < lastPage.total) {
-        return lastPage.page + lastPage.count;
-      }
-      return undefined;
+      return lastPage.page < lastPage.totalPages
+        ? lastPage.page + 1
+        : undefined;
     },
 
     refetchOnWindowFocus: refetchOnWindowFocus,
@@ -138,12 +136,7 @@ const InfiniteTable = ({
     [isFetchingNextPage, hasNextPage, fetchNextPage],
   );
 
-  console.log(
-    "isFetchingNextPage",
-    isFetchingNextPage,
-    hasNextPage,
-    fetchNextPage,
-  );
+  console.log("isFetchingNextPage", isFetchingNextPage);
 
   // Table instance
   const table = useReactTable({
