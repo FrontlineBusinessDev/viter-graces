@@ -15,12 +15,12 @@ const PurchaseOrder = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "purchase_order_is_active",
-      header: "status",
-      classTh: "w-[5rem]",
+      accessorKey: "purchase_order_payment_status",
+      header: "payment status",
+      classTh: "w-[9rem]",
       classTd: "",
       status_option: ActiveInActiveStatus(),
-      status_text: "purchase_order_status",
+      status_text: "purchase_order_payment_status",
     },
     {
       accessorKey: "purchase_order_number",
@@ -63,14 +63,6 @@ const PurchaseOrder = () => {
       classTd: "",
       amount: false,
       paid_amount: true,
-    },
-    {
-      accessorKey: "purchase_order_payment_status",
-      header: "payment status",
-      classTh: "w-[9rem]",
-      classTd: "",
-      status_option: ActiveInActiveStatus(),
-      status_text: "purchase_order_payment_status",
     },
     {
       accessorKey: "action",

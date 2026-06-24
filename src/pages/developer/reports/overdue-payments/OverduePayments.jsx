@@ -6,7 +6,6 @@ import ReportsStats from "../ReportsStats";
 
 const OverduePayments = () => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const [itemEdit, setItemEdit] = React.useState(null);
 
   // Columns
   const columns = [
@@ -55,10 +54,11 @@ const OverduePayments = () => {
         <ReportsStats />
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)]`}
-          path=""
+          className={`sm:overflow-auto sm:h-[calc(82dvh-230px)] h-[calc(97dvh-250px)]`}
+          path="report-sales-order/page-all-low-stock"
           hasExport={true}
-          setItemEdit={setItemEdit}
+          haveFilterTable={true}
+          ishaveAdd={false}
         />
       </HeaderNav>
     </>
