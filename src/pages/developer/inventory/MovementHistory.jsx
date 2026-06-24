@@ -101,9 +101,10 @@ const MovementHistory = () => {
     <>
       <HeaderNav menu={"inventory"} activeTab="movement-history">
         <WarningBanner
-          path="stock-movement/read-count-low-stock"
+          path="stock-movement/read-all-low-stock"
           text="products"
-          description="are below low stock threshold: Cassava chips (C), Kropek."
+          description="are below low stock threshold: "
+          isLowStock={true}
         />
         <InfiniteTable
           columns={columns}
