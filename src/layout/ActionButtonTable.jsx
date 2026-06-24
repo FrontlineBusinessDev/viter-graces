@@ -38,52 +38,54 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
   return (
     <>
       <div className="flex items-center justify-end gap-3 ">
-        {item?.action_array?.map((a, akey) => {
-          return (
-            isEmptyItem(a?.name, "") === "view" &&
-            Number(isEmptyItem(a?.isActive, 1)) ===
-              Number(isEmptyItem(dataArray?.is_active, 1)) && (
-              <div key={akey}>
-                <ActionButton
-                  item={a}
-                  onClick={() => handleView(a)}
-                  data-testid={a.testId}
-                />
-              </div>
-            )
-          );
-        })}
-        {item?.action_array?.map((a, akey) => {
-          return (
-            isEmptyItem(a?.name, "") === "edit" &&
-            Number(isEmptyItem(a?.isActive, 1)) ===
-              Number(isEmptyItem(dataArray?.is_active, 1)) && (
-              <div key={akey}>
-                <ActionButton
-                  item={a}
-                  onClick={() => handleUpdate(a)}
-                  data-testid={a.testId}
-                />
-              </div>
-            )
-          );
-        })}
-        {item?.action_array?.map((b, bkey) => {
-          return (
-            isEmptyItem(b?.name, "") !== "edit" &&
-            isEmptyItem(b?.name, "") !== "view" &&
-            Number(isEmptyItem(b?.isActive, 1)) ===
-              Number(isEmptyItem(dataArray?.is_active, 1)) && (
-              <div key={bkey}>
-                <ActionButton
-                  item={b}
-                  onClick={() => handleAction(b)}
-                  data-testid={b.testId}
-                />
-              </div>
-            )
-          );
-        })}
+        <div className=" right-5 flex gap-x-2 items-center h-full ">
+          {item?.action_array?.map((a, akey) => {
+            return (
+              isEmptyItem(a?.name, "") === "view" &&
+              Number(isEmptyItem(a?.isActive, 1)) ===
+                Number(isEmptyItem(dataArray?.is_active, 1)) && (
+                <div key={akey}>
+                  <ActionButton
+                    item={a}
+                    onClick={() => handleView(a)}
+                    data-testid={a.testId}
+                  />
+                </div>
+              )
+            );
+          })}
+          {item?.action_array?.map((a, akey) => {
+            return (
+              isEmptyItem(a?.name, "") === "edit" &&
+              Number(isEmptyItem(a?.isActive, 1)) ===
+                Number(isEmptyItem(dataArray?.is_active, 1)) && (
+                <div key={akey}>
+                  <ActionButton
+                    item={a}
+                    onClick={() => handleUpdate(a)}
+                    data-testid={a.testId}
+                  />
+                </div>
+              )
+            );
+          })}
+          {item?.action_array?.map((b, bkey) => {
+            return (
+              isEmptyItem(b?.name, "") !== "edit" &&
+              isEmptyItem(b?.name, "") !== "view" &&
+              Number(isEmptyItem(b?.isActive, 1)) ===
+                Number(isEmptyItem(dataArray?.is_active, 1)) && (
+                <div key={bkey}>
+                  <ActionButton
+                    item={b}
+                    onClick={() => handleAction(b)}
+                    data-testid={b.testId}
+                  />
+                </div>
+              )
+            );
+          })}
+        </div>
       </div>
     </>
   );

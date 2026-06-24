@@ -47,8 +47,8 @@ export const InputCheckbox = ({
             meta.touched && meta.error ? "w-auto h-auto error-show" : ""
           } cursor-pointer -bottom-2 m-0 -translate-y-4 relative`}
         >
+          {required && <span className="text-red-500">*</span>}
           {label}
-          {required && <span className="text-alert">*</span>}
         </label>
       </div>
     </>

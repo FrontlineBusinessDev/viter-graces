@@ -18,8 +18,8 @@ export const InputTextArea = ({
     <>
       {label !== "" && (
         <label htmlFor={props.id || props.name}>
+          {required && <span className="text-red-500">*</span>}
           {label}
-          {required && <span className="text-alert"> *</span>}
         </label>
       )}
       <textarea
