@@ -5,11 +5,10 @@ import {
 import { StockTypeArray } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
+import WarningBanner from "@/layout/WarningBanner";
 import { StoreContext } from "@/store/StoreContext";
-import { TriangleAlert } from "lucide-react";
 import React from "react";
 import ModalStockOverview from "./modal/ModalStockOverview";
-import WarningBanner from "@/layout/WarningBanner";
 const MovementHistory = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);

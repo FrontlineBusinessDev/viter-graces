@@ -80,7 +80,11 @@ const ModalReturns = ({ itemEdit }) => {
       if (data.success) {
         dispatch(setIsAdd(false));
         dispatch(setSuccess(true));
-        dispatch(setMessage(successMsg));
+        dispatch(
+          setMessage(
+            itemEdit ? "Updated successfully." : "Created successfully.",
+          ),
+        );
       }
       if (!data.success) {
         dispatch(setError(true));

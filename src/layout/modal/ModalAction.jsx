@@ -33,7 +33,7 @@ const ModalAction = ({ mysqlApiAction, msg, successMsg, item, queryKey }) => {
       if (data.success) {
         dispatch(setIsAction(false));
         dispatch(setSuccess(true));
-        dispatch(setMessage(successMsg));
+        dispatch(setMessage(`${item?.action} successfully.`));
       }
       if (!data.success) {
         dispatch(setError(true));
@@ -41,6 +41,7 @@ const ModalAction = ({ mysqlApiAction, msg, successMsg, item, queryKey }) => {
       }
     },
   });
+
   const handleYes = async () => {
     // mutate data
     mutation.mutate({
