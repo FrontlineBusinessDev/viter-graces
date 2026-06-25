@@ -30,6 +30,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         // FOR MULTIPLE FILTER 
         $val->filters = $data['columnFilters'];
 
+
         checkLimitId($val->column_start, $val->column_total);
 
         $query = checkReadAllInventoryMovementLimit($val, allowedColumns());

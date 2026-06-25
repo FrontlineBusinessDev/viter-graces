@@ -120,23 +120,6 @@ const InfiniteTable = ({
     return pages?.flatMap((page) => page.data ?? []) ?? [];
   }, [pages]);
 
-  // // Infinite scroll trigger
-  // const lastRowRef = useCallback(
-  //   (node) => {
-  //     if (isFetchingNextPage) return;
-
-  //     if (observer.current) observer.current.disconnect();
-
-  //     observer.current = new IntersectionObserver((entries) => {
-  //       if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-  //         fetchNextPage();
-  //       }
-  //     });
-
-  //     if (node) observer.current.observe(node);
-  //   },
-  //   [isFetchingNextPage, hasNextPage, fetchNextPage],
-  // );
   const lastRowRef = useCallback(
     (node) => {
       if (!node) return;
@@ -169,9 +152,9 @@ const InfiniteTable = ({
       equals: (row, columnId, value) => {
         return row.getValue(columnId) === value;
       },
-      date: (row, columnId, value) => {
-        return row.getValue(columnId) === DateFormat(value);
-      },
+      // date: (row, columnId, value) => {
+      //   return row.getValue(columnId) === DateFormat(value);
+      // },
       between: (row, columnId, value) => {
         const rowValue = row.getValue(columnId);
         const { min, max } = value || {};
