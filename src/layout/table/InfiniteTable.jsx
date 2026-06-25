@@ -28,7 +28,7 @@ import MobileResponsiveList from "../mobile-responsive/MobileResponsiveList";
 import ModalAction from "../modal/ModalAction";
 import TableStatus from "../TableStatus";
 import { renderCellContent } from "./function-table";
-import { DateFormat } from "@/components/dateFormat";
+import { DateFormat } from "@/components/DateFormat";
 
 const InfiniteTable = ({
   columns,
@@ -152,9 +152,9 @@ const InfiniteTable = ({
       equals: (row, columnId, value) => {
         return row.getValue(columnId) === value;
       },
-      // date: (row, columnId, value) => {
-      //   return row.getValue(columnId) === DateFormat(value);
-      // },
+      date: (row, columnId, value) => {
+        return row.getValue(columnId) === DateFormat(value);
+      },
       between: (row, columnId, value) => {
         const rowValue = row.getValue(columnId);
         const { min, max } = value || {};
