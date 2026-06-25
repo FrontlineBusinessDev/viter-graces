@@ -49,6 +49,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
             sales_order_product_owner_id: "",
             sales_order_product_owner_name: "",
             sales_order_qty: "1",
+            sales_order_qty_old: "1",
             sales_order_price: "",
             sales_order_total: 0,
           },
@@ -74,9 +75,15 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     setItems(updated);
   };
 
-  const handleChangeAmount = (index, field, value) => {
+  const handleChangeAmount = (index, id = 0, field, value) => {
     const updated = [...items];
 
+    updated[index]["sales_order_qty_old"] = isEmptyItem(
+      itemEdit?.items?.find(
+        (option) => Number(option.sales_order_aid) === Number(id),
+      )?.sales_order_qty,
+      "",
+    );
     updated[index][field] = value;
 
     // compute row total
@@ -98,6 +105,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
         sales_order_product_owner_id: "",
         sales_order_product_owner_name: "",
         sales_order_qty: "1",
+        sales_order_qty_old: "1",
         sales_order_price: "",
         sales_order_total: 0,
         id: counter,
@@ -154,11 +162,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     setInstallmentItems(updated);
   };
 
-  const handleClose = () => {
-    dispatch(setIsAdd(false));
-    dispatch(setError(false));
-  };
-
   handleEscape(() => handleClose());
 
   const queryClient = useQueryClient();
@@ -195,6 +198,15 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     },
   });
 
+  const handleClose = () => {
+    dispatch(setIsAdd(false));
+    dispatch(setError(false));
+    queryClient.invalidateQueries({ queryKey: ["stock-movement"] });
+    queryClient.invalidateQueries({ queryKey: ["products"] });
+    queryClient.invalidateQueries({ queryKey: ["stock-overview"] });
+    queryClient.invalidateQueries({ queryKey: ["sales-order"] });
+  };
+
   const initVal = {
     // ...itemEdit,
     sales_order_date: isEmptyItem(
@@ -219,6 +231,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
       "",
     ),
     sales_order_qty: isEmptyItem(itemEdit?.sales_order_qty, "1"),
+    sales_order_status: isEmptyItem(itemEdit?.sales_order_status, ""),
     sales_order_price: isEmptyItem(itemEdit?.sales_order_price, ""),
     sales_order_total: isEmptyItem(itemEdit?.sales_order_total, ""),
     sales_order_discount: isEmptyItem(itemEdit?.sales_order_discount, ""),
@@ -256,6 +269,10 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     ),
     sales_order_total_balance_amount: isEmptyItem(
       itemEdit?.sales_order_total_balance_amount,
+      "0",
+    ),
+    sales_order_total_amount: isEmptyItem(
+      itemEdit?.sales_order_total_amount,
       "0",
     ),
     total: "0",
@@ -484,9 +501,9 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                 onChange={(e) => {
                                   handleChangeAmount(
                                     index,
+                                    a?.sales_order_aid,
                                     "sales_order_qty",
                                     e.target.value,
-                                    0,
                                   );
                                 }}
                                 className="mt-0"

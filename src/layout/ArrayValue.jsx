@@ -20,7 +20,7 @@ export const ActiveInActiveStatus = (val = "default-status") => {
       name: "installment-status",
       status: [
         { label: "paid", value: 1 },
-        { label: "duedate", value: 0 },
+        { label: "overdue", value: 0 },
       ],
     },
     {
@@ -44,6 +44,8 @@ export const ActiveInActiveStatus = (val = "default-status") => {
         { label: "unpaid", value: "unpaid" },
         { label: "paid", value: "paid" },
         { label: "partial", value: "partial" },
+        { label: "inactive", value: "inactive" },
+        { label: "overdue", value: "overdue" },
       ],
     },
     {

@@ -15,7 +15,7 @@ const Pills = ({ children, variant = "active" }) => {
     unpaid: "bg-gray-300 text-gray-700",
     paid: "bg-success/20 text-success",
     partial: "bg-blue-300 text-blue-700",
-    duedate: "bg-red-100 text-red-500",
+    overdue: "bg-red-100 text-red-500",
     // stock-type-status
     stock_in_adjustments: "bg-blue-300 text-blue-700",
     purchases: "bg-violet-300 text-violet-700 ",

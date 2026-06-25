@@ -36,7 +36,6 @@ if (array_key_exists("id", $_GET)) {
     $val->sales_order_total_balance_amount = max(0, $data["sales_order_total_balance_amount"]);
     $val->sales_order_created = date("Y-m-d H:i:s");
     $val->sales_order_updated = date("Y-m-d H:i:s");
-    $val->sales_order_number = $data["sales_order_number"];
 
     $installmentItems = $data["installmentItems"];
     $installmentItemsDelete = $data["installmentItemsDelete"];
@@ -62,25 +61,15 @@ if (array_key_exists("id", $_GET)) {
             }
         }
     }
+    // INSTALLMENT DATA
+    updateStatus($val, $data);
     for ($i = 0; $i < count($installmentItemsDelete); $i++) {
         $val->installmet_payment_aid = $installmentItemsDelete[$i]['installmet_payment_aid'];
         $query = checkDeleteById($val);
     }
 
-
     $ordersItems = $data["items"];
     $itemsDelete = $data["itemsDelete"];
-    // create
-    $val->sales_order_status = 'paid';
-
-    if ((float)$val->sales_order_paid_amount < (float)$val->sales_order_total_payable_amount) {
-        $val->sales_order_status = 'partial';
-    }
-
-    if ((float)$val->sales_order_paid_amount == 0) {
-        $val->sales_order_status = 'unpaid';
-    }
-
 
     for ($i = 0; $i < count($ordersItems); $i++) {
 
@@ -91,6 +80,7 @@ if (array_key_exists("id", $_GET)) {
         $val->sales_order_product_owner_name = $ordersItems[$i]["sales_order_product_owner_name"];
         $val->sales_order_qty = $ordersItems[$i]["sales_order_qty"];
         $val->sales_order_price = $ordersItems[$i]["sales_order_price"];
+        $sales_order_qty_old = $ordersItems[$i]["sales_order_qty_old"];
         $val->sales_order_total = $ordersItems[$i]["sales_order_total"];
 
         if ((float)$val->sales_order_aid == 0) {
@@ -106,10 +96,16 @@ if (array_key_exists("id", $_GET)) {
         if (count($queryQty) > 0) {
             $val->stock_movement_before_qty = $queryQty[0]['current_qty'] + (float)$val->sales_order_qty;
             $val->stock_movement_after_qty = $queryQty[0]['current_qty'];
+        } else {
+            $val->stock_movement_before_qty = 0;
+            $val->stock_movement_after_qty = 0;
         };
         $val->stock_movement_qty = (float)$val->sales_order_qty;
+        $val->stock_movement_status = "active";
 
-        $query = checkCreateMovementStock($val);
+        if ((float)$val->sales_order_qty != (float)$sales_order_qty_old) {
+            $query = checkCreateMovementStock($val);
+        }
     }
 
     for ($i = 0; $i < count($itemsDelete); $i++) {

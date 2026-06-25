@@ -107,7 +107,7 @@ const MovementHistory = () => {
         />
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(100dvh-295px)] h-[calc(97dvh-250px)]`}
           path="stock-movement"
           setItemEdit={setItemEdit}
           haveFilterTable={true}
