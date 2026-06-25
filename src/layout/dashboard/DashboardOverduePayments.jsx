@@ -1,32 +1,29 @@
-import { devNavUrl } from "@/config/config";
+import NoData from "@/components/NoData";
+import ServerError from "@/components/ServerError";
+import TableLoading from "@/components/spinners/TableLoading";
+import { apiVersion, devNavUrl } from "@/config/config";
+import useQueryData from "@/services/useQueryData";
 import { StoreContext } from "@/store/StoreContext";
 import { TrendingDown } from "lucide-react";
-import React from "react";
+import React, { useMemo } from "react";
 const DashboardOverduePayments = () => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const userRole = "developer";
-  const dashboardData = {
-    overduePayments: [
-      {
-        name: "Carol Williams",
-        order: "ORD-003",
-        date: "Jan 15, 2026",
-        amount: 699,
-      },
-      {
-        name: "Juan Dela Cruz",
-        order: "ORD-013",
-        date: "Jan 18, 2026",
-        amount: 2599,
-      },
-      {
-        name: "Robert Samson",
-        order: "ORD-018",
-        date: "Feb 5, 2026",
-        amount: 12599,
-      },
-    ],
-  };
+  const userRole = store.credentials?.data?.role;
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data: result,
+  } = useQueryData(
+    `${apiVersion}/report-sales-order/read-overdue-payment`, // endpoint
+    "post", // method
+    `report-sales-order/read-overdue-payment`, // key
+    { limit: 6 },
+  );
+
+  const valData = useMemo(() => {
+    return result?.data;
+  }, [result]);
 
   return (
     <>
@@ -39,28 +36,52 @@ const DashboardOverduePayments = () => {
           <TrendingDown size={16} /> Overdue Payments
         </h2>
         <ul className="space-y-3 min-h-[300px]">
-          {dashboardData.overduePayments.map((payment, idx) => (
-            <li key={idx} className="flex justify-between">
-              <div>
-                <span className="font-medium text-xs text-black dark:text-light">
-                  {payment.name} -{" "}
-                  <span className="text-gray-500">{payment.order}</span>
-                </span>
-                <p className="text-gray-500 text-sm">{payment.date}</p>
-              </div>
-              <span className="text-red-600 font-semibold">
-                ₱{payment.amount.toLocaleString()}
-              </span>
+          {isLoading ? (
+            <li>
+              <TableLoading count={15} cols={1} />
             </li>
-          ))}
+          ) : error ? (
+            <li>
+              <ServerError />
+            </li>
+          ) : valData?.length > 0 ? (
+            valData?.map((item, key) => {
+              return (
+                <li key={key} className="flex justify-between">
+                  <div>
+                    <span className="font-medium text-xs text-black dark:text-light">
+                      {item.installmet_payment_customer_name} -{" "}
+                      <span className="text-gray-500">
+                        {item.installmet_payment_code_number}
+                      </span>
+                    </span>
+                    <p className="text-gray-500 text-sm">
+                      {item.installmet_payment_due_date}
+                    </p>
+                  </div>
+                  <span className="text-red-600 font-semibold">
+                    ₱{item.installmet_payment_amount}
+                  </span>
+                </li>
+              );
+            })
+          ) : (
+            <li>
+              <NoData />
+            </li>
+          )}
         </ul>
-        <a
-          data-testid="overdue-payment-btn-to-view"
-          href={`${devNavUrl}/${userRole}/overdue-payments`}
-          className="absolute bottom-3 text-orange-500 pt-3 inline-block"
-        >
-          Click to view →
-        </a>
+        {valData?.length > 0 ? (
+          <a
+            data-testid="overdue-payment-btn-to-view"
+            href={`${devNavUrl}/${userRole}/overdue-payments`}
+            className="absolute bottom-3 text-orange-500 pt-3 inline-block"
+          >
+            Click to view →
+          </a>
+        ) : (
+          ""
+        )}
       </div>
     </>
   );

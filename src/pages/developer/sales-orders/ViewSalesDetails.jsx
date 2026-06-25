@@ -33,7 +33,7 @@ const ViewSalesDetails = ({ itemEdit }) => {
             Order Details - {itemEdit?.sales_order_number}
           </h3>
 
-          <ul className="grid grid-cols-2 [&>li]:flex [&>li]:items-center [&>li]:gap-2 my-3">
+          {/* <ul className="grid grid-cols-2 [&>li]:flex [&>li]:items-center [&>li]:gap-2 my-3">
             <li>
               <p>Customer:</p>
               <p className="text-black dark:text-light">
@@ -64,51 +64,35 @@ const ViewSalesDetails = ({ itemEdit }) => {
                 {itemEdit?.sales_order_status}
               </Pills>
             </li>
-          </ul>
+          </ul> */}
 
           <div className="overflow-y-auto flex-1">
             <div className="">
               <div className="rounded-2xl border border-gray-300 bg-white dark:bg-[#0b111e] overflow-x-hidden dark:border-gray-700 max-h-[200px]">
                 {/* desktop header */}
-                <ul className="hidden sticky top-0 lg:grid lg:grid-cols-[2rem_1fr_1fr_1fr_1fr] lg:items-center border-b bg-gray-50 px-4 py-3 text-xs font-medium text-gray-500 dark:bg-[#0b111e]">
+                <ul className="sticky top-0 grid grid-cols-[2rem_1fr_4rem_1fr_1fr] items-center border-b bg-gray-50 px-4 py-3 text-xs font-medium text-gray-500 dark:bg-[#0b111e]">
                   <li>#</li>
                   <li>Product</li>
-                  <li className="text-center">QTY</li>
-                  <li className="text-right">Price</li>
-                  <li className="text-right">Total</li>
+                  <li>QTY</li>
+                  <li className="text-center">Price</li>
+                  <li className="text-center">Total</li>
                 </ul>
                 {itemEdit?.items?.map((aitem, akey) => {
                   return (
                     <ul
-                      className={`${akey === 0 ? " pt-3 " : " pt-1 "} px-4 grid grid-cols-[.5fr_1fr_1fr_1fr_1fr] lg:grid-cols-[2rem_1fr_1fr_1fr_1fr] gap-1 text-sm last:pb-3`}
+                      className={`${akey === 0 ? " pt-3 " : " pt-1 "} px-4 grid grid-cols-[2rem_1fr_4rem_1fr_1fr] gap-1 text-sm last:pb-3`}
                       key={akey}
                     >
+                      <li>{counter++}.</li>
+                      <li>{aitem?.sales_order_product_name}</li>
+                      <li>{aitem?.sales_order_qty}</li>
                       <li>
-                        <p className="text-xs text-gray-400 lg:hidden">#</p>
-                        {counter++}.
-                      </li>
-
-                      <li>
-                        <p className="text-xs text-gray-400 lg:hidden">
-                          Product
-                        </p>
-                        {aitem?.sales_order_product_name}
-                      </li>
-                      <li className="text-center">
-                        <p className="text-xs text-gray-400 lg:hidden ">QTY</p>
-                        {aitem?.sales_order_qty}
-                      </li>
-
-                      <li>
-                        <p className="text-xs text-gray-400 lg:hidden">Price</p>
                         <AmountWithPesoSign
                           classN="size-3"
                           amount={`${aitem?.sales_order_price}`}
                         />
                       </li>
                       <li>
-                        <p className="text-xs text-gray-400 lg:hidden">Total</p>
-
                         <AmountWithPesoSign
                           classN="size-3"
                           amount={`${aitem?.sales_order_total}`}

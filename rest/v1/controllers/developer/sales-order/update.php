@@ -38,6 +38,36 @@ if (array_key_exists("id", $_GET)) {
     $val->sales_order_updated = date("Y-m-d H:i:s");
     $val->sales_order_number = $data["sales_order_number"];
 
+    $installmentItems = $data["installmentItems"];
+    $installmentItemsDelete = $data["installmentItemsDelete"];
+
+    if (count($installmentItems) > 0) {
+        // CREATE INSTALLMENT PAYMENT
+        for ($a = 0; $a < count($installmentItems); $a++) {
+            if ($a === 0) {
+                $val->sales_order_due_date = $installmentItems[$a]["installmet_payment_due_date"];
+            }
+            $val->installmet_payment_code_id = 0;
+            $val->installmet_payment_aid = $installmentItems[$a]["installmet_payment_aid"];
+            $val->installmet_payment_code = $installmentItems[$a]["installmet_payment_code"];
+            $val->installmet_payment_due_date = $installmentItems[$a]["installmet_payment_due_date"];
+            $val->installmet_payment_code_number = $val->sales_order_number;
+            $val->installmet_payment_method = "";
+            $val->installmet_payment_amount = $installmentItems[$a]["installmet_payment_amount"];
+            if ((float)$val->installmet_payment_aid == 0) {
+                checkCreateInstallment($val);
+            } else {
+                checkId($val->installmet_payment_aid);
+                checkUpdateInstallment($val);
+            }
+        }
+    }
+    for ($i = 0; $i < count($installmentItemsDelete); $i++) {
+        $val->installmet_payment_aid = $installmentItemsDelete[$i]['installmet_payment_aid'];
+        $query = checkDeleteById($val);
+    }
+
+
     $ordersItems = $data["items"];
     $itemsDelete = $data["itemsDelete"];
     // create
@@ -83,7 +113,7 @@ if (array_key_exists("id", $_GET)) {
     }
 
     for ($i = 0; $i < count($itemsDelete); $i++) {
-        $val->sales_order_aid = $data['id'];
+        $val->sales_order_aid = $itemsDelete[$i]['sales_order_aid'];
         $query = checkDeleteById($val);
     }
 

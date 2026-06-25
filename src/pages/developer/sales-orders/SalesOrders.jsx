@@ -19,7 +19,7 @@ const SalesOrders = () => {
     {
       accessorKey: "sales_order_status",
       header: "status",
-      classTh: "min-w-[8rem]",
+      classTh: "min-w-[7rem]",
       classTd: "",
       filterFn: "equals",
       meta: {
@@ -99,7 +99,7 @@ const SalesOrders = () => {
       <HeaderNav menu={"sales orders"} activeTab="sales-orders">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(100dvh-203px)] h-[calc(97dvh-250px)]`}
           path="sales-order"
           setItemEdit={setItemEdit}
           haveFilterTable={true}

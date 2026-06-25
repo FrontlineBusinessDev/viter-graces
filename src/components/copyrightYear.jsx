@@ -1,5 +1,5 @@
 // Copyright year
-export const copyrightYear = () => {
+export const CopyrightYear = () => {
   return new Date(new Date().toString().split("GMT")[0] + " UTC")
     .toISOString()
     .split("T")[0]
