@@ -89,7 +89,7 @@ const ModalProducts = ({ itemEdit }) => {
     products_stocks: isEmptyItem(itemEdit?.products_stocks, ""),
     products_owner_id: isEmptyItem(itemEdit?.products_owner_id, ""),
     products_owner_name: isEmptyItem(itemEdit?.products_owner_name, ""),
-    products_suppliers_id: isEmptyItem(itemEdit?.products_suppliers_id, ""),
+    products_suppliers_id: isEmptyItem(itemEdit?.products_suppliers_id, "0"),
     products_suppliers_name: isEmptyItem(itemEdit?.products_suppliers_name, ""),
     products_sales: isEmptyItem(itemEdit?.products_sales, ""),
     products_unit: isEmptyItem(itemEdit?.products_unit, "pcs"),
