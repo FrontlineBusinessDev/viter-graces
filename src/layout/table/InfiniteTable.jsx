@@ -1,8 +1,8 @@
 import AddButton from "@/components/buttons/AddButton";
 import ExportCSVButton from "@/components/buttons/ExportCSVButton";
+import { DateFormat } from "@/components/DateFormat";
 import { DebouncedInput } from "@/components/inputs/InputText";
 import NoData from "@/components/NoData";
-import { AmountWithPesoSign } from "@/components/PesoSign";
 import SearchBar from "@/components/SearchBar";
 import ServerError from "@/components/ServerError";
 import ButtonSpinner from "@/components/spinners/ButtonSpinner";
@@ -21,14 +21,11 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Image } from "lucide-react";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import ActionButtonTable from "../ActionButtonTable";
 import MobileResponsiveList from "../mobile-responsive/MobileResponsiveList";
 import ModalAction from "../modal/ModalAction";
-import TableStatus from "../TableStatus";
 import { renderCellContent } from "./function-table";
-import { DateFormat } from "@/components/DateFormat";
 
 const InfiniteTable = ({
   columns,
@@ -69,12 +66,12 @@ const InfiniteTable = ({
           : "0",
       id: "",
     }),
-    [store.isSearch],
+    [store.isSearch, search.current?.value || ""],
   );
 
   const queryKey = useMemo(
     () => [path, store.isSearch, search.current?.value || "", columnFilters],
-    [path, store.isSearch, JSON.stringify({ columnFilters })],
+    [path, search.current?.value || "", JSON.stringify({ columnFilters })],
   );
 
   // React Query infinite fetch
