@@ -69,7 +69,7 @@ if (count($installmentItems) > 0) {
 }
 
 if (
-    $val->sales_order_due_date == ""
+    $val->sales_order_due_date == "" && (float)$val->sales_order_paid_amount < (float)$val->sales_order_total_payable_amount
 ) {
     $val->sales_order_status = 'overdue';
 }
@@ -93,9 +93,9 @@ for ($i = 0; $i < count($ordersItems); $i++) {
 
     $queryQty = getResultData($val->readtotalQTY());
     if (count($queryQty) > 0) {
-        $val->stock_movement_before_qty = $queryQty[0]['current_qty'];
+        $val->stock_movement_before_qty = (float)$queryQty[0]['current_qty'] + (float)$val->sales_order_qty;
+        $val->stock_movement_after_qty = (float)$queryQty[0]['current_qty'];
     };
-    $val->stock_movement_after_qty = (float)$val->stock_movement_before_qty + (float)$val->sales_order_qty;
     $val->stock_movement_qty = (float)$val->sales_order_qty;
 
     checkCreateMovementStock($val);
