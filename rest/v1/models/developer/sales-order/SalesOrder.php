@@ -503,7 +503,6 @@ class SalesOrder
         try {
             $sql = "update {$this->tblSalesOrder} set ";
             $sql .= "sales_order_date = :sales_order_date, ";
-            $sql .= "sales_order_number = :sales_order_number, ";
             $sql .= "sales_order_customer_id = :sales_order_customer_id, ";
             $sql .= "sales_order_customer_name = :sales_order_customer_name, ";
             $sql .= "sales_order_payment_method = :sales_order_payment_method, ";
@@ -528,7 +527,6 @@ class SalesOrder
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "sales_order_date" => $this->sales_order_date,
-                "sales_order_number" => $this->sales_order_number,
                 "sales_order_customer_id" => $this->sales_order_customer_id,
                 "sales_order_customer_name" => $this->sales_order_customer_name,
                 "sales_order_payment_method" => $this->sales_order_payment_method,
@@ -607,6 +605,24 @@ class SalesOrder
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "sales_order_aid" => $this->sales_order_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // delete
+    public function deleteInstallment()
+    {
+        try {
+            $sql = "delete from {$this->tblInstallmetPayment} ";
+            $sql .= "where installmet_payment_code_number = :installmet_payment_code_number ";
+            $sql .= "and installmet_payment_code = 'sales-order' ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "installmet_payment_code_number" => $this->sales_order_number,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

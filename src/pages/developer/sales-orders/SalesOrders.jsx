@@ -12,7 +12,6 @@ import ViewSalesDetails from "./ViewSalesDetails";
 const SalesOrders = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
-  const [isView, setView] = React.useState(false);
 
   // Columns
   const columns = [

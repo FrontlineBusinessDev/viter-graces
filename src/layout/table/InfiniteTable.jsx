@@ -9,7 +9,7 @@ import ButtonSpinner from "@/components/spinners/ButtonSpinner";
 import TableLoading from "@/components/spinners/TableLoading";
 import { apiVersion } from "@/config/config";
 import { queryDataInfinite } from "@/services/queryDataInfinite";
-import { setIsAdd, setIsSubAdd, setIsView } from "@/store/StoreAction";
+import { setIsAdd, setIsSubAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { getConvertStringToJSONparseData } from "@/utilities/getConvertStringToJSONparseData";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
@@ -50,12 +50,6 @@ const InfiniteTable = ({
   const search = React.useRef(null);
   const [onSearch, setOnSearch] = React.useState(false);
   const [page, setPage] = useState(1);
-
-  // ACTIONS ADD
-  const handleView = () => {
-    dispatch(setIsView(true));
-    setItemEdit(null);
-  };
 
   const searchPayload = useMemo(
     () => ({
