@@ -12,6 +12,7 @@ const TableStatus = ({ item, dataArray }) => {
           item?.status_option.find(
             (option) =>
               option.label === isEmptyItem(dataArray?.is_status, "") ||
+              option.label === isEmptyItem(dataArray?.products_status, "") ||
               option.value === Number(isEmptyItem(dataArray?.is_active, 1)),
           )?.label,
           "",
@@ -23,6 +24,7 @@ const TableStatus = ({ item, dataArray }) => {
         : item?.status_option.find(
             (option) =>
               option.label === isEmptyItem(dataArray?.is_status, "") ||
+              option.label === isEmptyItem(dataArray?.products_status, "") ||
               option.value === Number(isEmptyItem(dataArray?.is_active, 1)),
           )?.label
       : dataArray?.status_text;

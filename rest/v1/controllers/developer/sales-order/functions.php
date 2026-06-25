@@ -120,6 +120,14 @@ function allowedColumns()
 }
 
 // Update 
+function checkUpdateInstallment($object)
+{
+    $query = $object->updateInstallment();
+    checkQuery($query, "There's a problem processing your request. (update installment)");
+    return $query;
+}
+
+// Update 
 function updateConnectedMenu($object)
 {
     // 

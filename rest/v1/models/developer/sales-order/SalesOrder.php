@@ -31,11 +31,15 @@ class SalesOrder
     public $sales_order_created;
     public $sales_order_updated;
 
+    public $installmet_payment_aid;
+    public $installmet_payment_code_id;
     public $installmet_payment_code;
     public $installmet_payment_due_date;
     public $installmet_payment_code_number;
     public $installmet_payment_method;
     public $installmet_payment_amount;
+    public $installmet_payment_customer_id;
+    public $installmet_payment_customer_name;
 
     public $stock_movement_before_qty;
     public $stock_movement_after_qty;
@@ -206,15 +210,15 @@ class SalesOrder
         try {
             $sql = "select *, ";
             $sql .= "sales_order_number, ";
-            $sql .= "MAX(sales_order_status) as is_status, ";
-            $sql .= "MAX(sales_order_total_payable_amount) as total_amount, ";
-            $sql .= "MAX(sales_order_total_amount) as total_sub_amount, ";
-            $sql .= "MAX(sales_order_paid_amount) as total_paid, ";
-            $sql .= "MAX(sales_order_aid) as id, ";
-            $sql .= "MAX(sales_order_is_active) as is_active, ";
-            $sql .= "MAX(sales_order_date) as order_date, ";
-            $sql .= "DATE_FORMAT(MAX(sales_order_date), '%b %d, %Y') as sales_order_date, ";
-            $sql .= "MAX(sales_order_customer_name) as name ";
+            $sql .= "sales_order_status as is_status, ";
+            $sql .= "sales_order_total_payable_amount as total_amount, ";
+            $sql .= "sales_order_total_amount as total_sub_amount, ";
+            $sql .= "sales_order_paid_amount as total_paid, ";
+            $sql .= "sales_order_aid as id, ";
+            $sql .= "sales_order_is_active as is_active, ";
+            $sql .= "sales_order_date as order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";
             if (!empty($filterColumn)) {
@@ -274,15 +278,15 @@ class SalesOrder
         try {
             $sql = "select *, ";
             $sql .= "sales_order_number, ";
-            $sql .= "MAX(sales_order_status) as is_status, ";
-            $sql .= "MAX(sales_order_total_payable_amount) as total_amount, ";
-            $sql .= "MAX(sales_order_total_amount) as total_sub_amount, ";
-            $sql .= "MAX(sales_order_paid_amount) as total_paid, ";
-            $sql .= "MAX(sales_order_aid) as id, ";
-            $sql .= "MAX(sales_order_is_active) as is_active, ";
-            $sql .= "MAX(sales_order_date) as order_date, ";
-            $sql .= "DATE_FORMAT(MAX(sales_order_date), '%b %d, %Y') as sales_order_date, ";
-            $sql .= "MAX(sales_order_customer_name) as name ";
+            $sql .= "sales_order_status as is_status, ";
+            $sql .= "sales_order_total_payable_amount as total_amount, ";
+            $sql .= "sales_order_total_amount as total_sub_amount, ";
+            $sql .= "sales_order_paid_amount as total_paid, ";
+            $sql .= "sales_order_aid as id, ";
+            $sql .= "sales_order_is_active as is_active, ";
+            $sql .= "sales_order_date as order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";
             if (!empty($filterColumn)) {
@@ -295,7 +299,7 @@ class SalesOrder
             or sales_order_product_name like :sales_order_product_name ) " : " ");
             }
             $sql .= " group by sales_order_number ";
-            $sql .= " order by MAX(sales_order_is_active) desc, ";
+            $sql .= " order by sales_order_is_active desc, ";
             $sql .= "sales_order_number desc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
@@ -677,6 +681,8 @@ class SalesOrder
             $sql .= "installmet_payment_code_number, ";
             $sql .= "installmet_payment_amount, ";
             $sql .= "installmet_payment_method, ";
+            $sql .= "installmet_payment_customer_id, ";
+            $sql .= "installmet_payment_customer_name, ";
             $sql .= "installmet_payment_created, ";
             $sql .= "installmet_payment_updated ) values ( ";
             $sql .= ":installmet_payment_code_id, ";
@@ -685,16 +691,20 @@ class SalesOrder
             $sql .= ":installmet_payment_code_number, ";
             $sql .= ":installmet_payment_amount, ";
             $sql .= ":installmet_payment_method, ";
+            $sql .= ":installmet_payment_customer_id, ";
+            $sql .= ":installmet_payment_customer_name, ";
             $sql .= ":installmet_payment_created, ";
             $sql .= ":installmet_payment_updated ) ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "installmet_payment_code_id" => $this->lastInsertedId,
+                "installmet_payment_code_id" => $this->installmet_payment_code_id,
                 "installmet_payment_code" => $this->installmet_payment_code,
                 "installmet_payment_due_date" => $this->installmet_payment_due_date,
                 "installmet_payment_code_number" => $this->installmet_payment_code_number,
                 "installmet_payment_amount" => $this->installmet_payment_amount,
                 "installmet_payment_method" => $this->installmet_payment_method,
+                "installmet_payment_customer_id" => $this->installmet_payment_customer_id,
+                "installmet_payment_customer_name" => $this->installmet_payment_customer_name,
                 "installmet_payment_created" => $this->sales_order_created,
                 "installmet_payment_updated" => $this->sales_order_updated,
             ]);
@@ -1062,6 +1072,48 @@ class SalesOrder
             $query = false;
         }
 
+        return $query;
+    }
+
+    // read all
+    public function readByInstallment()
+    {
+        try {
+            $sql = "select * from {$this->tblInstallmetPayment} ";
+            $sql .= "where installmet_payment_code_number = :installmet_payment_code_number ";
+            $sql .= "and installmet_payment_code = 'sales-order' ";
+            $sql .= "order by installmet_payment_code_number asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "installmet_payment_code_number" => $this->sales_order_number,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
+    public function updateInstallment()
+    {
+        try {
+            $sql = "update {$this->tblInstallmetPayment} set ";
+            $sql .= "installmet_payment_due_date = :installmet_payment_due_date, ";
+            $sql .= "installmet_payment_amount = :installmet_payment_amount, ";
+            $sql .= "installmet_payment_updated = :installmet_payment_updated ";
+            $sql .= "where installmet_payment_aid = :installmet_payment_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "installmet_payment_due_date" => $this->installmet_payment_due_date,
+                "installmet_payment_amount" => $this->installmet_payment_amount,
+                "installmet_payment_updated" => $this->sales_order_updated,
+                "installmet_payment_aid" => $this->installmet_payment_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
         return $query;
     }
 }

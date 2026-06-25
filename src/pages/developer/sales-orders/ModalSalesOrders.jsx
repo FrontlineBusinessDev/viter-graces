@@ -36,6 +36,9 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   const [installmentItemsDelete, setInstallmentItemsDelete] = React.useState(
     [],
   );
+  const [installmentItems, setInstallmentItems] = React.useState(
+    itemEdit ? itemEdit?.installmentItems : [],
+  );
   const [items, setItems] = React.useState(
     itemEdit
       ? itemEdit?.items
@@ -50,9 +53,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
             sales_order_total: 0,
           },
         ],
-  );
-  const [installmentItems, setInstallmentItems] = React.useState(
-    itemEdit ? itemEdit?.items : [],
   );
 
   const handleChange = (index, selectedItem = "", fieldId, field) => {
@@ -127,7 +127,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
         installmet_payment_due_date: store?.credentials?.data?.server_date,
         installmet_payment_code_number: "",
         installmet_payment_code_id: "",
-        installmet_payment_amount: 0,
+        installmet_payment_amount: "",
         id: installmentCounter,
       },
     ]);
@@ -196,7 +196,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   });
 
   const initVal = {
-    ...itemEdit,
+    // ...itemEdit,
     sales_order_date: isEmptyItem(
       itemEdit?.order_date,
       store?.credentials?.data?.server_date,
@@ -250,6 +250,16 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
       itemEdit?.sales_order_due_date,
       store?.credentials?.data?.server_date,
     ),
+    sales_order_total_payable_amount: isEmptyItem(
+      itemEdit?.sales_order_total_payable_amount,
+      "0",
+    ),
+    sales_order_total_balance_amount: isEmptyItem(
+      itemEdit?.sales_order_total_balance_amount,
+      "0",
+    ),
+    total: "0",
+    validationAmount: false,
   };
 
   const yupSchema = Yup.object({
@@ -279,12 +289,12 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   return (
     <>
       <ModalWrapper
-        val="Sales Order"
+        val={`Sales Order ${itemEdit ? `${itemEdit?.sales_order_number}` : ""}`}
         itemEdit={itemEdit}
         mutation={mutation}
         isOpen={true}
         handleClose={handleClose}
-        width="min-w-[50rem]!"
+        width="max-w-[50rem]!"
       >
         <div className="modal-body">
           <Formik
@@ -317,6 +327,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                 ),
                 ...values,
                 sales_order_discount: Number(values?.sales_order_discount),
+                sales_order_installment: installmentItems?.length,
                 installmentItems,
                 installmentItemsDelete,
                 items,
@@ -365,6 +376,16 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
               props.values.sales_order_total_balance_amount =
                 Number(props.values.sales_order_total_payable_amount) -
                 Number(props.values.sales_order_paid_amount);
+
+              props.values.total =
+                installmentItems?.reduce(
+                  (isum, itemIns) =>
+                    isum + Number(itemIns.installmet_payment_amount),
+                  0,
+                ) + Number(props.values.sales_order_paid_amount);
+              props.values.validationAmount =
+                Number(props.values.total) >=
+                Number(props.values.sales_order_total_payable_amount);
               return (
                 <Form>
                   <div className="grid grid-cols-2 gap-4">
@@ -433,17 +454,18 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         <p>No Items added yet.</p>
                       </div>
                     ) : (
-                      <div className="flex flex-col pb-2">
-                        <ul className="hidden md:grid grid-cols-[1fr_5rem_7rem_7rem_1rem] gap-1 px-3 mt-2 text-dark">
+                      <div className="flex flex-col pb-2 mb-3  ">
+                        <ul className="grid grid-cols-[10rem_5rem_7rem_7rem_1rem] sm:grid-cols-[1fr_5rem_7rem_7rem_1rem] gap-2 px-3 p-3 text-dark bg-gray-100">
                           <li>Products</li>
                           <li>Quantity</li>
                           <li className="text-right">Price per pc.</li>
+                          <li className="text-center">Total</li>
                         </ul>
                         {items.map((a, index) => {
                           return (
                             <div
                               key={index}
-                              className="grid grid-cols-2 md:grid md:grid-cols-[1fr_5rem_7rem_7rem_1rem] gap-1 items-center px-3 py-1"
+                              className="grid grid-cols-[10rem_5rem_7rem_7rem_1rem] sm:grid-cols-[1fr_5rem_7rem_7rem_1rem] gap-1 items-center px-3 py-1"
                             >
                               <InputSalesOrderSelectTagArray
                                 onChange={(e, selectedItem) => {
@@ -554,16 +576,16 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                       onClick={handleAddInstallmentItems}
                     >
                       <Plus size={15} />
-                      <span className="capitalize leading-0">Add Item</span>
+                      <span className="capitalize leading-0">Installment</span>
                     </button>
                   </div>
 
-                  <div className="border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out ">
-                    {installmentItems.length === 0 ? (
-                      ""
-                    ) : (
-                      <div className="flex flex-col pb-2 ">
-                        <ul className="hidden md:grid grid-cols-[1fr_1fr_1rem] gap-3 px-3 mt-2 text-dark">
+                  {installmentItems.length === 0 ? (
+                    <hr className="border-gray-200" />
+                  ) : (
+                    <div className="border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out py-3 ">
+                      <div className="flex flex-col pb-2 h-57 overflow-auto">
+                        <ul className=" grid grid-cols-[10rem_1fr_1rem] sm:grid-cols-[1fr_1fr_1rem] gap-3 px-3 text-dark sticky top-0 bg-gray-100 py-2">
                           <li>Due Date</li>
                           <li>Amount</li>
                         </ul>
@@ -571,7 +593,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                           return (
                             <div
                               key={index}
-                              className="grid grid-cols-2 md:grid md:grid-cols-[1fr_1fr_1rem] gap-3 items-center px-3 py-2"
+                              className="grid grid-cols-[10rem_1fr_1rem] sm:grid-cols-[1fr_1fr_1rem] gap-3 items-center px-3 py-2"
                             >
                               <input
                                 onChange={(e) => {
@@ -601,6 +623,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                   a["installmet_payment_amount"],
                                   1,
                                 )}
+                                placeholder="0"
                                 type="number"
                               />
 
@@ -617,23 +640,21 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                           );
                         })}
                         <div className="px-3 mt-2 text-dark ">
-                          <ul className="hidden md:grid grid-cols-2 ">
-                            <li className="text-right mx-2 uppercase">
+                          <ul className="sm:grid grid-cols-2 ">
+                            <li className="sm:text-right mx-2 uppercase">
                               Total installment amount
                             </li>
                             <li className="text-left! mx-2 ">
                               <AmountWithPesoSign
                                 classN="size-3 "
                                 classAmnt="justify-start! "
-                                amount={installmentItems?.reduce(
-                                  (isum, itemIns) =>
-                                    isum +
-                                    Number(itemIns.installmet_payment_amount),
-                                  0,
-                                )}
+                                amount={
+                                  Number(props.values.total) -
+                                  Number(props.values.sales_order_paid_amount)
+                                }
                               />
                             </li>
-                            <li className="text-right mx-2 uppercase">
+                            <li className="sm:text-right mx-2 uppercase">
                               Total Paid
                             </li>
                             <li className="text-left! mx-2 ">
@@ -643,26 +664,42 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                 amount={props.values.sales_order_paid_amount}
                               />
                             </li>
-                            <li className="text-right mx-2 uppercase">Total</li>
-                            <li className="text-left! mx-2 ">
-                              <AmountWithPesoSign
-                                classN="size-3 "
-                                classAmnt="justify-start! "
-                                amount={
-                                  installmentItems?.reduce(
-                                    (isum, itemIns) =>
-                                      isum +
-                                      Number(itemIns.installmet_payment_amount),
-                                    0,
-                                  ) + props.values.sales_order_paid_amount
-                                }
-                              />
+                            <li
+                              className={`${props.values.validationAmount ? "" : " text-red-800 "} sm:text-right mx-2 uppercase `}
+                            >
+                              Total
+                            </li>
+                            <li
+                              className={`text-left! mx-2 sm:flex justify-between `}
+                            >
+                              <div
+                                className={`${props.values.validationAmount ? "" : " text-red-800 "} `}
+                              >
+                                <AmountWithPesoSign
+                                  classN="size-3 "
+                                  classAmnt="justify-start! "
+                                  amount={props.values.total}
+                                />
+                              </div>
+                              <div className="sm:flex ">
+                                <span className=" mr-4 uppercase ">
+                                  Total Amount
+                                </span>
+                                <AmountWithPesoSign
+                                  classN="size-3 "
+                                  classAmnt="justify-start! "
+                                  amount={
+                                    props?.values
+                                      ?.sales_order_total_payable_amount
+                                  }
+                                />
+                              </div>
                             </li>
                           </ul>
                         </div>
                       </div>
-                    )}
-                  </div>
+                    </div>
+                  )}
 
                   <div className="relative mt-3">
                     <InputTextArea

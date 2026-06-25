@@ -92,6 +92,7 @@ class Customer
             ...$this->column_search != "" ? [
                 "customer_name" => "%{$this->column_search}%",
                 "customer_email" => "%{$this->column_search}%",
+                "customer_address" => "%{$this->column_search}%",
             ] : [],
         ];
 
@@ -126,6 +127,7 @@ class Customer
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != "" ? " and ( customer_name like :customer_name 
+            or customer_address like :customer_address 
             or customer_email like :customer_email ) " : " ");
             }
             $sql .= " order by customer_is_active desc, ";
@@ -148,6 +150,7 @@ class Customer
             ...$this->column_search != "" ? [
                 "customer_name" => "%{$this->column_search}%",
                 "customer_email" => "%{$this->column_search}%",
+                "customer_address" => "%{$this->column_search}%",
             ] : [],
         ];
 
@@ -182,6 +185,7 @@ class Customer
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != "" ? " and ( customer_name like :customer_name 
+            or customer_address like :customer_address 
             or customer_email like :customer_email ) " : " ");
             }
             $sql .= " order by customer_is_active desc, ";
@@ -206,6 +210,7 @@ class Customer
             ...$this->column_search != "" ? [
                 "customer_name" => "%{$this->column_search}%",
                 "customer_email" => "%{$this->column_search}%",
+                "customer_address" => "%{$this->column_search}%",
             ] : [],
         ];
 
@@ -240,6 +245,7 @@ class Customer
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != "" ? " and ( customer_name like :customer_name 
+            or customer_address like :customer_address 
             or customer_email like :customer_email ) " : " ");
             }
             $sql .= " order by customer_is_active desc, ";
@@ -270,6 +276,7 @@ class Customer
             $sql .= " {$this->tblCustomer} ";
             $sql .= "where ( customer_name like :customer_name ";
             $sql .= "or customer_email like :customer_email ";
+            $sql .= "or customer_address like :customer_address ";
             $sql .= ") ";
             $sql .= "order by customer_is_active desc, ";
             $sql .= " customer_is_walk_in_customer desc, ";
@@ -278,6 +285,7 @@ class Customer
             $query->execute([
                 "customer_name" => "%{$this->column_search}%",
                 "customer_email" => "%{$this->column_search}%",
+                "customer_address" => "%{$this->column_search}%",
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

@@ -17,6 +17,13 @@ export const ActiveInActiveStatus = (val = "default-status") => {
       ],
     },
     {
+      name: "installment-status",
+      status: [
+        { label: "paid", value: 1 },
+        { label: "duedate", value: 0 },
+      ],
+    },
+    {
       name: "stock-overview",
       status: [
         { label: "out of stock", value: "out of stock" },
