@@ -273,8 +273,6 @@ class StockOverview
 
 
             $col = $item['id'];
-            // $col = 'inventory_data.' . $item['id'];
-
             if (is_array($item['value'])) {
                 $params["min$i"] = (float) $item['value']['min'];
 
@@ -337,7 +335,7 @@ class StockOverview
             } elseif ($inventoryStatusFilter === 'in stock') {
                 $sql .= " and inventory_data.current_qty > inventory_data.products_low_stock_threshold ";
             }
-            $sql .= " order by inventory_data.products_aid ";
+            $sql .= " order by inventory_data.current_qty asc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
@@ -450,7 +448,7 @@ class StockOverview
             } elseif ($inventoryStatusFilter === 'in stock') {
                 $sql .= " and inventory_data.current_qty > inventory_data.products_low_stock_threshold ";
             }
-            $sql .= " order by inventory_data.products_aid ";
+            $sql .= " order by inventory_data.current_qty asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);

@@ -181,7 +181,7 @@ const InfinitePerTabs = ({
                     </div>
                     <div
                       onClick={() => setOpenRow(isOpen ? null : item.id)}
-                      className="flex items-center gap-2 text-left"
+                      className="flex items-center gap-2 text-left "
                     >
                       <TableDefaultStatusDot
                         dataArray={rows[index]?.original}
@@ -189,7 +189,7 @@ const InfinitePerTabs = ({
                       {item.getVisibleCells().map((aitem, akey) => {
                         return (
                           <React.Fragment key={akey}>
-                            <div className="hover:underline">
+                            <div className="hover:underline w-full">
                               {aitem?.column?.columnDef?.header === "name" ? (
                                 <div
                                   className="flex items-center gap-2 cursor-pointer "
@@ -212,7 +212,7 @@ const InfinitePerTabs = ({
                         );
                       })}
                     </div>
-                    <div className="flex justify-between gap-5 w-full">
+                    <div className="grid grid-cols-[7rem_1fr_10rem] gap-5 w-full">
                       {item.getVisibleCells().map((ditem, dkey) => {
                         return (
                           <React.Fragment key={dkey}>
@@ -258,7 +258,7 @@ const InfinitePerTabs = ({
                         );
                       })}
 
-                      <div className="flex items-center gap-3 justify-end ">
+                      <div className=" flex justify-end lg:items-center text-gray-700 dark:text-light gap-3">
                         {item.getVisibleCells().map((bitem, bkey) => {
                           return bitem?.column?.columnDef?.header ===
                             "social" ? (
@@ -272,6 +272,10 @@ const InfinitePerTabs = ({
                                 <a
                                   href={`${bitem?.column?.columnDef?.link}`}
                                   target="_black"
+                                  className="tooltip-action-table "
+                                  data-tooltip={
+                                    bitem?.column?.columnDef?.accessorKey
+                                  }
                                 >
                                   {bitem?.column?.columnDef?.icon}
                                 </a>
@@ -287,6 +291,10 @@ const InfinitePerTabs = ({
                                 <a
                                   href={`${bitem?.column?.columnDef?.link}`}
                                   target="_black"
+                                  className="tooltip-action-table "
+                                  data-tooltip={
+                                    bitem?.column?.columnDef?.accessorKey
+                                  }
                                 >
                                   {bitem?.column?.columnDef?.icon}
                                 </a>
@@ -297,7 +305,13 @@ const InfinitePerTabs = ({
                                 "" &&
                               bitem?.column?.columnDef?.accessorKey ===
                                 "other" ? (
-                                <a href={`${bitem?.column?.columnDef?.link}`}>
+                                <a
+                                  href={`${bitem?.column?.columnDef?.link}`}
+                                  className="tooltip-action-table "
+                                  data-tooltip={
+                                    bitem?.column?.columnDef?.accessorKey
+                                  }
+                                >
                                   {bitem?.column?.columnDef?.icon}
                                 </a>
                               ) : (
@@ -308,8 +322,6 @@ const InfinitePerTabs = ({
                             ""
                           );
                         })}
-                      </div>
-                      <div className=" flex justify-end lg:items-center text-gray-700 dark:text-light">
                         {item.getVisibleCells().map((fitem, fkey) => {
                           return (
                             <React.Fragment key={fkey}>
@@ -329,7 +341,7 @@ const InfinitePerTabs = ({
                           );
                         })}
                       </div>
-                    </div>{" "}
+                    </div>
                   </div>
 
                   {/* MOBILE RESPONSIVE */}
@@ -419,7 +431,7 @@ const InfinitePerTabs = ({
                           SOCIAL MEDIA{" "}
                         </small>
                         <br />
-                        <span className="flex gap-3">
+                        <span className="flex gap-3 mt-1">
                           {item.getVisibleCells().map((bitem, bkey) => {
                             return bitem?.column?.columnDef?.header ===
                               "social" ? (
