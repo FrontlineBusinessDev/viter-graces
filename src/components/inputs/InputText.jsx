@@ -310,7 +310,7 @@ export const DebouncedInput = ({
               setValue(newValue);
             }}
             data-testid={`${cypressTesting}_min`}
-            placeholder="0"
+            placeholder="min"
           />
           <span className="font-bold">-</span>
           <input

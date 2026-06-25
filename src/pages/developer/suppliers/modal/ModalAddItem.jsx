@@ -78,6 +78,7 @@ const ModalAddItem = ({ itemEdit, item, setAddItem }) => {
   const yupSchema = Yup.object({
     suppliers_product_name: Yup.string().trim().required("Required"),
     suppliers_product_unit: Yup.string().trim().required("Required"),
+    suppliers_product_price: Yup.string().trim().required("Required"),
   });
 
   React.useEffect(() => {
@@ -129,9 +130,8 @@ const ModalAddItem = ({ itemEdit, item, setAddItem }) => {
                       label="Unit"
                       type="text"
                       name="suppliers_product_unit"
-                      placeholder={`${itemEdit ? "Update unit" : "Enter unit"}`}
+                      placeholder={`Kilograms`}
                       disabled={mutation.isPending}
-                      required={false}
                     />
                   </div>
                   <div className="relative mb-6">
