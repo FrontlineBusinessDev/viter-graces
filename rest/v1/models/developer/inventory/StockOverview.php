@@ -272,7 +272,8 @@ class StockOverview
             }
 
 
-            $col = $item['id'];
+            // $col = $item['id'];
+            $col = 'inventory_data.' . $item['id'];
 
             if (is_array($item['value'])) {
                 $params["min$i"] = (float) $item['value']['min'];
@@ -332,8 +333,8 @@ class StockOverview
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } elseif ($this->column_search !== "") {
-                $sql .= " and ( ms.stock_movement_product_name LIKE :stock_movement_product_name
-                OR ms.stock_movement_product_owner_name LIKE :stock_movement_product_owner_name ) ";
+                $sql .= " and ( inventory_data.stock_movement_product_name LIKE :stock_movement_product_name
+                OR inventory_data.stock_movement_product_owner_name LIKE :stock_movement_product_owner_name ) ";
             }
             $sql .= "order by inventory_data.products_aid ";
             $query = $this->connection->prepare($sql);
@@ -382,7 +383,7 @@ class StockOverview
                 continue;
             }
 
-            $col = $item['id'];
+            $col = 'inventory_data.' . $item['id'];
 
             if (is_array($item['value'])) {
                 $params["min$i"] = (float) $item['value']['min'];
@@ -435,8 +436,8 @@ class StockOverview
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } elseif ($this->column_search !== "") {
-                $sql .= " and ( ms.stock_movement_product_name LIKE :stock_movement_product_name
-                OR ms.stock_movement_product_owner_name LIKE :stock_movement_product_owner_name ) ";
+                $sql .= " and ( inventory_data.stock_movement_product_name LIKE :stock_movement_product_name
+                OR inventory_data.stock_movement_product_owner_name LIKE :stock_movement_product_owner_name ) ";
             }
             // FILTER THE inventory_status 
             if ($inventoryStatusFilter === 'out of stock') {
