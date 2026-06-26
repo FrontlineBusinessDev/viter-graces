@@ -275,6 +275,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
       itemEdit?.sales_order_total_amount,
       "0",
     ),
+    sales_order_number: isEmptyItem(itemEdit?.sales_order_number, ""),
     total: "0",
     validationAmount: false,
   };
@@ -638,7 +639,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                 }}
                                 defaultValue={isEmptyItem(
                                   a["installmet_payment_amount"],
-                                  1,
+                                  "",
                                 )}
                                 placeholder="0"
                                 type="number"
