@@ -30,7 +30,7 @@ const Suppliers = () => {
     },
     {
       accessorKey: "suppliers_email",
-      header: "second_column",
+      header: "email",
       icon: "",
       classTh: "",
       classTd: "",
@@ -51,7 +51,7 @@ const Suppliers = () => {
     },
     {
       accessorKey: "messenger",
-      header: "social",
+      header: "messenger",
       link: "https://www.facebook.com/",
       icon: <FaFacebookMessenger className="text-blue-500 size-4" />,
       classTh: "",
@@ -59,7 +59,7 @@ const Suppliers = () => {
     },
     {
       accessorKey: "whatsapp",
-      header: "social",
+      header: "whatsapp",
       link: "https://www.whatsapp.com/",
       icon: <IoLogoWhatsapp className="text-green-500 size-4.5" />,
       classTh: "",
@@ -67,17 +67,9 @@ const Suppliers = () => {
     },
     {
       accessorKey: "other",
-      header: "social",
+      header: "other social",
       link: "#",
       icon: <AiFillMessage className="text-green-500 size-4.5" />,
-      classTh: "",
-      classTd: "",
-    },
-    {
-      accessorKey: "suppliers_contact_person",
-      header: "stringArray",
-      label: "Other Contacts",
-      icon: "",
       classTh: "",
       classTd: "",
     },
@@ -90,9 +82,17 @@ const Suppliers = () => {
       classTd: "",
     },
     {
+      accessorKey: "suppliers_contact_person",
+      header: "stringArray",
+      label: "Other Contacts",
+      icon: "",
+      classTh: "",
+      classTd: "",
+    },
+    {
       accessorKey: "action",
       action_array: DefaultActionTableList("customer"),
-      header: "Action",
+      header: "action",
       icon: "",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
@@ -119,7 +119,7 @@ const Suppliers = () => {
     },
     {
       accessorKey: "suppliers_product_name",
-      header: "Items(s)",
+      header: "Item(s)",
       isViewItems: false,
       classTh: "",
       classTd: "",

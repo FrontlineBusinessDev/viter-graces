@@ -56,6 +56,7 @@ function getHtmlResetPassword(
               color: #505050;
               font-weight: bold;
               margin: 0;
+              text-align: center;
             "
           >
             RESET PASSWORD

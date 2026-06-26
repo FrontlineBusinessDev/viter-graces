@@ -31,7 +31,7 @@ const Customers = () => {
     },
     {
       accessorKey: "customer_email",
-      header: "second_column",
+      header: "email",
       icon: "",
       classTh: "",
       classTd: "",
@@ -52,7 +52,7 @@ const Customers = () => {
     },
     {
       accessorKey: "messenger",
-      header: "social",
+      header: "messenger",
       link: "https://www.facebook.com/",
       icon: <FaFacebookMessenger className="text-blue-500 size-4" />,
       classTh: "",
@@ -60,7 +60,7 @@ const Customers = () => {
     },
     {
       accessorKey: "whatsapp",
-      header: "social",
+      header: "whatsapp",
       link: "https://www.whatsapp.com/",
       icon: <IoLogoWhatsapp className="text-green-500 size-4.5" />,
       classTh: "",
@@ -68,7 +68,7 @@ const Customers = () => {
     },
     {
       accessorKey: "other",
-      header: "social",
+      header: "other social",
       link: "#",
       icon: <AiFillMessage className="text-green-500 size-4.5" />,
       classTh: "",
@@ -77,7 +77,7 @@ const Customers = () => {
     {
       accessorKey: "action",
       action_array: DefaultActionTableList("customer"),
-      header: "Action",
+      header: "action",
       icon: "",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
@@ -169,7 +169,7 @@ const Customers = () => {
       {store.isAdd && <ModalCustomer itemEdit={itemEdit} />}
       {store.isSubAdd && <ModalSalesOrders itemEdit={itemEdit} />}
 
-      {store.isView && <ViewDetails itemEdit={itemEdit} item={itemVal} />}
+      {store.isView && <ViewDetails itemEdit={itemVal} />}
     </>
   );
 };

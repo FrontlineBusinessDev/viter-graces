@@ -56,6 +56,7 @@ const ModalSuppliers = ({ itemEdit }) => {
   const handleClose = () => {
     dispatch(setIsAdd(false));
     dispatch(setError(false));
+    queryClient.invalidateQueries({ queryKey: ["suppliers"] });
   };
 
   handleEscape(() => handleClose());
@@ -325,7 +326,7 @@ const ModalSuppliers = ({ itemEdit }) => {
                           <div className="flex flex-col">
                             <ul className="hidden md:grid grid-cols-[2.2fr_1fr_1fr_2rem] px-3 mt-2 text-dark">
                               <li>Item(s)</li>
-                              <li>Unit</li>
+                              <li>Unit of measurement</li>
                               <li>Est. Cost</li>
                             </ul>
                             {items.map((item, index) => (
@@ -347,7 +348,7 @@ const ModalSuppliers = ({ itemEdit }) => {
                                   onChange={(e) =>
                                     handleChange(index, "unit", e.target.value)
                                   }
-                                  placeholder="Unit"
+                                  placeholder="e.g., pcs, kilograms, pack"
                                   className="input"
                                 />
                                 <input

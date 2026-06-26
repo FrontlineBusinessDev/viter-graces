@@ -39,7 +39,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
             purchase_order_product_name: "",
             purchase_order_product_owner_id: "",
             purchase_order_product_owner_name: "",
-            purchase_order_qty: "",
+            purchase_order_qty: "1",
             purchase_order_price: "",
             purchase_order_total_amount: 0,
           },
@@ -48,6 +48,23 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
 
   const [counter, setCounter] = React.useState(0);
 
+  const handleChangeProduct = (
+    index,
+    itemVal,
+    field,
+    fieldId,
+    fieldPrice,
+    value,
+    id,
+  ) => {
+    const updated = [...items];
+
+    updated[index][fieldPrice] = itemVal?.amount;
+    updated[index][field] = value;
+    updated[index][fieldId] = id;
+
+    setItems(updated);
+  };
   const handleChange = (index, field, fieldId, value, id) => {
     const updated = [...items];
 
@@ -95,6 +112,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
   const handleClose = () => {
     dispatch(setIsAdd(false));
     dispatch(setError(false));
+    queryClient.invalidateQueries({ queryKey: ["purchase-order"] });
   };
 
   handleEscape(() => handleClose());
@@ -291,7 +309,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                           <li>Products</li>
                           <li>Product Owner</li>
                           <li>Quantity</li>
-                          <li>Price per pc.</li>
+                          <li>Amount</li>
                           <li> </li>
                           <li> </li>
                         </ul>
@@ -303,20 +321,20 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                             >
                               <InputPurchaseOrderSelectTagArray
                                 onChange={(e, selectedItem) => {
-                                  handleChange(
+                                  handleChangeProduct(
                                     index,
                                     selectedItem,
                                     "purchase_order_product_id",
                                     "purchase_order_product_name",
+                                    "purchase_order_price",
                                     e.target.value,
-                                    e.target.options[e.target.selectedIndex].id,
+                                    e.target.options[e.target.selectedIndex]
+                                      .name,
                                   );
                                 }}
                                 itemEdit={itemEdit}
                                 item={a}
-                                defaultValue={
-                                  items[index]["purchase_order_product_id"]
-                                }
+                                defaultValue={a["purchase_order_product_id"]}
                                 path={`suppliers-product/read-in-modal/${Number(props.values.purchase_order_supplier_id)}`}
                                 placeholder="Product"
                               />
@@ -333,9 +351,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                 }
                                 itemEdit={itemEdit}
                                 defaultValue={
-                                  items[index][
-                                    "purchase_order_product_owner_id"
-                                  ]
+                                  a["purchase_order_product_owner_id"]
                                 }
                                 path={`product-owner/read-by-product-owner`}
                                 placeholder="Product"
@@ -349,9 +365,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                     0,
                                   );
                                 }}
-                                defaultValue={
-                                  items[index]["purchase_order_qty"]
-                                }
+                                defaultValue={a["purchase_order_qty"]}
                                 type="number"
                                 placeholder="Qty"
                               />
@@ -364,18 +378,14 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                     0,
                                   );
                                 }}
-                                defaultValue={
-                                  items[index]["purchase_order_price"]
-                                }
+                                defaultValue={a["purchase_order_price"]}
                                 type="number"
                                 placeholder="Price"
                               />
                               <span className="font-semibold text-black dark:text-light mr-2">
                                 <AmountWithPesoSign
                                   classN="size-3"
-                                  amount={
-                                    items[index]["purchase_order_total_amount"]
-                                  }
+                                  amount={a["purchase_order_total_amount"]}
                                 />
                               </span>
                               <button
