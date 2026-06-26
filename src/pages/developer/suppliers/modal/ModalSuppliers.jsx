@@ -235,7 +235,7 @@ const ModalSuppliers = ({ itemEdit }) => {
                     <div className="relative mt-3">
                       <InputText
                         label="WhatsApp"
-                        type="text"
+                        type="number"
                         name="suppliers_whatsapp"
                         placeholder={`WhatsApp`}
                         disabled={mutation.isPending}
@@ -326,7 +326,7 @@ const ModalSuppliers = ({ itemEdit }) => {
                           <div className="flex flex-col">
                             <ul className="hidden md:grid grid-cols-[2.2fr_1fr_1fr_2rem] px-3 mt-2 text-dark">
                               <li>Item(s)</li>
-                              <li>Unit of measurement</li>
+                              <li>Unit of measure</li>
                               <li>Est. Cost</li>
                             </ul>
                             {items.map((item, index) => (

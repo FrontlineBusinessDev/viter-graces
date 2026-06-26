@@ -22,6 +22,7 @@ import React, { useCallback, useMemo, useRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import InfinitePerTabsMobile from "./InfinitePerTabsMobile";
 import InfiniteSubTable from "./InfiniteSubTable";
+import Linkify from "linkify-react";
 
 const InfinitePerTabs = ({
   columns,
@@ -359,9 +360,9 @@ const InfinitePerTabs = ({
 
                 {isOpen && (
                   <div className="border-t border-gray-200 px-4 lg:px-5 pb-4 ">
-                    {/*  */}
                     <div className="grid sm:grid-cols-[1fr_12rem] gap-1 mt-2 mb-1">
                       {item.getVisibleCells().map((ditem, dkey) => {
+                        const valItem = isEmptyItem(ditem.getValue(), "none");
                         return (
                           <React.Fragment key={dkey}>
                             {ditem?.column?.columnDef?.header === "email" ||
@@ -369,16 +370,27 @@ const InfinitePerTabs = ({
                             ditem?.column?.columnDef?.header === "whatsapp" ||
                             ditem?.column?.columnDef?.header ===
                               "other social" ? (
-                              <p className="text-xs text-gray-500 lg:block hidden dark:text-light mb-0 wrap-break-word">
+                              <div className="text-xs text-gray-500 lg:block hidden dark:text-light mb-0 wrap-break-word">
                                 <small className="font-bold text-xs uppercase text-[9px]">
                                   {ditem?.column?.columnDef?.header}
                                 </small>
                                 <br />
-                                {flexRender(
-                                  ditem?.column?.columnDef?.cell,
-                                  ditem?.getContext(),
-                                )}
-                              </p>
+                                <span className="flex gap-1 items-center ">
+                                  {ditem?.column?.columnDef?.icon}
+                                  {!ditem?.column?.columnDef?.isHaveLink ||
+                                  isEmptyItem(ditem.getValue(), "") === "" ? (
+                                    <span>{valItem}</span>
+                                  ) : (
+                                    <a
+                                      href={`${ditem?.column?.columnDef?.link}${valItem}`}
+                                      target="_black"
+                                      className=" cursor-pointer hover:text-blue-600 hover:underline"
+                                    >
+                                      {valItem}
+                                    </a>
+                                  )}
+                                </span>
+                              </div>
                             ) : (
                               ""
                             )}
@@ -386,6 +398,7 @@ const InfinitePerTabs = ({
                         );
                       })}
                       {item.getVisibleCells().map((ditem, dkey) => {
+                        const valItem = isEmptyItem(ditem.getValue(), "none");
                         return (
                           <React.Fragment key={dkey}>
                             {ditem?.column?.columnDef?.header !== "name" &&
@@ -396,14 +409,24 @@ const InfinitePerTabs = ({
                               "stringArray" ? (
                               <p className="text-xs text-gray-500 lg:hidden dark:text-light mb-0 wrap-break-word">
                                 <small className="font-bold text-xs uppercase text-[9px]">
-                                  {/* Email{" "} */}
                                   {ditem?.column?.columnDef?.header}
                                 </small>
                                 <br />
-                                {flexRender(
-                                  ditem?.column?.columnDef?.cell,
-                                  ditem?.getContext(),
-                                )}
+                                <span className="flex gap-1 items-center ">
+                                  {ditem?.column?.columnDef?.icon}
+                                  {!ditem?.column?.columnDef?.isHaveLink ||
+                                  isEmptyItem(ditem.getValue(), "") === "" ? (
+                                    <span>{valItem}</span>
+                                  ) : (
+                                    <a
+                                      href={`${ditem?.column?.columnDef?.link}${valItem}`}
+                                      target="_black"
+                                      className=" cursor-pointer hover:text-blue-600 hover:underline"
+                                    >
+                                      {valItem}
+                                    </a>
+                                  )}
+                                </span>
                               </p>
                             ) : (
                               ""
@@ -418,7 +441,7 @@ const InfinitePerTabs = ({
                             return bitem?.column?.columnDef?.header ===
                               "stringArray" ? (
                               <React.Fragment key={bkey}>
-                                <div className="text-xs text-gray-500 lg:hidden dark:text-light mb-0 wrap-break-word">
+                                <div className="text-xs text-gray-500 dark:text-light mb-0 wrap-break-word">
                                   <small className="font-bold text-xs uppercase  text-[9px]">
                                     {bitem?.column?.columnDef?.label}
                                   </small>
@@ -445,7 +468,7 @@ const InfinitePerTabs = ({
                               <React.Fragment key={hkey}>
                                 {hitem?.column?.columnDef?.header ===
                                 "suppliers_delivery" ? (
-                                  <p className="text-xs text-gray-500 lg:hidden dark:text-light mb-0 wrap-break-word">
+                                  <p className="text-xs text-gray-500 dark:text-light mb-0 wrap-break-word">
                                     <small className="font-bold text-xs uppercase  text-[9px]">
                                       {hitem?.column?.columnDef?.label}
                                     </small>
