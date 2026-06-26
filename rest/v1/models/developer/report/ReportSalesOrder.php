@@ -1259,6 +1259,7 @@ class ReportSalesOrder
                 "due_date" => $this->due_date,
             ]);
         } catch (PDOException $ex) {
+            returnError($ex);
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
