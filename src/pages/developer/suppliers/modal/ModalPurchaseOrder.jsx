@@ -35,6 +35,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
       ? itemEdit?.items
       : [
           {
+            purchase_order_aid: "0",
             purchase_order_product_id: "",
             purchase_order_product_name: "",
             purchase_order_product_owner_id: "",
@@ -92,6 +93,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     setItems([
       ...items,
       {
+        purchase_order_aid: "0",
         purchase_order_product_id: "",
         purchase_order_product_name: "",
         purchase_order_product_owner_id: "",
@@ -329,7 +331,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                     "purchase_order_price",
                                     e.target.value,
                                     e.target.options[e.target.selectedIndex]
-                                      .name,
+                                      .text,
                                   );
                                 }}
                                 itemEdit={itemEdit}
@@ -354,7 +356,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                   a["purchase_order_product_owner_id"]
                                 }
                                 path={`product-owner/read-by-product-owner`}
-                                placeholder="Product"
+                                placeholder="product owner"
                               />
                               <input
                                 onChange={(e) => {

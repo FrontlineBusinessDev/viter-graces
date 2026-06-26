@@ -128,7 +128,7 @@ const ModalAddItem = ({ itemEdit, item, setAddItem }) => {
                   </div>
                   <div className="relative mb-6">
                     <InputText
-                      label="Unit of measurement"
+                      label="Unit of measure"
                       type="text"
                       name="suppliers_product_unit"
                       placeholder="e.g., pcs, kilograms, pack"

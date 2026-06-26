@@ -232,7 +232,7 @@ const ModalProducts = ({ itemEdit }) => {
                     </div>
                     <div className="relative mt-3">
                       <InputText
-                        label="Unit of measurement"
+                        label="Unit of measure"
                         name="products_unit"
                         placeholder="e.g., pcs, kilograms, pack"
                         disabled={mutation.isPending}

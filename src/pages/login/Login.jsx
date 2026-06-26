@@ -108,20 +108,20 @@ const Login = () => {
                       <div className="relative mb-5">
                         <InputLogin
                           placeholder="EMAIL"
-                          icon={<User className="text-white" />}
+                          icon={<User className="text-gray-400!" />}
                           type="text"
                           name="user_account_email"
-                          className="text-white"
+                          className="text-white disabled:text-gray-400!"
                           disabled={mutation.isPending}
                         />
                       </div>
                       <div className="relative mb-6">
                         <InputLogin
                           placeholder="PASSWORD"
-                          icon={<Lock className="text-white" />}
+                          icon={<Lock className="text-gray-400! " />}
                           type={passwordShown ? "text" : "password"}
                           name="password"
-                          className="text-white"
+                          className="text-white disabled:text-gray-400!"
                           disabled={mutation.isPending}
                         />
                         {props.values.password && (
@@ -129,7 +129,11 @@ const Login = () => {
                             className="text-base absolute bottom-1/2 right-2 translate-y-1/2 cursor-pointer"
                             onClick={togglePassword}
                           >
-                            {passwordShown ? <Eye /> : <EyeOff />}
+                            {passwordShown ? (
+                              <Eye className="text-gray-400!" />
+                            ) : (
+                              <EyeOff className="text-gray-400!" />
+                            )}
                           </span>
                         )}
                       </div>
