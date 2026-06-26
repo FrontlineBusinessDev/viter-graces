@@ -481,7 +481,11 @@ export const InputSelectTagArray = ({
 
           {result?.data?.map((item, key) => {
             return isEmptyItem(item?.name, "") !== "developer" ? (
-              <option key={key} value={Number(item.id)}>
+              <option
+                key={key}
+                value={Number(item.id)}
+                price={Number(isEmptyItem(item.amount, 0))}
+              >
                 {item.name}
               </option>
             ) : (
@@ -615,6 +619,8 @@ export const InputPurchaseOrderSelectTagArray = ({
     `${path}`, // key
     { id: id },
   );
+
+  console.log("result", result);
 
   return (
     <>

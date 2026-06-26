@@ -39,11 +39,7 @@ const ModalSubAction = ({
       if (data.success) {
         dispatch(setIsSubAction(false));
         dispatch(setSuccess(true));
-        dispatch(
-          setMessage(
-            itemEdit ? "Updated successfully." : "Created successfully.",
-          ),
-        );
+        dispatch(setMessage(`${item?.action} successfully.`));
       }
       if (!data.success) {
         dispatch(setError(true));

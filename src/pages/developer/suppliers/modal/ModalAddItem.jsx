@@ -26,6 +26,7 @@ const ModalAddItem = ({ itemEdit, item, setAddItem }) => {
   const handleClose = () => {
     dispatch(setIsSubAdd(false));
     setAddItem(false);
+    queryClient.invalidateQueries({ queryKey: ["suppliers-product"] });
   };
 
   handleEscape(() => handleClose());
@@ -127,10 +128,10 @@ const ModalAddItem = ({ itemEdit, item, setAddItem }) => {
                   </div>
                   <div className="relative mb-6">
                     <InputText
-                      label="Unit"
+                      label="Unit of measurement"
                       type="text"
                       name="suppliers_product_unit"
-                      placeholder={`Kilograms`}
+                      placeholder="e.g., pcs, kilograms, pack"
                       disabled={mutation.isPending}
                     />
                   </div>

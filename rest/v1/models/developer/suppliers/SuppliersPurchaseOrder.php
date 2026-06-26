@@ -151,6 +151,7 @@ class SuppliersPurchaseOrder
             $sql .= "purchase_order_aid as id, ";
             $sql .= "purchase_order_status as status, ";
             $sql .= "purchase_order_is_active as is_active, ";
+            $sql .= "purchase_order_price as amount, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
             $sql .= " where true ";
@@ -213,6 +214,7 @@ class SuppliersPurchaseOrder
             $sql .= "purchase_order_aid as id, ";
             $sql .= "purchase_order_status as status, ";
             $sql .= "purchase_order_is_active as is_active, ";
+            $sql .= "purchase_order_price as amount, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
             $sql .= " where true ";
@@ -249,6 +251,7 @@ class SuppliersPurchaseOrder
             $sql .= "purchase_order_aid as id, ";
             $sql .= "purchase_order_is_active as is_active, ";
             $sql .= "purchase_order_status as status, ";
+            $sql .= "purchase_order_price as amount, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
             $sql .= "where purchase_order_number = :purchase_order_number ";
@@ -274,6 +277,7 @@ class SuppliersPurchaseOrder
             $sql .= "purchase_order_aid as id, ";
             $sql .= "purchase_order_is_active as is_active, ";
             $sql .= "purchase_order_status as status, ";
+            $sql .= "purchase_order_price as amount, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
             $sql .= "where purchase_order_aid = :purchase_order_aid ";

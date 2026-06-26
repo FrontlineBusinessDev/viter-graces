@@ -92,7 +92,7 @@ const ModalProducts = ({ itemEdit }) => {
     products_suppliers_id: isEmptyItem(itemEdit?.products_suppliers_id, "0"),
     products_suppliers_name: isEmptyItem(itemEdit?.products_suppliers_name, ""),
     products_sales: isEmptyItem(itemEdit?.products_sales, ""),
-    products_unit: isEmptyItem(itemEdit?.products_unit, "pcs"),
+    products_unit: isEmptyItem(itemEdit?.products_unit, ""),
     products_barcode: isEmptyItem(itemEdit?.products_barcode, ""),
     stock_movement_location: "",
     products_low_stock_threshold: isEmptyItem(
@@ -232,9 +232,9 @@ const ModalProducts = ({ itemEdit }) => {
                     </div>
                     <div className="relative mt-3">
                       <InputText
-                        label="Unit"
+                        label="Unit of measurement"
                         name="products_unit"
-                        placeholder={`${itemEdit ? "pcs" : "pcs"}`}
+                        placeholder="e.g., pcs, kilograms, pack"
                         disabled={mutation.isPending}
                         required={true}
                       />
