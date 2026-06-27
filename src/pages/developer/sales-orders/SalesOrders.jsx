@@ -80,7 +80,7 @@ const SalesOrders = () => {
     },
     {
       accessorKey: "action",
-      action_array: ActionTableList("sales-order"),
+      action_array: ActionTableList("sales-order", "status-with-view"),
       header: "Action",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",

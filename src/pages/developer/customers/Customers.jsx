@@ -1,8 +1,4 @@
-import {
-  ActiveInActiveStatus,
-  DefaultActionTableList,
-  EditDeleteActionTableList,
-} from "@/layout/ArrayValue";
+import { ActionTableList, ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfinitePerTabs from "@/layout/table/InfinitePerTabs";
 import { StoreContext } from "@/store/StoreContext";
@@ -76,7 +72,7 @@ const Customers = () => {
     },
     {
       accessorKey: "action",
-      action_array: DefaultActionTableList("customer"),
+      action_array: ActionTableList("customer"),
       header: "action",
       icon: "",
       classTh: "text-center w-[7rem]",
@@ -139,7 +135,7 @@ const Customers = () => {
     },
     {
       accessorKey: "action",
-      action_array: EditDeleteActionTableList("sales-order"),
+      action_array: ActionTableList("sales-order", "edit-delete-status"),
       header: "Action",
       icon: "",
       classTh: "text-center w-[7rem]",

@@ -283,7 +283,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   const yupSchema = Yup.object({
     sales_order_date: Yup.string().trim().required("Required"),
     sales_order_customer_id: Yup.string().trim().required("Required"),
-    sales_order_paid_amount: Yup.string().trim().required("Required"),
     sales_order_received_by_id: Yup.string().trim().required("Required"),
   });
 
@@ -345,6 +344,9 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                 ),
                 ...values,
                 sales_order_discount: Number(values?.sales_order_discount),
+                sales_order_paid_amount: Number(
+                  values?.sales_order_paid_amount,
+                ),
                 sales_order_installment: installmentItems?.length,
                 installmentItems,
                 installmentItemsDelete,
@@ -679,7 +681,9 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                               <AmountWithPesoSign
                                 classN="size-3 "
                                 classAmnt="justify-start! "
-                                amount={props.values.sales_order_paid_amount}
+                                amount={Number(
+                                  props.values.sales_order_paid_amount,
+                                )}
                               />
                             </li>
                             <li

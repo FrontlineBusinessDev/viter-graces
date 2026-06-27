@@ -144,13 +144,16 @@ function updateStatus($val, $data)
     $val->sales_order_paid_amount = $data["sales_order_paid_amount"];
     $val->sales_order_total_payable_amount = $data["sales_order_total_payable_amount"];
 
+    //  IF THE PAYMENT IS PARTIAL AND HAVE INSTALLMENT DATA
+    if ((float)$val->sales_order_paid_amount < (float)$val->sales_order_total_payable_amount) {
+        $val->sales_order_status = 'partial';
+    }
     //  IF THE PAYMENT IS 0, NEGATIVE OR INSTALLMENT
     if ((float)$val->sales_order_paid_amount == 0) {
         $val->sales_order_status = 'unpaid';
     }
-    //  IF THE PAYMENT IS PARTIAL AND HAVE INSTALLMENT DATA
-    if ((float)$val->sales_order_paid_amount < (float)$val->sales_order_total_payable_amount) {
-        $val->sales_order_status = 'partial';
+    if ((float)$val->sales_order_paid_amount == 0 && count($installmentData) == 0) {
+        $val->sales_order_status = 'unpaid';
     }
     //  IF THE PAYMENT IS PARTIAL BUT NO INSTALLMENT DATA
     if (

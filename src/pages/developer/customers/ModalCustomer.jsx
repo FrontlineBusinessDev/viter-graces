@@ -159,7 +159,7 @@ const ModalCustomer = ({ itemEdit }) => {
                   <div className="grid lg:grid-cols-3 mt-3 gap-2">
                     <div className="relative">
                       <InputText
-                        label="Messenger"
+                        label="Messenger link"
                         type="text"
                         name="customer_messenger"
                         data-testid="customer-messenger"
@@ -170,8 +170,8 @@ const ModalCustomer = ({ itemEdit }) => {
                     </div>
                     <div className="relative  ">
                       <InputText
-                        label="Whatsapp"
-                        type="text"
+                        label="Whatsapp number"
+                        type="number"
                         name="customer_whatsapp"
                         data-testid="customer-whatsapp"
                         placeholder={`${itemEdit ? "Update Whatsapp" : "Enter new Whatsapp"}`}
@@ -179,9 +179,9 @@ const ModalCustomer = ({ itemEdit }) => {
                         required={false}
                       />
                     </div>
-                    <div className="relative  ">
+                    <div className="relative">
                       <InputText
-                        label="Other"
+                        label="Other social media link"
                         type="text"
                         name="customer_other"
                         data-testid="customer-other"

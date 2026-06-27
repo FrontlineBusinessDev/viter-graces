@@ -224,7 +224,7 @@ const ModalSuppliers = ({ itemEdit }) => {
                   <div className="grid lg:grid-cols-3 gap-2">
                     <div className="relative mt-3">
                       <InputText
-                        label="Messenger"
+                        label="Messenger link"
                         type="text"
                         name="suppliers_messenger"
                         placeholder={`Messenger`}
@@ -234,7 +234,7 @@ const ModalSuppliers = ({ itemEdit }) => {
                     </div>
                     <div className="relative mt-3">
                       <InputText
-                        label="WhatsApp"
+                        label="WhatsApp number"
                         type="number"
                         name="suppliers_whatsapp"
                         placeholder={`WhatsApp`}
@@ -244,7 +244,7 @@ const ModalSuppliers = ({ itemEdit }) => {
                     </div>
                     <div className="relative mt-3">
                       <InputText
-                        label="Other"
+                        label="Other social media link"
                         type="text"
                         name="suppliers_other"
                         placeholder={`Other`}

@@ -1,8 +1,5 @@
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
-import {
-  ActiveInActiveStatus,
-  DefaultActionTableList,
-} from "@/layout/ArrayValue";
+import { ActiveInActiveStatus, ActionTableList } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfinitePerTabs from "@/layout/table/InfinitePerTabs";
 import { StoreContext } from "@/store/StoreContext";
@@ -101,7 +98,7 @@ const Suppliers = () => {
     },
     {
       accessorKey: "action",
-      action_array: DefaultActionTableList("customer"),
+      action_array: ActionTableList("customer"),
       header: "action",
       isHaveLink: false,
       icon: "",
@@ -155,7 +152,7 @@ const Suppliers = () => {
     },
     {
       accessorKey: "action",
-      action_array: DefaultActionTableList("roles"),
+      action_array: ActionTableList("roles"),
       header: "Action",
       classTh: " text-center w-[5rem] ",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
