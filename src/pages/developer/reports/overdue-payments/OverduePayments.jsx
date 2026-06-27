@@ -28,8 +28,6 @@ const OverduePayments = () => {
     },
     {
       accessorKey: "installmet_payment_due_date",
-      otherKey: "days_ago",
-      subText: "day(s) ago",
       header: "Date",
       classTh: "",
       classTd: "",

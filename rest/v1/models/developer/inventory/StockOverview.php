@@ -67,7 +67,6 @@ class StockOverview
                     THEN ms.stock_movement_qty
 
                     WHEN ms.stock_movement_type IN (
-                        'purchases',
                         'stock out - reject/defective items',
                         'stock out - return item'
                     )
@@ -92,9 +91,8 @@ class StockOverview
                         )
                         THEN ms.stock_movement_qty
 
-                        WHEN ms.stock_movement_type IN (
-                            'purchases',
-                            'stock out - reject/defective items',
+                        WHEN ms.stock_movement_type IN ( 
+                        'stock out - reject/defective items',
                         'stock out - return item'
                         )
                         THEN -ms.stock_movement_qty
@@ -170,8 +168,7 @@ class StockOverview
                     )
                     THEN ms.stock_movement_qty
 
-                    WHEN ms.stock_movement_type IN (
-                        'purchases',
+                    WHEN ms.stock_movement_type IN ( 
                         'stock out - reject/defective items',
                         'stock out - return item'
                     )
@@ -196,9 +193,8 @@ class StockOverview
                         )
                         THEN ms.stock_movement_qty
 
-                        WHEN ms.stock_movement_type IN (
-                            'purchases',
-                            'stock out - reject/defective items',
+                        WHEN ms.stock_movement_type IN ( 
+                        'stock out - reject/defective items',
                         'stock out - return item'
                         )
                         THEN -ms.stock_movement_qty

@@ -369,7 +369,13 @@ class SalesOrder
             or sales_order_product_name like :sales_order_product_name ) " : " ");
             }
             $sql .= " group by sales_order_number ";
-            $sql .= " order by MAX(sales_order_is_active) desc, ";
+            $sql .= "order by MAX(sales_order_is_active) desc, ";
+            $sql .= "CASE sales_order_status ";
+            $sql .= "WHEN 'overdue' THEN 1 ";
+            $sql .= "WHEN 'unpaid' THEN 2 ";
+            $sql .= "WHEN 'partial' THEN 3 ";
+            $sql .= "WHEN 'paid' THEN 4 ";
+            $sql .= "WHEN 'inactive' THEN 5 ELSE 6 END, ";
             $sql .= "sales_order_number desc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
@@ -439,6 +445,12 @@ class SalesOrder
             }
             $sql .= " group by sales_order_number ";
             $sql .= " order by MAX(sales_order_is_active) desc, ";
+            $sql .= "CASE sales_order_status ";
+            $sql .= "WHEN 'overdue' THEN 1 ";
+            $sql .= "WHEN 'unpaid' THEN 2 ";
+            $sql .= "WHEN 'partial' THEN 3 ";
+            $sql .= "WHEN 'paid' THEN 4 ";
+            $sql .= "WHEN 'inactive' THEN 5 ELSE 6 END, ";
             $sql .= "sales_order_number desc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
@@ -850,12 +862,12 @@ class SalesOrder
             // Total stock quantity
             $sql .= "SUM(
                 CASE
-                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
+                    WHEN ms.stock_movement_type IN ('in stock', 'purchases', 'stock in adjustments')
                         THEN ms.stock_movement_qty
 
-                    WHEN ms.stock_movement_type IN (
-                        'purchases',
-                        'stock out - reject/defective items'
+                    WHEN ms.stock_movement_type IN ( 
+                        'stock out - reject/defective items',
+                        'stock out - return item'
                     )
                         THEN -ms.stock_movement_qty
 
@@ -866,12 +878,12 @@ class SalesOrder
             // Current quantity after sales orders
             $sql .= "SUM(
                 CASE
-                    WHEN ms.stock_movement_type IN ('in stock', 'stock in adjustments')
+                    WHEN ms.stock_movement_type IN ('in stock','purchases', 'stock in adjustments')
                         THEN ms.stock_movement_qty
 
                     WHEN ms.stock_movement_type IN (
-                        'purchases',
-                        'stock out - reject/defective items'
+                        'stock out - reject/defective items',
+                        'stock out - return item'
                     )
                         THEN -ms.stock_movement_qty
 
@@ -1100,7 +1112,7 @@ class SalesOrder
     public function readByInstallment()
     {
         try {
-            $sql = "select * from {$this->tblInstallmetPayment} ";
+            $sql = "select *, installmet_payment_aid as id from {$this->tblInstallmetPayment} ";
             $sql .= "where installmet_payment_code_number = :installmet_payment_code_number ";
             $sql .= "and installmet_payment_code = 'sales-order' ";
             $sql .= "order by installmet_payment_code_number asc ";

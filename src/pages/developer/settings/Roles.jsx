@@ -1,8 +1,5 @@
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
-import {
-  ActiveInActiveStatus,
-  DefaultActionTableList,
-} from "@/layout/ArrayValue";
+import { ActiveInActiveStatus, ActionTableList } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -57,7 +54,7 @@ const Roles = () => {
     },
     {
       accessorKey: "action",
-      action_array: DefaultActionTableList("roles"),
+      action_array: ActionTableList("roles"),
       header: "Action",
       classTh: " text-center ",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
