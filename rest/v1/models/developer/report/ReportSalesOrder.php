@@ -1160,7 +1160,9 @@ class ReportSalesOrder
         try {
             $sql = "select *, ";
             $sql .= "DATE_FORMAT(installmet_payment_due_date, '%b %d, %Y') as installmet_payment_due_date, ";
+            $sql .= "DATEDIFF(NOW(), installmet_payment_due_date) as days_ago, ";
             $sql .= "installmet_payment_aid as id, ";
+            $sql .= "installmet_payment_is_paid as is_active, ";
             $sql .= "installmet_payment_code_number as name ";
             $sql .= "from {$this->tblInstallmetPayment} ";
             $sql .= "where installmet_payment_is_paid = '0' ";
@@ -1215,8 +1217,9 @@ class ReportSalesOrder
         try {
             $sql = "select *, ";
             $sql .= "DATE_FORMAT(installmet_payment_due_date, '%b %d, %Y') as installmet_payment_due_date, ";
-            $sql .= "installmet_payment_is_paid as is_active, ";
+            $sql .= "DATEDIFF(NOW(), installmet_payment_due_date) as days_ago, ";
             $sql .= "installmet_payment_aid as id, ";
+            $sql .= "installmet_payment_is_paid as is_active, ";
             $sql .= "installmet_payment_code_number as name ";
             $sql .= "from {$this->tblInstallmetPayment} ";
             $sql .= "where installmet_payment_is_paid = '0' ";
@@ -1246,11 +1249,12 @@ class ReportSalesOrder
         try {
             $sql = "select *, ";
             $sql .= "DATE_FORMAT(installmet_payment_due_date, '%b %d, %Y') as installmet_payment_due_date, ";
+            $sql .= "DATEDIFF(NOW(), installmet_payment_due_date) as days_ago, ";
             $sql .= "installmet_payment_aid as id, ";
             $sql .= "installmet_payment_code_number as name ";
             $sql .= "from {$this->tblInstallmetPayment} ";
             $sql .= "where installmet_payment_is_paid = '0' ";
-            $sql .= "and DATE(installmet_payment_due_date) = DATE(:due_date) ";
+            $sql .= "and DATE(installmet_payment_due_date) <= DATE(:due_date) ";
             $sql .= " order by DATE(installmet_payment_due_date) asc ";
             $sql .= "limit :total ";
             $query = $this->connection->prepare($sql);

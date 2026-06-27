@@ -1,6 +1,5 @@
 import CashflowChart from "@/components/CashflowChart";
 import ProfitLossChart from "@/components/ProfitLossChart";
-import StatCard from "@/components/StatCard";
 import DashboardExpensesToday from "@/layout/dashboard/DashboardExpensesToday";
 import DashboardLowStockAlert from "@/layout/dashboard/DashboardLowStockAlert";
 import DashboardOverduePayments from "@/layout/dashboard/DashboardOverduePayments";
@@ -11,7 +10,6 @@ import DashboardTopSellingProduct from "@/layout/dashboard/DashboardTopSellingPr
 import HeaderNav from "@/layout/headers/HeaderNav";
 import { setTabValue } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
-import { PhilippinePeso } from "lucide-react";
 import React from "react";
 const Dashboard = () => {
   const { store, dispatch } = React.useContext(StoreContext);

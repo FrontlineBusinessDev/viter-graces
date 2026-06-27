@@ -70,7 +70,7 @@ const DashboardRecentActivities = () => {
                     </span>
                     <span className="text-gray-400 text-xs">
                       {Number(item?.days_ago) > 0
-                        ? `${item?.days_ago} days ago`
+                        ? `${item?.days_ago} day(s) ago`
                         : "now"}
                     </span>
                   </div>
