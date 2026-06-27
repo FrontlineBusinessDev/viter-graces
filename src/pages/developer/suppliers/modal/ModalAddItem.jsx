@@ -26,6 +26,7 @@ const ModalAddItem = ({ itemEdit, item, setAddItem }) => {
   const handleClose = () => {
     dispatch(setIsSubAdd(false));
     setAddItem(false);
+    queryClient.invalidateQueries({ queryKey: ["suppliers-product"] });
   };
 
   handleEscape(() => handleClose());
@@ -57,8 +58,6 @@ const ModalAddItem = ({ itemEdit, item, setAddItem }) => {
     },
   });
 
-  // console.log("item", item);
-
   const initVal = {
     suppliers_product_aid: isEmptyItem(itemEdit?.suppliers_product_aid, ""),
     suppliers_product_name: isEmptyItem(itemEdit?.suppliers_product_name, ""),
@@ -80,6 +79,7 @@ const ModalAddItem = ({ itemEdit, item, setAddItem }) => {
   const yupSchema = Yup.object({
     suppliers_product_name: Yup.string().trim().required("Required"),
     suppliers_product_unit: Yup.string().trim().required("Required"),
+    suppliers_product_price: Yup.string().trim().required("Required"),
   });
 
   React.useEffect(() => {
@@ -128,12 +128,11 @@ const ModalAddItem = ({ itemEdit, item, setAddItem }) => {
                   </div>
                   <div className="relative mb-6">
                     <InputText
-                      label="Unit"
+                      label="Unit of measure"
                       type="text"
                       name="suppliers_product_unit"
-                      placeholder={`${itemEdit ? "Update unit" : "Enter unit"}`}
+                      placeholder="e.g., pcs, kilograms, pack"
                       disabled={mutation.isPending}
-                      required={false}
                     />
                   </div>
                   <div className="relative mb-6">

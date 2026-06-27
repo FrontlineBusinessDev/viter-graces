@@ -154,7 +154,7 @@ const ResetPassword = () => {
                         placeholder="CREATE PASSWORD"
                         name="new_password"
                         type={newPasswordShown ? "text" : "password"}
-                        className="text-white"
+                        className="text-white disabled:text-gray-400!"
                         disabled={mutation.isPending}
                         onChange={(e) => handleChange(e.target.value)}
                       />
@@ -172,7 +172,7 @@ const ResetPassword = () => {
                         placeholder="RE-ENTER PASSWORD"
                         type={passwordShown ? "text" : "password"}
                         name="confirm_password"
-                        className="text-white"
+                        className="text-white disabled:text-gray-400!"
                         disabled={mutation.isPending}
                         onChange={(e) => handleChange(e.target.value)}
                       />
@@ -181,7 +181,11 @@ const ResetPassword = () => {
                           className="text-base absolute bottom-1/2 right-2 translate-y-1/2 cursor-pointer"
                           onClick={() => togglePassword("")}
                         >
-                          {passwordShown ? <Eye /> : <EyeOff />}
+                          {passwordShown ? (
+                            <Eye className="text-gray-400!" />
+                          ) : (
+                            <EyeOff className="text-gray-400!" />
+                          )}
                         </span>
                       )}
                     </div>

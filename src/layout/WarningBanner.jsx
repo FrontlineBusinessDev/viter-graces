@@ -31,7 +31,6 @@ const WarningBanner = ({
     return result?.data;
   }, [result]);
 
-  console.log("valData", result?.data);
   return (
     <>
       {path === "" && description !== "" ? (
@@ -48,24 +47,28 @@ const WarningBanner = ({
         <div className="bg-orange-100 text-orange-600 dark:bg-orange-200 dark:text-orange-300 border border-orange-300 rounded-xl px-3 py-2 my-2  ">
           <div className="flex items-center gap-2">
             <TriangleAlert size={14} className="place-self-start mt-0.5" />
-            <div className="dark:text-orange-600 mb-0 flex font-bold ">
+            <div className="dark:text-orange-600! mb-0 font-bold sm:truncate ">
               {isLoading ? (
                 <TableLoading count={1} cols={1} />
               ) : (
-                <span className="mr-1">{isEmptyItem(valData?.length, "")}</span>
-              )}
-              <span>{text}</span>
-              {description}
-              {isLowStock ? (
                 <>
-                  {isLowStock && (
-                    <span className="ml-1">
-                      {valData.map((item) => item.name).join(", ")}.
-                    </span>
+                  <span className="mr-1 dark:text-orange-600">
+                    {isEmptyItem(valData?.length, "")}
+                  </span>
+                  <span className="dark:text-orange-600 mr-1">{text}</span>
+                  {description}
+                  {isLowStock ? (
+                    <>
+                      {isLowStock && (
+                        <span className="ml-1 dark:text-orange-600">
+                          {valData.map((item) => item.name).join(", ")}.
+                        </span>
+                      )}
+                    </>
+                  ) : (
+                    ""
                   )}
                 </>
-              ) : (
-                ""
               )}
             </div>
           </div>

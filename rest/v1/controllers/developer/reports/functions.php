@@ -96,6 +96,29 @@ function checkReadAllExpensesLimit($object, $allowedColumns = [])
     return $query;
 }
 
+// Read all
+function checkReadOverduePaymentWithLimit($object, $allowedColumns = [])
+{
+    $query = $object->readOverduePaymentWithLimit($allowedColumns);
+    checkQuery($query, "Empty records. (readOverduePaymentWithLimit)");
+    return $query;
+}
+
+// Read all
+function checkReadAllOverduePayment($object, $allowedColumns = [])
+{
+    $query = $object->readAllOverduePayment($allowedColumns);
+    checkQuery($query, "Empty records. (readAllOverduePayment)");
+    return $query;
+}
+
+// Read limit
+function checkReadAllOverduePaymentLimit($object, $allowedColumns = [])
+{
+    $query = $object->readAllOverduePaymentLimit($allowedColumns);
+    checkQuery($query, "Empty records. (limit)");
+    return $query;
+}
 
 // check association
 function allowedColumns()

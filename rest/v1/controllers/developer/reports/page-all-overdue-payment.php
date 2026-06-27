@@ -22,6 +22,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkPayload($data);
 
     if (array_key_exists("start", $_GET)) {
+        $val->due_date = date('Y-m-d', strtotime(date("Y-m-d") . ' +3 days'));
+
         $val->column_search = $data["searchValue"];    // get data 
         $val->column_start = $_GET['start'];
         $val->column_total = 15;
@@ -30,11 +32,10 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         // FOR MULTIPLE FILTER 
         $val->filters = $data['columnFilters'];
 
-
         checkLimitId($val->column_start, $val->column_total);
 
-        $query = checkReadAllInventoryMovementLimit($val, allowedColumns());
-        $total_result = checkReadAllInventoryMovement($val, allowedColumns());
+        $query = checkReadAllOverduePaymentLimit($val, allowedColumns());
+        $total_result = checkReadAllOverduePayment($val, allowedColumns());
         http_response_code(200);
 
         checkReadQuery(

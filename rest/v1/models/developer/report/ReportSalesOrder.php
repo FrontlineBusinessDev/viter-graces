@@ -28,6 +28,8 @@ class ReportSalesOrder
     public $sales_order_created;
     public $sales_order_updated;
 
+    public $due_date;
+
     public $stock_movement_before_qty;
     public $stock_movement_after_qty;
     public $stock_movement_qty;
@@ -43,6 +45,7 @@ class ReportSalesOrder
     public $tblMovementStock;
     public $tblProducts;
     public $tblSuppliersPurchaseOrder;
+    public $tblInstallmetPayment;
 
     public $filters;
     public $column_start;
@@ -58,6 +61,7 @@ class ReportSalesOrder
         $this->tblMovementStock = "graces_stock_movement";
         $this->tblProducts = "graces_products";
         $this->tblSuppliersPurchaseOrder = "graces_suppliers_purchase_order";
+        $this->tblInstallmetPayment = "graces_installmet_payment";
     }
 
     // read all
@@ -329,7 +333,6 @@ class ReportSalesOrder
                     THEN ms.stock_movement_qty
 
                     WHEN ms.stock_movement_type IN (
-                        'purchases',
                         'stock out - reject/defective items',
                         'stock out - return item'
                     )
@@ -355,8 +358,7 @@ class ReportSalesOrder
                         THEN ms.stock_movement_qty
 
                         WHEN ms.stock_movement_type IN (
-                            'purchases',
-                            'stock out - reject/defective items',
+                        'stock out - reject/defective items',
                         'stock out - return item'
                         )
                         THEN -ms.stock_movement_qty
@@ -483,7 +485,6 @@ class ReportSalesOrder
                     THEN ms.stock_movement_qty
 
                     WHEN ms.stock_movement_type IN (
-                        'purchases',
                         'stock out - reject/defective items',
                         'stock out - return item'
                     )
@@ -511,8 +512,7 @@ class ReportSalesOrder
                         THEN ms.stock_movement_qty
 
                         WHEN ms.stock_movement_type IN (
-                            'purchases',
-                            'stock out - reject/defective items',
+                        'stock out - reject/defective items',
                         'stock out - return item'
                         )
                         THEN -ms.stock_movement_qty
@@ -641,7 +641,6 @@ class ReportSalesOrder
                     THEN ms.stock_movement_qty
 
                     WHEN ms.stock_movement_type IN (
-                        'purchases',
                         'stock out - reject/defective items',
                         'stock out - return item'
                     )
@@ -667,8 +666,7 @@ class ReportSalesOrder
                         THEN ms.stock_movement_qty
 
                         WHEN ms.stock_movement_type IN (
-                            'purchases',
-                            'stock out - reject/defective items',
+                        'stock out - reject/defective items',
                         'stock out - return item'
                         )
                         THEN -ms.stock_movement_qty
@@ -796,7 +794,6 @@ class ReportSalesOrder
                     THEN ms.stock_movement_qty
 
                     WHEN ms.stock_movement_type IN (
-                        'purchases',
                         'stock out - reject/defective items',
                         'stock out - return item'
                     )
@@ -824,8 +821,7 @@ class ReportSalesOrder
                         THEN ms.stock_movement_qty
 
                         WHEN ms.stock_movement_type IN (
-                            'purchases',
-                            'stock out - reject/defective items',
+                        'stock out - reject/defective items',
                         'stock out - return item'
                         )
                         THEN -ms.stock_movement_qty
@@ -1121,6 +1117,147 @@ class ReportSalesOrder
             $query = false;
         }
 
+        return $query;
+    }
+
+    // read all
+    public function readAllOverduePayment($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            "due_date" => $this->due_date,
+            ...$this->column_search != "" ? [
+                "installmet_payment_due_date" => "%{$this->column_search}%",
+                "installmet_payment_code_number" => "%{$this->column_search}%",
+            ] : [],
+        ];
+
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
+            if (is_array($item['value'])) {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
+            }
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "DATE_FORMAT(installmet_payment_due_date, '%b %d, %Y') as installmet_payment_due_date, ";
+            $sql .= "DATEDIFF(NOW(), installmet_payment_due_date) as days_ago, ";
+            $sql .= "installmet_payment_aid as id, ";
+            $sql .= "installmet_payment_is_paid as is_active, ";
+            $sql .= "installmet_payment_code_number as name ";
+            $sql .= "from {$this->tblInstallmetPayment} ";
+            $sql .= "where installmet_payment_is_paid = '0' ";
+            $sql .= "and DATE(installmet_payment_due_date) <= DATE(:due_date) ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and (installmet_payment_due_date like :installmet_payment_due_date 
+                or installmet_payment_code_number like :installmet_payment_code_number) " : " ");
+            }
+            $sql .= " order by DATE(installmet_payment_due_date) asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readAllOverduePaymentLimit($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            "start" => $this->column_start - 1,
+            "total" => $this->column_total,
+            "due_date" => $this->due_date,
+            ...$this->column_search != "" ? [
+                "installmet_payment_due_date" => "%{$this->column_search}%",
+                "installmet_payment_code_number" => "%{$this->column_search}%",
+            ] : [],
+        ];
+
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
+            if (is_array($item['value'])) {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
+            }
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "DATE_FORMAT(installmet_payment_due_date, '%b %d, %Y') as installmet_payment_due_date, ";
+            $sql .= "DATEDIFF(NOW(), installmet_payment_due_date) as days_ago, ";
+            $sql .= "installmet_payment_aid as id, ";
+            $sql .= "installmet_payment_is_paid as is_active, ";
+            $sql .= "installmet_payment_code_number as name ";
+            $sql .= "from {$this->tblInstallmetPayment} ";
+            $sql .= "where installmet_payment_is_paid = '0' ";
+            $sql .= "and DATE(installmet_payment_due_date) <= DATE(:due_date) ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and (installmet_payment_due_date like :installmet_payment_due_date 
+                or installmet_payment_code_number like :installmet_payment_code_number) " : " ");
+            }
+            $sql .= " order by DATE(installmet_payment_due_date) asc ";
+            $sql .= "limit :start, ";
+            $sql .= ":total ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
+
+    // read all
+    public function readOverduePaymentWithLimit()
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "DATE_FORMAT(installmet_payment_due_date, '%b %d, %Y') as installmet_payment_due_date, ";
+            $sql .= "DATEDIFF(NOW(), installmet_payment_due_date) as days_ago, ";
+            $sql .= "installmet_payment_aid as id, ";
+            $sql .= "installmet_payment_code_number as name ";
+            $sql .= "from {$this->tblInstallmetPayment} ";
+            $sql .= "where installmet_payment_is_paid = '0' ";
+            $sql .= "and DATE(installmet_payment_due_date) <= DATE(:due_date) ";
+            $sql .= " order by DATE(installmet_payment_due_date) asc ";
+            $sql .= "limit :total ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "total" => $this->column_total,
+                "due_date" => $this->due_date,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
         return $query;
     }
 }

@@ -124,3 +124,5 @@ RewriteRule ^report-sales-order/page-stock-level/page/([0-9]+)$ controllers/deve
 RewriteRule ^report-sales-order/page-all-low-stock/page/([0-9]+)$ controllers/developer/reports/page-all-low-stock.php?start=$1 [L]
 RewriteRule ^report-sales-order/page-all-inventory-movement/page/([0-9]+)$ controllers/developer/reports/page-all-inventory-movement.php?start=$1 [L]
 RewriteRule ^report-sales-order/page-all-expenses/page/([0-9]+)$ controllers/developer/reports/page-all-expenses.php?start=$1 [L]
+RewriteRule ^report-sales-order/page-all-overdue-payment/page/([0-9]+)$ controllers/developer/reports/page-all-overdue-payment.php?start=$1 [L]
+RewriteRule ^report-sales-order/read-overdue-payment$ controllers/developer/reports/read-overdue-payment.php [L]

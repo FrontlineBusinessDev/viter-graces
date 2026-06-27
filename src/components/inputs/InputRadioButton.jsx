@@ -7,7 +7,6 @@ import React from "react";
 export const InputRadioButton = ({ label, onChange = null, ...props }) => {
   const { dispatch } = React.useContext(StoreContext);
   const [field, meta] = useField(props);
-  // console.log(field);
   return (
     <>
       <div className="flex items-center pl-0 w-fit relative">

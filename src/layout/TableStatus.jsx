@@ -5,40 +5,35 @@ import React from "react";
 
 const TableStatus = ({ item, dataArray }) => {
   const { store, dispatch } = React.useContext(StoreContext);
+
+  const selectedItem =
+    isEmptyItem(item?.status_option, "") !== ""
+      ? isEmptyItem(
+          item?.status_option.find(
+            (option) =>
+              option.label === isEmptyItem(dataArray?.is_status, "") ||
+              option.label === isEmptyItem(dataArray?.products_status, "") ||
+              option.value === Number(isEmptyItem(dataArray?.is_active, 1)),
+          )?.label,
+          "",
+        ) === ""
+        ? item?.status_option.find(
+            (option) =>
+              option.label === isEmptyItem(dataArray?.inventory_status, ""),
+          )?.label
+        : item?.status_option.find(
+            (option) =>
+              option.label === isEmptyItem(dataArray?.is_status, "") ||
+              option.label === isEmptyItem(dataArray?.products_status, "") ||
+              option.value === Number(isEmptyItem(dataArray?.is_active, 1)),
+          )?.label
+      : dataArray?.status_text;
+
   return (
     <>
-      {isEmptyItem(item?.status_option, "") !== "" ? (
-        item?.status_option?.map((i, key) => {
-          return (
-            (i?.value === Number(isEmptyItem(dataArray?.is_active, 1)) ||
-              i?.value === isEmptyItem(dataArray?.is_status, "")) && (
-              <div key={key} className="">
-                <Pills
-                  variant={
-                    item?.status_text
-                      ? dataArray[`${item?.status_text}`].toLowerCase()
-                      : i?.label.toLowerCase().replaceAll(" ", "_")
-                  }
-                >
-                  {item?.status_text
-                    ? dataArray[`${item?.status_text}`]
-                    : i?.label}
-                </Pills>
-              </div>
-            )
-          );
-        })
-      ) : (
-        <div className="">
-          <Pills
-            variant={dataArray?.status_text
-              ?.toLowerCase()
-              ?.replaceAll(" ", "_")}
-          >
-            {dataArray?.status_text}
-          </Pills>
-        </div>
-      )}
+      <div className="">
+        <Pills variant={selectedItem}>{selectedItem}</Pills>
+      </div>
     </>
   );
 };

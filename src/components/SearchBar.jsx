@@ -19,7 +19,6 @@ const SearchBar = ({
   const handleSubmit = (e) => {
     e.preventDefault();
     let val = search.current.value;
-    // console.log("val", val);
 
     if (val === " " || val === "") {
       setOnSearch(!onSearch);
@@ -34,7 +33,6 @@ const SearchBar = ({
   return (
     <form
       onSubmit={(e) => {
-        // console.log(search.current.value);
         handleSubmit(e);
       }}
       className="search-box"

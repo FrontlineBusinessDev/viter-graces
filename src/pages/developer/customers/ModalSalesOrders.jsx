@@ -285,7 +285,6 @@ const ModalSalesOrders = ({ itemEdit }) => {
                   0,
                 ),
               };
-              // console.log(data);
               mutation.mutate(data);
             }}
           >

@@ -288,6 +288,7 @@ export const SearchableSelectFilterStatus = ({
   column,
   options,
   testFilterStatusId,
+  uppercase = "uppercase! ",
 }) => {
   const value = column.getFilterValue();
   const selected = options.find((opt) => opt.value === value) || null;
@@ -317,7 +318,8 @@ export const SearchableSelectFilterStatus = ({
 
           placeholder: () => "text-gray-400! text-sm",
 
-          singleValue: () => "normal-case! text-sm text-gray-500! ",
+          singleValue: () =>
+            ` ${uppercase} normal-case! text-sm text-gray-500! `,
 
           indicatorsContainer: () => "",
 
@@ -335,7 +337,7 @@ export const SearchableSelectFilterStatus = ({
           menuList: () => "py-1 max-h-60 overflow-auto ",
 
           option: ({ isFocused, isSelected }) =>
-            ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  
+            ` ${uppercase} normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  
          ${isSelected ? "bg-primary! text-secondary!" : " "}
          ${!isSelected && isFocused ? "bg-primary! text-secondary! " : " "}`,
         }}
@@ -479,7 +481,11 @@ export const InputSelectTagArray = ({
 
           {result?.data?.map((item, key) => {
             return isEmptyItem(item?.name, "") !== "developer" ? (
-              <option key={key} value={Number(item.id)}>
+              <option
+                key={key}
+                value={Number(item.id)}
+                price={Number(isEmptyItem(item.amount, 0))}
+              >
                 {item.name}
               </option>
             ) : (
@@ -613,6 +619,8 @@ export const InputPurchaseOrderSelectTagArray = ({
     `${path}`, // key
     { id: id },
   );
+
+  console.log("result", result);
 
   return (
     <>

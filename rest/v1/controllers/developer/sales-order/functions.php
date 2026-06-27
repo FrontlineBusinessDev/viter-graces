@@ -55,6 +55,14 @@ function checkDeleteById($object)
     return $query;
 }
 
+// Delete 
+function checkDeleteInstallment($object)
+{
+    $query = $object->deleteInstallment();
+    checkQuery($query, "There's a problem processing your request. (deleteInstallment)");
+    return $query;
+}
+
 // Read all
 function checkReadByCustomerId($object, $allowedColumns = [])
 {
@@ -117,6 +125,57 @@ function allowedColumns()
         "sales_order_total_payable_amount",
     ];
     return $query;
+}
+
+// Update 
+function checkUpdateInstallment($object)
+{
+    $query = $object->updateInstallment();
+    checkQuery($query, "There's a problem processing your request. (update installment)");
+    return $query;
+}
+
+// Update 
+function updateStatus($val, $data)
+{
+    // DEFAULT VALUE
+    $val->sales_order_status = 'paid';
+    $installmentData = $data["installmentItems"];
+    $val->sales_order_paid_amount = $data["sales_order_paid_amount"];
+    $val->sales_order_total_payable_amount = $data["sales_order_total_payable_amount"];
+
+    //  IF THE PAYMENT IS PARTIAL AND HAVE INSTALLMENT DATA
+    if ((float)$val->sales_order_paid_amount < (float)$val->sales_order_total_payable_amount) {
+        $val->sales_order_status = 'partial';
+    }
+    //  IF THE PAYMENT IS 0, NEGATIVE OR INSTALLMENT
+    if ((float)$val->sales_order_paid_amount == 0) {
+        $val->sales_order_status = 'unpaid';
+    }
+    if ((float)$val->sales_order_paid_amount == 0 && count($installmentData) == 0) {
+        $val->sales_order_status = 'unpaid';
+    }
+    //  IF THE PAYMENT IS PARTIAL BUT NO INSTALLMENT DATA
+    if (
+        $val->sales_order_due_date == "" &&
+        (float)$val->sales_order_paid_amount < (float)$val->sales_order_total_payable_amount
+        && count($installmentData) == 0
+    ) {
+        $val->sales_order_status = 'overdue';
+    }
+
+    $due_date = date('Y-m-d', strtotime(date("Y-m-d") . ' +3 days'));
+    $timestamp = strtotime($val->sales_order_due_date);
+    $val->sales_order_due_date = date("Y-m-d", $timestamp);
+
+    //  IF THE NEXT DUEDATE IS IN NEXT 3 DAY
+    if (
+        $val->sales_order_due_date <= $due_date
+    ) {
+        $val->sales_order_status = 'overdue';
+    }
+
+    return;
 }
 
 // Update 
