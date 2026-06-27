@@ -1,7 +1,4 @@
-import {
-  ActiveInActiveStatus,
-  DefaultActionTableList,
-} from "@/layout/ArrayValue";
+import { ActiveInActiveStatus, ActionTableList } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -33,7 +30,7 @@ const ProductOwner = () => {
     },
     {
       accessorKey: "action",
-      action_array: DefaultActionTableList("owner"),
+      action_array: ActionTableList("owner"),
       header: "Action",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",

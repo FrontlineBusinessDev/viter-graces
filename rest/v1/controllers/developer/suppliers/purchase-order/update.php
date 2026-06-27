@@ -26,6 +26,7 @@ if (array_key_exists("id", $_GET)) {
     $val->purchase_order_status = $data["purchase_order_status"];
     $val->purchase_order_payment_status = $data["purchase_order_payment_status"];
     $val->purchase_order_note = $data["purchase_order_note"];
+    $val->purchase_order_created = date("Y-m-d H:i:s");
     $val->purchase_order_updated = date("Y-m-d H:i:s");
 
     $val_name_old = $data['purchase_order_number_old'];
@@ -43,10 +44,16 @@ if (array_key_exists("id", $_GET)) {
         $val->purchase_order_qty = $purchase_order[$i]["purchase_order_qty"];
         $val->purchase_order_price = $purchase_order[$i]["purchase_order_price"];
         $val->purchase_order_total_amount = $purchase_order[$i]["purchase_order_total_amount"];
-        // create
-        checkId($val->purchase_order_aid);
+
         // update
-        $query = checkUpdate($val);
+        if ((float)$val->purchase_order_aid == 0) {
+
+            $query = checkCreate($val);
+        } else { // create
+            checkId($val->purchase_order_aid);
+
+            $query = checkUpdate($val);
+        }
     }
 
     // create activity log 

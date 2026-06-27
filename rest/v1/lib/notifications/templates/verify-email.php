@@ -39,18 +39,16 @@ function getHtmlVerifyEmail(
   "
 >
   <div style="width: 100%; max-width: 550px; margin: 10px auto">
-    <div style="padding: 10px 10px 0px">
-      <div>
+    <div style="padding: 10px 10px 0px; text-align: center">
         <img
-          src="' . $IMAGES_URL . '/SideLogo.png"
+          src="' . $IMAGES_URL . '/Graces_Logos.png"
           alt="graces-logo"
           style="max-width: 150px"
-        />
-      </div>
+        /> 
     </div>
     <div style="padding: 0 10px 0px">
       <div style="color: #505050; margin: 20px 0 0px; border-radius: 10px">
-        <div style="padding: 20px 0px; border-radius: 5px 5px 12px 12px">
+        <div style="padding: 0 0 20px 0px; border-radius: 5px 5px 12px 12px">
           <p
             style="
               line-height: 1.2;
@@ -58,6 +56,7 @@ function getHtmlVerifyEmail(
               color: #505050;
               font-weight: bold;
               margin: 0;
+              text-align: center;
             "
           >
             CHANGE EMAIL REQUEST

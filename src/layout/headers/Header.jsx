@@ -57,12 +57,6 @@ const Header = ({ menu, toggleMobileNav }) => {
     }, 1500);
   };
 
-  // console.log({
-  //   darkMode,
-  //   theme: localStorage.getItem("theme"),
-  //   htmlHasDark: document.documentElement.classList.contains("dark"),
-  // });
-
   return (
     <>
       <div

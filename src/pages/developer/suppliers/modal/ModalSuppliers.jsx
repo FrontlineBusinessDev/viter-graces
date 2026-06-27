@@ -56,6 +56,7 @@ const ModalSuppliers = ({ itemEdit }) => {
   const handleClose = () => {
     dispatch(setIsAdd(false));
     dispatch(setError(false));
+    queryClient.invalidateQueries({ queryKey: ["suppliers"] });
   };
 
   handleEscape(() => handleClose());
@@ -223,7 +224,7 @@ const ModalSuppliers = ({ itemEdit }) => {
                   <div className="grid lg:grid-cols-3 gap-2">
                     <div className="relative mt-3">
                       <InputText
-                        label="Messenger"
+                        label="Messenger link"
                         type="text"
                         name="suppliers_messenger"
                         placeholder={`Messenger`}
@@ -233,8 +234,8 @@ const ModalSuppliers = ({ itemEdit }) => {
                     </div>
                     <div className="relative mt-3">
                       <InputText
-                        label="WhatsApp"
-                        type="text"
+                        label="WhatsApp number"
+                        type="number"
                         name="suppliers_whatsapp"
                         placeholder={`WhatsApp`}
                         disabled={mutation.isPending}
@@ -243,7 +244,7 @@ const ModalSuppliers = ({ itemEdit }) => {
                     </div>
                     <div className="relative mt-3">
                       <InputText
-                        label="Other"
+                        label="Other social media link"
                         type="text"
                         name="suppliers_other"
                         placeholder={`Other`}
@@ -325,7 +326,7 @@ const ModalSuppliers = ({ itemEdit }) => {
                           <div className="flex flex-col">
                             <ul className="hidden md:grid grid-cols-[2.2fr_1fr_1fr_2rem] px-3 mt-2 text-dark">
                               <li>Item(s)</li>
-                              <li>Unit</li>
+                              <li>Unit of measure</li>
                               <li>Est. Cost</li>
                             </ul>
                             {items.map((item, index) => (
@@ -347,7 +348,7 @@ const ModalSuppliers = ({ itemEdit }) => {
                                   onChange={(e) =>
                                     handleChange(index, "unit", e.target.value)
                                   }
-                                  placeholder="Unit"
+                                  placeholder="e.g., pcs, kilograms, pack"
                                   className="input"
                                 />
                                 <input

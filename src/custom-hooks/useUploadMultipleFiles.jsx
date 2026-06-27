@@ -45,7 +45,6 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
   const [files, setFiles] = React.useState([]);
 
   const uploadMultipleFiles = async () => {
-    // console.log(clientId);
     if (filesArrayList.length > 0) {
       const fd = new FormData();
       let count = 0;
@@ -78,7 +77,6 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
   };
 
   const uploadFiles = async () => {
-    // console.log(clientId);
     if (files.length > 0) {
       const fd = new FormData();
       let count = 0;
@@ -131,7 +129,6 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
       const filterExcessFileSize = Array.from(e.target.files).filter(
         (item) => Number(item.size) > Number(sizeLimitKb),
       );
-      // console.log(filterExcessFileSize);
       if (filterExcessFileSize?.length > 0) {
         dispatch(setError(true));
         dispatch(
@@ -153,7 +150,6 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
           return item.type.split("/")[0] !== "image";
         },
       );
-      // console.log(allImageSizes);
       if (checkCountIfFileIsImage.length > 0) {
         dispatch(setError(true));
         dispatch(setMessage(`Invalid file. Input only accept images.`));

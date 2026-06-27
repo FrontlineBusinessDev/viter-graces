@@ -3,6 +3,7 @@
 require '../../../core/header.php';
 // use needed functions
 require '../../../core/functions.php';
+require 'functions.php';
 // use needed classes 
 require '../../../models/developer/sales-order/SalesOrder.php';
 // check database connection
@@ -27,11 +28,13 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->sales_order_aid = $_GET['id'];
         $val->sales_order_number = trim($data["sales_order_number"]);
         $val->sales_order_is_active = trim($data["isActive"]);
+        $val->sales_order_due_date = $data["sales_order_due_date"];
 
-        if ($val->sales_order_is_active === 0) {
+        if ((float)$val->sales_order_is_active == 0) {
             $val->sales_order_status = "inactive";
         } else {
-            $val->sales_order_status = "active";
+            // INSTALLMENT DATA
+            updateStatus($val, $data);
         }
 
         $val->sales_order_updated = date("Y-m-d H:i:s");

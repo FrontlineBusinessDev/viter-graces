@@ -87,6 +87,7 @@ class User
             ...$this->column_search != "" ? [
                 "user_account_first_name" => "%{$this->column_search}%",
                 "user_account_last_name" => "%{$this->column_search}%",
+                "user_account_email" => "%{$this->column_search}%",
                 "name" => "%{$this->column_search}%",
                 "fullname" => "%{$this->column_search}%",
                 "user_account_role" => "%{$this->column_search}%",
@@ -123,6 +124,7 @@ class User
                 $sql .= ($this->isDeveloper != "1" ? "and user_account_role != 'Developer'  " : " ");
                 $sql .= ($this->column_search != "" ? "and (user_account_first_name like :user_account_first_name 
                                                     or user_account_last_name like :user_account_last_name 
+                                                    or user_account_email like :user_account_email 
                                                     or CONCAT(user_account_first_name, ' ', user_account_last_name) like :name 
                                                     or CONCAT(user_account_last_name, ', ', user_account_first_name) like :fullname 
                                                     or user_account_role like :user_account_role ) " : " ");
@@ -147,6 +149,7 @@ class User
             ...$this->column_search != "" ? [
                 "user_account_first_name" => "%{$this->column_search}%",
                 "user_account_last_name" => "%{$this->column_search}%",
+                "user_account_email" => "%{$this->column_search}%",
                 "name" => "%{$this->column_search}%",
                 "fullname" => "%{$this->column_search}%",
                 "user_account_role" => "%{$this->column_search}%",
@@ -185,6 +188,7 @@ class User
                 $sql .= ($this->isDeveloper != "1" ? "and user_account_role != 'Developer'  " : " ");
                 $sql .= ($this->column_search != "" ? "and (user_account_first_name like :user_account_first_name 
                                                     or user_account_last_name like :user_account_last_name 
+                                                    or user_account_email like :user_account_email 
                                                     or CONCAT(user_account_first_name, ' ', user_account_last_name) like :name 
                                                     or CONCAT(user_account_last_name, ', ', user_account_first_name) like :fullname 
                                                     or user_account_role like :user_account_role ) " : " ");

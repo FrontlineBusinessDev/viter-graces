@@ -127,7 +127,6 @@ const ModalExpenses = ({ itemEdit }) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
               // mutate data
-              // console.log(values);
               mutation.mutate(values);
             }}
           >

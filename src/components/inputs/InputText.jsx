@@ -169,7 +169,10 @@ export const InputLogin = ({
         data-testid={props.name}
         ref={refVal}
       />
-      <label htmlFor={props.id || props.name} className="label_login">
+      <label
+        htmlFor={props.id || props.name}
+        className="label_login disabled:text-gray-400!"
+      >
         {icon}
       </label>
 
@@ -310,7 +313,7 @@ export const DebouncedInput = ({
               setValue(newValue);
             }}
             data-testid={`${cypressTesting}_min`}
-            placeholder="0"
+            placeholder="min"
           />
           <span className="font-bold">-</span>
           <input

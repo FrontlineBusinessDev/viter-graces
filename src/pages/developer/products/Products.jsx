@@ -2,10 +2,7 @@ import {
   SearchableSelectFilter,
   SearchableSelectFilterStatus,
 } from "@/components/inputs/InputSelect";
-import {
-  ActiveInActiveStatus,
-  DefaultActionTableList,
-} from "@/layout/ArrayValue";
+import { ActiveInActiveStatus, ActionTableList } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -20,7 +17,7 @@ const Products = () => {
     {
       accessorKey: "products_is_active",
       header: "status",
-      classTh: "min-w-[10rem]",
+      classTh: "min-w-[8rem]",
       classTd: "",
       filterFn: "equals",
       meta: {
@@ -109,7 +106,7 @@ const Products = () => {
     },
     {
       accessorKey: "action",
-      action_array: DefaultActionTableList("products"),
+      action_array: ActionTableList("products"),
       header: "Action",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",

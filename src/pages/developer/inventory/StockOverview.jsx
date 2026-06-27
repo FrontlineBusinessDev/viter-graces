@@ -19,8 +19,8 @@ const StockOverview = () => {
   const columns = [
     {
       accessorKey: "inventory_status",
-      header: "",
-      classTh: "w-[10rem]",
+      header: "status",
+      classTh: "min-w-[8rem]",
       classTd: "",
       filterFn: "equals",
       meta: {
@@ -60,7 +60,7 @@ const StockOverview = () => {
       accessorKey: "current_qty",
       header: "Current Stock",
       filterFn: "between",
-      classTh: "",
+      classTh: "min-w-[10rem]",
       classTd: "",
       meta: "",
     },
@@ -75,7 +75,7 @@ const StockOverview = () => {
     {
       accessorKey: "products_unit",
       header: "Unit",
-      classTh: "",
+      classTh: "min-w-[5rem]",
       classTd: "",
       meta: "",
     },
@@ -107,7 +107,7 @@ const StockOverview = () => {
         />
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(100dvh-295px)] h-[calc(97dvh-250px)]`}
           path="stock-overview"
           setItemEdit={setItemEdit}
           haveFilterTable={true}

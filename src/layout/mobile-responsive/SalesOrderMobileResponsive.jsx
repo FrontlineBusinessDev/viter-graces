@@ -93,7 +93,10 @@ const SalesOrderMobileResponsive = ({
                       setItemEdit={setItemEdit}
                       ishaveSubAdd={ishaveSubAdd}
                       path={path}
-                      itemVal={ActionTableList("sales-order")}
+                      itemVal={ActionTableList(
+                        "sales-order",
+                        "status-with-view",
+                      )}
                     />
                   </div>
                 </div>

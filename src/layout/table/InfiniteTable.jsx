@@ -1,15 +1,15 @@
 import AddButton from "@/components/buttons/AddButton";
 import ExportCSVButton from "@/components/buttons/ExportCSVButton";
+import { DateFormat } from "@/components/DateFormat";
 import { DebouncedInput } from "@/components/inputs/InputText";
 import NoData from "@/components/NoData";
-import { AmountWithPesoSign } from "@/components/PesoSign";
 import SearchBar from "@/components/SearchBar";
 import ServerError from "@/components/ServerError";
 import ButtonSpinner from "@/components/spinners/ButtonSpinner";
 import TableLoading from "@/components/spinners/TableLoading";
 import { apiVersion } from "@/config/config";
 import { queryDataInfinite } from "@/services/queryDataInfinite";
-import { setIsAdd, setIsSubAdd, setIsView } from "@/store/StoreAction";
+import { setIsAdd, setIsSubAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { getConvertStringToJSONparseData } from "@/utilities/getConvertStringToJSONparseData";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
@@ -21,12 +21,10 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import { Image } from "lucide-react";
 import React, { useCallback, useMemo, useRef, useState } from "react";
 import ActionButtonTable from "../ActionButtonTable";
 import MobileResponsiveList from "../mobile-responsive/MobileResponsiveList";
 import ModalAction from "../modal/ModalAction";
-import TableStatus from "../TableStatus";
 import { renderCellContent } from "./function-table";
 
 const InfiniteTable = ({
@@ -53,12 +51,6 @@ const InfiniteTable = ({
   const [onSearch, setOnSearch] = React.useState(false);
   const [page, setPage] = useState(1);
 
-  // ACTIONS ADD
-  const handleView = () => {
-    dispatch(setIsView(true));
-    setItemEdit(null);
-  };
-
   const searchPayload = useMemo(
     () => ({
       searchValue: search.current?.value || "",
@@ -68,12 +60,12 @@ const InfiniteTable = ({
           : "0",
       id: "",
     }),
-    [store.isSearch],
+    [store.isSearch, search.current?.value || ""],
   );
 
   const queryKey = useMemo(
     () => [path, store.isSearch, search.current?.value || "", columnFilters],
-    [path, store.isSearch, JSON.stringify({ columnFilters })],
+    [path, search.current?.value || "", JSON.stringify({ columnFilters })],
   );
 
   // React Query infinite fetch
@@ -119,23 +111,6 @@ const InfiniteTable = ({
     return pages?.flatMap((page) => page.data ?? []) ?? [];
   }, [pages]);
 
-  // // Infinite scroll trigger
-  // const lastRowRef = useCallback(
-  //   (node) => {
-  //     if (isFetchingNextPage) return;
-
-  //     if (observer.current) observer.current.disconnect();
-
-  //     observer.current = new IntersectionObserver((entries) => {
-  //       if (entries[0].isIntersecting && hasNextPage && !isFetchingNextPage) {
-  //         fetchNextPage();
-  //       }
-  //     });
-
-  //     if (node) observer.current.observe(node);
-  //   },
-  //   [isFetchingNextPage, hasNextPage, fetchNextPage],
-  // );
   const lastRowRef = useCallback(
     (node) => {
       if (!node) return;
@@ -167,6 +142,9 @@ const InfiniteTable = ({
     filterFns: {
       equals: (row, columnId, value) => {
         return row.getValue(columnId) === value;
+      },
+      date: (row, columnId, value) => {
+        return row.getValue(columnId) === DateFormat(value);
       },
       between: (row, columnId, value) => {
         const rowValue = row.getValue(columnId);
@@ -371,6 +349,7 @@ const InfiniteTable = ({
                             className={` ${isEmptyItem(item?.column?.columnDef?.classTd, "")} `}
                           >
                             {renderCellContent(item, rowData)}
+
                             {/* FOR ACTION BUTTONS */}
                             {item?.column?.columnDef?.accessorKey ===
                               "action" && (

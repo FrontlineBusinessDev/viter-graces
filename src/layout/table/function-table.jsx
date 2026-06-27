@@ -57,7 +57,7 @@ export const renderCellContent = (item, rowData) => {
           amount={rowData[column.accessorKey]}
         />
       ) : (
-        flexRender(column.cell, item.getContext())
+        <>{flexRender(column.cell, item.getContext())}</>
       )}
     </div>
   );

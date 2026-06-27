@@ -1,8 +1,5 @@
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
-import {
-  ActiveInActiveStatus,
-  DefaultActionTableList,
-} from "@/layout/ArrayValue";
+import { ActiveInActiveStatus, ActionTableList } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfinitePerTabs from "@/layout/table/InfinitePerTabs";
 import { StoreContext } from "@/store/StoreContext";
@@ -13,6 +10,7 @@ import { FaFacebookMessenger } from "react-icons/fa";
 import { IoLogoWhatsapp } from "react-icons/io";
 import ModalAddItem from "./modal/ModalAddItem";
 import ModalSuppliers from "./modal/ModalSuppliers";
+import { MdEmail } from "react-icons/md";
 
 const Suppliers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -25,59 +23,58 @@ const Suppliers = () => {
       accessorKey: "suppliers_name",
       header: "name",
       icon: "",
+      isHaveLink: false,
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "suppliers_email",
-      header: "second_column",
-      icon: "",
-      classTh: "",
-      classTd: "",
-    },
-    {
-      accessorKey: "suppliers_address",
-      header: "address",
-      icon: <MapPin size={14} />,
+      header: "email",
+      link: "mailto:",
+      isHaveLink: true,
+      icon: <MdEmail size={12} />,
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "suppliers_phone",
       header: "contact",
-      icon: <Phone size={14} />,
+      icon: <Phone size={10} />,
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "messenger",
-      header: "social",
-      link: "https://www.facebook.com/",
-      icon: <FaFacebookMessenger className="text-blue-500 size-4" />,
+      accessorKey: "suppliers_address",
+      header: "address",
+      isHaveLink: false,
+      icon: <MapPin size={10} />,
+      classTh: "",
+      classTd: "",
+    },
+    {
+      accessorKey: "messenger ",
+      header: "messenger",
+      link: "",
+      isHaveLink: true,
+      icon: <FaFacebookMessenger className="text-blue-500 size-3" />,
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "whatsapp",
-      header: "social",
-      link: "https://www.whatsapp.com/",
-      icon: <IoLogoWhatsapp className="text-green-500 size-4.5" />,
+      header: "whatsapp",
+      link: "https://wa.me/63",
+      isHaveLink: true,
+      icon: <IoLogoWhatsapp className="text-green-500 size-3" />,
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "other",
-      header: "social",
-      link: "#",
-      icon: <AiFillMessage className="text-green-500 size-4.5" />,
-      classTh: "",
-      classTd: "",
-    },
-    {
-      accessorKey: "suppliers_contact_person",
-      header: "stringArray",
-      label: "Other Contacts",
-      icon: "",
+      header: "other social",
+      link: "",
+      isHaveLink: true,
+      icon: <AiFillMessage className="text-green-500 size-3 " />,
       classTh: "",
       classTd: "",
     },
@@ -85,14 +82,25 @@ const Suppliers = () => {
       accessorKey: "suppliers_delivery",
       header: "suppliers_delivery",
       label: "Delivery",
+      isHaveLink: false,
+      icon: "",
+      classTh: "",
+      classTd: "",
+    },
+    {
+      accessorKey: "suppliers_contact_person",
+      header: "stringArray",
+      label: "Other Contacts",
+      isHaveLink: false,
       icon: "",
       classTh: "",
       classTd: "",
     },
     {
       accessorKey: "action",
-      action_array: DefaultActionTableList("customer"),
-      header: "Action",
+      action_array: ActionTableList("customer"),
+      header: "action",
+      isHaveLink: false,
       icon: "",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
@@ -119,7 +127,7 @@ const Suppliers = () => {
     },
     {
       accessorKey: "suppliers_product_name",
-      header: "Items(s)",
+      header: "Item(s)",
       isViewItems: false,
       classTh: "",
       classTd: "",
@@ -144,7 +152,7 @@ const Suppliers = () => {
     },
     {
       accessorKey: "action",
-      action_array: DefaultActionTableList("roles"),
+      action_array: ActionTableList("roles"),
       header: "Action",
       classTh: " text-center w-[5rem] ",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",

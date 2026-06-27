@@ -23,9 +23,9 @@ if (array_key_exists("id", $_GET)) {
     $val->products_price = $data["products_price"];
     $val->products_cost = $data["products_cost"];
     $val->products_stocks = $data["products_stocks"];
-    $val->products_owner_id = $data["products_owner_id"];
+    $val->products_owner_id = (float)$data["products_owner_id"];
     $val->products_owner_name = $data["products_owner_name"];
-    $val->products_suppliers_id = $data["products_suppliers_id"];
+    $val->products_suppliers_id = (float)$data["products_suppliers_id"];
     $val->products_suppliers_name = $data["products_suppliers_name"];
     $val->products_sales = $data["products_sales"];
     $val->products_unit = $data["products_unit"];

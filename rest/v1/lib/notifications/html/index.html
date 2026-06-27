@@ -1,3 +1,24 @@
+<style>
+  @import url("https://fonts.cdnfonts.com/css/Helvetica Neue-neue-9");
+  * {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+  }
+
+  p {
+    margin-bottom: 10px;
+    font-size: 14px;
+  }
+
+  .info td {
+    padding: 2px;
+    font-size: 14px;
+  }
+  table {
+    border-spacing: 0;
+  }
+</style>
 <body
   style="
     font-family:
@@ -9,18 +30,16 @@
   "
 >
   <div style="width: 100%; max-width: 550px; margin: 10px auto">
-    <div style="padding: 10px 10px 0px">
-      <div>
-        <img
-          src="' . $IMAGES_URL . '/SideLogo.png"
-          alt="graces-logo"
-          style="max-width: 150px"
-        />
-      </div>
+    <div style="padding: 10px 10px 0px; text-align: center">
+      <img
+        src="http://localhost:5174/public/img/Graces_Logos.png"
+        alt="graces-logo"
+        style="max-width: 100%"
+      />
     </div>
     <div style="padding: 0 10px 0px">
       <div style="color: #505050; margin: 20px 0 0px; border-radius: 10px">
-        <div style="padding: 20px 0px; border-radius: 5px 5px 12px 12px">
+        <div style="padding: 0 0 20px 0px; border-radius: 5px 5px 12px 12px">
           <p
             style="
               line-height: 1.2;
@@ -28,16 +47,18 @@
               color: #505050;
               font-weight: bold;
               margin: 0;
+              text-align: center;
             "
           >
-            RESET PASSWORD
+            CHANGE EMAIL REQUEST
           </p>
         </div>
         <div style="padding: 10px 0px">
-          <p style="margin: 5px 0px 15px 0px">
-            We received a request to reset the password for your account
-            <span style="">' . $email . '</span> Tap the button below to set a
-            new password and regain access.
+          <p style="margin: 5px 0px 15px 0px">Hi There ' . $name . ',</p>
+          <p style="margin-bottom: 5px">
+            Hi there, We’ve received a request to change your email address.<br />To
+            complete the update and secure your account, please confirm by
+            clicking the button below.
           </p>
 
           <div style="margin: 30px 0 30px 0px">
@@ -53,12 +74,13 @@
                 border-radius: 5px;
                 line-height: 28px;
               "
-              >Reset password</a
+              >Confirm new email</a
             >
           </div>
           <small style="margin-top: 30px">
-            If you did not request a password reset, then just ignore this
-            message.
+            If you didn’t receive the email, you can request a new one anytime.
+            <br />
+            Need help? Reply to this email—we’re here for you.
           </small>
         </div>
       </div>

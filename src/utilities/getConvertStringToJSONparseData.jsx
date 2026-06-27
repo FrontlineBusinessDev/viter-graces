@@ -3,9 +3,7 @@ export const getConvertStringToJSONparseData = (jsonString) => {
 
   try {
     resultArray = JSON.parse(jsonString);
-  } catch (e) {
-    // console.log(e);
-  }
+  } catch (e) {}
 
   return resultArray;
 };

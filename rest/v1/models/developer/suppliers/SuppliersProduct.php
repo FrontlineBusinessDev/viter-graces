@@ -100,6 +100,7 @@ class SuppliersProduct
             $sql = "select *, ";
             $sql .= "suppliers_product_aid as id, ";
             $sql .= "suppliers_product_is_active as is_active, ";
+            $sql .= "suppliers_product_price as amount, ";
             $sql .= "suppliers_product_name as name ";
             $sql .= "from {$this->tblSuppliersProduct} ";
             $sql .= " where suppliers_product_supplier_id = :suppliers_product_supplier_id ";
@@ -154,6 +155,7 @@ class SuppliersProduct
             $sql = "select *, ";
             $sql .= "suppliers_product_aid as id, ";
             $sql .= "suppliers_product_is_active as is_active, ";
+            $sql .= "suppliers_product_price as amount, ";
             $sql .= "suppliers_product_name as name ";
             $sql .= "from {$this->tblSuppliersProduct} ";
             $sql .= " where suppliers_product_supplier_id = :suppliers_product_supplier_id ";
@@ -180,6 +182,7 @@ class SuppliersProduct
             $sql = "select *, ";
             $sql .= "suppliers_product_aid as id, ";
             $sql .= "suppliers_product_is_active as is_active, ";
+            $sql .= "suppliers_product_price as amount, ";
             $sql .= "suppliers_product_name as name ";
             $sql .= "from ";
             $sql .= " {$this->tblSuppliersProduct} ";
@@ -203,6 +206,7 @@ class SuppliersProduct
             $sql = "select *, ";
             $sql .= "suppliers_product_aid as id, ";
             $sql .= "suppliers_product_is_active as is_active, ";
+            $sql .= "suppliers_product_price as amount, ";
             $sql .= "suppliers_product_name as name ";
             $sql .= "from {$this->tblSuppliersProduct} ";
             $sql .= "where suppliers_product_aid = :suppliers_product_aid ";

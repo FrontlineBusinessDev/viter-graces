@@ -123,10 +123,10 @@ const ForgotPassword = () => {
                       <div className="relative mb-2">
                         <InputLogin
                           placeholder="ENTER EMAIL ADDRESS"
-                          icon={<User className="text-white" />}
+                          icon={<User className=" text-gray-400!" />}
                           type="text"
                           name="user_account_email"
-                          className="text-white"
+                          className="text-white disabled:text-gray-400!"
                           disabled={mutation.isPending}
                         />
                       </div>
