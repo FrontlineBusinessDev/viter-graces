@@ -59,9 +59,14 @@ const DashboardOverduePayments = () => {
                       {item.installmet_payment_due_date}
                     </p>
                   </div>
-                  <span className="text-red-600 font-semibold">
-                    ₱{item.installmet_payment_amount}
-                  </span>
+                  <div>
+                    <span className="text-red-600 font-semibold">
+                      ₱{item.installmet_payment_amount}
+                    </span>
+                    <p className="text-red-600 font-semibold">
+                      {item.days_ago} day(s) ago
+                    </p>
+                  </div>
                 </li>
               );
             })
