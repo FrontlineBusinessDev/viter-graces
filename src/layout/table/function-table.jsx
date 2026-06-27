@@ -57,10 +57,7 @@ export const renderCellContent = (item, rowData) => {
           amount={rowData[column.accessorKey]}
         />
       ) : (
-        <>
-          {flexRender(column.cell, item.getContext())}
-          {isEmptyItem(item.getValue(), "")} day(s) ago
-        </>
+        <>{flexRender(column.cell, item.getContext())}</>
       )}
     </div>
   );
