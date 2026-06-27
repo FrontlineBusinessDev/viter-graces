@@ -20,7 +20,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
     checkPayload($data);
 
-    $val->due_date = date('Y-m-d', strtotime(date("Y-m-d") . ' +3 days'));
+    $val->due_date = date('Y-m-d');
     $val->column_total = $data['limit'];
     $query = checkReadOverduePaymentWithLimit($val);
     http_response_code(200);
