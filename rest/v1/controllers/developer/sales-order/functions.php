@@ -170,7 +170,8 @@ function updateStatus($val, $data)
 
     //  IF THE NEXT DUEDATE IS IN NEXT 3 DAY
     if (
-        $val->sales_order_due_date <= $due_date
+        $val->sales_order_due_date <= $due_date &&
+        (float)$val->sales_order_paid_amount < (float)$val->sales_order_total_payable_amount
     ) {
         $val->sales_order_status = 'overdue';
     }
