@@ -71,7 +71,7 @@ class SalesOrder
         $this->tblStockMovements = "graces_stock_movement";
         $this->tblMovementStock = "graces_stock_movement";
         $this->tblProducts = "graces_products";
-        $this->tblInstallmetPayment = "graces_installmet_payment";
+        $this->tblInstallmetPayment = "graces_installment_payment";
     }
 
     // create
