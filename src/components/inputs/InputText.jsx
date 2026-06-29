@@ -99,14 +99,19 @@ export const InputMaxMinValue = ({ column, cypressTesting = "" }) => {
       <div className="flex items-center gap-1">
         {/* MIN */}
         <input
-          type="number"
+          type="search"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          // oninput={(this?.value = this?.value?.replaceAll(/[^0-9]/g, ""))}
           value={value?.min ?? ""}
-          placeholder="Min"
+          placeholder="min"
           data-testid={`${cypressTesting}_min`}
           className={`bg-white m-0! w-full! text-sm border rounded-md cursor-pointer! isFocused:border-primary!
                               isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! `}
           onChange={(e) => {
-            let min = e.target.value ? Number(e.target.value) : undefined;
+            let min = e.target.value?.replaceAll(/[^0-9]/g, "")
+              ? Number(e.target.value?.replaceAll(/[^0-9]/g, ""))
+              : 0;
 
             const newValue = {
               ...value,
@@ -119,14 +124,19 @@ export const InputMaxMinValue = ({ column, cypressTesting = "" }) => {
         <span className="font-bold">-</span>
         {/* MAX */}
         <input
-          type="number"
+          type="search"
+          inputmode="numeric"
+          pattern="[0-9]*"
+          // oninput={(this?.value = this?.value?.replaceAll(/[^0-9]/g, ""))}
           value={value?.max ?? ""}
-          placeholder="Max"
+          placeholder="max"
           data-testid={`${cypressTesting}_max`}
           className={`bg-white m-0! w-full! text-sm border rounded-md cursor-pointer! isFocused:border-primary!
                               isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! `}
           onChange={(e) => {
-            let max = e.target.value ? Number(e.target.value) : undefined;
+            let max = e.target.value?.replaceAll(/[^0-9]/g, "")
+              ? Number(e.target.value?.replaceAll(/[^0-9]/g, ""))
+              : 0;
 
             const newValue = {
               ...value,
@@ -242,6 +252,8 @@ export const InputCode = ({ length, loading, onComplete }) => {
                 key={idx}
                 type="text"
                 inputMode="numeric"
+                pattern="[0-9]*"
+                // oninput={(this?.value = this?.value?.replaceAll(/[^0-9]/g, ""))}
                 value={num}
                 autoFocus={!code[0].length && idx === 0}
                 readOnly={loading}
@@ -301,9 +313,14 @@ export const DebouncedInput = ({
           <input
             {...props}
             value={value?.min ?? ""}
-            type="number"
+            type="search"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            // oninput={(this?.value = this?.value?.replaceAll(/[^0-9]/g, ""))}
             onChange={(e) => {
-              let min = e.target.value ? Number(e.target.value) : "";
+              let min = e.target.value?.replaceAll(/[^0-9]/g, "")
+                ? Number(e.target.value?.replaceAll(/[^0-9]/g, ""))
+                : "";
               let max = value?.max ?? "";
               const newValue = {
                 ...value,
@@ -319,9 +336,14 @@ export const DebouncedInput = ({
           <input
             {...props}
             value={value?.max ?? ""}
-            type="number"
+            type="search"
+            inputmode="numeric"
+            pattern="[0-9]*"
+            // oninput={(this?.value = this?.value?.replaceAll(/[^0-9]/g, ""))}
             onChange={(e) => {
-              let max = e.target.value ? Number(e.target.value) : "";
+              let max = e.target.value?.replaceAll(/[^0-9]/g, "")
+                ? Number(e.target.value?.replaceAll(/[^0-9]/g, ""))
+                : "";
               let min = value?.min ?? "0";
               const newValue = {
                 ...value,

@@ -35,3 +35,11 @@ function allowedColumns()
     ];
     return $query;
 }
+
+// Delete 
+function checkDeleteById($object)
+{
+    $query = $object->deleteById();
+    checkQuery($query, "There's a problem processing your request. (deleteById)");
+    return $query;
+}

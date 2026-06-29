@@ -55,6 +55,11 @@ if (array_key_exists("id", $_GET)) {
             $query = checkUpdate($val);
         }
     }
+    $itemsDelete = $data["itemsDelete"];
+    for ($i = 0; $i < count($itemsDelete); $i++) {
+        $val->purchase_order_aid = $itemsDelete[$i]['purchase_order_aid'];
+        $query = checkDeleteById($val);
+    }
 
     // create activity log 
     createActivityLog($valActivity, $data);

@@ -351,6 +351,23 @@ class SuppliersPurchaseOrder
     {
         try {
             $sql = "delete from {$this->tblSuppliersPurchaseOrder} ";
+            $sql .= "where purchase_order_number = :purchase_order_number ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "purchase_order_number" => $this->purchase_order_number,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // delete
+    public function deleteById()
+    {
+        try {
+            $sql = "delete from {$this->tblSuppliersPurchaseOrder} ";
             $sql .= "where purchase_order_aid = :purchase_order_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([

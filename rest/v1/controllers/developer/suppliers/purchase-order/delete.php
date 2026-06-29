@@ -18,6 +18,7 @@ if (array_key_exists("id", $_GET)) {
     $val->purchase_order_aid = $_GET['id'];
     checkId($val->purchase_order_aid);
     // delete  
+    $val->purchase_order_number = $data['purchase_order_number'];
 
     $query = checkDelete($val);
     // create activity log 

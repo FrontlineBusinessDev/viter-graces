@@ -620,8 +620,6 @@ export const InputPurchaseOrderSelectTagArray = ({
     { id: id },
   );
 
-  console.log("result", result);
-
   return (
     <>
       {label ? (
