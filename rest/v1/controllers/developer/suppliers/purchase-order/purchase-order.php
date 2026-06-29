@@ -3,6 +3,7 @@
 require '../../../../core/header.php';
 // use needed functions
 require '../../../../core/functions.php';
+require 'functions.php';
 // use needed classes
 require '../../../../models/developer/suppliers/SuppliersPurchaseOrder.php';
 // ACTIVITY LOG DETAILS
