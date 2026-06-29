@@ -51,6 +51,7 @@ if (array_key_exists("id", $_GET)) {
                 $val->sales_order_due_date = $installmentItems[$a]["installmet_payment_due_date"];
             }
             $val->installmet_payment_code_id = 0;
+            $val->installmet_payment_is_paid = 0;
             $val->installmet_payment_aid = $installmentItems[$a]["installmet_payment_aid"];
             $val->installmet_payment_code = $installmentItems[$a]["installmet_payment_code"];
             $val->installmet_payment_due_date = $installmentItems[$a]["installmet_payment_due_date"];
