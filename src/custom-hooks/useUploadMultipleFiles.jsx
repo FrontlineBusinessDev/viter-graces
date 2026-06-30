@@ -4,6 +4,7 @@ import { setError, setMessage } from "@/store/StoreAction";
 import { convertTimeToDecimal } from "@/utilities/convertTimeToDecimal";
 import { devApiUrl } from "@/config/config";
 import { fetchFormData } from "@/utilities/fetchFormData";
+import { queryData } from "@/services/queryData";
 
 const handleGetSeconds = async (blobFile) => {
   let result = 0,
@@ -65,7 +66,7 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
       // if (isFilesJsonString) return { success: true };
       if (count == 0) return { success: true };
 
-      const data = await fetchFormData(`${devApiUrl}` + url, fd, dispatch);
+      const data = await queryData(`${devApiUrl}` + url, fd, dispatch);
 
       if (!data.success) {
         dispatch(setError(true));
@@ -94,7 +95,7 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
       if (count == 0) return { success: true };
 
       const data = await fetchFormData(`${devApiUrl}` + url, fd, dispatch);
-
+      // upload-multiple-files
       if (!data.success) {
         dispatch(setError(true));
         dispatch(setMessage(data.error));

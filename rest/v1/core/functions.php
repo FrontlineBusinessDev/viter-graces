@@ -821,3 +821,18 @@ function logError(
         json_encode($log, JSON_UNESCAPED_SLASHES) . PHP_EOL
     );
 }
+
+function deleteImageDirectory($imageFileName)
+{
+    $result = false;
+    $directory = __DIR__ . UPLOAD_MULTIPLE_PATH;  // localhost link  
+
+    if ($imageFileName == '') return; // if empty file name 
+
+    $fileDirectory = "{$directory}{$imageFileName}"; // store file path
+    if (file_exists($fileDirectory)) { // check if file exist
+        $result = unlink($fileDirectory); // remove in server public img
+    }
+
+    return $result;
+}

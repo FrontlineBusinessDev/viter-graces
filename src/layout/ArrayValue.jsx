@@ -10,106 +10,110 @@ import {
 export const ActiveInActiveStatus = (val = "default-status") => {
   const result = [
     {
-      name: "default-status",
+      name: ["default-status"],
       label: "Active",
       value: 1,
     },
     {
-      name: "default-status",
+      name: ["default-status"],
       label: "Inactive",
       value: 0,
     },
     {
-      name: "installment-status",
+      name: ["installment-status"],
       label: "paid",
       value: 1,
     },
     {
-      name: "installment-status",
+      name: ["installment-status"],
       label: "overdue",
       value: 0,
     },
-
     {
-      name: "stock-overview",
+      name: ["stock-overview"],
       label: "out of stock",
       value: "out of stock",
     },
     {
-      name: "stock-overview",
+      name: ["purchase-order-status"],
+      label: "draft",
+      value: "draft",
+    },
+    {
+      name: ["stock-overview"],
       label: "in stock",
       value: "in stock",
     },
     {
-      name: "stock-overview",
+      name: ["stock-overview"],
       label: "low stock",
       value: "low stock",
     },
 
     {
-      name: "default-status-words",
+      name: ["default-status-words"],
       label: "active",
       value: "active",
     },
     {
-      name: "default-status-words",
+      name: ["default-status-words"],
       label: "inactive",
       value: "inactive",
     },
     {
-      name: "payment-status",
+      name: ["payment-status", "purchase-order-status"],
       label: "unpaid",
       value: "unpaid",
     },
     {
-      name: "payment-status",
+      name: ["payment-status", "purchase-order-status"],
       label: "paid",
       value: "paid",
     },
     {
-      name: "payment-status",
+      name: ["payment-status"],
       label: "partial",
       value: "partial",
     },
     {
-      name: "payment-status",
+      name: ["payment-status"],
       label: "inactive",
       value: "inactive",
     },
     {
-      name: "payment-status",
+      name: ["payment-status"],
       label: "overdue",
       value: "overdue",
     },
 
     {
-      name: "stock-type-status",
+      name: ["stock-type-status"],
       label: "IN STOCK",
       value: "in stock",
     },
     {
-      name: "stock-type-status",
+      name: ["stock-type-status"],
       label: "PURCHASES",
       value: "purchases",
     },
     {
-      name: "stock-type-status",
+      name: ["stock-type-status"],
       label: "STOCK IN ADJUSTMENTS",
       value: "stock in adjustments",
     },
     {
-      name: "stock-type-status",
+      name: ["stock-type-status"],
       label: "STOCK OUT - SALES",
       value: "stock out - sales",
     },
     {
-      name: "stock-type-status",
+      name: ["stock-type-status"],
       label: "STOCK OUT - REJECT/DEFECTIVE ITEMS",
       value: "stock out - reject/defective items",
     },
   ];
 
-  return result.filter((item) => item.name === val);
+  return result.filter((item) => item.name.includes(val));
 };
 
 export const ActionTableList = (path, val = "default-status") => {

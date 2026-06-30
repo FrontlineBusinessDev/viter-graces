@@ -11,9 +11,11 @@ RewriteCond %{REQUEST_FILENAME} -d
 Header set Access-Control-Allow-Origin "*"
 
 #################################### ALL FOR DEVELOPER #################################
+### FOR UPLOAD PHOTO ###  
+RewriteRule ^test-api$ controllers/test-api.php [L]
+
 ### FOR UPLOAD PHOTO ###
 RewriteRule ^upload-multiple-files$ core/upload-multiple-files.php [L]
-RewriteRule ^test-api$ controllers/test-api.php [L]
 
 ### ROLES ###
 RewriteRule ^roles$ controllers/developer/settings/role/role.php [L]

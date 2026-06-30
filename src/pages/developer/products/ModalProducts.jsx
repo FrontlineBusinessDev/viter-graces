@@ -5,8 +5,9 @@ import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import LoadImages from "@/components/LoadImages";
 import MessageError from "@/components/MessageError";
-import { apiVersion } from "@/config/config";
+import { apiVersion, devBaseImgUrl } from "@/config/config";
 import useUploadMultipleFiles from "@/custom-hooks/useUploadMultipleFiles";
+import useUploadPhoto from "@/custom-hooks/useUploadPhoto";
 import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
@@ -36,6 +37,11 @@ const ModalProducts = ({ itemEdit }) => {
   };
 
   handleEscape(() => handleClose());
+
+  const { uploadPhoto, handleChangePhoto, photo } = useUploadPhoto(
+    `${apiVersion}/upload-multiple-files`,
+    dispatch,
+  );
 
   const {
     uploadMultipleFiles,
@@ -113,13 +119,7 @@ const ModalProducts = ({ itemEdit }) => {
     products_low_stock_threshold: Yup.string().trim().required("Required"),
   });
 
-  React.useEffect(() => {
-    if (itemEdit) {
-      const files = getConvertStringToJSONparseData(itemEdit.products_image);
-      setFilesArrayList(files);
-    }
-  }, [itemEdit?.products_image]);
-
+  console.log("photo", photo);
   return (
     <>
       <ModalWrapper
@@ -136,6 +136,7 @@ const ModalProducts = ({ itemEdit }) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
               // mutate data
+
               let data = {
                 ...ActivityLogDetails(
                   "products",
@@ -144,13 +145,24 @@ const ModalProducts = ({ itemEdit }) => {
                   values,
                 ),
                 ...values,
+                products_image:
+                  (itemEdit.products_image === "" && photo) ||
+                  (photo && itemEdit.products_image !== photo.name)
+                    ? photo.name
+                    : itemEdit.products_image,
               };
               setLoading(true);
-              mutation.mutate(data);
+              console.log(data);
 
-              // const filesUpload = await uploadMultipleFiles();
-              // if (filesUpload?.success) setLoading(false);
-              // if (!loading) mutation.mutate(data);
+              const upload = await uploadPhoto();
+
+              if (photo === null || upload?.success) {
+                setLoading(false);
+              }
+
+              if (!loading || upload?.success || photo === null) {
+                mutation.mutate(data);
+              }
             }}
           >
             {(props) => {
@@ -162,7 +174,7 @@ const ModalProducts = ({ itemEdit }) => {
                       type="text"
                       name="products_name"
                       placeholder={`${itemEdit ? "Update product" : "Product Name"}`}
-                      disabled={mutation.isPending}
+                      disabled={mutation.isPending || loading}
                     />
                   </div>
 
@@ -172,7 +184,7 @@ const ModalProducts = ({ itemEdit }) => {
                         label="Category"
                         type="text"
                         name="products_category"
-                        disabled={mutation.isPending}
+                        disabled={mutation.isPending || loading}
                         required={false}
                       />
                     </div>
@@ -197,7 +209,7 @@ const ModalProducts = ({ itemEdit }) => {
                         label="Cost Price"
                         name="products_cost"
                         placeholder={`${itemEdit ? "0.00" : "0.00"}`}
-                        disabled={mutation.isPending}
+                        disabled={mutation.isPending || loading}
                         required={false}
                       />
                     </div>
@@ -206,7 +218,7 @@ const ModalProducts = ({ itemEdit }) => {
                         label="Selling Price"
                         name="products_price"
                         placeholder={`${itemEdit ? "0.00" : "0.00"}`}
-                        disabled={mutation.isPending}
+                        disabled={mutation.isPending || loading}
                       />
                     </div>
                     {!itemEdit ? (
@@ -215,7 +227,7 @@ const ModalProducts = ({ itemEdit }) => {
                           label="Stock Quantity"
                           name="products_stocks"
                           placeholder={`${itemEdit ? "0" : "0"}`}
-                          disabled={mutation.isPending}
+                          disabled={mutation.isPending || loading}
                           required={false}
                         />
                       </div>
@@ -227,7 +239,7 @@ const ModalProducts = ({ itemEdit }) => {
                         label="Low Stock Threshold"
                         name="products_low_stock_threshold"
                         placeholder={`${itemEdit ? "0" : "0"}`}
-                        disabled={mutation.isPending}
+                        disabled={mutation.isPending || loading}
                       />
                     </div>
                     <div className="relative mt-3">
@@ -235,7 +247,7 @@ const ModalProducts = ({ itemEdit }) => {
                         label="Unit of measure"
                         name="products_unit"
                         placeholder="e.g., pcs, kilograms, pack"
-                        disabled={mutation.isPending}
+                        disabled={mutation.isPending || loading}
                         required={true}
                       />
                     </div>
@@ -262,7 +274,7 @@ const ModalProducts = ({ itemEdit }) => {
                           label="Location"
                           type="text"
                           name="stock_movement_location"
-                          disabled={mutation.isPending}
+                          disabled={mutation.isPending || loading}
                           required={false}
                         />
                       </div>
@@ -275,25 +287,30 @@ const ModalProducts = ({ itemEdit }) => {
                       type="text"
                       name="products_description"
                       placeholder={`${itemEdit ? "Update description" : "Enter description"}`}
-                      disabled={mutation.isPending}
+                      disabled={mutation.isPending || loading}
                       required={false}
                     />
                   </div>
 
-                  {/* <div className="relative mt-5 mb-6">
+                  <div className="relative mt-5 mb-6">
                     <div className="relative w-fit m-auto mb-6 mt-1 group cursor-pointer">
-                      {filesArrayList?.length == 0 ? (
+                      {itemEdit?.products_image === "" && photo === null ? (
                         <>
                           <FileText className="group-hover:opacity-30 duration-200 relative size-[200px] object-cover object-[50%_50%] m-auto fill-gray-400 border p-14" />
                         </>
                       ) : (
                         <div className="group-hover:opacity-30 duration-200 relative size-[150px] m-auto">
                           <LoadImages
-                            url={filesArrayList[filesArrayList?.length - 1]}
-                            alt={
-                              filesArrayList[filesArrayList?.length - 1]?.name
+                            url={
+                              photo
+                                ? URL.createObjectURL(photo) // preview
+                                : devBaseImgUrl + "/" + itemEdit?.products_image // check db
                             }
-                            className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full z-20 aspect-square"
+                            alt={
+                              "name"
+                              // filesArrayList[filesArrayList?.length - 1]?.name
+                            }
+                            className="absolute top-1/2 left-1/2 object-cover -translate-x-1/2 -translate-y-1/2 w-full h-full z-20 aspect-square"
                             isTableSpinner={true}
                           />
                         </div>
@@ -305,19 +322,15 @@ const ModalProducts = ({ itemEdit }) => {
                         id="myFile"
                         accept="image/*"
                         title="Upload photo"
-                        onChange={(e) =>
-                          handleChangeMultipleFiles(
-                            e, // event
-                            props, // props field
-                            setFilesArrayList, // onchange file state
-                            "products_image", // field value
-                            1, // file limit
-                            true,
-                            200000,
-                          )
-                        }
+                        onChange={(e) => {
+                          handleChangePhoto(e);
+                          const files = e.target.files;
+                          let myFiles = Array.from(files);
+
+                          props.setFieldValue("products_image", myFiles);
+                        }}
                         className="opacity-0 absolute top-0 right-0 bottom-0 left-0 min-w-[155px] min-h-[150px] max-w-[155px] max-h-[150px] m-auto cursor-pointer"
-                        disabled={loading || mutation.isPending}
+                        disabled={loading || mutation.isPending || loading}
                       />
 
                       <div className="relative py-2 mb-6 leading-tight">
@@ -333,20 +346,20 @@ const ModalProducts = ({ itemEdit }) => {
                         </span>
                       </div>
                     </div>
-                  </div> */}
+                  </div>
 
                   {store.error && <MessageError />}
                   <div className="modal-action">
                     <ModalButton
-                      disabled={mutation.isPending}
-                      loading={mutation.isPending}
+                      disabled={mutation.isPending || loading}
+                      loading={mutation.isPending || loading}
                       itemEdit={itemEdit}
                       type="button"
                       handleClose={handleClose}
                     />
                     <ModalButton
-                      disabled={mutation.isPending}
-                      loading={mutation.isPending}
+                      disabled={mutation.isPending || loading}
+                      loading={mutation.isPending || loading}
                       itemEdit={itemEdit}
                       type="submit"
                     />

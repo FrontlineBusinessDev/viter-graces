@@ -437,7 +437,7 @@ class Products
             $sql .= "products_low_stock_threshold = :products_low_stock_threshold, ";
             $sql .= "products_description = :products_description, ";
             $sql .= "products_updated = :products_updated ";
-            $sql .= "where products_aid  = :products_aid ";
+            $sql .= "where products_aid = :products_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "products_name" => $this->products_name,

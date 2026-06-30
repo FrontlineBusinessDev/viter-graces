@@ -1,17 +1,15 @@
 import { AmountWithPesoSign } from "@/components/PesoSign";
-import TableStatus from "../TableStatus";
+import { devBaseImgUrl } from "@/config/config";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { flexRender } from "@tanstack/react-table";
-import { getConvertStringToJSONparseData } from "@/utilities/getConvertStringToJSONparseData";
 import { Image } from "lucide-react";
+import TableStatus from "../TableStatus";
 
 const renderImage = (rowData) => {
-  const photo = getConvertStringToJSONparseData(rowData.children_photo);
-
-  if (!photo?.length) {
+  if (isEmptyItem(rowData?.products_image, "") === "") {
     return (
-      <div className="rounded-sm">
-        <Image className="mx-auto p-1" size={30} />
+      <div className="rounded-full">
+        <Image className="h-8 w-8 mx-auto p-1" size={30} />
       </div>
     );
   }
@@ -19,9 +17,9 @@ const renderImage = (rowData) => {
   return (
     <div className="rounded-sm">
       <img
-        src={photo[photo.length - 1]}
-        alt=""
-        className="min-w-12 w-12 m-auto"
+        src={`${devBaseImgUrl}/${rowData?.products_image}`}
+        alt={`${rowData?.products_image}`}
+        className="h-8 w-8 m-auto rounded-full object-cover"
       />
     </div>
   );

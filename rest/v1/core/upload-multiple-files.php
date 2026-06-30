@@ -7,22 +7,19 @@ $response = new Response();
 $error = [];
 $returnData = [];
 
-if ($_FILES) {
-    try {
-        // loop and save file to public img
-        for ($i = 0; $i < count($_FILES); $i++) {
-            $file = $_FILES["file$i"]["name"];
-            move_uploaded_file($_FILES["file$i"]["tmp_name"], UPLOAD_MULTIPLE_PATH . strtolower($file)); // if localhost
-        }
+if ($_FILES['photo']) {
+    $photo = $_FILES["photo"]["name"];
+    // if (move_uploaded_file($_FILES["photo"]["tmp_name"], "../../../img/" . $photo)) { // if online
+    if (move_uploaded_file($_FILES["photo"]["tmp_name"], "../../../public/img/" . $photo)) { // if localhost
         $returnData["success"] = true;
-        $returnData["message"] = "File success.";
+        $returnData["message"] = "Photo success.";
         $response->setData($returnData);
         $response->send();
         exit;
-    } catch (Exception $e) {
+    } else {
         $response->setSuccess(false);
         $error["success"] = false;
-        $error['error'] = "File error.";
+        $error['error'] = "Photo error.";
         $response->setData($error);
         $response->send();
         exit;
@@ -31,7 +28,7 @@ if ($_FILES) {
     $response->setSuccess(false);
     $error["count"] = 0;
     $error["success"] = false;
-    $error['error'] = "File empty`.";
+    $error['error'] = "No photo.";
     $response->setData($error);
     $response->send();
     exit;

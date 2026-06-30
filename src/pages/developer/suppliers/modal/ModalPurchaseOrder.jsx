@@ -216,9 +216,10 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
   }, []);
 
   let paymentOption = [
-    { id: "0", name: "draft" },
-    { id: "1", name: "paid" },
-    { id: "2", name: "installment" },
+    { id: "draft", name: "draft" },
+    { id: "paid", name: "paid" },
+    { id: "inpaid", name: "inpaid" },
+    // { id: "installment", name: "installment" },
   ];
 
   return (

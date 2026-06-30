@@ -149,7 +149,7 @@ class SuppliersPurchaseOrder
             $sql .= " DATE_FORMAT(purchase_order_date, '%b %d, %Y') as formated_date, ";
             $sql .= " DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "purchase_order_aid as id, ";
-            $sql .= "purchase_order_status as status, ";
+            $sql .= "purchase_order_payment_status as is_status, ";
             $sql .= "purchase_order_is_active as is_active, ";
             $sql .= "purchase_order_price as amount, ";
             $sql .= "purchase_order_number as name ";
@@ -212,7 +212,7 @@ class SuppliersPurchaseOrder
             $sql .= " DATE_FORMAT(purchase_order_date, '%b %d, %Y') as formated_date, ";
             $sql .= " DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "purchase_order_aid as id, ";
-            $sql .= "purchase_order_status as status, ";
+            $sql .= "purchase_order_payment_status as is_status, ";
             $sql .= "purchase_order_is_active as is_active, ";
             $sql .= "purchase_order_price as amount, ";
             $sql .= "purchase_order_number as name ";
@@ -250,7 +250,7 @@ class SuppliersPurchaseOrder
             $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "purchase_order_aid as id, ";
             $sql .= "purchase_order_is_active as is_active, ";
-            $sql .= "purchase_order_status as status, ";
+            $sql .= "purchase_order_payment_status as is_status, ";
             $sql .= "purchase_order_price as amount, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
@@ -276,7 +276,7 @@ class SuppliersPurchaseOrder
             $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "purchase_order_aid as id, ";
             $sql .= "purchase_order_is_active as is_active, ";
-            $sql .= "purchase_order_status as status, ";
+            $sql .= "purchase_order_payment_status as is_status, ";
             $sql .= "purchase_order_price as amount, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";

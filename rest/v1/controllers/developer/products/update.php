@@ -37,14 +37,12 @@ if (array_key_exists("id", $_GET)) {
     checkId($val->products_aid);
 
     $val_name_old = $data['products_name_old'];
-    $pendingDeleteFile = $data["pendingDeleteFile"];
     $products_image_old = $data["products_image_old"];
+    // IF CHANGE IMG
+    if ($products_image_old != $val->products_image) {
+        deleteImageDirectory($products_image_old);
+    }
 
-    // $val->products_image = checkToUploadGoogleDrive(
-    //     $val->products_image,
-    //     $products_image_old,
-    //     'Products'
-    // );
 
     compareName($val, $val_name_old, $val->products_name);
     // update

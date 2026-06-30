@@ -12,12 +12,11 @@ const PurchaseOrder = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "purchase_order_payment_status",
-      header: "payment status",
+      accessorKey: "is_status",
+      header: "status",
       classTh: "w-[9rem]",
       classTd: "",
-      status_option: ActiveInActiveStatus(),
-      status_text: "purchase_order_payment_status",
+      status_option: ActiveInActiveStatus("purchase-order-status"),
     },
     {
       accessorKey: "purchase_order_number",
