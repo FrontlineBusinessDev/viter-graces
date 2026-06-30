@@ -65,6 +65,12 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     updated[index][field] = value;
     updated[index][fieldId] = id;
 
+    // compute row total
+    const qty = Number(updated[index]["purchase_order_qty"] || 1);
+    const price = Number(updated[index]["purchase_order_price"] || 0);
+
+    updated[index]["purchase_order_total_amount"] = qty * price;
+
     setItems(updated);
   };
   const handleChange = (index, field, fieldId, value, id) => {
@@ -82,7 +88,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     updated[index][field] = value;
 
     // compute row total
-    const qty = Number(updated[index]["purchase_order_qty"] || 0);
+    const qty = Number(updated[index]["purchase_order_qty"] || 1);
     const price = Number(updated[index]["purchase_order_price"] || 0);
 
     updated[index]["purchase_order_total_amount"] = qty * price;
@@ -99,7 +105,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
         purchase_order_product_name: "",
         purchase_order_product_owner_id: "",
         purchase_order_product_owner_name: "",
-        purchase_order_qty: "",
+        purchase_order_qty: "1",
         purchase_order_price: "",
         purchase_order_total_amount: "",
         id: counter,
@@ -336,7 +342,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                               <InputPurchaseOrderSelectTagArray
                                 onChange={(e, selectedItem) => {
                                   handleChangeProduct(
-                                    a.id,
+                                    index,
                                     selectedItem,
                                     "purchase_order_product_id",
                                     "purchase_order_product_name",
