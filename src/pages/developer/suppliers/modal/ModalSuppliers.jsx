@@ -331,7 +331,7 @@ const ModalSuppliers = ({ itemEdit }) => {
                             </ul>
                             {items.map((item, index) => (
                               <div
-                                key={index}
+                                key={item.id}
                                 className="grid grid-cols-2 md:grid md:grid-cols-[2.2fr_1fr_1fr_2rem] gap-2 items-center px-3 pb-3 mt-1"
                               >
                                 <input
@@ -362,7 +362,7 @@ const ModalSuppliers = ({ itemEdit }) => {
 
                                 <button
                                   type="button"
-                                  onClick={() => handleRemoveItem(index)}
+                                  onClick={() => handleRemoveItem(item.id)}
                                   className="text-red-500 text-xl"
                                 >
                                   ✕
