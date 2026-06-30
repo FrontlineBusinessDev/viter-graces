@@ -330,13 +330,13 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         {items.map((a, index) => {
                           return (
                             <div
-                              key={index}
+                              key={a.id}
                               className="grid grid-cols-[1fr_1fr_5rem_5rem_5rem_1rem] gap-1 items-center px-3 pb-3 mt-1"
                             >
                               <InputPurchaseOrderSelectTagArray
                                 onChange={(e, selectedItem) => {
                                   handleChangeProduct(
-                                    index,
+                                    a.id,
                                     selectedItem,
                                     "purchase_order_product_id",
                                     "purchase_order_product_name",

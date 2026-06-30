@@ -143,6 +143,10 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   };
 
   const handleRemoveInstallmentItems = (a) => {
+    setInstallmentItems((prev) =>
+      prev.filter((item) => Number(item.id) !== Number(a.id)),
+    );
+
     setInstallmentItemsDelete([
       ...installmentItemsDelete,
       {
@@ -150,8 +154,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
         id: a.id,
       },
     ]);
-
-    setInstallmentItems((prev) => prev.filter((item) => item.id !== a.id));
   };
 
   const handleChangeInstallment = (index, field, value) => {
@@ -484,7 +486,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         {items.map((a, index) => {
                           return (
                             <div
-                              key={index}
+                              key={a.id}
                               className="grid grid-cols-[10rem_5rem_7rem_7rem_1rem] sm:grid-cols-[1fr_5rem_7rem_7rem_1rem] gap-1 items-center px-3 py-1"
                             >
                               <InputSalesOrderSelectTagArray
@@ -532,7 +534,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                               </span>
                               <button
                                 type="button"
-                                onClick={() => handleRemoveItem(a, index)}
+                                onClick={() => handleRemoveItem(a)}
                                 className="text-red-500 text-xl"
                               >
                                 ✕
@@ -612,7 +614,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         {installmentItems.map((a, index) => {
                           return (
                             <div
-                              key={index}
+                              key={a.id}
                               className="grid grid-cols-[10rem_1fr_1rem] sm:grid-cols-[1fr_1fr_1rem] gap-3 items-center px-3 py-2"
                             >
                               <input
@@ -621,7 +623,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                     index,
                                     "installmet_payment_due_date",
                                     e.target.value,
-                                    0,
                                   );
                                 }}
                                 defaultValue={isEmptyItem(
@@ -649,9 +650,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
 
                               <button
                                 type="button"
-                                onClick={() =>
-                                  handleRemoveInstallmentItems(a, index)
-                                }
+                                onClick={() => handleRemoveInstallmentItems(a)}
                                 className="text-red-500 text-xl"
                               >
                                 ✕
