@@ -42,7 +42,9 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
             purchase_order_product_owner_name: "",
             purchase_order_qty: "1",
             purchase_order_price: "",
+            purchase_order_delivery_is_status: true,
             purchase_order_total_amount: 0,
+            id: 0,
           },
         ],
   );
@@ -82,6 +84,14 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     setItems(updated);
   };
 
+  const handleDeliveryStatus = (index, field, value) => {
+    const updated = [...items];
+
+    updated[index][field] = value;
+
+    setItems(updated);
+  };
+
   const handleChangeAmount = (index, field, value) => {
     const updated = [...items];
 
@@ -108,6 +118,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
         purchase_order_qty: "1",
         purchase_order_price: "",
         purchase_order_total_amount: "",
+        purchase_order_delivery_is_status: true,
         id: counter,
       },
     ]);
@@ -122,8 +133,6 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
         id: a.id,
       },
     ]);
-
-    console.log("a", a);
 
     setItems((prev) => prev.filter((item) => Number(item.id) !== Number(a.id)));
   };
@@ -207,7 +216,6 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
   const yupSchema = Yup.object({
     purchase_order_supplier_id: Yup.string().trim().required("Required"),
     purchase_order_date: Yup.string().trim().required("Required"),
-    purchase_order_expected_delivery: Yup.string().trim().required("Required"),
     purchase_order_payment_status: Yup.string().trim().required("Required"),
   });
 
@@ -218,7 +226,15 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
   let paymentOption = [
     { id: "draft", name: "draft" },
     { id: "paid", name: "paid" },
-    { id: "inpaid", name: "inpaid" },
+    // { id: "unpaid", name: "unpaid" },
+    // { id: "installment", name: "installment" },
+  ];
+
+  let deliveryStatusOption = [
+    { id: "not delivered", name: "Not Delivered" },
+    { id: "delivered - incomplete", name: "Delivered - Incomplete" },
+    { id: "delivered - completed", name: "Delivered - Completed" },
+    // { id: "unpaid", name: "unpaid" },
     // { id: "installment", name: "installment" },
   ];
 
@@ -234,7 +250,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
         mutation={mutation}
         isOpen={true}
         handleClose={handleClose}
-        width="max-w-[40rem]!"
+        width="max-w-[60rem]!"
       >
         <div className="modal-body">
           <Formik
@@ -255,6 +271,9 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                 purchase_order: items,
                 itemsDelete: itemsDelete,
                 purchase_order_payment: Number(values?.purchase_order_payment),
+                purchase_order_delivery_status: Number(
+                  values?.purchase_order_payment,
+                ),
               };
 
               mutation.mutate(data);
@@ -279,7 +298,8 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         type="text"
                         path="suppliers/read-in-modal"
                         name="purchase_order_supplier_id"
-                        onChange={(e) => {
+                        onChange={(e, selectedItem) => {
+                          console.log("selectedItem", selectedItem);
                           props.values.purchase_order_supplier_id =
                             e.target.value;
                           props.values.purchase_order_supplier_name =
@@ -297,17 +317,9 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         disabled={mutation.isPending}
                       />
                     </div>
-                    <div className="relative">
-                      <InputText
-                        label="Expected Delivery"
-                        type="date"
-                        name="purchase_order_expected_delivery"
-                        disabled={mutation.isPending}
-                      />
-                    </div>
                   </div>
 
-                  <div className="flex my-7 justify-between">
+                  <div className="flex my-7 items-center justify-between">
                     <label htmlFor="">Order Items</label>
                     <button
                       type="button"
@@ -326,11 +338,12 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                       </div>
                     ) : (
                       <div className="flex flex-col">
-                        <ul className="grid grid-cols-[1fr_1fr_5rem_5rem_5rem_1rem]  gap-1 items-center p-3 mt-1">
+                        <ul className="grid grid-cols-[1fr_1fr_5rem_5rem_10rem_5rem_1rem]  gap-1 items-center p-3 mt-1">
                           <li>Products</li>
                           <li>Product Owner</li>
                           <li>Quantity</li>
                           <li>Amount</li>
+                          <li className="text-center">Total</li>
                           <li> </li>
                           <li> </li>
                         </ul>
@@ -338,7 +351,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                           return (
                             <div
                               key={a.id}
-                              className="grid grid-cols-[1fr_1fr_5rem_5rem_5rem_1rem] gap-1 items-center px-3 pb-3 mt-1"
+                              className="grid grid-cols-[1fr_1fr_5rem_5rem_10rem_5rem_1rem] gap-1 items-center px-3 pb-3 mt-1"
                             >
                               <InputPurchaseOrderSelectTagArray
                                 onChange={(e, selectedItem) => {
@@ -383,7 +396,6 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                     index,
                                     "purchase_order_qty",
                                     e.target.value,
-                                    0,
                                   );
                                 }}
                                 defaultValue={a["purchase_order_qty"]}
@@ -409,6 +421,25 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                   amount={a["purchase_order_total_amount"]}
                                 />
                               </span>
+                              {itemEdit ? (
+                                <button
+                                  onClick={() =>
+                                    handleDeliveryStatus(
+                                      index,
+                                      "purchase_order_delivery_is_status",
+                                      !a.purchase_order_delivery_is_status,
+                                    )
+                                  }
+                                  className={` text-white ${!a.purchase_order_delivery_is_status ? " bg-gray-500 " : "bg-green-800 "} rounded-sm py-1 text-[10px] mr-3`}
+                                  type="button"
+                                >
+                                  {!a.purchase_order_delivery_is_status
+                                    ? "Not Delivered"
+                                    : "Delivered"}
+                                </button>
+                              ) : (
+                                <button></button>
+                              )}
                               <button
                                 onClick={() => handleRemoveItem(a)}
                                 className="text-red-500 text-xl"
@@ -438,7 +469,8 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         }}
                       />
                     </div>
-                    <div className="relative   mt-3">
+
+                    <div className="relative mt-3">
                       <InputText
                         label="Paid Amount"
                         type="number"

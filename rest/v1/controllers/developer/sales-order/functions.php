@@ -164,7 +164,7 @@ function updateStatus($val, $data)
         $val->sales_order_status = 'overdue';
     }
 
-    $due_date = date('Y-m-d', strtotime(date("Y-m-d") . ' +3 days'));
+    $due_date = date('Y-m-d');
     $timestamp = strtotime($val->sales_order_due_date);
     $val->sales_order_due_date = date("Y-m-d", $timestamp);
 

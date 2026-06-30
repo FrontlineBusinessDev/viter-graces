@@ -73,7 +73,7 @@ export const InputSelectArrayWithOptions = ({
         autoComplete="off"
         data-testid={dataTestIdSelect}
       >
-        <optgroup label={`Select a ${label}`}>
+        <optgroup label={`Select ${label}`}>
           <option value={defaultValue} hidden>
             {isEmptyItem(defaultValue, "--")}
           </option>
@@ -172,9 +172,9 @@ export const InputSelectArray = ({
           )}
           {store.credentials?.data?.role === "developer" ? (
             <>
-              {valData?.map((item, key) => {
+              {valData?.map((item, ikey) => {
                 return (
-                  <option key={key} value={item.id} className="capitalize">
+                  <option key={ikey} value={item.id} className="capitalize">
                     {item.name}
                   </option>
                 );
@@ -460,7 +460,7 @@ export const InputSelectTagArray = ({
         className={`${className}`}
         defaultValue={defaultValue}
       >
-        <optgroup label={`Select a ${placeholder}`}>
+        <optgroup label={`Select ${placeholder}`}>
           {result?.count === 0 ? (
             <option value="" hidden>
               No data
@@ -642,10 +642,10 @@ export const InputPurchaseOrderSelectTagArray = ({
           }}
           autoComplete="off"
           id={label}
-          className={`${className}`}
+          className={`${className} `}
           defaultValue={defaultValue}
         >
-          <optgroup label={`Select a ${placeholder}`}>
+          <optgroup label={`Select ${placeholder}`}>
             {result?.count === 0 ? (
               <option value="" hidden>
                 No data

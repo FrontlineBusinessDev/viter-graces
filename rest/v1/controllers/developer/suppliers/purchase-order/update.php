@@ -20,7 +20,7 @@ if (array_key_exists("id", $_GET)) {
     $val->purchase_order_supplier_id = $data["purchase_order_supplier_id"];
     $val->purchase_order_supplier_name = $data["purchase_order_supplier_name"];
     $val->purchase_order_date = $data["purchase_order_date"];
-    $val->purchase_order_expected_delivery = $data["purchase_order_expected_delivery"];
+    $val->purchase_order_expected_delivery = date('Y-m-d', strtotime('next ' . $data["purchase_order_supplier_name"]));
     $val->purchase_order_payment = $data["purchase_order_payment"];
     $val->purchase_order_is_active = 1;
     $val->purchase_order_status = $data["purchase_order_status"];
@@ -34,6 +34,8 @@ if (array_key_exists("id", $_GET)) {
 
     $purchase_order = $data["purchase_order"];
 
+    $val->purchase_order_delivery_status = "delivered - completed / paid";
+
 
     for ($i = 0; $i < count($purchase_order); $i++) {
         $val->purchase_order_aid = $purchase_order[$i]["purchase_order_aid"];
@@ -41,6 +43,7 @@ if (array_key_exists("id", $_GET)) {
         $val->purchase_order_product_name = $purchase_order[$i]["purchase_order_product_name"];
         $val->purchase_order_product_owner_id = $purchase_order[$i]["purchase_order_product_owner_id"];
         $val->purchase_order_product_owner_name = $purchase_order[$i]["purchase_order_product_owner_name"];
+        $val->purchase_order_delivery_is_status = $purchase_order[$i]["purchase_order_delivery_is_status"];
         $val->purchase_order_qty = $purchase_order[$i]["purchase_order_qty"];
         $val->purchase_order_price = $purchase_order[$i]["purchase_order_price"];
         $val->purchase_order_total_amount = $purchase_order[$i]["purchase_order_total_amount"];

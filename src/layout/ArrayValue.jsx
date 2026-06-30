@@ -36,8 +36,38 @@ export const ActiveInActiveStatus = (val = "default-status") => {
     },
     {
       name: ["purchase-order-status"],
-      label: "draft",
-      value: "draft",
+      label: "for delivery",
+      value: "for delivery",
+    },
+    {
+      name: ["purchase-order-status"],
+      label: "delivered - incomplete / paid",
+      value: "delivered - incomplete / paid",
+    },
+    {
+      name: ["purchase-order-status"],
+      label: "delivered - incomplete / unpaid",
+      value: "delivered - incomplete / unpaid",
+    },
+    {
+      name: ["purchase-order-status"],
+      label: "delivered - completed / paid",
+      value: "delivered - completed / paid",
+    },
+    {
+      name: ["purchase-order-status"],
+      label: "delivered - completed / unpaid",
+      value: "delivered - completed / unpaid",
+    },
+    {
+      name: ["purchase-order-status"],
+      label: "not delivered / paid",
+      value: "not delivered / paid",
+    },
+    {
+      name: ["purchase-order-status"],
+      label: "not delivered / unpaid",
+      value: "not delivered / unpaid",
     },
     {
       name: ["stock-overview"],
@@ -61,12 +91,12 @@ export const ActiveInActiveStatus = (val = "default-status") => {
       value: "inactive",
     },
     {
-      name: ["payment-status", "purchase-order-status"],
+      name: ["payment-status"],
       label: "unpaid",
       value: "unpaid",
     },
     {
-      name: ["payment-status", "purchase-order-status"],
+      name: ["payment-status"],
       label: "paid",
       value: "paid",
     },
@@ -114,6 +144,46 @@ export const ActiveInActiveStatus = (val = "default-status") => {
   ];
 
   return result.filter((item) => item.name.includes(val));
+};
+export const variantsStatus = (val = "active") => {
+  const variants = {
+    // default-status || default-status-words
+    active: "bg-success/20 text-success",
+    inactive: "bg-gray-100 text-gray-500",
+    // stock-overview
+    out_of_stock: "bg-gray-100 text-gray-500",
+    in_stock: "bg-success/20 text-success",
+    low_stock: "bg-warning/10 text-warning",
+    // payment-status
+    unpaid: "bg-gray-300 text-gray-700",
+    paid: "bg-success/20 text-success",
+    partial: "bg-blue-300 text-blue-700",
+    overdue: "bg-red-100 text-red-500",
+    // stock-type-status
+    stock_in_adjustments: "bg-blue-300 text-blue-700",
+    purchases: "bg-violet-300 text-violet-700 ",
+    stock_out__sales: "bg-gray-100 text-gray-500",
+    stock_out__reject_defectiveitems: "bg-warning/10 text-warning",
+    // other
+    draft: "bg-gray-300 text-gray-700",
+    warning: "bg-warning/10 text-warning",
+    alert: "bg-alert/10 text-alert",
+    for_delivery: "bg-orange-100 text-orange-500",
+    delivered__incomplete__paid: "bg-blue-100 text-blue-500",
+    delivered__incomplete__unpaid: "bg-purple-100 text-purple-500",
+    delivered__completed__paid: "bg-green-100 text-green-500",
+    delivered__completed__unpaid: "bg-blue-100 text-blue-500",
+    not_delivered__paid: "bg-green-100 text-green-500",
+    not_delivered__unpaid: "bg-blue-100 text-blue-500",
+  };
+
+  return variants[
+    val
+      ?.toLowerCase()
+      ?.replaceAll(" ", "_")
+      ?.replaceAll("-", "")
+      ?.replaceAll("/", "")
+  ];
 };
 
 export const ActionTableList = (path, val = "default-status") => {

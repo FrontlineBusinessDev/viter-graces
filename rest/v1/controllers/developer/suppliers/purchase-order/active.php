@@ -37,6 +37,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->purchase_order_updated = date("Y-m-d H:i:s");
 
 
+        // INSTALLMENT DATA
+        updateStatus($val, $data);
         checkId($val->purchase_order_aid);
         $query = checkActive($val);
         // create activity log

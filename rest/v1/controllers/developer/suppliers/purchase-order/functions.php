@@ -31,7 +31,7 @@ function allowedColumns()
         "purchase_order_product_name",
         "purchase_order_product_owner_name",
         "purchase_order_qty",
-        "purchase_order_price",
+        "purchase_order_payment",
     ];
     return $query;
 }
@@ -42,4 +42,30 @@ function checkDeleteById($object)
     $query = $object->deleteById();
     checkQuery($query, "There's a problem processing your request. (deleteById)");
     return $query;
+}
+
+// Update 
+function updateStatus($val, $data)
+{
+    // DEFAULT VALUE
+    $val->purchase_order_payment_status = 'paid';
+    $val->purchase_order_payment = $data["purchase_order_payment"];
+    $val->purchase_order_total_amount = $data["purchase_order_total_amount"];
+    $val->purchase_order_payment_status = 'draft';
+    $val->purchase_order_expected_delivery = $data['purchase_order_expected_delivery'];
+
+    //  IF THE PAYMENT IS PAID
+    if ((float)$val->purchase_order_payment >= (float)$val->purchase_order_total_amount) {
+        $val->purchase_order_payment_status = 'paid';
+    }
+    //  IF THE PAYMENT IS PARTIAL AND HAVE INSTALLMENT DATA
+    if ((float)$val->purchase_order_payment < (float)$val->purchase_order_total_amount) {
+        $val->purchase_order_payment_status = 'partial';
+    }
+    //  IF THE PAYMENT IS 0, NEGATIVE OR INSTALLMENT
+    if ((float)$val->purchase_order_payment == 0) {
+        $val->purchase_order_payment_status = 'unpaid';
+    }
+
+    return;
 }

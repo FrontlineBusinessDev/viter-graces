@@ -12,6 +12,8 @@ class SuppliersPurchaseOrder
     public $purchase_order_is_active;
     public $purchase_order_status;
     public $purchase_order_payment_status;
+    public $purchase_order_delivery_status;
+    public $purchase_order_delivery_is_status;
     public $purchase_order_note;
     public $purchase_order_product_id;
     public $purchase_order_product_name;
@@ -56,6 +58,8 @@ class SuppliersPurchaseOrder
             $sql .= "purchase_order_is_active, ";
             $sql .= "purchase_order_status, ";
             $sql .= "purchase_order_payment_status, ";
+            $sql .= "purchase_order_delivery_status, ";
+            $sql .= "purchase_order_delivery_is_status, ";
             $sql .= "purchase_order_note, ";
             $sql .= "purchase_order_product_id, ";
             $sql .= "purchase_order_product_name, ";
@@ -75,6 +79,8 @@ class SuppliersPurchaseOrder
             $sql .= ":purchase_order_is_active, ";
             $sql .= ":purchase_order_status, ";
             $sql .= ":purchase_order_payment_status, ";
+            $sql .= ":purchase_order_delivery_status, ";
+            $sql .= ":purchase_order_delivery_is_status, ";
             $sql .= ":purchase_order_note, ";
             $sql .= ":purchase_order_product_id, ";
             $sql .= ":purchase_order_product_name, ";
@@ -95,6 +101,8 @@ class SuppliersPurchaseOrder
                 "purchase_order_payment" => $this->purchase_order_payment,
                 "purchase_order_is_active" => $this->purchase_order_is_active,
                 "purchase_order_status" => $this->purchase_order_status,
+                "purchase_order_delivery_status" => $this->purchase_order_delivery_status,
+                "purchase_order_delivery_is_status" => $this->purchase_order_delivery_is_status,
                 "purchase_order_payment_status" => $this->purchase_order_payment_status,
                 "purchase_order_note" => $this->purchase_order_note,
                 "purchase_order_product_id" => $this->purchase_order_product_id,
@@ -149,7 +157,7 @@ class SuppliersPurchaseOrder
             $sql .= " DATE_FORMAT(purchase_order_date, '%b %d, %Y') as formated_date, ";
             $sql .= " DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "purchase_order_aid as id, ";
-            $sql .= "purchase_order_payment_status as is_status, ";
+            $sql .= "purchase_order_delivery_status as is_status, ";
             $sql .= "purchase_order_is_active as is_active, ";
             $sql .= "purchase_order_price as amount, ";
             $sql .= "purchase_order_number as name ";
@@ -212,7 +220,7 @@ class SuppliersPurchaseOrder
             $sql .= " DATE_FORMAT(purchase_order_date, '%b %d, %Y') as formated_date, ";
             $sql .= " DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "purchase_order_aid as id, ";
-            $sql .= "purchase_order_payment_status as is_status, ";
+            $sql .= "purchase_order_delivery_status as is_status, ";
             $sql .= "purchase_order_is_active as is_active, ";
             $sql .= "purchase_order_price as amount, ";
             $sql .= "purchase_order_number as name ";
@@ -250,7 +258,7 @@ class SuppliersPurchaseOrder
             $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "purchase_order_aid as id, ";
             $sql .= "purchase_order_is_active as is_active, ";
-            $sql .= "purchase_order_payment_status as is_status, ";
+            $sql .= "purchase_order_delivery_status as is_status, ";
             $sql .= "purchase_order_price as amount, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
@@ -276,7 +284,7 @@ class SuppliersPurchaseOrder
             $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "purchase_order_aid as id, ";
             $sql .= "purchase_order_is_active as is_active, ";
-            $sql .= "purchase_order_payment_status as is_status, ";
+            $sql .= "purchase_order_delivery_status as is_status, ";
             $sql .= "purchase_order_price as amount, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
@@ -313,6 +321,8 @@ class SuppliersPurchaseOrder
             $sql .= "purchase_order_product_name = :purchase_order_product_name, ";
             $sql .= "purchase_order_product_owner_id = :purchase_order_product_owner_id, ";
             $sql .= "purchase_order_product_owner_name = :purchase_order_product_owner_name, ";
+            $sql .= "purchase_order_delivery_status = :purchase_order_delivery_status, ";
+            $sql .= "purchase_order_delivery_is_status = :purchase_order_delivery_is_status, ";
             $sql .= "purchase_order_qty = :purchase_order_qty, ";
             $sql .= "purchase_order_price = :purchase_order_price, ";
             $sql .= "purchase_order_updated = :purchase_order_updated ";
@@ -334,6 +344,8 @@ class SuppliersPurchaseOrder
                 "purchase_order_product_name" => $this->purchase_order_product_name,
                 "purchase_order_product_owner_id" => $this->purchase_order_product_owner_id,
                 "purchase_order_product_owner_name" => $this->purchase_order_product_owner_name,
+                "purchase_order_delivery_status" => $this->purchase_order_delivery_status,
+                "purchase_order_delivery_is_status" => $this->purchase_order_delivery_is_status,
                 "purchase_order_qty" => $this->purchase_order_qty,
                 "purchase_order_price" => $this->purchase_order_price,
                 "purchase_order_updated" => $this->purchase_order_updated,
