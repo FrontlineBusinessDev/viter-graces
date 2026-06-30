@@ -46,6 +46,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
           },
         ],
   );
+  const [itemsDelete, setItemsDelete] = React.useState([]);
 
   const [counter, setCounter] = React.useState(0);
 
@@ -107,8 +108,18 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     setCounter((prev) => prev + 1);
   };
 
-  const handleRemoveItem = (id) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
+  const handleRemoveItem = (a) => {
+    setItemsDelete([
+      ...itemsDelete,
+      {
+        purchase_order_aid: isEmptyItem(a?.purchase_order_aid, 0),
+        id: a.id,
+      },
+    ]);
+
+    console.log("a", a);
+
+    setItems((prev) => prev.filter((item) => Number(item.id) !== Number(a.id)));
   };
 
   const handleClose = () => {
@@ -235,6 +246,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                 ),
                 ...values,
                 purchase_order: items,
+                itemsDelete: itemsDelete,
                 purchase_order_payment: Number(values?.purchase_order_payment),
               };
 
@@ -391,8 +403,9 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                 />
                               </span>
                               <button
-                                onClick={() => handleRemoveItem(a.id)}
+                                onClick={() => handleRemoveItem(a)}
                                 className="text-red-500 text-xl"
+                                type="button"
                               >
                                 ✕
                               </button>

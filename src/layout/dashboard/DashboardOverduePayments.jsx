@@ -64,7 +64,9 @@ const DashboardOverduePayments = () => {
                       ₱{item.installmet_payment_amount}
                     </span>
                     <p className="text-red-600 font-semibold">
-                      {item.days_ago} day(s) ago
+                      {Number(item.days_ago) === 0
+                        ? "Due today"
+                        : `${item.days_ago} day(s) ago`}
                     </p>
                   </div>
                 </li>

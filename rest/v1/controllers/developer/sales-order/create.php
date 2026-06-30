@@ -49,6 +49,7 @@ if (count($installmentItems) > 0) {
             $val->sales_order_due_date = $installmentItems[$a]["installmet_payment_due_date"];
         }
         $val->installmet_payment_code_id = 0;
+        $val->installmet_payment_is_paid = 0;
         $val->installmet_payment_code = $installmentItems[$a]["installmet_payment_code"];
         $val->installmet_payment_due_date = $installmentItems[$a]["installmet_payment_due_date"];
         $val->installmet_payment_code_number = $val->sales_order_number;

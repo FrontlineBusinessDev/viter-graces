@@ -34,6 +34,7 @@ class SalesOrder
     public $installmet_payment_aid;
     public $installmet_payment_code_id;
     public $installmet_payment_code;
+    public $installmet_payment_is_paid;
     public $installmet_payment_due_date;
     public $installmet_payment_code_number;
     public $installmet_payment_method;
@@ -71,7 +72,7 @@ class SalesOrder
         $this->tblStockMovements = "graces_stock_movement";
         $this->tblMovementStock = "graces_stock_movement";
         $this->tblProducts = "graces_products";
-        $this->tblInstallmetPayment = "graces_installmet_payment";
+        $this->tblInstallmetPayment = "graces_installment_payment";
     }
 
     // create
@@ -710,6 +711,7 @@ class SalesOrder
             $sql = "insert into {$this->tblInstallmetPayment} ";
             $sql .= "( installmet_payment_code_id, ";
             $sql .= "installmet_payment_code, ";
+            $sql .= "installmet_payment_is_paid, ";
             $sql .= "installmet_payment_due_date, ";
             $sql .= "installmet_payment_code_number, ";
             $sql .= "installmet_payment_amount, ";
@@ -720,6 +722,7 @@ class SalesOrder
             $sql .= "installmet_payment_updated ) values ( ";
             $sql .= ":installmet_payment_code_id, ";
             $sql .= ":installmet_payment_code, ";
+            $sql .= ":installmet_payment_is_paid, ";
             $sql .= ":installmet_payment_due_date, ";
             $sql .= ":installmet_payment_code_number, ";
             $sql .= ":installmet_payment_amount, ";
@@ -732,6 +735,7 @@ class SalesOrder
             $query->execute([
                 "installmet_payment_code_id" => $this->installmet_payment_code_id,
                 "installmet_payment_code" => $this->installmet_payment_code,
+                "installmet_payment_is_paid" => $this->installmet_payment_is_paid,
                 "installmet_payment_due_date" => $this->installmet_payment_due_date,
                 "installmet_payment_code_number" => $this->installmet_payment_code_number,
                 "installmet_payment_amount" => $this->installmet_payment_amount,

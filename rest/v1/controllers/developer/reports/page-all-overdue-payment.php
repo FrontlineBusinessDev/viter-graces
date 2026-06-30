@@ -22,7 +22,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkPayload($data);
 
     if (array_key_exists("start", $_GET)) {
-        $val->due_date = date('Y-m-d', strtotime(date("Y-m-d") . ' +3 days'));
+        $val->due_date = date('Y-m-d');
 
         $val->column_search = $data["searchValue"];    // get data 
         $val->column_start = $_GET['start'];
