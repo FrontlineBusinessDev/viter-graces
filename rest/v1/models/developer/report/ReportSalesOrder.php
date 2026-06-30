@@ -61,7 +61,7 @@ class ReportSalesOrder
         $this->tblMovementStock = "graces_stock_movement";
         $this->tblProducts = "graces_products";
         $this->tblSuppliersPurchaseOrder = "graces_suppliers_purchase_order";
-        $this->tblInstallmetPayment = "graces_installmet_payment";
+        $this->tblInstallmetPayment = "graces_installment_payment";
     }
 
     // read all

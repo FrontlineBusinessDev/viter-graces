@@ -12,8 +12,6 @@ const ViewDetails = ({ itemEdit }) => {
     dispatch(setIsView(false));
   };
 
-  console.log("itemEdit", itemEdit);
-
   let total_balance =
     Number(itemEdit?.total_amount) - Number(itemEdit?.total_paid);
 
