@@ -41,8 +41,8 @@ const PurchaseOrderMobileReponsive = ({
 
                   {/* STATUS */}
                   <div>
-                    <Pills variant={rowData?.purchase_order_payment_status}>
-                      {rowData?.purchase_order_payment_status}
+                    <Pills variant={rowData?.is_status}>
+                      {rowData?.is_status}
                     </Pills>
                     <p className="mb-0 mt-1">{rowData?.formated_date}</p>
                   </div>

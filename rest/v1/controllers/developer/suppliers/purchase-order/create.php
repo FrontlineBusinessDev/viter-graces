@@ -18,7 +18,6 @@ checkPayload($data);
 $val->purchase_order_supplier_id = $data["purchase_order_supplier_id"];
 $val->purchase_order_supplier_name = $data["purchase_order_supplier_name"];
 $val->purchase_order_date = $data["purchase_order_date"];
-$val->purchase_order_expected_delivery = date('Y-m-d', strtotime('next ' . $data["purchase_order_supplier_name"]));
 $val->purchase_order_payment = $data["purchase_order_payment"];
 $val->purchase_order_is_active = 1;
 $val->purchase_order_status = $data["purchase_order_status"];
@@ -30,23 +29,25 @@ $val->purchase_order_updated = date("Y-m-d H:i:s");
 $val->purchase_order_number = setIdNumber($val, "PO-");
 
 $purchase_order = $data["purchase_order"];
+deliveryStatus($val, $data);
 // check name 
 
 if ($data["purchase_order_payment_status"] == "paid") {
     $val->purchase_order_delivery_status = "delivered - completed / paid";
+    $val->purchase_order_delivery_is_status = 1;
 } else {
-    $val->purchase_order_delivery_status = "for delivered";
+    $val->purchase_order_delivery_status = "for delivery";
+    $val->purchase_order_delivery_is_status = 0;
 }
-
 for ($i = 0; $i < count($purchase_order); $i++) {
     $val->purchase_order_product_id = $purchase_order[$i]["purchase_order_product_id"];
     $val->purchase_order_product_name = $purchase_order[$i]["purchase_order_product_name"];
     $val->purchase_order_product_owner_id = $purchase_order[$i]["purchase_order_product_owner_id"];
     $val->purchase_order_product_owner_name = $purchase_order[$i]["purchase_order_product_owner_name"];
-    $val->purchase_order_delivery_is_status = $purchase_order[$i]["purchase_order_delivery_is_status"];
     $val->purchase_order_qty = $purchase_order[$i]["purchase_order_qty"];
     $val->purchase_order_price = $purchase_order[$i]["purchase_order_price"];
     $val->purchase_order_total_amount = $purchase_order[$i]["purchase_order_total_amount"];
+    $val->purchase_order_expected_delivery = date('Y-m-d', strtotime('next ' . strtolower($data["suppliers_delivery"])));
     // create
     $query = checkCreate($val);
 }

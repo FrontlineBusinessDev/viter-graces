@@ -3,6 +3,7 @@
 require '../../../../core/header.php';
 // use needed functions
 require '../../../../core/functions.php';
+require 'functions.php';
 // use needed classes
 require '../../../../models/developer/suppliers/SuppliersPurchaseOrder.php';
 // ACTIVITY LOG DETAILS
@@ -30,15 +31,15 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         if ((float)$val->purchase_order_is_active == 0) {
             $val->purchase_order_status = 'inactive';
             $val->purchase_order_payment_status = 'inactive';
+            $val->purchase_order_delivery_status = 'inactive';
         } else {
+            deliveryStatus($val, $data);
             $val->purchase_order_status = 'active';
             $val->purchase_order_payment_status = 'draft';
         }
         $val->purchase_order_updated = date("Y-m-d H:i:s");
 
-
         // INSTALLMENT DATA
-        updateStatus($val, $data);
         checkId($val->purchase_order_aid);
         $query = checkActive($val);
         // create activity log

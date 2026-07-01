@@ -106,7 +106,7 @@ export const ActiveInActiveStatus = (val = "default-status") => {
       value: "partial",
     },
     {
-      name: ["payment-status"],
+      name: ["payment-status", "purchase-order-status"],
       label: "inactive",
       value: "inactive",
     },
@@ -169,12 +169,12 @@ export const variantsStatus = (val = "active") => {
     warning: "bg-warning/10 text-warning",
     alert: "bg-alert/10 text-alert",
     for_delivery: "bg-orange-100 text-orange-500",
-    delivered__incomplete__paid: "bg-blue-100 text-blue-500",
-    delivered__incomplete__unpaid: "bg-purple-100 text-purple-500",
     delivered__completed__paid: "bg-green-100 text-green-500",
     delivered__completed__unpaid: "bg-blue-100 text-blue-500",
-    not_delivered__paid: "bg-green-100 text-green-500",
-    not_delivered__unpaid: "bg-blue-100 text-blue-500",
+    delivered__incomplete__paid: "bg-purple-100 text-purple-500",
+    delivered__incomplete__unpaid: "bg-teal-100 text-teal-500",
+    not_delivered__paid: "bg-gray-100 text-gray-500",
+    not_delivered__unpaid: "bg-red-100 text-red-500",
   };
 
   return variants[

@@ -22,7 +22,6 @@ import React, { useCallback, useMemo, useRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import InfinitePerTabsMobile from "./InfinitePerTabsMobile";
 import InfiniteSubTable from "./InfiniteSubTable";
-import Linkify from "linkify-react";
 
 const InfinitePerTabs = ({
   columns,

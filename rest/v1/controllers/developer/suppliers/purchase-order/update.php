@@ -20,7 +20,7 @@ if (array_key_exists("id", $_GET)) {
     $val->purchase_order_supplier_id = $data["purchase_order_supplier_id"];
     $val->purchase_order_supplier_name = $data["purchase_order_supplier_name"];
     $val->purchase_order_date = $data["purchase_order_date"];
-    $val->purchase_order_expected_delivery = date('Y-m-d', strtotime('next ' . $data["purchase_order_supplier_name"]));
+    $val->purchase_order_expected_delivery = date('Y-m-d', strtotime('next ' . strtolower($data["suppliers_delivery"])));
     $val->purchase_order_payment = $data["purchase_order_payment"];
     $val->purchase_order_is_active = 1;
     $val->purchase_order_status = $data["purchase_order_status"];
@@ -33,9 +33,7 @@ if (array_key_exists("id", $_GET)) {
     compareName($val, $val_name_old, $val->purchase_order_number);
 
     $purchase_order = $data["purchase_order"];
-
-    $val->purchase_order_delivery_status = "delivered - completed / paid";
-
+    deliveryStatus($val, $data);
 
     for ($i = 0; $i < count($purchase_order); $i++) {
         $val->purchase_order_aid = $purchase_order[$i]["purchase_order_aid"];

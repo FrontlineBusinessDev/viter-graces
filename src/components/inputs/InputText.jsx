@@ -100,7 +100,7 @@ export const InputMaxMinValue = ({ column, cypressTesting = "" }) => {
         {/* MIN */}
         <input
           type="search"
-          inputmode="numeric"
+          inputMode="numeric"
           pattern="[0-9]*"
           // oninput={(this?.value = this?.value?.replaceAll(/[^0-9]/g, ""))}
           value={value?.min ?? ""}
@@ -125,7 +125,7 @@ export const InputMaxMinValue = ({ column, cypressTesting = "" }) => {
         {/* MAX */}
         <input
           type="search"
-          inputmode="numeric"
+          inputMode="numeric"
           pattern="[0-9]*"
           // oninput={(this?.value = this?.value?.replaceAll(/[^0-9]/g, ""))}
           value={value?.max ?? ""}
@@ -314,7 +314,7 @@ export const DebouncedInput = ({
             {...props}
             value={value?.min ?? ""}
             type="search"
-            inputmode="numeric"
+            inputMode="numeric"
             pattern="[0-9]*"
             // oninput={(this?.value = this?.value?.replaceAll(/[^0-9]/g, ""))}
             onChange={(e) => {
@@ -337,7 +337,7 @@ export const DebouncedInput = ({
             {...props}
             value={value?.max ?? ""}
             type="search"
-            inputmode="numeric"
+            inputMode="numeric"
             pattern="[0-9]*"
             // oninput={(this?.value = this?.value?.replaceAll(/[^0-9]/g, ""))}
             onChange={(e) => {

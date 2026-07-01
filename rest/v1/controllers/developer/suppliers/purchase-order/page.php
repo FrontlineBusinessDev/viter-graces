@@ -29,6 +29,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->filters = $data['columnFilters'];
         $total_result_final = [];
 
+
         $query = checkReadLimit($val, allowedColumns());
         $total_result = checkReadAll($val, allowedColumns());
 

@@ -30,6 +30,7 @@ class SuppliersPurchaseOrder
     public $connection;
     public $lastInsertedId;
     public $tblSuppliersPurchaseOrder;
+    public $tblSuppliers;
 
     public $filters;
     public $column_start;
@@ -41,6 +42,7 @@ class SuppliersPurchaseOrder
     {
         $this->connection = $db;
         $this->tblSuppliersPurchaseOrder = "graces_suppliers_purchase_order";
+        $this->tblSuppliers = "graces_suppliers";
     }
 
     // create
@@ -149,31 +151,33 @@ class SuppliersPurchaseOrder
                     : (float) $item['value']['max'];
             } else {
                 $filterColumn[] = "$col LIKE :search$i";
-                $params["search$i"] = "%" . trim($item['value']) . "%";
+                $params["search$i"] = "%" . $item['value'] . "%";
             }
         }
         try {
-            $sql = "select *, ";
-            $sql .= " DATE_FORMAT(purchase_order_date, '%b %d, %Y') as formated_date, ";
-            $sql .= " DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
-            $sql .= "purchase_order_aid as id, ";
-            $sql .= "purchase_order_delivery_status as is_status, ";
-            $sql .= "purchase_order_is_active as is_active, ";
-            $sql .= "purchase_order_price as amount, ";
-            $sql .= "purchase_order_number as name ";
-            $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
-            $sql .= " where true ";
+            $sql = "select spo.*, ";
+            $sql .= "s.suppliers_delivery, ";
+            $sql .= "DATE_FORMAT(spo.purchase_order_date, '%b %d, %Y') as formated_date, ";
+            $sql .= "DATE_FORMAT(spo.purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
+            $sql .= "spo.purchase_order_aid as id, ";
+            $sql .= "spo.purchase_order_delivery_status as is_status, ";
+            $sql .= "spo.purchase_order_is_active as is_active, ";
+            $sql .= "spo.purchase_order_price as amount, ";
+            $sql .= "spo.purchase_order_number as name ";
+            $sql .= "from {$this->tblSuppliersPurchaseOrder} as spo, ";
+            $sql .= "{$this->tblSuppliers} as s ";
+            $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
-                $sql .= ($this->column_search != "" ? "and (purchase_order_number like :purchase_order_number
-                or purchase_order_supplier_name like :purchase_order_supplier_name 
-                or purchase_order_product_owner_name like :purchase_order_product_owner_name 
-                or purchase_order_product_name like :purchase_order_product_name) " : " ");
+                $sql .= ($this->column_search != "" ? "and (spo.purchase_order_number like :purchase_order_number
+                or spo.purchase_order_supplier_name like :purchase_order_supplier_name 
+                or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name 
+                or spo.purchase_order_product_name like :purchase_order_product_name) " : " ");
             }
-            $sql .= " group by purchase_order_number ";
-            $sql .= " order by purchase_order_is_active desc, ";
-            $sql .= " purchase_order_aid desc ";
+            $sql .= " group by spo.purchase_order_number ";
+            $sql .= " order by spo.purchase_order_is_active desc, ";
+            $sql .= " spo.purchase_order_aid desc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
@@ -216,32 +220,35 @@ class SuppliersPurchaseOrder
             }
         }
         try {
-            $sql = "select *, ";
-            $sql .= " DATE_FORMAT(purchase_order_date, '%b %d, %Y') as formated_date, ";
-            $sql .= " DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
-            $sql .= "purchase_order_aid as id, ";
-            $sql .= "purchase_order_delivery_status as is_status, ";
-            $sql .= "purchase_order_is_active as is_active, ";
-            $sql .= "purchase_order_price as amount, ";
-            $sql .= "purchase_order_number as name ";
-            $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
-            $sql .= " where true ";
+            $sql = "select spo.*, ";
+            $sql .= "s.suppliers_delivery, ";
+            $sql .= "DATE_FORMAT(spo.purchase_order_date, '%b %d, %Y') as formated_date, ";
+            $sql .= "DATE_FORMAT(spo.purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
+            $sql .= "spo.purchase_order_aid as id, ";
+            $sql .= "spo.purchase_order_delivery_status as is_status, ";
+            $sql .= "spo.purchase_order_is_active as is_active, ";
+            $sql .= "spo.purchase_order_price as amount, ";
+            $sql .= "spo.purchase_order_number as name ";
+            $sql .= "from {$this->tblSuppliersPurchaseOrder} as spo, ";
+            $sql .= "{$this->tblSuppliers} as s ";
+            $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
-                $sql .= ($this->column_search != "" ? "and (purchase_order_number like :purchase_order_number
-                or purchase_order_supplier_name like :purchase_order_supplier_name 
-                or purchase_order_product_owner_name like :purchase_order_product_owner_name 
-                or purchase_order_product_name like :purchase_order_product_name) " : " ");
+                $sql .= ($this->column_search != "" ? "and (spo.purchase_order_number like :purchase_order_number
+                or spo.purchase_order_supplier_name like :purchase_order_supplier_name 
+                or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name 
+                or spo.purchase_order_product_name like :purchase_order_product_name) " : " ");
             }
-            $sql .= "group by purchase_order_number ";
-            $sql .= "order by purchase_order_is_active desc, ";
-            $sql .= "purchase_order_aid desc ";
+            $sql .= " group by spo.purchase_order_number ";
+            $sql .= " order by spo.purchase_order_is_active desc, ";
+            $sql .= " spo.purchase_order_aid desc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
+            returnError($ex);
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
@@ -400,6 +407,7 @@ class SuppliersPurchaseOrder
             $sql .= "purchase_order_is_active = :purchase_order_is_active, ";
             $sql .= "purchase_order_status = :purchase_order_status, ";
             $sql .= "purchase_order_payment_status = :purchase_order_payment_status, ";
+            $sql .= "purchase_order_delivery_status = :purchase_order_delivery_status, ";
             $sql .= "purchase_order_updated = :purchase_order_updated ";
             $sql .= "where purchase_order_aid = :purchase_order_aid  ";
             $query = $this->connection->prepare($sql);
@@ -407,6 +415,7 @@ class SuppliersPurchaseOrder
                 "purchase_order_is_active" => $this->purchase_order_is_active,
                 "purchase_order_status" => $this->purchase_order_status,
                 "purchase_order_payment_status" => $this->purchase_order_payment_status,
+                "purchase_order_delivery_status" => $this->purchase_order_delivery_status,
                 "purchase_order_updated" => $this->purchase_order_updated,
                 "purchase_order_aid" => $this->purchase_order_aid,
             ]);

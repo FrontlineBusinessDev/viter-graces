@@ -42,6 +42,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
             purchase_order_product_owner_name: "",
             purchase_order_qty: "1",
             purchase_order_price: "",
+            suppliers_delivery: "monday",
             purchase_order_delivery_is_status: true,
             purchase_order_total_amount: 0,
             id: 0,
@@ -64,6 +65,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     const updated = [...items];
 
     updated[index][fieldPrice] = itemVal?.amount;
+    updated[index]["suppliers_delivery"] = itemVal?.suppliers_delivery;
     updated[index][field] = value;
     updated[index][fieldId] = id;
 
@@ -117,6 +119,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
         purchase_order_product_owner_name: "",
         purchase_order_qty: "1",
         purchase_order_price: "",
+        suppliers_delivery: "monday",
         purchase_order_total_amount: "",
         purchase_order_delivery_is_status: true,
         id: counter,
@@ -209,6 +212,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
       "draft",
     ),
     purchase_order_note: isEmptyItem(itemEdit?.purchase_order_note, ""),
+    suppliers_delivery: isEmptyItem(itemEdit?.suppliers_delivery, "monday"),
 
     purchase_order_number_old: isEmptyItem(itemEdit?.purchase_order_number, ""),
   };
@@ -219,6 +223,8 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     purchase_order_payment_status: Yup.string().trim().required("Required"),
   });
 
+  console.log("itemEdit", itemEdit);
+
   React.useEffect(() => {
     dispatch(setError(false));
   }, []);
@@ -226,7 +232,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
   let paymentOption = [
     { id: "draft", name: "draft" },
     { id: "paid", name: "paid" },
-    // { id: "unpaid", name: "unpaid" },
+    itemEdit ? { id: "unpaid", name: "unpaid" } : "",
     // { id: "installment", name: "installment" },
   ];
 
@@ -274,7 +280,12 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                 purchase_order_delivery_status: Number(
                   values?.purchase_order_payment,
                 ),
+                isHaveNotDelivered: items.filter(
+                  (a) => !a.purchase_order_delivery_is_status,
+                )?.length,
               };
+
+              // console.log("data", data);
 
               mutation.mutate(data);
             }}
@@ -283,15 +294,6 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
               return (
                 <Form>
                   <div className="grid grid-cols-2 gap-4">
-                    {/* <div className="relative">
-                      <InputText
-                        label="PO Number"
-                        type="text"
-                        name="purchase_order_number"
-                        placeholder={`${itemEdit ? "Update PO number" : "Enter new PO number"}`}
-                        disabled={mutation.isPending}
-                      />
-                    </div> */}
                     <div className="relative">
                       <InputSelectArray
                         label="Suppliers"
@@ -299,11 +301,12 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         path="suppliers/read-in-modal"
                         name="purchase_order_supplier_id"
                         onChange={(e, selectedItem) => {
-                          console.log("selectedItem", selectedItem);
                           props.values.purchase_order_supplier_id =
                             e.target.value;
                           props.values.purchase_order_supplier_name =
                             e.target.options[e.target.selectedIndex].text;
+                          props.values.suppliers_delivery =
+                            selectedItem?.suppliers_delivery;
                           return e;
                         }}
                       />
@@ -338,7 +341,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                       </div>
                     ) : (
                       <div className="flex flex-col">
-                        <ul className="grid grid-cols-[1fr_1fr_5rem_5rem_10rem_5rem_1rem]  gap-1 items-center p-3 mt-1">
+                        <ul className="grid grid-cols-[1fr_1fr_5rem_5rem_10rem_5rem]  gap-1 items-center p-3 mt-1">
                           <li>Products</li>
                           <li>Product Owner</li>
                           <li>Quantity</li>
@@ -351,7 +354,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                           return (
                             <div
                               key={a.id}
-                              className="grid grid-cols-[1fr_1fr_5rem_5rem_10rem_5rem_1rem] gap-1 items-center px-3 pb-3 mt-1"
+                              className="grid grid-cols-[1fr_1fr_5rem_5rem_10rem_5rem] gap-1 items-center px-3 pb-3 mt-1"
                             >
                               <InputPurchaseOrderSelectTagArray
                                 onChange={(e, selectedItem) => {
@@ -438,15 +441,14 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                     : "Delivered"}
                                 </button>
                               ) : (
-                                <button></button>
+                                <button
+                                  onClick={() => handleRemoveItem(a)}
+                                  className="text-red-500 text-xl"
+                                  type="button"
+                                >
+                                  ✕
+                                </button>
                               )}
-                              <button
-                                onClick={() => handleRemoveItem(a)}
-                                className="text-red-500 text-xl"
-                                type="button"
-                              >
-                                ✕
-                              </button>
                             </div>
                           );
                         })}

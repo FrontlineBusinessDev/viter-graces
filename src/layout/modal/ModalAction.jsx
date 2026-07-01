@@ -53,6 +53,10 @@ const ModalAction = ({ mysqlApiAction, msg, successMsg, item, queryKey }) => {
       ),
       isActive: Number(isEmptyItem(item?.is_active, 0)) === 1 ? 0 : 1,
       ...item,
+      purchase_order: item?.items,
+      isHaveNotDelivered: item?.items?.filter(
+        (a) => !a?.purchase_order_delivery_is_status,
+      )?.length,
     });
   };
 

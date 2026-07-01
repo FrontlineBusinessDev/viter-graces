@@ -4,6 +4,7 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalPurchaseOrder from "./modal/ModalPurchaseOrder";
+import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
 
 const PurchaseOrder = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -14,49 +15,67 @@ const PurchaseOrder = () => {
     {
       accessorKey: "is_status",
       header: "status",
-      classTh: "w-[9rem]",
+      classTh: "min-w-[15rem]",
       classTd: "",
       status_option: ActiveInActiveStatus("purchase-order-status"),
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={ActiveInActiveStatus("purchase-order-status")}
+          />
+        ),
+      },
     },
     {
       accessorKey: "purchase_order_number",
       header: "PO Number",
       orderNumber: "1",
-      classTh: "",
+      classTh: "min-w-[7rem] ",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "purchase_order_supplier_name",
       header: "Supplier",
-      classTh: "",
+      classTh: "min-w-[10rem] ",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "formated_date",
       header: "Order date",
       orderNumber: "2",
-      classTh: "",
+      classTh: "min-w-[7rem] ",
       classTd: "",
+      filterFn: "date",
+      meta: "",
     },
     {
       accessorKey: "formated_delivery_date",
       header: "expected",
-      classTh: "",
+      classTh: "min-w-[7rem] ",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "total_amount",
       header: "total",
-      classTh: "",
+      filterFn: "between",
+      classTh: "min-w-[10rem]",
       classTd: "",
+      meta: "",
       amount: true,
       paid_amount: false,
     },
     {
       accessorKey: "purchase_order_payment",
       header: "payment",
-      classTh: "",
+      filterFn: "between",
+      classTh: "min-w-[10rem]",
       classTd: "",
+      meta: "",
       amount: false,
       paid_amount: true,
     },
@@ -77,6 +96,7 @@ const PurchaseOrder = () => {
           className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
           path="purchase-order"
           setItemEdit={setItemEdit}
+          haveFilterTable={true}
         />
       </HeaderNav>
       {store.isAdd && <ModalPurchaseOrder itemEdit={itemEdit} />}

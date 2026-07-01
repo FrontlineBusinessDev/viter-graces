@@ -44,28 +44,32 @@ function checkDeleteById($object)
     return $query;
 }
 
-// Update 
-function updateStatus($val, $data)
+// Read all
+function deliveryStatus($val, $data)
 {
-    // DEFAULT VALUE
-    $val->purchase_order_payment_status = 'paid';
-    $val->purchase_order_payment = $data["purchase_order_payment"];
-    $val->purchase_order_total_amount = $data["purchase_order_total_amount"];
-    $val->purchase_order_payment_status = 'draft';
-    $val->purchase_order_expected_delivery = $data['purchase_order_expected_delivery'];
 
-    //  IF THE PAYMENT IS PAID
-    if ((float)$val->purchase_order_payment >= (float)$val->purchase_order_total_amount) {
-        $val->purchase_order_payment_status = 'paid';
-    }
-    //  IF THE PAYMENT IS PARTIAL AND HAVE INSTALLMENT DATA
-    if ((float)$val->purchase_order_payment < (float)$val->purchase_order_total_amount) {
-        $val->purchase_order_payment_status = 'partial';
-    }
-    //  IF THE PAYMENT IS 0, NEGATIVE OR INSTALLMENT
-    if ((float)$val->purchase_order_payment == 0) {
-        $val->purchase_order_payment_status = 'unpaid';
-    }
+    $purchase_order = $data["purchase_order"];
+    $isHaveNotDelivered = $data["isHaveNotDelivered"];
 
+    $val->purchase_order_delivery_status = "for delivery";
+
+    if ($isHaveNotDelivered > 0 && $val->purchase_order_payment_status == "paid") {
+        $val->purchase_order_delivery_status = "delivered - incomplete / paid";
+    }
+    if ($isHaveNotDelivered > 0 && $val->purchase_order_payment_status == "unpaid") {
+        $val->purchase_order_delivery_status = "delivered - incomplete / unpaid";
+    }
+    if ($isHaveNotDelivered == 0 && $val->purchase_order_payment_status == "paid") {
+        $val->purchase_order_delivery_status = "delivered - completed / paid";
+    }
+    if ($isHaveNotDelivered == 0 && $val->purchase_order_payment_status == "unpaid") {
+        $val->purchase_order_delivery_status = "delivered - completed / unpaid";
+    }
+    if ($isHaveNotDelivered == count($purchase_order) && $val->purchase_order_payment_status == "paid") {
+        $val->purchase_order_delivery_status = "not delivered / paid";
+    }
+    if ($isHaveNotDelivered == count($purchase_order) && $val->purchase_order_payment_status == "unpaid") {
+        $val->purchase_order_delivery_status = "not delivered / unpaid";
+    }
     return;
 }
