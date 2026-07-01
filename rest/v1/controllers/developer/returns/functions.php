@@ -33,30 +33,29 @@ function checkReadAllThatHaveStock($object)
 // Update 
 function updateConnectedMenu($object)
 {
-    // 
-
-
+    //  
 }
 
 // check association
 function allowedColumns()
 {
     $query = [
-        "products_is_active",
-        "products_status",
-        "products_name",
-        "products_sku",
-        "products_category",
-        "products_price",
-        "products_cost",
-        "products_stocks",
-        "products_suppliers_name",
-        "products_owner_name",
-        "products_sales",
-        "products_unit",
-        "products_barcode",
-        "products_low_stock_threshold",
-        "products_description",
+        "return_product_status",
+        "return_product_number",
+        "return_product_order_id",
+        "return_product_order_number",
+        "return_product_customer_id",
+        "return_product_customer_name",
+        "return_product_date",
+        "return_product_amount",
+        "return_product_product_id",
+        "return_product_product_name",
+        "return_product_qty",
+        "return_product_price",
+        "return_product_reason",
+        "return_product_is_restocked",
+        "return_product_owner_id",
+        "return_product_owner_name",
     ];
     return $query;
 }

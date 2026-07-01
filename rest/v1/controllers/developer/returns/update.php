@@ -3,7 +3,7 @@
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new Products($conn);
+$val = new Returns($conn);
 $valActivity = new ActivityLog($conn);
 // get payload
 $body = file_get_contents("php://input");
@@ -15,44 +15,35 @@ if (array_key_exists("id", $_GET)) {
     // check data
     checkPayload($data);
     // get data
-    $val->products_aid  = $_GET['id'];
-    $val->products_name = $data["products_name"];
-    $val->products_image = $data["products_image"];
-    $val->products_sku = $data["products_sku"];
-    $val->products_category = $data["products_category"];
-    $val->products_price = $data["products_price"];
-    $val->products_cost = $data["products_cost"];
-    $val->products_stocks = $data["products_stocks"];
-    $val->products_owner_id = $data["products_owner_id"];
-    $val->products_owner_name = $data["products_owner_name"];
-    $val->products_suppliers_id = $data["products_suppliers_id"];
-    $val->products_suppliers_name = $data["products_suppliers_name"];
-    $val->products_sales = $data["products_sales"];
-    $val->products_unit = $data["products_unit"];
-    $val->products_barcode = $data["products_barcode"];
-    $val->products_low_stock_threshold = $data["products_low_stock_threshold"];
-    $val->products_description = $data["products_description"];
-    $val->products_updated = date("Y-m-d H:i:s");
+    $val->return_product_aid = $_GET['id'];
+    $val->return_product_status = $data["return_product_status"];
+    $val->return_product_number = $data["return_product_number"];
+    $val->return_product_order_id = $data["return_product_order_id"];
+    $val->return_product_order_number = $data["return_product_order_number"];
+    $val->return_product_customer_id = $data["return_product_customer_id"];
+    $val->return_product_customer_name = $data["return_product_customer_name"];
+    $val->return_product_date = $data["return_product_date"];
+    $val->return_product_amount = $data["return_product_amount"];
+    $val->return_product_product_id = $data["return_product_product_id"];
+    $val->return_product_product_name = $data["return_product_product_name"];
+    $val->return_product_qty = $data["return_product_qty"];
+    $val->return_product_price = $data["return_product_price"];
+    $val->return_product_reason = $data["return_product_reason"];
+    $val->return_product_is_restocked = $data["return_product_is_restocked"];
+    $val->return_product_owner_id = $data["return_product_owner_id"];
+    $val->return_product_owner_name = $data["return_product_owner_name"];
+    $val->return_product_updated = date("Y-m-d H:i:s");
 
-    checkId($val->products_aid);
+    $return_product_number_old = $data["return_product_number_old"];
 
-    $val_name_old = $data['products_name_old'];
-    $pendingDeleteFile = $data["pendingDeleteFile"];
-    $products_image_old = $data["products_image_old"];
-
-    // $val->products_image = checkToUploadGoogleDrive(
-    //     $val->products_image,
-    //     $products_image_old,
-    //     'Products'
-    // );
-
-    compareName($val, $val_name_old, $val->products_name);
+    checkId($val->return_product_aid);
+    compareName($val, $return_product_number_old, $val->return_product_number);
     // update
     $query = checkUpdate($val);
     updateConnectedMenu($val);
     // create activity log
     createActivityLog($valActivity, $data);
-    returnSuccess($val, "Products", $query);
+    returnSuccess($val, "Return Products", $query);
 }
 
 // return 404 error if endpoint not available

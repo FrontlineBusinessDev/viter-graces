@@ -3,7 +3,7 @@
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new Products($conn);
+$val = new Returns($conn);
 $valActivity = new ActivityLog($conn);
 // get payload
 $body = file_get_contents("php://input");
@@ -16,45 +16,47 @@ if (array_key_exists("id", $_GET)) {
 checkPayload($data);
 // get data
 
-$val->products_is_active = 1;
-$val->products_status = 'active';
-$val->products_name = $data["products_name"];
-$val->products_image = $data["products_image"];
-$val->products_sku = "";
-$val->products_category = strtolower($data["products_category"]);
-$val->products_price = $data["products_price"];
-$val->products_cost = $data["products_cost"];
-$val->products_stocks = $data["products_stocks"];
-$val->products_owner_id = $data["products_owner_id"];
-$val->products_owner_name = $data["products_owner_name"];
-$val->products_suppliers_id = $data["products_suppliers_id"];
-$val->products_suppliers_name = $data["products_suppliers_name"];
-$val->products_sales = $data["products_sales"];
-$val->products_unit = $data["products_unit"];
-$val->products_barcode = mktime(date("H"), date("i"), date("s"), date("m"), date("d"), date("Y"));
-$val->products_low_stock_threshold = $data["products_low_stock_threshold"];
-$val->products_description = $data["products_description"];
-$val->products_created = date("Y-m-d H:i:s");
-$val->products_updated = date("Y-m-d H:i:s");
 
-$val->products_image = "";
-// $val->products_image = checkToUploadGoogleDrive($data['products_image'], '', 'products');
+$val->return_product_status = $data["return_product_status"];
+$val->return_product_number = $data["return_product_number"];
+$val->return_product_order_id = $data["return_product_order_id"];
+$val->return_product_order_number = $data["return_product_order_number"];
+$val->return_product_customer_id = $data["return_product_customer_id"];
+$val->return_product_customer_name = $data["return_product_customer_name"];
+$val->return_product_date = $data["return_product_date"];
+$val->return_product_amount = $data["return_product_amount"];
+$val->return_product_product_id = $data["return_product_product_id"];
+$val->return_product_product_name = $data["return_product_product_name"];
+$val->return_product_qty = $data["return_product_qty"];
+$val->return_product_price = $data["return_product_price"];
+$val->return_product_reason = $data["return_product_reason"];
+$val->return_product_is_restocked = $data["return_product_is_restocked"];
+$val->return_product_owner_id = $data["return_product_owner_id"];
+$val->return_product_owner_name = $data["return_product_owner_name"];
+$val->return_product_created = date("Y-m-d H:i:s");
+$val->return_product_updated = date("Y-m-d H:i:s");
 
-$val->products_sku = setIdNumber($val, "SKU");
+$val->return_product_number = setIdNumber($val, "RET");
 // check name
-isNameExist($val, $val->products_name);
-
-$val->stock_movement_type = "in stock";
-$val->stock_movement_before_qty = 0;
-$val->stock_movement_date = date("Y-m-d");
-$val->stock_movement_after_qty = (float)$val->stock_movement_before_qty + (float)$val->products_stocks;
-$val->stock_movement_qty = (float)$val->products_stocks;
-
+isNameExist($val, $val->return_product_number);
 // create
 $query = checkCreate($val);
+
+$val->stock_movement_type = "stock in - return";
+
+$queryQty = getResultData($val->readtotalQTY());
+if (count($queryQty) > 0) {
+    $val->stock_movement_before_qty = (float)$queryQty[0]['current_qty'] + (float)$val->return_product_qty;
+    $val->stock_movement_after_qty = (float)$queryQty[0]['current_qty'];
+} else {
+    $val->stock_movement_before_qty = 0;
+    $val->stock_movement_after_qty = 0;
+};
+$val->stock_movement_qty = (float)$val->return_product_qty;
+
 checkCreateMovementStock($val);
 
 // create activity log
 createActivityLog($valActivity, $data);
 
-returnSuccess($val, "Products", $query);
+returnSuccess($val, "Return Products", $query);

@@ -3,7 +3,7 @@
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new Products($conn);
+$val = new Returns($conn);
 $valActivity = new ActivityLog($conn);
 // get $_GET data
 $body = file_get_contents("php://input");
@@ -14,8 +14,8 @@ if (array_key_exists("id", $_GET)) {
     // check data
     checkPayload($data);
     // get data
-    $val->products_aid = $_GET['id'];
-    checkId($val->products_aid);
+    $val->return_product_aid = $_GET['id'];
+    checkId($val->return_product_aid);
 
     $query = checkDelete($val);
     // create activity log

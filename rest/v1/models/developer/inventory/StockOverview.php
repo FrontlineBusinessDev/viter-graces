@@ -61,7 +61,8 @@ class StockOverview
                 CASE
                     WHEN ms.stock_movement_type IN (
                         'in stock',
-                            'purchases',
+                        'stock in - return',
+                        'purchases',
                         'stock in adjustments'
                     )
                     THEN ms.stock_movement_qty
@@ -86,6 +87,7 @@ class StockOverview
                     CASE
                         WHEN ms.stock_movement_type IN (
                             'in stock',
+                        'stock in - return',
                             'purchases',
                             'stock in adjustments'
                         )
@@ -163,6 +165,7 @@ class StockOverview
                 CASE
                     WHEN ms.stock_movement_type IN (
                         'in stock',
+                        'stock in - return',
                             'purchases',
                         'stock in adjustments'
                     )
@@ -188,6 +191,7 @@ class StockOverview
                     CASE
                         WHEN ms.stock_movement_type IN (
                             'in stock',
+                        'stock in - return',
                             'purchases',
                             'stock in adjustments'
                         )
@@ -303,11 +307,11 @@ class StockOverview
             $sql .= "MAX(ms.stock_movement_product_name) as stock_movement_product_name, ";
             $sql .= "MAX(ms.stock_movement_product_owner_name) as stock_movement_product_owner_name, ";
             $sql .= "DATE_FORMAT(MAX(ms.stock_movement_date), '%b %d, %Y') AS stock_movement_date, ";
-            $sql .= "SUM( CASE WHEN ms.stock_movement_type IN ( 'in stock', 'purchases', 'stock in adjustments' ) ";
+            $sql .= "SUM( CASE WHEN ms.stock_movement_type IN ( 'in stock', 'stock in - return', 'purchases', 'stock in adjustments' ) ";
             $sql .= "THEN ms.stock_movement_qty WHEN ms.stock_movement_type IN ( 'stock out - reject/defective items', 'stock out - return item' ) ";
             $sql .= "THEN -ms.stock_movement_qty ELSE 0 END ) as stock_qty, ";
             $sql .= "MAX(IFNULL(so.order_qty, 0)) as order_qty, ";
-            $sql .= "( SUM( CASE WHEN ms.stock_movement_type IN ( 'in stock', 'purchases', 'stock in adjustments' ) ";
+            $sql .= "( SUM( CASE WHEN ms.stock_movement_type IN ( 'in stock', 'stock in - return', 'purchases', 'stock in adjustments' ) ";
             $sql .= "THEN ms.stock_movement_qty WHEN ms.stock_movement_type IN ( 'stock out - reject/defective items', ";
             $sql .= "'stock out - return item' ) THEN -ms.stock_movement_qty ELSE 0 END ) - MAX(IFNULL(so.order_qty, 0))) as current_qty ";
             $sql .= "from {$this->tblMovementStock} AS ms INNER JOIN {$this->tblProducts} as p ";
@@ -415,11 +419,11 @@ class StockOverview
             $sql .= "MAX(ms.stock_movement_product_name) as stock_movement_product_name, ";
             $sql .= "MAX(ms.stock_movement_product_owner_name) as stock_movement_product_owner_name, ";
             $sql .= "DATE_FORMAT(MAX(ms.stock_movement_date), '%b %d, %Y') AS stock_movement_date, ";
-            $sql .= "SUM( CASE WHEN ms.stock_movement_type IN ( 'in stock', 'purchases', 'stock in adjustments' ) ";
+            $sql .= "SUM( CASE WHEN ms.stock_movement_type IN ( 'in stock', 'stock in - return', 'purchases', 'stock in adjustments' ) ";
             $sql .= "THEN ms.stock_movement_qty WHEN ms.stock_movement_type IN ( 'stock out - reject/defective items', 'stock out - return item' ) ";
             $sql .= "THEN -ms.stock_movement_qty ELSE 0 END ) as stock_qty, ";
             $sql .= "MAX(IFNULL(so.order_qty, 0)) as order_qty, ";
-            $sql .= "( SUM( CASE WHEN ms.stock_movement_type IN ( 'in stock', 'purchases', 'stock in adjustments' ) ";
+            $sql .= "( SUM( CASE WHEN ms.stock_movement_type IN ( 'in stock', 'stock in - return', 'purchases', 'stock in adjustments' ) ";
             $sql .= "THEN ms.stock_movement_qty WHEN ms.stock_movement_type IN ( 'stock out - reject/defective items', ";
             $sql .= "'stock out - return item' ) THEN -ms.stock_movement_qty ELSE 0 END ) - MAX(IFNULL(so.order_qty, 0))) as current_qty ";
             $sql .= "from {$this->tblMovementStock} AS ms INNER JOIN {$this->tblProducts} as p ";

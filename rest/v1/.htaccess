@@ -128,3 +128,12 @@ RewriteRule ^report-sales-order/page-all-inventory-movement/page/([0-9]+)$ contr
 RewriteRule ^report-sales-order/page-all-expenses/page/([0-9]+)$ controllers/developer/reports/page-all-expenses.php?start=$1 [L]
 RewriteRule ^report-sales-order/page-all-overdue-payment/page/([0-9]+)$ controllers/developer/reports/page-all-overdue-payment.php?start=$1 [L]
 RewriteRule ^report-sales-order/read-overdue-payment$ controllers/developer/reports/read-overdue-payment.php [L]
+
+### RETURN PRODUCTS ###
+RewriteRule ^returns-products$ controllers/developer/returns/returns.php [L]
+RewriteRule ^returns-products/([0-9]+)$ controllers/developer/returns/returns.php?id=$1 [L] 
+RewriteRule ^returns-products/active/([0-9]+)$ controllers/developer/returns/active.php?id=$1 [L] 
+RewriteRule ^returns-products/page/([0-9]+)$ controllers/developer/returns/page.php?start=$1 [L]
+RewriteRule ^returns-products/search$ controllers/developer/returns/search.php [L]
+RewriteRule ^returns-products/read-all-active-by-product$ controllers/developer/returns/read-all-active-by-product.php [L]
+RewriteRule ^returns-products/read-all-product-that-have-stock$ controllers/developer/returns/read-all-product-that-have-stock.php [L]

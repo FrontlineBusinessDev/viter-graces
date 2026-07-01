@@ -4,12 +4,12 @@ require '../../../core/header.php';
 // use needed functions
 require '../../../core/functions.php';
 // use needed classes
-require '../../../models/developer/products/Products.php';
+require '../../../models/developer/returns/Returns.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new Products($conn);
+$val = new Returns($conn);
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
 // validate api key

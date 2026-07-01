@@ -6,12 +6,12 @@ require '../../../core/header.php';
 require '../../../core/functions.php';
 require 'functions.php';
 // use needed classes
-require '../../../models/developer/products/Products.php';
+require '../../../models/developer/returns/Returns.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new Products($conn);
+$val = new Returns($conn);
 // validate api key
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();

@@ -169,14 +169,14 @@ const ModalReturns = ({ itemEdit }) => {
               return (
                 <Form>
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="relative">
+                    {/* <div className="relative">
                       <InputNumber
                         label="Return Number"
                         name="user_account_first_name"
                         placeholder={`${itemEdit ? "Update PO-149181" : "Enter RET-149181"}`}
                         disabled={mutation.isPending}
                       />
-                    </div>
+                    </div> */}
                     <div className="relative ">
                       <InputText
                         label="Return Date"
@@ -184,6 +184,19 @@ const ModalReturns = ({ itemEdit }) => {
                         name="user_account_last_name"
                         disabled={mutation.isPending}
                       />
+                    </div>
+
+                    <div className="relative">
+                      <InputSelect
+                        label="Return Reason"
+                        type="text"
+                        name="user_account_role_id"
+                        disabled={mutation.isPending}
+                        isLoading={isLoading || isFetching}
+                      >
+                        <option value="">Select Return Reason</option>
+                        <option value="damage">Damage</option>
+                      </InputSelect>
                     </div>
                   </div>
 
@@ -329,18 +342,7 @@ const ModalReturns = ({ itemEdit }) => {
                   </div>
 
                   <div className="grid grid-cols-2 gap-4 mt-3">
-                    <div className="relative">
-                      <InputSelect
-                        label="Return Reason"
-                        type="text"
-                        name="user_account_role_id"
-                        disabled={mutation.isPending}
-                        isLoading={isLoading || isFetching}
-                      >
-                        <option value="">Select Return Reason</option>
-                        <option value="damage">Damage</option>
-                      </InputSelect>
-                    </div>
+                    <div className=" "></div>
                     <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end my-5 p-2">
                       <p className="flex flex-col place-self-end text-primary text-lg text-right">
                         <span className="text-black dark:text-light text-sm">

@@ -3,15 +3,15 @@
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new Products($conn);
+$val = new Returns($conn);
 // get $_GET data
 $error = [];
 $returnData = [];
 
 if (array_key_exists("id", $_GET)) {
     $val->filters = [];
-    $val->products_aid = $_GET['id'];
-    checkId($val->products_aid);
+    $val->return_product_aid = $_GET['id'];
+    checkId($val->return_product_aid);
     $query = checkReadById($val);
     http_response_code(200);
     getQueriedData($query);

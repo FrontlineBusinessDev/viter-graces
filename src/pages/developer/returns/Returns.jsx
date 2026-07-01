@@ -11,49 +11,49 @@ const Returns = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "status",
+      accessorKey: "is_status",
       header: "status",
       classTh: "w-[5rem]",
       classTd: "",
     },
     {
-      accessorKey: "return_no",
+      accessorKey: "return_product_number",
       header: "return #",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "date",
+      accessorKey: "return_product_date",
       header: "date",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "order_no",
+      accessorKey: "return_product_order_number",
       header: "order #",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "customer",
+      accessorKey: "return_product_customer_name",
       header: "customer",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "amount",
+      accessorKey: "return_product_amount",
       header: "amount",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "reason",
+      accessorKey: "return_product_reason",
       header: "reason",
       classTh: "",
       classTd: "",
     },
     {
-      accessorKey: "restocked",
+      accessorKey: "return_product_is_restocked",
       header: "restocked",
       classTh: "",
       classTd: "",
@@ -66,7 +66,7 @@ const Returns = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="sales-order"
+          path="returns-products"
           setItemEdit={setItemEdit}
         />
       </HeaderNav>

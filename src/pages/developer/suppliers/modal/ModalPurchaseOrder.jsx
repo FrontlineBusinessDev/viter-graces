@@ -223,8 +223,6 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     purchase_order_payment_status: Yup.string().trim().required("Required"),
   });
 
-  console.log("itemEdit", itemEdit);
-
   React.useEffect(() => {
     dispatch(setError(false));
   }, []);
