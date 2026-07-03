@@ -9,6 +9,7 @@ import WarningBanner from "@/layout/WarningBanner";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalStockOverview from "./modal/ModalStockOverview";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 const StockOverview = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -79,21 +80,25 @@ const StockOverview = () => {
       classTd: "",
       meta: "",
     },
-    {
-      accessorKey: "stock_movement_product_owner_name",
-      header: "Product Owner",
-      classTh: "min-w-[10rem]",
-      classTd: "",
-      meta: {
-        filterComponent: (column) => (
-          <SearchableSelectFilter
-            column={column}
-            path="product-owner/read-by-product-owner"
-            testFilterId={"filter-owner"}
-          />
-        ),
-      },
-    },
+    ...(Number(ProductOwnerId(store)) > 0
+      ? []
+      : [
+          {
+            accessorKey: "stock_movement_product_owner_name",
+            header: "Product Owner",
+            classTh: "min-w-[10rem]",
+            classTd: "",
+            meta: {
+              filterComponent: (column) => (
+                <SearchableSelectFilter
+                  column={column}
+                  path="product-owner/read-by-product-owner"
+                  testFilterId={"filter-owner"}
+                />
+              ),
+            },
+          },
+        ]),
   ];
 
   return (

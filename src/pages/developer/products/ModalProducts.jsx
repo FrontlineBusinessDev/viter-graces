@@ -6,7 +6,6 @@ import { InputTextArea } from "@/components/inputs/InputTextArea";
 import LoadImages from "@/components/LoadImages";
 import MessageError from "@/components/MessageError";
 import { apiVersion, devBaseImgUrl } from "@/config/config";
-import useUploadMultipleFiles from "@/custom-hooks/useUploadMultipleFiles";
 import useUploadPhoto from "@/custom-hooks/useUploadPhoto";
 import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
@@ -18,9 +17,12 @@ import {
   setSuccess,
 } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
-import { getConvertStringToJSONparseData } from "@/utilities/getConvertStringToJSONparseData";
 import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
+import {
+  ProductOwnerId,
+  ProductOwnerName,
+} from "@/utilities/productOwnerToken";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import { FileText, Upload } from "lucide-react";
@@ -42,13 +44,6 @@ const ModalProducts = ({ itemEdit }) => {
     `${apiVersion}/upload-multiple-files`,
     dispatch,
   );
-
-  const {
-    uploadMultipleFiles,
-    handleChangeMultipleFiles,
-    setFilesArrayList,
-    filesArrayList,
-  } = useUploadMultipleFiles(`${apiVersion}/upload-multiple-files`, dispatch);
 
   const queryClient = useQueryClient();
 
@@ -93,8 +88,14 @@ const ModalProducts = ({ itemEdit }) => {
     products_price: isEmptyItem(itemEdit?.products_price, ""),
     products_cost: isEmptyItem(itemEdit?.products_cost, ""),
     products_stocks: isEmptyItem(itemEdit?.products_stocks, ""),
-    products_owner_id: isEmptyItem(itemEdit?.products_owner_id, ""),
-    products_owner_name: isEmptyItem(itemEdit?.products_owner_name, ""),
+    products_owner_id:
+      Number(ProductOwnerId(store)) > 0
+        ? Number(ProductOwnerId(store))
+        : isEmptyItem(itemEdit?.products_owner_id, ""),
+    products_owner_name:
+      Number(ProductOwnerId(store)) > 0
+        ? ProductOwnerName(store)
+        : isEmptyItem(itemEdit?.products_owner_name, ""),
     products_suppliers_id: isEmptyItem(itemEdit?.products_suppliers_id, "0"),
     products_suppliers_name: isEmptyItem(itemEdit?.products_suppliers_name, ""),
     products_sales: isEmptyItem(itemEdit?.products_sales, ""),
@@ -114,12 +115,14 @@ const ModalProducts = ({ itemEdit }) => {
   const yupSchema = Yup.object({
     products_name: Yup.string().trim().required("Required"),
     products_price: Yup.string().trim().required("Required"),
-    products_owner_id: Yup.string().trim().required("Required"),
+    products_owner_id:
+      Number(ProductOwnerId(store)) > 0
+        ? ""
+        : Yup.string().trim().required("Required"),
     products_unit: Yup.string().trim().required("Required"),
     products_low_stock_threshold: Yup.string().trim().required("Required"),
   });
 
-  console.log("photo", photo);
   return (
     <>
       <ModalWrapper
@@ -146,13 +149,13 @@ const ModalProducts = ({ itemEdit }) => {
                 ),
                 ...values,
                 products_image:
-                  (itemEdit.products_image === "" && photo) ||
-                  (photo && itemEdit.products_image !== photo.name)
-                    ? photo.name
-                    : itemEdit.products_image,
+                  (itemEdit?.products_image === "" && photo) ||
+                  (photo && itemEdit?.products_image !== photo.name)
+                    ? isEmptyItem(photo.name, " ")
+                    : isEmptyItem(itemEdit?.products_image, ""),
               };
               setLoading(true);
-              console.log(data);
+              // console.log(data);
 
               const upload = await uploadPhoto();
 
@@ -251,21 +254,25 @@ const ModalProducts = ({ itemEdit }) => {
                         required={true}
                       />
                     </div>
-                    <div className="relative mt-3">
-                      <InputSelectArray
-                        label="Product Owner"
-                        path="product-owner/read-by-product-owner"
-                        type="text"
-                        name="products_owner_id"
-                        dataTestIdSelect="select-product-owner"
-                        onChange={(e) => {
-                          props.values.products_owner_id = e.target.value;
-                          props.values.products_owner_name =
-                            e.target.options[e.target.selectedIndex].text;
-                          return e;
-                        }}
-                      />
-                    </div>
+                    {Number(ProductOwnerId(store)) > 0 ? (
+                      ""
+                    ) : (
+                      <div className="relative mt-3">
+                        <InputSelectArray
+                          label="Product Owner"
+                          path="product-owner/read-by-product-owner"
+                          type="text"
+                          name="products_owner_id"
+                          dataTestIdSelect="select-product-owner"
+                          onChange={(e) => {
+                            props.values.products_owner_id = e.target.value;
+                            props.values.products_owner_name =
+                              e.target.options[e.target.selectedIndex].text;
+                            return e;
+                          }}
+                        />
+                      </div>
+                    )}
                     {itemEdit ? (
                       ""
                     ) : (

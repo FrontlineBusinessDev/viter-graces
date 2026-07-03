@@ -313,6 +313,22 @@ function checkReadLimit($object, $allowedColumns = [])
     return $query;
 }
 
+// Read all
+function checkReadByUserId($object, $allowedColumns = [])
+{
+    $query = $object->readByUserId($allowedColumns);
+    checkQuery($query, "Empty records. (Read by user id)");
+    return $query;
+}
+
+// Read limit
+function checkReadByUserIdLimit($object, $allowedColumns = [])
+{
+    $query = $object->readByUserIdLimit($allowedColumns);
+    checkQuery($query, "Empty records. (Read by user id limit)");
+    return $query;
+}
+
 // Read search
 function checkSearch($object)
 {

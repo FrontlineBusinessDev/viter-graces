@@ -26,6 +26,7 @@ import ActionButtonTable from "../ActionButtonTable";
 import MobileResponsiveList from "../mobile-responsive/MobileResponsiveList";
 import ModalAction from "../modal/ModalAction";
 import { renderCellContent } from "./function-table";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 
 const InfiniteTable = ({
   columns,
@@ -51,6 +52,8 @@ const InfiniteTable = ({
   const [onSearch, setOnSearch] = React.useState(false);
   const [page, setPage] = useState(1);
 
+  const userId = ProductOwnerId(store);
+
   const searchPayload = useMemo(
     () => ({
       searchValue: search.current?.value || "",
@@ -59,6 +62,7 @@ const InfiniteTable = ({
           ? "1"
           : "0",
       id: "",
+      userId: userId,
     }),
     [store.isSearch, search.current?.value || ""],
   );
@@ -87,6 +91,7 @@ const InfiniteTable = ({
         {
           ...searchPayload,
           columnFilters: columnFilters,
+          userId: userId,
         },
         "post",
       ),

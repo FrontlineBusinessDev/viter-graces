@@ -2,9 +2,11 @@ import ServerError from "@/components/ServerError";
 import TableLoading from "@/components/spinners/TableLoading";
 import { apiVersion } from "@/config/config";
 import useQueryData from "@/services/useQueryData";
+import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import { TriangleAlert } from "lucide-react";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 
 const WarningBanner = ({
   path = "",
@@ -13,6 +15,7 @@ const WarningBanner = ({
   description = "",
   isLowStock = false,
 }) => {
+  const { store, dispatch } = React.useContext(StoreContext);
   const {
     isLoading,
     isFetching,
@@ -22,7 +25,7 @@ const WarningBanner = ({
     path !== "" ? `${apiVersion}/${path}` : null, // endpoint
     "post", // method
     `${path}`, // key
-    { id: id },
+    { id: id, userId: ProductOwnerId(store) },
   );
 
   const valData = useMemo(() => {

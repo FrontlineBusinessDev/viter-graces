@@ -22,7 +22,12 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkPayload($data);
 
     $val->filters = [];
-    $query = checkReadAllLowStock($val, allowedColumns());
+    $val->userId = $data["userId"];
+    if ((float)$val->userId > 0) {
+        $query = checkReadByUserIdLowStock($val, allowedColumns());
+    } else {
+        $query = checkReadAllLowStock($val, allowedColumns());
+    }
     http_response_code(200);
     getQueriedData($query);
 }

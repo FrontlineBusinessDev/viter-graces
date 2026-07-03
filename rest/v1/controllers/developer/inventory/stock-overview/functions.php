@@ -36,6 +36,14 @@ function checkReadAllLowStock($object, $allowedColumns = [])
 }
 
 // Read all
+function checkReadByUserIdLowStock($object, $allowedColumns = [])
+{
+    $query = $object->readByUserIdLowStock($allowedColumns);
+    checkQuery($query, "Empty records. (read All)");
+    return $query;
+}
+
+// Read all
 function checkReadCountLowStock($object)
 {
     $query = $object->readCountLowStock();

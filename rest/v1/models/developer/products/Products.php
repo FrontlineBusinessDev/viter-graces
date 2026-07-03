@@ -23,6 +23,8 @@ class Products
     public $products_created;
     public $products_updated;
 
+    public $userId;
+
     public $stock_movement_status;
     public $stock_movement_location;
     public $stock_movement_type;
@@ -344,6 +346,125 @@ class Products
             $sql .= "products_name as name ";
             $sql .= "from {$this->tblProducts} ";
             $sql .= " where true ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( products_name like :products_name 
+            or products_owner_name like :products_owner_name 
+            or products_suppliers_name like :products_suppliers_name 
+            or products_sku like :products_sku ) " : " ");
+            }
+            $sql .= " order by products_is_active desc, ";
+            $sql .= "products_name asc ";
+            $sql .= "limit :start, ";
+            $sql .= ":total ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
+
+    // read all
+    public function readByUserId($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            "products_owner_id" => $this->userId,
+            ...$this->column_search != "" ? [
+                "products_name" => "%{$this->column_search}%",
+                "products_sku" => "%{$this->column_search}%",
+                "products_owner_name" => "%{$this->column_search}%",
+                "products_suppliers_name" => "%{$this->column_search}%",
+            ] : [],
+        ];
+
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
+            if (is_array($item['value'])) {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
+            }
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "products_aid as id, ";
+            $sql .= "products_is_active as is_active, ";
+            $sql .= "products_name as name ";
+            $sql .= "from {$this->tblProducts} ";
+            $sql .= " where products_owner_id = :products_owner_id ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( products_name like :products_name 
+            or products_owner_name like :products_owner_name 
+            or products_suppliers_name like :products_suppliers_name 
+            or products_sku like :products_sku ) " : " ");
+            }
+            $sql .= " order by products_is_active desc, ";
+            $sql .= "products_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readByUserIdLimit($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            "start" => $this->column_start - 1,
+            "total" => $this->column_total,
+            "products_owner_id" => $this->userId,
+            ...$this->column_search != "" ? [
+                "products_name" => "%{$this->column_search}%",
+                "products_sku" => "%{$this->column_search}%",
+                "products_owner_name" => "%{$this->column_search}%",
+                "products_suppliers_name" => "%{$this->column_search}%",
+            ] : [],
+        ];
+
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
+            if (is_array($item['value'])) {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = " CAST($col AS UNSIGNED) BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
+            }
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "products_aid as id, ";
+            $sql .= "products_is_active as is_active, ";
+            $sql .= "products_name as name ";
+            $sql .= "from {$this->tblProducts} ";
+            $sql .= " where products_owner_id = :products_owner_id ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {

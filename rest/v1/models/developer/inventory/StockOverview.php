@@ -18,6 +18,8 @@ class StockOverview
     public $stock_movement_created;
     public $stock_movement_updated;
 
+    public $userId;
+
     public $connection;
     public $lastInsertedId;
     public $tblMovementStock;
@@ -134,6 +136,114 @@ class StockOverview
                     'code' => $ex->getCode()
                 ]
             );
+
+            $query = false;
+        }
+
+        return $query;
+    }
+
+    public function readByUserIdLowStock()
+    {
+        try {
+            $sql = "select MAX(p.products_low_stock_threshold) as products_low_stock_threshold, ";
+            $sql .= "MAX(p.products_sku) as products_sku, ";
+            $sql .= "MAX(p.products_unit) as products_unit, ";
+            $sql .= "MAX(p.products_status) as products_status, ";
+            $sql .= "MAX(p.products_price) as products_price, ";
+            $sql .= "MAX(p.products_name) as products_name, ";
+            $sql .= "MAX(p.products_aid) as products_aid, ";
+            $sql .= "MAX(ms.stock_movement_location) AS stock_movement_location, ";
+            $sql .= "MAX(ms.stock_movement_product_name) as name, ";
+            $sql .= "MAX(ms.stock_movement_is_active) as is_active, ";
+            $sql .= "MAX(ms.stock_movement_product_name) as stock_movement_product_name, ";
+            $sql .= "MAX(ms.stock_movement_product_owner_name) as stock_movement_product_owner_name, ";
+            $sql .= "DATE_FORMAT(MAX(ms.stock_movement_date), '%b %d, %Y') AS stock_movement_date, ";
+
+            // Total stock quantity
+            $sql .= "
+            SUM(
+                CASE
+                    WHEN ms.stock_movement_type IN (
+                        'in stock',
+                        'stock in - return',
+                        'purchases',
+                        'stock in adjustments'
+                    )
+                    THEN ms.stock_movement_qty
+
+                    WHEN ms.stock_movement_type IN (
+                        'stock out - reject/defective items',
+                        'stock out - return item'
+                    )
+                    THEN -ms.stock_movement_qty
+
+                    ELSE 0
+                END
+            ) AS stock_qty,
+        ";
+
+            $sql .= "
+            MAX(IFNULL(so.order_qty, 0)) AS order_qty,
+        ";
+            $sql .= "
+            (
+                SUM(
+                    CASE
+                        WHEN ms.stock_movement_type IN (
+                            'in stock',
+                        'stock in - return',
+                            'purchases',
+                            'stock in adjustments'
+                        )
+                        THEN ms.stock_movement_qty
+
+                        WHEN ms.stock_movement_type IN ( 
+                        'stock out - reject/defective items',
+                        'stock out - return item'
+                        )
+                        THEN -ms.stock_movement_qty
+
+                        ELSE 0
+                    END
+                ) - MAX(IFNULL(so.order_qty, 0))
+            ) AS current_qty
+        ";
+            $sql .= "from {$this->tblMovementStock} AS ms ";
+
+            $sql .= "
+            INNER JOIN {$this->tblProducts} AS p
+                ON ms.stock_movement_product_id = p.products_aid
+        ";
+
+            $sql .= "
+            LEFT JOIN (
+                select
+                    sales_order_product_id,
+                    SUM(sales_order_qty) AS order_qty
+                from {$this->tblSalesOrder}
+                group by sales_order_product_id
+            ) AS so
+                ON so.sales_order_product_id = p.products_aid
+        ";
+            $sql .= " and p.products_owner_id = :products_owner_id ";
+            $sql .= " group by p.products_aid ";
+            $sql .= "HAVING current_qty <= MAX(p.products_low_stock_threshold) ";
+            $sql .= " order by p.products_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "products_owner_id" => $this->userId,
+            ]);
+        } catch (PDOException $ex) {
+            logError(
+                $ex->getMessage(),
+                $ex->getFile(),
+                [
+                    'line' => $ex->getLine(),
+                    'code' => $ex->getCode()
+                ]
+            );
+            returnError($this);
 
             $query = false;
         }
