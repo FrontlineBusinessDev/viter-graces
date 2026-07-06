@@ -2,6 +2,7 @@ import { apiVersion } from "@/config/config";
 import useQueryData from "@/services/useQueryData";
 import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import { useField } from "formik";
 import React, { useMemo } from "react";
 import Select from "react-select";
@@ -130,6 +131,8 @@ export const InputSelectArray = ({
 
     return result?.data;
   }, [result]);
+
+  console.log("path", path);
   return (
     <>
       <label htmlFor={props.id || props.name}>
@@ -172,6 +175,14 @@ export const InputSelectArray = ({
           )}
           {store.credentials?.data?.role === "developer" ? (
             <>
+              {path === "product-owner/read-by-product-owner" && (
+                <option
+                  value={store.credentials?.data?.user_account_aid}
+                  className="capitalize"
+                >
+                  {store.credentials?.data?.name}
+                </option>
+              )}
               {valData?.map((item, ikey) => {
                 return (
                   <option key={ikey} value={item.id} className="capitalize">
@@ -413,6 +424,73 @@ export const SearchableSelectFilter = ({ column, path, testFilterId }) => {
   );
 };
 
+export const SearchableSelectModalFilter = ({ path, testFilterId }) => {
+  const [value, setValue] = React.useState(null);
+  const { data: result } = useQueryData(
+    `${apiVersion}/${path}`, // endpoint
+    "get", // method
+    `${path}`, // key
+  );
+
+  let options = result?.data?.map((item) => ({
+    value: item.name,
+    label: item.name,
+  }));
+
+  console.log("value", value);
+
+  const selected = options?.find((opt) => opt.value === value) || null;
+
+  return (
+    <div data-testid={testFilterId}>
+      <Select
+        placeholder="--"
+        classNamePrefix="react-select"
+        options={options}
+        value={selected}
+        onChange={(option) => {
+          setValue(option ? option.value : undefined);
+        }}
+        isClearable
+        classNames={{
+          control: ({ isFocused }) =>
+            ` w-full! min-h-full! text-sm border rounded-lg! px-1 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
+         ${isFocused ? " border-primary! " : " border-gray-300 "}
+         hover:border-primary! `,
+
+          valueContainer: () => "px-1 py-0",
+
+          input: () => "text-sm h-[22px]! text-gray-500! ",
+
+          placeholder: () => "text-gray-400! text-sm",
+
+          singleValue: () => "normal-case! text-sm text-gray-500! ",
+
+          indicatorsContainer: () => "",
+
+          indicatorSeparator: () => "w-0!",
+
+          dropdownIndicator: () =>
+            "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
+
+          clearIndicator: () =>
+            "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
+
+          menu: () =>
+            "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white dark:bg-[#0b111e]! z-50",
+
+          menuList: () => "py-1 max-h-60 overflow-auto ",
+
+          option: ({ isFocused, isSelected }) =>
+            ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  
+         ${isSelected ? "bg-primary! text-secondary!" : " "}
+         ${!isSelected && isFocused ? "bg-primary! text-secondary! " : " "}`,
+        }}
+      />
+    </div>
+  );
+};
+
 export const InputSelectTagArray = ({
   label = "",
   onChange = null,
@@ -501,15 +579,28 @@ export const InputSelectTagArray = ({
 export const InputSalesOrderSelectTagArray = ({
   label = "",
   onChange = null,
+  dataVal = null,
   item = null,
   path = null,
   required = true,
   testFilterId = "",
+  store,
 }) => {
+  const userId = ProductOwnerId(store);
   const { data: result } = useQueryData(
     `${apiVersion}/${path}`, // endpoint
-    "get", // method
+    "post", // method
     `${path}`, // key
+    {
+      searchValue: "",
+      isDeveloper:
+        isEmptyItem(store?.credentials?.data?.role, "admin") === "developer"
+          ? "1"
+          : "0",
+      id: "",
+      columnFilters: [],
+      userId: userId,
+    },
   );
   const [selected, setSelected] = React.useState("");
   const options =
@@ -517,7 +608,6 @@ export const InputSalesOrderSelectTagArray = ({
       id: item.id,
       value: item.name,
       label: `${item.name} (${item.current_qty})`,
-      ...item,
     })) || [];
 
   return (
@@ -590,6 +680,122 @@ export const InputSalesOrderSelectTagArray = ({
           />
         </div>
       )}
+    </>
+  );
+};
+
+export const InputSelectFilterTagArray = ({
+  label = "",
+  defaultValue = "",
+  onChange = null,
+  item = null,
+  path = null,
+  required = true,
+  testFilterId = "",
+  store,
+  ...props
+}) => {
+  const userId = ProductOwnerId(store);
+  // const [field, meta] = useField(props);
+  const { data: result } = useQueryData(
+    `${apiVersion}/${path}`, // endpoint
+    "post", // method
+    `${path}`, // key
+    {
+      searchValue: "",
+      isDeveloper:
+        isEmptyItem(store?.credentials?.data?.role, "admin") === "developer"
+          ? "1"
+          : "0",
+      id: "",
+      columnFilters: [],
+      userId: userId,
+    },
+  );
+  const [selected, setSelected] = React.useState(defaultValue);
+  const options =
+    result?.data?.map((item) => ({
+      id: item.id,
+      value: item.name,
+      label: item.name,
+    })) || [];
+
+  console.log("selected", selected);
+  console.log("options", options);
+
+  return (
+    <>
+      {label ? (
+        <label htmlFor={label} className=" ">
+          {required && <span className="text-red-500">*</span>}
+          {label}
+        </label>
+      ) : (
+        ""
+      )}
+      {Number(isEmptyItem(item?.sales_order_aid, 0)) !== 0 ? (
+        <span>{item?.sales_order_product_name}</span>
+      ) : (
+        <div data-testid={testFilterId}>
+          <Select
+            placeholder="--"
+            options={options}
+            value={selected}
+            onChange={(e) => {
+              if (!e) {
+                setSelected(null);
+                onChange(null, null);
+                return;
+              }
+
+              const selectedItem = result?.data?.find(
+                (item) => Number(item.id) === Number(e.id),
+              );
+
+              setSelected(e);
+              onChange(e, selectedItem);
+            }}
+            isClearable
+            classNames={{
+              control: ({ isFocused }) =>
+                ` w-full! min-h-full! text-sm border rounded-lg! px-1 mt-1! cursor-pointer! shadow-none! dark:bg-[#0b111e]!
+         ${isFocused ? " border-primary! " : " border-gray-300 "}
+         hover:border-primary! `,
+
+              valueContainer: () => "",
+
+              input: () => "text-sm h-[27px]! text-gray-500! ",
+
+              placeholder: () => "text-gray-400! text-sm",
+
+              singleValue: () => "normal-case! text-sm text-gray-500! ",
+
+              indicatorsContainer: () => "",
+
+              indicatorSeparator: () => "w-0!",
+
+              dropdownIndicator: () =>
+                "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
+
+              clearIndicator: () =>
+                "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
+
+              menu: () =>
+                "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white dark:bg-[#0b111e]! z-50",
+
+              menuList: () => "py-1 max-h-60 overflow-auto ",
+
+              option: ({ isFocused, isSelected }) =>
+                ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  
+         ${isSelected ? "bg-primary! text-secondary!" : " "}
+         ${!isSelected && isFocused ? "bg-primary! text-secondary! " : " "}`,
+            }}
+          />
+        </div>
+      )}
+      {/* {meta.touched && meta.error ? (
+        <span className="error-show">{meta.error}</span>
+      ) : null} */}
     </>
   );
 };

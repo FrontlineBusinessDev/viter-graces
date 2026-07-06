@@ -3,6 +3,7 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalReturns from "./ModalReturns";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 
 const Returns = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -15,6 +16,7 @@ const Returns = () => {
       header: "status",
       classTh: "w-[5rem]",
       classTd: "",
+      status_option: ActiveInActiveStatus("return-status"),
     },
     {
       accessorKey: "return_product_number",
@@ -43,6 +45,7 @@ const Returns = () => {
     {
       accessorKey: "return_product_amount",
       header: "amount",
+      amount: true,
       classTh: "",
       classTd: "",
     },
@@ -50,13 +53,14 @@ const Returns = () => {
       accessorKey: "return_product_reason",
       header: "reason",
       classTh: "",
-      classTd: "",
+      classTd: "capitalize",
     },
     {
       accessorKey: "return_product_is_restocked",
       header: "restocked",
       classTh: "",
       classTd: "",
+      status_option: ActiveInActiveStatus("restocked-status"),
     },
   ];
 

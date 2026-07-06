@@ -17,7 +17,7 @@ RewriteRule ^test-api$ controllers/test-api.php [L]
 ### FOR UPLOAD PHOTO ###
 RewriteRule ^upload-multiple-files$ core/upload-multiple-files.php [L]
 
-### ROLES ###
+### ROLES ### 
 RewriteRule ^roles$ controllers/developer/settings/role/role.php [L]
 RewriteRule ^roles/([0-9]+)$ controllers/developer/settings/role/role.php?id=$1 [L]
 RewriteRule ^roles/active/([0-9]+)$ controllers/developer/settings/role/active.php?id=$1 [L] 
@@ -118,6 +118,7 @@ RewriteRule ^sales-order/read-all-active-by-product$ controllers/developer/sales
 RewriteRule ^sales-order/read-sales-today$ controllers/developer/sales-order/read-sales-today.php [L]
 RewriteRule ^sales-order/read-top-selling-product$ controllers/developer/sales-order/read-top-selling-product.php [L]
 RewriteRule ^sales-order/page-by-id/([0-9]+)$ controllers/developer/sales-order/page-by-cutomer-id.php?start=$1 [L]
+RewriteRule ^sales-order/read-all-sales-order$ controllers/developer/sales-order/read-all-sales-order.php [L]
  
 ### REPORT SALES ORDER ###
 RewriteRule ^report-sales-order/page-all-sales-order/page/([0-9]+)$ controllers/developer/reports/page-all-sales-order.php?start=$1 [L]

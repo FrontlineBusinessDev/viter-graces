@@ -186,3 +186,11 @@ function updateConnectedMenu($object)
 
 
 }
+
+// Read all
+function checkReadSalesOrder($object, $allowedColumns = [])
+{
+    $query = $object->readSalesOrder($allowedColumns);
+    checkQuery($query, "Empty records. (Read Sales Order)");
+    return $query;
+}

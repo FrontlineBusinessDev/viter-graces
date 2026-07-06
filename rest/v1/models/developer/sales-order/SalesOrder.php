@@ -219,6 +219,7 @@ class SalesOrder
             $sql .= "sales_order_is_active as is_active, ";
             $sql .= "sales_order_date as order_date, ";
             $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";
@@ -287,6 +288,7 @@ class SalesOrder
             $sql .= "sales_order_is_active as is_active, ";
             $sql .= "sales_order_date as order_date, ";
             $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";
@@ -813,7 +815,7 @@ class SalesOrder
             $sql = "select *, ";
             $sql .= "sales_order_number as id_number ";
             $sql .= "from {$this->tblSalesOrder} ";
-            $sql .= "order by sales_order_aid desc ";
+            $sql .= "order by sales_order_number desc ";
             $sql .= "limit 1 ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
@@ -827,14 +829,18 @@ class SalesOrder
     public function readBySoNumber()
     {
         try {
-            $sql = "select *, ";
-            $sql .= "sales_order_aid as id, ";
-            $sql .= "sales_order_is_active as is_active, ";
-            $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
-            $sql .= "sales_order_customer_name as name ";
-            $sql .= "from {$this->tblSalesOrder} ";
-            $sql .= "where sales_order_number = :sales_order_number ";
-            $sql .= "order by sales_order_date asc ";
+            $sql = "select so.*, ";
+            $sql .= "so.sales_order_aid as id, ";
+            $sql .= "p.products_owner_id, ";
+            $sql .= "p.products_owner_name, ";
+            $sql .= "so.sales_order_is_active as is_active, ";
+            $sql .= "DATE_FORMAT(so.sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "so.sales_order_customer_name as name ";
+            $sql .= "from {$this->tblSalesOrder} as so, ";
+            $sql .= "{$this->tblProducts} as p ";
+            $sql .= "where so.sales_order_product_id = p.products_aid ";
+            $sql .= "and so.sales_order_number = :sales_order_number ";
+            $sql .= "order by so.sales_order_date asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "sales_order_number" => $this->sales_order_number,
@@ -1147,6 +1153,76 @@ class SalesOrder
                 "installmet_payment_updated" => $this->sales_order_updated,
                 "installmet_payment_aid" => $this->installmet_payment_aid,
             ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+
+
+    // read all
+    public function readSalesOrder($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            ...($this->column_search != "" ? [
+                "sales_order_number" => "%{$this->column_search}%",
+                "sales_order_customer_name" => "%{$this->column_search}%",
+                "sales_order_product_name" => "%{$this->column_search}%",
+                "sales_order_received_by_name" => "%{$this->column_search}%",
+                "sales_order_product_owner_name" => "%{$this->column_search}%",
+            ] : []),
+        ];
+
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
+            if (is_array($item['value'])) {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
+            }
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "sales_order_number, ";
+            $sql .= "sales_order_status as is_status, ";
+            $sql .= "sales_order_total_payable_amount as total_amount, ";
+            $sql .= "sales_order_total_amount as total_sub_amount, ";
+            $sql .= "sales_order_paid_amount as total_paid, ";
+            $sql .= "sales_order_number as value, ";
+            $sql .= "CONCAT(sales_order_number, ' - ', sales_order_customer_name) as label, ";
+            $sql .= "sales_order_aid as id, ";
+            $sql .= "sales_order_is_active as is_active, ";
+            $sql .= "sales_order_date as order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "sales_order_customer_name as name ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= " where true ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number 
+            or sales_order_customer_name like :sales_order_customer_name 
+            or sales_order_received_by_name like :sales_order_received_by_name 
+            or sales_order_product_owner_name like :sales_order_product_owner_name 
+            or sales_order_product_name like :sales_order_product_name ) " : " ");
+            }
+            $sql .= " group by sales_order_number ";
+            $sql .= " order by MAX(sales_order_is_active) desc, ";
+            $sql .= "sales_order_number desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;

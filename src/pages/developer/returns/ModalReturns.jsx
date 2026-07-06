@@ -1,12 +1,15 @@
 import ModalButton from "@/components/buttons/ModalButton";
-import { InputSelect, InputSelectArray } from "@/components/inputs/InputSelect";
-import { InputNumber, InputText } from "@/components/inputs/InputText";
+import {
+  InputSalesOrderSelectTagArray,
+  InputSelect,
+} from "@/components/inputs/InputSelect";
+import { InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { apiVersion } from "@/config/config";
+import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
-import useQueryData from "@/services/useQueryData";
 import {
   setError,
   setIsAdd,
@@ -16,29 +19,16 @@ import {
 import { StoreContext } from "@/store/StoreContext";
 import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { numberWithCommasToFixed } from "@/utilities/numberWithCommas";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
-import { Plus, Search } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
 
 const ModalReturns = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const [items, setItems] = React.useState([]);
-  const [counter, setCounter] = React.useState(0);
-  const [search, setSearch] = React.useState("");
-  const [showDropdown, setShowDropdown] = React.useState(false);
   const [selectedItems, setSelectedItems] = React.useState([]);
   const [isSelected, setIsSelected] = React.useState(false);
-
-  const handleAddItem = () => {
-    setItems((prev) => [...prev, { id: counter }]);
-    setCounter((prev) => prev + 1);
-  };
-
-  const handleRemoveItem = (id) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
-  };
 
   const handleClose = () => {
     dispatch(setIsAdd(false));
@@ -47,35 +37,20 @@ const ModalReturns = ({ itemEdit }) => {
 
   handleEscape(() => handleClose());
 
-  const {
-    isLoading,
-    isFetching,
-    error,
-    data: role,
-  } = useQueryData(
-    `${apiVersion}/role`, // endpoint
-    "get", // method
-    "role", // key
-  );
-
-  const filteredrole = role?.filter((item) =>
-    item.label.toLowerCase().includes(search.toLowerCase()),
-  );
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
         itemEdit
-          ? `${apiVersion}/users/${itemEdit?.id}`
-          : `${apiVersion}/users`,
+          ? `${apiVersion}/returns-products/${itemEdit?.id}`
+          : `${apiVersion}/returns-products`,
         itemEdit ? "put" : "post",
         values,
       ),
     onSuccess: (data) => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({ queryKey: ["returns-products"] });
 
       if (data.success) {
         dispatch(setIsAdd(false));
@@ -94,57 +69,27 @@ const ModalReturns = ({ itemEdit }) => {
   });
 
   const initVal = {
-    user_account_aid: isEmptyItem(itemEdit?.user_account_aid, ""),
-    user_account_first_name: isEmptyItem(itemEdit?.user_account_first_name, ""),
-    user_account_last_name: isEmptyItem(itemEdit?.user_account_last_name, ""),
-    user_account_email: isEmptyItem(itemEdit?.user_account_email, ""),
-    user_account_role_id: isEmptyItem(itemEdit?.user_account_role_id, ""),
-    user_account_role: isEmptyItem(itemEdit?.user_account_role, ""),
-
-    name: isEmptyItem(itemEdit?.name, ""),
-    password_link: `/create-password`,
+    return_product_date: isEmptyItem(
+      itemEdit?.return_product_date,
+      store?.credentials?.data?.server_date,
+    ),
+    return_product_reason: isEmptyItem(itemEdit?.return_product_reason, ""),
+    return_product_notes: isEmptyItem(itemEdit?.return_product_notes, ""),
+    return_product_is_restocked: isEmptyItem(
+      itemEdit?.return_product_is_restocked,
+      "",
+    ),
   };
 
   const yupSchema = Yup.object({
-    user_account_first_name: Yup.string().trim().required("Required"),
-    user_account_last_name: Yup.string().trim().required("Required"),
-    user_account_email: Yup.string()
-      .trim()
-      .email("Invalid email")
-      .required("Required"),
-    user_account_role_id: Yup.string().trim().required("Required"),
+    return_product_date: Yup.string().trim().required("Required"),
+    return_product_reason: Yup.string().trim().required("Required"),
+    return_product_notes: Yup.string().trim().required("Required"),
   });
 
   React.useEffect(() => {
     dispatch(setError(false));
   }, []);
-
-  const linkedOrders = [
-    {
-      value: "SO-1001",
-      label: "Sales Order #1001 - John Doe",
-      items: [
-        { id: 1, name: "Banana Chips", ordered: 1 },
-        { id: 2, name: "Shing-aling XL", ordered: 1 },
-      ],
-    },
-    {
-      value: "SO-1002",
-      label: "Sales Order #1002 - Louren",
-      items: [
-        { id: 1, name: "Banana Chips", ordered: 3 },
-        { id: 2, name: "Shing-aling XL", ordered: 2 },
-      ],
-    },
-    {
-      value: "SO-1003",
-      label: "Sales Order #1003 - Isobel Rubico",
-      items: [
-        { id: 1, name: "Banana Chips", ordered: 20 },
-        { id: 2, name: "Shing-aling XL", ordered: 15 },
-      ],
-    },
-  ];
 
   return (
     <>
@@ -162,26 +107,39 @@ const ModalReturns = ({ itemEdit }) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
               // mutate data
-              mutation.mutate(values);
+
+              console.log({
+                ...values,
+                selectedItems: selectedItems || [],
+                return_product_is_restocked: isSelected,
+              });
+
+              mutation.mutate({
+                ...values,
+                selectedItems: selectedItems || [],
+                return_product_is_restocked: isSelected,
+                ...ActivityLogDetails(
+                  "returns-products",
+                  itemEdit ? "update" : "create",
+                  store,
+                  {
+                    ...values,
+                    selectedItems: selectedItems || [],
+                    return_product_is_restocked: isSelected,
+                  },
+                ),
+              });
             }}
           >
             {(props) => {
               return (
                 <Form>
                   <div className="grid grid-cols-2 gap-4">
-                    {/* <div className="relative">
-                      <InputNumber
-                        label="Return Number"
-                        name="user_account_first_name"
-                        placeholder={`${itemEdit ? "Update PO-149181" : "Enter RET-149181"}`}
-                        disabled={mutation.isPending}
-                      />
-                    </div> */}
                     <div className="relative ">
                       <InputText
                         label="Return Date"
                         type="date"
-                        name="user_account_last_name"
+                        name="return_product_date"
                         disabled={mutation.isPending}
                       />
                     </div>
@@ -190,84 +148,33 @@ const ModalReturns = ({ itemEdit }) => {
                       <InputSelect
                         label="Return Reason"
                         type="text"
-                        name="user_account_role_id"
+                        name="return_product_reason"
                         disabled={mutation.isPending}
-                        isLoading={isLoading || isFetching}
                       >
                         <option value="">Select Return Reason</option>
                         <option value="damage">Damage</option>
+                        <option value="expired">Expired</option>
                       </InputSelect>
                     </div>
                   </div>
 
                   <div className="relative mt-3">
                     <label htmlFor="">Linked Order *</label>
-                    <div
-                      type="submit"
-                      className="absolute left-2 top-7 text-[14px] h-[30px] rounded-tr-none rounded-br-none border-l-0  text-gray-400 cursor-default"
-                    >
-                      <Search size={14} />
-                    </div>
-                    <input
-                      type="text"
-                      value={search}
-                      placeholder="Search Customer..."
-                      disabled={mutation.isPending}
-                      onFocus={() => setShowDropdown(true)}
+                    <InputSalesOrderSelectTagArray
                       onChange={(e) => {
-                        setSearch(e.target.value);
-                        setShowDropdown(true);
+                        setSelectedItems(
+                          e.items.map((i) => ({
+                            ...i,
+                            selected: false,
+                            qty: 0,
+                            total: 0,
+                          })),
+                        );
                       }}
-                      className="w-full border rounded-lg px-3 py-1 text-xs pl-7"
+                      path={`sales-order/read-all-sales-order`}
+                      testFilterId="sales_order_product_name"
+                      store={store}
                     />
-                    {showDropdown && (
-                      <div className="absolute z-10 w-full bg-white dark:bg-dark-mode border mt-1 rounded-md shadow max-h-60 overflow-auto">
-                        {linkedOrders.filter((item) =>
-                          item.label
-                            .toLowerCase()
-                            .includes(search.toLowerCase()),
-                        ).length > 0 ? (
-                          linkedOrders
-                            .filter((item) =>
-                              item.label
-                                .toLowerCase()
-                                .includes(search.toLowerCase()),
-                            )
-                            .map((item, index) => (
-                              <div
-                                key={index}
-                                className="py-1 px-2 hover:bg-gray-100 hover:dark:bg-gray-600 cursor-pointer text-xs"
-                                onClick={() => {
-                                  setSearch(item.label);
-                                  setShowDropdown(false);
-
-                                  props.setFieldValue(
-                                    "linked_order_id",
-                                    item.value,
-                                  );
-                                  props.setFieldValue(
-                                    "linked_order",
-                                    item.label,
-                                  );
-                                  setSelectedItems(
-                                    item.items.map((i) => ({
-                                      ...i,
-                                      selected: false,
-                                      qty: 0,
-                                    })),
-                                  );
-                                }}
-                              >
-                                {item.label}
-                              </div>
-                            ))
-                        ) : (
-                          <p className="p-2 text-sm text-gray-400">
-                            No results found
-                          </p>
-                        )}
-                      </div>
-                    )}
 
                     {selectedItems.length > 0 && (
                       <div className="relative">
@@ -306,13 +213,15 @@ const ModalReturns = ({ itemEdit }) => {
                                   />
                                 </button>
 
-                                <span className="text-sm">{item.name}</span>
+                                <span className="text-sm">
+                                  {item.sales_order_product_name}
+                                </span>
                               </div>
 
                               {/* Ordered + Qty */}
                               <div className="flex items-center gap-3">
                                 <span className="text-sm text-gray-500 dark:text-light">
-                                  Ordered: {item.ordered}
+                                  Ordered: {item.sales_order_qty}
                                 </span>
 
                                 {item.selected && (
@@ -325,12 +234,16 @@ const ModalReturns = ({ itemEdit }) => {
                                       onChange={(e) => {
                                         const updated = [...selectedItems];
                                         updated[index].qty = e.target.value;
+                                        updated[index].total =
+                                          Number(
+                                            updated[index]?.sales_order_price,
+                                          ) * Number(updated[index]?.qty);
                                         setSelectedItems(updated);
                                       }}
                                       className="w-16 h-7 border rounded px-2 py-1 text-sm mt-0"
                                       placeholder="pcs"
                                     />
-                                    <p className="content-end mb-0">.pcs</p>
+                                    {/* <p className="content-end mb-0">.pcs</p> */}
                                   </div>
                                 )}
                               </div>
@@ -348,7 +261,21 @@ const ModalReturns = ({ itemEdit }) => {
                         <span className="text-black dark:text-light text-sm">
                           Return Amount
                         </span>
-                        ₱ 0.00
+                        <span>
+                          ₱
+                          <span className="ml-1">
+                            {numberWithCommasToFixed(
+                              selectedItems?.reduce(
+                                (sum, item) =>
+                                  Number(sum) +
+                                  Number(item.qty || 0) *
+                                    Number(item.sales_order_price || 0),
+                                0,
+                              ),
+                              2,
+                            )}
+                          </span>
+                        </span>
                       </p>
                     </div>
                   </div>
@@ -357,7 +284,7 @@ const ModalReturns = ({ itemEdit }) => {
                     <InputTextArea
                       label="Note"
                       type="text"
-                      name="user_account_email"
+                      name="return_product_notes"
                       placeholder={`${itemEdit ? "Update notes" : "Enter notes"}`}
                       disabled={mutation.isPending}
                     />

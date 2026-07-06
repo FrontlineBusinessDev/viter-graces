@@ -1,5 +1,6 @@
 import CloseButton from "@/components/buttons/CloseButton";
 import { AmountWithPesoSign } from "@/components/PesoSign";
+import Pills from "@/components/Pills";
 import { setIsView } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { Download } from "lucide-react";
@@ -14,6 +15,8 @@ const ViewDetails = ({ itemEdit }) => {
 
   let total_balance =
     Number(itemEdit?.total_amount) - Number(itemEdit?.total_paid);
+
+  console.log("itemEdit", itemEdit);
 
   return (
     <div
@@ -32,38 +35,38 @@ const ViewDetails = ({ itemEdit }) => {
             Order Details - {itemEdit?.sales_order_number}
           </h3>
 
-          {/* <ul className="grid grid-cols-2 [&>li]:flex [&>li]:items-center [&>li]:gap-2 my-3">
+          <ul className="grid grid-cols-2 [&>li]:flex [&>li]:items-center [&>li]:gap-1 mb-3 ">
             <li>
-              <p>Customer:</p>
-              <p className="text-black dark:text-light">
+              <p className="m-0">Customer:</p>
+              <p className="m-0 text-black dark:text-light">
                 {itemEdit?.sales_order_customer_name}
               </p>
             </li>
             <li>
-              <p>Date:</p>
-              <p className="text-black dark:text-light">
+              <p className="m-0">Date:</p>
+              <p className="m-0 text-black dark:text-light">
                 {itemEdit?.sales_order_date}
               </p>
             </li>
             <li>
-              <p>Received by:</p>
-              <p className="text-black dark:text-light">
+              <p className="m-0">Received by:</p>
+              <p className="m-0 text-black dark:text-light">
                 {itemEdit?.sales_order_received_by_name}
               </p>
             </li>
             <li>
-              <p>Payment:</p>
-              <p className="text-black dark:text-light capitalize">
+              <p className="m-0">Payment:</p>
+              <p className="m-0 text-black dark:text-light capitalize">
                 {itemEdit?.sales_order_payment_method}
               </p>
             </li>
             <li>
-              <p>Status:</p>
+              <p className="m-0">Status:</p>
               <Pills variant={itemEdit?.sales_order_status}>
                 {itemEdit?.sales_order_status}
               </Pills>
             </li>
-          </ul> */}
+          </ul>
 
           <div className="overflow-y-auto flex-1">
             <div className="">

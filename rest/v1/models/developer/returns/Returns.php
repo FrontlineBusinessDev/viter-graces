@@ -15,6 +15,7 @@ class Returns
     public $return_product_qty;
     public $return_product_price;
     public $return_product_reason;
+    public $return_product_notes;
     public $return_product_is_restocked;
     public $return_product_owner_id;
     public $return_product_owner_name;
@@ -58,7 +59,6 @@ class Returns
         try {
             $sql = "insert into {$this->tblReturnProducts} ";
             $sql .= "( return_product_status, ";
-            $sql .= "return_product_status, ";
             $sql .= "return_product_number, ";
             $sql .= "return_product_order_id, ";
             $sql .= "return_product_order_number, ";
@@ -71,6 +71,7 @@ class Returns
             $sql .= "return_product_qty, ";
             $sql .= "return_product_price, ";
             $sql .= "return_product_reason, ";
+            $sql .= "return_product_notes, ";
             $sql .= "return_product_is_restocked, ";
             $sql .= "return_product_owner_id, ";
             $sql .= "return_product_owner_name, ";
@@ -89,6 +90,7 @@ class Returns
             $sql .= ":return_product_qty, ";
             $sql .= ":return_product_price, ";
             $sql .= ":return_product_reason, ";
+            $sql .= ":return_product_notes, ";
             $sql .= ":return_product_is_restocked, ";
             $sql .= ":return_product_owner_id, ";
             $sql .= ":return_product_owner_name, ";
@@ -109,6 +111,7 @@ class Returns
                 "return_product_qty" => $this->return_product_qty,
                 "return_product_price" => $this->return_product_price,
                 "return_product_reason" => $this->return_product_reason,
+                "return_product_notes" => $this->return_product_notes,
                 "return_product_is_restocked" => $this->return_product_is_restocked,
                 "return_product_owner_id" => $this->return_product_owner_id,
                 "return_product_owner_name" => $this->return_product_owner_name,
@@ -158,6 +161,7 @@ class Returns
             $sql = "select *, ";
             $sql .= "return_product_aid as id, ";
             $sql .= "return_product_status as is_status, ";
+            $sql .= "DATE_FORMAT(return_product_date, '%b %d, %Y') as return_product_date, ";
             $sql .= "return_product_number as name ";
             $sql .= "from {$this->tblReturnProducts} ";
             $sql .= " where true ";
@@ -218,6 +222,7 @@ class Returns
             $sql = "select *, ";
             $sql .= "return_product_aid as id, ";
             $sql .= "return_product_status as is_status, ";
+            $sql .= "DATE_FORMAT(return_product_date, '%b %d, %Y') as return_product_date, ";
             $sql .= "return_product_number as name ";
             $sql .= "from {$this->tblReturnProducts} ";
             $sql .= " where true ";

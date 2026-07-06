@@ -4,6 +4,7 @@ import {
   InputSelectArray,
   InputSelectArrayWithOptions,
   InputSelectCustomerArray,
+  InputSelectFilterTagArray,
 } from "@/components/inputs/InputSelect";
 import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
@@ -30,7 +31,7 @@ import * as Yup from "yup";
 
 const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const [counter, setCounter] = React.useState(0);
+  const [counter, setCounter] = React.useState(1);
   const [installmentCounter, setInstallmentCounter] = React.useState(0);
   const [itemsDelete, setItemsDelete] = React.useState([]);
   const [installmentItemsDelete, setInstallmentItemsDelete] = React.useState(
@@ -44,6 +45,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
       ? itemEdit?.items
       : [
           {
+            id: 0,
             sales_order_product_id: "",
             sales_order_product_name: "",
             sales_order_product_owner_id: "",
@@ -355,6 +357,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                 items,
                 itemsDelete,
               };
+              // console.log("data", data);
               mutation.mutate(data);
             }}
           >
@@ -419,20 +422,36 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         disabled={mutation.isPending}
                       />
                     </div>
-                    <div className="relative">
-                      <InputSelectCustomerArray
+
+                    <div className="relative ">
+                      <InputSelectFilterTagArray
                         label="Customer"
-                        path="customer/read-all-by-active"
-                        type="text"
-                        name="sales_order_customer_id"
+                        defaultValue={{
+                          id: isEmptyItem(
+                            itemEdit?.sales_order_customer_id,
+                            isEmptyItem(cutomer?.customer_aid, 0),
+                          ),
+                          label: isEmptyItem(
+                            itemEdit?.sales_order_customer_name,
+                            isEmptyItem(cutomer?.customer_name, ""),
+                          ),
+                          value: isEmptyItem(
+                            itemEdit?.sales_order_customer_name,
+                            isEmptyItem(cutomer?.customer_name, ""),
+                          ),
+                        }}
                         onChange={(e) => {
-                          props.values.sales_order_customer_id = e.target.value;
-                          props.values.sales_order_customer_name =
-                            e.target.options[e.target.selectedIndex].text;
+                          props.values.sales_order_customer_id = e.id;
+                          props.values.sales_order_customer_name = e.value;
                           return e;
                         }}
+                        itemEdit={itemEdit}
+                        path={`customer/read-all-by-active`}
+                        testFilterId="sales_order_customer_id"
+                        store={store}
                       />
                     </div>
+
                     <div className="relative">
                       <InputSelectArrayWithOptions
                         label="Payment Method"
@@ -498,9 +517,11 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                     "sales_order_product_name",
                                   );
                                 }}
+                                dataVal={items}
                                 item={a}
                                 path={`products/read-all-product-that-have-stock`}
                                 testFilterId="sales_order_product_name"
+                                store={store}
                               />
                               <input
                                 onChange={(e) => {
@@ -567,6 +588,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         name="sales_order_paid_amount"
                         placeholder={`${itemEdit ? "0" : "0"}`}
                         disabled={mutation.isPending}
+                        required={false}
                       />
                     </div>
                     <div></div>
@@ -734,18 +756,34 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                   </div>
 
                   <div className="relative my-3 ">
-                    <InputSelectArray
+                    <InputSelectFilterTagArray
                       label="Received by:"
-                      path="product-owner/read-by-product-owner"
-                      type="text"
-                      name="sales_order_received_by_id"
+                      defaultValue={{
+                        id: isEmptyItem(
+                          itemEdit?.sales_order_received_by_id,
+                          isEmptyItem(
+                            store.credentials?.data?.user_account_aid,
+                            0,
+                          ),
+                        ),
+                        label: isEmptyItem(
+                          itemEdit?.sales_order_received_by_name,
+                          isEmptyItem(store.credentials?.data?.name, ""),
+                        ),
+                        value: isEmptyItem(
+                          itemEdit?.sales_order_received_by_name,
+                          isEmptyItem(store.credentials?.data?.name, ""),
+                        ),
+                      }}
                       onChange={(e) => {
-                        props.values.sales_order_received_by_id =
-                          e.target.value;
-                        props.values.sales_order_received_by_name =
-                          e.target.options[e.target.selectedIndex].text;
+                        props.values.sales_order_received_by_id = e.id;
+                        props.values.sales_order_received_by_name = e.value;
                         return e;
                       }}
+                      itemEdit={itemEdit}
+                      path={`product-owner/read-by-product-owner`}
+                      testFilterId="sales_order_received_by_id"
+                      store={store}
                     />
                   </div>
 

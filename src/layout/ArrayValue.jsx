@@ -20,6 +20,16 @@ export const ActiveInActiveStatus = (val = "default-status") => {
       value: 0,
     },
     {
+      name: ["restocked-status"],
+      label: "Restock returned",
+      value: 1,
+    },
+    {
+      name: ["restocked-status"],
+      label: "",
+      value: 0,
+    },
+    {
       name: ["installment-status"],
       label: "paid",
       value: 1,
@@ -141,6 +151,11 @@ export const ActiveInActiveStatus = (val = "default-status") => {
       label: "STOCK OUT - REJECT/DEFECTIVE ITEMS",
       value: "stock out - reject/defective items",
     },
+    {
+      name: ["return-status"],
+      label: "pending",
+      value: "pending",
+    },
   ];
 
   return result.filter((item) => item.name.includes(val));
@@ -175,6 +190,8 @@ export const variantsStatus = (val = "active") => {
     delivered__incomplete__unpaid: "bg-teal-100 text-teal-500",
     not_delivered__paid: "bg-gray-100 text-gray-500",
     not_delivered__unpaid: "bg-red-100 text-red-500",
+    // return-status
+    pending: "bg-warning/10 text-warning",
   };
 
   return variants[

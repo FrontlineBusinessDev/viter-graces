@@ -368,6 +368,7 @@ const ModalSalesOrders = ({ itemEdit }) => {
                                 item={a}
                                 path={`products/read-all-product-that-have-stock`}
                                 testFilterId="sales_order_product_name"
+                                store={store}
                               />
                               <input
                                 onChange={(e) => {

@@ -10,6 +10,7 @@ import { IoLogoWhatsapp } from "react-icons/io";
 import ModalCustomer from "./ModalCustomer";
 import ModalSalesOrders from "./ModalSalesOrders";
 import ViewDetails from "./ViewDetails";
+import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
 
 const Customers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -85,29 +86,41 @@ const Customers = () => {
     {
       accessorKey: "sales_order_status",
       header: "status",
-      classTh: "",
+      classTh: "min-w-[5rem] ",
       classTd: "",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={ActiveInActiveStatus("payment-status")}
+          />
+        ),
+      },
       status_option: ActiveInActiveStatus("payment-status"),
     },
     {
       accessorKey: "sales_order_number",
-      header: "Order Number",
+      header: "Order #",
+      classTh: "min-w-[6rem] ",
       isViewItems: false,
-      classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "sales_order_date",
       header: "Date",
       isViewItems: false,
-      classTh: "",
+      classTh: " ",
       classTd: "",
+      filterFn: "date",
+      meta: "",
     },
     {
       accessorKey: "customer_phone",
       header: "Items",
       isViewItems: true,
-      classTh: "",
+      classTh: "min-w-[6rem] ",
       classTd: "",
     },
     {
@@ -115,8 +128,10 @@ const Customers = () => {
       amount: true,
       header: "Paid",
       isViewItems: false,
-      classTh: "",
+      classTh: "min-w-[10rem] ",
       classTd: "",
+      filterFn: "between",
+      meta: "",
     },
     {
       accessorKey: "sales_order_payment_method",
@@ -124,14 +139,17 @@ const Customers = () => {
       isViewItems: false,
       classTh: "",
       classTd: " uppercase ",
+      meta: "",
     },
     {
       accessorKey: "total_amount",
       amount: true,
       header: "Total",
       isViewItems: false,
-      classTh: "",
+      classTh: "min-w-[10rem] ",
       classTd: "",
+      filterFn: "between",
+      meta: "",
     },
     {
       accessorKey: "action",
@@ -158,6 +176,7 @@ const Customers = () => {
           setView={setView}
           isSearch={false}
           ishaveAdd={false}
+          haveFilterTable={true}
           ishaveSubAdd={false}
           dataTestidAddButton="add-customer-btn"
         />

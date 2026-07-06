@@ -32,7 +32,11 @@ export const renderCellContent = (item, rowData) => {
     return renderImage(rowData);
   }
 
-  if (column.header === "status" || column.header === "payment status") {
+  if (
+    column.header === "status" ||
+    column.header === "payment status" ||
+    column.header === "restocked"
+  ) {
     return <TableStatus item={column} dataArray={rowData} />;
   }
 

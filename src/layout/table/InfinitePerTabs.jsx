@@ -32,6 +32,7 @@ const InfinitePerTabs = ({
   setItemVal,
   isSearch = false,
   ishaveAdd = false,
+  haveFilterTable = false,
   ishaveSubAdd = true,
   dataTestidAddButton,
 }) => {
@@ -499,6 +500,7 @@ const InfinitePerTabs = ({
                       setItemEdit={setItemEdit}
                       isSearch={isSearch}
                       ishaveSubAdd={ishaveSubAdd}
+                      haveFilterTable={haveFilterTable}
                       isDefaultMobile={path}
                       setItemVal={setItemVal}
                     />

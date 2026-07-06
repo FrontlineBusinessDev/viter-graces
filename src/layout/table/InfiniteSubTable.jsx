@@ -26,6 +26,8 @@ import ActionButtonSubTable from "../ActionButtonSubTable";
 import MobileResponsiveList from "../mobile-responsive/MobileResponsiveList";
 import ModalSubAction from "../modal/ModalSubAction";
 import TableStatus from "../TableStatus";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
+import { DateFormat } from "@/components/DateFormat";
 
 const InfiniteSubTable = ({
   columns,
@@ -51,6 +53,8 @@ const InfiniteSubTable = ({
   const [page, setPage] = useState(1);
   const [isFetchFilterDate, setIsFetchFilterDate] = useState(false);
 
+  const userId = ProductOwnerId(store);
+
   // ACTIONS ADD
   const handleView = (item, itemView) => {
     dispatch(setIsView(true));
@@ -71,13 +75,8 @@ const InfiniteSubTable = ({
   );
 
   const queryKey = useMemo(
-    () => [
-      path,
-      store.isSearch,
-      JSON.stringify({ searchPayload }),
-      isFetchFilterDate ? JSON.stringify({ columnFilters }) : "",
-    ],
-    [path, store.isSearch],
+    () => [path, store.isSearch, search.current?.value || "", columnFilters],
+    [path, search.current?.value || "", JSON.stringify({ columnFilters })],
   );
 
   // React Query infinite fetch
@@ -98,7 +97,8 @@ const InfiniteSubTable = ({
         false,
         {
           ...searchPayload,
-          columnFilters: isFetchFilterDate ? columnFilters : [],
+          columnFilters: columnFilters,
+          userId: userId,
         },
         "post",
       ),
@@ -156,6 +156,9 @@ const InfiniteSubTable = ({
     filterFns: {
       equals: (row, columnId, value) => {
         return row.getValue(columnId) === value;
+      },
+      date: (row, columnId, value) => {
+        return row.getValue(columnId) === DateFormat(value);
       },
       between: (row, columnId, value) => {
         const rowValue = row.getValue(columnId);
@@ -298,6 +301,7 @@ const InfiniteSubTable = ({
                               }
                               className={`bg-white dark:bg-[#0b111e] m-0! w-full! text-sm border cursor-pointer! isFocused:border-primary! isFocused:ring-1 isFocused:ring-primary! border-gray-300 hover:border-primary! h-8`}
                               value={header.column.getFilterValue() ?? ""}
+                              filterFn={header.column.columnDef.filterFn}
                               onChange={(value) => {
                                 setData([]);
                                 header.column.setFilterValue(
