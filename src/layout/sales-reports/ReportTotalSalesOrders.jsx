@@ -60,7 +60,7 @@ const ReportTotalSalesOrders = ({
           />
           <FinanceStats
             title="Total Sales"
-            value={valDataTotalSales}
+            value={`₱${valDataTotalSales}`}
             icon={<TrendingUp className="text-blue-600" size={20} />}
             iconBg="bg-blue-100 dark:bg-[#082125]"
             valueColor="text-blue-600"

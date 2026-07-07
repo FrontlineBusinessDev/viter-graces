@@ -3,6 +3,7 @@ import {
   InputPurchaseOrderSelectTagArray,
   InputSelectArray,
   InputSelectArrayWithOptions,
+  InputSelectFilterTagArray,
   InputSelectTagArray,
 } from "@/components/inputs/InputSelect";
 import { InputText } from "@/components/inputs/InputText";
@@ -262,51 +263,61 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
             validationSchema={yupSchema}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
-              // mutate data
 
-              let data = {
-                ...ActivityLogDetails(
-                  "purchase order",
-                  itemEdit ? "update" : "create",
-                  store,
-                  { ...values, purchase_order: items },
-                ),
-                ...values,
-                purchase_order: items,
-                itemsDelete: itemsDelete,
-                purchase_order_payment: Number(values?.purchase_order_payment),
-                purchase_order_delivery_status: Number(
-                  values?.purchase_order_payment,
-                ),
-                isHaveNotDelivered: items.filter(
-                  (a) => !a.purchase_order_delivery_is_status,
-                )?.length,
-              };
+              const isHaveEmptyProduct = items.filter(
+                (a) => Number(a?.purchase_order_product_id) === 0,
+              )?.length;
 
-              // console.log("data", data);
+              if (isHaveEmptyProduct > 0) {
+                dispatch(setError(true));
+                dispatch(setMessage("You have empty product field."));
+                return;
+              } else {
+                // mutate data
 
-              mutation.mutate(data);
+                let data = {
+                  ...ActivityLogDetails(
+                    "purchase order",
+                    itemEdit ? "update" : "create",
+                    store,
+                    { ...values, purchase_order: items },
+                  ),
+                  ...values,
+                  purchase_order: items,
+                  itemsDelete: itemsDelete,
+                  purchase_order_payment: Number(
+                    values?.purchase_order_payment,
+                  ),
+                  purchase_order_delivery_status: Number(
+                    values?.purchase_order_payment,
+                  ),
+                  isHaveNotDelivered: items.filter(
+                    (a) => !a.purchase_order_delivery_is_status,
+                  )?.length,
+                };
+
+                mutation.mutate(data);
+              }
             }}
           >
             {(props) => {
               return (
                 <Form>
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="relative">
-                      <InputSelectArray
-                        label="Suppliers"
-                        type="text"
-                        path="suppliers/read-in-modal"
-                        name="purchase_order_supplier_id"
+                    <div className="relative ">
+                      <InputSelectFilterTagArray
+                        label="Customer"
                         onChange={(e, selectedItem) => {
-                          props.values.purchase_order_supplier_id =
-                            e.target.value;
-                          props.values.purchase_order_supplier_name =
-                            e.target.options[e.target.selectedIndex].text;
+                          props.values.purchase_order_supplier_id = e.id;
+                          props.values.purchase_order_supplier_name = e.name;
                           props.values.suppliers_delivery =
                             selectedItem?.suppliers_delivery;
                           return e;
                         }}
+                        itemEdit={itemEdit}
+                        path={`suppliers/read-in-modal`}
+                        testFilterId="purchase_order_supplier_id"
+                        store={store}
                       />
                     </div>
 

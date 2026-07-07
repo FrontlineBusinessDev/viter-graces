@@ -27,7 +27,8 @@ function getSubjectEmail()
 
 function getDefaultFolderId($folderId = '')
 {
-    $itemFolderId = $folderId != '' ? $folderId : $_ENV['GOOGLE_APPLICATION_PROJECT_FOLDER_ID']; // localhost 
+    $itemFolderId = "1Ht1CV_OrPQZqdavBtJyRERmjQ8HZUEgu"; // localhost 
+    // $itemFolderId = $folderId != '' ? $folderId : $_ENV['GOOGLE_APPLICATION_PROJECT_FOLDER_ID']; // localhost 
     return $itemFolderId;
 }
 
