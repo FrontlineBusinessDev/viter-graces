@@ -40,7 +40,15 @@ const SalesReportMobileResponsive = ({
                       {rowData?.sales_order_product_owner_name}
                     </li>
                     <li className={`font-semibold text-left text-xs `}>
-                      Received by {rowData?.sales_order_received_by_name}
+                      {rowData?.sales_order_received_by_name}
+                    </li>{" "}
+                    <li className="flex text-left! text-xs">
+                      <span className={`text-gray-500 mr-2 min-w-12`}>
+                        Customer:
+                      </span>
+                      <span className="wrap-break-word font-semibold">
+                        {rowData?.sales_order_customer_name}
+                      </span>
                     </li>
                   </ul>
 
@@ -56,36 +64,7 @@ const SalesReportMobileResponsive = ({
                       {rowData?.sales_order_payment_method}
                     </li>
                   </ul>
-                </div>
-                {/* OTHER FIELDS */}
-                <div className="flex flex-wrap justify-between items-end">
-                  <ul className="py-2 gap-2 sm:gap-5  ">
-                    <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2 min-w-12`}>
-                        Customer:
-                      </span>
-                      <span className="wrap-break-word font-semibold">
-                        {rowData?.sales_order_customer_name}
-                      </span>
-                    </li>
-                    <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2 min-w-12`}>
-                        Before:
-                      </span>
-                      <span className="wrap-break-word font-semibold ">
-                        {rowData?.stock_movement_before_qty}
-                      </span>
-                    </li>
-                    <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2 min-w-12`}>
-                        After:
-                      </span>
-                      <span className="wrap-break-word font-semibold">
-                        {rowData?.stock_movement_after_qty}
-                      </span>
-                    </li>
-                  </ul>
-                  <div className=" ">
+                  {/* <div className=" ">
                     <ActionButtonMobile
                       dataArray={rowData}
                       setData={setData}
@@ -93,7 +72,7 @@ const SalesReportMobileResponsive = ({
                       ishaveSubAdd={ishaveSubAdd}
                       path={path}
                     />
-                  </div>
+                  </div> */}
                 </div>
               </div>
             );

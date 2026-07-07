@@ -46,38 +46,37 @@ export const ActiveInActiveStatus = (val = "default-status") => {
     },
     {
       name: ["purchase-order-status"],
-      label: "for delivery",
-      value: "for delivery",
+      label: "draft",
+      value: "draft",
     },
     {
       name: ["purchase-order-status"],
-      label: "delivered - incomplete / paid",
-      value: "delivered - incomplete / paid",
+      label: "open",
+      value: "open",
+    },
+    {
+      name: [
+        "payment-status",
+        "purchase-order-status",
+        "purchase-order-payment-status",
+      ],
+      label: "paid",
+      value: "paid",
     },
     {
       name: ["purchase-order-status"],
-      label: "delivered - incomplete / unpaid",
-      value: "delivered - incomplete / unpaid",
+      label: "partial",
+      value: "partial",
     },
     {
       name: ["purchase-order-status"],
-      label: "delivered - completed / paid",
-      value: "delivered - completed / paid",
+      label: "completed",
+      value: "completed",
     },
     {
       name: ["purchase-order-status"],
-      label: "delivered - completed / unpaid",
-      value: "delivered - completed / unpaid",
-    },
-    {
-      name: ["purchase-order-status"],
-      label: "not delivered / paid",
-      value: "not delivered / paid",
-    },
-    {
-      name: ["purchase-order-status"],
-      label: "not delivered / unpaid",
-      value: "not delivered / unpaid",
+      label: "cancelled",
+      value: "cancelled",
     },
     {
       name: ["stock-overview"],
@@ -101,14 +100,14 @@ export const ActiveInActiveStatus = (val = "default-status") => {
       value: "inactive",
     },
     {
-      name: ["payment-status"],
+      name: ["payment-status", "purchase-order-payment-status"],
       label: "unpaid",
       value: "unpaid",
     },
     {
-      name: ["payment-status"],
-      label: "paid",
-      value: "paid",
+      name: ["purchase-order-payment-status"],
+      label: "partially paid",
+      value: "partially paid",
     },
     {
       name: ["payment-status"],
@@ -173,6 +172,7 @@ export const variantsStatus = (val = "active") => {
     unpaid: "bg-gray-300 text-gray-700",
     paid: "bg-success/20 text-success",
     partial: "bg-blue-300 text-blue-700",
+    partially_paid: "bg-blue-300 text-blue-700",
     overdue: "bg-red-100 text-red-500",
     // stock-type-status
     stock_in_adjustments: "bg-blue-300 text-blue-700",
@@ -183,13 +183,10 @@ export const variantsStatus = (val = "active") => {
     draft: "bg-gray-300 text-gray-700",
     warning: "bg-warning/10 text-warning",
     alert: "bg-alert/10 text-alert",
-    for_delivery: "bg-orange-100 text-orange-500",
-    delivered__completed__paid: "bg-green-100 text-green-500",
-    delivered__completed__unpaid: "bg-blue-100 text-blue-500",
-    delivered__incomplete__paid: "bg-purple-100 text-purple-500",
-    delivered__incomplete__unpaid: "bg-teal-100 text-teal-500",
-    not_delivered__paid: "bg-gray-100 text-gray-500",
-    not_delivered__unpaid: "bg-red-100 text-red-500",
+    // purchase order status
+    cancelled: "bg-orange-100 text-orange-500",
+    open: "bg-purple-100 text-purple-500",
+    completed: "bg-teal-100 text-teal-500",
     // return-status
     pending: "bg-warning/10 text-warning",
   };

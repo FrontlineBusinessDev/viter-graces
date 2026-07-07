@@ -41,6 +41,7 @@ const InfiniteSubTable = ({
   isDefaultMobile = "",
   isSearch = true,
   ishaveSubAdd = false,
+  refetchOnWindowFocus = false,
   setItemVal,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -70,8 +71,9 @@ const InfiniteSubTable = ({
           ? "1"
           : "0",
       id: data?.id,
+      userId: userId,
     }),
-    [store.isSearch],
+    [store.isSearch, search.current?.value || ""],
   );
 
   const queryKey = useMemo(
@@ -109,13 +111,7 @@ const InfiniteSubTable = ({
       }
       return undefined;
     },
-    refetchOnWindowFocus: true,
-    // staleTime: 1000 * 60 * 5, // 5 mins → no refetch when revisiting
-    // gcTime: 1000 * 60 * 30, // keep cache for 30 mins
-    // refetchOnMount: false,
-    // refetchOnWindowFocus: false,
-    // refetchOnReconnect: false,
-    // enabled: !isStatic,
+    refetchOnWindowFocus: refetchOnWindowFocus,
   });
 
   // // Flatten pages into single array
@@ -165,7 +161,7 @@ const InfiniteSubTable = ({
         const { min, max } = value || {};
 
         if (min !== undefined && rowValue < min) return false;
-        if (max !== undefined && rowValue > max) return false;
+        if (max !== "" && rowValue > max) return false;
 
         return true;
       },
@@ -180,14 +176,6 @@ const InfiniteSubTable = ({
     dispatch(setIsSubAdd(true));
     setItemEdit(null);
   };
-
-  React.useEffect(() => {
-    if (result?.pages[0]?.total < 30) {
-      setIsFetchFilterDate(false);
-    } else {
-      setIsFetchFilterDate(true);
-    }
-  }, [columnFilters]);
 
   return (
     <>

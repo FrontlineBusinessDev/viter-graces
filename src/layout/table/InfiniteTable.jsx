@@ -184,6 +184,13 @@ const InfiniteTable = ({
 
     return <NoData />;
   };
+
+  React.useEffect(() => {
+    if (columnFilters !== "") {
+      setFilterColumns(columnFilters);
+    }
+  }, [columnFilters]);
+
   return (
     <>
       <div className="md:flex md:justify-between flex-row-reverse my-2 gap-4 items-center">

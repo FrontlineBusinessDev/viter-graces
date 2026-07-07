@@ -131,6 +131,7 @@ const Suppliers = () => {
       isViewItems: false,
       classTh: "",
       classTd: "",
+      meta: "",
       isMobileTitle: true,
     },
     {
@@ -139,6 +140,7 @@ const Suppliers = () => {
       isViewItems: false,
       classTh: "",
       classTd: "",
+      meta: "",
       isSubTitle: true,
     },
     {
@@ -147,6 +149,8 @@ const Suppliers = () => {
       isViewItems: false,
       classTh: "",
       classTd: "",
+      meta: "",
+      filterFn: "between",
       isPrice: true,
       amount: true,
     },
@@ -175,6 +179,7 @@ const Suppliers = () => {
           isSearch={false}
           ishaveAdd={false}
           ishaveSubAdd={true}
+          haveFilterTable={true}
           isDefaultMobile="suppliers"
         />
       </HeaderNav>

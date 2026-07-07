@@ -274,8 +274,8 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
       itemEdit?.sales_order_due_date,
       store?.credentials?.data?.server_date,
     ),
-    sales_order_total_payable_amount: isEmptyItem(
-      itemEdit?.sales_order_total_payable_amount,
+    sales_order_total_receivable_amount: isEmptyItem(
+      itemEdit?.sales_order_total_receivable_amount,
       "0",
     ),
     sales_order_total_balance_amount: isEmptyItem(
@@ -377,7 +377,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                     Number(item.sales_order_price || 0),
                 0,
               );
-              props.values.sales_order_total_payable_amount =
+              props.values.sales_order_total_receivable_amount =
                 items?.reduce(
                   (sum, item) =>
                     sum +
@@ -389,17 +389,19 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
               // COMPUTATION OF INCLUSIVE TAX
               if (Number(props.values.sales_order_tax) === 1.12) {
                 props.values.sales_order_tax_amount =
-                  Number(props.values.sales_order_total_payable_amount) -
-                  Number(props.values.sales_order_total_payable_amount) / 1.12;
+                  Number(props.values.sales_order_total_receivable_amount) -
+                  Number(props.values.sales_order_total_receivable_amount) /
+                    1.12;
               }
 
               // COMPUTATION OF EXCLUSIVE TAX
               if (Number(props.values.sales_order_tax) === 0.12) {
                 props.values.sales_order_tax_amount =
-                  Number(props.values.sales_order_total_payable_amount) * 0.12;
+                  Number(props.values.sales_order_total_receivable_amount) *
+                  0.12;
 
-                props.values.sales_order_total_payable_amount =
-                  Number(props.values.sales_order_total_payable_amount) +
+                props.values.sales_order_total_receivable_amount =
+                  Number(props.values.sales_order_total_receivable_amount) +
                   Number(props.values.sales_order_tax_amount);
               }
 
@@ -407,7 +409,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                 props.values.sales_order_tax_amount = 0;
               }
               props.values.sales_order_total_balance_amount =
-                Number(props.values.sales_order_total_payable_amount) -
+                Number(props.values.sales_order_total_receivable_amount) -
                 Number(props.values.sales_order_paid_amount);
 
               props.values.total =
@@ -418,7 +420,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                 ) + Number(props.values.sales_order_paid_amount);
               props.values.validationAmount =
                 Number(props.values.total) >=
-                Number(props.values.sales_order_total_payable_amount);
+                Number(props.values.sales_order_total_receivable_amount);
               return (
                 <Form>
                   <div className="grid grid-cols-2 gap-4">
@@ -449,8 +451,11 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                           ),
                         }}
                         onChange={(e) => {
-                          props.values.sales_order_customer_id = e.id;
-                          props.values.sales_order_customer_name = e.value;
+                          props.setFieldValue("sales_order_customer_id", e.id);
+                          props.setFieldValue(
+                            "sales_order_customer_name",
+                            e.value,
+                          );
                           return e;
                         }}
                         itemEdit={itemEdit}
@@ -609,7 +614,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         <AmountWithPesoSign
                           classN=""
                           amount={Number(
-                            props?.values?.sales_order_total_payable_amount,
+                            props?.values?.sales_order_total_receivable_amount,
                           )}
                         />
                       </p>
@@ -742,7 +747,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                   classAmnt="justify-start! "
                                   amount={
                                     props?.values
-                                      ?.sales_order_total_payable_amount
+                                      ?.sales_order_total_receivable_amount
                                   }
                                 />
                               </div>

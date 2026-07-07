@@ -122,7 +122,7 @@ function allowedColumns()
         "sales_order_product_owner_name",
         "sales_order_installment",
         "sales_order_due_date",
-        "sales_order_total_payable_amount",
+        "sales_order_total_receivable_amount",
     ];
     return $query;
 }
@@ -142,10 +142,10 @@ function updateStatus($val, $data)
     $val->sales_order_status = 'paid';
     $installmentData = $data["installmentItems"];
     $val->sales_order_paid_amount = $data["sales_order_paid_amount"];
-    $val->sales_order_total_payable_amount = $data["sales_order_total_payable_amount"];
+    $val->sales_order_total_receivable_amount = $data["sales_order_total_receivable_amount"];
 
     //  IF THE PAYMENT IS PARTIAL AND HAVE INSTALLMENT DATA
-    if ((float)$val->sales_order_paid_amount < (float)$val->sales_order_total_payable_amount) {
+    if ((float)$val->sales_order_paid_amount < (float)$val->sales_order_total_receivable_amount) {
         $val->sales_order_status = 'partial';
     }
     //  IF THE PAYMENT IS 0, NEGATIVE OR INSTALLMENT
@@ -158,7 +158,7 @@ function updateStatus($val, $data)
     //  IF THE PAYMENT IS PARTIAL BUT NO INSTALLMENT DATA
     if (
         $val->sales_order_due_date == "" &&
-        (float)$val->sales_order_paid_amount < (float)$val->sales_order_total_payable_amount
+        (float)$val->sales_order_paid_amount < (float)$val->sales_order_total_receivable_amount
         && count($installmentData) == 0
     ) {
         $val->sales_order_status = 'overdue';
@@ -171,7 +171,7 @@ function updateStatus($val, $data)
     //  IF THE NEXT DUEDATE IS IN NEXT 3 DAY
     if (
         $val->sales_order_due_date <= $due_date &&
-        (float)$val->sales_order_paid_amount < (float)$val->sales_order_total_payable_amount
+        (float)$val->sales_order_paid_amount < (float)$val->sales_order_total_receivable_amount
     ) {
         $val->sales_order_status = 'overdue';
     }

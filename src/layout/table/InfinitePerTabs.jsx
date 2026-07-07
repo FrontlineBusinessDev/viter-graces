@@ -35,6 +35,7 @@ const InfinitePerTabs = ({
   haveFilterTable = false,
   ishaveSubAdd = true,
   dataTestidAddButton,
+  refetchOnWindowFocus = false,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [openRow, setOpenRow] = React.useState(null);
@@ -82,7 +83,7 @@ const InfinitePerTabs = ({
       }
       return undefined;
     },
-    refetchOnWindowFocus: true,
+    refetchOnWindowFocus: refetchOnWindowFocus,
     // staleTime: 1000 * 60 * 5, // 5 mins → no refetch when revisiting
     // gcTime: 1000 * 60 * 30, // keep cache for 30 mins
     // refetchOnMount: false,
@@ -490,6 +491,16 @@ const InfinitePerTabs = ({
                       ) : (
                         ""
                       )}
+                      {isEmptyItem(rows[index]?.original?.notes, "") !== "" ? (
+                        <p className="m-0!">
+                          Notes:
+                          <span className="ml-1">
+                            {isEmptyItem(rows[index]?.original?.notes, "")}
+                          </span>
+                        </p>
+                      ) : (
+                        ""
+                      )}
                     </div>
 
                     <InfiniteSubTable
@@ -503,6 +514,7 @@ const InfinitePerTabs = ({
                       haveFilterTable={haveFilterTable}
                       isDefaultMobile={path}
                       setItemVal={setItemVal}
+                      refetchOnWindowFocus={refetchOnWindowFocus}
                     />
                   </div>
                 )}

@@ -81,14 +81,16 @@ export const InputSelectArrayWithOptions = ({
 
           {options?.map((item, key) => {
             return (
-              <option
-                key={key}
-                value={item.id}
-                id={item.name}
-                className="capitalize"
-              >
-                {item.name}
-              </option>
+              item?.id !== "" && (
+                <option
+                  key={key}
+                  value={item.id}
+                  id={item.name}
+                  className="capitalize"
+                >
+                  {item.name}
+                </option>
+              )
             );
           })}
         </optgroup>
@@ -319,7 +321,7 @@ export const SearchableSelectFilterStatus = ({
         isClearable
         classNames={{
           control: ({ isFocused }) =>
-            ` w-full! min-h-full! text-sm border rounded-lg! px-1 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
+            ` w-full! min-h-full! text-sm border rounded-lg! mt-2 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
          ${isFocused ? " border-primary! " : " border-gray-300 "}
          hover:border-primary! `,
 
@@ -823,6 +825,7 @@ export const InputPurchaseOrderSelectTagArray = ({
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
+  console.log("path", path);
   const {
     isLoading,
     isFetching,
@@ -833,6 +836,7 @@ export const InputPurchaseOrderSelectTagArray = ({
     "post", // method
     `${path}`, // key
     { id: id },
+    { id, path },
   );
 
   return (

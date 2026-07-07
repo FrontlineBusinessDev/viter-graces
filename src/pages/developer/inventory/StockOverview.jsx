@@ -107,7 +107,7 @@ const StockOverview = () => {
         <WarningBanner
           path="stock-movement/read-all-low-stock"
           text="products"
-          description="are below low stock threshold: "
+          description="are below low stock threshold"
           isLowStock={true}
         />
         <InfiniteTable

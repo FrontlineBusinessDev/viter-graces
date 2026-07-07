@@ -29,6 +29,22 @@ const PurchaseOrder = () => {
       },
     },
     {
+      accessorKey: "payment_status",
+      header: "payment status",
+      classTh: "min-w-[15rem]",
+      classTd: "",
+      status_option: ActiveInActiveStatus("purchase-order-payment-status"),
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={ActiveInActiveStatus("purchase-order-payment-status")}
+          />
+        ),
+      },
+    },
+    {
       accessorKey: "purchase_order_number",
       header: "PO Number",
       orderNumber: "1",

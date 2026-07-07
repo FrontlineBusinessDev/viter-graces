@@ -210,7 +210,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     ),
     purchase_order_payment_status: isEmptyItem(
       itemEdit?.purchase_order_payment_status,
-      "draft",
+      "unpaid",
     ),
     purchase_order_note: isEmptyItem(itemEdit?.purchase_order_note, ""),
     suppliers_delivery: isEmptyItem(itemEdit?.suppliers_delivery, "monday"),
@@ -222,25 +222,25 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     purchase_order_supplier_id: Yup.string().trim().required("Required"),
     purchase_order_date: Yup.string().trim().required("Required"),
     purchase_order_payment_status: Yup.string().trim().required("Required"),
+    purchase_order_payment: Yup.string().trim().required("Required"),
   });
 
   React.useEffect(() => {
     dispatch(setError(false));
   }, []);
 
-  let paymentOption = [
-    { id: "draft", name: "draft" },
-    { id: "paid", name: "paid" },
-    itemEdit ? { id: "unpaid", name: "unpaid" } : "",
-    // { id: "installment", name: "installment" },
+  let purchaseOrderStatusOption = [
+    { id: "draft", name: "Draft" },
+    { id: "open", name: "Open" },
+    { id: "partial", name: "Partial" },
+    { id: "completed", name: "Completed" },
+    { id: "cancelled", name: "Cancelled" },
   ];
 
-  let deliveryStatusOption = [
-    { id: "not delivered", name: "Not Delivered" },
-    { id: "delivered - incomplete", name: "Delivered - Incomplete" },
-    { id: "delivered - completed", name: "Delivered - Completed" },
-    // { id: "unpaid", name: "unpaid" },
-    // { id: "installment", name: "installment" },
+  let paymentOption = [
+    { id: "unpaid", name: "Unpaid" },
+    { id: "partially paid", name: "Partially Paid" },
+    { id: "paid", name: "Paid" },
   ];
 
   return (
@@ -285,12 +285,6 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                   ...values,
                   purchase_order: items,
                   itemsDelete: itemsDelete,
-                  purchase_order_payment: Number(
-                    values?.purchase_order_payment,
-                  ),
-                  purchase_order_delivery_status: Number(
-                    values?.purchase_order_payment,
-                  ),
                   isHaveNotDelivered: items.filter(
                     (a) => !a.purchase_order_delivery_is_status,
                   )?.length,
@@ -301,17 +295,36 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
             }}
           >
             {(props) => {
+              if (props.values.purchase_order_payment_status === "paid") {
+                props.values.purchase_order_payment = items.reduce(
+                  (sum, item) =>
+                    sum +
+                    Number(item.purchase_order_qty || 0) *
+                      Number(item.purchase_order_price || 0),
+                  0,
+                );
+              }
+
               return (
                 <Form>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="relative ">
                       <InputSelectFilterTagArray
-                        label="Customer"
+                        label="Supplier"
                         onChange={(e, selectedItem) => {
-                          props.values.purchase_order_supplier_id = e.id;
-                          props.values.purchase_order_supplier_name = e.name;
-                          props.values.suppliers_delivery =
-                            selectedItem?.suppliers_delivery;
+                          props.setFieldValue(
+                            "purchase_order_supplier_id",
+                            e.id,
+                          );
+                          props.setFieldValue(
+                            "purchase_order_supplier_name",
+                            e.value,
+                          );
+                          props.setFieldValue(
+                            "suppliers_delivery",
+                            selectedItem?.suppliers_delivery,
+                          );
+
                           return e;
                         }}
                         itemEdit={itemEdit}
@@ -465,13 +478,26 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-3 gap-4">
+                    <div className="relative capitalize mt-3">
+                      <InputSelectArrayWithOptions
+                        label="Purchase Order Status"
+                        type="text"
+                        name="purchase_order_status"
+                        defaultValue="draft"
+                        options={purchaseOrderStatusOption}
+                        onChange={(e) => {
+                          props.values.purchase_order_status = e.target.value;
+                          return e;
+                        }}
+                      />
+                    </div>
                     <div className="relative capitalize mt-3">
                       <InputSelectArrayWithOptions
                         label="Payment Status"
                         type="text"
                         name="purchase_order_payment_status"
-                        defaultValue="draft"
+                        defaultValue="unpaid"
                         options={paymentOption}
                         onChange={(e) => {
                           props.values.purchase_order_payment_status =
@@ -486,7 +512,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         label="Paid Amount"
                         type="number"
                         name="purchase_order_payment"
-                        placeholder="0"
+                        // placeholder="0"
                         disabled={mutation.isPending}
                       />
                     </div>

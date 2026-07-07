@@ -30,7 +30,7 @@ if (array_key_exists("id", $_GET)) {
     $val->sales_order_received_by_name = $data["sales_order_received_by_name"];
     $val->sales_order_installment = $data["sales_order_installment"];
     $val->sales_order_due_date = $data["sales_order_due_date"];
-    $val->sales_order_total_payable_amount = $data["sales_order_total_payable_amount"];
+    $val->sales_order_total_receivable_amount = $data["sales_order_total_receivable_amount"];
     $val->sales_order_total_amount = $data["sales_order_total_amount"];
     $val->sales_order_tax_amount = $data["sales_order_tax_amount"];
     $val->sales_order_number = $data["sales_order_number"];

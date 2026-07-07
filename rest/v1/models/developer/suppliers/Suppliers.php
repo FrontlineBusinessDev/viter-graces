@@ -171,6 +171,7 @@ class Suppliers
         try {
             $sql = "select *, ";
             $sql .= "suppliers_aid as id, ";
+            $sql .= "suppliers_notes as notes, ";
             $sql .= "suppliers_is_active as is_active, ";
             $sql .= "suppliers_messenger as messenger, ";
             $sql .= "suppliers_whatsapp as whatsapp, ";
@@ -229,6 +230,7 @@ class Suppliers
         try {
             $sql = "select *, ";
             $sql .= "suppliers_aid as id, ";
+            $sql .= "suppliers_notes as notes, ";
             $sql .= "suppliers_is_active as is_active, ";
             $sql .= "suppliers_messenger as messenger, ";
             $sql .= "suppliers_whatsapp as whatsapp, ";
@@ -260,6 +262,7 @@ class Suppliers
         try {
             $sql = "select *, ";
             $sql .= "suppliers_aid as id, ";
+            $sql .= "suppliers_notes as notes, ";
             $sql .= "suppliers_is_active as is_active, ";
             $sql .= "suppliers_messenger as messenger, ";
             $sql .= "suppliers_whatsapp as whatsapp, ";
@@ -290,6 +293,7 @@ class Suppliers
         try {
             $sql = "select *, ";
             $sql .= "suppliers_aid as id, ";
+            $sql .= "suppliers_notes as notes, ";
             $sql .= "suppliers_is_active as is_active, ";
             $sql .= "suppliers_messenger as messenger, ";
             $sql .= "suppliers_whatsapp as whatsapp, ";

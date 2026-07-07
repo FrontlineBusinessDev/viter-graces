@@ -60,7 +60,7 @@ const SalesReports = () => {
       meta: "",
     },
     {
-      accessorKey: "sales_order_price",
+      accessorKey: "sales_order_total",
       header: "amount",
       amount: true,
       filterFn: "between",

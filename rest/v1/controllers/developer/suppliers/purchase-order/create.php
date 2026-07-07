@@ -33,10 +33,10 @@ deliveryStatus($val, $data);
 // check name 
 
 if ($data["purchase_order_payment_status"] == "paid") {
-    $val->purchase_order_delivery_status = "delivered - completed / paid";
+    $val->purchase_order_delivery_status = "";
     $val->purchase_order_delivery_is_status = 1;
 } else {
-    $val->purchase_order_delivery_status = "for delivery";
+    $val->purchase_order_delivery_status = "";
     $val->purchase_order_delivery_is_status = 0;
 }
 for ($i = 0; $i < count($purchase_order); $i++) {

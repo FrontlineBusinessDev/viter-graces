@@ -160,7 +160,8 @@ class SuppliersPurchaseOrder
             $sql .= "DATE_FORMAT(spo.purchase_order_date, '%b %d, %Y') as formated_date, ";
             $sql .= "DATE_FORMAT(spo.purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "spo.purchase_order_aid as id, ";
-            $sql .= "spo.purchase_order_delivery_status as is_status, ";
+            $sql .= "spo.purchase_order_status as is_status, ";
+            $sql .= "spo.purchase_order_payment_status as payment_status, ";
             $sql .= "spo.purchase_order_is_active as is_active, ";
             $sql .= "spo.purchase_order_price as amount, ";
             $sql .= "spo.purchase_order_number as name ";
@@ -225,7 +226,8 @@ class SuppliersPurchaseOrder
             $sql .= "DATE_FORMAT(spo.purchase_order_date, '%b %d, %Y') as formated_date, ";
             $sql .= "DATE_FORMAT(spo.purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
             $sql .= "spo.purchase_order_aid as id, ";
-            $sql .= "spo.purchase_order_delivery_status as is_status, ";
+            $sql .= "spo.purchase_order_status as is_status, ";
+            $sql .= "spo.purchase_order_payment_status as payment_status, ";
             $sql .= "spo.purchase_order_is_active as is_active, ";
             $sql .= "spo.purchase_order_price as amount, ";
             $sql .= "spo.purchase_order_number as name ";

@@ -147,7 +147,7 @@ function allowedColumns()
         "sales_order_product_owner_name",
         "sales_order_installment",
         "sales_order_due_date",
-        "sales_order_total_payable_amount",
+        "sales_order_total_receivable_amount",
     ];
     return $query;
 }

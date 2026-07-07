@@ -60,7 +60,7 @@ const WarningBanner = ({
                   </span>
                   <span className="dark:text-orange-600 mr-1">{text}</span>
                   {description}
-                  {isLowStock ? (
+                  {/* {isLowStock ? (
                     <>
                       {isLowStock && (
                         <span className="ml-1 dark:text-orange-600">
@@ -70,7 +70,7 @@ const WarningBanner = ({
                     </>
                   ) : (
                     ""
-                  )}
+                  )} */}
                 </>
               )}
             </div>

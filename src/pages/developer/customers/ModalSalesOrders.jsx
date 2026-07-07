@@ -267,7 +267,7 @@ const ModalSalesOrders = ({ itemEdit }) => {
                 sales_order_tax: Number(values?.sales_order_tax),
                 items,
                 itemsDelete,
-                sales_order_total_payable_amount:
+                sales_order_total_receivable_amount:
                   items?.reduce(
                     (sum, item) =>
                       sum +

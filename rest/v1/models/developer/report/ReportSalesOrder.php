@@ -24,7 +24,7 @@ class ReportSalesOrder
     public $sales_order_product_owner_name;
     public $sales_order_installment;
     public $sales_order_due_date;
-    public $sales_order_total_payable_amount;
+    public $sales_order_total_receivable_amount;
     public $sales_order_created;
     public $sales_order_updated;
 

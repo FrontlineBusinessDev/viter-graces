@@ -1,6 +1,7 @@
 import ModalButton from "@/components/buttons/ModalButton";
 import { InputSelectArrayWithOptions } from "@/components/inputs/InputSelect";
 import { InputNumber, InputText } from "@/components/inputs/InputText";
+import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { apiVersion } from "@/config/config";
 import { ActivityLogDetails } from "@/layout/ArrayValue";
@@ -386,6 +387,15 @@ const ModalSuppliers = ({ itemEdit }) => {
                         props.values.suppliers_delivery = e.target.value;
                         return e;
                       }}
+                    />
+                  </div>
+                  <div className="relative mt-3">
+                    <InputTextArea
+                      label="Notes"
+                      type="text"
+                      name="suppliers_notes"
+                      disabled={mutation.isPending}
+                      required={false}
                     />
                   </div>
 

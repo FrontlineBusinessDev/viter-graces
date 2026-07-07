@@ -24,7 +24,7 @@ class SalesOrder
     public $sales_order_product_owner_name;
     public $sales_order_installment;
     public $sales_order_due_date;
-    public $sales_order_total_payable_amount;
+    public $sales_order_total_receivable_amount;
     public $sales_order_total_amount;
     public $sales_order_tax_amount;
     public $sales_order_total_balance_amount;
@@ -102,7 +102,7 @@ class SalesOrder
             $sql .= "sales_order_product_owner_name, ";
             $sql .= "sales_order_installment, ";
             $sql .= "sales_order_due_date, ";
-            $sql .= "sales_order_total_payable_amount, ";
+            $sql .= "sales_order_total_receivable_amount, ";
             $sql .= "sales_order_total_amount, ";
             $sql .= "sales_order_tax_amount, ";
             $sql .= "sales_order_total_balance_amount, ";
@@ -130,7 +130,7 @@ class SalesOrder
             $sql .= ":sales_order_product_owner_name, ";
             $sql .= ":sales_order_installment, ";
             $sql .= ":sales_order_due_date, ";
-            $sql .= ":sales_order_total_payable_amount, ";
+            $sql .= ":sales_order_total_receivable_amount, ";
             $sql .= ":sales_order_total_amount, ";
             $sql .= ":sales_order_tax_amount, ";
             $sql .= ":sales_order_total_balance_amount, ";
@@ -160,7 +160,7 @@ class SalesOrder
                 "sales_order_product_owner_name" => $this->sales_order_product_owner_name,
                 "sales_order_installment" => $this->sales_order_installment,
                 "sales_order_due_date" => $this->sales_order_due_date,
-                "sales_order_total_payable_amount" => $this->sales_order_total_payable_amount,
+                "sales_order_total_receivable_amount" => $this->sales_order_total_receivable_amount,
                 "sales_order_total_amount" => $this->sales_order_total_amount,
                 "sales_order_tax_amount" => $this->sales_order_tax_amount,
                 "sales_order_total_balance_amount" => $this->sales_order_total_balance_amount,
@@ -212,7 +212,7 @@ class SalesOrder
             $sql = "select *, ";
             $sql .= "sales_order_number, ";
             $sql .= "sales_order_status as is_status, ";
-            $sql .= "sales_order_total_payable_amount as total_amount, ";
+            $sql .= "sales_order_total_receivable_amount as total_amount, ";
             $sql .= "sales_order_total_amount as total_sub_amount, ";
             $sql .= "sales_order_paid_amount as total_paid, ";
             $sql .= "sales_order_aid as id, ";
@@ -281,7 +281,7 @@ class SalesOrder
             $sql = "select *, ";
             $sql .= "sales_order_number, ";
             $sql .= "sales_order_status as is_status, ";
-            $sql .= "sales_order_total_payable_amount as total_amount, ";
+            $sql .= "sales_order_total_receivable_amount as total_amount, ";
             $sql .= "sales_order_total_amount as total_sub_amount, ";
             $sql .= "sales_order_paid_amount as total_paid, ";
             $sql .= "sales_order_aid as id, ";
@@ -352,7 +352,7 @@ class SalesOrder
             $sql = "select *, ";
             $sql .= "sales_order_number, ";
             $sql .= "sales_order_status as is_status, ";
-            $sql .= "sales_order_total_payable_amount as total_amount, ";
+            $sql .= "sales_order_total_receivable_amount as total_amount, ";
             $sql .= "sales_order_total_amount as total_sub_amount, ";
             $sql .= "sales_order_paid_amount as total_paid, ";
             $sql .= "sales_order_aid as id, ";
@@ -427,7 +427,7 @@ class SalesOrder
             $sql = "select *, ";
             $sql .= "sales_order_number, ";
             $sql .= "sales_order_status as is_status, ";
-            $sql .= "sales_order_total_payable_amount as total_amount, ";
+            $sql .= "sales_order_total_receivable_amount as total_amount, ";
             $sql .= "sales_order_total_amount as total_sub_amount, ";
             $sql .= "sales_order_paid_amount as total_paid, ";
             $sql .= "sales_order_aid as id, ";
@@ -537,7 +537,7 @@ class SalesOrder
             $sql .= "sales_order_notes = :sales_order_notes, ";
             $sql .= "sales_order_received_by_id = :sales_order_received_by_id, ";
             $sql .= "sales_order_received_by_name = :sales_order_received_by_name, ";
-            $sql .= "sales_order_total_payable_amount = :sales_order_total_payable_amount, ";
+            $sql .= "sales_order_total_receivable_amount = :sales_order_total_receivable_amount, ";
             $sql .= "sales_order_total_amount = :sales_order_total_amount, ";
             $sql .= "sales_order_status = :sales_order_status, ";
             $sql .= "sales_order_tax_amount = :sales_order_tax_amount, ";
@@ -561,7 +561,7 @@ class SalesOrder
                 "sales_order_notes" => $this->sales_order_notes,
                 "sales_order_received_by_id" => $this->sales_order_received_by_id,
                 "sales_order_received_by_name" => $this->sales_order_received_by_name,
-                "sales_order_total_payable_amount" => $this->sales_order_total_payable_amount,
+                "sales_order_total_receivable_amount" => $this->sales_order_total_receivable_amount,
                 "sales_order_total_amount" => $this->sales_order_total_amount,
                 "sales_order_status" => $this->sales_order_status,
                 "sales_order_tax_amount" => $this->sales_order_tax_amount,
@@ -1197,7 +1197,7 @@ class SalesOrder
             $sql = "select *, ";
             $sql .= "sales_order_number, ";
             $sql .= "sales_order_status as is_status, ";
-            $sql .= "sales_order_total_payable_amount as total_amount, ";
+            $sql .= "sales_order_total_receivable_amount as total_amount, ";
             $sql .= "sales_order_total_amount as total_sub_amount, ";
             $sql .= "sales_order_paid_amount as total_paid, ";
             $sql .= "sales_order_number as value, ";
