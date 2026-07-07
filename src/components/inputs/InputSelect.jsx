@@ -603,13 +603,21 @@ export const InputSalesOrderSelectTagArray = ({
     },
   );
   const [selected, setSelected] = React.useState("");
+
+  const newDataList = result?.data.filter((item) => {
+    return !dataVal?.find((listItem) => {
+      return item.id === listItem.sales_order_product_id;
+    });
+  });
+
   const options =
-    result?.data?.map((item) => ({
+    newDataList?.map((item) => ({
       id: item.id,
       value: item.name,
       label: `${item.name} (${item.current_qty})`,
     })) || [];
 
+  console.log("dataVal", dataVal);
   return (
     <>
       {label ? (

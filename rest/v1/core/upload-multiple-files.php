@@ -7,10 +7,12 @@ $response = new Response();
 $error = [];
 $returnData = [];
 
+
+
 if ($_FILES['photo']) {
     $photo = $_FILES["photo"]["name"];
-    // if (move_uploaded_file($_FILES["photo"]["tmp_name"], "../../../img/" . $photo)) { // if online
-    if (move_uploaded_file($_FILES["photo"]["tmp_name"], "../../../public/img/" . $photo)) { // if localhost
+    if (move_uploaded_file($_FILES["photo"]["tmp_name"], "../../../img/" . $photo)) { // if online
+        // if (move_uploaded_file($_FILES["photo"]["tmp_name"], "../../../public/img/" . $photo)) { // if localhost
         $returnData["success"] = true;
         $returnData["message"] = "Photo success.";
         $response->setData($returnData);
