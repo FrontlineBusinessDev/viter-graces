@@ -38,7 +38,7 @@ const useUploadPhoto = (url, dispatch) => {
       );
     } else {
       dispatch(setError(false));
-      console.log("Set photo");
+      // console.log("Set photo");
       setPhoto(img);
     }
   };

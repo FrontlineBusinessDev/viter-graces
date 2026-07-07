@@ -132,7 +132,7 @@ export const InputSelectArray = ({
     return result?.data;
   }, [result]);
 
-  console.log("path", path);
+  // console.log("path", path);
   return (
     <>
       <label htmlFor={props.id || props.name}>
@@ -437,7 +437,7 @@ export const SearchableSelectModalFilter = ({ path, testFilterId }) => {
     label: item.name,
   }));
 
-  console.log("value", value);
+  // console.log("value", value);
 
   const selected = options?.find((opt) => opt.value === value) || null;
 
@@ -610,6 +610,8 @@ export const InputSalesOrderSelectTagArray = ({
     });
   });
 
+  console.log("dataVal", dataVal);
+
   const options =
     newDataList?.map((item) => ({
       id: item.id,
@@ -617,7 +619,6 @@ export const InputSalesOrderSelectTagArray = ({
       label: `${item.name} (${item.current_qty})`,
     })) || [];
 
-  console.log("dataVal", dataVal);
   return (
     <>
       {label ? (
@@ -728,8 +729,8 @@ export const InputSelectFilterTagArray = ({
       label: item.name,
     })) || [];
 
-  console.log("selected", selected);
-  console.log("options", options);
+  // console.log("selected", selected);
+  // console.log("options", options);
 
   return (
     <>

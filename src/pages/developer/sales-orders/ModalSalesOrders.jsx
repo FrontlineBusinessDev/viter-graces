@@ -1,9 +1,7 @@
 import ModalButton from "@/components/buttons/ModalButton";
 import {
   InputSalesOrderSelectTagArray,
-  InputSelectArray,
   InputSelectArrayWithOptions,
-  InputSelectCustomerArray,
   InputSelectFilterTagArray,
 } from "@/components/inputs/InputSelect";
 import { InputNumber, InputText } from "@/components/inputs/InputText";
@@ -307,6 +305,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     { id: 0.12, name: "exclusive" },
   ];
 
+  console.log("items123", items);
   return (
     <>
       <ModalWrapper
@@ -503,6 +502,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                           <li className="text-center">Total</li>
                         </ul>
                         {items.map((a, index) => {
+                          console.log("items", items);
                           return (
                             <div
                               key={a.id}

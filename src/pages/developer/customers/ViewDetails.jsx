@@ -16,7 +16,7 @@ const ViewDetails = ({ itemEdit }) => {
   let total_balance =
     Number(itemEdit?.total_amount) - Number(itemEdit?.total_paid);
 
-  console.log("itemEdit", itemEdit);
+  // console.log("itemEdit", itemEdit);
 
   return (
     <div

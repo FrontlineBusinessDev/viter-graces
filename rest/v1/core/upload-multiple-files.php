@@ -6,19 +6,27 @@ require "env.php";
 $response = new Response();
 $error = [];
 $returnData = [];
-
-if ($_FILES['photo']) {
-    $photo = $_FILES["photo"]["name"];
-    if (move_uploaded_file($_FILES["photo"]["tmp_name"], UPLOAD_MULTIPLE_PATH . $photo)) { // if online 
+// FILE UPLOADING DIRECTORY
+$uploadDir = __DIR__ . UPLOAD_MULTIPLE_PATH;
+// MAKE FOLDER IF FILE NOT EXIST
+if (!is_dir($uploadDir)) mkdir($uploadDir, 0775, true);
+// TRY TO UPLOAD THE FILE AND STORE IT IN SERVER FOLDER
+if ($_FILES) {
+    try {
+        // loop and save file to public img
+        for ($i = 0; $i < count($_FILES); $i++) {
+            $file = $_FILES["file$i"]["name"];
+            move_uploaded_file($_FILES["file$i"]["tmp_name"], $uploadDir . strtolower($file));
+        }
         $returnData["success"] = true;
-        $returnData["message"] = "Photo success.";
+        $returnData["message"] = "File success.";
         $response->setData($returnData);
         $response->send();
         exit;
-    } else {
+    } catch (Exception $e) {
         $response->setSuccess(false);
         $error["success"] = false;
-        $error['error'] = "Photo error.";
+        $error['error'] = "File error.";
         $response->setData($error);
         $response->send();
         exit;
@@ -27,7 +35,7 @@ if ($_FILES['photo']) {
     $response->setSuccess(false);
     $error["count"] = 0;
     $error["success"] = false;
-    $error['error'] = "No photo.";
+    $error['error'] = "File empty`.";
     $response->setData($error);
     $response->send();
     exit;
