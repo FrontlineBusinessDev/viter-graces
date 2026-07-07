@@ -1,9 +1,10 @@
-import { setError, setMessage } from "@/store/StoreAction";
 import getBlobDuration from "get-blob-duration";
 import React from "react";
+import { setError, setMessage } from "@/store/StoreAction";
 import { convertTimeToDecimal } from "@/utilities/convertTimeToDecimal";
 import { devApiUrl } from "@/config/config";
 import { fetchFormData } from "@/utilities/fetchFormData";
+import { queryData } from "@/services/queryData";
 
 const handleGetSeconds = async (blobFile) => {
   let result = 0,
@@ -45,7 +46,6 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
   const [files, setFiles] = React.useState([]);
 
   const uploadMultipleFiles = async () => {
-    // console.log(clientId);
     if (filesArrayList.length > 0) {
       const fd = new FormData();
       let count = 0;
@@ -66,7 +66,7 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
       // if (isFilesJsonString) return { success: true };
       if (count == 0) return { success: true };
 
-      const data = await fetchFormData(`${devApiUrl}` + url, fd, dispatch);
+      const data = await queryData(`${devApiUrl}` + url, fd, dispatch);
 
       if (!data.success) {
         dispatch(setError(true));
@@ -78,7 +78,6 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
   };
 
   const uploadFiles = async () => {
-    // console.log(clientId);
     if (files.length > 0) {
       const fd = new FormData();
       let count = 0;
@@ -96,7 +95,7 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
       if (count == 0) return { success: true };
 
       const data = await fetchFormData(`${devApiUrl}` + url, fd, dispatch);
-
+      // upload-multiple-files
       if (!data.success) {
         dispatch(setError(true));
         dispatch(setMessage(data.error));
@@ -113,7 +112,7 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
     fileLimit = 20,
     isAcceptImageOnly = false,
     sizeLimitKb = null,
-    filesArrayList = [],
+    saveToServer = false,
   ) => {
     dispatch(setError(false));
     let allImageSizes = 0,
@@ -127,36 +126,17 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
       );
       return false;
     }
-
-    console.log(
-      "123",
-      filesArrayList?.length,
-      fileLimit,
-      filesArrayList?.length > fileLimit,
-    );
-    if (filesArrayList?.length > fileLimit) {
-      dispatch(setError(true));
-      dispatch(
-        setMessage(`Invalid length of file. Only accept ${fileLimit} or less.`),
-      );
-      return false;
-    }
     if (sizeLimitKb) {
       const filterExcessFileSize = Array.from(e.target.files).filter(
         (item) => Number(item.size) > Number(sizeLimitKb),
       );
-      console.log(filterExcessFileSize);
       if (filterExcessFileSize?.length > 0) {
-        const sizeLimitConvertedToKb = Number(sizeLimitKb / 1000).toFixed(2);
-        const convertedToKb = Number(
-          filterExcessFileSize[0]?.size / 1000,
-        ).toFixed(2);
         dispatch(setError(true));
         dispatch(
           setMessage(
-            `Only accept total of ${Number(
-              sizeLimitConvertedToKb,
-            )} kb and less. (${Number(convertedToKb)} kb)`,
+            `Only accept total of ${Number(sizeLimitKb)} kb and less. (${Number(
+              filterExcessFileSize[0]?.size,
+            )} kb)`,
           ),
         );
         return;
@@ -171,7 +151,6 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
           return item.type.split("/")[0] !== "image";
         },
       );
-      // console.log(allImageSizes);
       if (checkCountIfFileIsImage.length > 0) {
         dispatch(setError(true));
         dispatch(setMessage(`Invalid file. Input only accept images.`));
@@ -206,18 +185,23 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
     const oldFiles =
       filesArrayList?.length > 0 && fileLimit > 1 ? filesArrayList : [];
     const mergeFilesData = await handleMergeTwoArrayFiles(oldFiles, blobToFile);
-    propsField.setFieldValue(fieldValue, [...mergeFilesData]);
+    if (saveToServer) {
+      if (mergeFilesData?.length == 1) {
+        const arrayFilesName = mergeFilesData.map(
+          (item) => JSON.parse(item).name,
+        );
+        propsField.setFieldValue(fieldValue, arrayFilesName[0]);
+      } else {
+        const arrayFilesName = mergeFilesData.map(
+          (item) => JSON.parse(item).name,
+        );
+        propsField.setFieldValue(fieldValue, arrayFilesName);
+      }
+    } else {
+      propsField.setFieldValue(fieldValue, [...mergeFilesData]);
+    }
     setFilesArrayList([...oldFiles, ...Array.from(blobToFile)]);
     setFiles([...Array.from(blobToFile)]);
-    // validate if the data is exiceed
-    if ([...oldFiles, ...Array.from(blobToFile)]?.length > fileLimit) {
-      setFilesArrayList([...oldFiles]);
-      dispatch(setError(true));
-      dispatch(
-        setMessage(`Invalid length of file. Only accept ${fileLimit} or less.`),
-      );
-      return false;
-    }
   };
 
   return {

@@ -36,7 +36,7 @@ const Products = () => {
       accessorKey: "products_image",
       header: "image",
       classTh: "text-center min-w-[5rem]",
-      classTd: "",
+      classTd: "relative ",
       isImage: true,
     },
     {

@@ -20,6 +20,7 @@ rest/v1/files-api-key
 # rest/v1/core/env.php
 rest/v1/core/google-api.php 
 rest/v1/core/google-api-dwd.php
+rest/v1/core/tmp
 apikey.php
 .env
 .env.local

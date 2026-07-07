@@ -3,6 +3,7 @@
 // Require Response 
 // Required google api vendor  
 require_once 'Response.php';
+require_once "env.php";
 // Required google api vendor
 require_once __DIR__ . '/../lib/bootstrap.php';
 require_once __DIR__ . '/../lib/google-api/vendor/autoload.php';
@@ -19,31 +20,36 @@ $returnData = [];
 
 function getSubjectEmail()
 {
+    // $subject = $_ENV['GOOGLE_API_SUBJECT_EMAIL']; // localhost
     $subject = "emmanuel.manalo@frontlinebusiness.com.ph"; // localhost
-    // $subject = "no-reply@worldfocusinc.com"; // production
     return $subject;
 }
 
 function getDefaultFolderId($folderId = '')
 {
-    $itemFolderId = $folderId != '' ? $folderId : "1ZRWIasxb2y9_eI6I3KGCo62SdzXZBppM"; // localhost
-    // $itemFolderId = $folderId != '' ? $folderId : "1CrMj7k4v_YEgYgKp4DcrgP43MjlDew9A"; // production
+    $itemFolderId = $folderId != '' ? $folderId : $_ENV['GOOGLE_APPLICATION_PROJECT_FOLDER_ID']; // localhost 
     return $itemFolderId;
 }
 
 function getDirectoryPath()
 {
-    $localPath = __DIR__ . '/../../../public/img/'; // localhost
-    // $localPath = __DIR__ . '/../../../img/'; // production
+    $localPath = __DIR__ . $_ENV['GOOGLE_API_DIRECTORY_PATH']; // localhost 
     return $localPath;
 }
 
 // GOOGLE API KEY
 // TO ECHO API KEY AND ENCODE IT IN BASE64TEXT 
 // echo base64_encode(file_get_contents(__DIR__ . '/../lib/google-api/google-key.json'));
-$json = base64_decode(getenv('GOOGLE_APPLICATION_CREDENTIALS_JSON_BASE64')); // decode the base 64 string
-file_put_contents('/tmp/google.json', $json); // tmp file it
-putenv("GOOGLE_APPLICATION_CREDENTIALS=/tmp/google.json"); // production
+$json = base64_decode($_ENV['GOOGLE_APPLICATION_CREDENTIALS_JSON_BASE64']); // decode the base 64 string
+
+// FILE UPLOADING DIRECTORY
+$uploadDir = __DIR__ . '/tmp/';
+// MAKE FOLDER IF FILE NOT EXIST
+if (!is_dir($uploadDir)) mkdir($uploadDir, 0775, true);
+// TRY TO UPLOAD THE FILE AND STORE IT IN SERVER FOLDER
+
+file_put_contents(__DIR__ . '/tmp/google.json', $json); // tmp file it
+putenv("GOOGLE_APPLICATION_CREDENTIALS=" . __DIR__ . "/tmp/google.json"); // production
 // putenv('GOOGLE_APPLICATION_CREDENTIALS=' . __DIR__ . '/../lib/google-api/google-key.json'); // production 
 
 function getClientService()

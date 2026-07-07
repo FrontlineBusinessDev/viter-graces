@@ -1,12 +1,15 @@
+import LoadImages from "@/components/LoadImages";
 import { AmountWithPesoSign } from "@/components/PesoSign";
-import { devBaseImgUrl } from "@/config/config";
+import { getConvertStringToJSONparseData } from "@/utilities/getConvertStringToJSONparseData";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { flexRender } from "@tanstack/react-table";
 import { Image } from "lucide-react";
 import TableStatus from "../TableStatus";
 
 const renderImage = (rowData) => {
-  if (isEmptyItem(rowData?.products_image, "") === "") {
+  let photo = getConvertStringToJSONparseData(rowData?.products_image);
+
+  if (photo?.length === 0) {
     return (
       <div className="rounded-full">
         <Image className="h-8 w-8 mx-auto p-1" size={30} />
@@ -15,11 +18,13 @@ const renderImage = (rowData) => {
   }
 
   return (
-    <div className="rounded-sm">
-      <img
-        src={`${devBaseImgUrl}/${rowData?.products_image}`}
-        alt={`${rowData?.products_image}`}
-        className="h-8 w-8 m-auto rounded-full object-cover"
+    <div className="duration-200 relative size-8 m-auto ">
+      <LoadImages
+        url={photo[photo?.length - 1]}
+        alt={photo[photo?.length - 1]?.name}
+        className="rounded-full object-cover absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full z-10 aspect-square"
+        isErrorUserImage={true}
+        isTableSpinner={true}
       />
     </div>
   );

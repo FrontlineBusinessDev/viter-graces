@@ -57,8 +57,17 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   );
 
   const handleChange = (index, selectedItem = "", fieldId, field) => {
+    // console.log("selectedItem", selectedItem);
     const updated = [...items];
-    if (selectedItem !== "") {
+    if (selectedItem === null || selectedItem === "") {
+      updated[index]["sales_order_product_owner_id"] = "";
+      updated[index]["current_qty"] = "";
+      updated[index]["sales_order_product_owner_name"] = "";
+      updated[index]["sales_order_price"] = "";
+      updated[index]["sales_order_total"] = 0;
+      updated[index][field] = "";
+      updated[index][fieldId] = "";
+    } else {
       updated[index]["sales_order_product_owner_id"] =
         selectedItem["products_owner_id"];
       updated[index]["current_qty"] = selectedItem["current_qty"];
@@ -68,10 +77,10 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
       const qty = Number(updated[index]["sales_order_qty"] || 1);
       const price = Number(updated[index]["sales_order_price"] || 0);
       updated[index]["sales_order_total"] = qty * price;
-    }
-    updated[index][field] = selectedItem["name"];
-    updated[index][fieldId] = selectedItem["id"];
 
+      updated[index][field] = selectedItem["name"];
+      updated[index][fieldId] = selectedItem["id"];
+    }
     setItems(updated);
   };
 
@@ -305,7 +314,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     { id: 0.12, name: "exclusive" },
   ];
 
-  console.log("items123", items);
+  // console.log("items123", items);
   return (
     <>
       <ModalWrapper
@@ -502,7 +511,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                           <li className="text-center">Total</li>
                         </ul>
                         {items.map((a, index) => {
-                          console.log("items", items);
+                          // console.log("items", items);
                           return (
                             <div
                               key={a.id}

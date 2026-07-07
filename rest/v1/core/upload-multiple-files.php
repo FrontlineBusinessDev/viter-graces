@@ -2,20 +2,19 @@
 
 require "Response.php";
 require "env.php";
+
 // use needed classes
 $response = new Response();
 $error = [];
 $returnData = [];
-// FILE UPLOADING DIRECTORY
-$uploadDir = __DIR__ . UPLOAD_MULTIPLE_PATH;
-// MAKE FOLDER IF FILE NOT EXIST
-if (!is_dir($uploadDir)) mkdir($uploadDir, 0775, true);
-// TRY TO UPLOAD THE FILE AND STORE IT IN SERVER FOLDER
+
 if ($_FILES) {
     try {
-        // loop and save file to public img 
-        $file = $_FILES["photo"]["name"];
-        move_uploaded_file($_FILES["photo"]["tmp_name"], $uploadDir . strtolower($file));
+        // loop and save file to public img
+        for ($i = 0; $i < count($_FILES); $i++) {
+            $file = $_FILES["file$i"]["name"];
+            move_uploaded_file($_FILES["file$i"]["tmp_name"], GOOGLE_API_DIRECTORY_PATH . strtolower($file)); // if localhost
+        }
         $returnData["success"] = true;
         $returnData["message"] = "File success.";
         $response->setData($returnData);

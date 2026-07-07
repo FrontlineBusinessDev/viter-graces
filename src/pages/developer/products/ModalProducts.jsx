@@ -6,6 +6,7 @@ import { InputTextArea } from "@/components/inputs/InputTextArea";
 import LoadImages from "@/components/LoadImages";
 import MessageError from "@/components/MessageError";
 import { apiVersion, devBaseImgUrl } from "@/config/config";
+import useUploadMultipleFiles from "@/custom-hooks/useUploadMultipleFiles";
 import useUploadPhoto from "@/custom-hooks/useUploadPhoto";
 import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
@@ -40,10 +41,12 @@ const ModalProducts = ({ itemEdit }) => {
 
   handleEscape(() => handleClose());
 
-  const { uploadPhoto, handleChangePhoto, photo } = useUploadPhoto(
-    `${apiVersion}/upload-multiple-files`,
-    dispatch,
-  );
+  const {
+    uploadMultipleFiles,
+    handleChangeMultipleFiles,
+    setFilesArrayList,
+    filesArrayList,
+  } = useUploadMultipleFiles(`${apiVersion}/upload-multiple-files`, dispatch);
 
   const queryClient = useQueryClient();
 
@@ -81,8 +84,8 @@ const ModalProducts = ({ itemEdit }) => {
 
   const initVal = {
     products_name: isEmptyItem(itemEdit?.products_name, ""),
-    products_image: isEmptyItem(itemEdit?.products_image, ""),
-    // products_image: isEmptyItem(itemEdit?.products_image, []),
+    // products_image: isEmptyItem(itemEdit?.products_image, ""),
+    products_image: isEmptyItem(itemEdit?.products_image, []),
     products_sku: isEmptyItem(itemEdit?.products_sku, ""),
     products_category: isEmptyItem(itemEdit?.products_category, ""),
     products_price: isEmptyItem(itemEdit?.products_price, ""),
@@ -107,8 +110,11 @@ const ModalProducts = ({ itemEdit }) => {
       "",
     ),
     products_description: isEmptyItem(itemEdit?.products_description, ""),
+
+    val_name_old: isEmptyItem(itemEdit?.products_name, ""),
     products_name_old: isEmptyItem(itemEdit?.products_name, ""),
     products_image_old: isEmptyItem(itemEdit?.products_image, ""),
+
     pendingDeleteFile: [],
   };
 
@@ -148,24 +154,13 @@ const ModalProducts = ({ itemEdit }) => {
                   values,
                 ),
                 ...values,
-                products_image:
-                  (itemEdit?.products_image === "" && photo) ||
-                  (photo && itemEdit?.products_image !== photo.name)
-                    ? isEmptyItem(photo.name, " ")
-                    : isEmptyItem(itemEdit?.products_image, ""),
               };
               setLoading(true);
               // console.log(data);
 
-              const upload = await uploadPhoto();
-
-              if (photo === null || upload?.success) {
-                setLoading(false);
-              }
-
-              if (!loading || upload?.success || photo === null) {
-                mutation.mutate(data);
-              }
+              const filesUpload = await uploadMultipleFiles();
+              if (filesUpload?.success) setLoading(false);
+              if (!loading) mutation.mutate(data); // mutate data
             }}
           >
             {(props) => {
@@ -301,21 +296,16 @@ const ModalProducts = ({ itemEdit }) => {
 
                   <div className="relative mt-5 mb-6">
                     <div className="relative w-fit m-auto mb-6 mt-1 group cursor-pointer">
-                      {itemEdit?.products_image === "" && photo === null ? (
+                      {filesArrayList?.length === 0 ? (
                         <>
                           <FileText className="group-hover:opacity-30 duration-200 relative size-[200px] object-cover object-[50%_50%] m-auto fill-gray-400 border p-14" />
                         </>
                       ) : (
                         <div className="group-hover:opacity-30 duration-200 relative size-[150px] m-auto">
                           <LoadImages
-                            url={
-                              photo
-                                ? URL.createObjectURL(photo) // preview
-                                : devBaseImgUrl + "/" + itemEdit?.products_image // check db
-                            }
+                            url={filesArrayList[filesArrayList?.length - 1]}
                             alt={
-                              "name"
-                              // filesArrayList[filesArrayList?.length - 1]?.name
+                              filesArrayList[filesArrayList?.length - 1]?.name
                             }
                             className="absolute top-1/2 left-1/2 object-cover -translate-x-1/2 -translate-y-1/2 w-full h-full z-20 aspect-square"
                             isTableSpinner={true}
@@ -329,15 +319,20 @@ const ModalProducts = ({ itemEdit }) => {
                         id="myFile"
                         accept="image/*"
                         title="Upload photo"
-                        onChange={(e) => {
-                          handleChangePhoto(e);
-                          const files = e.target.files;
-                          let myFiles = Array.from(files);
-
-                          props.setFieldValue("products_image", myFiles);
-                        }}
-                        className="opacity-0 absolute top-0 right-0 bottom-0 left-0 min-w-[155px] min-h-[150px] max-w-[155px] max-h-[150px] m-auto cursor-pointer"
-                        disabled={loading || mutation.isPending || loading}
+                        onChange={(e) =>
+                          handleChangeMultipleFiles(
+                            e, // event
+                            props, // props field
+                            setFilesArrayList, // onchange file state
+                            "products_image", // field value
+                            1, // file limit
+                            true,
+                            200000, // limit per file
+                            filesArrayList,
+                          )
+                        }
+                        className="opacity-0 absolute top-0 right-0 bottom-0 left-0 min-w-[155px] min-h-[250px] max-w-[155px] max-h-[250px] m-auto cursor-pointer"
+                        disabled={loading || mutation.isPending}
                       />
 
                       <div className="relative py-2 mb-6 leading-tight">
