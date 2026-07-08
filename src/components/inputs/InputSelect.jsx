@@ -537,7 +537,7 @@ export const InputSelectTagArray = ({
         }}
         autoComplete="off"
         id={label}
-        className={`${className}`}
+        className={`${className} min-w-20 `}
         defaultValue={defaultValue}
       >
         <optgroup label={`Select ${placeholder}`}>
@@ -612,13 +612,126 @@ export const InputSalesOrderSelectTagArray = ({
     });
   });
 
-  console.log("dataVal", dataVal);
-
   const options =
     newDataList?.map((item) => ({
       id: item.id,
       value: item.name,
       label: `${item.name} (${item.current_qty})`,
+    })) || [];
+
+  return (
+    <>
+      {label ? (
+        <label htmlFor={label}>
+          {required && <span className="text-red-500">*</span>}
+          {label}
+        </label>
+      ) : (
+        ""
+      )}
+      {Number(isEmptyItem(item?.sales_order_aid, 0)) !== 0 ? (
+        <span>{item?.sales_order_product_name}</span>
+      ) : (
+        <div data-testid={testFilterId}>
+          <Select
+            placeholder="--"
+            options={options}
+            value={selected}
+            onChange={(e) => {
+              if (!e) {
+                setSelected(null);
+                onChange(null, null);
+                return;
+              }
+
+              const selectedItem = result?.data?.find(
+                (item) => Number(item.id) === Number(e.id),
+              );
+
+              setSelected(e);
+              onChange(e, selectedItem);
+            }}
+            isClearable
+            classNames={{
+              control: ({ isFocused }) =>
+                ` w-full! min-h-full! text-sm border rounded-lg! px-1 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
+         ${isFocused ? " border-primary! " : " border-gray-300 "}
+         hover:border-primary! `,
+
+              valueContainer: () => "px-1 py-0",
+
+              input: () => "text-sm h-[27px]! text-gray-500! ",
+
+              placeholder: () => "text-gray-400! text-sm",
+
+              singleValue: () => "normal-case! text-sm text-gray-500! ",
+
+              indicatorsContainer: () => "",
+
+              indicatorSeparator: () => "w-0!",
+
+              dropdownIndicator: () =>
+                "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
+
+              clearIndicator: () =>
+                "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
+
+              menu: () =>
+                "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white dark:bg-[#0b111e]! z-50",
+
+              menuList: () => "py-1 max-h-60 overflow-auto ",
+
+              option: ({ isFocused, isSelected }) =>
+                ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  
+         ${isSelected ? "bg-primary! text-secondary!" : " "}
+         ${!isSelected && isFocused ? "bg-primary! text-secondary! " : " "}`,
+            }}
+          />
+        </div>
+      )}
+    </>
+  );
+};
+
+export const DefaultInputSelectTagArray = ({
+  label = "",
+  onChange = null,
+  dataVal = null,
+  item = null,
+  path = null,
+  required = true,
+  testFilterId = "",
+  store,
+}) => {
+  const userId = ProductOwnerId(store);
+  const { data: result } = useQueryData(
+    `${apiVersion}/${path}`, // endpoint
+    "post", // method
+    `${path}`, // key
+    {
+      searchValue: "",
+      isDeveloper:
+        isEmptyItem(store?.credentials?.data?.role, "admin") === "developer"
+          ? "1"
+          : "0",
+      id: "",
+      columnFilters: [],
+      userId: userId,
+    },
+  );
+  const [selected, setSelected] = React.useState("");
+
+  const newDataList = result?.data.filter((item) => {
+    return !dataVal?.find((listItem) => {
+      return item.id === Number(listItem.purchase_order_product_id);
+    });
+  });
+
+  const options =
+    newDataList?.map((item) => ({
+      id: item.id,
+      value: item.name,
+      label: `${item.name}`,
     })) || [];
 
   return (
@@ -817,6 +930,7 @@ export const InputPurchaseOrderSelectTagArray = ({
   itemEdit = null,
   item = null,
   path = null,
+  dataVal = [],
   placeholder = "",
   className,
   defaultValue = "",
@@ -825,7 +939,6 @@ export const InputPurchaseOrderSelectTagArray = ({
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
-  console.log("path", path);
   const {
     isLoading,
     isFetching,
@@ -838,6 +951,11 @@ export const InputPurchaseOrderSelectTagArray = ({
     { id: id },
     { id, path },
   );
+  const newDataList = result?.data.filter((item) => {
+    return !dataVal?.find((listItem) => {
+      return item.id === Number(listItem.purchase_order_product_id);
+    });
+  });
 
   return (
     <>
@@ -861,7 +979,7 @@ export const InputPurchaseOrderSelectTagArray = ({
           }}
           autoComplete="off"
           id={label}
-          className={`${className} `}
+          className={`${className} min-w-20 `}
           defaultValue={defaultValue}
         >
           <optgroup label={`Select ${placeholder}`}>
@@ -883,7 +1001,7 @@ export const InputPurchaseOrderSelectTagArray = ({
               </option>
             )}
 
-            {result?.data?.map((item, key) => {
+            {newDataList?.map((item, key) => {
               return (
                 <option key={key} value={Number(item.id)}>
                   {item.name}

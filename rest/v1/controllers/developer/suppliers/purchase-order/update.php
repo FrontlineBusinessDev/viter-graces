@@ -26,6 +26,9 @@ if (array_key_exists("id", $_GET)) {
     $val->purchase_order_status = $data["purchase_order_status"];
     $val->purchase_order_payment_status = $data["purchase_order_payment_status"];
     $val->purchase_order_note = $data["purchase_order_note"];
+    $val->purchase_order_balance = $data["purchase_order_balance"];
+    $val->purchase_order_tax = $data["purchase_order_tax"];
+    $val->purchase_order_discount = max(0, $data["purchase_order_discount"]);
     $val->purchase_order_created = date("Y-m-d H:i:s");
     $val->purchase_order_updated = date("Y-m-d H:i:s");
 

@@ -1,7 +1,6 @@
 import ModalButton from "@/components/buttons/ModalButton";
 import {
-  InputPurchaseOrderSelectTagArray,
-  InputSelectArray,
+  DefaultInputSelectTagArray,
   InputSelectArrayWithOptions,
   InputSelectFilterTagArray,
   InputSelectTagArray,
@@ -52,32 +51,34 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
   );
   const [itemsDelete, setItemsDelete] = React.useState([]);
 
-  const [counter, setCounter] = React.useState(0);
+  const [counter, setCounter] = React.useState(1);
 
-  const handleChangeProduct = (
-    index,
-    itemVal,
-    field,
-    fieldId,
-    fieldPrice,
-    value,
-    id,
-  ) => {
+  const handleChangeProduct = (index, itemVal, selectedItem, props) => {
     const updated = [...items];
 
-    updated[index][fieldPrice] = itemVal?.amount;
-    updated[index]["suppliers_delivery"] = itemVal?.suppliers_delivery;
-    updated[index][field] = value;
-    updated[index][fieldId] = id;
+    console.log("selectedItem", selectedItem);
 
-    // compute row total
-    const qty = Number(updated[index]["purchase_order_qty"] || 1);
-    const price = Number(updated[index]["purchase_order_price"] || 0);
+    if (itemVal === null || itemVal === "") {
+      updated[index]["purchase_order_price"] = "";
+      updated[index]["suppliers_delivery"] = "";
+      updated[index]["purchase_order_product_name"] = "";
+      updated[index]["purchase_order_product_id"] = "";
+      updated[index]["purchase_order_total_amount"] = 0;
+    } else {
+      updated[index]["purchase_order_price"] = selectedItem?.amount;
+      updated[index]["suppliers_delivery"] = props?.suppliers_delivery;
+      updated[index]["purchase_order_product_name"] = selectedItem?.name;
+      updated[index]["purchase_order_product_id"] = selectedItem?.id;
 
-    updated[index]["purchase_order_total_amount"] = qty * price;
+      // compute row total
+      const qty = Number(updated[index]["purchase_order_qty"] || 1);
+      const price = Number(updated[index]["purchase_order_price"] || 0);
 
+      updated[index]["purchase_order_total_amount"] = qty * price;
+    }
     setItems(updated);
   };
+
   const handleChange = (index, field, fieldId, value, id) => {
     const updated = [...items];
 
@@ -203,7 +204,14 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
       itemEdit?.purchase_order_total_amount,
       "",
     ),
+    purchase_order_tax: isEmptyItem(itemEdit?.purchase_order_tax, "0"),
+    purchase_order_balance: isEmptyItem(itemEdit?.purchase_order_balance, "0"),
+    purchase_order_discount: isEmptyItem(
+      itemEdit?.purchase_order_discount,
+      "0",
+    ),
     purchase_order_payment: isEmptyItem(itemEdit?.purchase_order_payment, ""),
+    total_amount: 0,
     purchase_order_status: isEmptyItem(
       itemEdit?.purchase_order_status,
       "draft",
@@ -243,12 +251,19 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     { id: "paid", name: "Paid" },
   ];
 
+  console.log("items", items);
   return (
     <>
       <ModalWrapper
         val={
           itemEdit
-            ? `${itemEdit ? itemEdit?.purchase_order_number : ""}`
+            ? `${
+                itemEdit
+                  ? `${
+                      itemEdit.purchase_order_supplier_name
+                    } (${itemEdit?.purchase_order_number})`
+                  : ""
+              }`
             : "Purchase Order"
         }
         itemEdit={itemEdit}
@@ -296,43 +311,63 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
           >
             {(props) => {
               if (props.values.purchase_order_payment_status === "paid") {
-                props.values.purchase_order_payment = items.reduce(
+                props.values.purchase_order_payment =
+                  items.reduce(
+                    (sum, item) =>
+                      sum +
+                      Number(item.purchase_order_qty || 0) *
+                        Number(item.purchase_order_price || 0),
+                    0,
+                  ) +
+                  Number(props.values.purchase_order_tax) -
+                  Number(props.values.purchase_order_discount);
+              }
+              props.values.total_amount =
+                items.reduce(
                   (sum, item) =>
                     sum +
                     Number(item.purchase_order_qty || 0) *
                       Number(item.purchase_order_price || 0),
                   0,
-                );
-              }
+                ) +
+                Number(props.values.purchase_order_tax) -
+                Number(props.values.purchase_order_discount);
+              props.values.purchase_order_balance =
+                Number(props.values.purchase_order_payment) -
+                Number(props.values.total_amount);
 
               return (
                 <Form>
                   <div className="grid grid-cols-2 gap-4">
-                    <div className="relative ">
-                      <InputSelectFilterTagArray
-                        label="Supplier"
-                        onChange={(e, selectedItem) => {
-                          props.setFieldValue(
-                            "purchase_order_supplier_id",
-                            e.id,
-                          );
-                          props.setFieldValue(
-                            "purchase_order_supplier_name",
-                            e.value,
-                          );
-                          props.setFieldValue(
-                            "suppliers_delivery",
-                            selectedItem?.suppliers_delivery,
-                          );
+                    {itemEdit ? (
+                      ""
+                    ) : (
+                      <div className="relative ">
+                        <InputSelectFilterTagArray
+                          label="Supplier"
+                          onChange={(e, selectedItem) => {
+                            props.setFieldValue(
+                              "purchase_order_supplier_id",
+                              e.id,
+                            );
+                            props.setFieldValue(
+                              "purchase_order_supplier_name",
+                              e.value,
+                            );
+                            props.setFieldValue(
+                              "suppliers_delivery",
+                              selectedItem?.suppliers_delivery,
+                            );
 
-                          return e;
-                        }}
-                        itemEdit={itemEdit}
-                        path={`suppliers/read-in-modal`}
-                        testFilterId="purchase_order_supplier_id"
-                        store={store}
-                      />
-                    </div>
+                            return e;
+                          }}
+                          itemEdit={itemEdit}
+                          path={`suppliers/read-in-modal`}
+                          testFilterId="purchase_order_supplier_id"
+                          store={store}
+                        />
+                      </div>
+                    )}
 
                     <div className="relative ">
                       <InputText
@@ -362,123 +397,135 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         <p>No Items added yet.</p>
                       </div>
                     ) : (
-                      <div className="flex flex-col">
-                        <ul className="grid grid-cols-[1fr_1fr_5rem_5rem_10rem_5rem]  gap-1 items-center p-3 mt-1">
-                          <li>Products</li>
-                          <li>Product Owner</li>
-                          <li>Quantity</li>
-                          <li>Amount</li>
-                          <li className="text-center">Total</li>
-                          <li> </li>
-                          <li> </li>
-                        </ul>
-                        {items.map((a, index) => {
-                          return (
-                            <div
-                              key={a.id}
-                              className="grid grid-cols-[1fr_1fr_5rem_5rem_10rem_5rem] gap-1 items-center px-3 pb-3 mt-1"
-                            >
-                              <InputPurchaseOrderSelectTagArray
-                                onChange={(e, selectedItem) => {
-                                  handleChangeProduct(
-                                    index,
-                                    selectedItem,
-                                    "purchase_order_product_id",
-                                    "purchase_order_product_name",
-                                    "purchase_order_price",
-                                    e.target.value,
-                                    e.target.options[e.target.selectedIndex]
-                                      .text,
-                                  );
-                                }}
-                                itemEdit={itemEdit}
-                                item={a}
-                                defaultValue={a["purchase_order_product_id"]}
-                                path={`suppliers-product/read-in-modal/${Number(props.values.purchase_order_supplier_id)}`}
-                                placeholder="Product"
-                              />
-                              <InputSelectTagArray
-                                onChange={(e) =>
-                                  handleChange(
-                                    index,
-                                    "purchase_order_product_owner_id",
-                                    "purchase_order_product_owner_name",
-                                    e.target.value,
-                                    e.target.options[e.target.selectedIndex]
-                                      .text,
-                                  )
-                                }
-                                itemEdit={itemEdit}
-                                defaultValue={
-                                  a["purchase_order_product_owner_id"]
-                                }
-                                path={`product-owner/read-by-product-owner`}
-                                placeholder="product owner"
-                              />
-                              <input
-                                onChange={(e) => {
-                                  handleChangeAmount(
-                                    index,
-                                    "purchase_order_qty",
-                                    e.target.value,
-                                  );
-                                }}
-                                defaultValue={a["purchase_order_qty"]}
-                                type="number"
-                                placeholder="Qty"
-                              />
-                              <input
-                                onChange={(e) => {
-                                  handleChangeAmount(
-                                    index,
-                                    "purchase_order_price",
-                                    e.target.value,
-                                    0,
-                                  );
-                                }}
-                                defaultValue={a["purchase_order_price"]}
-                                type="number"
-                                placeholder="Price"
-                              />
-                              <span className="font-semibold text-black dark:text-light mr-2">
-                                <AmountWithPesoSign
-                                  classN="size-3"
-                                  amount={a["purchase_order_total_amount"]}
-                                />
-                              </span>
-                              {itemEdit ? (
-                                <button
-                                  onClick={() =>
-                                    handleDeliveryStatus(
-                                      index,
-                                      "purchase_order_delivery_is_status",
-                                      !a.purchase_order_delivery_is_status,
-                                    )
-                                  }
-                                  className={` text-white ${!a.purchase_order_delivery_is_status ? " bg-gray-500 " : "bg-green-800 "} rounded-sm py-1 text-[10px] mr-3`}
-                                  type="button"
-                                >
-                                  {!a.purchase_order_delivery_is_status
-                                    ? "Not Delivered"
-                                    : "Delivered"}
-                                </button>
-                              ) : (
-                                <button
-                                  onClick={() => handleRemoveItem(a)}
-                                  className="text-red-500 text-xl"
-                                  type="button"
-                                >
-                                  ✕
-                                </button>
-                              )}
-                            </div>
-                          );
-                        })}
+                      <div className="relative overflow-auto w-full h-full ">
+                        <table className=" md:border md:border-gray-300 dark:border-[#0b111e] ">
+                          <thead className={`relative z-50 table-header-group`}>
+                            <tr className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0! z-999">
+                              <th className="w-px ">#</th>
+                              <th className={`min-w-20 `}>Products</th>
+                              <th className={``}>Product Owner</th>
+                              <th className={``}>Quantity</th>
+                              <th className={``}>Amount</th>
+                              <th className={`text-center`}>Total</th>
+                              <th className={``}></th>
+                            </tr>
+                          </thead>
+                          <tbody>
+                            {items.map((a, index) => {
+                              return (
+                                <tr key={a?.id}>
+                                  <td className="text-center last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
+                                    {index + 1}.
+                                  </td>
+
+                                  <td className="">
+                                    <DefaultInputSelectTagArray
+                                      onChange={(e, selectedItem) => {
+                                        handleChangeProduct(
+                                          index,
+                                          e,
+                                          selectedItem,
+                                          props.values,
+                                        );
+                                      }}
+                                      dataVal={items}
+                                      item={a}
+                                      path={`suppliers-product/read-in-modal/${Number(props.values.purchase_order_supplier_id)}`}
+                                      testFilterId="sales_order_product_name"
+                                      store={store}
+                                    />
+                                  </td>
+                                  <td className="min-w-25">
+                                    <DefaultInputSelectTagArray
+                                      onChange={(e) => {
+                                        console.log("e", e);
+                                        handleChange(
+                                          index,
+                                          "purchase_order_product_owner_id",
+                                          "purchase_order_product_owner_name",
+                                          e.id,
+                                          e.value,
+                                        );
+                                      }}
+                                      dataVal={items}
+                                      item={a}
+                                      path={`product-owner/read-by-product-owner`}
+                                      testFilterId="sales_order_product_name"
+                                      store={store}
+                                    />
+                                  </td>
+                                  <td>
+                                    <input
+                                      onChange={(e) => {
+                                        handleChangeAmount(
+                                          index,
+                                          "purchase_order_qty",
+                                          e.target.value,
+                                        );
+                                      }}
+                                      defaultValue={a["purchase_order_qty"]}
+                                      type="number"
+                                      placeholder="Qty"
+                                    />
+                                  </td>
+                                  <td>
+                                    <input
+                                      onChange={(e) => {
+                                        handleChangeAmount(
+                                          index,
+                                          "purchase_order_price",
+                                          e.target.value,
+                                          0,
+                                        );
+                                      }}
+                                      defaultValue={a?.purchase_order_price}
+                                      type="number"
+                                      placeholder="Price"
+                                    />
+                                  </td>
+                                  <td>
+                                    <AmountWithPesoSign
+                                      classN="size-3"
+                                      amount={a["purchase_order_total_amount"]}
+                                    />
+                                  </td>
+                                  <td>
+                                    {itemEdit ? (
+                                      <button
+                                        onClick={() =>
+                                          handleDeliveryStatus(
+                                            index,
+                                            "purchase_order_delivery_is_status",
+                                            !a.purchase_order_delivery_is_status,
+                                          )
+                                        }
+                                        className={`text-white ${!a.purchase_order_delivery_is_status ? " bg-gray-500 " : "bg-green-800 "} rounded-sm p-1 text-[10px] mr-3`}
+                                        type="button"
+                                      >
+                                        {!a.purchase_order_delivery_is_status
+                                          ? "Not Delivered"
+                                          : "Delivered"}
+                                      </button>
+                                    ) : (
+                                      <button
+                                        onClick={() => handleRemoveItem(a)}
+                                        className="text-red-500 text-xl"
+                                        type="button"
+                                      >
+                                        ✕
+                                      </button>
+                                    )}
+                                  </td>
+                                </tr>
+                              );
+                            })}
+                          </tbody>
+                        </table>
                       </div>
                     )}
                   </div>
 
-                  <div className="grid grid-cols-3 gap-4">
+                  <div className="grid grid-cols-2 gap-4">
                     <div className="relative capitalize mt-3">
                       <InputSelectArrayWithOptions
                         label="Purchase Order Status"
@@ -506,7 +553,30 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         }}
                       />
                     </div>
-
+                  </div>
+                  <div className="grid grid-cols-2 items items-center gap-2">
+                    <div className="relative mt-3">
+                      <InputText
+                        label="Tax Amount"
+                        type="number"
+                        name="purchase_order_tax"
+                        // placeholder="0"
+                        disabled={mutation.isPending}
+                        required={false}
+                      />
+                    </div>
+                    <div className="relative mt-3">
+                      <InputText
+                        label="Discount Amount"
+                        type="number"
+                        name="purchase_order_discount"
+                        // placeholder="0"
+                        disabled={mutation.isPending}
+                        required={false}
+                      />
+                    </div>
+                  </div>
+                  <div className="grid grid-cols-2 items items-center gap-2">
                     <div className="relative mt-3">
                       <InputText
                         label="Paid Amount"
@@ -516,9 +586,6 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         disabled={mutation.isPending}
                       />
                     </div>
-                  </div>
-                  <div className="grid grid-cols-2 items items-center gap-2">
-                    <div className="relative"></div>
                     <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end my-5 p-2">
                       <p className="flex flex-col place-self-end text-primary text-lg text-right">
                         <span className="text-black dark:text-light text-sm">
@@ -527,13 +594,17 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
 
                         <AmountWithPesoSign
                           classN="size-5"
-                          amount={items.reduce(
-                            (sum, item) =>
-                              sum +
-                              Number(item.purchase_order_qty || 0) *
-                                Number(item.purchase_order_price || 0),
-                            0,
-                          )}
+                          amount={
+                            items.reduce(
+                              (sum, item) =>
+                                sum +
+                                Number(item.purchase_order_qty || 0) *
+                                  Number(item.purchase_order_price || 0),
+                              0,
+                            ) +
+                            Number(props.values.purchase_order_tax) -
+                            Number(props.values.purchase_order_discount)
+                          }
                         />
                       </p>
                     </div>

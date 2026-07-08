@@ -53,7 +53,7 @@ const ViewSalesDetails = ({ itemEdit }) => {
               </p>
             </li>
             <li>
-              <p className="m-0">Payment:</p>
+              <p className="m-0">Payment method:</p>
               <p className="m-0 text-black dark:text-light capitalize">
                 {itemEdit?.sales_order_payment_method}
               </p>
@@ -63,6 +63,12 @@ const ViewSalesDetails = ({ itemEdit }) => {
               <Pills variant={itemEdit?.sales_order_status}>
                 {itemEdit?.sales_order_status}
               </Pills>
+            </li>
+            <li>
+              <p className="m-0">Payment terms:</p>
+              <p className="m-0 text-black dark:text-light capitalize">
+                {itemEdit?.sales_order_payment_method}
+              </p>
             </li>
           </ul>
 

@@ -21,6 +21,9 @@ class SuppliersPurchaseOrder
     public $purchase_order_product_owner_name;
     public $purchase_order_qty;
     public $purchase_order_price;
+    public $purchase_order_balance;
+    public $purchase_order_discount;
+    public $purchase_order_tax;
     public $purchase_order_created;
     public $purchase_order_updated;
 
@@ -69,6 +72,9 @@ class SuppliersPurchaseOrder
             $sql .= "purchase_order_product_owner_name, ";
             $sql .= "purchase_order_qty, ";
             $sql .= "purchase_order_price, ";
+            $sql .= "purchase_order_balance, ";
+            $sql .= "purchase_order_discount, ";
+            $sql .= "purchase_order_tax, ";
             $sql .= "purchase_order_created, ";
             $sql .= "purchase_order_updated ) values ( ";
             $sql .= ":purchase_order_number, ";
@@ -90,6 +96,9 @@ class SuppliersPurchaseOrder
             $sql .= ":purchase_order_product_owner_name, ";
             $sql .= ":purchase_order_qty, ";
             $sql .= ":purchase_order_price, ";
+            $sql .= ":purchase_order_balance, ";
+            $sql .= ":purchase_order_tax, ";
+            $sql .= ":purchase_order_discount, ";
             $sql .= ":purchase_order_created, ";
             $sql .= ":purchase_order_updated ) ";
             $query = $this->connection->prepare($sql);
@@ -112,7 +121,10 @@ class SuppliersPurchaseOrder
                 "purchase_order_product_owner_id" => $this->purchase_order_product_owner_id,
                 "purchase_order_product_owner_name" => $this->purchase_order_product_owner_name,
                 "purchase_order_qty" => $this->purchase_order_qty,
+                "purchase_order_balance" => $this->purchase_order_balance,
                 "purchase_order_price" => $this->purchase_order_price,
+                "purchase_order_discount" => $this->purchase_order_discount,
+                "purchase_order_tax" => $this->purchase_order_tax,
                 "purchase_order_created" => $this->purchase_order_created,
                 "purchase_order_updated" => $this->purchase_order_updated,
             ]);
@@ -334,6 +346,9 @@ class SuppliersPurchaseOrder
             $sql .= "purchase_order_delivery_is_status = :purchase_order_delivery_is_status, ";
             $sql .= "purchase_order_qty = :purchase_order_qty, ";
             $sql .= "purchase_order_price = :purchase_order_price, ";
+            $sql .= "purchase_order_tax = :purchase_order_tax, ";
+            $sql .= "purchase_order_discount = :purchase_order_discount, ";
+            $sql .= "purchase_order_balance = :purchase_order_balance, ";
             $sql .= "purchase_order_updated = :purchase_order_updated ";
             $sql .= "where purchase_order_aid = :purchase_order_aid ";
             $query = $this->connection->prepare($sql);
@@ -356,7 +371,10 @@ class SuppliersPurchaseOrder
                 "purchase_order_delivery_status" => $this->purchase_order_delivery_status,
                 "purchase_order_delivery_is_status" => $this->purchase_order_delivery_is_status,
                 "purchase_order_qty" => $this->purchase_order_qty,
+                "purchase_order_tax" => $this->purchase_order_tax,
+                "purchase_order_discount" => $this->purchase_order_discount,
                 "purchase_order_price" => $this->purchase_order_price,
+                "purchase_order_balance" => $this->purchase_order_balance,
                 "purchase_order_updated" => $this->purchase_order_updated,
                 "purchase_order_aid" => $this->purchase_order_aid,
             ]);

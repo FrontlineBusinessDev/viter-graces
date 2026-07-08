@@ -24,7 +24,7 @@ const SalesReportMobileResponsive = ({
                 className="lg:hidden border rounded-xl p-4 mb-4 shadow-sm"
               >
                 {/* HEADER */}
-                <div className="flex gap-2 justify-between items-center border-b border-gray-200 pb-3 ">
+                <div className="flex gap-2 justify-between items-center border-b border-gray-200 pb-2 ">
                   <ul className="flex flex-col">
                     <li className="flex sm:gap-2 flex-wrap items-center">
                       <span
@@ -40,15 +40,11 @@ const SalesReportMobileResponsive = ({
                       {rowData?.sales_order_product_owner_name}
                     </li>
                     <li className={`font-semibold text-left text-xs `}>
-                      {rowData?.sales_order_received_by_name}
-                    </li>{" "}
-                    <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2 min-w-12`}>
-                        Customer:
-                      </span>
-                      <span className="wrap-break-word font-semibold">
-                        {rowData?.sales_order_customer_name}
-                      </span>
+                      <AmountWithPesoSign
+                        classN={"size-3 "}
+                        classAmnt={"text-green-700 justify-start "}
+                        amount={rowData?.sales_order_total}
+                      />
                     </li>
                   </ul>
 
@@ -64,15 +60,26 @@ const SalesReportMobileResponsive = ({
                       {rowData?.sales_order_payment_method}
                     </li>
                   </ul>
-                  {/* <div className=" ">
-                    <ActionButtonMobile
-                      dataArray={rowData}
-                      setData={setData}
-                      setItemEdit={setItemEdit}
-                      ishaveSubAdd={ishaveSubAdd}
-                      path={path}
-                    />
-                  </div> */}
+                </div>
+                <div className="flex flex-wrap justify-between items-end ">
+                  <ul className=" py-2 gap-2 sm:gap-5  ">
+                    <li className="flex text-left! text-xs">
+                      <span className={`text-gray-500 mr-2 min-w-12`}>
+                        Received:
+                      </span>
+                      <span className="wrap-break-word font-semibold">
+                        {rowData?.sales_order_received_by_name}
+                      </span>
+                    </li>
+                    <li className="flex text-left! text-xs">
+                      <span className={`text-gray-500 mr-2 min-w-12`}>
+                        Customer:
+                      </span>
+                      <span className="wrap-break-word font-semibold">
+                        {rowData?.sales_order_customer_name}
+                      </span>
+                    </li>
+                  </ul>
                 </div>
               </div>
             );

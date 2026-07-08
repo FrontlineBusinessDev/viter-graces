@@ -27,7 +27,7 @@ const StockOverviewMobileResponsive = ({
                 className="lg:hidden border rounded-xl p-4 mb-4 shadow-sm"
               >
                 {/* HEADER */}
-                <div className="flex gap-2 justify-between items-center border-b border-gray-200 pb-3 ">
+                <div className="flex gap-2 justify-between items-center border-b border-gray-200 pb-2 ">
                   <div className="flex flex-col">
                     <div className="flex sm:gap-2 flex-wrap items-center">
                       <span
@@ -43,33 +43,32 @@ const StockOverviewMobileResponsive = ({
                     <span className={`font-semibold text-left text-xs `}>
                       {rowData?.stock_movement_product_owner_name}
                     </span>
-                    <span className={`font-semibold text-left text-xs `}>
-                      {rowData?.stock_movement_location}
-                    </span>
                   </div>
 
                   {/* STATUS */}
-                  <Pills variant={rowData?.products_status}>
-                    {rowData?.products_status}
-                  </Pills>
+                  <ul className="text-left">
+                    <li>
+                      <Pills variant={rowData?.products_status}>
+                        {rowData?.products_status}
+                      </Pills>
+                    </li>
+                    <li>
+                      <span className={`font-semibold text-left text-xs`}>
+                        {rowData?.stock_movement_location}
+                      </span>
+                    </li>
+                  </ul>
                 </div>
                 {/* OTHER FIELDS */}
                 <div className="flex flex-wrap justify-between items-end">
                   <ul className="py-2 gap-2 sm:gap-5  ">
-                    <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2 min-w-19`}>
-                        Unit:
-                      </span>
-                      <span className="wrap-break-word font-semibold">
-                        {rowData?.products_unit}
-                      </span>
-                    </li>
                     <li className="flex text-left! text-xs">
                       <span className={`text-gray-500 mr-2`}>
                         Current stock:
                       </span>
                       <span className="wrap-break-word font-semibold ">
                         {rowData?.current_qty}
+                        <span className="ml-2">{rowData?.products_unit}</span>
                       </span>
                     </li>
                     <li className="flex text-left! text-xs">
@@ -78,18 +77,21 @@ const StockOverviewMobileResponsive = ({
                       </span>
                       <span className="wrap-break-word font-semibold">
                         {rowData?.products_low_stock_threshold}
+                        <span className="ml-2">{rowData?.products_unit}</span>
                       </span>
                     </li>
                   </ul>
-                  <div className=" ">
-                    <ActionButtonMobile
-                      dataArray={rowData}
-                      setData={setData}
-                      setItemEdit={setItemEdit}
-                      ishaveSubAdd={ishaveSubAdd}
-                      path={path}
-                    />
-                  </div>
+                  {isDefaultMobile === "stock-overview" && (
+                    <div className=" ">
+                      <ActionButtonMobile
+                        dataArray={rowData}
+                        setData={setData}
+                        setItemEdit={setItemEdit}
+                        ishaveSubAdd={ishaveSubAdd}
+                        path={path}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             );

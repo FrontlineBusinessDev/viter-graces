@@ -15,8 +15,8 @@ const PurchaseOrder = () => {
     {
       accessorKey: "is_status",
       header: "status",
-      classTh: "min-w-[15rem]",
-      classTd: "",
+      classTh: "min-w-[8rem]",
+      classTd: "min-w-[8rem]",
       status_option: ActiveInActiveStatus("purchase-order-status"),
       filterFn: "equals",
       meta: {
@@ -31,8 +31,8 @@ const PurchaseOrder = () => {
     {
       accessorKey: "payment_status",
       header: "payment status",
-      classTh: "min-w-[15rem]",
-      classTd: "",
+      classTh: "min-w-[9rem]",
+      classTd: "min-w-[9rem]",
       status_option: ActiveInActiveStatus("purchase-order-payment-status"),
       filterFn: "equals",
       meta: {
@@ -77,7 +77,7 @@ const PurchaseOrder = () => {
     },
     {
       accessorKey: "total_amount",
-      header: "total",
+      header: "total amount",
       filterFn: "between",
       classTh: "min-w-[10rem]",
       classTd: "",
@@ -87,7 +87,17 @@ const PurchaseOrder = () => {
     },
     {
       accessorKey: "purchase_order_payment",
-      header: "payment",
+      header: "paid amount",
+      filterFn: "between",
+      classTh: "min-w-[10rem]",
+      classTd: "",
+      meta: "",
+      amount: false,
+      paid_amount: true,
+    },
+    {
+      accessorKey: "purchase_order_balance",
+      header: "Balance",
       filterFn: "between",
       classTh: "min-w-[10rem]",
       classTd: "",

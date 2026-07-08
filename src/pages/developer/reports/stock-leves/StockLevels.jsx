@@ -12,7 +12,7 @@ const StockLevels = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "products_status",
+      accessorKey: "inventory_status",
       header: "status",
       classTh: "w-[10rem]! p-0!",
       classTd: "",
@@ -21,11 +21,11 @@ const StockLevels = () => {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus
             column={column}
-            options={ActiveInActiveStatus("default-status-words")}
+            options={ActiveInActiveStatus("stock-overview")}
           />
         ),
       },
-      status_option: ActiveInActiveStatus("default-status-words"),
+      status_option: ActiveInActiveStatus("stock-overview"),
     },
     {
       accessorKey: "products_name",
@@ -45,14 +45,6 @@ const StockLevels = () => {
       classTd: "",
     },
     {
-      accessorKey: "products_unit",
-      header: "category",
-      filterFn: "",
-      meta: "",
-      classTh: "",
-      classTd: "",
-    },
-    {
       accessorKey: "current_qty",
       header: "stock",
       filterFn: "between",
@@ -61,7 +53,16 @@ const StockLevels = () => {
       classTd: "uppercase ",
     },
     {
+      accessorKey: "products_unit",
+      header: "category",
+      filterFn: "",
+      meta: "",
+      classTh: "",
+      classTd: "",
+    },
+    {
       accessorKey: "products_price",
+      amount: true,
       header: "price",
       filterFn: "between",
       meta: "",

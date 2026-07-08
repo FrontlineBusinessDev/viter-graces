@@ -148,6 +148,25 @@ function allowedColumns()
         "sales_order_installment",
         "sales_order_due_date",
         "sales_order_total_receivable_amount",
+        "current_qty",
+        "inventory_status",
+        "is_active",
+        "name",
+        "order_qty",
+        "products_aid",
+        "products_low_stock_threshold",
+        "products_name",
+        "products_owner_name",
+        "products_price",
+        "products_sku",
+        "products_status",
+        "products_unit",
+        "stock_movement_date",
+        "stock_movement_is_active",
+        "stock_movement_location",
+        "stock_movement_product_name",
+        "stock_movement_product_owner_name",
+        "stock_qty"
     ];
     return $query;
 }
