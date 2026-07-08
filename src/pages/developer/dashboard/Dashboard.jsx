@@ -22,7 +22,7 @@ const Dashboard = () => {
     <>
       <div data-testid="dashboard-page">
         <HeaderNav menu={"dashboard"}>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-4 gap-5">
             <DashboardSalesToday path="sales-order/read-sales-today" />
             <DashboardLowStockAlert path="stock-movement/read-count-low-stock" />
             <DashboardTopSellingProduct path="sales-order/read-top-selling-product" />

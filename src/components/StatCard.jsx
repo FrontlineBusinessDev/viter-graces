@@ -4,6 +4,7 @@ import TableLoading from "./spinners/TableLoading";
 import { Link } from "react-router-dom";
 import { devNavUrl } from "@/config/config";
 import { StoreContext } from "@/store/StoreContext";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
 
 const StatCard = ({
   title,
@@ -35,7 +36,7 @@ const StatCard = ({
   return (
     <>
       <div
-        className="group [perspective:1000px] w-full "
+        className="group perspective:[1000px] w-full "
         data-testid={dataTestId}
         onClick={handleClick}
       >
@@ -49,16 +50,18 @@ const StatCard = ({
           }`}
         >
           {/* FRONT */}
-          <div className="bg-white dark:bg-gray-900 rounded-xl p-5 shadow-sm w-full hover:shadow-md transition border border-transparent hover:border-gray-300 [backface-visibility:hidden] h-[155px]">
+          <div className="bg-white dark:bg-gray-900 rounded-xl p-3 shadow-sm w-full hover:shadow-md transition border border-transparent hover:border-gray-300 backface-visibility:[hidden] h-[116px]">
             <div className="flex justify-between items-start ">
               <div>
                 <div className="flex gap-2">
-                  <p className="text-xs text-gray-400 uppercase tracking-wide dark:text-gray-300">
+                  <p className="text-xs text-gray-400 uppercase tracking-wide dark:text-gray-300 mb-0! ">
                     {title}
                   </p>
                   {isFlippable && <Eye size={16} className="text-green-600" />}
                 </div>
-                <h2 className="text-2xl font-semibold text-gray-900 mt-1 dark:text-light">
+                <h2
+                  className={`${isEmptyItem(extra, "") === "" && isEmptyItem(button, "") === "" ? "my-3! " : " "} text-2xl font-semibold text-gray-900 dark:text-light`}
+                >
                   {loading ? (
                     <span className="bg-white dark:bg-gray-900 w-full h-[15px]">
                       <TableLoading count={1} cols={1} />
@@ -68,30 +71,37 @@ const StatCard = ({
                   )}
                 </h2>
               </div>
-              <div className={`${iconBg} p-3 rounded-lg`}>{icon}</div>
+              <div className={`${iconBg} ml-3 p-3 rounded-lg`}>{icon}</div>
             </div>
 
             {subtitle && (
-              <div className="text-sm text-gray-400 mt-1 dark:text-gray-300">
+              <div className="text-sm text-gray-400 dark:text-gray-300">
                 {loading ? (
                   <div className="bg-white dark:bg-gray-900 w-full h-[15px]">
                     <TableLoading count={1} cols={1} />
                   </div>
                 ) : (
-                  <p>{subtitle}</p>
+                  <p className=" mb-0!">{subtitle}</p>
                 )}
               </div>
             )}
+            {loading ? (
+              ""
+            ) : (
+              <>
+                {extra && (
+                  <p className="text-sm text-green-600 mt-1">{extra}</p>
+                )}
 
-            {extra && <p className="text-sm text-green-600 mt-1">{extra}</p>}
-
-            {button && (
-              <Link
-                to={`${devNavUrl}/${userRole}/${link}`}
-                className="text-sm text-orange-600 mt-1"
-              >
-                {button}
-              </Link>
+                {button && (
+                  <Link
+                    to={`${devNavUrl}/${userRole}/${link}`}
+                    className="text-sm text-orange-600 mt-1"
+                  >
+                    {button}
+                  </Link>
+                )}
+              </>
             )}
           </div>
 
@@ -101,7 +111,7 @@ const StatCard = ({
               className={`absolute inset-0 ${flipBg} rounded-xl p-5 shadow-sm flex justify-between items-start w-full border border-transparent [transform:rotateY(180deg)] [backface-visibility:hidden]`}
             >
               <div>
-                <div className="flex gap-2">
+                <div className="flex items-center gap-2">
                   <p className="text-xs text-gray-400 uppercase tracking-wide dark:text-gray-300">
                     {title}
                   </p>
@@ -113,13 +123,13 @@ const StatCard = ({
                 </h2>
 
                 {subTitleFlip && (
-                  <p className="text-sm text-gray-400 mt-1 dark:text-gray-300">
+                  <p className="text-sm text-gray-400 mt-1 dark:text-gray-300 line-clamp-3">
                     {subTitleFlip}
                   </p>
                 )}
               </div>
 
-              <div className={`${iconBg}/50 p-3 rounded-lg`}>{icon}</div>
+              <div className={`${iconBg} ml-3 p-3 rounded-lg`}>{icon}</div>
             </div>
           )}
         </div>

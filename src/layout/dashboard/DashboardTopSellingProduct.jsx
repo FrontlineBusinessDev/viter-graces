@@ -25,6 +25,8 @@ const DashboardTopSellingProduct = ({ path = "", id = 0 }) => {
     return result?.data[0];
   }, [result]);
 
+  console.log("123", valData);
+
   return (
     <>
       {error ? (
@@ -32,7 +34,7 @@ const DashboardTopSellingProduct = ({ path = "", id = 0 }) => {
       ) : (
         <StatCard
           title="Top Selling Product"
-          value={result?.data[0]?.product_name}
+          value={isEmptyItem(valData?.product_name, "--")}
           subtitle={`${isEmptyItem(valData?.qty, 0)} units sold`}
           extra={`₱${numberWithCommasToFixed(valData?.total_amount, 2)}`}
           icon={<Trophy className="text-yellow-500" size={20} />}

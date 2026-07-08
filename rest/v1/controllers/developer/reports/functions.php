@@ -160,6 +160,7 @@ function allowedColumns()
         "products_price",
         "products_sku",
         "products_status",
+        "products_category",
         "products_unit",
         "stock_movement_date",
         "stock_movement_is_active",

@@ -1,12 +1,13 @@
 import { devNavUrl } from "@/config/config";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { titleHeaderTab } from "./function-header";
 
 const TitleHeader = ({}) => {
   const { store } = React.useContext(StoreContext);
   const userRole = store.credentials?.data?.role;
+  const navigate = useNavigate();
 
   const location = useLocation();
   const currentTab = location.pathname.split("/")[2];
@@ -40,8 +41,8 @@ const TitleHeader = ({}) => {
           <p>{currentTabData?.description_tab || currentHeader.description}</p>
 
           {currentHeader.array_tab.length > 0 && (
-            <div className="rounded-lg bg-gray-200 dark:bg-gray-900 p-1 inline-block">
-              <ul className="flex flex-wrap gap-2 items-center">
+            <div className="rounded-lg lg:bg-gray-200 dark:bg-gray-900 p-1 inline-block">
+              <ul className="lg:flex flex-wrap gap-2 items-center hidden">
                 {currentHeader.array_tab.map((itemTab, key) => {
                   const isActive = store.tabValue === itemTab?.title_tab;
                   return (
@@ -64,6 +65,36 @@ const TitleHeader = ({}) => {
                   );
                 })}
               </ul>
+              <select
+                onChange={(e) => {
+                  navigate(e.target.value);
+                }}
+                className="lg:hidden capitalize"
+              >
+                <optgroup label={`Select sub menu`}>
+                  <option hidden>{store.tabValue?.replaceAll("-", " ")}</option>
+                  {currentHeader.array_tab.map((itemTab, key) => {
+                    return (
+                      <option
+                        key={key}
+                        value={`${devNavUrl}/${userRole}/${itemTab.title_tab}`}
+                        className={`${store.tabValue === itemTab.title_tab ? "bg-blue-600 text-white " : " "} capitalize `}
+                      >
+                        {itemTab?.icon}
+                        {formatText(itemTab?.title_tab)}
+                      </option>
+                    );
+                  })}
+
+                  {/* {newDataList?.map((item, key) => {
+                    return (
+                      <option key={key} value={Number(item.id)}>
+                        {item.name}
+                      </option>
+                    );
+                  })} */}
+                </optgroup>
+              </select>
             </div>
           )}
         </div>

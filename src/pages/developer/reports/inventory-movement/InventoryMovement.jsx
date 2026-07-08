@@ -30,14 +30,6 @@ const InventoryMovement = () => {
       },
     },
     {
-      accessorKey: "stock_movement_date",
-      header: "Date",
-      classTh: "",
-      classTd: "",
-      filterFn: "date",
-      meta: "",
-    },
-    {
       accessorKey: "stock_movement_product_name",
       header: "Products",
       classTh: "",
@@ -45,24 +37,42 @@ const InventoryMovement = () => {
       meta: "",
     },
     {
-      accessorKey: "stock_movement_qty",
-      header: "QTY",
+      accessorKey: "products_sku",
+      header: "SKU",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "stock_movement_before_qty",
-      header: "Before",
+      accessorKey: "products_category",
+      header: "Category",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
       accessorKey: "stock_movement_after_qty",
-      header: "After",
+      header: "Stock Quantity",
       classTh: "",
       classTd: "",
+      filterFn: "between",
+      meta: "",
+    },
+    {
+      accessorKey: "products_low_stock_threshold",
+      header: "Threshold",
+      classTh: "",
+      classTd: "",
+      filterFn: "between",
+      meta: "",
+    },
+    {
+      accessorKey: "products_price",
+      header: "Price",
+      amount: true,
+      classTh: "",
+      classTd: "",
+      filterFn: "between",
       meta: "",
     },
     {
@@ -86,12 +96,6 @@ const InventoryMovement = () => {
           />
         ),
       },
-    },
-    {
-      accessorKey: "stock_movement_notes",
-      header: "Notes",
-      classTh: "",
-      classTd: "",
     },
   ];
 

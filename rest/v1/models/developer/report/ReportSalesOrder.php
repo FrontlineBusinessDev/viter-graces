@@ -834,21 +834,27 @@ class ReportSalesOrder
             }
         }
         try {
-            $sql = "select *, ";
-            $sql .= "stock_movement_aid as id, ";
-            $sql .= "stock_movement_type as status_text, ";
-            $sql .= "stock_movement_is_active as is_active, ";
-            $sql .= "DATE_FORMAT(stock_movement_date, '%b %d, %Y') as stock_movement_date, ";
-            $sql .= "stock_movement_product_name as name ";
-            $sql .= "from {$this->tblMovementStock} ";
-            $sql .= " where true ";
+            $sql = "select sm.*, ";
+            $sql .= "p.products_name, ";
+            $sql .= "p.products_low_stock_threshold, ";
+            $sql .= "p.products_price, ";
+            $sql .= "p.products_sku, ";
+            $sql .= "p.products_category, ";
+            $sql .= "sm.stock_movement_aid as id, ";
+            $sql .= "sm.stock_movement_type as status_text, ";
+            $sql .= "sm.stock_movement_is_active as is_active, ";
+            $sql .= "DATE_FORMAT(sm.stock_movement_date, '%b %d, %Y') as stock_movement_date, ";
+            $sql .= "sm.stock_movement_product_name as name ";
+            $sql .= "from {$this->tblMovementStock} as sm, ";
+            $sql .= "{$this->tblProducts} as p ";
+            $sql .= " where p.products_aid = sm.stock_movement_product_id ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
-                $sql .= ($this->column_search != "" ? "and ( stock_movement_product_name like :stock_movement_product_name 
-            or stock_movement_product_owner_name like :stock_movement_product_owner_name ) " : " ");
+                $sql .= ($this->column_search != "" ? "and ( sm.stock_movement_product_name like :stock_movement_product_name 
+            or sm.stock_movement_product_owner_name like :stock_movement_product_owner_name ) " : " ");
             }
-            $sql .= " order by stock_movement_aid desc ";
+            $sql .= " order by sm.stock_movement_aid desc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
@@ -890,21 +896,27 @@ class ReportSalesOrder
             }
         }
         try {
-            $sql = "select *, ";
-            $sql .= "stock_movement_aid as id, ";
-            $sql .= "stock_movement_type as status_text, ";
-            $sql .= "stock_movement_is_active as is_active, ";
-            $sql .= "DATE_FORMAT(stock_movement_date, '%b %d, %Y') as stock_movement_date, ";
-            $sql .= "stock_movement_product_name as name ";
-            $sql .= "from {$this->tblMovementStock} ";
-            $sql .= " where true ";
+            $sql = "select sm.*, ";
+            $sql .= "p.products_name, ";
+            $sql .= "p.products_low_stock_threshold, ";
+            $sql .= "p.products_price, ";
+            $sql .= "p.products_sku, ";
+            $sql .= "p.products_category, ";
+            $sql .= "sm.stock_movement_aid as id, ";
+            $sql .= "sm.stock_movement_type as status_text, ";
+            $sql .= "sm.stock_movement_is_active as is_active, ";
+            $sql .= "DATE_FORMAT(sm.stock_movement_date, '%b %d, %Y') as stock_movement_date, ";
+            $sql .= "sm.stock_movement_product_name as name ";
+            $sql .= "from {$this->tblMovementStock} as sm, ";
+            $sql .= "{$this->tblProducts} as p ";
+            $sql .= " where p.products_aid = sm.stock_movement_product_id ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
-                $sql .= ($this->column_search != "" ? "and ( stock_movement_product_name like :stock_movement_product_name 
-            or stock_movement_product_owner_name like :stock_movement_product_owner_name ) " : " ");
+                $sql .= ($this->column_search != "" ? "and ( sm.stock_movement_product_name like :stock_movement_product_name 
+            or sm.stock_movement_product_owner_name like :stock_movement_product_owner_name ) " : " ");
             }
-            $sql .= " order by stock_movement_aid desc ";
+            $sql .= " order by sm.stock_movement_aid desc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);

@@ -361,7 +361,7 @@ const InfinitePerTabs = ({
 
                 {isOpen && (
                   <div className="border-t border-gray-200 px-4 lg:px-5 pb-4 ">
-                    <div className="grid sm:grid-cols-[1fr_12rem] gap-1 mt-2 mb-1">
+                    <div className="grid grid-cols-[1fr_12rem] gap-5 mt-2 mb-1">
                       {item.getVisibleCells().map((ditem, dkey) => {
                         const valItem = isEmptyItem(ditem.getValue(), "none");
                         return (
