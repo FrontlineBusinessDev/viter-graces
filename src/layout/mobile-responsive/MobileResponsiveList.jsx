@@ -4,6 +4,7 @@ import MovementMobileResponsive from "./MovementMobileResponsive";
 import ProductOwnerMobileReponsive from "./ProductOwnerMobileReponsive";
 import ProductsMobileResponsive from "./ProductsMobileResponsive";
 import PurchaseOrderMobileReponsive from "./PurchaseOrderMobileReponsive";
+import ReportOverdueMobileResponsive from "./ReportOverdueMobileResponsive";
 import SalesOrderMobileResponsive from "./SalesOrderMobileResponsive";
 import SalesReportMobileResponsive from "./SalesReportMobileResponsive";
 import StockOverviewMobileResponsive from "./StockOverviewMobileResponsive";
@@ -97,6 +98,14 @@ const MobileResponsiveList = ({
       />
       {/* PRODUCT OWNER RESPONSIVE */}
       <ProductOwnerMobileReponsive
+        rows={rows}
+        setData={setData}
+        setItemEdit={setItemEdit}
+        isDefaultMobile={isDefaultMobile}
+        ishaveSubAdd={ishaveSubAdd}
+      />
+      {/* REPORT OVERDUE RESPONSIVE */}
+      <ReportOverdueMobileResponsive
         rows={rows}
         setData={setData}
         setItemEdit={setItemEdit}

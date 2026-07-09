@@ -79,15 +79,18 @@ const MovementMobileResponsive = ({
                       </span>
                     </li>
                   </ul>
-                  <div className=" ">
-                    <ActionButtonMobile
-                      dataArray={rowData}
-                      setData={setData}
-                      setItemEdit={setItemEdit}
-                      ishaveSubAdd={ishaveSubAdd}
-                      path={path}
-                    />
-                  </div>
+                  {isDefaultMobile !==
+                    "report-sales-order/page-all-inventory-movement" && (
+                    <div className=" ">
+                      <ActionButtonMobile
+                        dataArray={rowData}
+                        setData={setData}
+                        setItemEdit={setItemEdit}
+                        ishaveSubAdd={ishaveSubAdd}
+                        path={path}
+                      />
+                    </div>
+                  )}
                 </div>
               </div>
             );

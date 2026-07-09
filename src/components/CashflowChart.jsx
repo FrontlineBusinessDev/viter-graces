@@ -84,7 +84,7 @@ export default function CashflowChart() {
 
         <div className="grid grid-cols-3 gap-3 mb-4">
           <div className="bg-green-100 p-3 rounded-lg">
-            <p className="flex items-center gap-2 text-sm text-gray-600">
+            <p className="xs:flex items-center gap-2 text-sm text-gray-600">
               <span className="text-green-600">
                 <TrendingUp size={14} />
               </span>
@@ -93,7 +93,7 @@ export default function CashflowChart() {
             <p className="text-green-600 font-semibold">₱58,724</p>
           </div>
           <div className="bg-red-100 p-3 rounded-lg">
-            <p className="flex items-center gap-2 text-sm text-gray-600">
+            <p className="xs:flex items-center gap-2 text-sm text-gray-600">
               <span className="text-red-600">
                 <TrendingDown size={14} />
               </span>
@@ -102,7 +102,7 @@ export default function CashflowChart() {
             <p className="text-red-600 font-semibold">₱35,840</p>
           </div>
           <div className="bg-blue-100 p-3 rounded-lg">
-            <p className="flex items-center gap-2 text-sm text-gray-600">
+            <p className="xs:flex items-center gap-2 text-sm text-gray-600">
               <span className="text-blue-600">
                 <DollarSign size={14} />
               </span>

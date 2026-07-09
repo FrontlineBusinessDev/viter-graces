@@ -401,24 +401,28 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         <table className=" md:border md:border-gray-300 dark:border-[#0b111e] ">
                           <thead className={`relative z-50 table-header-group`}>
                             <tr className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0! z-999">
-                              <th className="w-px ">#</th>
-                              <th className={`min-w-20 `}>Products</th>
-                              <th className={``}>Product Owner</th>
-                              <th className={``}>Quantity</th>
-                              <th className={``}>Amount</th>
-                              <th className={`text-center`}>Total</th>
-                              <th className={``}></th>
+                              <th className="w-px bg-gray-100!">#</th>
+                              <th className={`min-w-20  bg-gray-100!`}>
+                                Products
+                              </th>
+                              <th className={` bg-gray-100!`}>Product Owner</th>
+                              <th className={` bg-gray-100!`}>Quantity</th>
+                              <th className={` bg-gray-100!`}>Amount</th>
+                              <th className={` bg-gray-100! text-center`}>
+                                Total
+                              </th>
+                              <th className={` bg-gray-100! `}></th>
                             </tr>
                           </thead>
-                          <tbody>
+                          <tbody className="">
                             {items.map((a, index) => {
                               return (
-                                <tr key={a?.id}>
-                                  <td className="text-center last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
+                                <tr key={a?.id} className="border-0!">
+                                  <td className="text-center bg-gray-100! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
                                     {index + 1}.
                                   </td>
 
-                                  <td className="">
+                                  <td className=" bg-gray-100! ">
                                     <DefaultInputSelectTagArray
                                       onChange={(e, selectedItem) => {
                                         handleChangeProduct(
@@ -435,7 +439,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                       store={store}
                                     />
                                   </td>
-                                  <td className="min-w-25">
+                                  <td className=" bg-gray-100! min-w-25">
                                     <DefaultInputSelectTagArray
                                       onChange={(e) => {
                                         console.log("e", e);
@@ -454,7 +458,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                       store={store}
                                     />
                                   </td>
-                                  <td>
+                                  <td className=" bg-gray-100! ">
                                     <input
                                       onChange={(e) => {
                                         handleChangeAmount(
@@ -463,12 +467,13 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                           e.target.value,
                                         );
                                       }}
+                                      className="mt-0! bg-white"
                                       defaultValue={a["purchase_order_qty"]}
                                       type="number"
                                       placeholder="Qty"
                                     />
                                   </td>
-                                  <td>
+                                  <td className=" bg-gray-100! ">
                                     <input
                                       onChange={(e) => {
                                         handleChangeAmount(
@@ -478,18 +483,19 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                           0,
                                         );
                                       }}
+                                      className="mt-0! bg-white"
                                       defaultValue={a?.purchase_order_price}
                                       type="number"
                                       placeholder="Price"
                                     />
                                   </td>
-                                  <td>
+                                  <td className=" bg-gray-100! ">
                                     <AmountWithPesoSign
                                       classN="size-3"
                                       amount={a["purchase_order_total_amount"]}
                                     />
                                   </td>
-                                  <td>
+                                  <td className=" bg-gray-100! ">
                                     {itemEdit ? (
                                       <button
                                         onClick={() =>
