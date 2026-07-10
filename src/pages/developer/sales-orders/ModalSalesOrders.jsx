@@ -344,7 +344,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   return (
     <>
       <ModalWrapper
-        val={`Sales Order # ${itemEdit ? `${itemEdit?.sales_order_number}` : ""}`}
+        val={`Sales Order ${itemEdit ? `${itemEdit?.sales_order_number}` : ""}`}
         itemEdit={itemEdit}
         mutation={mutation}
         isOpen={true}
