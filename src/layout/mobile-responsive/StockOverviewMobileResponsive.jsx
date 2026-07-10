@@ -27,7 +27,7 @@ const StockOverviewMobileResponsive = ({
                 className="lg:hidden border rounded-xl p-4 mb-4 shadow-sm"
               >
                 {/* HEADER */}
-                <div className="flex gap-2 justify-between items-center border-b border-gray-200 pb-2 ">
+                <div className="xs:flex flex-wrap gap-2 justify-between items-center border-b border-gray-200 pb-2 ">
                   <div className="flex flex-col">
                     <div className="flex sm:gap-2 flex-wrap items-center">
                       <span
@@ -36,7 +36,7 @@ const StockOverviewMobileResponsive = ({
                         {rowData?.products_name}
                       </span>
 
-                      <span className={`font-semibold text-xs `}>
+                      <span className={`font-semibold text-xs ml-1 `}>
                         ({rowData?.products_sku})
                       </span>
                     </div>
@@ -48,8 +48,8 @@ const StockOverviewMobileResponsive = ({
                   {/* STATUS */}
                   <ul className="text-left">
                     <li>
-                      <Pills variant={rowData?.products_status}>
-                        {rowData?.products_status}
+                      <Pills variant={rowData?.inventory_status}>
+                        {rowData?.inventory_status}
                       </Pills>
                     </li>
                     <li>

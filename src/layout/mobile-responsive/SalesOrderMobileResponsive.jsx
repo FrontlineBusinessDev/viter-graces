@@ -25,7 +25,7 @@ const SalesOrderMobileResponsive = ({
                 className="lg:hidden border rounded-xl p-4 mb-4 shadow-sm"
               >
                 {/* HEADER */}
-                <div className="flex gap-2 flex-wrap justify-between mb-3">
+                <div className="xs:flex flex-wrap gap-2 flex-wrap justify-between mb-3">
                   <ul className="flex flex-col">
                     <li className="flex gap-2 flex-wrap items-center">
                       <span

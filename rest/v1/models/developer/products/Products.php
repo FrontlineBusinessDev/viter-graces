@@ -762,7 +762,7 @@ class Products
             $sql = "select *, ";
             $sql .= "products_sku as id_number ";
             $sql .= "from {$this->tblProducts} ";
-            $sql .= "order by products_aid desc ";
+            $sql .= "order by products_sku desc ";
             $sql .= "limit 1 ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {

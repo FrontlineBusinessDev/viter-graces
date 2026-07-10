@@ -493,7 +493,7 @@ class SuppliersPurchaseOrder
             $sql = "select *, ";
             $sql .= "purchase_order_number as id_number ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
-            $sql .= "order by purchase_order_aid desc ";
+            $sql .= "order by purchase_order_number desc ";
             $sql .= "limit 1 ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {

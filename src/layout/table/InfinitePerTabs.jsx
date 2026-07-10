@@ -361,7 +361,7 @@ const InfinitePerTabs = ({
 
                 {isOpen && (
                   <div className="border-t border-gray-200 px-4 lg:px-5 pb-4 ">
-                    <div className="grid grid-cols-[1fr_12rem] gap-5 mt-2 mb-1">
+                    <div className="grid xs:grid-cols-[1fr_12rem] xs:gap-3 mt-2 mb-1">
                       {item.getVisibleCells().map((ditem, dkey) => {
                         const valItem = isEmptyItem(ditem.getValue(), "none");
                         return (
@@ -376,7 +376,7 @@ const InfinitePerTabs = ({
                                   {ditem?.column?.columnDef?.header}
                                 </small>
                                 <br />
-                                <span className="flex gap-1 items-center ">
+                                <div className="flex gap-1 items-center ">
                                   {ditem?.column?.columnDef?.icon}
                                   {!ditem?.column?.columnDef?.isHaveLink ||
                                   isEmptyItem(ditem.getValue(), "") === "" ? (
@@ -390,7 +390,7 @@ const InfinitePerTabs = ({
                                       {valItem}
                                     </a>
                                   )}
-                                </span>
+                                </div>
                               </div>
                             ) : (
                               ""
@@ -408,12 +408,12 @@ const InfinitePerTabs = ({
                               "suppliers_delivery" &&
                             ditem?.column?.columnDef?.header !==
                               "stringArray" ? (
-                              <p className="text-xs text-gray-500 lg:hidden dark:text-light mb-0 wrap-break-word">
+                              <div className="text-xs text-gray-500 lg:hidden dark:text-light mb-0 wrap-break-word">
                                 <small className="font-bold text-xs uppercase text-[9px]">
                                   {ditem?.column?.columnDef?.header}
                                 </small>
                                 <br />
-                                <span className="flex gap-1 items-center ">
+                                <div className="flex gap-1 items-center ">
                                   {ditem?.column?.columnDef?.icon}
                                   {!ditem?.column?.columnDef?.isHaveLink ||
                                   isEmptyItem(ditem.getValue(), "") === "" ? (
@@ -427,8 +427,8 @@ const InfinitePerTabs = ({
                                       {valItem}
                                     </a>
                                   )}
-                                </span>
-                              </p>
+                                </div>
+                              </div>
                             ) : (
                               ""
                             )}

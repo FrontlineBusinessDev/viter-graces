@@ -24,7 +24,7 @@ const ProductsMobileResponsive = ({
                 className="lg:hidden border rounded-xl p-4 mb-4 shadow-sm"
               >
                 {/* HEADER */}
-                <div className="flex gap-2 justify-between items-start border-b border-gray-200 pb-3 ">
+                <div className="xs:flex flex-wrap gap-2 justify-between items-start border-b border-gray-200 pb-3 ">
                   <div className="flex flex-wrap gap-2 items-center">
                     <div className="w-12 h-12 bg-gray-300 rounded-sm">
                       <Image className="mx-auto p-1" size={45} />
@@ -37,7 +37,7 @@ const ProductsMobileResponsive = ({
                           {rowData?.products_name}
                         </span>
 
-                        <span className={`font-semibold text-xs `}>
+                        <span className={`font-semibold text-xs ml-1 `}>
                           ({rowData?.products_sku})
                         </span>
                       </div>

@@ -56,7 +56,7 @@ const SupplierMobileReponsive = ({
               <ul className="py-4 px-0 lg:py-4 lg:px-4 border-b lg:border-b-0">
                 {/* mobile */}
                 <li className="lg:hidden rounded-2xl border border-gray-200 bg-gray-50/80 dark:bg-[#101827] dark:border-gray-700 p-4 space-y-3 text-sm">
-                  <div className="flex flex-wrap items-start justify-between mb-0! gap-3">
+                  <div className="xs:flex flex-wrap items-start justify-between mb-0! gap-3">
                     <p className="text-left! mb-0! font-medium text-gray-900 dark:text-light">
                       {rowData?.suppliers_product_name}
                     </p>

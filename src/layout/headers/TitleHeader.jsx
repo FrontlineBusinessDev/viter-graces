@@ -80,7 +80,6 @@ const TitleHeader = ({}) => {
                         value={`${devNavUrl}/${userRole}/${itemTab.title_tab}`}
                         className={`${store.tabValue === itemTab.title_tab ? "bg-blue-600 text-white " : " "} capitalize `}
                       >
-                        {itemTab?.icon}
                         {formatText(itemTab?.title_tab)}
                       </option>
                     );

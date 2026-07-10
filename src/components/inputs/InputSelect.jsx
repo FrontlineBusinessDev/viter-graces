@@ -606,7 +606,7 @@ export const InputSalesOrderSelectTagArray = ({
   );
   const [selected, setSelected] = React.useState("");
 
-  const newDataList = result?.data.filter((item) => {
+  const newDataList = result?.data?.filter((item) => {
     return !dataVal?.find((listItem) => {
       return item.id === listItem.sales_order_product_id;
     });
@@ -721,7 +721,7 @@ export const DefaultInputSelectTagArray = ({
   );
   const [selected, setSelected] = React.useState("");
 
-  const newDataList = result?.data.filter((item) => {
+  const newDataList = result?.data?.filter((item) => {
     return !dataVal?.find((listItem) => {
       return item.id === Number(listItem.purchase_order_product_id);
     });
@@ -866,6 +866,7 @@ export const InputSelectFilterTagArray = ({
             options={options}
             value={selected}
             onChange={(e) => {
+              console.log("e", e);
               if (!e) {
                 setSelected(null);
                 onChange(null, null);
@@ -951,7 +952,7 @@ export const InputPurchaseOrderSelectTagArray = ({
     { id: id },
     { id, path },
   );
-  const newDataList = result?.data.filter((item) => {
+  const newDataList = result?.data?.filter((item) => {
     return !dataVal?.find((listItem) => {
       return item.id === Number(listItem.purchase_order_product_id);
     });

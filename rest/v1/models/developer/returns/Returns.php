@@ -495,7 +495,7 @@ class Returns
             $sql = "select *, ";
             $sql .= "return_product_number as id_number ";
             $sql .= "from {$this->tblReturnProducts} ";
-            $sql .= "order by return_product_aid desc ";
+            $sql .= "order by return_product_number desc ";
             $sql .= "limit 1 ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {

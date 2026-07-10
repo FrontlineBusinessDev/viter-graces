@@ -48,7 +48,7 @@ const SalesOrders = () => {
     },
     {
       accessorKey: "sales_order_due_date",
-      header: "overdue",
+      header: "Due Date",
       classTh: "min-w-[7rem]",
       classTd: "",
       filterFn: "date",

@@ -222,8 +222,8 @@ const ModalSuppliers = ({ itemEdit }) => {
                     </div>
                   </div>
 
-                  <div className="grid lg:grid-cols-3 gap-2">
-                    <div className="relative mt-3">
+                  <div className="grid lg:grid-cols-3 gap-2 mt-5">
+                    <div className="relative">
                       <InputText
                         label="Messenger link"
                         type="text"
@@ -233,7 +233,7 @@ const ModalSuppliers = ({ itemEdit }) => {
                         required={false}
                       />
                     </div>
-                    <div className="relative mt-3">
+                    <div className="relative">
                       <InputText
                         label="WhatsApp number"
                         type="number"
@@ -243,7 +243,7 @@ const ModalSuppliers = ({ itemEdit }) => {
                         required={false}
                       />
                     </div>
-                    <div className="relative mt-3">
+                    <div className="relative">
                       <InputText
                         label="Other social media link"
                         type="text"

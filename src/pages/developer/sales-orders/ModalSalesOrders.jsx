@@ -7,7 +7,7 @@ import {
 import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
-import { AmountWithPesoSign } from "@/components/PesoSign";
+import { AmountsWithPesoSign, AmountWithPesoSign } from "@/components/PesoSign";
 import { apiVersion } from "@/config/config";
 import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
@@ -26,17 +26,30 @@ import { Form, Formik } from "formik";
 import { Plus } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
+import { PropsValues, Validations } from "./functions";
 
 const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [counter, setCounter] = React.useState(1);
-  const [installmentCounter, setInstallmentCounter] = React.useState(0);
+  const [installmentCounter, setInstallmentCounter] = React.useState(1);
   const [itemsDelete, setItemsDelete] = React.useState([]);
   const [installmentItemsDelete, setInstallmentItemsDelete] = React.useState(
     [],
   );
   const [installmentItems, setInstallmentItems] = React.useState(
-    itemEdit ? itemEdit?.installmentItems : [],
+    itemEdit
+      ? itemEdit?.installmentItems
+      : [
+          {
+            installmet_payment_aid: 0,
+            installmet_payment_code: "sales-order",
+            installmet_payment_due_date: store?.credentials?.data?.server_date,
+            installmet_payment_code_number: "",
+            installmet_payment_code_id: "",
+            installmet_payment_amount: "",
+            id: 0,
+          },
+        ],
   );
   const [items, setItems] = React.useState(
     itemEdit
@@ -282,19 +295,22 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
       itemEdit?.sales_order_total_balance_amount,
       "0",
     ),
+    sales_order_payment_terms: isEmptyItem(
+      itemEdit?.sales_order_payment_terms,
+      "",
+    ),
     sales_order_total_amount: isEmptyItem(
       itemEdit?.sales_order_total_amount,
       "0",
     ),
     sales_order_number: isEmptyItem(itemEdit?.sales_order_number, ""),
-    total: "0",
+    subtotal: "0",
     validationAmount: false,
   };
 
   const yupSchema = Yup.object({
     sales_order_date: Yup.string().trim().required("Required"),
     sales_order_customer_id: Yup.string().trim().required("Required"),
-    sales_order_received_by_id: Yup.string().trim().required("Required"),
   });
 
   React.useEffect(() => {
@@ -314,6 +330,16 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     { id: 0.12, name: "exclusive" },
   ];
 
+  let termsOption = [
+    { id: "", name: "--" },
+    { id: "installment", name: "Installment" },
+    { id: 10, name: "Net 10 - Due within 10 days" },
+    { id: 15, name: "Net 15 - Due within 15 days" },
+    { id: 20, name: "Net 20 - Due within 20 days" },
+    { id: 25, name: "Net 25 - Due within 25 days" },
+    { id: 30, name: "Net 30 - Due within 30 days" },
+  ];
+
   // console.log("items123", items);
   return (
     <>
@@ -331,20 +357,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
             validationSchema={yupSchema}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
-              const invalidItem = items.find(
-                (item) =>
-                  Number(item.current_qty) < Number(item.sales_order_qty),
-              );
-
-              if (invalidItem) {
-                dispatch(setError(true));
-                dispatch(
-                  setMessage(
-                    `Insufficient stock for ${invalidItem.sales_order_product_name}. Available: ${invalidItem.current_qty}, Requested: ${invalidItem.sales_order_qty}`,
-                  ),
-                );
-                return;
-              }
 
               // mutate data
               let data = {
@@ -365,62 +377,18 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                 items,
                 itemsDelete,
               };
-              // console.log("data", data);
-              mutation.mutate(data);
+              Validations(values, items, dispatch);
+
+              if (!Validations(values, items, dispatch)) {
+                console.log("data1", data);
+                mutation.mutate(data);
+              } else {
+                dispatch(setError(true));
+              }
             }}
           >
             {(props) => {
-              props.values.sales_order_total_amount = items?.reduce(
-                (sum, item) =>
-                  sum +
-                  Number(item.sales_order_qty || 1) *
-                    Number(item.sales_order_price || 0),
-                0,
-              );
-              props.values.sales_order_total_receivable_amount =
-                items?.reduce(
-                  (sum, item) =>
-                    sum +
-                    Number(item.sales_order_qty || 1) *
-                      Number(item.sales_order_price || 0),
-                  0,
-                ) - Number(props.values.sales_order_discount);
-
-              // COMPUTATION OF INCLUSIVE TAX
-              if (Number(props.values.sales_order_tax) === 1.12) {
-                props.values.sales_order_tax_amount =
-                  Number(props.values.sales_order_total_receivable_amount) -
-                  Number(props.values.sales_order_total_receivable_amount) /
-                    1.12;
-              }
-
-              // COMPUTATION OF EXCLUSIVE TAX
-              if (Number(props.values.sales_order_tax) === 0.12) {
-                props.values.sales_order_tax_amount =
-                  Number(props.values.sales_order_total_receivable_amount) *
-                  0.12;
-
-                props.values.sales_order_total_receivable_amount =
-                  Number(props.values.sales_order_total_receivable_amount) +
-                  Number(props.values.sales_order_tax_amount);
-              }
-
-              if (Number(props.values.sales_order_tax) === 0) {
-                props.values.sales_order_tax_amount = 0;
-              }
-              props.values.sales_order_total_balance_amount =
-                Number(props.values.sales_order_total_receivable_amount) -
-                Number(props.values.sales_order_paid_amount);
-
-              props.values.total =
-                installmentItems?.reduce(
-                  (isum, itemIns) =>
-                    isum + Number(itemIns.installmet_payment_amount),
-                  0,
-                ) + Number(props.values.sales_order_paid_amount);
-              props.values.validationAmount =
-                Number(props.values.total) >=
-                Number(props.values.sales_order_total_receivable_amount);
+              PropsValues(props, items, installmentItems);
               return (
                 <Form>
                   <div className="grid grid-cols-2 gap-4">
@@ -464,7 +432,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         store={store}
                       />
                     </div>
-
                     <div className="relative">
                       <InputSelectArrayWithOptions
                         label="Payment Method"
@@ -479,13 +446,18 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         }}
                       />
                     </div>
-                    <div className="relative ">
-                      <InputNumber
-                        label="Discount"
-                        name="sales_order_discount"
-                        placeholder={`${itemEdit ? "0" : "0"}`}
-                        disabled={mutation.isPending}
-                        required={false}
+                    <div className="relative">
+                      <InputSelectArrayWithOptions
+                        label="Payment Terms"
+                        type="text"
+                        name="sales_order_payment_terms"
+                        defaultValue=""
+                        options={termsOption}
+                        onChange={(e) => {
+                          props.values.sales_order_payment_method =
+                            e.target.options[e.target.selectedIndex].text;
+                          return e;
+                        }}
                       />
                     </div>
                   </div>
@@ -581,8 +553,17 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="relative mt-3">
+                  <div className="grid grid-cols-3 mt-3 gap-3 items-center">
+                    <div className="relative ">
+                      <InputNumber
+                        label="Discount"
+                        name="sales_order_discount"
+                        placeholder={`${itemEdit ? "0" : "0"}`}
+                        disabled={mutation.isPending}
+                        required={false}
+                      />
+                    </div>
+                    <div className="relative ">
                       <InputSelectArrayWithOptions
                         label="Tax"
                         type="sales_order_tax"
@@ -596,7 +577,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         required={false}
                       />
                     </div>
-                    <div className="relative mt-3">
+                    <div className="relative ">
                       <InputNumber
                         label="Amount Paid"
                         name="sales_order_paid_amount"
@@ -605,11 +586,64 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         required={false}
                       />
                     </div>
-                    <div></div>
+                    <ul className="grid grid-cols-[5rem_1fr] ">
+                      <li>Sub Amount:</li>
+                      <li>
+                        <AmountsWithPesoSign
+                          classN={"size-3"}
+                          classAmnt="justify-start!"
+                          amount={props.values.subtotal}
+                        />
+                      </li>
+                      <li>Tax Amount:</li>
+                      <li>
+                        <AmountsWithPesoSign
+                          classN={"size-3"}
+                          classAmnt="justify-start!"
+                          amount={props.values.sales_order_tax_amount}
+                        />
+                      </li>
+                      <li>Discount:</li>
+                      <li>
+                        <AmountsWithPesoSign
+                          classN={"size-3"}
+                          classAmnt="justify-start!"
+                          amount={props.values.sales_order_discount}
+                        />
+                      </li>
+                    </ul>
+                    <ul className="grid grid-cols-[5rem_1fr] ">
+                      <li>Total Amount:</li>
+                      <li>
+                        <AmountsWithPesoSign
+                          classN={"size-3"}
+                          classAmnt="justify-start!"
+                          amount={
+                            props.values.sales_order_total_receivable_amount
+                          }
+                        />
+                      </li>
+                      <li>Paid Amount:</li>
+                      <li>
+                        <AmountsWithPesoSign
+                          classN={"size-3"}
+                          classAmnt="justify-start!"
+                          amount={props.values.sales_order_paid_amount}
+                        />
+                      </li>
+                      <li>Balance:</li>
+                      <li>
+                        <AmountsWithPesoSign
+                          classN={"size-3"}
+                          classAmnt="justify-start!"
+                          amount={props.values.sales_order_total_balance_amount}
+                        />
+                      </li>
+                    </ul>
                     <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end my-3 p-2">
                       <p className="flex flex-col place-self-end text-primary text-lg text-right">
                         <span className="text-black dark:text-light text-sm">
-                          Total
+                          Total Amount
                         </span>
                         <AmountWithPesoSign
                           classN=""
@@ -621,141 +655,153 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                     </div>
                   </div>
 
-                  <div className="flex my-5 justify-between items-center">
-                    <label htmlFor="">
-                      Installment{" "}
-                      {installmentItems?.length > 0
-                        ? `(${installmentItems?.length})`
-                        : ""}
-                    </label>
-                    <button
-                      type="button"
-                      className=" cursor-pointer flex items-center justify-center text-dark gap-2 px-3 py-1.5 bg-transparent rounded-md border-gray-300 border min-w-20 hover:bg-primary transition-all duration-300 ease-in-out hover:text-light dark:text-light"
-                      onClick={handleAddInstallmentItems}
-                    >
-                      <Plus size={15} />
-                      <span className="capitalize leading-0">Installment</span>
-                    </button>
-                  </div>
-
-                  {installmentItems.length === 0 ? (
-                    <hr className="border-gray-200" />
-                  ) : (
-                    <div className="border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out py-3 ">
-                      <div className="flex flex-col pb-2 h-57 overflow-auto">
-                        <ul className=" grid grid-cols-[10rem_1fr_1rem] sm:grid-cols-[1fr_1fr_1rem] gap-3 px-3 text-dark sticky top-0 bg-gray-100 py-2">
-                          <li>Due Date</li>
-                          <li>Amount</li>
-                        </ul>
-                        {installmentItems.map((a, index) => {
-                          return (
-                            <div
-                              key={a.id}
-                              className="grid grid-cols-[10rem_1fr_1rem] sm:grid-cols-[1fr_1fr_1rem] gap-3 items-center px-3 py-2"
-                            >
-                              <input
-                                onChange={(e) => {
-                                  handleChangeInstallment(
-                                    index,
-                                    "installmet_payment_due_date",
-                                    e.target.value,
-                                  );
-                                }}
-                                defaultValue={isEmptyItem(
-                                  a["installmet_payment_due_date"],
-                                  1,
-                                )}
-                                type="date"
-                              />
-                              <input
-                                onChange={(e) => {
-                                  handleChangeInstallment(
-                                    index,
-                                    "installmet_payment_amount",
-                                    e.target.value,
-                                    0,
-                                  );
-                                }}
-                                defaultValue={isEmptyItem(
-                                  a["installmet_payment_amount"],
-                                  "",
-                                )}
-                                placeholder="0"
-                                type="number"
-                              />
-
-                              <button
-                                type="button"
-                                onClick={() => handleRemoveInstallmentItems(a)}
-                                className="text-red-500 text-xl"
-                              >
-                                ✕
-                              </button>
-                            </div>
-                          );
-                        })}
-                        <div className="px-3 mt-2 text-dark ">
-                          <ul className="sm:grid grid-cols-2 ">
-                            <li className="sm:text-right mx-2 uppercase">
-                              Total installment amount
-                            </li>
-                            <li className="text-left! mx-2 ">
-                              <AmountWithPesoSign
-                                classN="size-3 "
-                                classAmnt="justify-start! "
-                                amount={
-                                  Number(props.values.total) -
-                                  Number(props.values.sales_order_paid_amount)
-                                }
-                              />
-                            </li>
-                            <li className="sm:text-right mx-2 uppercase">
-                              Total Paid
-                            </li>
-                            <li className="text-left! mx-2 ">
-                              <AmountWithPesoSign
-                                classN="size-3 "
-                                classAmnt="justify-start! "
-                                amount={Number(
-                                  props.values.sales_order_paid_amount,
-                                )}
-                              />
-                            </li>
-                            <li
-                              className={`${props.values.validationAmount ? "" : " text-red-800 "} sm:text-right mx-2 uppercase `}
-                            >
-                              Total
-                            </li>
-                            <li
-                              className={`text-left! mx-2 sm:flex justify-between `}
-                            >
-                              <div
-                                className={`${props.values.validationAmount ? "" : " text-red-800 "} `}
-                              >
-                                <AmountWithPesoSign
-                                  classN="size-3 "
-                                  classAmnt="justify-start! "
-                                  amount={props.values.total}
-                                />
-                              </div>
-                              <div className="sm:flex ">
-                                <span className=" mr-4 uppercase ">
-                                  Total Amount
-                                </span>
-                                <AmountWithPesoSign
-                                  classN="size-3 "
-                                  classAmnt="justify-start! "
-                                  amount={
-                                    props?.values
-                                      ?.sales_order_total_receivable_amount
-                                  }
-                                />
-                              </div>
-                            </li>
-                          </ul>
-                        </div>
+                  {props.values.sales_order_payment_terms === "installment" ? (
+                    <>
+                      <div className="flex my-5 justify-between items-center">
+                        <label htmlFor="">
+                          Installment{" "}
+                          {installmentItems?.length > 0
+                            ? `(${installmentItems?.length})`
+                            : ""}
+                        </label>
+                        <button
+                          type="button"
+                          className=" cursor-pointer flex items-center justify-center text-dark gap-2 px-3 py-1.5 bg-transparent rounded-md border-gray-300 border min-w-20 hover:bg-primary transition-all duration-300 ease-in-out hover:text-light dark:text-light"
+                          onClick={handleAddInstallmentItems}
+                        >
+                          <Plus size={15} />
+                          <span className="capitalize leading-0">
+                            Installment
+                          </span>
+                        </button>
                       </div>
-                    </div>
+
+                      {installmentItems.length === 0 ? (
+                        <hr className="border-gray-200" />
+                      ) : (
+                        <div className="border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out py-3 ">
+                          <div className="flex flex-col pb-2 h-57 overflow-auto">
+                            <ul className=" grid grid-cols-[10rem_1fr_1rem] sm:grid-cols-[1fr_1fr_1rem] gap-3 px-3 text-dark sticky top-0 bg-gray-100 py-2">
+                              <li>Due Date</li>
+                              <li>Amount</li>
+                            </ul>
+                            {installmentItems.map((a, index) => {
+                              return (
+                                <div
+                                  key={a.id}
+                                  className="grid grid-cols-[10rem_1fr_1rem] sm:grid-cols-[1fr_1fr_1rem] gap-3 items-center px-3 py-2"
+                                >
+                                  <input
+                                    onChange={(e) => {
+                                      handleChangeInstallment(
+                                        index,
+                                        "installmet_payment_due_date",
+                                        e.target.value,
+                                      );
+                                    }}
+                                    defaultValue={isEmptyItem(
+                                      a["installmet_payment_due_date"],
+                                      1,
+                                    )}
+                                    type="date"
+                                  />
+                                  <input
+                                    onChange={(e) => {
+                                      handleChangeInstallment(
+                                        index,
+                                        "installmet_payment_amount",
+                                        e.target.value,
+                                        0,
+                                      );
+                                    }}
+                                    defaultValue={isEmptyItem(
+                                      a["installmet_payment_amount"],
+                                      "",
+                                    )}
+                                    placeholder="0"
+                                    type="number"
+                                  />
+
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      handleRemoveInstallmentItems(a)
+                                    }
+                                    className="text-red-500 text-xl"
+                                  >
+                                    ✕
+                                  </button>
+                                </div>
+                              );
+                            })}
+                            <div className="px-3 mt-2 text-dark ">
+                              <ul className="sm:grid grid-cols-2 ">
+                                <li className="sm:text-right mx-2 uppercase">
+                                  Total installment amount
+                                </li>
+                                <li className="text-left! mx-2 ">
+                                  <AmountWithPesoSign
+                                    classN="size-3 "
+                                    classAmnt="justify-start! "
+                                    amount={
+                                      Number(props.values.total) -
+                                      Number(
+                                        props.values.sales_order_paid_amount,
+                                      )
+                                    }
+                                  />
+                                </li>
+                                <li className="sm:text-right mx-2 uppercase">
+                                  Total Paid
+                                </li>
+                                <li className="text-left! mx-2 ">
+                                  <AmountWithPesoSign
+                                    classN="size-3 "
+                                    classAmnt="justify-start! "
+                                    amount={Number(
+                                      props.values.sales_order_paid_amount,
+                                    )}
+                                  />
+                                </li>
+                                <li
+                                  className={`${props.values.validationAmount ? "" : " text-red-800 "} sm:text-right mx-2 uppercase `}
+                                >
+                                  Total
+                                </li>
+                                <li
+                                  className={`text-left! mx-2 sm:flex justify-between `}
+                                >
+                                  <div
+                                    className={`${props.values.validationAmount ? "" : " text-red-800 "} `}
+                                  >
+                                    <AmountWithPesoSign
+                                      classN="size-3 "
+                                      classAmnt="justify-start! "
+                                      amount={props.values.total}
+                                    />
+                                  </div>
+                                  <div className="sm:flex ">
+                                    <span className=" mr-4 uppercase ">
+                                      Total Amount
+                                    </span>
+                                    <AmountWithPesoSign
+                                      classN="size-3 "
+                                      classAmnt="justify-start! "
+                                      amount={
+                                        props?.values
+                                          ?.sales_order_total_receivable_amount
+                                      }
+                                    />
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    ""
                   )}
 
                   <div className="relative mt-3">
@@ -790,8 +836,14 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         ),
                       }}
                       onChange={(e) => {
-                        props.values.sales_order_received_by_id = e.id;
-                        props.values.sales_order_received_by_name = e.value;
+                        props.values.sales_order_received_by_id = isEmptyItem(
+                          e?.id,
+                          "",
+                        );
+                        props.values.sales_order_received_by_name = isEmptyItem(
+                          e?.value,
+                          "",
+                        );
                         return e;
                       }}
                       itemEdit={itemEdit}
