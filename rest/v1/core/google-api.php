@@ -21,13 +21,13 @@ $returnData = [];
 function getSubjectEmail()
 {
     // $subject = $_ENV['GOOGLE_API_SUBJECT_EMAIL']; // localhost
-    $subject = "emmanuel.manalo@frontlinebusiness.com.ph"; // localhost
+    $subject = "graces.noreply@gmail.com"; // localhost
     return $subject;
 }
 
 function getDefaultFolderId($folderId = '')
 {
-    $itemFolderId = "1Ht1CV_OrPQZqdavBtJyRERmjQ8HZUEgu"; // localhost 
+    $itemFolderId = "1OGqhwDjBUBMKSnGQS2dxyYkigCl5hlo4"; // localhost 
     // $itemFolderId = $folderId != '' ? $folderId : $_ENV['GOOGLE_APPLICATION_PROJECT_FOLDER_ID']; // localhost 
     return $itemFolderId;
 }

@@ -23,6 +23,12 @@ define("GOOGLE_AUTH_DRIVE", 'https://www.googleapis.com/auth/drive');
 
 define("UPLOAD_MULTIPLE_PATH", $_ENV["UPLOAD_MULTIPLE_PATH"]);
 
+// Also add putenv just to be completely safe:
+
+define("GOOGLE_CLIENT_ID", $_ENV["GOOGLE_CLIENT_ID"]);
+define("GOOGLE_CLIENT_SECRET", $_ENV["GOOGLE_CLIENT_SECRET"]);
+define("GOOGLE_REFRESH_TOKEN", $_ENV["GOOGLE_REFRESH_TOKEN"]);
+
 // define("USERNAME", "noreply@hris.frontlinebusiness.com.ph");
 // define("PASSWORD", "b@11551gfN4b");
 // define("FROM", "Grace's ");

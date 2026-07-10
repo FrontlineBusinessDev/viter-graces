@@ -297,7 +297,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     ),
     sales_order_payment_terms: isEmptyItem(
       itemEdit?.sales_order_payment_terms,
-      "",
+      "0",
     ),
     sales_order_total_amount: isEmptyItem(
       itemEdit?.sales_order_total_amount,
@@ -331,13 +331,13 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   ];
 
   let termsOption = [
-    { id: "", name: "--" },
+    { id: "0", name: "Due on Receipt - Due on the same day the Sales Order" },
     { id: "installment", name: "Installment" },
-    { id: 10, name: "Net 10 - Due within 10 days" },
-    { id: 15, name: "Net 15 - Due within 15 days" },
-    { id: 20, name: "Net 20 - Due within 20 days" },
-    { id: 25, name: "Net 25 - Due within 25 days" },
-    { id: 30, name: "Net 30 - Due within 30 days" },
+    { id: "10", name: "Net 10 - Due within 10 days" },
+    { id: "15", name: "Net 15 - Due within 15 days" },
+    { id: "20", name: "Net 20 - Due within 20 days" },
+    { id: "25", name: "Net 25 - Due within 25 days" },
+    { id: "30", name: "Net 30 - Due within 30 days" },
   ];
 
   // console.log("items123", items);
