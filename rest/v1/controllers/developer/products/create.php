@@ -37,7 +37,7 @@ $val->products_description = $data["products_description"];
 $val->products_created = date("Y-m-d H:i:s");
 $val->products_updated = date("Y-m-d H:i:s");
 
-$val->products_image = checkToUploadGoogleDrive($data['products_image'], '', 'Products');
+$val->products_image = checkToUploadGoogleDrive($data['products_image'], '');
 
 $val->products_sku = setIdNumber($val, "SKU");
 // check name
