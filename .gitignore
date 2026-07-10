@@ -21,6 +21,7 @@ rest/v1/files-api-key
 rest/v1/core/google-api.php 
 rest/v1/core/google-api-dwd.php
 rest/v1/core/tmp 
+rest/v1/lib/google-api
 rest/v1/lib/google-api/google-key.json
 apikey.php
 .env
