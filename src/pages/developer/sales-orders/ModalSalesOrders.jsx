@@ -297,7 +297,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     ),
     sales_order_payment_terms: isEmptyItem(
       itemEdit?.sales_order_payment_terms,
-      "0",
+      "due on receipt - due on the same day the sales order",
     ),
     sales_order_total_amount: isEmptyItem(
       itemEdit?.sales_order_total_amount,
@@ -331,13 +331,16 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   ];
 
   let termsOption = [
-    { id: "0", name: "Due on Receipt - Due on the same day the Sales Order" },
+    {
+      id: "due on receipt - due on the same day the sales order",
+      name: "Due on Receipt - Due on the same day the Sales Order",
+    },
     { id: "installment", name: "Installment" },
-    { id: "10", name: "Net 10 - Due within 10 days" },
-    { id: "15", name: "Net 15 - Due within 15 days" },
-    { id: "20", name: "Net 20 - Due within 20 days" },
-    { id: "25", name: "Net 25 - Due within 25 days" },
-    { id: "30", name: "Net 30 - Due within 30 days" },
+    { id: "net 10 - due within 10 days", name: "Net 10 - Due within 10 days" },
+    { id: "net 15 - due within 15 days", name: "Net 15 - Due within 15 days" },
+    { id: "net 20 - due within 20 days", name: "Net 20 - Due within 20 days" },
+    { id: "net 25 - due within 25 days", name: "Net 25 - Due within 25 days" },
+    { id: "net 30 - due within 30 days", name: "Net 30 - Due within 30 days" },
   ];
 
   // console.log("items123", items);
@@ -455,7 +458,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         defaultValue=""
                         options={termsOption}
                         onChange={(e) => {
-                          props.values.sales_order_payment_method =
+                          props.values.sales_order_payment_terms =
                             e.target.options[e.target.selectedIndex].text;
                           return e;
                         }}

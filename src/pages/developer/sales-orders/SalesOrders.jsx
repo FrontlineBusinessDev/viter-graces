@@ -96,6 +96,13 @@ const SalesOrders = () => {
       meta: "",
     },
     {
+      accessorKey: "sales_order_payment_terms",
+      header: "method",
+      classTh: "min-w-[10rem]",
+      classTd: "capitalize ",
+      meta: "",
+    },
+    {
       accessorKey: "action",
       action_array: ActionTableList("sales-order", "status-with-view"),
       header: "Action",
