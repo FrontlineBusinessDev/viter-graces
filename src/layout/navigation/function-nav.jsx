@@ -78,7 +78,7 @@ export const getNavList = () => {
       on_click: onClickNav,
       subList: [],
       // roles: ["admin", "product_owner", "cashier", "developer"],
-      roles: ["developer"],
+      roles: ["admin", "developer"],
       title_tab: "",
     },
     {
@@ -114,7 +114,7 @@ export const getNavList = () => {
       on_click: onClickNav,
       subList: [],
       // roles: ["admin", "product_owner", "cashier", "developer"],
-      roles: ["developer"],
+      roles: ["admin", "developer"],
       title_tab: "",
     },
     {
