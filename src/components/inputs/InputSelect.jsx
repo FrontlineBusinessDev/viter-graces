@@ -911,7 +911,7 @@ export const InputSelectFilterTagArray = ({
               menuList: () => "py-1 max-h-60 overflow-auto ",
 
               option: ({ isFocused, isSelected }) =>
-                ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  
+                ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary! z-999!
          ${isSelected ? "bg-primary! text-secondary!" : " "}
          ${!isSelected && isFocused ? "bg-primary! text-secondary! " : " "}`,
             }}
