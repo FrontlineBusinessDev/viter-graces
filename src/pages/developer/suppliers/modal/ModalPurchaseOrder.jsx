@@ -400,7 +400,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                       <div className="relative overflow-auto w-full h-full ">
                         <table className=" md:border md:border-gray-300 dark:border-[#0b111e] ">
                           <thead className={`relative z-50 table-header-group`}>
-                            <tr className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0! z-999">
+                            <tr className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0! z-99">
                               <th className="w-px bg-gray-100!">#</th>
                               <th className={`min-w-20  bg-gray-100!`}>
                                 Products
