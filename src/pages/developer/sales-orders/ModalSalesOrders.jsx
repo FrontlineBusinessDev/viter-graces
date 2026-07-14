@@ -70,7 +70,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
         ],
   );
 
-  const handleChange = (index, selectedItem = "", values, fieldId, field) => {
+  const handleChange = (index, selectedItem = "", fieldId, field) => {
     // console.log("selectedItem", selectedItem);
     const updated = [...items];
     if (selectedItem === null || selectedItem === "") {
@@ -98,7 +98,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     setItems(updated);
   };
 
-  const handleChangeAmount = (index, id = 0, values, field, value) => {
+  const handleChangeAmount = (index, id = 0, field, value) => {
     const updated = [...items];
 
     updated[index]["sales_order_qty_old"] = isEmptyItem(
@@ -544,7 +544,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                             handleChange(
                                               index,
                                               selectedItem,
-                                              props.values,
                                               "sales_order_product_id",
                                               "sales_order_product_name",
                                             );
