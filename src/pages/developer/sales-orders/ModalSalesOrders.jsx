@@ -61,6 +61,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
             sales_order_product_name: "",
             sales_order_product_owner_id: "",
             sales_order_product_owner_name: "",
+            sales_order_discounted_with_vat_amount: 0,
             sales_order_qty: "1",
             sales_order_qty_old: "1",
             sales_order_price: "",
@@ -93,37 +94,11 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
 
       updated[index][field] = selectedItem["name"];
       updated[index][fieldId] = selectedItem["id"];
-
-      // this is for total amount - discount + VAT
-
-      // this is for total amount - discount + VAT
-      const discountPerItems =
-        isEmptyItem(values?.sales_order_discount, 0) /
-        isEmptyItem(items?.length, 0);
-      const discountedAmountPerItem =
-        isEmptyItem(values?.sales_order_total, 0) - Number(discountPerItems);
-      let totalVatPerItems = 0;
-
-      // COMPUTATION OF EXCLUSIVE TAX
-      if (Number(values.sales_order_tax) === 0.12) {
-        totalVatPerItems = Number(discountedAmountPerItem) * 0.12;
-      }
-
-      updated[index]["sales_order_discounted_with_vat_amount"] =
-        discountedAmountPerItem;
     }
-    // COMPUTATION OF EXCLUSIVE TAX
-    if (Number(values.sales_order_tax) === 0.12) {
-      totalVatPerItems = Number(discountedAmountPerItem) * 0.12;
-    }
-
-    values.sales_order_discounted_with_vat_amount =
-      Number(discountedAmountPerItem) + Number(totalVatPerItems);
-
     setItems(updated);
   };
 
-  const handleChangeAmount = (index, id = 0, field, value) => {
+  const handleChangeAmount = (index, id = 0, values, field, value) => {
     const updated = [...items];
 
     updated[index]["sales_order_qty_old"] = isEmptyItem(
@@ -414,8 +389,8 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
               Validations(values, items, dispatch);
 
               if (!Validations(values, items, dispatch)) {
-                console.log("data1", data);
-                // mutation.mutate(data);
+                // console.log("data1", data);
+                mutation.mutate(data);
               } else {
                 dispatch(setError(true));
               }

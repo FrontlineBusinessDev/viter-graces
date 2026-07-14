@@ -36,7 +36,6 @@ if (array_key_exists("id", $_GET)) {
     $val->sales_order_tax_amount = $data["sales_order_tax_amount"];
     $val->sales_order_number = $data["sales_order_number"];
     $val->sales_order_total_balance_amount = max(0, $data["sales_order_total_balance_amount"]);
-    $val->sales_order_discounted_with_vat_amount = max(0, $data["sales_order_discounted_with_vat_amount"]); // not accepting negative
     $val->sales_order_created = date("Y-m-d H:i:s");
     $val->sales_order_updated = date("Y-m-d H:i:s");
 
@@ -99,6 +98,18 @@ if (array_key_exists("id", $_GET)) {
         $val->sales_order_price = $ordersItems[$i]["sales_order_price"];
         // $sales_order_qty_old = $ordersItems[$i]["sales_order_qty_old"];
         $val->sales_order_total = $ordersItems[$i]["sales_order_total"];
+
+        // this is for total amount - discount + VAT
+        $discountPerItems = (float)$val->sales_order_discount / count($installmentItems);
+        $discountedAmountPerItem = (float)$val->sales_order_total - (float)$discountPerItems;
+        $totalVatPerItems = 0;
+
+        // COMPUTATION OF EXCLUSIVE TAX
+        if ((float)$val->sales_order_tax == 0.12) {
+            $totalVatPerItems = (float)$discountedAmountPerItem * 0.12;
+        }
+
+        $val->sales_order_discounted_with_vat_amount = max(0, (float)$discountedAmountPerItem); // not accepting negative
 
         if ((float)$val->sales_order_aid == 0) {
             $query = checkCreate($val);
