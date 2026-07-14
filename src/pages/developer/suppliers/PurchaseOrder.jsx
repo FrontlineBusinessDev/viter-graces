@@ -70,9 +70,10 @@ const PurchaseOrder = () => {
     },
     {
       accessorKey: "formated_delivery_date",
-      header: "expected",
-      classTh: "min-w-[7rem] ",
+      header: "expected delivery",
+      classTh: "min-w-[10rem] ",
       classTd: "",
+      filterFn: "date",
       meta: "",
     },
     {

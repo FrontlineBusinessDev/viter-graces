@@ -69,7 +69,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
         ],
   );
 
-  const handleChange = (index, selectedItem = "", fieldId, field) => {
+  const handleChange = (index, selectedItem = "", values, fieldId, field) => {
     // console.log("selectedItem", selectedItem);
     const updated = [...items];
     if (selectedItem === null || selectedItem === "") {
@@ -93,7 +93,33 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
 
       updated[index][field] = selectedItem["name"];
       updated[index][fieldId] = selectedItem["id"];
+
+      // this is for total amount - discount + VAT
+
+      // this is for total amount - discount + VAT
+      const discountPerItems =
+        isEmptyItem(values?.sales_order_discount, 0) /
+        isEmptyItem(items?.length, 0);
+      const discountedAmountPerItem =
+        isEmptyItem(values?.sales_order_total, 0) - Number(discountPerItems);
+      let totalVatPerItems = 0;
+
+      // COMPUTATION OF EXCLUSIVE TAX
+      if (Number(values.sales_order_tax) === 0.12) {
+        totalVatPerItems = Number(discountedAmountPerItem) * 0.12;
+      }
+
+      updated[index]["sales_order_discounted_with_vat_amount"] =
+        discountedAmountPerItem;
     }
+    // COMPUTATION OF EXCLUSIVE TAX
+    if (Number(values.sales_order_tax) === 0.12) {
+      totalVatPerItems = Number(discountedAmountPerItem) * 0.12;
+    }
+
+    values.sales_order_discounted_with_vat_amount =
+      Number(discountedAmountPerItem) + Number(totalVatPerItems);
+
     setItems(updated);
   };
 
@@ -304,6 +330,10 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
       "0",
     ),
     sales_order_number: isEmptyItem(itemEdit?.sales_order_number, ""),
+    sales_order_discounted_with_vat_amount: isEmptyItem(
+      itemEdit?.sales_order_discounted_with_vat_amount,
+      0,
+    ),
     subtotal: "0",
     validationAmount: false,
   };
@@ -385,7 +415,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
 
               if (!Validations(values, items, dispatch)) {
                 console.log("data1", data);
-                mutation.mutate(data);
+                // mutation.mutate(data);
               } else {
                 dispatch(setError(true));
               }
@@ -484,76 +514,123 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         <p>No Items added yet.</p>
                       </div>
                     ) : (
-                      <div className="flex flex-col pb-2 mb-3  ">
-                        <ul className="grid grid-cols-[10rem_5rem_7rem_7rem_1rem] sm:grid-cols-[1fr_5rem_7rem_7rem_1rem] gap-2 px-3 p-3 text-dark bg-gray-100">
-                          <li>Products</li>
-                          <li>Quantity</li>
-                          <li className="text-right">Price per pc.</li>
-                          <li className="text-center">Total</li>
-                        </ul>
-                        {items.map((a, index) => {
-                          // console.log("items", items);
-                          return (
-                            <div
-                              key={a.id}
-                              className="grid grid-cols-[10rem_5rem_7rem_7rem_1rem] sm:grid-cols-[1fr_5rem_7rem_7rem_1rem] gap-1 items-center px-3 py-1"
+                      <>
+                        <div className="relative overflow-auto w-full h-full min-h-80 bg-gray-100 dark:bg-gray-900! ">
+                          <table className="shadow-none! ">
+                            <thead
+                              className={`relative z-50 table-header-group`}
                             >
-                              <InputSalesOrderSelectTagArray
-                                onChange={(e, selectedItem) => {
-                                  handleChange(
-                                    index,
-                                    selectedItem,
-                                    "sales_order_product_id",
-                                    "sales_order_product_name",
-                                  );
-                                }}
-                                dataVal={items}
-                                item={a}
-                                path={`products/read-all-product-that-have-stock`}
-                                testFilterId="sales_order_product_name"
-                                store={store}
-                              />
-                              <input
-                                onChange={(e) => {
-                                  handleChangeAmount(
-                                    index,
-                                    a?.sales_order_aid,
-                                    "sales_order_qty",
-                                    e.target.value,
-                                  );
-                                }}
-                                className="mt-0"
-                                defaultValue={isEmptyItem(
-                                  a["sales_order_qty"],
-                                  1,
-                                )}
-                                type="number"
-                                placeholder="Qty"
-                              />
+                              <tr className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0! ">
+                                <th className="w-px dark:bg-gray-900! bg-gray-100!">
+                                  #
+                                </th>
+                                <th
+                                  className={`min-w-40  dark:bg-gray-900! bg-gray-100!`}
+                                >
+                                  Products
+                                </th>
+                                <th
+                                  className={` dark:bg-gray-900! bg-gray-100!`}
+                                >
+                                  Quantity
+                                </th>
+                                <th
+                                  className={`min-w-30! dark:bg-gray-900! bg-gray-100! text-right`}
+                                >
+                                  Price per pc.
+                                </th>
+                                <th
+                                  className={` dark:bg-gray-900! bg-gray-100! text-right`}
+                                >
+                                  Total
+                                </th>
+                                <th
+                                  className={` dark:bg-gray-900! bg-gray-100! `}
+                                ></th>
+                              </tr>
+                            </thead>
+                            <tbody className="">
+                              {items.map((a, index) => {
+                                return (
+                                  <tr key={a?.id} className="border-0!">
+                                    <td className="text-center dark:bg-gray-900! bg-gray-100! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
+                                      {index + 1}.
+                                    </td>
+                                    {Number(
+                                      isEmptyItem(a?.sales_order_aid, 0),
+                                    ) !== 0 ? (
+                                      <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                        {itemEdit?.sales_order_product_name}
+                                      </td>
+                                    ) : (
+                                      <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                        <InputSalesOrderSelectTagArray
+                                          onChange={(e, selectedItem) => {
+                                            handleChange(
+                                              index,
+                                              selectedItem,
+                                              props.values,
+                                              "sales_order_product_id",
+                                              "sales_order_product_name",
+                                            );
+                                          }}
+                                          dataVal={items}
+                                          item={a}
+                                          path={`products/read-all-product-that-have-stock`}
+                                          testFilterId="sales_order_product_name"
+                                          store={store}
+                                          className={" "}
+                                        />
+                                      </td>
+                                    )}
 
-                              <span className="font-semibold text-black dark:text-light mr-2">
-                                <AmountWithPesoSign
-                                  classN="size-3"
-                                  amount={a["sales_order_price"]}
-                                />
-                              </span>
-                              <span className="font-semibold text-black dark:text-light mr-2">
-                                <AmountWithPesoSign
-                                  classN="size-3"
-                                  amount={a["sales_order_total"]}
-                                />
-                              </span>
-                              <button
-                                type="button"
-                                onClick={() => handleRemoveItem(a)}
-                                className="text-red-500 text-xl"
-                              >
-                                ✕
-                              </button>
-                            </div>
-                          );
-                        })}
-                      </div>
+                                    <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                      <input
+                                        onChange={(e) => {
+                                          handleChangeAmount(
+                                            index,
+                                            a?.sales_order_aid,
+                                            "sales_order_qty",
+                                            e.target.value,
+                                          );
+                                        }}
+                                        className="mt-0 bg-white  dark:bg-gray-900!"
+                                        defaultValue={isEmptyItem(
+                                          a["sales_order_qty"],
+                                          1,
+                                        )}
+                                        type="number"
+                                        placeholder="Qty"
+                                      />
+                                    </td>
+                                    <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                      <AmountWithPesoSign
+                                        classN="size-3"
+                                        amount={a["sales_order_price"]}
+                                      />
+                                    </td>
+                                    <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                      <AmountWithPesoSign
+                                        classN="size-3"
+                                        amount={a["sales_order_total"]}
+                                      />
+                                    </td>
+                                    <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                      <button
+                                        onClick={() => handleRemoveItem(a)}
+                                        className="text-red-500 text-xl"
+                                        type="button"
+                                      >
+                                        ✕
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                        </div>
+                      </>
                     )}
                   </div>
 
@@ -569,7 +646,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                     </div>
                     <div className="relative ">
                       <InputSelectArrayWithOptions
-                        label="Tax"
+                        label="VAT"
                         type="sales_order_tax"
                         name="sales_order_tax"
                         defaultValue="--"
@@ -599,7 +676,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                           amount={props.values.subtotal}
                         />
                       </li>
-                      <li>Tax Amount:</li>
+                      <li>VAT Amount:</li>
                       <li>
                         <AmountsWithPesoSign
                           classN={"size-3"}

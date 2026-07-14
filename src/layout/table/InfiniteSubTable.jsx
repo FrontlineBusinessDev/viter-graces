@@ -1,8 +1,8 @@
 import AddButton from "@/components/buttons/AddButton";
 import ExportCSVButton from "@/components/buttons/ExportCSVButton";
+import { DateFormat } from "@/components/DateFormat";
 import { DebouncedInput } from "@/components/inputs/InputText";
 import NoData from "@/components/NoData";
-import { AmountWithPesoSign } from "@/components/PesoSign";
 import SearchBar from "@/components/SearchBar";
 import ServerError from "@/components/ServerError";
 import ButtonSpinner from "@/components/spinners/ButtonSpinner";
@@ -13,6 +13,7 @@ import { queryDataInfinite } from "@/services/queryDataInfinite";
 import { setIsSubAdd, setIsView } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import {
   flexRender,
@@ -25,9 +26,7 @@ import React, { useCallback, useMemo, useRef, useState } from "react";
 import ActionButtonSubTable from "../ActionButtonSubTable";
 import MobileResponsiveList from "../mobile-responsive/MobileResponsiveList";
 import ModalSubAction from "../modal/ModalSubAction";
-import TableStatus from "../TableStatus";
-import { ProductOwnerId } from "@/utilities/productOwnerToken";
-import { DateFormat } from "@/components/DateFormat";
+import { renderCellContent } from "./function-table";
 
 const InfiniteSubTable = ({
   columns,
@@ -242,7 +241,7 @@ const InfiniteSubTable = ({
               ishaveSubAdd={ishaveSubAdd}
             />
             {/* TABLE */}
-            <table className="overflow-auto md:border md:border-gray-300 dark:border-[#0b111e] ">
+            <table className="overflow-visible md:border md:border-gray-300 dark:border-[#0b111e] ">
               <thead className={`relative z-50 hidden lg:table-header-group`}>
                 {table?.getHeaderGroups()?.map((headerGroup) => (
                   <tr
@@ -265,11 +264,11 @@ const InfiniteSubTable = ({
                 ))}
               </thead>
               {haveFilterTable ? (
-                <thead className={`relative border-0!`}>
+                <thead className={`relative border-0! z-50`}>
                   {table?.getHeaderGroups()?.map((headerGroup) => (
                     <tr
                       key={headerGroup?.id}
-                      className="lg:table-row sticky top-9 uppercase dark:bg-[#0b111e] z-999 hidden lg:group"
+                      className="lg:table-row sticky top-9 uppercase dark:bg-[#0b111e] hidden lg:group"
                     >
                       <th className="w-px  "> </th>
                       {headerGroup?.headers?.map((header) => (
@@ -338,51 +337,21 @@ const InfiniteSubTable = ({
                         key={row.id}
                         ref={isLastRow ? lastRowRef : null}
                         className="hidden lg:table-row group"
+                        data-testid="table-row"
                       >
-                        <td className="text-center">{index + 1}.</td>
+                        <td className="text-center last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
+                          {index + 1}.
+                        </td>
                         {row.getVisibleCells().map((item) => (
                           <td
                             key={item?.id}
-                            className={` ${isEmptyItem(item?.column?.columnDef?.classTd, "")} overflow-visible `}
+                            className={` ${isEmptyItem(item?.column?.columnDef?.classTd, "")} `}
                           >
-                            {item?.column?.columnDef?.header === "status" ? (
-                              <TableStatus
-                                item={item?.column?.columnDef}
-                                dataArray={row.original}
-                              />
-                            ) : item?.column?.columnDef?.isViewItems ? (
-                              <button
-                                className="text-green-700 hover:text-green-800 hover:underline"
-                                onClick={() => handleView(item, row.original)}
-                              >
-                                View Items
-                              </button>
-                            ) : (
-                              <div className="flex items-center">
-                                {isEmptyItem(
-                                  item?.column?.columnDef?.amount ||
-                                    item?.column?.columnDef?.paid_amount,
-                                  false,
-                                ) ? (
-                                  <AmountWithPesoSign
-                                    classN="size-3"
-                                    amount={
-                                      rowData[
-                                        `${item?.column?.columnDef?.accessorKey}`
-                                      ]
-                                    }
-                                  />
-                                ) : (
-                                  flexRender(
-                                    item?.column?.columnDef?.cell,
-                                    item?.getContext(),
-                                  )
-                                )}
-                              </div>
-                            )}
+                            {renderCellContent(item, rowData)}
+
                             {/* FOR ACTION BUTTONS */}
                             {item?.column?.columnDef?.accessorKey ===
-                            "action" ? (
+                              "action" && (
                               <ActionButtonSubTable
                                 item={item?.column?.columnDef}
                                 dataArray={row.original}
@@ -391,8 +360,6 @@ const InfiniteSubTable = ({
                                 ishaveSubAdd={ishaveSubAdd}
                                 path={path}
                               />
-                            ) : (
-                              ""
                             )}
                           </td>
                         ))}

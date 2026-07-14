@@ -1,5 +1,5 @@
 import ActionButton from "@/components/buttons/ActionButton";
-import { setIsSubAction, setIsSubAdd } from "@/store/StoreAction";
+import { setIsSubAction, setIsSubAdd, setIsView } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import React from "react";
@@ -35,12 +35,35 @@ const ActionButtonSubTable = ({
     });
   };
 
+  // ACTIONS UPDATE
+  const handleView = (val) => {
+    dispatch(setIsView(true));
+    setItemEdit({
+      ...dataArray,
+    });
+  };
   return (
     <>
       <div className="flex items-center lg:justify-end gap-3 ">
+        {item?.action_array?.map((a, akey) => {
+          return (
+            isEmptyItem(a?.name, "") === "view" &&
+            Number(isEmptyItem(a?.isActive, 1)) ===
+              Number(isEmptyItem(dataArray?.is_active, 1)) && (
+              <div key={akey}>
+                <ActionButton
+                  item={a}
+                  onClick={() => handleView(a)}
+                  data-testid={a.testId}
+                />
+              </div>
+            )
+          );
+        })}
         {item?.action_array?.map((a, key) => {
           return (
             isEmptyItem(a?.name, "") === "edit" &&
+            isEmptyItem(a?.name, "") !== "view" &&
             Number(isEmptyItem(a?.isActive, 1)) ===
               Number(isEmptyItem(dataArray?.is_active, 1)) && (
               <div key={key}>
@@ -52,6 +75,7 @@ const ActionButtonSubTable = ({
         {item?.action_array?.map((a, key) => {
           return (
             isEmptyItem(a?.name, "") !== "edit" &&
+            isEmptyItem(a?.name, "") !== "view" &&
             Number(isEmptyItem(a?.isActive, 1)) ===
               Number(isEmptyItem(dataArray?.is_active, 1)) && (
               <div key={key}>

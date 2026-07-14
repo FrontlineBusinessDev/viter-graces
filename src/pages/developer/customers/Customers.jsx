@@ -1,3 +1,4 @@
+import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
 import { ActionTableList, ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfinitePerTabs from "@/layout/table/InfinitePerTabs";
@@ -9,8 +10,7 @@ import { FaFacebookMessenger } from "react-icons/fa";
 import { IoLogoWhatsapp } from "react-icons/io";
 import ModalCustomer from "./ModalCustomer";
 import ModalSalesOrders from "./ModalSalesOrders";
-import ViewDetails from "./ViewDetails";
-import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import ViewSalesDetails from "../sales-orders/ViewSalesDetails";
 
 const Customers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -86,7 +86,7 @@ const Customers = () => {
     {
       accessorKey: "sales_order_status",
       header: "status",
-      classTh: "min-w-[5rem] ",
+      classTh: "min-w-[7rem]",
       classTd: "",
       filterFn: "equals",
       meta: {
@@ -101,66 +101,76 @@ const Customers = () => {
     },
     {
       accessorKey: "sales_order_number",
-      header: "Order #",
-      classTh: "min-w-[6rem] ",
-      isViewItems: false,
+      header: "order #",
+      classTh: "min-w-[5rem]",
       classTd: "",
       meta: "",
     },
     {
       accessorKey: "sales_order_date",
-      header: "Date",
-      isViewItems: false,
-      classTh: " ",
+      header: "date",
+      classTh: "min-w-[7rem]",
       classTd: "",
       filterFn: "date",
       meta: "",
     },
     {
-      accessorKey: "customer_phone",
-      header: "Items",
-      isViewItems: true,
-      classTh: "min-w-[6rem] ",
+      accessorKey: "sales_order_due_date",
+      header: "Due Date",
+      classTh: "min-w-[7rem]",
       classTd: "",
+      filterFn: "date",
+      meta: "",
     },
     {
-      accessorKey: "total_paid",
+      accessorKey: "sales_order_total_receivable_amount",
+      header: "total",
       amount: true,
-      header: "Paid",
-      isViewItems: false,
-      classTh: "min-w-[10rem] ",
-      classTd: "",
       filterFn: "between",
+      classTh: "min-w-[10rem]",
+      classTd: "",
+      meta: "",
+    },
+    {
+      accessorKey: "sales_order_paid_amount",
+      header: "paid",
+      paid_amount: true,
+      filterFn: "between",
+      classTh: "min-w-[10rem]",
+      classTd: "",
+      meta: "",
+    },
+    {
+      accessorKey: "sales_order_total_balance_amount",
+      header: "balance",
+      amount: true,
+      filterFn: "between",
+      classTh: "min-w-[10rem]",
+      classTd: "",
       meta: "",
     },
     {
       accessorKey: "sales_order_payment_method",
-      header: "Method",
-      isViewItems: false,
-      classTh: "",
-      classTd: " uppercase ",
+      header: "method",
+      classTh: "min-w-[10rem]",
+      classTd: "capitalize ",
       meta: "",
     },
     {
-      accessorKey: "total_amount",
-      amount: true,
-      header: "Total",
-      isViewItems: false,
-      classTh: "min-w-[10rem] ",
-      classTd: "",
-      filterFn: "between",
+      accessorKey: "sales_order_payment_terms",
+      header: "payment terms",
+      classTh: "min-w-[10rem]",
+      classTd: "capitalize ",
       meta: "",
     },
     {
       accessorKey: "action",
-      action_array: ActionTableList("sales-order", "edit-delete-status"),
+      action_array: ActionTableList("sales-order", "status-with-view"),
       header: "Action",
-      icon: "",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
     },
   ];
-
   return (
     <>
       <HeaderNav menu={"customers"} activeTab="customers">
@@ -184,7 +194,7 @@ const Customers = () => {
       {store.isAdd && <ModalCustomer itemEdit={itemEdit} />}
       {store.isSubAdd && <ModalSalesOrders itemEdit={itemEdit} />}
 
-      {store.isView && <ViewDetails itemEdit={itemVal} />}
+      {store.isView && <ViewSalesDetails itemEdit={itemEdit} />}
     </>
   );
 };

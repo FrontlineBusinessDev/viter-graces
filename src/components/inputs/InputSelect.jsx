@@ -307,7 +307,7 @@ export const SearchableSelectFilterStatus = ({
   const selected = options.find((opt) => opt.value === value) || null;
 
   return (
-    <div data-testid="filter-status-btn">
+    <div data-testid="filter-status-btn ">
       <Select
         data-testid={testFilterStatusId}
         classNamePrefix="react-select"
@@ -321,18 +321,17 @@ export const SearchableSelectFilterStatus = ({
         isClearable
         classNames={{
           control: ({ isFocused }) =>
-            ` w-full! min-h-full! text-sm border rounded-lg! mt-2 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
-         ${isFocused ? " border-primary! " : " border-gray-300 "}
+            ` w-full! min-h-full! text-sm border rounded-lg! cursor-pointer! shadow-none! dark:bg-[#0b111e]! ${isFocused ? " border-primary! " : " border-gray-300 "}
          hover:border-primary! `,
 
           valueContainer: () => "px-1 py-0 ",
 
-          input: () => "text-sm h-[22px]! text-gray-500!  ",
+          input: () => "text-sm h-[22px]! text-gray-500! dark:text-white! ",
 
-          placeholder: () => "text-gray-400! text-sm",
+          placeholder: () => "text-gray-400! text-sm dark:text-white!",
 
           singleValue: () =>
-            ` ${uppercase} normal-case! text-sm text-gray-500! `,
+            ` ${uppercase} normal-case! text-sm text-gray-500! dark:text-white!`,
 
           indicatorsContainer: () => "",
 
@@ -395,11 +394,12 @@ export const SearchableSelectFilter = ({ column, path, testFilterId }) => {
 
           valueContainer: () => "px-1 py-0",
 
-          input: () => "text-sm h-[22px]! text-gray-500! ",
+          input: () => "text-sm h-[22px]! text-gray-500! dark:text-white  ",
 
-          placeholder: () => "text-gray-400! text-sm",
+          placeholder: () => "text-gray-400! text-sm dark:text-white!",
 
-          singleValue: () => "normal-case! text-sm text-gray-500! ",
+          singleValue: () =>
+            "normal-case! text-sm text-gray-500! dark:text-white!",
 
           indicatorsContainer: () => "",
 
@@ -462,11 +462,13 @@ export const SearchableSelectModalFilter = ({ path, testFilterId }) => {
 
           valueContainer: () => "px-1 py-0",
 
-          input: () => "text-sm h-[22px]! text-gray-500! ",
+          input: () => "text-sm h-[22px]! text-gray-500! dark:text-white ",
 
-          placeholder: () => "text-gray-400! text-sm",
+          placeholder: () =>
+            "text-gray-400! text-sm dark:text-white dark:text-white! ",
 
-          singleValue: () => "normal-case! text-sm text-gray-500! ",
+          singleValue: () =>
+            "normal-case! text-sm text-gray-500! dark:text-white! ",
 
           indicatorsContainer: () => "",
 
@@ -586,6 +588,7 @@ export const InputSalesOrderSelectTagArray = ({
   path = null,
   required = true,
   testFilterId = "",
+  className = "",
   store,
 }) => {
   const userId = ProductOwnerId(store);
@@ -654,17 +657,19 @@ export const InputSalesOrderSelectTagArray = ({
             isClearable
             classNames={{
               control: ({ isFocused }) =>
-                ` w-full! min-h-full! text-sm border rounded-lg! px-1 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
+                `z-[999]!  w-full! min-h-full! text-sm border rounded-lg! px-1 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
          ${isFocused ? " border-primary! " : " border-gray-300 "}
+         ${className}
          hover:border-primary! `,
 
               valueContainer: () => "px-1 py-0",
 
               input: () => "text-sm h-[27px]! text-gray-500! ",
 
-              placeholder: () => "text-gray-400! text-sm",
+              placeholder: () => "text-gray-400! text-sm dark:text-white!",
 
-              singleValue: () => "normal-case! text-sm text-gray-500! ",
+              singleValue: () =>
+                "normal-case! text-sm text-gray-500! dark:text-white! ",
 
               indicatorsContainer: () => "",
 
@@ -677,12 +682,12 @@ export const InputSalesOrderSelectTagArray = ({
                 "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
 
               menu: () =>
-                "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white dark:bg-[#0b111e]! z-50",
+                "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white dark:bg-[#0b111e]! z-[999]! ",
 
               menuList: () => "py-1 max-h-60 overflow-auto ",
 
               option: ({ isFocused, isSelected }) =>
-                ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  
+                ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  z-[999]! 
          ${isSelected ? "bg-primary! text-secondary!" : " "}
          ${!isSelected && isFocused ? "bg-primary! text-secondary! " : " "}`,
             }}
@@ -744,66 +749,64 @@ export const DefaultInputSelectTagArray = ({
       ) : (
         ""
       )}
-      {Number(isEmptyItem(item?.sales_order_aid, 0)) !== 0 ? (
-        <span>{item?.sales_order_product_name}</span>
-      ) : (
-        <div data-testid={testFilterId}>
-          <Select
-            placeholder="--"
-            options={options}
-            value={selected}
-            onChange={(e) => {
-              if (!e) {
-                setSelected(null);
-                onChange(null, null);
-                return;
-              }
+      <div data-testid={testFilterId}>
+        <Select
+          placeholder="--"
+          options={options}
+          value={selected}
+          onChange={(e) => {
+            if (!e) {
+              setSelected(null);
+              onChange(null, null);
+              return;
+            }
 
-              const selectedItem = result?.data?.find(
-                (item) => Number(item.id) === Number(e.id),
-              );
+            const selectedItem = result?.data?.find(
+              (item) => Number(item.id) === Number(e.id),
+            );
 
-              setSelected(e);
-              onChange(e, selectedItem);
-            }}
-            isClearable
-            classNames={{
-              control: ({ isFocused }) =>
-                ` w-full! min-h-full! text-sm border rounded-lg! px-1 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
+            setSelected(e);
+            onChange(e, selectedItem);
+          }}
+          isClearable
+          classNames={{
+            control: ({ isFocused }) =>
+              ` w-full! min-h-full! text-sm border rounded-lg! px-1 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
          ${isFocused ? " border-primary! " : " border-gray-300 "}
          hover:border-primary! `,
 
-              valueContainer: () => "px-1 py-0",
+            valueContainer: () => "px-1 py-0",
 
-              input: () => "text-sm h-[27px]! text-gray-500! ",
+            input: () => "text-sm h-[27px]! text-gray-500! ",
 
-              placeholder: () => "text-gray-400! text-sm",
+            placeholder: () =>
+              "text-gray-400! text-sm dark:text-white! dark:text-white!",
 
-              singleValue: () => "normal-case! text-sm text-gray-500! ",
+            singleValue: () =>
+              "normal-case! text-sm text-gray-500! dark:text-white! ",
 
-              indicatorsContainer: () => "",
+            indicatorsContainer: () => "",
 
-              indicatorSeparator: () => "w-0!",
+            indicatorSeparator: () => "w-0!",
 
-              dropdownIndicator: () =>
-                "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
+            dropdownIndicator: () =>
+              "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
 
-              clearIndicator: () =>
-                "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
+            clearIndicator: () =>
+              "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
 
-              menu: () =>
-                "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white dark:bg-[#0b111e]! z-50",
+            menu: () =>
+              "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white dark:bg-[#0b111e]! z-50",
 
-              menuList: () => "py-1 max-h-60 overflow-auto ",
+            menuList: () => "py-1 max-h-60 overflow-auto ",
 
-              option: ({ isFocused, isSelected }) =>
-                ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  
+            option: ({ isFocused, isSelected }) =>
+              ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  
          ${isSelected ? "bg-primary! text-secondary!" : " "}
          ${!isSelected && isFocused ? "bg-primary! text-secondary! " : " "}`,
-            }}
-          />
-        </div>
-      )}
+          }}
+        />
+      </div>
     </>
   );
 };
@@ -891,9 +894,11 @@ export const InputSelectFilterTagArray = ({
 
               input: () => "text-sm h-[27px]! text-gray-500! ",
 
-              placeholder: () => "text-gray-400! text-sm",
+              placeholder: () =>
+                "text-gray-400! text-sm dark:text-white! dark:text-white!",
 
-              singleValue: () => "normal-case! text-sm text-gray-500! ",
+              singleValue: () =>
+                "normal-case! text-sm text-gray-500! dark:text-white! ",
 
               indicatorsContainer: () => "",
 

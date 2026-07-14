@@ -4,6 +4,7 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalProductOwner from "./modal/ModalProductOwner";
+import ViewProducts from "./modal/ViewProducts";
 const ProductOwner = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -30,7 +31,7 @@ const ProductOwner = () => {
     },
     {
       accessorKey: "action",
-      action_array: ActionTableList("owner"),
+      action_array: ActionTableList("product-owner", "status-with-view"),
       header: "Action",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
@@ -48,6 +49,7 @@ const ProductOwner = () => {
         />
       </HeaderNav>
       {store.isAdd && <ModalProductOwner itemEdit={itemEdit} />}
+      {store.isView && <ViewProducts itemEdit={itemEdit} />}
     </>
   );
 };

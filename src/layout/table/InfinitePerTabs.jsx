@@ -491,16 +491,13 @@ const InfinitePerTabs = ({
                       ) : (
                         ""
                       )}
-                      {isEmptyItem(rows[index]?.original?.notes, "") !== "" ? (
-                        <p className="m-0!">
-                          Notes:
-                          <span className="ml-1">
-                            {isEmptyItem(rows[index]?.original?.notes, "")}
-                          </span>
-                        </p>
-                      ) : (
-                        ""
-                      )}
+
+                      <p className="m-0!">
+                        Notes:
+                        <span className="ml-1">
+                          {isEmptyItem(rows[index]?.original?.notes, "")}
+                        </span>
+                      </p>
                     </div>
 
                     <InfiniteSubTable

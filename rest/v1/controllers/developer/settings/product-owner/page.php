@@ -28,22 +28,47 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->column_total = 15;
         $val->filters = [];
         $val->max = PHP_INT_MAX;
+        $total_result_final = [];
 
         checkLimitId($val->column_start, $val->column_total);
 
         $query = checkReadByProductOwnerLimit($val, allowedColumns());
         $total_result = checkReadByProductOwner($val, allowedColumns());
+
+        $data = getResultData($query);
+
+
+        for ($i = 0; $i < count($data); $i++) {
+
+            $val->user_account_aid = $data[$i]["user_account_aid"];
+
+            $queryLogin = $val->readByProductId(allowedProductColumns());
+
+            $queryLogin = $queryLogin
+                ? getResultData($queryLogin)
+                : [];
+
+            $total_result_final[] = [
+                ...$data[$i],
+                "items" => $queryLogin,
+            ];
+        }
+
         http_response_code(200);
 
-        checkReadQuery(
-            $query,
-            $total_result,
-            $val->column_total,
-            $val->column_start
-        );
+        $response = new Response();
+        $returnData = [];
 
-        // return 404 error if endpoint not available
-        checkEndpoint();
+        $returnData["data"] = $total_result_final;
+        $returnData["count"] = count($total_result_final);
+        $returnData["total"] = $total_result->rowCount();
+        $returnData["per_page"] = $val->column_total;
+        $returnData["page"] = (int)$val->column_start;
+        $returnData["total_pages"] = ceil($total_result->rowCount() / $val->column_total);
+        $returnData["success"] = true;
+        $response->setData($returnData);
+        $response->send();
+        exit;
     }
 }
 

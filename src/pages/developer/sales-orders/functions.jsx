@@ -1,4 +1,5 @@
 import { setMessage } from "@/store/StoreAction";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
 
 // Props Values
 export const PropsValues = (props, items, installmentItems) => {
@@ -17,6 +18,13 @@ export const PropsValues = (props, items, installmentItems) => {
         Number(item.sales_order_qty || 1) * Number(item.sales_order_price || 0),
       0,
     ) - Number(values.sales_order_discount);
+
+  values.subtotal = items?.reduce(
+    (sum, item) =>
+      sum +
+      Number(item.sales_order_qty || 1) * Number(item.sales_order_price || 0),
+    0,
+  );
 
   // COMPUTATION OF INCLUSIVE TAX
   if (Number(values.sales_order_tax) === 1.12) {
@@ -58,6 +66,7 @@ export const PropsValues = (props, items, installmentItems) => {
     ) + Number(values.sales_order_paid_amount);
   values.validationAmount =
     Number(values.total) >= Number(values.sales_order_total_receivable_amount);
+
   return;
 };
 // Copyright year
@@ -77,7 +86,7 @@ export const Validations = (values, items, dispatch) => {
   }
 
   if (Number(values.sales_order_received_by_id) === 0) {
-    dispatch(setMessage("Invalid is received by"));
+    dispatch(setMessage("Invalid received by"));
     return true;
   }
   return false;

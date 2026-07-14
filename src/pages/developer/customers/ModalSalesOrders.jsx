@@ -1,14 +1,13 @@
 import ModalButton from "@/components/buttons/ModalButton";
 import {
   InputSalesOrderSelectTagArray,
-  InputSelectArray,
   InputSelectArrayWithOptions,
-  InputSelectCustomerArray,
+  InputSelectFilterTagArray,
 } from "@/components/inputs/InputSelect";
 import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
-import { AmountWithPesoSign } from "@/components/PesoSign";
+import { AmountsWithPesoSign, AmountWithPesoSign } from "@/components/PesoSign";
 import { apiVersion } from "@/config/config";
 import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
@@ -27,21 +26,43 @@ import { Form, Formik } from "formik";
 import { Plus } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
+import { PropsValues, Validations } from "../sales-orders/functions";
 
-const ModalSalesOrders = ({ itemEdit }) => {
+const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const [counter, setCounter] = React.useState(0);
+  const [counter, setCounter] = React.useState(1);
+  const [installmentCounter, setInstallmentCounter] = React.useState(1);
   const [itemsDelete, setItemsDelete] = React.useState([]);
+  const [installmentItemsDelete, setInstallmentItemsDelete] = React.useState(
+    [],
+  );
+  const [installmentItems, setInstallmentItems] = React.useState(
+    itemEdit
+      ? itemEdit?.installmentItems
+      : [
+          {
+            installmet_payment_aid: 0,
+            installmet_payment_code: "sales-order",
+            installmet_payment_due_date: store?.credentials?.data?.server_date,
+            installmet_payment_code_number: "",
+            installmet_payment_code_id: "",
+            installmet_payment_amount: "",
+            id: 0,
+          },
+        ],
+  );
   const [items, setItems] = React.useState(
     itemEdit
       ? itemEdit?.items
       : [
           {
+            id: 0,
             sales_order_product_id: "",
             sales_order_product_name: "",
             sales_order_product_owner_id: "",
             sales_order_product_owner_name: "",
             sales_order_qty: "1",
+            sales_order_qty_old: "1",
             sales_order_price: "",
             sales_order_total: 0,
           },
@@ -49,8 +70,17 @@ const ModalSalesOrders = ({ itemEdit }) => {
   );
 
   const handleChange = (index, selectedItem = "", fieldId, field) => {
+    // console.log("selectedItem", selectedItem);
     const updated = [...items];
-    if (selectedItem !== "") {
+    if (selectedItem === null || selectedItem === "") {
+      updated[index]["sales_order_product_owner_id"] = "";
+      updated[index]["current_qty"] = "";
+      updated[index]["sales_order_product_owner_name"] = "";
+      updated[index]["sales_order_price"] = "";
+      updated[index]["sales_order_total"] = 0;
+      updated[index][field] = "";
+      updated[index][fieldId] = "";
+    } else {
       updated[index]["sales_order_product_owner_id"] =
         selectedItem["products_owner_id"];
       updated[index]["current_qty"] = selectedItem["current_qty"];
@@ -60,16 +90,22 @@ const ModalSalesOrders = ({ itemEdit }) => {
       const qty = Number(updated[index]["sales_order_qty"] || 1);
       const price = Number(updated[index]["sales_order_price"] || 0);
       updated[index]["sales_order_total"] = qty * price;
-    }
-    updated[index][field] = selectedItem["name"];
-    updated[index][fieldId] = selectedItem["id"];
 
+      updated[index][field] = selectedItem["name"];
+      updated[index][fieldId] = selectedItem["id"];
+    }
     setItems(updated);
   };
 
-  const handleChangeAmount = (index, field, value) => {
+  const handleChangeAmount = (index, id = 0, field, value) => {
     const updated = [...items];
 
+    updated[index]["sales_order_qty_old"] = isEmptyItem(
+      itemEdit?.items?.find(
+        (option) => Number(option.sales_order_aid) === Number(id),
+      )?.sales_order_qty,
+      "",
+    );
     updated[index][field] = value;
 
     // compute row total
@@ -91,6 +127,7 @@ const ModalSalesOrders = ({ itemEdit }) => {
         sales_order_product_owner_id: "",
         sales_order_product_owner_name: "",
         sales_order_qty: "1",
+        sales_order_qty_old: "1",
         sales_order_price: "",
         sales_order_total: 0,
         id: counter,
@@ -111,9 +148,42 @@ const ModalSalesOrders = ({ itemEdit }) => {
     setItems((prev) => prev.filter((item) => item.id !== a.id));
   };
 
-  const handleClose = () => {
-    dispatch(setIsSubAdd(false));
-    dispatch(setError(false));
+  const handleAddInstallmentItems = () => {
+    setInstallmentItems([
+      ...installmentItems,
+      {
+        installmet_payment_aid: 0,
+        installmet_payment_code: "sales-order",
+        installmet_payment_due_date: store?.credentials?.data?.server_date,
+        installmet_payment_code_number: "",
+        installmet_payment_code_id: "",
+        installmet_payment_amount: "",
+        id: installmentCounter,
+      },
+    ]);
+    setInstallmentCounter((prev) => prev + 1);
+  };
+
+  const handleRemoveInstallmentItems = (a) => {
+    setInstallmentItems((prev) =>
+      prev.filter((item) => Number(item.id) !== Number(a.id)),
+    );
+
+    setInstallmentItemsDelete([
+      ...installmentItemsDelete,
+      {
+        installmet_payment_aid: isEmptyItem(a?.installmet_payment_aid, 0),
+        id: a.id,
+      },
+    ]);
+  };
+
+  const handleChangeInstallment = (index, field, value) => {
+    const updated = [...installmentItems];
+
+    updated[index][field] = value;
+
+    setInstallmentItems(updated);
   };
 
   handleEscape(() => handleClose());
@@ -152,16 +222,28 @@ const ModalSalesOrders = ({ itemEdit }) => {
     },
   });
 
+  const handleClose = () => {
+    dispatch(setIsSubAdd(false));
+    dispatch(setError(false));
+    queryClient.invalidateQueries({ queryKey: ["stock-movement"] });
+    queryClient.invalidateQueries({ queryKey: ["products"] });
+    queryClient.invalidateQueries({ queryKey: ["stock-overview"] });
+    queryClient.invalidateQueries({ queryKey: ["sales-order"] });
+  };
+
   const initVal = {
-    ...itemEdit,
+    // ...itemEdit,
     sales_order_date: isEmptyItem(
       itemEdit?.order_date,
       store?.credentials?.data?.server_date,
     ),
-    sales_order_customer_id: isEmptyItem(itemEdit?.sales_order_customer_id, ""),
+    sales_order_customer_id: isEmptyItem(
+      itemEdit?.sales_order_customer_id,
+      isEmptyItem(cutomer?.customer_aid, ""),
+    ),
     sales_order_customer_name: isEmptyItem(
       itemEdit?.sales_order_customer_name,
-      "",
+      isEmptyItem(cutomer?.customer_name, ""),
     ),
     sales_order_payment_method: isEmptyItem(
       itemEdit?.sales_order_payment_method,
@@ -173,10 +255,12 @@ const ModalSalesOrders = ({ itemEdit }) => {
       "",
     ),
     sales_order_qty: isEmptyItem(itemEdit?.sales_order_qty, "1"),
+    sales_order_status: isEmptyItem(itemEdit?.sales_order_status, ""),
     sales_order_price: isEmptyItem(itemEdit?.sales_order_price, ""),
     sales_order_total: isEmptyItem(itemEdit?.sales_order_total, ""),
     sales_order_discount: isEmptyItem(itemEdit?.sales_order_discount, ""),
-    sales_order_tax: isEmptyItem(itemEdit?.sales_order_tax, ""),
+    sales_order_tax: isEmptyItem(itemEdit?.sales_order_tax, "0"),
+    sales_order_tax_amount: isEmptyItem(itemEdit?.sales_order_tax_amount, "0"),
     sales_order_paid_amount: isEmptyItem(itemEdit?.sales_order_paid_amount, ""),
     sales_order_notes: isEmptyItem(itemEdit?.sales_order_notes, ""),
     sales_order_received_by_id: isEmptyItem(
@@ -203,13 +287,29 @@ const ModalSalesOrders = ({ itemEdit }) => {
       itemEdit?.sales_order_due_date,
       store?.credentials?.data?.server_date,
     ),
+    sales_order_total_receivable_amount: isEmptyItem(
+      itemEdit?.sales_order_total_receivable_amount,
+      "0",
+    ),
+    sales_order_total_balance_amount: isEmptyItem(
+      itemEdit?.sales_order_total_balance_amount,
+      "0",
+    ),
+    sales_order_payment_terms: isEmptyItem(
+      itemEdit?.sales_order_payment_terms,
+      "due on receipt - due on the same day the sales order",
+    ),
+    sales_order_total_amount: isEmptyItem(
+      itemEdit?.sales_order_total_amount,
+      "0",
+    ),
+    sales_order_number: isEmptyItem(itemEdit?.sales_order_number, ""),
+    subtotal: "0",
+    validationAmount: false,
   };
 
   const yupSchema = Yup.object({
     sales_order_date: Yup.string().trim().required("Required"),
-    sales_order_customer_id: Yup.string().trim().required("Required"),
-    sales_order_paid_amount: Yup.string().trim().required("Required"),
-    sales_order_received_by_id: Yup.string().trim().required("Required"),
   });
 
   React.useEffect(() => {
@@ -217,21 +317,42 @@ const ModalSalesOrders = ({ itemEdit }) => {
   }, []);
 
   let paymentOption = [
-    { id: "0", name: "cash" },
-    { id: "1", name: "check" },
-    { id: "2", name: "online transaction" },
-    { id: "3", name: "mutiple payment" },
+    { id: "cash", name: "cash" },
+    { id: "check", name: "check" },
+    { id: "online transaction", name: "online transaction" },
+    { id: "mutiple payment", name: "mutiple payment" },
   ];
 
+  let taxOption = [
+    { id: 0, name: "--" },
+    { id: 1.12, name: "inclusive" },
+    { id: 0.12, name: "exclusive" },
+  ];
+
+  let termsOption = [
+    {
+      id: "due on receipt - due on the same day the sales order",
+      name: "Due on Receipt - Due on the same day the Sales Order",
+    },
+    { id: "installment", name: "Installment" },
+    { id: "net 10 - due within 10 days", name: "Net 10 - Due within 10 days" },
+    { id: "net 15 - due within 15 days", name: "Net 15 - Due within 15 days" },
+    { id: "net 20 - due within 20 days", name: "Net 20 - Due within 20 days" },
+    { id: "net 25 - due within 25 days", name: "Net 25 - Due within 25 days" },
+    { id: "net 30 - due within 30 days", name: "Net 30 - Due within 30 days" },
+  ];
+
+  // console.log("items123", items);
   return (
     <>
+      {/*  */}
       <ModalWrapper
-        val={`${isEmptyItem(itemEdit?.sales_order_customer_name, "")} (${isEmptyItem(itemEdit?.sales_order_number, "")})`}
+        val={`${itemEdit ? `${itemEdit?.sales_order_customer_name?.toLowerCase()} (${itemEdit?.sales_order_number})` : ""}`}
         itemEdit={itemEdit}
         mutation={mutation}
         isOpen={true}
         handleClose={handleClose}
-        width="lg:min-w-[50rem]!"
+        width="max-w-[50rem]!"
       >
         <div className="modal-body">
           <Formik
@@ -239,20 +360,6 @@ const ModalSalesOrders = ({ itemEdit }) => {
             validationSchema={yupSchema}
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
-              const invalidItem = items.find(
-                (item) =>
-                  Number(item.current_qty) < Number(item.sales_order_qty),
-              );
-
-              if (invalidItem) {
-                dispatch(setError(true));
-                dispatch(
-                  setMessage(
-                    `Insufficient stock for ${invalidItem.sales_order_product_name}. Available: ${invalidItem.current_qty}, Requested: ${invalidItem.sales_order_qty}`,
-                  ),
-                );
-                return;
-              }
 
               // mutate data
               let data = {
@@ -264,31 +371,26 @@ const ModalSalesOrders = ({ itemEdit }) => {
                 ),
                 ...values,
                 sales_order_discount: Number(values?.sales_order_discount),
-                sales_order_tax: Number(values?.sales_order_tax),
+                sales_order_paid_amount: Number(
+                  values?.sales_order_paid_amount,
+                ),
+                sales_order_installment: installmentItems?.length,
+                installmentItems,
+                installmentItemsDelete,
                 items,
                 itemsDelete,
-                sales_order_total_receivable_amount:
-                  items?.reduce(
-                    (sum, item) =>
-                      sum +
-                      Number(item.sales_order_qty || 1) *
-                        Number(item.sales_order_price || 0),
-                    0,
-                  ) +
-                  Number(values.sales_order_tax) -
-                  Number(values.sales_order_discount),
-                sales_order_total_amount: items?.reduce(
-                  (sum, item) =>
-                    sum +
-                    Number(item.sales_order_qty || 1) *
-                      Number(item.sales_order_price || 0),
-                  0,
-                ),
               };
-              mutation.mutate(data);
+              Validations(values, items, dispatch);
+              console.log("data", data, installmentItems);
+              if (!Validations(values, items, dispatch)) {
+                mutation.mutate(data);
+              } else {
+                dispatch(setError(true));
+              }
             }}
           >
             {(props) => {
+              PropsValues(props, items, installmentItems);
               return (
                 <Form>
                   <div className="grid grid-cols-2 gap-4">
@@ -310,23 +412,28 @@ const ModalSalesOrders = ({ itemEdit }) => {
                         options={paymentOption}
                         onChange={(e) => {
                           props.values.sales_order_payment_method =
-                            e.target.value;
+                            e.target.options[e.target.selectedIndex].text;
                           return e;
                         }}
                       />
                     </div>
-                    <div className="relative ">
-                      <InputNumber
-                        label="Discount"
-                        name="sales_order_discount"
-                        placeholder={`${itemEdit ? "0" : "0"}`}
-                        disabled={mutation.isPending}
-                        required={false}
+                    <div className="relative">
+                      <InputSelectArrayWithOptions
+                        label="Payment Terms"
+                        type="text"
+                        name="sales_order_payment_terms"
+                        defaultValue=""
+                        options={termsOption}
+                        onChange={(e) => {
+                          props.values.sales_order_payment_terms =
+                            e.target.options[e.target.selectedIndex].text;
+                          return e;
+                        }}
                       />
                     </div>
                   </div>
 
-                  <div className="flex my-7 justify-between">
+                  <div className="flex my-7 justify-between items-center">
                     <label htmlFor="">Order Items</label>
                     <button
                       type="button"
@@ -344,138 +451,377 @@ const ModalSalesOrders = ({ itemEdit }) => {
                         <p>No Items added yet.</p>
                       </div>
                     ) : (
-                      <div className="flex flex-col">
-                        <ul className="grid grid-cols-[1fr_.5fr_.5fr_.5fr_1rem] md:grid md:grid-cols-[1fr_5rem_7rem_7rem_1rem] gap-1 px-3 mt-2 text-dark">
-                          <li>Products</li>
-                          <li>Quantity</li>
-                          <li className="text-right">Price per pc.</li>
-                        </ul>
-                        {items.map((a, index) => {
-                          return (
-                            <div
-                              key={index}
-                              className="grid grid-cols-[1fr_.5fr_.5fr_.5fr_1rem] md:grid md:grid-cols-[1fr_5rem_7rem_7rem_1rem] gap-1 items-center p-3 mt-1"
+                      <>
+                        <div className="relative overflow-auto w-full h-full min-h-80 bg-gray-100 dark:bg-gray-900! ">
+                          <table className="shadow-none! ">
+                            <thead
+                              className={`relative z-50 table-header-group`}
                             >
-                              <InputSalesOrderSelectTagArray
-                                onChange={(e, selectedItem) => {
-                                  handleChange(
-                                    index,
-                                    selectedItem,
-                                    "sales_order_product_id",
-                                    "sales_order_product_name",
-                                  );
-                                }}
-                                item={a}
-                                path={`products/read-all-product-that-have-stock`}
-                                testFilterId="sales_order_product_name"
-                                store={store}
-                              />
-                              <input
-                                onChange={(e) => {
-                                  handleChangeAmount(
-                                    index,
-                                    "sales_order_qty",
-                                    e.target.value,
-                                    0,
-                                  );
-                                }}
-                                defaultValue={isEmptyItem(
-                                  a["sales_order_qty"],
-                                  1,
-                                )}
-                                type="number"
-                                placeholder="Qty"
-                              />
+                              <tr className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0! ">
+                                <th className="w-px dark:bg-gray-900! bg-gray-100!">
+                                  #
+                                </th>
+                                <th
+                                  className={`min-w-40  dark:bg-gray-900! bg-gray-100!`}
+                                >
+                                  Products
+                                </th>
+                                <th
+                                  className={` dark:bg-gray-900! bg-gray-100!`}
+                                >
+                                  Quantity
+                                </th>
+                                <th
+                                  className={`min-w-30! dark:bg-gray-900! bg-gray-100! text-right`}
+                                >
+                                  Price per pc.
+                                </th>
+                                <th
+                                  className={` dark:bg-gray-900! bg-gray-100! text-right`}
+                                >
+                                  Total
+                                </th>
+                                <th
+                                  className={` dark:bg-gray-900! bg-gray-100! `}
+                                ></th>
+                              </tr>
+                            </thead>
+                            <tbody className="">
+                              {items.map((a, index) => {
+                                return (
+                                  <tr key={a?.id} className="border-0!">
+                                    <td className="text-center dark:bg-gray-900! bg-gray-100! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
+                                      {index + 1}.
+                                    </td>
+                                    {Number(
+                                      isEmptyItem(a?.sales_order_aid, 0),
+                                    ) !== 0 ? (
+                                      <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                        {itemEdit?.sales_order_product_name}
+                                      </td>
+                                    ) : (
+                                      <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                        <InputSalesOrderSelectTagArray
+                                          onChange={(e, selectedItem) => {
+                                            handleChange(
+                                              index,
+                                              selectedItem,
+                                              "sales_order_product_id",
+                                              "sales_order_product_name",
+                                            );
+                                          }}
+                                          dataVal={items}
+                                          item={a}
+                                          path={`products/read-all-product-that-have-stock`}
+                                          testFilterId="sales_order_product_name"
+                                          store={store}
+                                          className={" "}
+                                        />
+                                      </td>
+                                    )}
 
-                              <span className="font-semibold text-black dark:text-light mr-2">
-                                <AmountWithPesoSign
-                                  classN="size-3"
-                                  amount={a["sales_order_price"]}
-                                />
-                              </span>
-                              <span className="font-semibold text-black dark:text-light mr-2">
-                                <AmountWithPesoSign
-                                  classN="size-3"
-                                  amount={a["sales_order_total"]}
-                                />
-                              </span>
-                              <button
-                                type="button"
-                                onClick={() => handleRemoveItem(a, index)}
-                                className="text-red-500 text-xl"
-                              >
-                                ✕
-                              </button>
-                            </div>
-                          );
-                        })}
-                      </div>
+                                    <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                      <input
+                                        onChange={(e) => {
+                                          handleChangeAmount(
+                                            index,
+                                            a?.sales_order_aid,
+                                            "sales_order_qty",
+                                            e.target.value,
+                                          );
+                                        }}
+                                        className="mt-0 bg-white  dark:bg-gray-900!"
+                                        defaultValue={isEmptyItem(
+                                          a["sales_order_qty"],
+                                          1,
+                                        )}
+                                        type="number"
+                                        placeholder="Qty"
+                                      />
+                                    </td>
+                                    <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                      <AmountWithPesoSign
+                                        classN="size-3"
+                                        amount={a["sales_order_price"]}
+                                      />
+                                    </td>
+                                    <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                      <AmountWithPesoSign
+                                        classN="size-3"
+                                        amount={a["sales_order_total"]}
+                                      />
+                                    </td>
+                                    <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                      <button
+                                        onClick={() => handleRemoveItem(a)}
+                                        className="text-red-500 text-xl"
+                                        type="button"
+                                      >
+                                        ✕
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                        </div>
+                      </>
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="relative mt-3">
+                  <div className="grid grid-cols-3 mt-3 gap-3 items-center">
+                    <div className="relative ">
                       <InputNumber
-                        label="Tax (₱)"
-                        name="sales_order_tax"
+                        label="Discount"
+                        name="sales_order_discount"
                         placeholder={`${itemEdit ? "0" : "0"}`}
                         disabled={mutation.isPending}
                         required={false}
                       />
                     </div>
-                    <div className="relative mt-3">
+                    <div className="relative ">
+                      <InputSelectArrayWithOptions
+                        label="VAT"
+                        type="sales_order_tax"
+                        name="sales_order_tax"
+                        defaultValue="--"
+                        options={taxOption}
+                        onChange={(e) => {
+                          props.values.sales_order_tax = e.target.id;
+                          return e;
+                        }}
+                        required={false}
+                      />
+                    </div>
+                    <div className="relative ">
                       <InputNumber
                         label="Amount Paid"
                         name="sales_order_paid_amount"
                         placeholder={`${itemEdit ? "0" : "0"}`}
                         disabled={mutation.isPending}
-                      />
-                    </div>
-                    <div className="relative mt-3">
-                      <InputNumber
-                        label="Installment Count"
-                        name="sales_order_installment"
-                        placeholder={`${itemEdit ? "0" : "0"}`}
-                        disabled={mutation.isPending}
                         required={false}
                       />
                     </div>
-                    <div className="relative mt-3">
-                      <InputText
-                        label="First due date"
-                        type="date"
-                        name="sales_order_date"
-                        placeholder={`${itemEdit ? "0" : "0"}`}
-                        disabled={mutation.isPending}
-                        required={false}
-                      />
-                    </div>
-                    <div></div>
-
+                    <ul className="grid grid-cols-[5rem_1fr] ">
+                      <li>Sub Amount:</li>
+                      <li>
+                        <AmountsWithPesoSign
+                          classN={"size-3"}
+                          classAmnt="justify-start!"
+                          amount={props.values.subtotal}
+                        />
+                      </li>
+                      <li>VAT Amount:</li>
+                      <li>
+                        <AmountsWithPesoSign
+                          classN={"size-3"}
+                          classAmnt="justify-start!"
+                          amount={props.values.sales_order_tax_amount}
+                        />
+                      </li>
+                      <li>Discount:</li>
+                      <li>
+                        <AmountsWithPesoSign
+                          classN={"size-3"}
+                          classAmnt="justify-start!"
+                          amount={props.values.sales_order_discount}
+                        />
+                      </li>
+                    </ul>
+                    <ul className="grid grid-cols-[5rem_1fr] ">
+                      <li>Total Amount:</li>
+                      <li>
+                        <AmountsWithPesoSign
+                          classN={"size-3"}
+                          classAmnt="justify-start!"
+                          amount={
+                            props.values.sales_order_total_receivable_amount
+                          }
+                        />
+                      </li>
+                      <li>Paid Amount:</li>
+                      <li>
+                        <AmountsWithPesoSign
+                          classN={"size-3"}
+                          classAmnt="justify-start!"
+                          amount={props.values.sales_order_paid_amount}
+                        />
+                      </li>
+                      <li>Balance:</li>
+                      <li>
+                        <AmountsWithPesoSign
+                          classN={"size-3"}
+                          classAmnt="justify-start!"
+                          amount={props.values.sales_order_total_balance_amount}
+                        />
+                      </li>
+                    </ul>
                     <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end my-3 p-2">
                       <p className="flex flex-col place-self-end text-primary text-lg text-right">
                         <span className="text-black dark:text-light text-sm">
-                          Total
+                          Total Amount
                         </span>
                         <AmountWithPesoSign
-                          classN="size-5"
-                          amount={
-                            items?.reduce(
-                              (sum, item) =>
-                                sum +
-                                Number(item.sales_order_qty || 1) *
-                                  Number(item.sales_order_price || 0),
-                              0,
-                            ) +
-                            Number(props?.values?.sales_order_tax) -
-                            Number(props?.values?.sales_order_discount)
-                          }
+                          classN=""
+                          amount={Number(
+                            props?.values?.sales_order_total_receivable_amount,
+                          )}
                         />
                       </p>
                     </div>
                   </div>
 
-                  <div className="relative">
+                  {props.values.sales_order_payment_terms === "installment" ? (
+                    <>
+                      <div className="flex my-5 justify-between items-center">
+                        <label htmlFor="">
+                          Installment{" "}
+                          {installmentItems?.length > 0
+                            ? `(${installmentItems?.length})`
+                            : ""}
+                        </label>
+                        <button
+                          type="button"
+                          className=" cursor-pointer flex items-center justify-center text-dark gap-2 px-3 py-1.5 bg-transparent rounded-md border-gray-300 border min-w-20 hover:bg-primary transition-all duration-300 ease-in-out hover:text-light dark:text-light"
+                          onClick={handleAddInstallmentItems}
+                        >
+                          <Plus size={15} />
+                          <span className="capitalize leading-0">
+                            Installment
+                          </span>
+                        </button>
+                      </div>
+
+                      {installmentItems.length === 0 ? (
+                        <hr className="border-gray-200" />
+                      ) : (
+                        <div className="border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out py-3 ">
+                          <div className="flex flex-col pb-2 h-57 overflow-auto">
+                            <ul className=" grid grid-cols-[10rem_1fr_1rem] sm:grid-cols-[1fr_1fr_1rem] gap-3 px-3 text-dark sticky top-0 bg-gray-100 py-2">
+                              <li>Due Date</li>
+                              <li>Amount</li>
+                            </ul>
+                            {installmentItems.map((a, index) => {
+                              return (
+                                <div
+                                  key={a.id}
+                                  className="grid grid-cols-[10rem_1fr_1rem] sm:grid-cols-[1fr_1fr_1rem] gap-3 items-center px-3 py-2"
+                                >
+                                  <input
+                                    onChange={(e) => {
+                                      handleChangeInstallment(
+                                        index,
+                                        "installmet_payment_due_date",
+                                        e.target.value,
+                                      );
+                                    }}
+                                    defaultValue={isEmptyItem(
+                                      a["installmet_payment_due_date"],
+                                      1,
+                                    )}
+                                    type="date"
+                                  />
+                                  <input
+                                    onChange={(e) => {
+                                      handleChangeInstallment(
+                                        index,
+                                        "installmet_payment_amount",
+                                        e.target.value,
+                                        0,
+                                      );
+                                    }}
+                                    defaultValue={isEmptyItem(
+                                      a["installmet_payment_amount"],
+                                      "",
+                                    )}
+                                    placeholder="0"
+                                    type="number"
+                                  />
+
+                                  <button
+                                    type="button"
+                                    onClick={() =>
+                                      handleRemoveInstallmentItems(a)
+                                    }
+                                    className="text-red-500 text-xl"
+                                  >
+                                    ✕
+                                  </button>
+                                </div>
+                              );
+                            })}
+                            <div className="px-3 mt-2 text-dark ">
+                              <ul className="sm:grid grid-cols-2 ">
+                                <li className="sm:text-right mx-2 uppercase">
+                                  Total installment amount
+                                </li>
+                                <li className="text-left! mx-2 ">
+                                  <AmountWithPesoSign
+                                    classN="size-3 "
+                                    classAmnt="justify-start! "
+                                    amount={
+                                      Number(props.values.total) -
+                                      Number(
+                                        props.values.sales_order_paid_amount,
+                                      )
+                                    }
+                                  />
+                                </li>
+                                <li className="sm:text-right mx-2 uppercase">
+                                  Total Paid
+                                </li>
+                                <li className="text-left! mx-2 ">
+                                  <AmountWithPesoSign
+                                    classN="size-3 "
+                                    classAmnt="justify-start! "
+                                    amount={Number(
+                                      props.values.sales_order_paid_amount,
+                                    )}
+                                  />
+                                </li>
+                                <li
+                                  className={`${props.values.validationAmount ? "" : " text-red-800 "} sm:text-right mx-2 uppercase `}
+                                >
+                                  Total
+                                </li>
+                                <li
+                                  className={`text-left! mx-2 sm:flex justify-between `}
+                                >
+                                  <div
+                                    className={`${props.values.validationAmount ? "" : " text-red-800 "} `}
+                                  >
+                                    <AmountWithPesoSign
+                                      classN="size-3 "
+                                      classAmnt="justify-start! "
+                                      amount={props.values.total}
+                                    />
+                                  </div>
+                                  <div className="sm:flex ">
+                                    <span className=" mr-4 uppercase ">
+                                      Total Amount
+                                    </span>
+                                    <AmountWithPesoSign
+                                      classN="size-3 "
+                                      classAmnt="justify-start! "
+                                      amount={
+                                        props?.values
+                                          ?.sales_order_total_receivable_amount
+                                      }
+                                    />
+                                  </div>
+                                </li>
+                              </ul>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    ""
+                  )}
+
+                  <div className="relative mt-3">
                     <InputTextArea
                       label="Note"
                       type="text"
@@ -487,18 +833,40 @@ const ModalSalesOrders = ({ itemEdit }) => {
                   </div>
 
                   <div className="relative my-3 ">
-                    <InputSelectArray
+                    <InputSelectFilterTagArray
                       label="Received by:"
-                      path="product-owner/read-by-product-owner"
-                      type="text"
-                      name="sales_order_received_by_id"
+                      defaultValue={{
+                        id: isEmptyItem(
+                          itemEdit?.sales_order_received_by_id,
+                          isEmptyItem(
+                            store.credentials?.data?.user_account_aid,
+                            0,
+                          ),
+                        ),
+                        label: isEmptyItem(
+                          itemEdit?.sales_order_received_by_name,
+                          isEmptyItem(store.credentials?.data?.name, ""),
+                        ),
+                        value: isEmptyItem(
+                          itemEdit?.sales_order_received_by_name,
+                          isEmptyItem(store.credentials?.data?.name, ""),
+                        ),
+                      }}
                       onChange={(e) => {
-                        props.values.sales_order_received_by_id =
-                          e.target.value;
-                        props.values.sales_order_received_by_name =
-                          e.target.options[e.target.selectedIndex].text;
+                        props.values.sales_order_received_by_id = isEmptyItem(
+                          e?.id,
+                          "",
+                        );
+                        props.values.sales_order_received_by_name = isEmptyItem(
+                          e?.value,
+                          "",
+                        );
                         return e;
                       }}
+                      itemEdit={itemEdit}
+                      path={`product-owner/read-by-product-owner`}
+                      testFilterId="sales_order_received_by_id"
+                      store={store}
                     />
                   </div>
 

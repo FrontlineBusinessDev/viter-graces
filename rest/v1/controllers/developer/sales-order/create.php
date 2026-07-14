@@ -34,6 +34,7 @@ $val->sales_order_total_receivable_amount = $data["sales_order_total_receivable_
 $val->sales_order_total_amount = $data["sales_order_total_amount"];
 $val->sales_order_tax_amount = $data["sales_order_tax_amount"];
 $val->sales_order_total_balance_amount = max(0, $data["sales_order_total_balance_amount"]); // not accepting negative
+$val->sales_order_discounted_with_vat_amount = max(0, $data["sales_order_discounted_with_vat_amount"]); // not accepting negative
 $val->sales_order_created = date("Y-m-d H:i:s");
 $val->sales_order_updated = date("Y-m-d H:i:s");
 $val->stock_movement_status = "active";

@@ -62,7 +62,7 @@ const SalesOrders = () => {
       meta: "",
     },
     {
-      accessorKey: "sales_order_total_payable_amount",
+      accessorKey: "sales_order_total_receivable_amount",
       header: "total",
       amount: true,
       filterFn: "between",
@@ -97,7 +97,7 @@ const SalesOrders = () => {
     },
     {
       accessorKey: "sales_order_payment_terms",
-      header: "method",
+      header: "payment terms",
       classTh: "min-w-[10rem]",
       classTd: "capitalize ",
       meta: "",

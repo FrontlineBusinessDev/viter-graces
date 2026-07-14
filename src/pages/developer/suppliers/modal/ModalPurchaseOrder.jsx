@@ -8,7 +8,7 @@ import {
 import { InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
-import { AmountWithPesoSign } from "@/components/PesoSign";
+import { AmountsWithPesoSign, AmountWithPesoSign } from "@/components/PesoSign";
 import { apiVersion } from "@/config/config";
 import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
@@ -210,7 +210,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
       itemEdit?.purchase_order_discount,
       "0",
     ),
-    purchase_order_payment: isEmptyItem(itemEdit?.purchase_order_payment, ""),
+    purchase_order_payment: isEmptyItem(itemEdit?.purchase_order_payment, "0"),
     total_amount: 0,
     purchase_order_status: isEmptyItem(
       itemEdit?.purchase_order_status,
@@ -391,58 +391,78 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                     </button>
                   </div>
 
-                  <div className="border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out ">
+                  <div className="border shadow  border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out ">
                     {items.length === 0 ? (
                       <div className="h-20 flex items-center justify-center ">
                         <p>No Items added yet.</p>
                       </div>
                     ) : (
-                      <div className="relative overflow-auto w-full h-full ">
-                        <table className=" md:border md:border-gray-300 dark:border-[#0b111e] ">
-                          <thead className={`relative z-50 table-header-group`}>
-                            <tr className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0! z-99">
-                              <th className="w-px bg-gray-100!">#</th>
-                              <th className={`min-w-20  bg-gray-100!`}>
+                      <div className="relative overflow-auto w-full h-full min-h-80 max-h-80 bg-gray-100 dark:bg-gray-900! ">
+                        <table className="shadow-none! ">
+                          <thead className={`relative z-20 table-header-group`}>
+                            <tr className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0!">
+                              <th className="w-px bg-gray-100! dark:bg-gray-900!">
+                                #
+                              </th>
+                              <th
+                                className={`min-w-20  dark:bg-gray-900! bg-gray-100!`}
+                              >
                                 Products
                               </th>
-                              <th className={` bg-gray-100!`}>Product Owner</th>
-                              <th className={` bg-gray-100!`}>Quantity</th>
-                              <th className={` bg-gray-100!`}>Amount</th>
-                              <th className={` bg-gray-100! text-center`}>
+                              <th className={` dark:bg-gray-900! bg-gray-100!`}>
+                                Product Owner
+                              </th>
+                              <th className={` dark:bg-gray-900! bg-gray-100!`}>
+                                Quantity
+                              </th>
+                              <th className={` dark:bg-gray-900! bg-gray-100!`}>
+                                Amount
+                              </th>
+                              <th
+                                className={` dark:bg-gray-900! bg-gray-100! text-center`}
+                              >
                                 Total
                               </th>
-                              <th className={` bg-gray-100! `}></th>
+                              <th
+                                className={` dark:bg-gray-900! bg-gray-100! `}
+                              ></th>
                             </tr>
                           </thead>
-                          <tbody className="">
+                          <tbody className=" ">
                             {items.map((a, index) => {
                               return (
                                 <tr key={a?.id} className="border-0!">
-                                  <td className="text-center bg-gray-100! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
+                                  <td className="text-center dark:bg-gray-900! bg-gray-100! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
                                     {index + 1}.
                                   </td>
 
-                                  <td className=" bg-gray-100! ">
-                                    <DefaultInputSelectTagArray
-                                      onChange={(e, selectedItem) => {
-                                        handleChangeProduct(
-                                          index,
-                                          e,
-                                          selectedItem,
-                                          props.values,
-                                        );
-                                      }}
-                                      dataVal={items}
-                                      item={a}
-                                      path={`suppliers-product/read-in-modal/${Number(props.values.purchase_order_supplier_id)}`}
-                                      testFilterId="sales_order_product_name"
-                                      store={store}
-                                    />
-                                  </td>
-                                  <td className=" bg-gray-100! min-w-25">
+                                  {Number(isEmptyItem(itemEdit?.id, 0)) !==
+                                  0 ? (
+                                    <td className=" bg-gray-100! dark:bg-gray-900!">
+                                      {itemEdit?.purchase_order_product_name}
+                                    </td>
+                                  ) : (
+                                    <td className=" bg-gray-100! dark:bg-gray-900! ">
+                                      <DefaultInputSelectTagArray
+                                        onChange={(e, selectedItem) => {
+                                          handleChangeProduct(
+                                            index,
+                                            e,
+                                            selectedItem,
+                                            props.values,
+                                          );
+                                        }}
+                                        dataVal={items}
+                                        item={a}
+                                        path={`suppliers-product/read-in-modal/${Number(props.values.purchase_order_supplier_id)}`}
+                                        testFilterId="sales_order_product_name"
+                                        store={store}
+                                      />
+                                    </td>
+                                  )}
+                                  <td className=" bg-gray-100! min-w-25 dark:bg-gray-900!">
                                     <DefaultInputSelectTagArray
                                       onChange={(e) => {
-                                        console.log("e", e);
                                         handleChange(
                                           index,
                                           "purchase_order_product_owner_id",
@@ -458,7 +478,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                       store={store}
                                     />
                                   </td>
-                                  <td className=" bg-gray-100! ">
+                                  <td className=" bg-gray-100! dark:bg-gray-900! ">
                                     <input
                                       onChange={(e) => {
                                         handleChangeAmount(
@@ -467,13 +487,13 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                           e.target.value,
                                         );
                                       }}
-                                      className="mt-0! bg-white"
+                                      className="mt-0! bg-white dark:bg-gray-900!"
                                       defaultValue={a["purchase_order_qty"]}
                                       type="number"
                                       placeholder="Qty"
                                     />
                                   </td>
-                                  <td className=" bg-gray-100! ">
+                                  <td className=" bg-gray-100! dark:bg-gray-900! ">
                                     <input
                                       onChange={(e) => {
                                         handleChangeAmount(
@@ -483,19 +503,19 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                           0,
                                         );
                                       }}
-                                      className="mt-0! bg-white"
+                                      className="mt-0! bg-white  dark:bg-gray-900!"
                                       defaultValue={a?.purchase_order_price}
                                       type="number"
                                       placeholder="Price"
                                     />
                                   </td>
-                                  <td className=" bg-gray-100! ">
+                                  <td className=" bg-gray-100! dark:bg-gray-900! ">
                                     <AmountWithPesoSign
                                       classN="size-3"
                                       amount={a["purchase_order_total_amount"]}
                                     />
                                   </td>
-                                  <td className=" bg-gray-100! ">
+                                  <td className=" bg-gray-100! dark:bg-gray-900! ">
                                     {itemEdit ? (
                                       <button
                                         onClick={() =>
@@ -553,6 +573,11 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         defaultValue="unpaid"
                         options={paymentOption}
                         onChange={(e) => {
+                          if (e.target.value === "unpaid") {
+                            props.values.purchase_order_payment = "0";
+                          } else {
+                            props.values.purchase_order_payment = "";
+                          }
                           props.values.purchase_order_payment_status =
                             e.target.value;
                           return e;
@@ -563,7 +588,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                   <div className="grid grid-cols-2 items items-center gap-2">
                     <div className="relative mt-3">
                       <InputText
-                        label="Tax Amount"
+                        label="VAT Amount"
                         type="number"
                         name="purchase_order_tax"
                         // placeholder="0"
@@ -583,19 +608,44 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                     </div>
                   </div>
                   <div className="grid grid-cols-2 items items-center gap-2">
-                    <div className="relative mt-3">
-                      <InputText
-                        label="Paid Amount"
-                        type="number"
-                        name="purchase_order_payment"
-                        // placeholder="0"
-                        disabled={mutation.isPending}
-                      />
-                    </div>
+                    {props.values.purchase_order_payment_status === "paid" ? (
+                      <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end my-5 p-2">
+                        <p className="flex flex-col place-self-end text-primary text-lg text-right">
+                          <span className="text-black dark:text-light text-sm">
+                            Amount Paid
+                          </span>
+
+                          <AmountWithPesoSign
+                            classN="size-5"
+                            amount={
+                              items.reduce(
+                                (sum, item) =>
+                                  sum +
+                                  Number(item.purchase_order_qty || 0) *
+                                    Number(item.purchase_order_price || 0),
+                                0,
+                              ) +
+                              Number(props.values.purchase_order_tax) -
+                              Number(props.values.purchase_order_discount)
+                            }
+                          />
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="relative mt-3">
+                        <InputText
+                          label="Paid Amount"
+                          type="number"
+                          name="purchase_order_payment"
+                          // placeholder="0"
+                          disabled={mutation.isPending}
+                        />
+                      </div>
+                    )}
                     <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end my-5 p-2">
                       <p className="flex flex-col place-self-end text-primary text-lg text-right">
                         <span className="text-black dark:text-light text-sm">
-                          Total
+                          Total Amount
                         </span>
 
                         <AmountWithPesoSign

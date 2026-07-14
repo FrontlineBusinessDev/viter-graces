@@ -67,7 +67,7 @@ const ViewSalesDetails = ({ itemEdit }) => {
             <li>
               <p className="m-0">Payment terms:</p>
               <p className="m-0 text-black dark:text-light capitalize">
-                {itemEdit?.sales_order_payment_method}
+                {itemEdit?.sales_order_payment_terms}
               </p>
             </li>
           </ul>
