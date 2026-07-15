@@ -294,7 +294,7 @@ const ModalProducts = ({ itemEdit }) => {
                     />
                   </div>
 
-                  <div className="relative mt-5 mb-6">
+                  {/* <div className="relative mt-5 mb-6">
                     <div className="relative w-fit m-auto mb-6 mt-1 group cursor-pointer">
                       {filesArrayList?.length === 0 ? (
                         <>
@@ -348,7 +348,7 @@ const ModalProducts = ({ itemEdit }) => {
                         </span>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
 
                   {store.error && <MessageError />}
                   <div className="modal-action">
