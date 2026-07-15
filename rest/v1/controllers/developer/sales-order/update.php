@@ -96,7 +96,6 @@ if (array_key_exists("id", $_GET)) {
         $val->sales_order_product_owner_name = $ordersItems[$i]["sales_order_product_owner_name"];
         $val->sales_order_qty = $ordersItems[$i]["sales_order_qty"];
         $val->sales_order_price = $ordersItems[$i]["sales_order_price"];
-        // $sales_order_qty_old = $ordersItems[$i]["sales_order_qty_old"];
         $val->sales_order_total = $ordersItems[$i]["sales_order_total"];
 
         // this is for total amount - discount + VAT
@@ -107,12 +106,14 @@ if (array_key_exists("id", $_GET)) {
         $discountedAmountPerItem = (float)$val->sales_order_total - (float)$discountPerItems;
         $totalVatPerItems = 0;
 
+        $val->sales_order_tax_amount = (float)$data["sales_order_tax_amount"] * 0.12;
         // COMPUTATION OF EXCLUSIVE TAX
         if ((float)$val->sales_order_tax == 0.12) {
             $totalVatPerItems = (float)$discountedAmountPerItem * 0.12;
         }
 
-        $val->sales_order_discounted_with_vat_amount = max(0, (float)$discountedAmountPerItem); // not accepting negative
+        $val->sales_order_vat = (float)$totalVatPerItems; // not accepting negative
+        $val->sales_order_discounted_with_vat_amount = max(0, (float)$discountedAmountPerItem) + (float)$totalVatPerItems; // not accepting negative
 
         if ((float)$val->sales_order_aid == 0) {
             $query = checkCreate($val);

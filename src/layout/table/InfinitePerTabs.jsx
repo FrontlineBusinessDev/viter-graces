@@ -499,7 +499,6 @@ const InfinitePerTabs = ({
                         </span>
                       </p>
                     </div>
-
                     <InfiniteSubTable
                       columns={subColumnsTable}
                       className={`sm:overflow-auto max-h-[calc(93dvh-200px)] min-h-full`}

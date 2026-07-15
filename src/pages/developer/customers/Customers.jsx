@@ -171,6 +171,7 @@ const Customers = () => {
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
     },
   ];
+
   return (
     <>
       <HeaderNav menu={"customers"} activeTab="customers">

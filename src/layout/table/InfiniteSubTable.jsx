@@ -27,6 +27,7 @@ import ActionButtonSubTable from "../ActionButtonSubTable";
 import MobileResponsiveList from "../mobile-responsive/MobileResponsiveList";
 import ModalSubAction from "../modal/ModalSubAction";
 import { renderCellContent } from "./function-table";
+import OverviewSalesCustomer from "../customer/OverviewSalesCustomer";
 
 const InfiniteSubTable = ({
   columns,
@@ -178,6 +179,12 @@ const InfiniteSubTable = ({
 
   return (
     <>
+      <OverviewSalesCustomer
+        path={path}
+        id={isEmptyItem(data?.id, "")}
+        columnFilters={columnFilters}
+      />
+
       <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 items-center mt-3">
         {ishaveSubAdd ? (
           <div className="flex justify-end sm:mb-0! mb-3 ">

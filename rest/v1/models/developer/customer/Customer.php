@@ -15,10 +15,15 @@ class Customer
     public $customer_updated;
 
     public $customer_is_walk_in_customer;
+    public $installmet_payment_customer_id;
+
+    public $due_date;
 
     public $connection;
     public $lastInsertedId;
     public $tblCustomer;
+    public $tblInstallmetPayment;
+    public $tblSalesOrder;
 
     public $filters;
     public $column_start;
@@ -30,6 +35,8 @@ class Customer
     {
         $this->connection = $db;
         $this->tblCustomer = "graces_customer";
+        $this->tblInstallmetPayment = "graces_installment_payment";
+        $this->tblSalesOrder = "graces_sales_order";
     }
 
     // create
@@ -467,6 +474,138 @@ class Customer
                 "customer_created" => $this->customer_created,
                 "customer_updated" => $this->customer_updated,
             ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readAllOverdueBalance($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            "installmet_payment_customer_id" => $this->installmet_payment_customer_id,
+            "due_date" => $this->due_date,
+            ...$this->column_search != "" ? [
+                "installmet_payment_due_date" => "%{$this->column_search}%",
+                "installmet_payment_code_number" => "%{$this->column_search}%",
+            ] : [],
+        ];
+
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
+            if (is_array($item['value'])) {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
+            }
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "DATE_FORMAT(installmet_payment_due_date, '%b %d, %Y') as installmet_payment_due_date, ";
+            $sql .= "DATEDIFF(NOW(), installmet_payment_due_date) as days_ago, ";
+            $sql .= "SUM(installmet_payment_amount) as amount, ";
+            $sql .= "installmet_payment_aid as id, ";
+            $sql .= "installmet_payment_is_paid as is_active, ";
+            $sql .= "installmet_payment_code_number as name ";
+            $sql .= "from {$this->tblInstallmetPayment} ";
+            $sql .= "where installmet_payment_is_paid = '0' ";
+            $sql .= "and installmet_payment_customer_id = :installmet_payment_customer_id ";
+            $sql .= "and DATE(installmet_payment_due_date) <= DATE(:due_date) ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and (installmet_payment_due_date like :installmet_payment_due_date 
+                or installmet_payment_code_number like :installmet_payment_code_number) " : " ");
+            }
+            $sql .= " group by installmet_payment_customer_id ";
+            $sql .= " order by DATE(installmet_payment_due_date) asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+
+    // read all
+    public function readAllOpenBalance($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            "installmet_payment_customer_id" => $this->installmet_payment_customer_id,
+            ...($this->column_search != "" ? [
+                "sales_order_number" => "%{$this->column_search}%",
+                "sales_order_customer_name" => "%{$this->column_search}%",
+                "sales_order_product_name" => "%{$this->column_search}%",
+                "sales_order_received_by_name" => "%{$this->column_search}%",
+                "sales_order_product_owner_name" => "%{$this->column_search}%",
+            ] : []),
+        ];
+
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
+            if (is_array($item['value'])) {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
+            }
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "COUNT(sales_order_number) as number_of_order, ";
+            $sql .= "sales_order_number, ";
+            $sql .= "sales_order_status as is_status, ";
+            $sql .= "sales_order_total_receivable_amount as total_amount, ";
+            $sql .= "sales_order_total_amount as total_sub_amount, ";
+            $sql .= "sales_order_paid_amount as total_paid, ";
+            $sql .= "sales_order_total_balance_amount as balance, ";
+            $sql .= "sales_order_total_balance_amount as balance, ";
+            $sql .= "sales_order_aid as id, ";
+            $sql .= "sales_order_is_active as is_active, ";
+            $sql .= "sales_order_date as order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
+            $sql .= "sales_order_customer_name as name ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= " where sales_order_customer_id = :installmet_payment_customer_id ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number 
+            or sales_order_customer_name like :sales_order_customer_name 
+            or sales_order_received_by_name like :sales_order_received_by_name 
+            or sales_order_product_owner_name like :sales_order_product_owner_name 
+            or sales_order_product_name like :sales_order_product_name ) " : " ");
+            }
+            $sql .= " group by sales_order_number ";
+            $sql .= " order by MAX(sales_order_is_active) desc, ";
+            $sql .= "sales_order_number desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;

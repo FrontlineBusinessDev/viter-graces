@@ -30,6 +30,7 @@ class SalesOrder
     public $sales_order_total_balance_amount;
     public $sales_order_payment_terms;
     public $sales_order_discounted_with_vat_amount;
+    public $sales_order_vat;
     public $sales_order_created;
     public $sales_order_updated;
 
@@ -109,6 +110,7 @@ class SalesOrder
             $sql .= "sales_order_tax_amount, ";
             $sql .= "sales_order_total_balance_amount, ";
             $sql .= "sales_order_payment_terms, ";
+            $sql .= "sales_order_vat, ";
             $sql .= "sales_order_discounted_with_vat_amount, ";
             $sql .= "sales_order_created, ";
             $sql .= "sales_order_updated ) values ( ";
@@ -139,6 +141,7 @@ class SalesOrder
             $sql .= ":sales_order_tax_amount, ";
             $sql .= ":sales_order_total_balance_amount, ";
             $sql .= ":sales_order_payment_terms, ";
+            $sql .= ":sales_order_vat, ";
             $sql .= ":sales_order_discounted_with_vat_amount, ";
             $sql .= ":sales_order_created, ";
             $sql .= ":sales_order_updated ) ";
@@ -171,6 +174,7 @@ class SalesOrder
                 "sales_order_tax_amount" => $this->sales_order_tax_amount,
                 "sales_order_total_balance_amount" => $this->sales_order_total_balance_amount,
                 "sales_order_payment_terms" => $this->sales_order_payment_terms,
+                "sales_order_vat" => $this->sales_order_vat,
                 "sales_order_discounted_with_vat_amount" => $this->sales_order_discounted_with_vat_amount,
                 "sales_order_created" => $this->sales_order_created,
                 "sales_order_updated" => $this->sales_order_updated,
@@ -366,6 +370,7 @@ class SalesOrder
             $sql .= "sales_order_is_active as is_active, ";
             $sql .= "sales_order_date as order_date, ";
             $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where sales_order_customer_id = :sales_order_customer_id ";
@@ -441,6 +446,7 @@ class SalesOrder
             $sql .= "sales_order_is_active as is_active, ";
             $sql .= "sales_order_date as order_date, ";
             $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where sales_order_customer_id = :sales_order_customer_id ";
@@ -551,6 +557,7 @@ class SalesOrder
             $sql .= "sales_order_total_balance_amount = :sales_order_total_balance_amount, ";
             $sql .= "sales_order_payment_terms = :sales_order_payment_terms, ";
             $sql .= "sales_order_discounted_with_vat_amount = :sales_order_discounted_with_vat_amount, ";
+            $sql .= "sales_order_vat = :sales_order_vat, ";
             $sql .= "sales_order_updated = :sales_order_updated ";
             $sql .= "where sales_order_aid  = :sales_order_aid ";
             $query = $this->connection->prepare($sql);
@@ -578,6 +585,7 @@ class SalesOrder
                 "sales_order_payment_terms" => $this->sales_order_payment_terms,
                 "sales_order_discounted_with_vat_amount" => $this->sales_order_discounted_with_vat_amount,
                 "sales_order_updated" => $this->sales_order_updated,
+                "sales_order_vat" => $this->sales_order_vat,
                 "sales_order_aid" => $this->sales_order_aid,
             ]);
         } catch (PDOException $ex) {
@@ -846,6 +854,7 @@ class SalesOrder
             $sql .= "p.products_owner_name, ";
             $sql .= "so.sales_order_is_active as is_active, ";
             $sql .= "DATE_FORMAT(so.sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(so.sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
             $sql .= "so.sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} as so, ";
             $sql .= "{$this->tblProducts} as p ";
