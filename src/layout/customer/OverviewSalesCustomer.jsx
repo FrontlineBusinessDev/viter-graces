@@ -15,7 +15,8 @@ const OverviewSalesCustomer = ({ path = "", id = "", columnFilters = [] }) => {
     `${apiVersion}/customer/read-cutomer-sales-summary`, // endpoint
     "post", // method
     `customer/read-cutomer-sales-summary`, // key
-    { id: id, columnFilters: columnFilters, searchValue: "" },
+    { id: id, columnFilters: [], searchValue: "" },
+    { id: id, columnFilters: [], searchValue: "" },
   );
 
   const data = useMemo(() => {

@@ -4,6 +4,7 @@
 require '../../../core/header.php';
 // use needed functions
 require '../../../core/functions.php';
+require 'functions.php';
 // use needed classes
 require '../../../models/developer/sales-order/SalesOrder.php';
 // check database connection
@@ -24,6 +25,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->column_search = $data["searchValue"];    // get data 
         $val->column_start = $_GET['start'];
         $val->column_total = 15;
+        $val->date_today = date("Y-m-d");
         $val->max = PHP_INT_MAX;
         $total_result_final = [];
         // FOR MULTIPLE FILTER 

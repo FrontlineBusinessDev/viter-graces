@@ -1157,6 +1157,31 @@ class SalesOrder
         return $query;
     }
 
+    // read all
+    public function readDuedateById()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "DATE_FORMAT(installmet_payment_due_date, '%b %d, %Y') as sales_order_due_date, ";
+            $sql .= "from {$this->tblInstallmetPayment} ";
+            $sql .= "where installmet_payment_code_number = :installmet_payment_code_number ";
+            $sql .= "and installmet_payment_code = 'sales-order' ";
+            $sql .= "and installmet_payment_is_paid = '0' ";
+            $sql .= "and DATE(installmet_payment_due_date) = DATE(:date_today) ";
+            $sql .= "order by DATE(installmet_payment_due_date) desc ";
+            $sql .= "limit 1 ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "installmet_payment_code_number" => $this->sales_order_number,
+                "date_today" => $this->date_today,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
     // update
     public function updateInstallment()
     {

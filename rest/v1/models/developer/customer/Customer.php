@@ -514,6 +514,7 @@ class Customer
         try {
             $sql = "select *, ";
             $sql .= "DATE_FORMAT(installmet_payment_due_date, '%b %d, %Y') as installmet_payment_due_date, ";
+            $sql .= "DATE_FORMAT(installmet_payment_due_date, '%b %d, %Y') as sales_order_due_date, ";
             $sql .= "DATEDIFF(NOW(), installmet_payment_due_date) as days_ago, ";
             $sql .= "SUM(installmet_payment_amount) as amount, ";
             $sql .= "installmet_payment_aid as id, ";
@@ -534,7 +535,6 @@ class Customer
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
-
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
