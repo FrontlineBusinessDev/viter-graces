@@ -13,7 +13,7 @@ import {
   YAxis,
 } from "recharts";
 import GraphTooltip from "./GraphTooltip";
-import WarningNoteForComingSoon from "@/layout/warningNOteForComingSoon";
+import WarningNoteForComingSoon from "@/layout/WarningNoteForComingSoon";
 
 const cashflowData = {
   Weekly: [

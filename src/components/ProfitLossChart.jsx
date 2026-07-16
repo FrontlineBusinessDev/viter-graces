@@ -11,7 +11,7 @@ import {
 } from "recharts";
 import GraphTooltip from "./GraphTooltip";
 import useDarkMode from "@/custom-hooks/useDarkMode";
-import WarningNoteForComingSoon from "@/layout/warningNOteForComingSoon";
+import WarningNoteForComingSoon from "@/layout/WarningNoteForComingSoon";
 
 const profitLossData = {
   Weekly: [

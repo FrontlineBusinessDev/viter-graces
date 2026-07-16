@@ -9,7 +9,7 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import WarningNoteForComingSoon from "../WarningNOteForComingSoon";
+import WarningNoteForComingSoon from "../WarningNoteForComingSoon";
 const DashboardSalesOverview = () => {
   const [timeframe, setTimeframe] = React.useState("Weekly");
   const { darkMode, toggleDarkMode } = useDarkMode();
