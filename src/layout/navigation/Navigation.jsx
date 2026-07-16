@@ -88,14 +88,36 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                     ? "rounded-lg bg-primary text-secondary"
                     : "text-white hover:bg-primary hover:text-secondary rounded-lg"
                 }`;
+                const sharedClassOG = `${
+                  isExpanded || window.innerWidth < 640
+                    ? "gap-2 w-full flex items-center p-2 justify-start "
+                    : "relative group flex items-center justify-center"
+                } cursor-default! h-7 mb-2 mx-auto py-5 px-3 ${
+                  menu === item.menu
+                    ? "rounded-lg bg-primary text-secondary"
+                    : "text-white rounded-lg"
+                }`;
+
                 return (
                   <div key={index} className="mb-2">
                     <Link
-                      to={`${isEmptyItem(item?.path, `${devNavUrl}`)}`}
+                      to={
+                        item?.ongoing?.filter((item) =>
+                          item?.role?.includes(userRole),
+                        )?.length > 0
+                          ? "#"
+                          : `${isEmptyItem(item?.path, `${devNavUrl}`)}`
+                      }
                       onMouseEnter={(e) => handleMouseEnter(e, item)}
                       onMouseLeave={handleMouseLeave}
                       onTouchStart={(e) => handleMouseEnter(e, item)}
-                      className={sharedClass}
+                      className={
+                        item?.ongoing?.filter((item) =>
+                          item?.role?.includes(userRole),
+                        )?.length > 0
+                          ? sharedClassOG
+                          : sharedClass
+                      }
                     >
                       <span className="text-lg">{item.icon}</span>
                       <span
@@ -107,8 +129,17 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                       >
                         {item.label}
                       </span>
-                    </Link>
 
+                      {item?.ongoing?.filter((item) =>
+                        item?.role?.includes(userRole),
+                      )?.length > 0 ? (
+                        <smal className="bg-amber-300 text-black px-1 text-[9px] rounded-sm">
+                          Comming soon
+                        </smal>
+                      ) : (
+                        ""
+                      )}
+                    </Link>
                     {/* SUBMENU */}
                     {(isExpanded || window.innerWidth < 640) &&
                       item.subList?.length > 0 &&
@@ -118,9 +149,7 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                             <Link
                               key={i}
                               to={`${link}/${sub.path}`}
-                              className={`
-                  block text-xs py-1 px-2 rounded-md
-                  transition-all duration-150
+                              className={` block text-xs py-1 px-2 rounded-md transition-all duration-150
                   ${
                     submenu === sub.submenu
                       ? "text-accent-light border-l-2 border-white"

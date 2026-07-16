@@ -57,7 +57,7 @@ export default function CashflowChart() {
   return (
     <>
       <div
-        className="bg-white dark:bg-gray-900 rounded-xl p-4 shadow"
+        className="bg-white grayscale! dark:bg-gray-900 rounded-xl p-4 shadow"
         data-testid="cashflow-chart"
       >
         <div className="flex justify-between mb-4">

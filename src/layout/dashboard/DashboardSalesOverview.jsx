@@ -52,7 +52,7 @@ const DashboardSalesOverview = () => {
   return (
     <>
       <div
-        className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow"
+        className="bg-white grayscale! dark:bg-gray-900 p-4 rounded-lg shadow"
         data-testid="sales-overview"
       >
         <div className="flex justify-between items-center mb-4">
