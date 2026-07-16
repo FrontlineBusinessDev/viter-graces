@@ -123,7 +123,7 @@ const ModalSuppliers = ({ itemEdit }) => {
     suppliers_messenger: isEmptyItem(itemEdit?.suppliers_messenger, ""),
     suppliers_whatsapp: isEmptyItem(itemEdit?.suppliers_whatsapp, ""),
     suppliers_other: isEmptyItem(itemEdit?.suppliers_other, ""),
-    suppliers_delivery: isEmptyItem(itemEdit?.suppliers_delivery, ""),
+    suppliers_delivery: isEmptyItem(itemEdit?.suppliers_delivery, "monday"),
     suppliers_contact_person: "",
     suppliers_notes: isEmptyItem(itemEdit?.suppliers_notes, ""),
 
@@ -140,13 +140,13 @@ const ModalSuppliers = ({ itemEdit }) => {
   }, []);
 
   let optionWeek = [
-    { id: "0", name: "Monday" },
-    { id: "1", name: "Tuesday" },
-    { id: "2", name: "Wenesday" },
-    { id: "3", name: "Thursday" },
-    { id: "4", name: "Friday" },
-    { id: "5", name: "Saturday" },
-    { id: "6", name: "Sunday" },
+    { id: "monday", name: "Monday" },
+    { id: "tuesday", name: "Tuesday" },
+    { id: "wenesday", name: "Wenesday" },
+    { id: "thursday", name: "Thursday" },
+    { id: "friday", name: "Friday" },
+    { id: "saturday", name: "Saturday" },
+    { id: "sunday", name: "Sunday" },
   ];
   return (
     <>

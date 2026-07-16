@@ -55,29 +55,19 @@ const ViewProducts = ({ itemEdit }) => {
                   <table className="shadow-none! ">
                     <thead className={`relative z-50 table-header-group`}>
                       <tr className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0! ">
-                        <th className="w-px dark:bg-gray-900! bg-gray-100!">
-                          #
-                        </th>
-                        <th
-                          className={`min-w-40  dark:bg-gray-900! bg-gray-100!`}
-                        >
+                        <th className="w-px dark:bg-gray-900!">#</th>
+                        <th className={`min-w-40  dark:bg-gray-900!`}>
                           Status
                         </th>
-                        <th
-                          className={`min-w-40  dark:bg-gray-900! bg-gray-100!`}
-                        >
+                        <th className={`min-w-40  dark:bg-gray-900!`}>
                           Product
                         </th>
-                        <th className={` dark:bg-gray-900! bg-gray-100!`}>
-                          Stock
-                        </th>
+                        <th className={` dark:bg-gray-900!`}>Stock</th>
                         <th
-                          className={`min-w-30! dark:bg-gray-900! bg-gray-100! text-right`}
+                          className={`min-w-30! dark:bg-gray-900! text-right`}
                         >
                           Price
                         </th>
-
-                        <th className={` dark:bg-gray-900! bg-gray-100! `}></th>
                       </tr>
                     </thead>
                     <tbody className="">
@@ -92,21 +82,21 @@ const ViewProducts = ({ itemEdit }) => {
                       {itemEdit?.items?.map((aitem, index) => {
                         return (
                           <tr key={index} className="border-0!">
-                            <td className="text-center dark:bg-gray-900! bg-gray-100! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
+                            <td className="text-center dark:bg-gray-900! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
                               {index + 1}.
                             </td>
-                            <td className=" dark:bg-gray-900! bg-gray-100! ">
+                            <td className=" dark:bg-gray-900! ">
                               <Pills variant={aitem?.inventory_status}>
                                 {aitem?.inventory_status}
                               </Pills>
                             </td>
-                            <td className=" dark:bg-gray-900! bg-gray-100! ">
+                            <td className=" dark:bg-gray-900! ">
                               {aitem?.stock_movement_product_name}
                             </td>
-                            <td className="text-right dark:bg-gray-900! bg-gray-100! ">
+                            <td className="text-right dark:bg-gray-900! ">
                               {numberWithCommas(aitem?.current_qty)}
                             </td>
-                            <td className="text-right dark:bg-gray-900! bg-gray-100! ">
+                            <td className="text-right dark:bg-gray-900! ">
                               <AmountsWithPesoSign
                                 classN={"size-3"}
                                 amount={aitem?.products_price}
