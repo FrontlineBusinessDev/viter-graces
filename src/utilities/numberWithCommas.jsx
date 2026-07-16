@@ -7,8 +7,8 @@ export const numberWithCommas = (x) => {
 export const numberWithCommasToFixed = (item, x) => {
   let result = "0.0000";
   console.log("item", item);
-  if (typeof item !== "undefined" && item !== "") {
-    result = item.toLocaleString("en-US", {
+  if (typeof item !== "undefined" && item !== "" && item !== null) {
+    result = item?.toLocaleString("en-US", {
       minimumFractionDigits: 4,
       maximumFractionDigits: 4,
     });
