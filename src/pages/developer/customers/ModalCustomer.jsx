@@ -26,6 +26,7 @@ const ModalCustomer = ({ itemEdit }) => {
   const handleClose = () => {
     dispatch(setIsAdd(false));
     dispatch(setError(false));
+    sessionStorage.removeItem("quickAdd");
   };
 
   handleEscape(() => handleClose());

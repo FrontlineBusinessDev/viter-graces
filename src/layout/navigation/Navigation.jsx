@@ -32,6 +32,7 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
     setHoverItem(item);
     setHoverText(` ${item.label}`);
     setShowHover(true);
+    sessionStorage.removeItem("quickAdd");
 
     const rect = e.currentTarget.getBoundingClientRect();
     const navRect = navWrapperRef.current.getBoundingClientRect();

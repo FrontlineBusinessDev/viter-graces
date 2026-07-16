@@ -11,6 +11,7 @@ import {
 } from "recharts";
 import GraphTooltip from "./GraphTooltip";
 import useDarkMode from "@/custom-hooks/useDarkMode";
+import WarningNoteForComingSoon from "@/layout/warningNOteForComingSoon";
 
 const profitLossData = {
   Weekly: [
@@ -54,100 +55,103 @@ export default function ProfitLossChart() {
 
   return (
     <>
-      <div
-        className="bg-white grayscale! dark:bg-gray-900 rounded-xl p-4 shadow"
-        data-testid="profit-loss-chart"
-      >
-        <div className="flex justify-between mb-4">
-          <h2 className="font-semibold text-black text-sm dark:text-light">
-            Profit & Loss
-          </h2>
-          <div className="flex gap-2">
-            {["Weekly", "Monthly", "Yearly"].map((frame) => (
-              <button
-                key={frame}
-                onClick={() => setTimeframe(frame)}
-                data-testid={`timeframe-${frame.toLowerCase()}`}
-                className={`px-3 py-1 rounded-lg ${
-                  timeframe === frame
-                    ? "bg-primary text-white"
-                    : "bg-gray-200 text-gray-700"
-                }`}
-              >
-                {frame}
-              </button>
-            ))}
+      <div className="relative group">
+        <div
+          className="bg-white grayscale! dark:bg-gray-900 rounded-xl p-4 shadow"
+          data-testid="profit-loss-chart"
+        >
+          <div className="flex justify-between mb-4">
+            <h2 className="font-semibold text-black text-sm dark:text-light">
+              Profit & Loss
+            </h2>
+            <div className="flex gap-2">
+              {["Weekly", "Monthly", "Yearly"].map((frame) => (
+                <button
+                  key={frame}
+                  onClick={() => setTimeframe(frame)}
+                  data-testid={`timeframe-${frame.toLowerCase()}`}
+                  className={`px-3 py-1 rounded-lg ${
+                    timeframe === frame
+                      ? "bg-primary text-white"
+                      : "bg-gray-200 text-gray-700"
+                  }`}
+                >
+                  {frame}
+                </button>
+              ))}
+            </div>
           </div>
+
+          <div className="grid grid-cols-3 gap-3 mb-4">
+            <div className="bg-blue-100 p-3 rounded">
+              <p className="xs:flex items-center gap-2 text-sm text-gray-600">
+                <span className="text-blue-600">
+                  <DollarSign size={14} />
+                </span>
+                Net
+              </p>
+              <p className="text-blue-600 font-semibold">₱85,097</p>
+            </div>
+            <div className="bg-green-100 p-3 rounded">
+              <p className="xs:flex items-center gap-2 text-sm text-gray-600">
+                <span className="text-green-600">
+                  <TrendingUp size={14} />
+                </span>
+                Income
+              </p>
+              <p className="text-green-600 font-semibold">₱145,301</p>
+            </div>
+            <div className="bg-red-100 p-3 rounded">
+              <p className="xs:flex items-center gap-2 text-sm text-gray-600">
+                <span className="text-red-600">
+                  <TrendingDown size={14} />
+                </span>
+                Expenses
+              </p>
+              <p className="text-red-600 font-semibold">₱60,204</p>
+            </div>
+          </div>
+
+          {/* Chart */}
+          <ResponsiveContainer width="100%" height={220}>
+            <ComposedChart data={currentData}>
+              <XAxis dataKey="label" />
+              <YAxis tickFormatter={(v) => `₱${v / 1000}k`} />
+              <Tooltip content={<GraphTooltip darkMode={darkMode} />} />
+
+              {/* Dashed Lines */}
+              <Line
+                type="monotone"
+                dataKey="income"
+                name="Income"
+                stroke="#22C55E"
+                strokeWidth={2}
+                strokeDasharray="5 5"
+                dot={false}
+              />
+              <Line
+                type="monotone"
+                dataKey="expenses"
+                name="Expenses"
+                stroke="#EF4444"
+                strokeWidth={2}
+                strokeDasharray="5 5"
+                dot={false}
+              />
+              <Line
+                type="monotone"
+                dataKey="net"
+                name="Net"
+                stroke="#2563EB"
+                strokeWidth={2}
+                strokeDasharray="5 5"
+                dot={false}
+              />
+              <Legend verticalAlign="bottom" align="center" iconType="square" />
+            </ComposedChart>
+          </ResponsiveContainer>
         </div>
-
-        <div className="grid grid-cols-3 gap-3 mb-4">
-          <div className="bg-blue-100 p-3 rounded">
-            <p className="xs:flex items-center gap-2 text-sm text-gray-600">
-              <span className="text-blue-600">
-                <DollarSign size={14} />
-              </span>
-              Net
-            </p>
-            <p className="text-blue-600 font-semibold">₱85,097</p>
-          </div>
-          <div className="bg-green-100 p-3 rounded">
-            <p className="xs:flex items-center gap-2 text-sm text-gray-600">
-              <span className="text-green-600">
-                <TrendingUp size={14} />
-              </span>
-              Income
-            </p>
-            <p className="text-green-600 font-semibold">₱145,301</p>
-          </div>
-          <div className="bg-red-100 p-3 rounded">
-            <p className="xs:flex items-center gap-2 text-sm text-gray-600">
-              <span className="text-red-600">
-                <TrendingDown size={14} />
-              </span>
-              Expenses
-            </p>
-            <p className="text-red-600 font-semibold">₱60,204</p>
-          </div>
-        </div>
-
-        {/* Chart */}
-        <ResponsiveContainer width="100%" height={220}>
-          <ComposedChart data={currentData}>
-            <XAxis dataKey="label" />
-            <YAxis tickFormatter={(v) => `₱${v / 1000}k`} />
-            <Tooltip content={<GraphTooltip darkMode={darkMode} />} />
-
-            {/* Dashed Lines */}
-            <Line
-              type="monotone"
-              dataKey="income"
-              name="Income"
-              stroke="#22C55E"
-              strokeWidth={2}
-              strokeDasharray="5 5"
-              dot={false}
-            />
-            <Line
-              type="monotone"
-              dataKey="expenses"
-              name="Expenses"
-              stroke="#EF4444"
-              strokeWidth={2}
-              strokeDasharray="5 5"
-              dot={false}
-            />
-            <Line
-              type="monotone"
-              dataKey="net"
-              name="Net"
-              stroke="#2563EB"
-              strokeWidth={2}
-              strokeDasharray="5 5"
-              dot={false}
-            />
-            <Legend verticalAlign="bottom" align="center" iconType="square" />
-          </ComposedChart>
-        </ResponsiveContainer>
+        <WarningNoteForComingSoon />
       </div>
     </>
   );

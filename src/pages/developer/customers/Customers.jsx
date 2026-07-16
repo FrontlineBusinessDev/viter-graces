@@ -11,6 +11,7 @@ import { IoLogoWhatsapp } from "react-icons/io";
 import ModalCustomer from "./ModalCustomer";
 import ModalSalesOrders from "./ModalSalesOrders";
 import ViewSalesDetails from "../sales-orders/ViewSalesDetails";
+import { setIsAdd } from "@/store/StoreAction";
 
 const Customers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -171,6 +172,12 @@ const Customers = () => {
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
     },
   ];
+
+  React.useEffect(() => {
+    if (window.sessionStorage.getItem("quickAdd")) {
+      dispatch(setIsAdd(true));
+    }
+  }, [window.sessionStorage.getItem("quickAdd")]);
 
   return (
     <>

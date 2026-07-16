@@ -348,7 +348,7 @@
     @apply relative p-1 bg-transparent leading-none hover:rounded-sm;
   }
   .tooltip::after {
-    @apply content-[attr(data-tooltip)] overflow-visible block absolute -translate-x-2/4 bottom-full -top-2 bg-dark/80 text-white p-1 rounded-sm h-fit leading-none z-51! whitespace-nowrap text-center opacity-0 text-[10px] pointer-events-none transition ease-linear scale-0 duration-75 left-1/4;
+    @apply content-[attr(data-tooltip)] overflow-visible block absolute -translate-x-2/4 bottom-full -top-5 bg-amber-400 text-black p-1 rounded-sm h-fit leading-none z-51! whitespace-nowrap text-center opacity-0 text-[10px] pointer-events-none transition ease-linear scale-0 duration-75 left-1/2;
   }
   .tooltip:hover::after {
     @apply opacity-100 scale-100;

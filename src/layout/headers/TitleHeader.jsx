@@ -47,17 +47,25 @@ const TitleHeader = ({}) => {
                   const isActive = store.tabValue === itemTab?.title_tab;
                   return (
                     <Link
-                      to={`${devNavUrl}/${userRole}/${itemTab.title_tab}`}
+                      to={
+                        !itemTab?.ongoingDevelopment
+                          ? `${devNavUrl}/${userRole}/${itemTab.title_tab}`
+                          : "#"
+                      }
                       key={key}
-                      className={`
-                  py-1 px-3 flex rounded-lg font-medium
-                  transition-colors duration-300 capitalize
+                      className={` py-1 px-3 flex rounded-lg font-medium transition-colors duration-300 capitalize
+                          ${
+                            !itemTab?.ongoingDevelopment
+                              ? `
                   ${
                     isActive
                       ? "bg-light dark:bg-dark-mode text-black/80 dark:text-light font-bold"
                       : "text-gray-500 hover:text-black dark:hover:text-light"
-                  }
+                  } `
+                              : "  tooltip "
+                          } 
                 `}
+                      data-tooltip={"Coming soon"}
                     >
                       {itemTab?.icon}
                       {formatText(itemTab?.title_tab)}
@@ -75,13 +83,15 @@ const TitleHeader = ({}) => {
                   <option hidden>{store.tabValue?.replaceAll("-", " ")}</option>
                   {currentHeader.array_tab.map((itemTab, key) => {
                     return (
-                      <option
-                        key={key}
-                        value={`${devNavUrl}/${userRole}/${itemTab.title_tab}`}
-                        className={`${store.tabValue === itemTab.title_tab ? "bg-blue-600 text-white " : " "} capitalize `}
-                      >
-                        {formatText(itemTab?.title_tab)}
-                      </option>
+                      !itemTab.ongoingDevelopment && (
+                        <option
+                          key={key}
+                          value={`${devNavUrl}/${userRole}/${itemTab.title_tab}`}
+                          className={`${store.tabValue === itemTab.title_tab ? "bg-blue-600 text-white " : " "} capitalize `}
+                        >
+                          {formatText(itemTab?.title_tab)}
+                        </option>
+                      )
                     );
                   })}
 

@@ -1,10 +1,14 @@
-import { setIsSearch } from "@/store/StoreAction";
+import { devNavUrl } from "@/config/config";
+import { setIsAdd, setIsSearch } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import {
   ArrowRightLeft,
   Building2,
   FileText,
   Layers,
+  Package,
+  PhilippinePeso,
+  ShoppingCart,
   Truck,
   UserCog,
   Users,
@@ -17,6 +21,7 @@ export const titleHeaderTab = () => {
 
   const onClickTab = () => {
     dispatch(setIsSearch(false));
+    sessionStorage.removeItem("quickAdd");
   };
 
   let navItems = [
@@ -35,12 +40,14 @@ export const titleHeaderTab = () => {
           icon: <Layers className="size-4 mr-1" />,
           title_tab: "stock-overview",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
         {
           icon: <ArrowRightLeft className="size-4 mr-1" />,
           title_tab: "movement-history",
           description_tab: "Track item movements and status changes.",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
       ],
     },
@@ -71,36 +78,42 @@ export const titleHeaderTab = () => {
           icon: "",
           title_tab: "finance-overview",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
         {
           icon: "",
           title_tab: "cash-sales",
           description_tab: "Record and track cash transactions.",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
         {
           icon: "",
           title_tab: "accounts-receivable",
           description_tab: "Monitor customer balances and payments.",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
         {
           icon: "",
           title_tab: "expenses",
           description_tab: "Track business costs and expenditures.",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
         {
           icon: "",
           title_tab: "accounts-payable",
           description_tab: "Manage supplier balances and payments.",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
         {
           icon: "",
           title_tab: "sales-journal",
           description_tab: "Review and record sales transactions.",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
       ],
     },
@@ -113,54 +126,63 @@ export const titleHeaderTab = () => {
           icon: "",
           title_tab: "sales-reports",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
         {
           icon: "",
           title_tab: "stock-levels",
           description_tab: "Monitor current inventory quantities.",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
         {
           icon: "",
           title_tab: "low-stock",
           description_tab: "Track items that need restocking.",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
         {
           icon: "",
           title_tab: "inventory-movement",
           description_tab: "Track stock movements and adjustments.",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
         {
           icon: "",
           title_tab: "profit-&-loss",
           description_tab: "Review income, costs, and net profit.",
           on_click: onClickTab,
+          ongoingDevelopment: true,
         },
         {
           icon: "",
           title_tab: "AR-report",
           description_tab: "Monitor outstanding customer balances.",
           on_click: onClickTab,
+          ongoingDevelopment: true,
         },
         {
           icon: "",
           title_tab: "AP-report",
           description_tab: "Review supplier balances and payables.",
           on_click: onClickTab,
+          ongoingDevelopment: true,
         },
         {
           icon: "",
           title_tab: "expenses-report",
           description_tab: "Track business expenses and spending trends.",
           on_click: onClickTab,
+          ongoingDevelopment: true,
         },
         {
           icon: "",
           title_tab: "overdue-payments",
           description_tab: "Monitor unpaid balances past due date.",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
       ],
     },
@@ -174,18 +196,21 @@ export const titleHeaderTab = () => {
           title_tab: "users",
           description_tab: "Manage user accounts and access.",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
         {
           icon: <UserCog className="size-4 mr-1" />,
           title_tab: "roles",
           description_tab: "Define roles and permissions.",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
         {
           icon: <Building2 className="size-4 mr-1" />,
           title_tab: "product-owner",
           description_tab: "Manage product owner profiles.",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
       ],
     },
@@ -199,12 +224,14 @@ export const titleHeaderTab = () => {
           title_tab: "users",
           description_tab: "Manage user accounts and access.",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
         {
           icon: <Building2 className="size-4 mr-1" />,
           title_tab: "product-owner",
           description_tab: "Manage product owner profiles.",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
       ],
     },
@@ -217,14 +244,58 @@ export const titleHeaderTab = () => {
           icon: <Truck className="size-4 mr-1" />,
           title_tab: "suppliers",
           on_click: onClickTab,
+          ongoingDevelopment: false,
         },
         {
           icon: <FileText className="size-4 mr-1" />,
           title_tab: "purchase-orders",
           description_tab: "Manage purchase requests and orders.",
           on_click: onClickTab,
+          ongoingDevelopment: false,
+        },
+        {
+          icon: <FileText className="size-4 mr-1" />,
+          title_tab: "purchase-movement-history",
+          description_tab: "Manage purchase requests and orders.",
+          on_click: onClickTab,
+          ongoingDevelopment: true,
         },
       ],
+    },
+  ];
+
+  return navItems;
+};
+
+export const quickHeaderShortCut = () => {
+  const { store, dispatch } = React.useContext(StoreContext);
+  const userRole = store.credentials?.data?.role;
+
+  const onClickTab = () => {
+    dispatch(setIsSearch(false));
+    dispatch(setIsAdd(true));
+  };
+
+  let navItems = [
+    {
+      icon: <ShoppingCart className=" text-blue-500 pt-2 place-self-center" />,
+      title: "New Order",
+      path: `${devNavUrl}/${userRole}/sales-orders`,
+    },
+    {
+      icon: <Package className=" text-violet-500 pt-2 place-self-center" />,
+      title: "Add Product",
+      path: `${devNavUrl}/${userRole}/products`,
+    },
+    {
+      icon: <Users className=" text-green-500 pt-2 place-self-center" />,
+      title: "Add Customer",
+      path: `${devNavUrl}/${userRole}/customers`,
+    },
+    {
+      icon: <PhilippinePeso className=" text-red-500 pt-2 place-self-center" />,
+      title: "Add Expenses",
+      path: `${devNavUrl}/${userRole}/purchase-orders`,
     },
   ];
 

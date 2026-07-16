@@ -31,6 +31,7 @@ const ModalReturns = ({ itemEdit }) => {
   const [isSelected, setIsSelected] = React.useState(false);
 
   const handleClose = () => {
+    sessionStorage.removeItem("quickAdd");
     dispatch(setIsAdd(false));
     dispatch(setError(false));
   };

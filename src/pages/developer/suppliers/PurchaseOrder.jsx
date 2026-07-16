@@ -5,6 +5,7 @@ import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalPurchaseOrder from "./modal/ModalPurchaseOrder";
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import { setIsAdd } from "@/store/StoreAction";
 
 const PurchaseOrder = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -114,6 +115,12 @@ const PurchaseOrder = () => {
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
     },
   ];
+
+  React.useEffect(() => {
+    if (window.sessionStorage.getItem("quickAdd")) {
+      dispatch(setIsAdd(true));
+    }
+  }, [window.sessionStorage.getItem("quickAdd")]);
 
   return (
     <>

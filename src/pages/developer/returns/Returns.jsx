@@ -4,6 +4,7 @@ import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalReturns from "./ModalReturns";
 import { ActiveInActiveStatus } from "@/layout/ArrayValue";
+import { setIsAdd } from "@/store/StoreAction";
 
 const Returns = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -63,6 +64,12 @@ const Returns = () => {
       status_option: ActiveInActiveStatus("restocked-status"),
     },
   ];
+
+  React.useEffect(() => {
+    if (window.sessionStorage.getItem("quickAdd")) {
+      dispatch(setIsAdd(true));
+    }
+  }, [window.sessionStorage.getItem("quickAdd")]);
 
   return (
     <>

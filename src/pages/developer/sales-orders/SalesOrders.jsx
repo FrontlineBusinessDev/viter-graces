@@ -8,6 +8,7 @@ import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalSalesOrders from "./ModalSalesOrders";
 import ViewSalesDetails from "./ViewSalesDetails";
+import { setIsAdd } from "@/store/StoreAction";
 
 const SalesOrders = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -116,6 +117,12 @@ const SalesOrders = () => {
     "get", // method
     `customer`, // key
   );
+
+  React.useEffect(() => {
+    if (window.sessionStorage.getItem("quickAdd")) {
+      dispatch(setIsAdd(true));
+    }
+  }, [window.sessionStorage.getItem("quickAdd")]);
 
   return (
     <>

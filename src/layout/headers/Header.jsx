@@ -3,26 +3,17 @@ import { devNavUrl } from "@/config/config";
 import useDarkMode from "@/custom-hooks/useDarkMode";
 import { StoreContext } from "@/store/StoreContext";
 import { checkLocalStorage } from "@/utilities/CheckLocalStorage";
-import {
-  LucideLogOut,
-  Menu,
-  Moon,
-  Package,
-  PhilippinePeso,
-  Plus,
-  RotateCcw,
-  ShoppingCart,
-  Sun,
-  Users,
-  X,
-} from "lucide-react";
+import { LucideLogOut, Menu, Moon, Plus, Sun, X } from "lucide-react";
 import React from "react";
+import { Link } from "react-router-dom";
+import { quickHeaderShortCut } from "./function-header";
 
 const Header = ({ menu, toggleMobileNav }) => {
   const [loading, setLoading] = React.useState(false);
   const { store, dispatch } = React.useContext(StoreContext);
   const { darkMode, toggleDarkMode } = useDarkMode();
   const [openQuick, setOpenQuick] = React.useState(false);
+  const link = "";
 
   let menuRef = React.useRef(null);
 
@@ -117,46 +108,21 @@ const Header = ({ menu, toggleMobileNav }) => {
         </div>
         <div>
           <ul className="[&>li]:text-black [&>li]:text-xs [&>li]:font-inter-regular [&>li]:py-2 dark:[&>li]:text-light">
-            <li>
-              <a href="" className="flex items-center gap-2">
-                <span className="bg-blue-300/20 rounded-full w-8 h-8 ">
-                  <ShoppingCart className=" text-blue-500 pt-2 place-self-center" />
-                </span>
-                New Order
-              </a>
-            </li>
-            <li>
-              <a href="" className="flex items-center gap-2">
-                <span className="bg-violet-300/20 rounded-full w-8 h-8 ">
-                  <Package className=" text-violet-500 pt-2 place-self-center" />
-                </span>
-                Add Product
-              </a>
-            </li>
-            <li>
-              <a href="" className="flex items-center gap-2">
-                <span className="bg-green-300/20 rounded-full w-8 h-8 ">
-                  <Users className=" text-green-500 pt-2 place-self-center" />
-                </span>
-                Add Customer
-              </a>
-            </li>
-            <li>
-              <a href="" className="flex items-center gap-2">
-                <span className="bg-orange-300/20 rounded-full w-8 h-8 ">
-                  <RotateCcw className=" text-orange-500 pt-2 place-self-center" />
-                </span>
-                Process Return
-              </a>
-            </li>
-            <li>
-              <a href="" className="flex items-center gap-2">
-                <span className="bg-red-300/20 rounded-full w-8 h-8 ">
-                  <PhilippinePeso className=" text-red-500 pt-2 place-self-center" />
-                </span>
-                Add Expenses
-              </a>
-            </li>
+            {quickHeaderShortCut().map((item, key) => {
+              return (
+                <li
+                  key={key}
+                  onClick={() => sessionStorage.setItem("quickAdd", true)}
+                >
+                  <Link to={`${item.path}`} className="flex items-center gap-2">
+                    <span className="bg-blue-300/20 rounded-full w-8 h-8 ">
+                      {item?.icon}{" "}
+                    </span>
+                    {item?.title}
+                  </Link>
+                </li>
+              );
+            })}
           </ul>
         </div>
       </div>

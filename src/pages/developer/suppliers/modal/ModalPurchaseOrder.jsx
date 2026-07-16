@@ -146,6 +146,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     dispatch(setIsAdd(false));
     dispatch(setError(false));
     queryClient.invalidateQueries({ queryKey: ["purchase-order"] });
+    sessionStorage.removeItem("quickAdd");
   };
 
   handleEscape(() => handleClose());

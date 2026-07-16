@@ -9,6 +9,7 @@ import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalProducts from "./ModalProducts";
 import { ProductOwnerId } from "@/utilities/productOwnerToken";
+import { setIsAdd } from "@/store/StoreAction";
 const Products = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -118,6 +119,12 @@ const Products = () => {
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
     },
   ];
+
+  React.useEffect(() => {
+    if (window.sessionStorage.getItem("quickAdd")) {
+      dispatch(setIsAdd(true));
+    }
+  }, [window.sessionStorage.getItem("quickAdd")]);
 
   return (
     <>

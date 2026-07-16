@@ -225,6 +225,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     queryClient.invalidateQueries({ queryKey: ["products"] });
     queryClient.invalidateQueries({ queryKey: ["stock-overview"] });
     queryClient.invalidateQueries({ queryKey: ["sales-order"] });
+    sessionStorage.removeItem("quickAdd");
   };
 
   const initVal = {
