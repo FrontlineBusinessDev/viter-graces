@@ -1,4 +1,7 @@
-import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import {
+  SearchableSelectFilter,
+  SearchableSelectFilterStatus,
+} from "@/components/inputs/InputSelect";
 import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
@@ -67,6 +70,21 @@ const StockLevels = () => {
       meta: "",
       classTh: "",
       classTd: "",
+    },
+    {
+      accessorKey: "stock_movement_product_owner_name",
+      header: "Product Owner",
+      classTh: "min-w-[10rem]",
+      classTd: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="product-owner/read-by-product-owner"
+            testFilterId={"filter-owner"}
+          />
+        ),
+      },
     },
   ];
 
