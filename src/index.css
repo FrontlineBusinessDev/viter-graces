@@ -142,6 +142,7 @@
   * {
     @apply scroll-smooth font-poppins;
   }
+
   h1,
   h2,
   h3,
@@ -378,5 +379,24 @@
   /* Firefox */
   input[type="number"] {
     -moz-appearance: textfield;
+  }
+
+  ::-webkit-scrollbar {
+    @apply w-1.5;
+  }
+  ::-webkit-scrollbar:vertical {
+    @apply w-2;
+  }
+  ::-webkit-scrollbar:horizontal {
+    @apply h-2 bg-transparent;
+  }
+  ::-webkit-scrollbar-track-piece {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-track {
+    @apply bg-transparent;
+  }
+  ::-webkit-scrollbar-thumb {
+    @apply bg-transparent/50 rounded-full border-8 cursor-pointer ml-2;
   }
 }

@@ -133,7 +133,10 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                       {item?.ongoing?.filter((item) =>
                         item?.role?.includes(userRole),
                       )?.length > 0 ? (
-                        <smal className="bg-amber-300 text-black px-1 text-[9px] rounded-sm">
+                        <smal
+                          className={`bg-amber-300 text-black px-1 text-[9px] rounded-sm 
+                          ${isExpanded || window.innerWidth < 640 ? "" : " hidden"}`}
+                        >
                           Comming soon
                         </smal>
                       ) : (
