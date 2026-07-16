@@ -6,7 +6,7 @@ export const numberWithCommas = (x) => {
 // format the numbers separated by comma
 export const numberWithCommasToFixed = (item, x) => {
   let result = "0.0000";
-
+  console.log("item", item);
   if (typeof item !== "undefined" && item !== "") {
     result = item.toLocaleString("en-US", {
       minimumFractionDigits: 4,
