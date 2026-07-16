@@ -126,7 +126,7 @@ class ProductOwner
             $sql .= "user_account_is_active as is_active, ";
             $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) as name ";
             $sql .= "from {$this->tblUserAccount} ";
-            $sql .= "where user_account_role = 'Product Owner' ";
+            $sql .= "where user_account_role = 'product owner' ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -186,7 +186,7 @@ class ProductOwner
             $sql .= "user_account_is_active as is_active, ";
             $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) as name ";
             $sql .= "from {$this->tblUserAccount} ";
-            $sql .= "where user_account_role = 'Product Owner' ";
+            $sql .= "where user_account_role = 'product owner' ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {

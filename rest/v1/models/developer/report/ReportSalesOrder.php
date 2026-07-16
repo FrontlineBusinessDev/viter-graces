@@ -1178,7 +1178,7 @@ class ReportSalesOrder
             $sql .= "from {$this->tblInstallmetPayment} ";
             $sql .= "where installmet_payment_is_paid = '0' ";
             $sql .= "and DATE(installmet_payment_due_date) <= DATE(:due_date) ";
-            $sql .= " order by DATE(installmet_payment_due_date) asc ";
+            $sql .= " order by DATE(installmet_payment_due_date) desc ";
             $sql .= "limit :total ";
             $query = $this->connection->prepare($sql);
             $query->execute([

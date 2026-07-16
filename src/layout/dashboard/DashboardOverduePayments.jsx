@@ -1,4 +1,5 @@
 import NoData from "@/components/NoData";
+import { AmountWithPesoSign } from "@/components/PesoSign";
 import ServerError from "@/components/ServerError";
 import TableLoading from "@/components/spinners/TableLoading";
 import { apiVersion, devNavUrl } from "@/config/config";
@@ -55,15 +56,18 @@ const DashboardOverduePayments = () => {
                         {item.installmet_payment_code_number}
                       </span>
                     </span>
-                    <p className="text-gray-500 text-sm">
+                    <p className="text-gray-500 text-sm mb-1!">
                       {item.installmet_payment_due_date}
                     </p>
                   </div>
                   <div>
                     <span className="text-red-600 font-semibold">
-                      ₱{item.installmet_payment_amount}
+                      <AmountWithPesoSign
+                        classN={"size-3"}
+                        amount={item.installmet_payment_amount}
+                      />
                     </span>
-                    <p className="text-red-600 font-semibold">
+                    <p className="text-red-600 font-semibold mb-1!">
                       {Number(item.days_ago) === 0
                         ? "Due today"
                         : `${item.days_ago} day(s) ago`}

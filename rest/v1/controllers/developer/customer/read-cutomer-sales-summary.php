@@ -39,7 +39,9 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $totalNumberOfOrders = 0;
     $totalTotalAmountSpent = 0;
 
+    returnError(count($dataSet));
     if (count($dataSet) > 0) {
+
         $totalOverdueBalance = array_sum(array_column($dataSet, 'amount'));
     }
 

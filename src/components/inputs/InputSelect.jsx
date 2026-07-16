@@ -177,14 +177,14 @@ export const InputSelectArray = ({
           )}
           {store.credentials?.data?.role === "developer" ? (
             <>
-              {path === "product-owner/read-by-product-owner" && (
+              {/* {path === "product-owner/read-by-product-owner" && (
                 <option
                   value={store.credentials?.data?.user_account_aid}
                   className="capitalize"
                 >
                   {store.credentials?.data?.name}
                 </option>
-              )}
+              )} */}
               {valData?.map((item, ikey) => {
                 return (
                   <option key={ikey} value={item.id} className="capitalize">

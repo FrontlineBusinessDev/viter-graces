@@ -35,25 +35,32 @@ if (array_key_exists("id", $_GET)) {
     $val->products_updated = date("Y-m-d H:i:s");
 
     checkId($val->products_aid);
+    $products_owner_id_old = (float)$data["products_owner_id_old"];
 
     $val_name_old = $data["val_name_old"];
 
-    $products_image_old = $data["products_image_old"];
-    $jsonStringToArray = (array)json_decode($products_image_old);
-    $pendingDeleteFile = array_map(fn($item) => json_encode($item, true), $jsonStringToArray);
+    $val->products_image = "";
 
-    $val->products_image = checkToUploadGoogleDrive(
-        $val->products_image,
-        $products_image_old,
-        'Products'
-    );
+    // $products_image_old = $data["products_image_old"];
+    // $jsonStringToArray = (array)json_decode($products_image_old);
+    // $pendingDeleteFile = array_map(fn($item) => json_encode($item, true), $jsonStringToArray);
 
-    $val->products_image = checkDeleteGoogleDriveApiFiles($val->products_image, $pendingDeleteFile);
+    // $val->products_image = checkToUploadGoogleDrive(
+    //     $val->products_image,
+    //     $products_image_old,
+    //     'Products'
+    // );
 
+    // $val->products_image = checkDeleteGoogleDriveApiFiles($val->products_image, $pendingDeleteFile);
 
     compareName($val, $val_name_old, $val->products_name);
     // update
     $query = checkUpdate($val);
+    if ((float)$val->products_owner_id != (float)$products_owner_id_old) {
+
+        updateProductOwner($val);
+    }
+
     updateConnectedMenu($val);
     // create activity log
     createActivityLog($valActivity, $data);

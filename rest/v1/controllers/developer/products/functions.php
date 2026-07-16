@@ -37,6 +37,17 @@ function updateConnectedMenu($object)
 
 
 }
+// Update 
+function updateProductOwner($object)
+{
+
+    $queryPOSO = $object->updateProductOwnerSalesOrder();
+    checkQuery($queryPOSO, "There's a problem processing your request. (updateProductOwnerSalesOrder)");
+    $queryPOSM = $object->updateProductOwnerStockMovement();
+    checkQuery($queryPOSM, "There's a problem processing your request. (updateProductOwnerStockMovement)");
+
+    return;
+}
 
 // Delete 
 function checkDeleteMovementStock($object)

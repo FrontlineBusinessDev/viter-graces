@@ -110,7 +110,10 @@ const ModalProducts = ({ itemEdit }) => {
       "",
     ),
     products_description: isEmptyItem(itemEdit?.products_description, ""),
-
+    products_owner_id_old:
+      Number(ProductOwnerId(store)) > 0
+        ? Number(ProductOwnerId(store))
+        : isEmptyItem(itemEdit?.products_owner_id, ""),
     val_name_old: isEmptyItem(itemEdit?.products_name, ""),
     products_name_old: isEmptyItem(itemEdit?.products_name, ""),
     products_image_old: isEmptyItem(itemEdit?.products_image, ""),

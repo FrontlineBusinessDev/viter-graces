@@ -5,10 +5,13 @@ export const numberWithCommas = (x) => {
 
 // format the numbers separated by comma
 export const numberWithCommasToFixed = (item, x) => {
-  let result = "0.00";
+  let result = "0.0000";
 
   if (typeof item !== "undefined" && item !== "") {
-    result = numberWithCommas(Number(item).toFixed(x));
+    result = item.toLocaleString("en-US", {
+      minimumFractionDigits: 4,
+      maximumFractionDigits: 4,
+    });
   }
   return result;
 };

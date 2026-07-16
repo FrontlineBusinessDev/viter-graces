@@ -653,6 +653,23 @@ class SalesOrder
     }
 
     // delete
+    public function deleteInstallmetById()
+    {
+        try {
+            $sql = "delete from {$this->tblInstallmetPayment} ";
+            $sql .= "where installmet_payment_aid = :installmet_payment_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "installmet_payment_aid" => $this->installmet_payment_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // delete
     public function deleteInstallment()
     {
         try {
@@ -852,6 +869,7 @@ class SalesOrder
             $sql .= "so.sales_order_aid as id, ";
             $sql .= "p.products_owner_id, ";
             $sql .= "p.products_owner_name, ";
+            $sql .= "so.sales_order_qty as sales_order_qty_old, ";
             $sql .= "so.sales_order_is_active as is_active, ";
             $sql .= "DATE_FORMAT(so.sales_order_date, '%b %d, %Y') as sales_order_date, ";
             $sql .= "DATE_FORMAT(so.sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";

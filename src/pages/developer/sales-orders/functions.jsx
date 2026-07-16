@@ -71,7 +71,6 @@ export const PropsValues = (props, items, installmentItems) => {
 };
 // Copyright year
 export const Validations = (values, items, dispatch) => {
-  console.log("values", values);
   const invalidItem = items.find(
     (item) => Number(item.current_qty) < Number(item.sales_order_qty),
   );

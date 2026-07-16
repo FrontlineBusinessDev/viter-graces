@@ -49,11 +49,8 @@ const OverviewSalesCustomer = ({ path = "", id = "", columnFilters = [] }) => {
           </li>
           <li>
             <span className="font-bold uppercase">Number of Orders</span>
-            <span>
-              <AmountWithPesoSign
-                classN={"size-3"}
-                amount={data?.number_of_order}
-              />
+            <span className="flex justify-end text-black">
+              {data?.number_of_order}
             </span>
           </li>
           <li>

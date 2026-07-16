@@ -62,6 +62,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
             sales_order_product_owner_id: "",
             sales_order_product_owner_name: "",
             sales_order_discounted_with_vat_amount: 0,
+            current_qty: "0",
             sales_order_qty: "1",
             sales_order_qty_old: "1",
             sales_order_price: "",
@@ -101,12 +102,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   const handleChangeAmount = (index, id = 0, field, value) => {
     const updated = [...items];
 
-    updated[index]["sales_order_qty_old"] = isEmptyItem(
-      itemEdit?.items?.find(
-        (option) => Number(option.sales_order_aid) === Number(id),
-      )?.sales_order_qty,
-      "",
-    );
     updated[index][field] = value;
 
     // compute row total
@@ -389,7 +384,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
               Validations(values, items, dispatch);
 
               if (!Validations(values, items, dispatch)) {
-                // console.log("data1", data);
                 mutation.mutate(data);
               } else {
                 dispatch(setError(true));

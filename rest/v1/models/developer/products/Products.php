@@ -807,4 +807,53 @@ class Products
         }
         return $query;
     }
+
+    // update
+    public function updateProductOwnerSalesOrder()
+    {
+        try {
+            $sql = "update {$this->tblSalesOrder} set ";
+            $sql .= "sales_order_product_owner_id = :sales_order_product_owner_id, ";
+            $sql .= "sales_order_product_owner_name = :sales_order_product_owner_name, ";
+            $sql .= "sales_order_updated = :sales_order_updated ";
+            $sql .= "where sales_order_product_id = :sales_order_product_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_order_product_owner_id" => $this->products_owner_id,
+                "sales_order_product_owner_name" => $this->products_owner_name,
+                "sales_order_updated" => $this->products_updated,
+                "sales_order_product_id" => $this->products_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
+    public function updateProductOwnerStockMovement()
+    {
+        try {
+            $sql = "update {$this->tblMovementStock} set ";
+            $sql .= "stock_movement_product_owner_id = :stock_movement_product_owner_id, ";
+            $sql .= "stock_movement_product_owner_name = :stock_movement_product_owner_name, ";
+            $sql .= "stock_movement_updated = :stock_movement_updated ";
+            $sql .= "where stock_movement_product_id = :stock_movement_product_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "stock_movement_product_owner_id" => $this->products_owner_id,
+                "stock_movement_product_owner_name" => $this->products_owner_name,
+                "stock_movement_updated" => $this->products_updated,
+                "stock_movement_product_id" => $this->products_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+
+    // updateProductOwnerStockMovement
 }
