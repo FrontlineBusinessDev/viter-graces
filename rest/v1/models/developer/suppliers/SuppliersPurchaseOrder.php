@@ -176,6 +176,7 @@ class SuppliersPurchaseOrder
             $sql .= "spo.purchase_order_payment_status as payment_status, ";
             $sql .= "spo.purchase_order_is_active as is_active, ";
             $sql .= "spo.purchase_order_price as amount, ";
+            $sql .= "spo.purchase_order_total_amount as total_amount, ";
             $sql .= "spo.purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} as spo, ";
             $sql .= "{$this->tblSuppliers} as s ";
@@ -242,6 +243,7 @@ class SuppliersPurchaseOrder
             $sql .= "spo.purchase_order_payment_status as payment_status, ";
             $sql .= "spo.purchase_order_is_active as is_active, ";
             $sql .= "spo.purchase_order_price as amount, ";
+            $sql .= "spo.purchase_order_total_amount as total_amount, ";
             $sql .= "spo.purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} as spo, ";
             $sql .= "{$this->tblSuppliers} as s ";
