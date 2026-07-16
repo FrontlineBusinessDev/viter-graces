@@ -334,8 +334,10 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                 Number(props.values.purchase_order_tax) -
                 Number(props.values.purchase_order_discount);
               props.values.purchase_order_balance =
-                Number(props.values.purchase_order_payment) -
-                Number(props.values.total_amount);
+                Number(props.values.purchase_order_payment) <= 0
+                  ? Number(props.values.total_amount)
+                  : Number(props.values.purchase_order_payment) -
+                    Number(props.values.total_amount);
 
               return (
                 <Form>
