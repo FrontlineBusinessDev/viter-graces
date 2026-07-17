@@ -228,6 +228,7 @@ class ReportSalesOrder
             $sql .= "sales_order_status as is_status, ";
             $sql .= "sales_order_is_active as is_active, ";
             $sql .= "SUM(sales_order_qty) as qty, ";
+            $sql .= "SUM(sales_order_discounted_with_vat_amount) as sales_order_discounted_with_vat_amount, ";
             $sql .= "sales_order_aid as id, ";
             $sql .= "sales_order_date as order_date, ";
             $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
@@ -243,7 +244,6 @@ class ReportSalesOrder
             or sales_order_product_owner_name like :sales_order_product_owner_name 
             or sales_order_product_name like :sales_order_product_name ) " : " ");
             }
-            $sql .= " group by sales_order_number ";
             $sql .= " order by sales_order_is_active desc, ";
             $sql .= "sales_order_number desc ";
             $query = $this->connection->prepare($sql);
