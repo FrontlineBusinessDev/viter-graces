@@ -91,9 +91,9 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                 }`;
                 const sharedClassOG = `${
                   isExpanded || window.innerWidth < 640
-                    ? "gap-2 w-full flex items-center justify-between "
+                    ? "gap-2 w-full flex items-center p-2 justify-between "
                     : "relative group flex items-center justify-center"
-                } cursor-default! h-7 mb-2 mx-auto py-5 pl-3 ${
+                } cursor-default! h-7 mb-2 mx-auto py-5 px-3 ${
                   menu === item.menu
                     ? "rounded-lg bg-primary text-secondary"
                     : "text-white rounded-lg"
@@ -112,13 +112,13 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                       onMouseEnter={(e) => handleMouseEnter(e, item)}
                       onMouseLeave={handleMouseLeave}
                       onTouchStart={(e) => handleMouseEnter(e, item)}
-                      className={
+                      className={`bg-transparent! ${
                         item?.ongoing?.filter((item) =>
                           item?.role?.includes(userRole),
                         )?.length > 0
                           ? sharedClassOG
                           : sharedClass
-                      }
+                      }`}
                     >
                       <div className={sharedClass}>
                         <span className="text-lg">{item.icon}</span>
