@@ -530,7 +530,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                       isEmptyItem(a?.sales_order_aid, 0),
                                     ) !== 0 ? (
                                       <td className=" dark:bg-gray-900! bg-gray-100! ">
-                                        {itemEdit?.sales_order_product_name}
+                                        {a?.sales_order_product_name}
                                       </td>
                                     ) : (
                                       <td className=" dark:bg-gray-900! bg-gray-100! ">

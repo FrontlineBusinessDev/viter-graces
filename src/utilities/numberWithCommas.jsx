@@ -4,12 +4,12 @@ export const numberWithCommas = (x) => {
 };
 
 // format the numbers separated by comma
-export const numberWithCommasToFixed = (item, x) => {
+export const numberWithCommasToFixed = (item, x = 0) => {
   let result = "0.0000";
   if (typeof item !== "undefined" && item !== "" && item !== null) {
-    result = item?.toLocaleString("en-US", {
-      minimumFractionDigits: 4,
-      maximumFractionDigits: 4,
+    result = `${item}`?.toLocaleString("en-US", {
+      minimumFractionDigits: Number(x),
+      maximumFractionDigits: Number(x),
     });
   }
   return result;

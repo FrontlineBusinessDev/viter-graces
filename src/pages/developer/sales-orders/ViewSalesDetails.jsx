@@ -72,42 +72,61 @@ const ViewSalesDetails = ({ itemEdit }) => {
             </li>
           </ul>
 
-          <div className="overflow-y-auto flex-1">
-            <div className="">
-              <div className="rounded-2xl border border-gray-300 bg-white dark:bg-[#0b111e] overflow-x-hidden dark:border-gray-700 max-h-[200px]">
-                {/* desktop header */}
-                <ul className="sticky top-0 grid grid-cols-[2rem_1fr_4rem_1fr_1fr] items-center border-b bg-gray-50 px-4 py-3 text-xs font-medium text-gray-500 dark:bg-[#0b111e]">
-                  <li>#</li>
-                  <li>Product</li>
-                  <li>QTY</li>
-                  <li className="text-center">Price</li>
-                  <li className="text-center">Total</li>
-                </ul>
-                {itemEdit?.items?.map((aitem, akey) => {
-                  return (
-                    <ul
-                      className={`${akey === 0 ? " pt-3 " : " pt-1 "} px-4 grid grid-cols-[2rem_1fr_4rem_1fr_1fr] gap-1 text-sm last:pb-3`}
-                      key={akey}
+          <div className="border shadow  border-gray-300 rounded-lg dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out ">
+            <div className="relative overflow-auto w-full h-full min-h-50 max-h-50 dark:bg-gray-900! ">
+              <table className="shadow-none! ">
+                <thead className={`relative z-20 table-header-group`}>
+                  <tr className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0!">
+                    <th className="w-px bg-gray-100! dark:bg-gray-900!">#</th>
+                    <th className={`min-w-40  dark:bg-gray-900! bg-gray-100!`}>
+                      Products
+                    </th>
+                    <th className={` dark:bg-gray-900! bg-gray-100!`}>QTY</th>
+                    <th
+                      className={`min-w-30! dark:bg-gray-900! bg-gray-100! text-right`}
                     >
-                      <li>{counter++}.</li>
-                      <li>{aitem?.sales_order_product_name}</li>
-                      <li>{aitem?.sales_order_qty}</li>
-                      <li>
-                        <AmountWithPesoSign
-                          classN="size-3"
-                          amount={`${aitem?.sales_order_price}`}
-                        />
-                      </li>
-                      <li>
-                        <AmountWithPesoSign
-                          classN="size-3"
-                          amount={`${aitem?.sales_order_total}`}
-                        />
-                      </li>
-                    </ul>
-                  );
-                })}
-              </div>
+                      Price per unit
+                    </th>
+                    <th
+                      className={` dark:bg-gray-900! bg-gray-100! text-right`}
+                    >
+                      Total
+                    </th>
+                  </tr>
+                </thead>
+                <tbody className="">
+                  {itemEdit?.items?.map((aitem, akey) => {
+                    console.log("itemEdit", itemEdit);
+                    return (
+                      <tr key={akey} className="border-0!">
+                        <td className="text-center dark:bg-gray-900! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
+                          {akey + 1}.
+                        </td>
+
+                        <td className=" dark:bg-gray-900! ">
+                          {aitem?.sales_order_product_name}
+                        </td>
+
+                        <td className=" dark:bg-gray-900! text-right">
+                          {aitem?.sales_order_qty}
+                        </td>
+                        <td className=" dark:bg-gray-900! ">
+                          <AmountWithPesoSign
+                            classN="size-3"
+                            amount={`${aitem?.sales_order_price}`}
+                          />
+                        </td>
+                        <td className=" dark:bg-gray-900! ">
+                          <AmountWithPesoSign
+                            classN="size-3"
+                            amount={`${aitem?.sales_order_total}`}
+                          />
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
             </div>
           </div>
 

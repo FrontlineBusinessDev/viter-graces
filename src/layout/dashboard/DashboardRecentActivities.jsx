@@ -50,8 +50,8 @@ const DashboardRecentActivities = () => {
                     <p>
                       <span className="w-2 h-2 rounded-full bg-yellow-400 inline-block mr-1"></span>
                       {item?.activity_log_user_name}
-                      <span className="mx-2 uppercase ">
-                        {item?.activity_log_action}
+                      <span className="mx-2 lowercase ">
+                        ({item?.activity_log_user_role} role)
                       </span>
                     </p>
                   </div>
@@ -65,8 +65,8 @@ const DashboardRecentActivities = () => {
                     >
                       {item?.activity_log_menu}
                     </span>
-                    <span className="lowercase">
-                      ({item?.activity_log_user_role} role)
+                    <span className="lowercase font-semibold">
+                      {item?.activity_log_action}
                     </span>
                     <span className="text-gray-400 text-xs">
                       {Number(item?.days_ago) > 0

@@ -204,9 +204,7 @@
   label.label_login {
     @apply flex justify-center transform -translate-y-6 -translate-x-1 absolute left-3 top-[35px] px-1 z-10 isolate;
   }
-  ::placeholder {
-    @apply text-gray-500 dark:text-white!;
-  }
+
   label.label_login:after {
     @apply content-[''] w-[97%] h-[2.5px] absolute left-px top-[7.2px] -z-10;
   }
