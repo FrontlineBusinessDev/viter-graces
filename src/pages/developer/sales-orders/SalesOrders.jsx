@@ -17,6 +17,8 @@ import React from "react";
 import ModalSalesOrders from "./ModalSalesOrders";
 import ViewSalesDetails from "./ViewSalesDetails";
 import { setIsAdd } from "@/store/StoreAction";
+import { DateFormat } from "@/components/DateFormat";
+import { getDateNow } from "@/components/getDateNow";
 
 const SalesOrders = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -54,6 +56,7 @@ const SalesOrders = () => {
       classTd: "",
       filterFn: "date",
       meta: "",
+      defaultValue: store.credentials?.data?.server_date,
     },
     {
       accessorKey: "sales_order_due_date",
@@ -136,6 +139,30 @@ const SalesOrders = () => {
         ),
       },
       status_option: PaymentTermsList(),
+    },
+    {
+      accessorKey: "sales_order_received_by_name",
+      header: "Received by",
+      classTh: "min-w-[10rem]",
+      classTd: "capitalize ",
+      filterFn: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="product-owner/read-by-product-owner"
+            testFilterId={"filter-owner"}
+          />
+        ),
+      },
+    },
+    {
+      accessorKey: "sales_order_notes",
+      header: "notes",
+      classTh: "min-w-[10rem]",
+      classTd: "capitalize ",
+      filterFn: "",
+      meta: "",
     },
     {
       accessorKey: "action",

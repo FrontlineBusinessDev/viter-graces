@@ -91,7 +91,7 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                 }`;
                 const sharedClassOG = `${
                   isExpanded || window.innerWidth < 640
-                    ? "gap-2 w-full flex items-center p-2 justify-between "
+                    ? "gap-2 w-full flex items-center p-2 justify-start "
                     : "relative group flex items-center justify-center"
                 } cursor-default! h-7 mb-2 mx-auto py-5 px-3 ${
                   menu === item.menu
@@ -112,36 +112,36 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                       onMouseEnter={(e) => handleMouseEnter(e, item)}
                       onMouseLeave={handleMouseLeave}
                       onTouchStart={(e) => handleMouseEnter(e, item)}
-                      className={`bg-transparent! ${
+                      className={
                         item?.ongoing?.filter((item) =>
                           item?.role?.includes(userRole),
                         )?.length > 0
                           ? sharedClassOG
                           : sharedClass
-                      }`}
+                      }
                     >
-                      <div className={sharedClass}>
-                        <span className="text-lg">{item.icon}</span>
-                        <span
-                          className={`
+                      <span className="text-lg">{item.icon}</span>
+                      <span
+                        className={`
                           text-sm whitespace-nowrap
                           transition-all duration-200
                           ${isExpanded || window.innerWidth < 640 ? "opacity-100" : "opacity-0 w-0 overflow-hidden"}
                         `}
-                        >
-                          {item.label}
-                        </span>
-                      </div>
+                      >
+                        {item.label}
+                      </span>
 
                       {item?.ongoing?.filter((item) =>
                         item?.role?.includes(userRole),
                       )?.length > 0 ? (
-                        <smal
-                          className={` bg-amber-300 text-black px-1 text-[9px] w-26 rounded-sm 
+                        <span className="w-full flex justify-end ">
+                          <smal
+                            className={`bg-amber-300 text-black px-1 text-[9px] rounded-sm 
                           ${isExpanded || window.innerWidth < 640 ? "" : " hidden"}`}
-                        >
-                          Coming soon
-                        </smal>
+                          >
+                            Coming soon
+                          </smal>
+                        </span>
                       ) : (
                         ""
                       )}

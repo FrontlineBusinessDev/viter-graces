@@ -368,7 +368,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
               };
               Validations(values, items, dispatch);
 
-              console.log("data", data);
               if (!Validations(values, items, dispatch)) {
                 mutation.mutate(data);
               } else {
@@ -690,7 +689,8 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                     </div>
                   </div>
 
-                  {props.values.sales_order_payment_terms === "installment" ? (
+                  {props.values.sales_order_payment_terms?.toLocaleLowerCase() ===
+                  "installment" ? (
                     <>
                       <div className="flex my-5 justify-between items-center">
                         <label htmlFor="">

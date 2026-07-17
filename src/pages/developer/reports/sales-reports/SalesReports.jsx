@@ -93,6 +93,28 @@ const SalesReports = () => {
         ),
       },
     },
+    {
+      accessorKey: "sales_order_received_by_name",
+      header: "Received by",
+      classTh: "min-w-[10rem]",
+      classTd: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="product-owner/read-by-product-owner"
+            testFilterId={"filter-owner"}
+          />
+        ),
+      },
+    },
+    {
+      accessorKey: "sales_order_notes",
+      header: "Notes",
+      classTh: "min-w-[10rem]",
+      classTd: "",
+      meta: "",
+    },
   ];
 
   return (

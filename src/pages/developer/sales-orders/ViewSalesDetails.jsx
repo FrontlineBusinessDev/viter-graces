@@ -33,7 +33,7 @@ const ViewSalesDetails = ({ itemEdit }) => {
             Order Details - {itemEdit?.sales_order_number}
           </h3>
 
-          <ul className="grid xs:grid-cols-2 [&>li]:flex [&>li]:items-start [&>li]:gap-1 mb-3 ">
+          <ul className="grid xs:grid-cols-2 [&>li]:flex [&>li]:items-start [&>li]:gap-1 ">
             <li>
               <p className="m-0">Customer:</p>
               <p className="m-0 text-black dark:text-light">
@@ -71,6 +71,10 @@ const ViewSalesDetails = ({ itemEdit }) => {
               </p>
             </li>
           </ul>
+          <p>
+            Notes:
+            <span className="font-bold">{itemEdit?.sales_order_notes}</span>
+          </p>
 
           <div className="border shadow  border-gray-300 rounded-lg dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out ">
             <div className="relative overflow-auto w-full h-full min-h-50 max-h-50 dark:bg-gray-900! ">
