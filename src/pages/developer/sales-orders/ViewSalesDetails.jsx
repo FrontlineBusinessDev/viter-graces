@@ -22,7 +22,7 @@ const ViewSalesDetails = ({ itemEdit }) => {
       onClick={handleClose}
     >
       <div
-        className={`p-1 min-w-[350px] animate-slideUp w-full max-w-lg my-10`}
+        className={`p-1 min-w-[350px] animate-slideUp w-full max-w-140 my-10`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="bg-light dark:bg-gray-900 rounded-lg dark:border dark:border-gray-800 flex flex-col max-h-[90vh] p-4">
@@ -33,7 +33,7 @@ const ViewSalesDetails = ({ itemEdit }) => {
             Order Details - {itemEdit?.sales_order_number}
           </h3>
 
-          <ul className="grid grid-cols-2 [&>li]:flex [&>li]:items-center [&>li]:gap-1 mb-3 ">
+          <ul className="grid xs:grid-cols-2 [&>li]:flex [&>li]:items-start [&>li]:gap-1 mb-3 ">
             <li>
               <p className="m-0">Customer:</p>
               <p className="m-0 text-black dark:text-light">
@@ -65,7 +65,7 @@ const ViewSalesDetails = ({ itemEdit }) => {
               </Pills>
             </li>
             <li>
-              <p className="m-0">Payment terms:</p>
+              <p className="m-0 min-w-23">Payment terms:</p>
               <p className="m-0 text-black dark:text-light capitalize">
                 {itemEdit?.sales_order_payment_terms}
               </p>

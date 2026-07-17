@@ -1,11 +1,12 @@
 import ModalButton from "@/components/buttons/ModalButton";
 import {
-  InputSalesOrderSelectTagArray,
+  DefaultInputSelectTagArray,
   InputSelect,
 } from "@/components/inputs/InputSelect";
 import { InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
+import { AmountWithPesoSign, PesoSign } from "@/components/PesoSign";
 import { apiVersion } from "@/config/config";
 import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
@@ -22,6 +23,7 @@ import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { numberWithCommasToFixed } from "@/utilities/numberWithCommas";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
+import { PhilippinePeso } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
 
@@ -109,13 +111,7 @@ const ModalReturns = ({ itemEdit }) => {
               dispatch(setError(false));
               // mutate data
 
-              console.log({
-                ...values,
-                selectedItems: selectedItems || [],
-                return_product_is_restocked: isSelected,
-              });
-
-              mutation.mutate({
+              const data = {
                 ...values,
                 selectedItems: selectedItems || [],
                 return_product_is_restocked: isSelected,
@@ -129,7 +125,10 @@ const ModalReturns = ({ itemEdit }) => {
                     return_product_is_restocked: isSelected,
                   },
                 ),
-              });
+              };
+
+              console.log(data);
+              // mutation.mutate(data);
             }}
           >
             {(props) => {
@@ -161,7 +160,7 @@ const ModalReturns = ({ itemEdit }) => {
 
                   <div className="relative mt-3">
                     <label htmlFor="">Linked Order *</label>
-                    <InputSalesOrderSelectTagArray
+                    <DefaultInputSelectTagArray
                       onChange={(e) => {
                         setSelectedItems(
                           e.items.map((i) => ({
@@ -177,7 +176,9 @@ const ModalReturns = ({ itemEdit }) => {
                       store={store}
                     />
 
-                    {selectedItems.length > 0 && (
+                    {console.log("selectedItems", selectedItems)}
+
+                    {selectedItems?.length > 0 && (
                       <div className="relative">
                         <p className="text-xs font-medium mt-3 mb-1">
                           Select Items to Return
@@ -214,8 +215,14 @@ const ModalReturns = ({ itemEdit }) => {
                                   />
                                 </button>
 
-                                <span className="text-sm">
-                                  {item.sales_order_product_name}
+                                <span className="flex items-center text-sm">
+                                  {item.sales_order_product_name} (
+                                  <PhilippinePeso className={`size-3 mr-px`} />
+                                  {numberWithCommasToFixed(
+                                    item.sales_order_price,
+                                    4,
+                                  )}
+                                  )
                                 </span>
                               </div>
 
@@ -262,21 +269,16 @@ const ModalReturns = ({ itemEdit }) => {
                         <span className="text-black dark:text-light text-sm">
                           Return Amount
                         </span>
-                        <span>
-                          ₱
-                          <span className="ml-1">
-                            {numberWithCommasToFixed(
-                              selectedItems?.reduce(
-                                (sum, item) =>
-                                  Number(sum) +
-                                  Number(item.qty || 0) *
-                                    Number(item.sales_order_price || 0),
-                                0,
-                              ),
-                              2,
-                            )}
-                          </span>
-                        </span>
+                        <AmountWithPesoSign
+                          classN="size-5"
+                          amount={selectedItems?.reduce(
+                            (sum, item) =>
+                              Number(sum) +
+                              Number(item.qty || 0) *
+                                Number(item.sales_order_price || 0),
+                            0,
+                          )}
+                        />
                       </p>
                     </div>
                   </div>

@@ -16,14 +16,9 @@ $conn = checkDbConnection();
 // make instance of classes
 $val = new Customer($conn);
 $valActivity = new ActivityLog($conn);
-// get payload
-$body = file_get_contents("php://input");
-$data = json_decode($body, true);
 // validate api key
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
-    // check data
-    checkPayload($data);
 
     if (empty($_GET)) {
         $val->filters = [];

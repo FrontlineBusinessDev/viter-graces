@@ -1,6 +1,14 @@
-import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import {
+  SearchableSelectFilter,
+  SearchableSelectFilterStatus,
+} from "@/components/inputs/InputSelect";
 import { apiVersion } from "@/config/config";
-import { ActionTableList, ActiveInActiveStatus } from "@/layout/ArrayValue";
+import {
+  ActionTableList,
+  ActiveInActiveStatus,
+  PaymentMethodList,
+  PaymentTermsList,
+} from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import useQueryData from "@/services/useQueryData";
@@ -60,7 +68,15 @@ const SalesOrders = () => {
       header: "customer",
       classTh: "min-w-[10rem]",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="customer/read-all-by-active"
+            testFilterId={"filter-owner"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_order_total_receivable_amount",
@@ -94,14 +110,32 @@ const SalesOrders = () => {
       header: "method",
       classTh: "min-w-[10rem]",
       classTd: "capitalize ",
-      meta: "",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={PaymentMethodList()}
+          />
+        ),
+      },
+      status_option: PaymentMethodList(),
     },
     {
       accessorKey: "sales_order_payment_terms",
       header: "payment terms",
       classTh: "min-w-[10rem]",
       classTd: "capitalize ",
-      meta: "",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={PaymentTermsList()}
+          />
+        ),
+      },
+      status_option: PaymentTermsList(),
     },
     {
       accessorKey: "action",

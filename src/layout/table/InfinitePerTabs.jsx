@@ -246,7 +246,7 @@ const InfinitePerTabs = ({
                                 <span className="text-xs text-gray-400 lg:hidden">
                                   {eitem?.column?.columnDef?.icon}
                                 </span>
-                                <span>
+                                <span className="">
                                   {flexRender(
                                     eitem?.column?.columnDef?.cell,
                                     eitem?.getContext(),

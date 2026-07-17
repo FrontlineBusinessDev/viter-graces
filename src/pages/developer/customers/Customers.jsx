@@ -1,5 +1,10 @@
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
-import { ActionTableList, ActiveInActiveStatus } from "@/layout/ArrayValue";
+import {
+  ActionTableList,
+  ActiveInActiveStatus,
+  PaymentMethodList,
+  PaymentTermsList,
+} from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfinitePerTabs from "@/layout/table/InfinitePerTabs";
 import { StoreContext } from "@/store/StoreContext";
@@ -155,14 +160,31 @@ const Customers = () => {
       header: "method",
       classTh: "min-w-[10rem]",
       classTd: "capitalize ",
-      meta: "",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={PaymentMethodList()}
+          />
+        ),
+      },
+      status_option: PaymentMethodList(),
     },
     {
       accessorKey: "sales_order_payment_terms",
       header: "payment terms",
       classTh: "min-w-[10rem]",
       classTd: "capitalize ",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={PaymentTermsList()}
+          />
+        ),
+      },
+      status_option: PaymentTermsList(),
     },
     {
       accessorKey: "action",

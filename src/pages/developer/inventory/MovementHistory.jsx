@@ -50,6 +50,7 @@ const MovementHistory = () => {
       header: "QTY",
       classTh: "",
       classTd: "",
+      filterFn: "between",
       meta: "",
     },
     {
@@ -57,6 +58,7 @@ const MovementHistory = () => {
       header: "Before",
       classTh: "",
       classTd: "",
+      filterFn: "between",
       meta: "",
     },
     {
@@ -64,6 +66,7 @@ const MovementHistory = () => {
       header: "After",
       classTh: "",
       classTd: "",
+      filterFn: "between",
       meta: "",
     },
     {

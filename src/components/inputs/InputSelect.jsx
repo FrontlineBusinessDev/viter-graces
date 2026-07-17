@@ -84,11 +84,11 @@ export const InputSelectArrayWithOptions = ({
               item?.id !== "" && (
                 <option
                   key={key}
-                  value={item.id}
-                  id={item.name}
+                  value={item.id || item.value}
+                  id={item.name || item.label}
                   className="capitalize"
                 >
-                  {item.name}
+                  {item.name || item.label}
                 </option>
               )
             );
@@ -734,6 +734,7 @@ export const DefaultInputSelectTagArray = ({
 
   const options =
     newDataList?.map((item) => ({
+      ...item,
       id: item.id,
       value: item.name,
       label: `${item.name}`,

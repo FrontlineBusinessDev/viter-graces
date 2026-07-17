@@ -9,7 +9,11 @@ import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { AmountsWithPesoSign, AmountWithPesoSign } from "@/components/PesoSign";
 import { apiVersion } from "@/config/config";
-import { ActivityLogDetails } from "@/layout/ArrayValue";
+import {
+  ActivityLogDetails,
+  PaymentMethodList,
+  PaymentTermsList,
+} from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
 import {
@@ -318,30 +322,10 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     dispatch(setError(false));
   }, []);
 
-  let paymentOption = [
-    { id: "cash", name: "cash" },
-    { id: "check", name: "check" },
-    { id: "online transaction", name: "online transaction" },
-    { id: "mutiple payment", name: "mutiple payment" },
-  ];
-
   let taxOption = [
     { id: 0, name: "--" },
     { id: 1.12, name: "inclusive" },
     { id: 0.12, name: "exclusive" },
-  ];
-
-  let termsOption = [
-    {
-      id: "due on receipt - due on the same day the sales order",
-      name: "Due on Receipt - Due on the same day the Sales Order",
-    },
-    { id: "installment", name: "Installment" },
-    { id: "net 10 - due within 10 days", name: "Net 10 - Due within 10 days" },
-    { id: "net 15 - due within 15 days", name: "Net 15 - Due within 15 days" },
-    { id: "net 20 - due within 20 days", name: "Net 20 - Due within 20 days" },
-    { id: "net 25 - due within 25 days", name: "Net 25 - Due within 25 days" },
-    { id: "net 30 - due within 30 days", name: "Net 30 - Due within 30 days" },
   ];
 
   // console.log("items123", items);
@@ -442,7 +426,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         type="text"
                         name="sales_order_payment_method"
                         defaultValue="cash"
-                        options={paymentOption}
+                        options={PaymentMethodList()}
                         onChange={(e) => {
                           props.values.sales_order_payment_method =
                             e.target.options[e.target.selectedIndex].text;
@@ -455,8 +439,8 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         label="Payment Terms"
                         type="text"
                         name="sales_order_payment_terms"
-                        defaultValue=""
-                        options={termsOption}
+                        defaultValue="due on receipt - due on the same day the sales order"
+                        options={PaymentTermsList()}
                         onChange={(e) => {
                           props.values.sales_order_payment_terms =
                             e.target.options[e.target.selectedIndex].text;
@@ -478,14 +462,14 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                     </button>
                   </div>
 
-                  <div className="border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out ">
+                  <div className="border shadow border-gray-300 rounded-lg dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out ">
                     {items.length === 0 ? (
                       <div className="h-20 flex items-center justify-center ">
                         <p>No Items added yet.</p>
                       </div>
                     ) : (
                       <>
-                        <div className="relative overflow-auto w-full h-full min-h-80 bg-gray-100 dark:bg-gray-900! ">
+                        <div className="relative overflow-auto w-full h-full min-h-80 dark:bg-gray-900! ">
                           <table className="shadow-none! ">
                             <thead
                               className={`relative z-50 table-header-group`}
@@ -523,17 +507,17 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                               {items.map((a, index) => {
                                 return (
                                   <tr key={a?.id} className="border-0!">
-                                    <td className="text-center dark:bg-gray-900! bg-gray-100! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
+                                    <td className="text-center dark:bg-gray-900! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
                                       {index + 1}.
                                     </td>
                                     {Number(
                                       isEmptyItem(a?.sales_order_aid, 0),
                                     ) !== 0 ? (
-                                      <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                      <td className=" dark:bg-gray-900! ">
                                         {a?.sales_order_product_name}
                                       </td>
                                     ) : (
-                                      <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                      <td className=" dark:bg-gray-900! ">
                                         <InputSalesOrderSelectTagArray
                                           onChange={(e, selectedItem) => {
                                             handleChange(
@@ -553,7 +537,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                       </td>
                                     )}
 
-                                    <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                    <td className=" dark:bg-gray-900! ">
                                       <input
                                         onChange={(e) => {
                                           handleChangeAmount(
@@ -572,19 +556,19 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                         placeholder="Qty"
                                       />
                                     </td>
-                                    <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                    <td className=" dark:bg-gray-900! ">
                                       <AmountWithPesoSign
                                         classN="size-3"
                                         amount={a["sales_order_price"]}
                                       />
                                     </td>
-                                    <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                    <td className=" dark:bg-gray-900! ">
                                       <AmountWithPesoSign
                                         classN="size-3"
                                         amount={a["sales_order_total"]}
                                       />
                                     </td>
-                                    <td className=" dark:bg-gray-900! bg-gray-100! ">
+                                    <td className=" dark:bg-gray-900! ">
                                       <button
                                         onClick={() => handleRemoveItem(a)}
                                         className="text-red-500 text-xl"
