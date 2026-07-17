@@ -91,9 +91,9 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                 }`;
                 const sharedClassOG = `${
                   isExpanded || window.innerWidth < 640
-                    ? "gap-2 w-full flex items-center p-2 justify-start "
+                    ? "gap-2 w-full flex items-center justify-between "
                     : "relative group flex items-center justify-center"
-                } cursor-default! h-7 mb-2 mx-auto py-5 px-3 ${
+                } cursor-default! h-7 mb-2 mx-auto py-5 pl-3 ${
                   menu === item.menu
                     ? "rounded-lg bg-primary text-secondary"
                     : "text-white rounded-lg"
@@ -120,25 +120,27 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                           : sharedClass
                       }
                     >
-                      <span className="text-lg">{item.icon}</span>
-                      <span
-                        className={`
+                      <div className={sharedClass}>
+                        <span className="text-lg">{item.icon}</span>
+                        <span
+                          className={`
                           text-sm whitespace-nowrap
                           transition-all duration-200
                           ${isExpanded || window.innerWidth < 640 ? "opacity-100" : "opacity-0 w-0 overflow-hidden"}
                         `}
-                      >
-                        {item.label}
-                      </span>
+                        >
+                          {item.label}
+                        </span>
+                      </div>
 
                       {item?.ongoing?.filter((item) =>
                         item?.role?.includes(userRole),
                       )?.length > 0 ? (
                         <smal
-                          className={`bg-amber-300 text-black px-1 text-[9px] rounded-sm 
+                          className={` bg-amber-300 text-black px-1 text-[9px] w-26 rounded-sm 
                           ${isExpanded || window.innerWidth < 640 ? "" : " hidden"}`}
                         >
-                          Comming soon
+                          Coming soon
                         </smal>
                       ) : (
                         ""
