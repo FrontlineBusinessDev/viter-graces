@@ -1,4 +1,7 @@
-import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import {
+  SearchableSelectFilter,
+  SearchableSelectFilterStatus,
+} from "@/components/inputs/InputSelect";
 import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
@@ -77,10 +80,18 @@ const SalesReports = () => {
     },
     {
       accessorKey: "sales_order_product_owner_name",
-      header: "product owner",
-      classTh: "min-w-40 ",
+      header: "Product Owner",
+      classTh: "min-w-[10rem]",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="product-owner/read-by-product-owner"
+            testFilterId={"filter-owner"}
+          />
+        ),
+      },
     },
   ];
 
