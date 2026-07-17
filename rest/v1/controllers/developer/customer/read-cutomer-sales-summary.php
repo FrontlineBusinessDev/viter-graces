@@ -45,7 +45,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     }
 
     if (count($dataSetOP) > 0) {
-        $totalTotalAmountSpent = array_sum(array_column($dataSetOP, 'total_paid'));
+        $totalTotalAmountSpent = array_sum(array_column($dataSetOP, 'total_amount'));
         $totalNumberOfOrders = array_sum(array_column($dataSetOP, 'number_of_order'));
         $totalOpenBalance = array_sum(array_column($dataSetOP, 'balance'));
     }

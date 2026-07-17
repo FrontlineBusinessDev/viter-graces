@@ -3,6 +3,7 @@ import { AmountWithPesoSign } from "@/components/PesoSign";
 import Pills from "@/components/Pills";
 import { setIsSubAction, setIsSubAdd, setIsView } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
+import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 import { Edit, Trash } from "lucide-react";
 import React from "react";
 
@@ -81,50 +82,54 @@ const CustomerMobileReponsive = ({
                       onClick={() => handleView(rowData)}
                     >
                       View Items
-                    </button>{" "}
-                    <div className="flex items-center justify-end gap-3 ">
-                      <ActionButton
-                        item={{
-                          ...rowData,
-                          name: "edit",
-                          path: "sales-order",
-                          isActive: 1,
-                          testId: "action-edit",
-                          icon: <Edit className="size-5 lg:size-4" />,
-                        }}
-                        onClick={() =>
-                          handleUpdate({
-                            ...rowData,
-                            name: "edit",
-                            path: "sales-order",
-                            isActive: 1,
-                          })
-                        }
-                        data-testid={"action-edit"}
-                      />
-                      <ActionButton
-                        item={{
-                          ...rowData,
-                          name: "delete",
-                          path: "sales-order",
-                          isActive: 1,
-                          testId: "action-delete",
-                          icon: <Trash className="size-5 lg:size-4" />,
-                        }}
-                        onClick={() =>
-                          handleAction(
-                            {
+                    </button>
+                    {getAdminDeveloperRole(store) && (
+                      <>
+                        <div className="flex items-center justify-end gap-3 ">
+                          <ActionButton
+                            item={{
+                              ...rowData,
+                              name: "edit",
+                              path: "sales-order",
+                              isActive: 1,
+                              testId: "action-edit",
+                              icon: <Edit className="size-5 lg:size-4" />,
+                            }}
+                            onClick={() =>
+                              handleUpdate({
+                                ...rowData,
+                                name: "edit",
+                                path: "sales-order",
+                                isActive: 1,
+                              })
+                            }
+                            data-testid={"action-edit"}
+                          />
+                          <ActionButton
+                            item={{
                               ...rowData,
                               name: "delete",
                               path: "sales-order",
-                              isActive: 0,
-                            },
-                            rowData,
-                          )
-                        }
-                        data-testid={"action-delete"}
-                      />
-                    </div>
+                              isActive: 1,
+                              testId: "action-delete",
+                              icon: <Trash className="size-5 lg:size-4" />,
+                            }}
+                            onClick={() =>
+                              handleAction(
+                                {
+                                  ...rowData,
+                                  name: "delete",
+                                  path: "sales-order",
+                                  isActive: 0,
+                                },
+                                rowData,
+                              )
+                            }
+                            data-testid={"action-delete"}
+                          />
+                        </div>
+                      </>
+                    )}
                   </div>
                 </li>
               </ul>

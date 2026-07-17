@@ -5,6 +5,7 @@ import { FaCaretDown } from "react-icons/fa";
 import ActionButtonMobile from "../ActionButtonMobile";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { flexRender } from "@tanstack/react-table";
+import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 
 const InfinitePerTabsMobile = ({
   item,
@@ -52,14 +53,15 @@ const InfinitePerTabsMobile = ({
                           className={` size-5 ${isOpen ? "rotate-180" : ""}`}
                         />
                       </button>
-
-                      <ActionButtonMobile
-                        dataArray={rowData}
-                        setData={setData}
-                        setItemEdit={setItemEdit}
-                        ishaveSubAdd={ishaveSubAdd}
-                        path={path}
-                      />
+                      {getAdminDeveloperRole(store) && (
+                        <ActionButtonMobile
+                          dataArray={rowData}
+                          setData={setData}
+                          setItemEdit={setItemEdit}
+                          ishaveSubAdd={ishaveSubAdd}
+                          path={path}
+                        />
+                      )}
                     </div>
                   </div>
                 </>

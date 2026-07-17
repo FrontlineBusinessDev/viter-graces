@@ -7,6 +7,7 @@ import { LucideLogOut, Menu, Moon, Plus, Sun, X } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
 import { quickHeaderShortCut } from "./function-header";
+import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 
 const Header = ({ menu, toggleMobileNav }) => {
   const [loading, setLoading] = React.useState(false);
@@ -70,11 +71,13 @@ const Header = ({ menu, toggleMobileNav }) => {
             {menu}
           </h2>
           <div className="flex items-center gap-2">
-            <div className="hidden md:block">
-              <button className="btn--green " onClick={handleQuickOpen}>
-                <Plus size={16} /> Quick Add
-              </button>
-            </div>
+            {getAdminDeveloperRole(store) && (
+              <div className="hidden md:block">
+                <button className="btn--green " onClick={handleQuickOpen}>
+                  <Plus size={16} /> Quick Add
+                </button>
+              </div>
+            )}
             <button
               onClick={toggleDarkMode}
               className="p-3 hover:bg-primary hover:text-light rounded"

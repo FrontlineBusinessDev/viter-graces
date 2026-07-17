@@ -9,6 +9,7 @@ import WarningBanner from "@/layout/WarningBanner";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalStockOverview from "./modal/ModalStockOverview";
+import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 const MovementHistory = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -114,6 +115,7 @@ const MovementHistory = () => {
           path="stock-movement"
           setItemEdit={setItemEdit}
           haveFilterTable={true}
+          ishaveAdd={getAdminDeveloperRole(store)}
           dataTestidAddButton="add-stocks-btn"
         />
       </HeaderNav>

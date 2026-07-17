@@ -11,6 +11,7 @@ import { IoLogoWhatsapp } from "react-icons/io";
 import ModalAddItem from "./modal/ModalAddItem";
 import ModalSuppliers from "./modal/ModalSuppliers";
 import { MdEmail } from "react-icons/md";
+import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 
 const Suppliers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -154,13 +155,17 @@ const Suppliers = () => {
       isPrice: true,
       amount: true,
     },
-    {
-      accessorKey: "action",
-      action_array: ActionTableList("roles"),
-      header: "Action",
-      classTh: " text-center w-[5rem] ",
-      classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
-    },
+    ...(getAdminDeveloperRole(store)
+      ? [
+          {
+            accessorKey: "action",
+            action_array: ActionTableList("roles"),
+            header: "Action",
+            classTh: " text-center w-[5rem] ",
+            classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
+          },
+        ]
+      : []),
   ];
 
   return (
@@ -177,8 +182,8 @@ const Suppliers = () => {
           isView={isView}
           setView={setView}
           isSearch={false}
-          ishaveAdd={false}
-          ishaveSubAdd={true}
+          ishaveAdd={getAdminDeveloperRole(store)}
+          ishaveSubAdd={getAdminDeveloperRole(store)}
           haveFilterTable={true}
           isDefaultMobile="suppliers"
         />

@@ -28,6 +28,7 @@ import MobileResponsiveList from "../mobile-responsive/MobileResponsiveList";
 import ModalSubAction from "../modal/ModalSubAction";
 import { renderCellContent } from "./function-table";
 import OverviewSalesCustomer from "../customer/OverviewSalesCustomer";
+import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 
 const InfiniteSubTable = ({
   columns,
@@ -355,18 +356,21 @@ const InfiniteSubTable = ({
                             className={` ${isEmptyItem(item?.column?.columnDef?.classTd, "")} `}
                           >
                             {renderCellContent(item, rowData)}
-
-                            {/* FOR ACTION BUTTONS */}
-                            {item?.column?.columnDef?.accessorKey ===
-                              "action" && (
-                              <ActionButtonSubTable
-                                item={item?.column?.columnDef}
-                                dataArray={row.original}
-                                setData={setData}
-                                setItemEdit={setItemEdit}
-                                ishaveSubAdd={ishaveSubAdd}
-                                path={path}
-                              />
+                            {getAdminDeveloperRole(store) && (
+                              <>
+                                {/* FOR ACTION BUTTONS */}
+                                {item?.column?.columnDef?.accessorKey ===
+                                  "action" && (
+                                  <ActionButtonSubTable
+                                    item={item?.column?.columnDef}
+                                    dataArray={row.original}
+                                    setData={setData}
+                                    setItemEdit={setItemEdit}
+                                    ishaveSubAdd={ishaveSubAdd}
+                                    path={path}
+                                  />
+                                )}
+                              </>
                             )}
                           </td>
                         ))}

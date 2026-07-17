@@ -6,6 +6,7 @@ import React from "react";
 import ModalPurchaseOrder from "./modal/ModalPurchaseOrder";
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
 import { setIsAdd } from "@/store/StoreAction";
+import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 
 const PurchaseOrder = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -107,13 +108,17 @@ const PurchaseOrder = () => {
       amount: false,
       paid_amount: true,
     },
-    {
-      accessorKey: "action",
-      action_array: ActionTableList("purchase-order"),
-      header: "Action",
-      classTh: "text-center w-[7rem]",
-      classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
-    },
+    ...(getAdminDeveloperRole(store)
+      ? [
+          {
+            accessorKey: "action",
+            action_array: ActionTableList("purchase-order"),
+            header: "Action",
+            classTh: "text-center w-[7rem]",
+            classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
+          },
+        ]
+      : []),
   ];
 
   React.useEffect(() => {
@@ -131,6 +136,7 @@ const PurchaseOrder = () => {
           path="purchase-order"
           setItemEdit={setItemEdit}
           haveFilterTable={true}
+          ishaveAdd={getAdminDeveloperRole(store)}
         />
       </HeaderNav>
       {store.isAdd && <ModalPurchaseOrder itemEdit={itemEdit} />}

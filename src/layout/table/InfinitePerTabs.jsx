@@ -22,6 +22,7 @@ import React, { useCallback, useMemo, useRef } from "react";
 import { FaCaretDown } from "react-icons/fa";
 import InfinitePerTabsMobile from "./InfinitePerTabsMobile";
 import InfiniteSubTable from "./InfiniteSubTable";
+import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 
 const InfinitePerTabs = ({
   columns,
@@ -128,13 +129,15 @@ const InfinitePerTabs = ({
   return (
     <>
       <div className="sm:flex justify-between flex-row-reverse mb-3 gap-4 ">
-        <div className="flex justify-end sm:mb-0! mb-3 ">
-          <AddButton
-            value={path?.replaceAll("-", " ")}
-            onClick={handleAdd}
-            testId={dataTestidAddButton}
-          />
-        </div>
+        {ishaveAdd && (
+          <div className="flex justify-end sm:mb-0! mb-3 ">
+            <AddButton
+              value={path?.replaceAll("-", " ")}
+              onClick={handleAdd}
+              testId={dataTestidAddButton}
+            />
+          </div>
+        )}
         <div className={`w-full lg:max-w-1/4 `}>
           <SearchBar
             search={search}
@@ -324,24 +327,29 @@ const InfinitePerTabs = ({
                             ""
                           );
                         })}
-                        {item.getVisibleCells().map((fitem, fkey) => {
-                          return (
-                            <React.Fragment key={fkey}>
-                              {fitem?.column?.columnDef?.accessorKey ===
-                              "action" ? (
-                                <ActionButtonTable
-                                  item={fitem?.column?.columnDef}
-                                  dataArray={rows[index]?.original}
-                                  setData={setData}
-                                  setItemEdit={setItemEdit}
-                                  path={path}
-                                />
-                              ) : (
-                                ""
-                              )}
-                            </React.Fragment>
-                          );
-                        })}
+
+                        {getAdminDeveloperRole(store) && (
+                          <>
+                            {item.getVisibleCells().map((fitem, fkey) => {
+                              return (
+                                <React.Fragment key={fkey}>
+                                  {fitem?.column?.columnDef?.accessorKey ===
+                                  "action" ? (
+                                    <ActionButtonTable
+                                      item={fitem?.column?.columnDef}
+                                      dataArray={rows[index]?.original}
+                                      setData={setData}
+                                      setItemEdit={setItemEdit}
+                                      path={path}
+                                    />
+                                  ) : (
+                                    ""
+                                  )}
+                                </React.Fragment>
+                              );
+                            })}
+                          </>
+                        )}
                       </div>
                     </div>
                   </div>

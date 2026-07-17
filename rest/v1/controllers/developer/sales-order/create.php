@@ -68,7 +68,7 @@ for ($i = 0; $i < count($ordersItems); $i++) {
     $discountedAmountPerItem = (float)$val->sales_order_total - (float)$discountPerItems;
     $totalVatPerItems = 0;
 
-    $val->sales_order_tax_amount = (float)$data["sales_order_tax_amount"] * 0.12;
+    // $val->sales_order_tax_amount = (float)$data["sales_order_tax_amount"] * 0.12;
     // COMPUTATION OF EXCLUSIVE TAX
     if ((float)$val->sales_order_tax == 0.12) {
         $totalVatPerItems = (float)$discountedAmountPerItem * 0.12;

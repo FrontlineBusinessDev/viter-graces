@@ -245,10 +245,8 @@ function installmentDetails($val, $installmentItems)
         } else {
             $termsDaysCount = 0;
         }
-        $poDate = date("Y-m-d", strtotime($val->sales_order_date));
 
-        $val->sales_order_due_date = date($poDate, strtotime('+' . (float)$termsDaysCount . ' day'));
-
+        $val->sales_order_due_date = date("Y-m-d", strtotime('+' . (float)$termsDaysCount . ' day'));
 
         $val->installmet_payment_code_id = 0;
         $val->installmet_payment_is_paid = 0;

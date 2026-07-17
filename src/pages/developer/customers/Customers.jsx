@@ -17,6 +17,10 @@ import ModalCustomer from "./ModalCustomer";
 import ModalSalesOrders from "./ModalSalesOrders";
 import ViewSalesDetails from "../sales-orders/ViewSalesDetails";
 import { setIsAdd } from "@/store/StoreAction";
+import {
+  getAdminDeveloperRole,
+  getProductOwnerRole,
+} from "@/utilities/roleValidation";
 
 const Customers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -186,13 +190,17 @@ const Customers = () => {
       },
       status_option: PaymentTermsList(),
     },
-    {
-      accessorKey: "action",
-      action_array: ActionTableList("sales-order", "status-with-view"),
-      header: "Action",
-      classTh: "text-center w-[7rem]",
-      classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
-    },
+    ...(getAdminDeveloperRole(store)
+      ? [
+          {
+            accessorKey: "action",
+            action_array: ActionTableList("sales-order", "status-with-view"),
+            header: "Action",
+            classTh: "text-center w-[7rem]",
+            classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
+          },
+        ]
+      : []),
   ];
 
   React.useEffect(() => {
@@ -215,7 +223,7 @@ const Customers = () => {
           isView={isView}
           setView={setView}
           isSearch={false}
-          ishaveAdd={false}
+          ishaveAdd={getAdminDeveloperRole(store)}
           haveFilterTable={true}
           ishaveSubAdd={false}
           dataTestidAddButton="add-customer-btn"

@@ -583,7 +583,6 @@ class Customer
             $sql .= "sales_order_total_amount as total_sub_amount, ";
             $sql .= "sales_order_paid_amount as total_paid, ";
             $sql .= "sales_order_total_balance_amount as balance, ";
-            $sql .= "sales_order_total_balance_amount as balance, ";
             $sql .= "sales_order_aid as id, ";
             $sql .= "sales_order_is_active as is_active, ";
             $sql .= "sales_order_date as order_date, ";

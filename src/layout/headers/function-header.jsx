@@ -28,13 +28,13 @@ export const titleHeaderTab = () => {
     {
       title: "products",
       description: "Manage and organize your product catalog",
-      roles: ["admin", "developer"],
+      roles: ["admin", "developer", "product_owner"],
       array_tab: [],
     },
     {
       title: "inventory",
       description: "Track and manage your stock in real time",
-      roles: ["admin", "developer"],
+      roles: ["admin", "developer", "product_owner"],
       array_tab: [
         {
           icon: <Layers className="size-4 mr-1" />,
@@ -54,7 +54,7 @@ export const titleHeaderTab = () => {
     {
       title: "customers",
       description: "Centralized management of all customers",
-      roles: ["admin", "developer"],
+      roles: ["admin", "developer", "product_owner"],
       array_tab: [],
     },
     {
@@ -66,13 +66,13 @@ export const titleHeaderTab = () => {
     {
       title: "returns",
       description: "6 orders total",
-      roles: ["admin", "developer"],
+      roles: ["admin", "developer", "product_owner"],
       array_tab: [],
     },
     {
       title: "finance",
       description: "Manage your finance",
-      roles: ["admin", "developer"],
+      roles: ["admin", "developer", "product_owner"],
       array_tab: [
         {
           icon: "",
@@ -120,7 +120,7 @@ export const titleHeaderTab = () => {
     {
       title: "reports",
       description: "Review sales performance and transaction summaries.",
-      roles: ["admin", "developer"],
+      roles: ["admin", "developer", "product_owner"],
       array_tab: [
         {
           icon: "",
@@ -238,7 +238,7 @@ export const titleHeaderTab = () => {
     {
       title: "suppliers",
       description: "Supplier management & purchase orders",
-      roles: ["admin", "developer"],
+      roles: ["admin", "developer", "product_owner"],
       array_tab: [
         {
           icon: <Truck className="size-4 mr-1" />,
