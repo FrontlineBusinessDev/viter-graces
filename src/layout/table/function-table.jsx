@@ -5,6 +5,7 @@ import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { flexRender } from "@tanstack/react-table";
 import { Image } from "lucide-react";
 import TableStatus from "../TableStatus";
+import { Link } from "react-router-dom";
 
 const renderImage = (rowData) => {
   let photo = getConvertStringToJSONparseData(rowData?.products_image);
@@ -53,6 +54,29 @@ export const renderCellContent = (item, rowData) => {
       >
         View Items
       </button>
+    );
+  }
+
+  if (column.link) {
+    return (
+      <Link
+        to={`${column.link}`}
+        className="tooltip-action-table bg-transparent! underline text-primary capitalize p-0! "
+        target={column.header === "name" ? "" : "_black"}
+        data-tooltip={"View"}
+        onClick={() =>
+          column.header === "name"
+            ? sessionStorage.setItem(
+                "filter",
+                JSON.stringify([
+                  { id: "sales_order_customer_name", value: rowData?.name },
+                ]),
+              )
+            : ""
+        }
+      >
+        {flexRender(column.cell, item.getContext())}
+      </Link>
     );
   }
 

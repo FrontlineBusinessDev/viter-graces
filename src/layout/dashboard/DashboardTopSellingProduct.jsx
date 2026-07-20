@@ -36,10 +36,14 @@ const DashboardTopSellingProduct = ({ path = "", id = 0 }) => {
           title="Top Selling Product"
           value={isEmptyItem(valData?.product_name, "--")}
           subtitle={`${isEmptyItem(valData?.qty, 0)} units sold`}
-          extra={`₱${numberWithCommasToFixed(valData?.total_amount, 2)}`}
+          extra={`₱******`}
+          subTitleFlip={`${isEmptyItem(valData?.qty, 0)} units sold`}
+          flipContent={isEmptyItem(valData?.product_name, "--")}
+          flipExtra={`₱${numberWithCommasToFixed(valData?.total_amount, 2)}`}
+          flipBg="bg-green-100 dark:bg-green-900"
           icon={<Trophy className="text-yellow-500" size={20} />}
-          iconBg="bg-yellow-100 dark:bg-[#281b17]"
-          dataTestId="top-selling-card"
+          iconBg="bg-green-100 dark:bg-[#082125]"
+          dataTestId="sales-today-card"
           loading={isLoading}
         />
       )}

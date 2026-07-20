@@ -384,6 +384,7 @@ export const SearchableSelectFilter = ({ column, path, testFilterId }) => {
         onChange={(option) => {
           const value = option ? option.value : undefined;
           column.setFilterValue(value);
+          sessionStorage.removeItem("filter");
         }}
         isClearable
         classNames={{

@@ -7,10 +7,15 @@ export const numberWithCommas = (x) => {
 export const numberWithCommasToFixed = (item, x = 0) => {
   let result = "0.0000";
   if (typeof item !== "undefined" && item !== "" && item !== null) {
-    result = `${item}`?.toLocaleString("en-US", {
+    result = new Intl.NumberFormat("en-US", {
       minimumFractionDigits: Number(x),
       maximumFractionDigits: Number(x),
-    });
+    }).format(item);
+
+    // result = `${item}`?.toLocaleString("en-US", {
+    //   minimumFractionDigits: Number(x),
+    //   maximumFractionDigits: Number(x),
+    // });
   }
   return result;
 };

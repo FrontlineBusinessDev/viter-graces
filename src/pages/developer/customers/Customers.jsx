@@ -21,186 +21,76 @@ import {
   getAdminDeveloperRole,
   getProductOwnerRole,
 } from "@/utilities/roleValidation";
+import InfiniteTable from "@/layout/table/InfiniteTable";
+import { devNavUrl } from "@/config/config";
 
 const Customers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
   const [isView, setView] = React.useState(false);
   const [itemVal, setItemVal] = React.useState(null);
+  const userRole = store.credentials?.data?.role;
   // Columns
   const columns = [
     {
       accessorKey: "customer_name",
       header: "name",
-      icon: "",
+      link: `${devNavUrl}/${userRole}/sales-orders`,
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "customer_email",
       header: "email",
-      icon: "",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "customer_phone",
       header: "contact",
-      icon: <Phone size={14} />,
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "customer_address",
       header: "address",
-      icon: <MapPin size={14} />,
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "messenger",
       header: "messenger",
       link: "https://www.facebook.com/",
-      icon: <FaFacebookMessenger className="text-blue-500 size-4" />,
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "whatsapp",
       header: "whatsapp",
       link: "https://www.whatsapp.com/",
-      icon: <IoLogoWhatsapp className="text-green-500 size-4.5" />,
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "other",
       header: "other social",
-      link: "#",
-      icon: <AiFillMessage className="text-green-500 size-4.5" />,
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "action",
       action_array: ActionTableList("customer"),
       header: "action",
-      icon: "",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
     },
-  ];
-
-  // SUB Columns Tables
-  const subColumnsTable = [
-    {
-      accessorKey: "sales_order_status",
-      header: "status",
-      classTh: "min-w-[7rem]",
-      classTd: "",
-      filterFn: "equals",
-      meta: {
-        filterComponent: (column) => (
-          <SearchableSelectFilterStatus
-            column={column}
-            options={ActiveInActiveStatus("payment-status")}
-          />
-        ),
-      },
-      status_option: ActiveInActiveStatus("payment-status"),
-    },
-    {
-      accessorKey: "sales_order_number",
-      header: "order #",
-      classTh: "min-w-[5rem]",
-      classTd: "",
-      meta: "",
-    },
-    {
-      accessorKey: "sales_order_date",
-      header: "date",
-      classTh: "min-w-[7rem]",
-      classTd: "",
-      filterFn: "date",
-      meta: "",
-    },
-    {
-      accessorKey: "sales_order_due_date",
-      header: "Due Date",
-      classTh: "min-w-[7rem]",
-      classTd: "",
-      filterFn: "date",
-      meta: "",
-    },
-    {
-      accessorKey: "sales_order_total_receivable_amount",
-      header: "total",
-      amount: true,
-      filterFn: "between",
-      classTh: "min-w-[10rem]",
-      classTd: "",
-      meta: "",
-    },
-    {
-      accessorKey: "sales_order_paid_amount",
-      header: "paid",
-      paid_amount: true,
-      filterFn: "between",
-      classTh: "min-w-[10rem]",
-      classTd: "",
-      meta: "",
-    },
-    {
-      accessorKey: "sales_order_total_balance_amount",
-      header: "balance",
-      amount: true,
-      filterFn: "between",
-      classTh: "min-w-[10rem]",
-      classTd: "",
-      meta: "",
-    },
-    {
-      accessorKey: "sales_order_payment_method",
-      header: "method",
-      classTh: "min-w-[10rem]",
-      classTd: "capitalize ",
-      filterFn: "equals",
-      meta: {
-        filterComponent: (column) => (
-          <SearchableSelectFilterStatus
-            column={column}
-            options={PaymentMethodList()}
-          />
-        ),
-      },
-      status_option: PaymentMethodList(),
-    },
-    {
-      accessorKey: "sales_order_payment_terms",
-      header: "payment terms",
-      classTh: "min-w-[10rem]",
-      classTd: "capitalize ",
-      meta: {
-        filterComponent: (column) => (
-          <SearchableSelectFilterStatus
-            column={column}
-            options={PaymentTermsList()}
-          />
-        ),
-      },
-      status_option: PaymentTermsList(),
-    },
-    ...(getAdminDeveloperRole(store)
-      ? [
-          {
-            accessorKey: "action",
-            action_array: ActionTableList("sales-order", "status-with-view"),
-            header: "Action",
-            classTh: "text-center w-[7rem]",
-            classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
-          },
-        ]
-      : []),
   ];
 
   React.useEffect(() => {
@@ -212,21 +102,14 @@ const Customers = () => {
   return (
     <>
       <HeaderNav menu={"customers"} activeTab="customers">
-        <InfinitePerTabs
+        <InfiniteTable
           columns={columns}
-          subColumnsTable={subColumnsTable}
-          path={"customer"}
-          subPath={"sales-order"}
-          itemEdit={itemEdit}
+          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
+          path="customer"
           setItemEdit={setItemEdit}
-          setItemVal={setItemVal}
-          isView={isView}
-          setView={setView}
-          isSearch={false}
-          ishaveAdd={getAdminDeveloperRole(store)}
+          productMobile={true}
           haveFilterTable={true}
-          ishaveSubAdd={false}
-          dataTestidAddButton="add-customer-btn"
+          dataTestidAddButton="add-product-btn"
         />
       </HeaderNav>
       {store.isAdd && <ModalCustomer itemEdit={itemEdit} />}

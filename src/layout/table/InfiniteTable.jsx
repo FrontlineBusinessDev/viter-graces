@@ -46,7 +46,25 @@ const InfiniteTable = ({
   const { store, dispatch } = React.useContext(StoreContext);
   const [dataItem, setData] = React.useState(null);
   const [sorting, setSorting] = useState([]);
-  const [columnFilters, setColumnFilters] = useState([]);
+
+  let filterName = isEmptyItem(
+    JSON.parse(window.sessionStorage.getItem("filter")),
+    "",
+  );
+
+  let defaultValue =
+    path === "sales-order"
+      ? [
+          {
+            id: "sales_order_date",
+            value: store.credentials?.data?.server_date,
+          },
+        ]
+      : [];
+
+  const [columnFilters, setColumnFilters] = useState(
+    filterName !== "" ? filterName : defaultValue,
+  );
   const observer = useRef();
   const search = React.useRef(null);
   const [onSearch, setOnSearch] = React.useState(false);
@@ -146,10 +164,25 @@ const InfiniteTable = ({
 
     filterFns: {
       equals: (row, columnId, value) => {
+        if (filterName !== "" && columnId === "customer_name") {
+          return row.getValue(columnId) === filterName[0]?.value;
+        }
+
         return row.getValue(columnId) === value;
       },
       date: (row, columnId, value) => {
-        return row.getValue(columnId) === DateFormat(value);
+        if (
+          path === "sales-order" &&
+          columnId === "sales_order_date" &&
+          value !== store.credentials?.data?.server_date
+        ) {
+          return row.getValue(columnId) === DateFormat(value);
+        } else {
+          return (
+            row.getValue(columnId) ===
+            DateFormat(store.credentials?.data?.server_date)
+          );
+        }
       },
       between: (row, columnId, value) => {
         const rowValue = row.getValue(columnId);
@@ -165,6 +198,10 @@ const InfiniteTable = ({
 
   const rows = table?.getRowModel()?.rows;
 
+  console.log("rows", rows);
+  console.log("tableData", tableData);
+  console.log("getHeaderGroups", table?.getHeaderGroups());
+
   // ACTIONS ADD
   const handleAdd = () => {
     dispatch(setIsAdd(true));
@@ -176,8 +213,6 @@ const InfiniteTable = ({
     dispatch(setIsSubAdd(true));
     setItemEdit(null);
   };
-
-  let photo = [];
 
   const renderEmptyState = () => {
     if (status === "pending") return <TableLoading count={20} cols={3} />;
@@ -340,9 +375,6 @@ const InfiniteTable = ({
                 {rows?.map((row, index) => {
                   const isLastRow = index === rows?.length - 1;
                   const rowData = row.original;
-                  photo = getConvertStringToJSONparseData(
-                    row.original.children_photo,
-                  );
 
                   return (
                     <React.Fragment key={row.id}>

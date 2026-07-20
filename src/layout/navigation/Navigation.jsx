@@ -32,7 +32,6 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
     setHoverItem(item);
     setHoverText(` ${item.label}`);
     setShowHover(true);
-    sessionStorage.removeItem("quickAdd");
 
     const rect = e.currentTarget.getBoundingClientRect();
     const navRect = navWrapperRef.current.getBoundingClientRect();
@@ -42,6 +41,11 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
 
     setHoverPos(top);
     setSubmenuMaxHeight(availableSpace);
+  };
+
+  const handleOnClickNav = () => {
+    sessionStorage.removeItem("quickAdd");
+    sessionStorage.removeItem("filter");
   };
 
   const handleHoverBoxEnter = () => {
@@ -112,6 +116,7 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                       onMouseEnter={(e) => handleMouseEnter(e, item)}
                       onMouseLeave={handleMouseLeave}
                       onTouchStart={(e) => handleMouseEnter(e, item)}
+                      onClick={() => handleOnClickNav()}
                       className={
                         item?.ongoing?.filter((item) =>
                           item?.role?.includes(userRole),
@@ -135,12 +140,12 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                         item?.role?.includes(userRole),
                       )?.length > 0 ? (
                         <span className="w-full flex justify-end ">
-                          <smal
+                          <small
                             className={`bg-amber-300 text-black px-1 text-[9px] rounded-sm 
                           ${isExpanded || window.innerWidth < 640 ? "" : " hidden"}`}
                           >
                             Coming soon
-                          </smal>
+                          </small>
                         </span>
                       ) : (
                         ""

@@ -11,6 +11,7 @@ const StatCard = ({
   value,
   subtitle,
   extra,
+  flipExtra = "",
   icon,
   iconBg = "bg-gray-100",
   button,
@@ -104,32 +105,66 @@ const StatCard = ({
               </>
             )}
           </div>
-
           {/* BACK */}
+
           {isFlippable && (
             <div
-              className={`absolute inset-0 ${flipBg} rounded-xl p-5 shadow-sm flex justify-between items-start w-full border border-transparent [transform:rotateY(180deg)] [backface-visibility:hidden]`}
+              className={`absolute inset-0 ${flipBg} rounded-xl p-3 shadow-sm w-full border border-transparent [transform:rotateY(180deg)] [backface-visibility:hidden]`}
             >
-              <div>
-                <div className="flex items-center gap-2">
-                  <p className="text-xs text-gray-400 uppercase tracking-wide dark:text-gray-300">
-                    {title}
-                  </p>
-                  <EyeOff size={16} className="text-green-600" />
+              <div className="flex justify-between items-start ">
+                <div className="w-full">
+                  <div className="flex gap-2">
+                    <p className="text-xs text-gray-400 uppercase tracking-wide dark:text-gray-300 mb-0! ">
+                      {title}
+                    </p>
+                    {isFlippable && (
+                      <Eye size={16} className="text-green-600" />
+                    )}
+                  </div>
+                  <h2
+                    className={`${isEmptyItem(extra, "") === "" && isEmptyItem(button, "") === "" ? "my-3! " : " "} text-2xl font-semibold text-gray-900 dark:text-light`}
+                  >
+                    {loading ? (
+                      <span className="bg-white dark:bg-gray-900 w-full h-[15px]">
+                        <TableLoading count={1} cols={1} />
+                      </span>
+                    ) : (
+                      <>{flipContent}</>
+                    )}
+                  </h2>
                 </div>
-
-                <h2 className="text-2xl font-semibold text-gray-900 mt-1 dark:text-light">
-                  {flipContent}
-                </h2>
-
-                {subTitleFlip && (
-                  <p className="text-sm text-gray-400 mt-1 dark:text-gray-300 line-clamp-3">
-                    {subTitleFlip}
-                  </p>
-                )}
+                <div className={`${iconBg} ml-3 p-3 rounded-lg`}>{icon}</div>
               </div>
 
-              <div className={`${iconBg} ml-3 p-3 rounded-lg`}>{icon}</div>
+              {subTitleFlip && (
+                <div className="text-sm text-gray-400 dark:text-gray-300">
+                  {loading ? (
+                    <div className="bg-white dark:bg-gray-900 w-full h-[15px]">
+                      <TableLoading count={1} cols={1} />
+                    </div>
+                  ) : (
+                    <p className=" mb-0!">{subTitleFlip}</p>
+                  )}
+                </div>
+              )}
+              {loading ? (
+                ""
+              ) : (
+                <>
+                  {flipExtra && (
+                    <p className="text-sm text-green-600 mt-1">{flipExtra}</p>
+                  )}
+
+                  {button && (
+                    <Link
+                      to={`${devNavUrl}/${userRole}/${link}`}
+                      className="text-sm text-orange-600 mt-1"
+                    >
+                      {button}
+                    </Link>
+                  )}
+                </>
+              )}
             </div>
           )}
         </div>

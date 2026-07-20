@@ -2,7 +2,7 @@
 export const isEmptyItem = (item, x = "") => {
   let result = x;
 
-  if (typeof item !== "undefined" && item !== "") {
+  if (typeof item !== "undefined" && item !== "" && item !== null) {
     result = item;
   }
   return result;
