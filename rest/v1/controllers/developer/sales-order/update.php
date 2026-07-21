@@ -72,7 +72,8 @@ if (array_key_exists("id", $_GET)) {
         // this is for total amount - discount + VAT
         $discountPerItems = 0;
         if ((float)$val->sales_order_discount != 0) {
-            $discountPerItems = (float)$val->sales_order_discount / count($ordersItems);
+            $percentDiscount = (float)$val->sales_order_total / (float)$val->sales_order_total_amount;
+            $discountPerItems = (float)$percentDiscount * (float)$val->sales_order_discount;
         }
         $discountedAmountPerItem = (float)$val->sales_order_total - (float)$discountPerItems;
         $totalVatPerItems = 0;

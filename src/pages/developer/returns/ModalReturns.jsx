@@ -127,7 +127,7 @@ const ModalReturns = ({ itemEdit }) => {
                 ),
               };
 
-              console.log(data);
+              // console.log(data);
               // mutation.mutate(data);
             }}
           >
@@ -176,7 +176,7 @@ const ModalReturns = ({ itemEdit }) => {
                       store={store}
                     />
 
-                    {console.log("selectedItems", selectedItems)}
+                    {/* {console.log("selectedItems", selectedItems)} */}
 
                     {selectedItems?.length > 0 && (
                       <div className="relative">

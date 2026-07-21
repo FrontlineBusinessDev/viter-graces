@@ -871,7 +871,7 @@ export const InputSelectFilterTagArray = ({
             options={options}
             value={selected}
             onChange={(e) => {
-              console.log("e", e);
+              // console.log("e", e);
               if (!e) {
                 setSelected(null);
                 onChange(null, null);

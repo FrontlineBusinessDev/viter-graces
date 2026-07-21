@@ -3,6 +3,7 @@ import ServerError from "@/components/ServerError";
 import { apiVersion } from "@/config/config";
 import useQueryData from "@/services/useQueryData";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { numberWithCommasToFixed } from "@/utilities/numberWithCommas";
 import { ChartNoAxesColumn, PhilippinePeso, TrendingUp } from "lucide-react";
 import { useMemo } from "react";
 
@@ -60,7 +61,7 @@ const ReportTotalSalesOrders = ({
           />
           <FinanceStats
             title="Total Sales"
-            value={`₱${valDataTotalSales}`}
+            value={`₱${numberWithCommasToFixed(valDataTotalSales, 4)}`}
             icon={<TrendingUp className="text-blue-600" size={20} />}
             iconBg="bg-blue-100 dark:bg-[#082125]"
             valueColor="text-blue-600"
@@ -69,7 +70,7 @@ const ReportTotalSalesOrders = ({
           />
           <FinanceStats
             title="Net Revenue"
-            value={`₱${valDataNetRevenue}`}
+            value={`₱${numberWithCommasToFixed(valDataNetRevenue, 4)}`}
             icon={<PhilippinePeso className="text-green-600" size={20} />}
             iconBg="bg-green-100 dark:bg-[#082125]"
             valueColor="text-green-600"

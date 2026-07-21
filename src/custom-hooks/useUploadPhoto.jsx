@@ -14,7 +14,7 @@ const useUploadPhoto = (url, dispatch) => {
 
       const data = await fetchFormData(devApiUrl + url, fd);
 
-      console.log(data);
+      // console.log(data);
       return data;
     }
   };
@@ -28,7 +28,7 @@ const useUploadPhoto = (url, dispatch) => {
     }
 
     const img = e.target.files[0];
-    console.log(img);
+    // console.log(img);
     if (img.size > 200000) {
       dispatch(setError(true));
       dispatch(

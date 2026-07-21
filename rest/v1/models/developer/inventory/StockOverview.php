@@ -243,7 +243,6 @@ class StockOverview
                     'code' => $ex->getCode()
                 ]
             );
-            returnError($this);
 
             $query = false;
         }
@@ -380,7 +379,6 @@ class StockOverview
                 $inventoryStatusFilter = strtolower(trim($item['value']));
                 continue;
             }
-
 
             $col = $item['id'];
             if (is_array($item['value'])) {
@@ -565,7 +563,6 @@ class StockOverview
             $query->execute($params);
         } catch (PDOException $ex) {
 
-            returnError($ex);
             logError(
                 $ex->getMessage(),
                 $ex->getFile(),
@@ -794,7 +791,6 @@ class StockOverview
             $query->execute($params);
         } catch (PDOException $ex) {
 
-            returnError($ex);
             logError(
                 $ex->getMessage(),
                 $ex->getFile(),

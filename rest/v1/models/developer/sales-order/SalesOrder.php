@@ -863,36 +863,6 @@ class SalesOrder
         return $query;
     }
 
-    // read by id
-    public function readBySoNumber()
-    {
-        try {
-            $sql = "select so.*, ";
-            $sql .= "so.sales_order_aid as id, ";
-            $sql .= "p.products_owner_id, ";
-            $sql .= "p.products_owner_name, ";
-            $sql .= "so.sales_order_qty as sales_order_qty_old, ";
-            $sql .= "so.sales_order_is_active as is_active, ";
-            $sql .= "DATE_FORMAT(so.sales_order_date, '%b %d, %Y') as sales_order_date, ";
-            $sql .= "DATE_FORMAT(so.sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
-            $sql .= "so.sales_order_customer_name as name ";
-            $sql .= "from {$this->tblSalesOrder} as so, ";
-            $sql .= "{$this->tblProducts} as p ";
-            $sql .= "where so.sales_order_product_id = p.products_aid ";
-            $sql .= "and so.sales_order_number = :sales_order_number ";
-            $sql .= "order by so.sales_order_date asc ";
-            $query = $this->connection->prepare($sql);
-            $query->execute([
-                "sales_order_number" => $this->sales_order_number,
-            ]);
-        } catch (PDOException $ex) {
-            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
-            $query = false;
-        }
-        return $query;
-    }
-
-
     // read all
     public function readtotalQTY()
     {
@@ -1290,6 +1260,109 @@ class SalesOrder
             $query->execute($params);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // // read by id
+    // public function readBySoNumber()
+    // {
+    //     try {
+    //         $sql = "select so.*, ";
+    //         $sql .= "so.sales_order_aid as id, ";
+    //         $sql .= "p.products_owner_id, ";
+    //         $sql .= "p.products_owner_name, ";
+    //         $sql .= "so.sales_order_qty as sales_order_qty_old, ";
+    //         $sql .= "so.sales_order_is_active as is_active, ";
+    //         $sql .= "DATE_FORMAT(so.sales_order_date, '%b %d, %Y') as sales_order_date, ";
+    //         $sql .= "DATE_FORMAT(so.sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
+    //         $sql .= "so.sales_order_customer_name as name ";
+    //         $sql .= "from {$this->tblSalesOrder} as so, ";
+    //         $sql .= "{$this->tblProducts} as p ";
+    //         $sql .= "where so.sales_order_product_id = p.products_aid ";
+    //         $sql .= "and so.sales_order_number = :sales_order_number ";
+    //         $sql .= "order by so.sales_order_date asc ";
+    //         $query = $this->connection->prepare($sql);
+    //         $query->execute([
+    //             "sales_order_number" => $this->sales_order_number,
+    //         ]);
+    //     } catch (PDOException $ex) {
+    //         logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+    //         $query = false;
+    //     }
+    //     return $query;
+    // }
+
+    public function readBySoNumber()
+    {
+
+        $params = [
+            "sales_order_number" => $this->sales_order_number
+        ];
+
+        try {
+            $sql = " select inventory_data.*, ";
+            $sql .= "so.*, ";
+            $sql .= "so.sales_order_aid as id, ";
+            $sql .= "p.products_owner_id, ";
+            $sql .= "p.products_owner_name, ";
+            $sql .= "so.sales_order_qty as sales_order_qty_old, ";
+            $sql .= "so.sales_order_is_active as is_active, ";
+            $sql .= "DATE_FORMAT(so.sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(so.sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
+            $sql .= "so.sales_order_customer_name as name, ";
+            $sql .= "CASE WHEN inventory_data.current_qty <= 0 THEN 'out of stock' ";
+            $sql .= "WHEN inventory_data.current_qty <= inventory_data.products_low_stock_threshold THEN 'low stock' ";
+            $sql .= "ELSE 'in stock' ";
+            $sql .= "END as inventory_status ";
+            $sql .= "from ( select MAX(p.products_low_stock_threshold) as products_low_stock_threshold, ";
+            $sql .= "MAX(p.products_sku) as products_sku, ";
+            $sql .= "MAX(p.products_unit) as products_unit, ";
+            $sql .= "MAX(p.products_status) as products_status, ";
+            $sql .= "MAX(p.products_price) as products_price, ";
+            $sql .= "MAX(p.products_name) as products_name, ";
+            $sql .= "MAX(p.products_owner_name) as products_owner_name, ";
+            $sql .= "MAX(p.products_aid) as products_aid, ";
+            $sql .= "MAX(ms.stock_movement_location) as stock_movement_location, ";
+            $sql .= "MAX(ms.stock_movement_product_name) as name, ";
+            $sql .= "MAX(ms.stock_movement_is_active) as is_active, ";
+            $sql .= "MAX(ms.stock_movement_is_active) as stock_movement_is_active, ";
+            $sql .= "MAX(ms.stock_movement_product_name) as stock_movement_product_name, ";
+            $sql .= "MAX(ms.stock_movement_product_owner_name) as stock_movement_product_owner_name, ";
+            $sql .= "DATE_FORMAT(MAX(ms.stock_movement_date), '%b %d, %Y') AS stock_movement_date, ";
+            $sql .= "SUM( CASE WHEN ms.stock_movement_type IN ( 'in stock', 'stock in - return', 'purchases', 'stock in adjustments' ) ";
+            $sql .= "THEN ms.stock_movement_qty WHEN ms.stock_movement_type IN ( 'stock out - reject/defective items', 'stock out - return item' ) ";
+            $sql .= "THEN -ms.stock_movement_qty ELSE 0 END ) as stock_qty, ";
+            $sql .= "MAX(IFNULL(so.order_qty, 0)) as order_qty, ";
+            $sql .= "( SUM( CASE WHEN ms.stock_movement_type IN ( 'in stock', 'stock in - return', 'purchases', 'stock in adjustments' ) ";
+            $sql .= "THEN ms.stock_movement_qty WHEN ms.stock_movement_type IN ( 'stock out - reject/defective items', ";
+            $sql .= "'stock out - return item' ) THEN -ms.stock_movement_qty ELSE 0 END ) - MAX(IFNULL(so.order_qty, 0))) as current_qty ";
+            $sql .= "from {$this->tblMovementStock} AS ms INNER JOIN {$this->tblProducts} as p ";
+            $sql .= "ON ms.stock_movement_product_id = p.products_aid LEFT JOIN ( ";
+            $sql .= "select sales_order_product_id, SUM(sales_order_qty) AS order_qty ";
+            $sql .= "from {$this->tblSalesOrder} group by sales_order_product_id ) as so ";
+            $sql .= "ON so.sales_order_product_id = p.products_aid ";
+            $sql .= "group by p.products_aid ) AS inventory_data, ";
+            $sql .= "{$this->tblSalesOrder} as so, ";
+            $sql .= "{$this->tblProducts} as p ";
+            $sql .= "where so.sales_order_product_id = p.products_aid ";
+            $sql .= "and inventory_data.products_aid = p.products_aid ";
+            $sql .= "and inventory_data.products_aid = so.sales_order_product_id ";
+            $sql .= "and so.sales_order_number = :sales_order_number ";
+            $sql .= " order by inventory_data.current_qty asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError(
+                $ex->getMessage(),
+                $ex->getFile(),
+                [
+                    'line' => $ex->getLine(),
+                    'code' => $ex->getCode()
+                ]
+            );
+
             $query = false;
         }
         return $query;

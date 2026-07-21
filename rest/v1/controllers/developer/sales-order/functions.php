@@ -246,7 +246,7 @@ function installmentDetails($val, $installmentItems)
             $termsDaysCount = 0;
         }
 
-        $val->sales_order_due_date = date("Y-m-d", strtotime('+' . (float)$termsDaysCount . ' day'));
+        $val->sales_order_due_date = date("Y-m-d", strtotime($val->sales_order_date . ' +' . (float)$termsDaysCount . ' days'));
 
         $val->installmet_payment_code_id = 0;
         $val->installmet_payment_is_paid = 0;
@@ -277,7 +277,7 @@ function installmentDetails($val, $installmentItems)
             checkDeleteInstallmetById($val);
         }
 
-        $val->sales_order_due_date = date('Y-m-d');
+        $val->sales_order_due_date = $val->sales_order_date;
 
         $val->installmet_payment_code_id = 0;
         $val->installmet_payment_is_paid = 0;

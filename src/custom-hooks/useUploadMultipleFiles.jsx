@@ -128,12 +128,12 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
       return false;
     }
 
-    console.log(
-      "123",
-      filesArrayList?.length,
-      fileLimit,
-      filesArrayList?.length > fileLimit,
-    );
+    // console.log(
+    //   "123",
+    //   filesArrayList?.length,
+    //   fileLimit,
+    //   filesArrayList?.length > fileLimit,
+    // );
     if (filesArrayList?.length > fileLimit) {
       dispatch(setError(true));
       dispatch(
@@ -145,7 +145,7 @@ const useUploadMultipleFiles = (url, dispatch, size = null) => {
       const filterExcessFileSize = Array.from(e.target.files).filter(
         (item) => Number(item.size) > Number(sizeLimitKb),
       );
-      console.log(filterExcessFileSize);
+      // console.log(filterExcessFileSize);
       if (filterExcessFileSize?.length > 0) {
         const sizeLimitConvertedToKb = Number(sizeLimitKb / 1000).toFixed(2);
         const convertedToKb = Number(

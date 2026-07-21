@@ -100,7 +100,7 @@ const ViewSalesDetails = ({ itemEdit }) => {
                 </thead>
                 <tbody className="">
                   {itemEdit?.items?.map((aitem, akey) => {
-                    console.log("itemEdit", itemEdit);
+                    // console.log("itemEdit", itemEdit);
                     return (
                       <tr key={akey} className="border-0!">
                         <td className="text-center dark:bg-gray-900! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">

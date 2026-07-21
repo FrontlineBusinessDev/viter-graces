@@ -198,9 +198,9 @@ const InfiniteTable = ({
 
   const rows = table?.getRowModel()?.rows;
 
-  console.log("rows", rows);
-  console.log("tableData", tableData);
-  console.log("getHeaderGroups", table?.getHeaderGroups());
+  // console.log("rows", rows);
+  // console.log("tableData", tableData);
+  // console.log("getHeaderGroups", table?.getHeaderGroups());
 
   // ACTIONS ADD
   const handleAdd = () => {

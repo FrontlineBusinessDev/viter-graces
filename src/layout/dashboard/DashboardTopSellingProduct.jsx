@@ -25,7 +25,7 @@ const DashboardTopSellingProduct = ({ path = "", id = 0 }) => {
     return result?.data[0];
   }, [result]);
 
-  console.log("123", valData);
+  // console.log("123", valData);
 
   return (
     <>

@@ -56,7 +56,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
   const handleChangeProduct = (index, itemVal, selectedItem, props) => {
     const updated = [...items];
 
-    console.log("selectedItem", selectedItem);
+    // console.log("selectedItem", selectedItem);
 
     if (itemVal === null || itemVal === "") {
       updated[index]["purchase_order_price"] = "";
@@ -252,7 +252,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     { id: "paid", name: "Paid" },
   ];
 
-  console.log("items", items);
+  // console.log("items", items);
   return (
     <>
       <ModalWrapper

@@ -381,7 +381,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                 itemsDelete,
               };
               Validations(values, items, dispatch);
-              console.log("data", data, installmentItems);
+              // console.log("data", data, installmentItems);
               if (!Validations(values, items, dispatch)) {
                 mutation.mutate(data);
               } else {

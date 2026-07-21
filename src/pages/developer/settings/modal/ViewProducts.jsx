@@ -22,7 +22,7 @@ const ViewProducts = ({ itemEdit }) => {
   let total_balance =
     Number(itemEdit?.total_amount) - Number(itemEdit?.total_paid);
 
-  console.log("itemEdit", itemEdit);
+  // console.log("itemEdit", itemEdit);
   return (
     <div
       className="bg-dark/50 dark:bg-dark-mode/90 fixed inset-0 z-999 flex justify-center items-center overflow-y-auto animate-fadeIn"
