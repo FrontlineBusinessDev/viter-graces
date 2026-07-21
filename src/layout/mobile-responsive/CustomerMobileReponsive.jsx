@@ -1,141 +1,138 @@
-import ActionButton from "@/components/buttons/ActionButton";
 import { AmountWithPesoSign } from "@/components/PesoSign";
 import Pills from "@/components/Pills";
-import { setIsSubAction, setIsSubAdd, setIsView } from "@/store/StoreAction";
+import { Image } from "lucide-react";
+import ActionButtonMobile from "../ActionButtonMobile";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { Link } from "react-router-dom";
+import { devNavUrl } from "@/config/config";
 import { StoreContext } from "@/store/StoreContext";
-import { getAdminDeveloperRole } from "@/utilities/roleValidation";
-import { Edit, Trash } from "lucide-react";
 import React from "react";
 
 const CustomerMobileReponsive = ({
   rows,
-  setItemEdit,
-  setItemVal,
-  isDefaultMobile,
   setData,
+  setItemEdit,
+  lastRowRef,
+  isDefaultMobile,
+  ishaveSubAdd = false,
+  path = "",
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
-
-  // ACTIONS ADD
-  const handleView = (itemView) => {
-    dispatch(setIsView(true));
-    setItemEdit(itemView);
-    setItemVal(itemView);
-  };
-
-  // ACTIONS ACHIEVE, RESTORE AND DELETE
-  const handleAction = (val, dataArray) => {
-    dispatch(setIsSubAction(true));
-    setData({
-      ...dataArray,
-      path:
-        val?.name !== "delete"
-          ? `${val?.path}/${dataArray?.id}`
-          : `${dataArray?.id}`,
-      menu: "sales-order",
-      action: val?.name,
-    });
-  };
-  // ACTIONS UPDATE
-  const handleUpdate = (val) => {
-    dispatch(setIsSubAdd(true));
-    setItemEdit({
-      ...val,
-    });
-  };
+  const userRole = store.credentials?.data?.role;
   return (
     <>
-      {isDefaultMobile === "customer" &&
-        rows?.map((row, index) => {
-          const rowData = row.original;
+      {isDefaultMobile === "customer" && (
+        <div>
+          {rows?.map((row, index) => {
+            const rowData = row.original;
+            const is_status =
+              Number(rowData?.is_active) > 0 ? "active" : "inactive";
 
-          return (
-            <div key={row.id} className="lg:hidden">
-              <ul className="py-4 px-0 lg:py-4 lg:px-4 border-b lg:border-b-0">
-                {/* mobile */}
-                <li className="lg:hidden rounded-2xl border border-gray-200 bg-gray-50/80 dark:bg-[#101827] dark:border-gray-700 p-4 space-y-3 text-sm">
-                  <div className="flex items-start justify-between mb-0! gap-3">
-                    <p className="text-left! mb-0! font-medium text-gray-900 dark:text-light">
-                      {rowData?.sales_order_number}
-                    </p>
-                    <p className="font-semibold text-gray-900 dark:text-light">
-                      <AmountWithPesoSign
-                        classN={"size-3 "}
-                        classAmnt={"text-green-600 "}
-                        amount={rowData?.total_amount}
-                      />
-                    </p>
-                  </div>
-                  <div className="flex items-start justify-between mb-1! ">
-                    <p className="text-left! text-xs text-gray-500 dark:text-gray-400">
-                      {rowData?.sales_order_date}
-                    </p>
-
-                    <Pills variant={rowData?.sales_order_status}>
-                      {rowData?.sales_order_status}
-                    </Pills>
-                  </div>
-
-                  <div className="flex justify-between pt-3 border-t border-gray-200 dark:border-gray-700  text-left!">
-                    <button
-                      className="text-green-700 hover:text-green-800 hover:underline"
-                      onClick={() => handleView(rowData)}
+            return (
+              <div
+                key={row.id}
+                className="lg:hidden border rounded-xl p-4 mb-4 shadow-sm mt-2"
+              >
+                {/* HEADER */}
+                <div className="xs:flex flex-wrap gap-2 justify-between items-start border-b border-gray-200 pb-2 ">
+                  <div className="text-left!">
+                    <Link
+                      to={`${devNavUrl}/${userRole}/sales-orders`}
+                      className="tooltip-action-table text-lg bg-transparent! underline text-primary capitalize p-0! "
+                      data-tooltip={"View"}
+                      onClick={() =>
+                        sessionStorage.setItem(
+                          "filter",
+                          JSON.stringify([
+                            {
+                              id: "sales_order_customer_name",
+                              value: rowData?.customer_name,
+                            },
+                          ]),
+                        )
+                      }
                     >
-                      View Items
-                    </button>
-                    {getAdminDeveloperRole(store) && (
-                      <>
-                        <div className="flex items-center justify-end gap-3 ">
-                          <ActionButton
-                            item={{
-                              ...rowData,
-                              name: "edit",
-                              path: "sales-order",
-                              isActive: 1,
-                              testId: "action-edit",
-                              icon: <Edit className="size-5 lg:size-4" />,
-                            }}
-                            onClick={() =>
-                              handleUpdate({
-                                ...rowData,
-                                name: "edit",
-                                path: "sales-order",
-                                isActive: 1,
-                              })
-                            }
-                            data-testid={"action-edit"}
-                          />
-                          <ActionButton
-                            item={{
-                              ...rowData,
-                              name: "delete",
-                              path: "sales-order",
-                              isActive: 1,
-                              testId: "action-delete",
-                              icon: <Trash className="size-5 lg:size-4" />,
-                            }}
-                            onClick={() =>
-                              handleAction(
-                                {
-                                  ...rowData,
-                                  name: "delete",
-                                  path: "sales-order",
-                                  isActive: 0,
-                                },
-                                rowData,
-                              )
-                            }
-                            data-testid={"action-delete"}
-                          />
-                        </div>
-                      </>
-                    )}
+                      {rowData?.customer_name}
+                    </Link>
+                    <p className="m-0! wrap-break-word font-semibold">
+                      {rowData?.customer_email}
+                    </p>
+                    <p className="m-0! wrap-break-word font-semibold ">
+                      {rowData?.customer_phone}
+                    </p>
                   </div>
-                </li>
-              </ul>
-            </div>
-          );
-        })}
+
+                  {/* STATUS */}
+                  <Pills variant={is_status}>{is_status}</Pills>
+                </div>
+
+                {/* OTHER FIELDS */}
+                <div className="flex flex-wrap justify-between items-end">
+                  <ul className="py-2 gap-2 sm:gap-5 ">
+                    <li className="flex text-left! text-xs">
+                      <span
+                        className={`text-gray-500 mr-2 min-w-15 capitalize`}
+                      >
+                        address:
+                      </span>
+                      <span className="wrap-break-word font-semibold">
+                        {isEmptyItem(rowData?.customer_address, "none")}
+                      </span>
+                    </li>
+                    <li className="flex text-left! text-xs">
+                      <span
+                        className={`text-gray-500 mr-2 min-w-15 capitalize`}
+                      >
+                        messenger:
+                        <span className="wrap-break-word font-semibold ml-1">
+                          {isEmptyItem(rowData?.messenger, "none")}
+                        </span>
+                      </span>
+                      |
+                      <span
+                        className={`text-gray-500 mr-2 min-w-15 capitalize ml-2`}
+                      >
+                        whatsapp:
+                        <span className="wrap-break-word font-semibold ml-1">
+                          {isEmptyItem(rowData?.whatsapp, "none")}
+                        </span>
+                      </span>
+                      |
+                      <span
+                        className={`text-gray-500 mr-2 min-w-15 capitalize ml-2`}
+                      >
+                        other social:
+                        <span className="wrap-break-word font-semibold ml-1">
+                          {isEmptyItem(rowData?.other, "none")}
+                        </span>
+                      </span>
+                    </li>
+                    <li className="flex text-left! text-xs">
+                      <span
+                        className={`text-gray-500 mr-2 min-w-15 capitalize`}
+                      >
+                        note:
+                      </span>
+                      <span className="wrap-break-word font-semibold">
+                        {isEmptyItem(rowData?.customer_notes, "none")}
+                      </span>
+                    </li>
+                  </ul>
+                  <div className=" ">
+                    <ActionButtonMobile
+                      dataArray={rowData}
+                      setData={setData}
+                      setItemEdit={setItemEdit}
+                      ishaveSubAdd={ishaveSubAdd}
+                      path={path}
+                    />
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      )}
     </>
   );
 };

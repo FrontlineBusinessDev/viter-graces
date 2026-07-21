@@ -1,37 +1,38 @@
-import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
-import {
-  ActionTableList,
-  ActiveInActiveStatus,
-  PaymentMethodList,
-  PaymentTermsList,
-} from "@/layout/ArrayValue";
+import { devNavUrl } from "@/config/config";
+import { ActionTableList, ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
-import InfinitePerTabs from "@/layout/table/InfinitePerTabs";
+import InfiniteTable from "@/layout/table/InfiniteTable";
+import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
-import { MapPin, Phone } from "lucide-react";
 import React from "react";
-import { AiFillMessage } from "react-icons/ai";
-import { FaFacebookMessenger } from "react-icons/fa";
-import { IoLogoWhatsapp } from "react-icons/io";
+import ViewSalesDetails from "../sales-orders/ViewSalesDetails";
 import ModalCustomer from "./ModalCustomer";
 import ModalSalesOrders from "./ModalSalesOrders";
-import ViewSalesDetails from "../sales-orders/ViewSalesDetails";
-import { setIsAdd } from "@/store/StoreAction";
-import {
-  getAdminDeveloperRole,
-  getProductOwnerRole,
-} from "@/utilities/roleValidation";
-import InfiniteTable from "@/layout/table/InfiniteTable";
-import { devNavUrl } from "@/config/config";
+import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
 
 const Customers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
-  const [isView, setView] = React.useState(false);
-  const [itemVal, setItemVal] = React.useState(null);
   const userRole = store.credentials?.data?.role;
   // Columns
   const columns = [
+    {
+      accessorKey: "is_active",
+      header: "status",
+      classTh: "",
+      classTd: "",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={ActiveInActiveStatus()}
+            testFilterStatusId={"filter-status"}
+          />
+        ),
+      },
+      status_option: ActiveInActiveStatus(),
+    },
     {
       accessorKey: "customer_name",
       header: "name",
@@ -83,6 +84,12 @@ const Customers = () => {
       classTh: "",
       classTd: "",
       meta: "",
+    },
+    {
+      accessorKey: "customer_notes",
+      header: "note",
+      classTh: "",
+      classTd: "",
     },
     {
       accessorKey: "action",

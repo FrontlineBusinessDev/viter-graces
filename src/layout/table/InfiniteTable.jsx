@@ -62,9 +62,6 @@ const InfiniteTable = ({
         ]
       : [];
 
-  const [columnFilters, setColumnFilters] = useState(
-    filterName !== "" ? filterName : defaultValue,
-  );
   const observer = useRef();
   const search = React.useRef(null);
   const [onSearch, setOnSearch] = React.useState(false);
@@ -72,6 +69,9 @@ const InfiniteTable = ({
 
   const userId = ProductOwnerId(store);
 
+  const [columnFilters, setColumnFilters] = useState(
+    search.current?.value ? [] : filterName !== "" ? filterName : defaultValue,
+  );
   const searchPayload = useMemo(
     () => ({
       searchValue: search.current?.value || "",
@@ -230,7 +230,7 @@ const InfiniteTable = ({
     <>
       <div className="md:flex md:justify-between flex-row-reverse my-2 gap-4 items-center">
         {ishaveAdd && (
-          <div className="flex justify-end sm:mb-0! mb-3 w-full ">
+          <div className="flex justify-end sm:mb-0! mb-3 md:w-40 ">
             <AddButton
               value={path?.replaceAll("-", " ")}
               onClick={handleAdd}
@@ -254,17 +254,59 @@ const InfiniteTable = ({
           </div>
         )}
         {isSearch && (
-          <div className={`${haveFilterTable ? " lg:hidden " : " "} w-full `}>
+          <div
+            className={`${haveFilterTable ? " lg:hidden " : " "} ${path === "sales-order" ? " sm:grid grid-cols-[10rem_1fr] gap-2 " : " "} w-full `}
+          >
+            {path === "sales-order" && (
+              <div className="mt-1 md:mt-3">
+                <input
+                  type={"date"}
+                  value={isEmptyItem(columnFilters[0]?.value, "")}
+                  onChange={(e) => {
+                    setColumnFilters([
+                      {
+                        id: "sales_order_date",
+                        value: e.target.value,
+                      },
+                    ]);
+                  }}
+                  className="text-xs h-[30px]"
+                  data-testid={"sales_order_date"}
+                />
+              </div>
+            )}
             <SearchBar
               search={search}
               dispatch={dispatch}
               setOnSearch={setOnSearch}
               onSearch={onSearch}
               label={"Search..."}
+              className="mb-3 mt-1 md:my-3 "
             />
           </div>
         )}
       </div>
+      {columnFilters?.length > 0 && (
+        <>
+          <ul className="lg:hidden mb-2 flex items-center flex-wrap gap-2">
+            <li>Filtered by:</li>
+            {columnFilters?.map((a) => (
+              <li key={a?.id} className="bg-gray-100 px-2 py-1 rounded-sm">
+                {a.value}
+              </li>
+            ))}
+            <li className="bg-gray-400 cursor-pointer hover:bg-primary text-white px-2 py-1 rounded-sm">
+              <button
+                onClick={() => {
+                  setColumnFilters([]);
+                }}
+              >
+                Clear
+              </button>
+            </li>
+          </ul>
+        </>
+      )}
       <div className="">
         <div className="relative rounded-xl md:text-center overflow-auto z-0 ">
           <div className={`${className} `}>

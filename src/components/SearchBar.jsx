@@ -7,6 +7,7 @@ const SearchBar = ({
   setOnSearch,
   onSearch,
   label = "Search....",
+  className = " ",
 }) => {
   const handleChange = (e, search) => {
     search.current.value = e.target.value;
@@ -37,7 +38,7 @@ const SearchBar = ({
       }}
       className="search-box"
     >
-      <div className="relative">
+      <div className={`${className} relative`}>
         <div
           type="submit"
           className="absolute left-2 top-2.5 text-[14px] h-[30px] rounded-tr-none rounded-br-none border-l-0  text-gray-400 cursor-default"
@@ -47,7 +48,7 @@ const SearchBar = ({
         <input
           type="search"
           placeholder={label}
-          className="text-xs py-0 h-[30px] pl-8 rounded-lg"
+          className={`text-xs py-0 h-[30px] pl-8 rounded-lg `}
           ref={search}
           onChange={(e) => handleChange(e, search)}
           data-testid="search-input"
