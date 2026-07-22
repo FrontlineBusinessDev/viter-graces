@@ -308,41 +308,11 @@ class Returns
         try {
             $sql = "update {$this->tblReturnProducts} set ";
             $sql .= "return_product_status = :return_product_status, ";
-            $sql .= "return_product_number = :return_product_number, ";
-            $sql .= "return_product_order_id = :return_product_order_id, ";
-            $sql .= "return_product_order_number = :return_product_order_number, ";
-            $sql .= "return_product_customer_id = :return_product_customer_id, ";
-            $sql .= "return_product_customer_name = :return_product_customer_name, ";
-            $sql .= "return_product_date = :return_product_date, ";
-            $sql .= "return_product_amount = :return_product_amount, ";
-            $sql .= "return_product_product_id = :return_product_product_id, ";
-            $sql .= "return_product_product_name = :return_product_product_name, ";
-            $sql .= "return_product_qty = :return_product_qty, ";
-            $sql .= "return_product_price = :return_product_price, ";
-            $sql .= "return_product_reason = :return_product_reason, ";
-            $sql .= "return_product_is_restocked = :return_product_is_restocked, ";
-            $sql .= "return_product_owner_id = :return_product_owner_id, ";
-            $sql .= "return_product_owner_name = :return_product_owner_name, ";
             $sql .= "return_product_updated = :return_product_updated ";
             $sql .= "where return_product_aid = :return_product_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "return_product_status" => $this->return_product_status,
-                "return_product_number" => $this->return_product_number,
-                "return_product_order_id" => $this->return_product_order_id,
-                "return_product_order_number" => $this->return_product_order_number,
-                "return_product_customer_id" => $this->return_product_customer_id,
-                "return_product_customer_name" => $this->return_product_customer_name,
-                "return_product_date" => $this->return_product_date,
-                "return_product_amount" => $this->return_product_amount,
-                "return_product_product_id" => $this->return_product_product_id,
-                "return_product_product_name" => $this->return_product_product_name,
-                "return_product_qty" => $this->return_product_qty,
-                "return_product_price" => $this->return_product_price,
-                "return_product_reason" => $this->return_product_reason,
-                "return_product_is_restocked" => $this->return_product_is_restocked,
-                "return_product_owner_id" => $this->return_product_owner_id,
-                "return_product_owner_name" => $this->return_product_owner_name,
                 "return_product_updated" => $this->return_product_updated,
                 "return_product_aid" => $this->return_product_aid,
             ]);
@@ -444,12 +414,12 @@ class Returns
             $sql .= ":stock_movement_updated ) ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "stock_movement_product_id" => $this->lastInsertedId,
+                "stock_movement_product_id" => $this->return_product_product_id,
                 "stock_movement_product_name" => $this->return_product_product_name,
                 "stock_movement_type" => $this->stock_movement_type,
                 "stock_movement_location" => $this->stock_movement_location,
                 "stock_movement_status" => $this->stock_movement_status,
-                "stock_movement_date" => $this->stock_movement_date,
+                "stock_movement_date" => $this->return_product_date,
                 "stock_movement_is_active" => $this->stock_movement_is_active,
                 "stock_movement_before_qty" => $this->stock_movement_before_qty,
                 "stock_movement_after_qty" => $this->stock_movement_after_qty,
@@ -527,8 +497,7 @@ class Returns
                     WHEN ms.stock_movement_type IN ('in stock', 'stock in - return', 'purchases', 'stock in adjustments')
                         THEN ms.stock_movement_qty
 
-                    WHEN ms.stock_movement_type IN ( 
-                        'stock out - reject/defective items',
+                    WHEN ms.stock_movement_type IN ('stock out - reject/defective items',
                         'stock out - return item'
                     )
                         THEN -ms.stock_movement_qty
@@ -540,11 +509,9 @@ class Returns
             // Current quantity after sales orders
             $sql .= "SUM(
                 CASE
-                    WHEN ms.stock_movement_type IN ('in stock','purchases', 'stock in adjustments')
-                        THEN ms.stock_movement_qty
-
-                    WHEN ms.stock_movement_type IN (
-                        'stock out - reject/defective items',
+                    WHEN ms.stock_movement_type IN ('in stock', 'stock in - return', 'purchases', 'stock in adjustments')
+                        THEN ms.stock_movement_qty 
+                    WHEN ms.stock_movement_type IN ('stock out - reject/defective items',
                         'stock out - return item'
                     )
                         THEN -ms.stock_movement_qty

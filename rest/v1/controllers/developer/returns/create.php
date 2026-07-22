@@ -47,26 +47,6 @@ if (count($selectedItems) > 0) {
             isNameExist($val, $val->return_product_number);
             $query = checkCreate($val);
         }
-        // if ($val->return_product_is_restocked) {
-
-        //     $val->stock_movement_type = "stock in - return";
-        //     $val->stock_movement_location = "";
-        //     $val->stock_movement_status = "active";
-        //     $val->stock_movement_is_active = "1";
-        //     $val->stock_movement_date = date("Y-m-d");
-
-        //     $queryQty = getResultData($val->readtotalQTY());
-        //     if (count($queryQty) > 0) {
-        //         $val->stock_movement_before_qty = (float)$queryQty[0]['current_qty'] + (float)$val->return_product_qty;
-        //         $val->stock_movement_after_qty = (float)$queryQty[0]['current_qty'];
-        //     } else {
-        //         $val->stock_movement_before_qty = 0;
-        //         $val->stock_movement_after_qty = 0;
-        //     };
-        //     $val->stock_movement_qty = (float)$val->return_product_qty;
-
-        //     checkCreateMovementStock($val);
-        // }
     }
 }
 

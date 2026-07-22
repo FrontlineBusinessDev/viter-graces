@@ -1,16 +1,15 @@
-import HeaderNav from "@/layout/headers/HeaderNav";
-import InfiniteTable from "@/layout/table/InfiniteTable";
-import { StoreContext } from "@/store/StoreContext";
-import React from "react";
-import ModalReturns from "./ModalReturns";
-import { ActiveInActiveStatus } from "@/layout/ArrayValue";
-import { setIsAdd } from "@/store/StoreAction";
 import {
   SearchableSelectFilter,
   SearchableSelectFilterStatus,
 } from "@/components/inputs/InputSelect";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
+import HeaderNav from "@/layout/headers/HeaderNav";
+import InfiniteTable from "@/layout/table/InfiniteTable";
+import { StoreContext } from "@/store/StoreContext";
+import React from "react";
+import ModalPurchaseOrderMovement from "./modal/ModalPurchaseOrderMovement";
 
-const Returns = () => {
+const PurchaseOrderMovement = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
 
@@ -21,7 +20,6 @@ const Returns = () => {
       header: "status",
       classTh: "w-[5rem]",
       classTd: "w-[10rem]",
-      updateDataColumn: true,
       filterFn: "equals",
       meta: {
         filterComponent: (column) => (
@@ -108,27 +106,20 @@ const Returns = () => {
       meta: "",
     },
   ];
-
-  React.useEffect(() => {
-    if (window.sessionStorage.getItem("quickAdd")) {
-      dispatch(setIsAdd(true));
-    }
-  }, [window.sessionStorage.getItem("quickAdd")]);
-
   return (
     <>
-      <HeaderNav menu={"returns"} activeTab="returns">
+      <HeaderNav menu={"suppliers"} activeTab="purchase-movement-history">
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="returns-products"
+          path="purchase-movement-history"
           haveFilterTable={true}
           setItemEdit={setItemEdit}
         />
       </HeaderNav>
-      {store.isAdd && <ModalReturns itemEdit={itemEdit} />}
+      {store.isAdd && <ModalPurchaseOrderMovement itemEdit={itemEdit} />}
     </>
   );
 };
 
-export default Returns;
+export default PurchaseOrderMovement;

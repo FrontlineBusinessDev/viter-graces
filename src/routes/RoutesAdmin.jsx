@@ -24,6 +24,7 @@ import SalesOrders from "@/pages/developer/sales-orders/SalesOrders";
 import ProductOwner from "@/pages/developer/settings/ProductOwner";
 import UsersAccount from "@/pages/developer/settings/UsersAccount";
 import PurchaseOrder from "@/pages/developer/suppliers/PurchaseOrder";
+import PurchaseOrderMovement from "@/pages/developer/suppliers/PurchaseOrderMovement";
 import Suppliers from "@/pages/developer/suppliers/Suppliers";
 import ProtectedRouteUser from "@/pages/login/ProtectedRouteUser";
 
@@ -233,6 +234,14 @@ export const routesAdmin = [
     element: (
       <ProtectedRouteUser>
         <PurchaseOrder />
+      </ProtectedRouteUser>
+    ),
+  },
+  {
+    path: `${devNavUrl}/admin/purchase-movement-history`,
+    element: (
+      <ProtectedRouteUser>
+        <PurchaseOrderMovement />
       </ProtectedRouteUser>
     ),
   },

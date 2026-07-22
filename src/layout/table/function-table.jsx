@@ -6,6 +6,9 @@ import { flexRender } from "@tanstack/react-table";
 import { Image } from "lucide-react";
 import TableStatus from "../TableStatus";
 import { Link } from "react-router-dom";
+import { apiVersion } from "@/config/config";
+import { queryData } from "@/services/queryData";
+import TableUpdateStatus from "../TableUpdateStatus";
 
 const renderImage = (rowData) => {
   let photo = getConvertStringToJSONparseData(rowData?.products_image);
@@ -31,18 +34,18 @@ const renderImage = (rowData) => {
   );
 };
 
-export const renderCellContent = (item, rowData) => {
+export const renderCellContent = (item, rowData, path = "") => {
   const column = item.column.columnDef;
 
   if (column.isImage) {
     return renderImage(rowData);
   }
 
-  if (
-    column.header === "status" ||
-    column.header === "payment status" ||
-    column.header === "restocked"
-  ) {
+  if (column.updateDataColumn) {
+    return <TableUpdateStatus path={path} item={column} dataArray={rowData} />;
+  }
+
+  if (column.header === "status" || column.header === "payment status") {
     return <TableStatus item={column} dataArray={rowData} />;
   }
 

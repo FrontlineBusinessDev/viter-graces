@@ -34,16 +34,9 @@ const Products = () => {
       status_option: ActiveInActiveStatus(),
     },
     {
-      accessorKey: "products_image",
-      header: "image",
-      classTh: "text-center min-w-[5rem]",
-      classTd: "relative ",
-      isImage: true,
-    },
-    {
       accessorKey: "products_name",
       header: "Products",
-      classTh: "min-w-[10rem]",
+      classTh: "min-w-[10rem] ",
       classTd: "",
       isMobileTitle: true,
       meta: "",
@@ -51,7 +44,7 @@ const Products = () => {
     {
       accessorKey: "products_sku",
       header: "SKU",
-      classTh: "min-w-[10rem]",
+      classTh: "min-w-[10rem] ",
       classTd: "",
       isTag: true,
       meta: "",

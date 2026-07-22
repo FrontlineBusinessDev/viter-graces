@@ -230,7 +230,7 @@ const InfiniteTable = ({
     <>
       <div className="md:flex md:justify-between flex-row-reverse my-2 gap-4 items-center">
         {ishaveAdd && (
-          <div className="flex justify-end sm:mb-0! mb-3 md:w-40 ">
+          <div className="flex justify-end sm:mb-0! mb-3 md:w-1/2 ">
             <AddButton
               value={path?.replaceAll("-", " ")}
               onClick={handleAdd}
@@ -434,7 +434,7 @@ const InfiniteTable = ({
                             key={item?.id}
                             className={` ${isEmptyItem(item?.column?.columnDef?.classTd, "")} `}
                           >
-                            {renderCellContent(item, rowData)}
+                            {renderCellContent(item, rowData, path)}
 
                             {/* FOR ACTION BUTTONS */}
                             {item?.column?.columnDef?.accessorKey ===

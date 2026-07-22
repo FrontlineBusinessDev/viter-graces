@@ -10,7 +10,10 @@ import {
   YAxis,
 } from "recharts";
 import WarningNoteForComingSoon from "../WarningNoteForComingSoon";
+import { StoreContext } from "@/store/StoreContext";
 const DashboardSalesOverview = () => {
+  const { store } = React.useContext(StoreContext);
+  const userRole = store.credentials?.data?.role;
   const [timeframe, setTimeframe] = React.useState("Weekly");
   const { darkMode, toggleDarkMode } = useDarkMode();
 
@@ -106,7 +109,7 @@ const DashboardSalesOverview = () => {
             </AreaChart>
           </ResponsiveContainer>
         </div>
-        <WarningNoteForComingSoon />
+        {userRole !== "developer" ? <WarningNoteForComingSoon /> : ""}
       </div>
     </>
   );

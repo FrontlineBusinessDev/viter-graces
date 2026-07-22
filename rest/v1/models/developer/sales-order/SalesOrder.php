@@ -1236,12 +1236,12 @@ class SalesOrder
             $sql .= "sales_order_total_amount as total_sub_amount, ";
             $sql .= "sales_order_paid_amount as total_paid, ";
             $sql .= "sales_order_number as value, ";
-            $sql .= "CONCAT(sales_order_number, ' - ', sales_order_customer_name) as label, ";
+            $sql .= "CONCAT(sales_order_number, ' - ', sales_order_customer_name) as name, ";
             $sql .= "sales_order_aid as id, ";
             $sql .= "sales_order_is_active as is_active, ";
             $sql .= "sales_order_date as order_date, ";
             $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
-            $sql .= "sales_order_customer_name as name ";
+            $sql .= "sales_order_customer_name as label ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";
             if (!empty($filterColumn)) {

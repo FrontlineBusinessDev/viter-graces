@@ -30,8 +30,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
         if ((float)$val->purchase_order_is_active == 0) {
             $val->purchase_order_status = 'inactive';
-            $val->purchase_order_payment_status = 'inactive';
-            $val->purchase_order_delivery_status = '';
+            $val->purchase_order_payment_status = $data['purchase_order_payment_status'];
+            $val->purchase_order_delivery_status = 'not delivered / unpaid';
         } else {
             deliveryStatus($val, $data);
             $val->purchase_order_status = 'draft';
@@ -39,6 +39,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
             $val->purchase_order_delivery_status = '';
         }
         $val->purchase_order_updated = date("Y-m-d H:i:s");
+
 
         // INSTALLMENT DATA
         checkId($val->purchase_order_aid);

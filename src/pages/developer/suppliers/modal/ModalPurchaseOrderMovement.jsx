@@ -28,7 +28,7 @@ import React from "react";
 import * as Yup from "yup";
 import { Validations } from "./functions";
 
-const ModalReturns = ({ itemEdit }) => {
+const ModalPurchaseOrderMovement = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [selectedItems, setSelectedItems] = React.useState([]);
   const [isSelected, setIsSelected] = React.useState(false);
@@ -345,4 +345,4 @@ const ModalReturns = ({ itemEdit }) => {
   );
 };
 
-export default ModalReturns;
+export default ModalPurchaseOrderMovement;

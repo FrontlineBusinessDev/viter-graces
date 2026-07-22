@@ -12,6 +12,7 @@ import {
 import GraphTooltip from "./GraphTooltip";
 import useDarkMode from "@/custom-hooks/useDarkMode";
 import WarningNoteForComingSoon from "@/layout/WarningNoteForComingSoon";
+import { StoreContext } from "@/store/StoreContext";
 
 const profitLossData = {
   Weekly: [
@@ -48,6 +49,8 @@ const profitLossData = {
 };
 
 export default function ProfitLossChart() {
+  const { store } = React.useContext(StoreContext);
+  const userRole = store.credentials?.data?.role;
   const [timeframe, setTimeframe] = React.useState("Weekly");
   const { darkMode } = useDarkMode();
 
@@ -151,7 +154,7 @@ export default function ProfitLossChart() {
             </ComposedChart>
           </ResponsiveContainer>
         </div>
-        <WarningNoteForComingSoon />
+        {userRole !== "developer" ? <WarningNoteForComingSoon /> : ""}
       </div>
     </>
   );

@@ -14,6 +14,7 @@ import {
 } from "recharts";
 import GraphTooltip from "./GraphTooltip";
 import WarningNoteForComingSoon from "@/layout/WarningNoteForComingSoon";
+import { StoreContext } from "@/store/StoreContext";
 
 const cashflowData = {
   Weekly: [
@@ -50,6 +51,8 @@ const cashflowData = {
 };
 
 export default function CashflowChart() {
+  const { store } = React.useContext(StoreContext);
+  const userRole = store.credentials?.data?.role;
   const [timeframe, setTimeframe] = React.useState("Weekly");
   const { darkMode } = useDarkMode();
 
@@ -161,7 +164,7 @@ export default function CashflowChart() {
             </ComposedChart>
           </ResponsiveContainer>
         </div>
-        <WarningNoteForComingSoon />
+        {userRole !== "developer" ? <WarningNoteForComingSoon /> : ""}
       </div>
     </>
   );

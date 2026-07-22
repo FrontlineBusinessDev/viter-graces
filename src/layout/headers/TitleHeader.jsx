@@ -48,21 +48,28 @@ const TitleHeader = ({}) => {
                   return (
                     <Link
                       to={
-                        !itemTab?.ongoingDevelopment
-                          ? `${devNavUrl}/${userRole}/${itemTab.title_tab}`
-                          : "#"
+                        userRole !== "developer"
+                          ? !itemTab?.ongoingDevelopment
+                            ? `${devNavUrl}/${userRole}/${itemTab.title_tab}`
+                            : "#"
+                          : `${devNavUrl}/${userRole}/${itemTab.title_tab}`
                       }
                       key={key}
                       className={` py-1 px-3 flex rounded-lg font-medium transition-colors duration-300 capitalize
                           ${
-                            !itemTab?.ongoingDevelopment
-                              ? `
-                  ${
-                    isActive
-                      ? "bg-light dark:bg-dark-mode text-black/80 dark:text-light font-bold"
-                      : "text-gray-500 hover:text-black dark:hover:text-light"
-                  } `
-                              : "  tooltip "
+                            userRole !== "developer"
+                              ? !itemTab?.ongoingDevelopment
+                                ? `${
+                                    isActive
+                                      ? "bg-light dark:bg-dark-mode text-black/80 dark:text-light font-bold"
+                                      : "text-gray-500 hover:text-black dark:hover:text-light"
+                                  } `
+                                : "  tooltip "
+                              : `${
+                                  isActive
+                                    ? "bg-light dark:bg-dark-mode text-black/80 dark:text-light font-bold"
+                                    : "text-gray-500 hover:text-black dark:hover:text-light"
+                                } `
                           } 
                 `}
                       data-tooltip={"Coming soon"}
