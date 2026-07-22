@@ -2,3 +2,10 @@
 node_modules
 vendor
 .env
+.env.*
+dist
+rest/v1/db-backup
+cypress
+cypress.config.*
+Dockerfile copy
+*.log

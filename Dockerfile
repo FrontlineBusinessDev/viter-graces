@@ -1,8 +1,9 @@
 FROM node:20-alpine AS frontend
 WORKDIR /app
-COPY package*.json ./
+COPY package.json package-lock.json ./
 RUN npm ci
 COPY . .
+
 # Declare every VITE var as ARG so Docker passes them through
 ARG VITE_APP_DEV_API_URL
 ARG VITE_APP_DEV_BASE_URL
@@ -18,6 +19,7 @@ ARG VITE_APP_DEV_GOOGLE_THUMBNAIL_LINK
 ARG VITE_APP_DEV_GOOGLE_HD_VIEW_LINK
 ARG VITE_APP_DEV_GOOGLE_VIEW_LINK
 ARG VITE_APP_DEV_URL_WEBSITE_PATH
+ARG VITE_APP_DEV_VITE_APP_DEV_APP_ROOT
 
 # Convert ARGs to ENV so Vite's import.meta.env can read them
 ENV VITE_APP_DEV_API_URL=$VITE_APP_DEV_API_URL
@@ -34,21 +36,29 @@ ENV VITE_APP_DEV_GOOGLE_THUMBNAIL_LINK=$VITE_APP_DEV_GOOGLE_THUMBNAIL_LINK
 ENV VITE_APP_DEV_GOOGLE_HD_VIEW_LINK=$VITE_APP_DEV_GOOGLE_HD_VIEW_LINK
 ENV VITE_APP_DEV_GOOGLE_VIEW_LINK=$VITE_APP_DEV_GOOGLE_VIEW_LINK
 ENV VITE_APP_DEV_URL_WEBSITE_PATH=$VITE_APP_DEV_URL_WEBSITE_PATH
+ENV VITE_APP_DEV_VITE_APP_DEV_APP_ROOT=$VITE_APP_DEV_VITE_APP_DEV_APP_ROOT
+
 RUN npm run build
+
 FROM php:8.3-apache
-RUN a2enmod rewrite headers \
- && sed -ri 's/Listen 80/Listen 8080/' /etc/apache2/ports.conf
+
+ARG APP_ENV=production
+ENV APP_ENV=$APP_ENV
+
+RUN a2enmod rewrite env
+
 COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
+
 RUN mkdir -p /var/www/html
 COPY --from=frontend /app/dist/ /var/www/html/
-# Empty root .htaccess
-COPY apache/root.htaccess /var/www/html/.htaccess
-# SPA .htaccess inside /
 COPY apache/.htaccess /var/www/html/.htaccess
 COPY rest/ /var/www/html/rest/
+
 RUN docker-php-ext-install pdo pdo_mysql mysqli \
  && chown -R www-data:www-data /var/www/html
+
 RUN echo "log_errors = On" >> /usr/local/etc/php/conf.d/error-logging.ini \
-&& echo "error_log = /proc/self/fd/2" >> /usr/local/etc/php/conf.d/error-logging.ini
-EXPOSE 8080
+ && echo "error_log = /proc/self/fd/2" >> /usr/local/etc/php/conf.d/error-logging.ini
+
+EXPOSE 80
 CMD ["apache2-foreground"]
