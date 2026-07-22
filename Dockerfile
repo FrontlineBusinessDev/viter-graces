@@ -45,7 +45,7 @@ FROM php:8.3-apache
 ARG APP_ENV=production
 ENV APP_ENV=$APP_ENV
 
-RUN a2enmod rewrite env
+RUN a2enmod rewrite env headers
 
 COPY apache/000-default.conf /etc/apache2/sites-available/000-default.conf
 
