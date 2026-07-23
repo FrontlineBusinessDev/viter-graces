@@ -142,6 +142,6 @@ RewriteRule ^returns-products/read-all-product-that-have-stock$ controllers/deve
 
 ### RETURN PRODUCTS ###  
 RewriteRule ^purchase-order-movement$ controllers/developer/suppliers/purchase-order-movement/purchase-order-movement.php [L] 
-RewriteRule ^purchase-order-movement/read-all-active-data$ controllers/developer/suppliers/purchase-order-movement/read-all-active-data.php [L] 
+RewriteRule ^purchase-order-movement/read-search-data$ controllers/developer/suppliers/purchase-order-movement/read-search-data.php [L] 
 RewriteRule ^purchase-order-movement/([0-9]+)$$ controllers/developer/suppliers/purchase-order-movement/purchase-order-movement.php?id=$1 [L] 
 RewriteRule ^purchase-order-movement/page/([0-9]+)$ controllers/developer/suppliers/purchase-order-movement/page.php?start=$1 [L] 

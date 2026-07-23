@@ -10,18 +10,14 @@ const TableStatus = ({ item, dataArray }) => {
     isEmptyItem(dataArray?.products_status, "") ||
     (item.header === "payment status" &&
       isEmptyItem(dataArray?.payment_status, ""));
-
   const selectedItem =
-    item?.status_option
-      ?.find(
-        (o) =>
-          o.label.toLowerCase() === statusToMatch.toLowerCase() ||
-          o.value === Number(dataArray?.is_active ?? 1),
-      )
-      ?.label.toLowerCase() ??
-    item?.status_option
-      ?.find((o) => o.label === dataArray?.inventory_status)
-      ?.label.toLowerCase() ??
+    item?.status_option?.find(
+      (o) =>
+        o.label?.toLowerCase() === statusToMatch ||
+        o.value === Number(dataArray?.is_active ?? 1),
+    )?.label ??
+    item?.status_option?.find((o) => o.label === dataArray?.inventory_status)
+      ?.label ??
     dataArray?.status_text;
 
   return (

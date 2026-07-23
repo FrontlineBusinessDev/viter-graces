@@ -24,7 +24,7 @@ import { Form, Formik } from "formik";
 import { Plus } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
-import { Validations } from "./functions";
+import { ValidationsStockMovement } from "./functions";
 
 const ModalPurchaseOrderMovement = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -60,11 +60,7 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
 
   const mutation = useMutation({
     mutationFn: (values) =>
-      queryData(
-        itemEdit`${apiVersion}/purchase-order-movement`,
-        "post",
-        values,
-      ),
+      queryData(`${apiVersion}/purchase-order-movement`, "post", values),
     onSuccess: (data) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({ queryKey: ["purchase-order-movement"] });
@@ -146,6 +142,8 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
   };
 
   const initVal = {
+    purchase_order_transact_id: store.credentials?.data?.user_account_aid,
+    purchase_order_transact_name: store.credentials?.data?.name,
     purchase_order_date: isEmptyItem(
       itemEdit?.purchase_order_date,
       store?.credentials?.data?.server_date,
@@ -173,6 +171,7 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
         mutation={mutation}
         isOpen={true}
         handleClose={handleClose}
+        width="max-w-[50rem]!"
       >
         <div className="modal-body">
           <Formik
@@ -196,11 +195,11 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
                 ),
               };
 
-              Validations(values, items, dispatch);
+              ValidationsStockMovement(values, items, dispatch);
 
-              if (!Validations(values, items, dispatch)) {
+              if (!ValidationsStockMovement(values, items, dispatch)) {
                 console.log(data);
-                // mutation.mutate(data);
+                mutation.mutate(data);
               } else {
                 dispatch(setError(true));
               }
@@ -254,12 +253,7 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
                                   Product owner
                                 </th>
                                 <th
-                                  className={` dark:bg-gray-900! bg-gray-100!`}
-                                >
-                                  Quantity
-                                </th>
-                                <th
-                                  className={`min-w-30! dark:bg-gray-900! bg-gray-100! text-right`}
+                                  className={`min-w-30! dark:bg-gray-900! bg-gray-100! `}
                                 >
                                   Tranfer qty
                                 </th>
@@ -295,7 +289,7 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
                                           }}
                                           dataVal={items}
                                           item={a}
-                                          path={`purchase-order-movement/read-all-active-data`}
+                                          path={`purchase-order-movement/read-search-data`}
                                           testFilterId="purchase_order_product_name"
                                           store={store}
                                           className={" "}
@@ -307,8 +301,8 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
                                         onChange={(e) => {
                                           handleChangeItem(
                                             index,
-                                            "purchase_order_product_owner_id",
                                             "purchase_order_product_owner_name",
+                                            "purchase_order_product_owner_id",
                                             e.id,
                                             e.value,
                                           );
@@ -319,9 +313,6 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
                                         testFilterId="sales_order_product_name"
                                         store={store}
                                       />
-                                    </td>
-                                    <td className=" dark:bg-gray-900! ">
-                                      {a?.purchase_order_qty}
                                     </td>
                                     <td className=" dark:bg-gray-900! ">
                                       <input

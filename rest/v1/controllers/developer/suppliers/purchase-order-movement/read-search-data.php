@@ -22,7 +22,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkPayload($data);
 
     $val->filters = [];
-    $query = checkReadAll($val);
+    $query = checkReadAllActive($val);
     http_response_code(200);
     getQueriedData($query);
 }

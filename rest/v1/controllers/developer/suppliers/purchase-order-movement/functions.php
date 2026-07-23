@@ -23,3 +23,11 @@ function allowedColumns()
     ];
     return $query;
 }
+
+// Read all
+function checkReadAllActive($object, $allowedColumns = [])
+{
+    $query = $object->readAllActive($allowedColumns);
+    checkQuery($query, "Empty records. (read All)");
+    return $query;
+}
