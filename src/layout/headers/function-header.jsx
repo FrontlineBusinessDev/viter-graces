@@ -258,7 +258,7 @@ export const titleHeaderTab = () => {
           title_tab: "purchase-movement-history",
           description_tab: "Manage purchase requests and orders.",
           on_click: onClickTab,
-          ongoingDevelopment: true,
+          ongoingDevelopment: false,
         },
       ],
     },

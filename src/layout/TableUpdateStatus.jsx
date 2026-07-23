@@ -45,7 +45,7 @@ const TableUpdateStatus = ({ path, item, dataArray }) => {
             handleYes(e);
           }}
           defaultValue={dataArray?.return_product_status}
-          className="border-0 shadow h-8 capitalize"
+          className="border-0 shadow shadow-primary h-8 capitalize"
         >
           <optgroup label={`Select status`}>
             <option value="pending">Pending</option>

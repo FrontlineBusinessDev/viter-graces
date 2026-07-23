@@ -4,6 +4,7 @@ import React from "react";
 
 const ModalWrapper = ({
   val = "",
+  label = "",
   itemEdit = null,
   mutation,
   children,
@@ -29,7 +30,7 @@ const ModalWrapper = ({
                 disabled={mutation.isPending}
               />
               <h3 className="text-dark dark:text-light text-sm">
-                {itemEdit ? "Update" : "Add New"} {val}
+                {label === "" ? (itemEdit ? "Update" : "Add New") : label} {val}
               </h3>
             </div>
 

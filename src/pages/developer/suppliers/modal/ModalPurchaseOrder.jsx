@@ -205,6 +205,8 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
       itemEdit?.purchase_order_total_amount,
       "",
     ),
+    purchase_order_transact_id: store.credentials?.data?.user_account_aid,
+    purchase_order_transact_name: store.credentials?.data?.name,
     purchase_order_tax: isEmptyItem(itemEdit?.purchase_order_tax, "0"),
     purchase_order_balance: isEmptyItem(itemEdit?.purchase_order_balance, "0"),
     purchase_order_discount: isEmptyItem(

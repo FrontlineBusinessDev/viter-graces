@@ -25,9 +25,12 @@ $val->purchase_order_payment_status = $data["purchase_order_payment_status"];
 $val->purchase_order_note = $data["purchase_order_note"];
 $val->purchase_order_balance = $data["purchase_order_balance"];
 $val->purchase_order_tax = $data["purchase_order_tax"];
+$val->purchase_order_transact_id = $data["purchase_order_transact_id"];
+$val->purchase_order_transact_name = $data["purchase_order_transact_name"];
 $val->purchase_order_discount = max(0, $data["purchase_order_discount"]);
 $val->purchase_order_created = date("Y-m-d H:i:s");
 $val->purchase_order_updated = date("Y-m-d H:i:s");
+$val->purchase_order_movement_status = "stock in";
 
 $val->purchase_order_number = setIdNumber($val, "PO-");
 
@@ -48,6 +51,8 @@ for ($i = 0; $i < count($purchase_order); $i++) {
     $val->purchase_order_product_owner_id = $purchase_order[$i]["purchase_order_product_owner_id"];
     $val->purchase_order_product_owner_name = $purchase_order[$i]["purchase_order_product_owner_name"];
     $val->purchase_order_qty = $purchase_order[$i]["purchase_order_qty"];
+    $val->purchase_order_before_qty = 0;
+    $val->purchase_order_after_qty = $val->purchase_order_qty;
     $val->purchase_order_price = $purchase_order[$i]["purchase_order_price"];
     $val->purchase_order_total_amount = $purchase_order[$i]["purchase_order_total_amount"];
     $val->purchase_order_expected_delivery = date('Y-m-d', strtotime('next ' . strtolower($data["suppliers_delivery"])));

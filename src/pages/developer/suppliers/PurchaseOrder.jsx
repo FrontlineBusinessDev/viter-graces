@@ -4,7 +4,10 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalPurchaseOrder from "./modal/ModalPurchaseOrder";
-import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import {
+  SearchableSelectFilter,
+  SearchableSelectFilterStatus,
+} from "@/components/inputs/InputSelect";
 import { setIsAdd } from "@/store/StoreAction";
 import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 
@@ -59,7 +62,15 @@ const PurchaseOrder = () => {
       header: "Supplier",
       classTh: "min-w-[10rem] ",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="suppliers"
+            testFilterId={"filter-supplier"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "formated_date",

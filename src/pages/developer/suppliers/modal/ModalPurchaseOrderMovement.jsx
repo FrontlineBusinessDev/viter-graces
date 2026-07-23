@@ -1,12 +1,11 @@
 import ModalButton from "@/components/buttons/ModalButton";
 import {
   DefaultInputSelectTagArray,
-  InputSelect,
+  InputSalesOrderSelectTagArray,
 } from "@/components/inputs/InputSelect";
 import { InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
-import { AmountWithPesoSign, PesoSign } from "@/components/PesoSign";
 import { apiVersion } from "@/config/config";
 import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
@@ -20,10 +19,9 @@ import {
 import { StoreContext } from "@/store/StoreContext";
 import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
-import { numberWithCommasToFixed } from "@/utilities/numberWithCommas";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
-import { PhilippinePeso } from "lucide-react";
+import { Plus } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
 import { Validations } from "./functions";
@@ -32,6 +30,23 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [selectedItems, setSelectedItems] = React.useState([]);
   const [isSelected, setIsSelected] = React.useState(false);
+  const [itemsDelete, setItemsDelete] = React.useState([]);
+  const [counter, setCounter] = React.useState(1);
+
+  const [items, setItems] = React.useState(
+    itemEdit
+      ? itemEdit?.items
+      : [
+          {
+            id: 0,
+            purchase_order_transfer_from_id: "",
+            purchase_order_qty: "",
+            purchase_order_product_owner_id: "",
+            purchase_order_product_owner_name: "",
+            allData: [],
+          },
+        ],
+  );
 
   const handleClose = () => {
     sessionStorage.removeItem("quickAdd");
@@ -46,15 +61,13 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
-        itemEdit
-          ? `${apiVersion}/returns-products/${itemEdit?.id}`
-          : `${apiVersion}/returns-products`,
-        itemEdit ? "put" : "post",
+        itemEdit`${apiVersion}/purchase-order-movement`,
+        "post",
         values,
       ),
     onSuccess: (data) => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["returns-products"] });
+      queryClient.invalidateQueries({ queryKey: ["purchase-order-movement"] });
 
       if (data.success) {
         dispatch(setIsAdd(false));
@@ -71,24 +84,81 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
       }
     },
   });
+  const handleAddItem = () => {
+    setItems([
+      ...items,
+      {
+        purchase_order_ai: 0,
+        purchase_order_transfer_from_id: "",
+        purchase_order_qty: "",
+        purchase_order_product_owner_id: "",
+        purchase_order_product_owner_name: "",
+        id: counter,
+      },
+    ]);
+    setCounter((prev) => prev + 1);
+  };
+
+  const handleChangeItem = (index, field, fieldId, id, value) => {
+    const updated = [...items];
+
+    updated[index][fieldId] = id;
+    updated[index][field] = value;
+
+    setItems(updated);
+  };
+
+  const handleRemoveItem = (a) => {
+    setItemsDelete([
+      ...itemsDelete,
+      {
+        purchase_order_ai: isEmptyItem(a?.purchase_order_ai, 0),
+        id: a.id,
+      },
+    ]);
+
+    setItems((prev) => prev.filter((item) => item.id !== a.id));
+  };
+
+  const handleChange = (index, selectedItem = "", fieldId, field) => {
+    const updated = [...items];
+    if (selectedItem === null || selectedItem === "") {
+      updated[index]["purchase_order_transfer_from_id"] = "";
+      updated[index]["purchase_order_qty"] = "";
+      updated[index]["purchase_order_product_owner_id"] = "";
+      updated[index]["purchase_order_product_owner_name"] = "";
+      updated[index][field] = "";
+      updated[index][fieldId] = "";
+      updated[index]["allData"] = [];
+    } else {
+      updated[index]["purchase_order_transfer_from_id"] =
+        selectedItem["purchase_order_aid"];
+      updated[index]["purchase_order_qty"] = selectedItem["purchase_order_qty"];
+      updated[index]["purchase_order_product_owner_id"] =
+        selectedItem["purchase_order_product_owner_id"];
+      updated[index]["purchase_order_product_owner_name"] =
+        selectedItem["purchase_order_product_owner_name"];
+      updated[index][field] = selectedItem["name"];
+      updated[index][fieldId] = selectedItem["id"];
+      updated[index]["allData"] = selectedItem;
+    }
+    setItems(updated);
+  };
 
   const initVal = {
-    return_product_date: isEmptyItem(
-      itemEdit?.return_product_date,
+    purchase_order_date: isEmptyItem(
+      itemEdit?.purchase_order_date,
       store?.credentials?.data?.server_date,
     ),
-    return_product_reason: isEmptyItem(itemEdit?.return_product_reason, ""),
-    return_product_notes: isEmptyItem(itemEdit?.return_product_notes, ""),
-    return_product_is_restocked: isEmptyItem(
-      itemEdit?.return_product_is_restocked,
+    purchase_order_transfer_note: isEmptyItem(
+      itemEdit?.purchase_order_transfer_note,
       "",
     ),
   };
 
   const yupSchema = Yup.object({
-    return_product_date: Yup.string().trim().required("Required"),
-    return_product_reason: Yup.string().trim().required("Required"),
-    return_product_notes: Yup.string().trim().required("Required"),
+    purchase_order_date: Yup.string().trim().required("Required"),
+    purchase_order_transfer_note: Yup.string().trim().required("Required"),
   });
 
   React.useEffect(() => {
@@ -98,7 +168,7 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
   return (
     <>
       <ModalWrapper
-        val="Process Returns"
+        label="Transfer Supply"
         itemEdit={itemEdit}
         mutation={mutation}
         isOpen={true}
@@ -114,25 +184,23 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
 
               const data = {
                 ...values,
-                selectedItems: selectedItems || [],
-                return_product_is_restocked: isSelected ? "yes" : "no",
+                items: items || [],
                 ...ActivityLogDetails(
-                  "returns-products",
+                  "purchase-order-movement",
                   itemEdit ? "update" : "create",
                   store,
                   {
                     ...values,
-                    selectedItems: selectedItems || [],
-                    return_product_is_restocked: isSelected ? "yes" : "no",
+                    items: items || [],
                   },
                 ),
               };
 
-              Validations(values, selectedItems, dispatch);
+              Validations(values, items, dispatch);
 
-              if (!Validations(values, selectedItems, dispatch)) {
-                // console.log(data);
-                mutation.mutate(data);
+              if (!Validations(values, items, dispatch)) {
+                console.log(data);
+                // mutation.mutate(data);
               } else {
                 dispatch(setError(true));
               }
@@ -141,182 +209,163 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
             {(props) => {
               return (
                 <Form>
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="flex mb-7 justify-between items-end">
                     <div className="relative ">
                       <InputText
-                        label="Return Date"
+                        label="Date"
                         type="date"
-                        name="return_product_date"
+                        name="purchase_order_date"
                         disabled={mutation.isPending}
                       />
                     </div>
-
-                    <div className="relative">
-                      <InputSelect
-                        label="Return Reason"
-                        type="text"
-                        name="return_product_reason"
-                        disabled={mutation.isPending}
-                      >
-                        <option value="">Select Return Reason</option>
-                        <option value="damage">Damage</option>
-                        <option value="expired">Expired</option>
-                      </InputSelect>
-                    </div>
+                    <button
+                      type="button"
+                      className=" cursor-pointer flex items-center justify-center text-dark gap-2 px-3 py-1.5 bg-transparent rounded-md border-gray-300 border min-w-20 hover:bg-primary transition-all duration-300 ease-in-out hover:text-light dark:text-light"
+                      onClick={handleAddItem}
+                    >
+                      <Plus size={15} />
+                      <span className="capitalize leading-0">Add Item</span>
+                    </button>
                   </div>
-
-                  <div className="relative mt-3">
-                    <label htmlFor="">Linked Order *</label>
-                    <DefaultInputSelectTagArray
-                      onChange={(e) => {
-                        setSelectedItems(
-                          e.items.map((i) => ({
-                            ...i,
-                            selected: false,
-                            qty: 0,
-                            total: 0,
-                          })),
-                        );
-                      }}
-                      path={`sales-order/read-all-sales-order`}
-                      testFilterId="sales_order_product_name"
-                      store={store}
-                    />
-
-                    {/* {console.log("selectedItems", selectedItems)} */}
-
-                    {selectedItems?.length > 0 && (
-                      <div className="relative">
-                        <p className="text-xs font-medium mt-3 mb-1">
-                          Select Items to Return
-                        </p>
-                        <div className=" border border-gray-300 rounded-xl p-4 bg-gray-50 dark:bg-dark-mode">
-                          {selectedItems.map((item, index) => (
-                            <div
-                              key={item.id}
-                              className="flex items-center justify-between mb-2"
-                            >
-                              {/* Toggle */}
-                              <div className="flex items-center gap-3">
-                                {/* Toggle Switch */}
-                                <button
-                                  type="button"
-                                  onClick={() => {
-                                    const updated = [...selectedItems];
-                                    updated[index].selected =
-                                      !updated[index].selected;
-                                    setSelectedItems(updated);
-                                  }}
-                                  className={`w-11 h-5.5 flex items-center rounded-full p-1 transition-colors duration-300 ${
-                                    item.selected
-                                      ? "bg-green-600"
-                                      : "bg-gray-300"
-                                  }`}
-                                >
-                                  <div
-                                    className={`w-4 h-4 bg-white rounded-full shadow transform transition-transform duration-300 ${
-                                      item.selected
-                                        ? "translate-x-5"
-                                        : "translate-x-0"
-                                    }`}
-                                  ></div>
-                                </button>
-
-                                <span className="flex items-center text-sm">
-                                  {item.sales_order_product_name} (
-                                  <PhilippinePeso className={`size-3 mr-px`} />
-                                  {numberWithCommasToFixed(
-                                    item.sales_order_price,
-                                    4,
-                                  )}
-                                  )
-                                </span>
-                              </div>
-
-                              {/* Ordered + Qty */}
-                              <div className="flex items-center gap-3">
-                                <span className="text-sm text-gray-500 dark:text-light">
-                                  Ordered: {item.sales_order_qty}
-                                </span>
-
-                                {item.selected && (
-                                  <div className="flex gap-1 ">
-                                    <input
-                                      type="number"
-                                      min={0}
-                                      max={item.ordered}
-                                      value={item.qty}
-                                      onChange={(e) => {
-                                        const updated = [...selectedItems];
-                                        updated[index].qty = e.target.value;
-                                        updated[index].total =
-                                          Number(
-                                            updated[index]?.sales_order_price,
-                                          ) * Number(updated[index]?.qty);
-                                        setSelectedItems(updated);
-                                      }}
-                                      className="w-16 h-7 border rounded px-2 py-1 text-sm mt-0"
-                                      placeholder="pcs"
-                                    />
-                                    {/* <p className="content-end mb-0">.pcs</p> */}
-                                  </div>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
+                  <div className="border shadow border-gray-300 rounded-lg dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out ">
+                    {items.length === 0 ? (
+                      <div className="h-20 flex items-center justify-center ">
+                        <p>No Items added yet.</p>
                       </div>
+                    ) : (
+                      <>
+                        <div className="relative overflow-auto w-full h-full min-h-80 dark:bg-gray-900! ">
+                          <table className="shadow-none! ">
+                            <thead
+                              className={`relative z-50 table-header-group`}
+                            >
+                              <tr className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0! ">
+                                <th className="w-px dark:bg-gray-900! bg-gray-100!">
+                                  #
+                                </th>
+                                <th
+                                  className={`min-w-40  dark:bg-gray-900! bg-gray-100!`}
+                                >
+                                  Items
+                                </th>
+                                <th
+                                  className={`min-w-40  dark:bg-gray-900! bg-gray-100!`}
+                                >
+                                  Product owner
+                                </th>
+                                <th
+                                  className={` dark:bg-gray-900! bg-gray-100!`}
+                                >
+                                  Quantity
+                                </th>
+                                <th
+                                  className={`min-w-30! dark:bg-gray-900! bg-gray-100! text-right`}
+                                >
+                                  Tranfer qty
+                                </th>
+                                <th
+                                  className={` dark:bg-gray-900! bg-gray-100! `}
+                                ></th>
+                              </tr>
+                            </thead>
+                            <tbody className="">
+                              {items.map((a, index) => {
+                                return (
+                                  <tr key={a?.id} className="border-0!">
+                                    <td className="text-center dark:bg-gray-900! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
+                                      {index + 1}.
+                                    </td>
+                                    {Number(
+                                      isEmptyItem(a?.purchase_order_ai, 0),
+                                    ) !== 0 ? (
+                                      <td className=" dark:bg-gray-900! ">
+                                        {a?.purchase_order_product_name} (
+                                        {a?.purchase_order_qty} qty)
+                                      </td>
+                                    ) : (
+                                      <td className=" dark:bg-gray-900! ">
+                                        <InputSalesOrderSelectTagArray
+                                          onChange={(e, selectedItem) => {
+                                            handleChange(
+                                              index,
+                                              selectedItem,
+                                              "purchase_order_product_id",
+                                              "purchase_order_product_name",
+                                            );
+                                          }}
+                                          dataVal={items}
+                                          item={a}
+                                          path={`purchase-order-movement/read-all-active-data`}
+                                          testFilterId="purchase_order_product_name"
+                                          store={store}
+                                          className={" "}
+                                        />
+                                      </td>
+                                    )}
+                                    <td className=" dark:bg-gray-900! ">
+                                      <DefaultInputSelectTagArray
+                                        onChange={(e) => {
+                                          handleChangeItem(
+                                            index,
+                                            "purchase_order_product_owner_id",
+                                            "purchase_order_product_owner_name",
+                                            e.id,
+                                            e.value,
+                                          );
+                                        }}
+                                        dataVal={items}
+                                        item={a}
+                                        path={`product-owner/read-by-product-owner`}
+                                        testFilterId="sales_order_product_name"
+                                        store={store}
+                                      />
+                                    </td>
+                                    <td className=" dark:bg-gray-900! ">
+                                      {a?.purchase_order_qty}
+                                    </td>
+                                    <td className=" dark:bg-gray-900! ">
+                                      <input
+                                        onChange={(e) => {
+                                          handleChangeItem(
+                                            index,
+                                            "current_order_qty",
+                                            "current_order_qty",
+                                            e.target.value,
+                                            e.target.value,
+                                          );
+                                        }}
+                                        className="mt-0 bg-white  dark:bg-gray-900!"
+                                        type="number"
+                                        placeholder="Qty"
+                                      />
+                                    </td>
+                                    <td className=" dark:bg-gray-900! ">
+                                      <button
+                                        onClick={() => handleRemoveItem(a)}
+                                        className="text-red-500 text-xl"
+                                        type="button"
+                                      >
+                                        ✕
+                                      </button>
+                                    </td>
+                                  </tr>
+                                );
+                              })}
+                            </tbody>
+                          </table>
+                        </div>
+                      </>
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4 mt-3">
-                    <div className=" "></div>
-                    <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end my-5 p-2">
-                      <p className="flex flex-col place-self-end text-primary text-lg text-right">
-                        <span className="text-black dark:text-light text-sm">
-                          Return Amount
-                        </span>
-                        <AmountWithPesoSign
-                          classN="size-5"
-                          amount={selectedItems?.reduce(
-                            (sum, item) =>
-                              Number(sum) +
-                              Number(item.qty || 0) *
-                                Number(item.sales_order_price || 0),
-                            0,
-                          )}
-                        />
-                      </p>
-                    </div>
-                  </div>
-
-                  <div className="relative">
+                  <div className="relative mt-5">
                     <InputTextArea
                       label="Note"
                       type="text"
-                      name="return_product_notes"
+                      name="purchase_order_transfer_note"
                       placeholder={`${itemEdit ? "Update notes" : "Enter notes"}`}
                       disabled={mutation.isPending}
                     />
-                  </div>
-
-                  <div className="flex items-center gap-2 mt-3">
-                    <button
-                      type="button"
-                      onClick={() => setIsSelected((prev) => !prev)}
-                      className={`w-11 h-6 flex items-center rounded-full p-1 transition-colors duration-300 ${
-                        isSelected ? "bg-green-600" : "bg-gray-300"
-                      }`}
-                    >
-                      <div
-                        className={`w-4 h-4 bg-white rounded-full shadow transform transition-transform duration-300 ${
-                          isSelected ? "translate-x-5" : "translate-x-0"
-                        }`}
-                      />
-                    </button>
-                    <span className="text-black text-sm dark:text-light">
-                      Restock returned items
-                    </span>
                   </div>
 
                   {store.error && <MessageError />}

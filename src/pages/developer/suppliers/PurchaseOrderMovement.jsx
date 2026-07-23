@@ -18,60 +18,46 @@ const PurchaseOrderMovement = () => {
     {
       accessorKey: "is_status",
       header: "status",
-      classTh: "w-[5rem]",
-      classTd: "w-[10rem]",
+      classTh: "min-w-[8rem]",
+      classTd: "min-w-[8rem]",
+      status_option: ActiveInActiveStatus("purchase-movement-status"),
       filterFn: "equals",
       meta: {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus
             column={column}
-            options={ActiveInActiveStatus("return-status")}
-            testFilterStatusId={"return-status"}
+            options={ActiveInActiveStatus("purchase-movement-status")}
           />
         ),
       },
-      status_option: ActiveInActiveStatus("return-status"),
     },
     {
-      accessorKey: "return_product_number",
-      header: "return #",
-      classTh: "min-w-[6rem] ",
+      accessorKey: "purchase_order_number",
+      header: "PO Number",
+      orderNumber: "1",
+      classTh: "min-w-[7rem] ",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "return_product_date",
-      header: "date",
-      classTh: "",
+      accessorKey: "purchase_order_supplier_name",
+      header: "Supplier",
+      classTh: "min-w-[10rem] ",
       classTd: "",
-      filterFn: "date",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="suppliers"
+            testFilterId={"filter-supplier"}
+          />
+        ),
+      },
     },
     {
-      accessorKey: "return_product_order_number",
-      header: "order #",
-      classTh: "min-w-[6rem] ",
-      classTd: "",
-      meta: "",
-    },
-    {
-      accessorKey: "return_product_customer_name",
-      header: "customer",
-      classTh: "",
-      classTd: "",
-      meta: "",
-    },
-    {
-      accessorKey: "return_product_product_name",
-      header: "Product",
-      classTh: "",
-      classTd: "",
-      meta: "",
-    },
-    {
-      accessorKey: "return_product_owner_name",
+      accessorKey: "purchase_order_product_owner_name",
       header: "Product Owner",
-      classTh: "min-w-40 ",
+      classTh: "min-w-[10rem]",
       classTd: "",
       meta: {
         filterComponent: (column) => (
@@ -84,25 +70,44 @@ const PurchaseOrderMovement = () => {
       },
     },
     {
-      accessorKey: "return_product_amount",
-      header: "amount",
-      amount: true,
-      classTh: "",
+      accessorKey: "purchase_order_qty",
+      header: "quantity",
+      filterFn: "between",
+      classTh: "w-[10rem] min-w-[10rem] ",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "return_product_reason",
-      header: "reason",
-      classTh: "",
-      classTd: "capitalize",
+      accessorKey: "purchase_order_before_qty",
+      header: "before",
+      filterFn: "between",
+      classTh: "w-[10rem] min-w-[10rem] ",
+      classTd: "",
       meta: "",
     },
     {
-      accessorKey: "return_product_is_restocked",
-      header: "restocked",
-      classTh: "",
-      classTd: "uppercase ",
+      accessorKey: "purchase_order_after_qty",
+      header: "after",
+      filterFn: "between",
+      classTh: "w-[10rem] min-w-[10rem] ",
+      classTd: "",
+      meta: "",
+    },
+    {
+      accessorKey: "formated_date",
+      header: "Order date",
+      orderNumber: "2",
+      classTh: "min-w-[7rem] ",
+      classTd: "",
+      filterFn: "date",
+      meta: "",
+    },
+    {
+      accessorKey: "formated_delivery_date",
+      header: "expected delivery",
+      classTh: "min-w-[10rem] ",
+      classTd: "",
+      filterFn: "date",
       meta: "",
     },
   ];
@@ -112,7 +117,8 @@ const PurchaseOrderMovement = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="purchase-movement-history"
+          path="purchase-order-movement"
+          addLabel={"Transfer supply"}
           haveFilterTable={true}
           setItemEdit={setItemEdit}
         />

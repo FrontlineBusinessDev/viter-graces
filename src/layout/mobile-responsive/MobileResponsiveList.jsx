@@ -3,8 +3,10 @@ import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
 import MovementMobileResponsive from "./MovementMobileResponsive";
 import ProductOwnerMobileReponsive from "./ProductOwnerMobileReponsive";
 import ProductsMobileResponsive from "./ProductsMobileResponsive";
+import PurchaseMovementMobileReponsive from "./PurchaseMovementMobileReponsive";
 import PurchaseOrderMobileReponsive from "./PurchaseOrderMobileReponsive";
 import ReportOverdueMobileResponsive from "./ReportOverdueMobileResponsive";
+import ReturnsMobileReponsive from "./ReturnsMobileReponsive";
 import RoleMobileReponsive from "./RoleMobileReponsive";
 import SalesOrderMobileResponsive from "./SalesOrderMobileResponsive";
 import SalesReportMobileResponsive from "./SalesReportMobileResponsive";
@@ -72,6 +74,14 @@ const MobileResponsiveList = ({
         setData={setData}
         isDefaultMobile={isDefaultMobile}
       />
+      {/* SALES ORDER RESPONSIVE */}
+      <ReturnsMobileReponsive
+        rows={rows}
+        setItemEdit={setItemEdit}
+        setItemVal={setItemVal}
+        setData={setData}
+        isDefaultMobile={isDefaultMobile}
+      />
       {/* SUPPLIER RESPONSIVE */}
       <SupplierMobileReponsive
         rows={rows}
@@ -82,6 +92,15 @@ const MobileResponsiveList = ({
       />
       {/* PURCHASE ORDER RESPONSIVE */}
       <PurchaseOrderMobileReponsive
+        rows={rows}
+        setData={setData}
+        setItemEdit={setItemEdit}
+        lastRowRef={lastRowRef}
+        isDefaultMobile={isDefaultMobile}
+        ishaveSubAdd={ishaveSubAdd}
+      />
+      {/* PURCHASE ORDER RESPONSIVE */}
+      <PurchaseMovementMobileReponsive
         rows={rows}
         setData={setData}
         setItemEdit={setItemEdit}

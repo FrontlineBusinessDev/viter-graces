@@ -32,6 +32,7 @@ const InfiniteTable = ({
   columns,
   className,
   path = "",
+  addLabel = path?.replaceAll("-", " "),
   setItemEdit = () => {},
   setSearchValue = () => {},
   setFilterColumns = () => {},
@@ -232,7 +233,7 @@ const InfiniteTable = ({
         {ishaveAdd && (
           <div className="flex justify-end sm:mb-0! mb-3 md:w-1/2 ">
             <AddButton
-              value={path?.replaceAll("-", " ")}
+              value={addLabel}
               onClick={handleAdd}
               testId={dataTestidAddButton}
             />
@@ -241,7 +242,7 @@ const InfiniteTable = ({
         {ishaveSubAdd && (
           <div className="flex justify-end sm:mb-0! mb-3  ">
             <AddButton
-              value={path?.replaceAll("-", " ")}
+              value={addLabel}
               onClick={handleSubAdd}
               testId={dataTestidAddButton}
             />

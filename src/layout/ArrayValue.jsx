@@ -155,6 +155,16 @@ export const ActiveInActiveStatus = (val = "default-status") => {
       label: "processed",
       value: "processed",
     },
+    {
+      name: ["purchase-movement-status"],
+      label: "STOCK IN",
+      value: "stock in",
+    },
+    {
+      name: ["purchase-movement-status"],
+      label: "TRANSFERRED",
+      value: "transferred",
+    },
   ];
 
   return result.filter((item) => item.name.includes(val));
@@ -212,7 +222,9 @@ export const variantsStatus = (val = "active") => {
     // stock-overview
     out_of_stock: "bg-gray-100 text-gray-500",
     in_stock: "bg-success/20 text-success",
+    stock_in: "bg-success/20 text-success",
     low_stock: "bg-warning/10 text-warning",
+    transferred: "bg-blue-300 text-blue-700",
     // payment-status
     unpaid: "bg-gray-300 text-gray-700",
     paid: "bg-success/20 text-success",
