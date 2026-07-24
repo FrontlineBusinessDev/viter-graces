@@ -1,11 +1,8 @@
 import HeaderNav from "@/layout/headers/HeaderNav";
-import React from "react";
-import ReportsStats from "../ReportsStats";
 
 const ProfitAddLoss = () => {
   return (
     <HeaderNav menu={"reports"} activeTab="profit-&-loss">
-      <ReportsStats />
       <div className="max-w-2xl my-4 place-self-center text-sm ">
         <div className="grid grid-cols-3 gap-3">
           <div>

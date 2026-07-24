@@ -199,7 +199,7 @@
     @apply capitalize;
   }
   textarea {
-    @apply border border-solid border-gray-300 p-2 rounded-lg w-full truncate bg-transparent outline-none dark:bg-dark-mode mt-1 h-28;
+    @apply border border-solid border-gray-300 p-2 rounded-lg w-full bg-transparent outline-none dark:bg-dark-mode mt-1 h-28;
   }
   label.label_login {
     @apply flex justify-center transform -translate-y-6 -translate-x-1 absolute left-3 top-[35px] px-1 z-10 isolate;

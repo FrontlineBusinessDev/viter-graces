@@ -3,12 +3,42 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ReportsStats from "../ReportsStats";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
+import {
+  SearchableSelectFilter,
+  SearchableSelectFilterStatus,
+} from "@/components/inputs/InputSelect";
+import { Amount } from "@/components/PesoSign";
 
 const ExpensesReport = () => {
   const { store, dispatch } = React.useContext(StoreContext);
 
   // Columns
   const columns = [
+    {
+      accessorKey: "payment_status",
+      header: "payment status",
+      classTh: "min-w-[9rem]",
+      classTd: "min-w-[9rem]",
+      status_option: ActiveInActiveStatus("purchase-order-payment-status"),
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={ActiveInActiveStatus("purchase-order-payment-status")}
+          />
+        ),
+      },
+    },
+    {
+      accessorKey: "purchase_order_number",
+      header: "PO Number",
+      orderNumber: "1",
+      classTh: "min-w-[5rem] ",
+      classTd: "",
+      meta: "",
+    },
     {
       accessorKey: "purchase_order_date",
       header: "Order Date",
@@ -20,37 +50,40 @@ const ExpensesReport = () => {
     {
       accessorKey: "purchase_order_product_name",
       header: "Product",
-      classTh: "w-[8rem]",
+      classTh: "w-[10rem]",
       classTd: "",
       meta: "",
     },
     {
       accessorKey: "purchase_order_note",
       header: "Description",
-      classTh: "",
-      classTd: "",
+      classTh: "w-[20rem]",
+      classTd: "truncate block! w-[20rem]",
       meta: "",
     },
     {
       accessorKey: "amount",
       header: "Amount",
+      amount: true,
       classTh: "",
       classTd: "",
+      filterFn: "between",
       meta: "",
     },
     {
-      accessorKey: "method",
-      header: "Method",
-      classTh: "",
-      classTd: "",
-      meta: "",
-    },
-    {
-      accessorKey: "product_owner",
+      accessorKey: "purchase_order_product_owner_name",
       header: "Product Owner",
-      classTh: "",
+      classTh: "min-w-[10rem]",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="product-owner/read-by-product-owner"
+            testFilterId={"filter-owner"}
+          />
+        ),
+      },
     },
   ];
 

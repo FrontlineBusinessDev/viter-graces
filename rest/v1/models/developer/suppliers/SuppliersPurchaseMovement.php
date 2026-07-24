@@ -34,6 +34,8 @@ class SuppliersPurchaseMovement
     public $purchase_order_transact_name;
     public $purchase_order_transfer_note;
     public $purchase_order_transfer_from_id;
+    public $purchase_order_total_amount_per_product;
+    public $purchase_order_percent_tax;
 
     public $date_yesterday;
     public $date_today;
@@ -90,6 +92,8 @@ class SuppliersPurchaseMovement
             $sql .= "purchase_order_transact_name, ";
             $sql .= "purchase_order_transfer_note, ";
             $sql .= "purchase_order_transfer_from_id, ";
+            $sql .= "purchase_order_total_amount_per_product, ";
+            $sql .= "purchase_order_percent_tax, ";
             $sql .= "purchase_order_created, ";
             $sql .= "purchase_order_updated ) values ( ";
             $sql .= ":purchase_order_number, ";
@@ -121,6 +125,8 @@ class SuppliersPurchaseMovement
             $sql .= ":purchase_order_transact_name, ";
             $sql .= ":purchase_order_transfer_note, ";
             $sql .= ":purchase_order_transfer_from_id, ";
+            $sql .= ":purchase_order_total_amount_per_product, ";
+            $sql .= ":purchase_order_percent_tax, ";
             $sql .= ":purchase_order_created, ";
             $sql .= ":purchase_order_updated ) ";
             $query = $this->connection->prepare($sql);
@@ -154,6 +160,8 @@ class SuppliersPurchaseMovement
                 "purchase_order_transact_name" => $this->purchase_order_transact_name,
                 "purchase_order_transfer_note" => $this->purchase_order_transfer_note,
                 "purchase_order_transfer_from_id" => $this->purchase_order_transfer_from_id,
+                "purchase_order_total_amount_per_product" => $this->purchase_order_total_amount_per_product,
+                "purchase_order_percent_tax" => $this->purchase_order_percent_tax,
                 "purchase_order_created" => $this->purchase_order_created,
                 "purchase_order_updated" => $this->purchase_order_updated,
             ]);
@@ -372,6 +380,8 @@ class SuppliersPurchaseMovement
             $sql .= "purchase_order_qty = :purchase_order_qty, ";
             $sql .= "purchase_order_before_qty = :purchase_order_before_qty, ";
             $sql .= "purchase_order_after_qty = :purchase_order_after_qty, ";
+            $sql .= "purchase_order_total_amount_per_product = :purchase_order_total_amount_per_product, ";
+            $sql .= "purchase_order_total_amount = :purchase_order_total_amount, ";
             $sql .= "purchase_order_updated = :purchase_order_updated ";
             $sql .= "where purchase_order_aid = :purchase_order_aid ";
             $query = $this->connection->prepare($sql);
@@ -379,6 +389,8 @@ class SuppliersPurchaseMovement
                 "purchase_order_qty" => $this->purchase_order_qty,
                 "purchase_order_before_qty" => $this->purchase_order_before_qty,
                 "purchase_order_after_qty" => $this->purchase_order_after_qty,
+                "purchase_order_total_amount_per_product" => $this->purchase_order_total_amount_per_product,
+                "purchase_order_total_amount" => $this->purchase_order_total_amount,
                 "purchase_order_updated" => $this->purchase_order_updated,
                 "purchase_order_aid" => $this->purchase_order_aid,
             ]);

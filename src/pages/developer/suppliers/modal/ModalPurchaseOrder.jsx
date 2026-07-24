@@ -3,14 +3,13 @@ import {
   DefaultInputSelectTagArray,
   InputSelectArrayWithOptions,
   InputSelectFilterTagArray,
-  InputSelectTagArray,
 } from "@/components/inputs/InputSelect";
 import { InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
-import { AmountsWithPesoSign, AmountWithPesoSign } from "@/components/PesoSign";
+import { Amount, AmountWithPesoSign } from "@/components/PesoSign";
 import { apiVersion } from "@/config/config";
-import { ActivityLogDetails } from "@/layout/ArrayValue";
+import { ActivityLogDetails, taxOption } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
 import {
@@ -27,6 +26,7 @@ import { Form, Formik } from "formik";
 import { Plus } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
+import { PropsValues } from "./functions";
 
 const ModalPurchaseOrder = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -49,6 +49,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
           },
         ],
   );
+
   const [itemsDelete, setItemsDelete] = React.useState([]);
 
   const [counter, setCounter] = React.useState(1);
@@ -182,6 +183,8 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     },
   });
 
+  console.log("items", items);
+
   const initVal = {
     purchase_order_aid: isEmptyItem(itemEdit?.purchase_order_aid, ""),
     purchase_order_number: isEmptyItem(itemEdit?.purchase_order_number, ""),
@@ -215,6 +218,8 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     ),
     purchase_order_payment: isEmptyItem(itemEdit?.purchase_order_payment, "0"),
     total_amount: 0,
+    total_sub_amount: 0,
+    total_amount_without_discount_and_vat: 0,
     purchase_order_status: isEmptyItem(
       itemEdit?.purchase_order_status,
       "draft",
@@ -227,6 +232,10 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     suppliers_delivery: isEmptyItem(itemEdit?.suppliers_delivery, "monday"),
 
     purchase_order_number_old: isEmptyItem(itemEdit?.purchase_order_number, ""),
+    purchase_order_percent_tax: isEmptyItem(
+      itemEdit?.purchase_order_percent_tax,
+      "",
+    ),
   };
 
   const yupSchema = Yup.object({
@@ -313,33 +322,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
             }}
           >
             {(props) => {
-              if (props.values.purchase_order_payment_status === "paid") {
-                props.values.purchase_order_payment =
-                  items.reduce(
-                    (sum, item) =>
-                      sum +
-                      Number(item.purchase_order_qty || 0) *
-                        Number(item.purchase_order_price || 0),
-                    0,
-                  ) +
-                  Number(props.values.purchase_order_tax) -
-                  Number(props.values.purchase_order_discount);
-              }
-              props.values.total_amount =
-                items.reduce(
-                  (sum, item) =>
-                    sum +
-                    Number(item.purchase_order_qty || 0) *
-                      Number(item.purchase_order_price || 0),
-                  0,
-                ) +
-                Number(props.values.purchase_order_tax) -
-                Number(props.values.purchase_order_discount);
-              props.values.purchase_order_balance =
-                Number(props.values.purchase_order_payment) <= 0
-                  ? Number(props.values.total_amount)
-                  : Number(props.values.purchase_order_payment) -
-                    Number(props.values.total_amount);
+              PropsValues(props, items);
 
               return (
                 <Form>
@@ -436,15 +419,15 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                           <tbody className=" ">
                             {items.map((a, index) => {
                               return (
-                                <tr key={a?.id} className="border-0!">
+                                <tr key={index} className="border-0!">
                                   <td className="text-center dark:bg-gray-900! bg-gray-100! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
                                     {index + 1}.
                                   </td>
-
-                                  {Number(isEmptyItem(itemEdit?.id, 0)) !==
-                                  0 ? (
+                                  {Number(
+                                    isEmptyItem(a?.purchase_order_aid, 0),
+                                  ) !== 0 ? (
                                     <td className=" bg-gray-100! dark:bg-gray-900!">
-                                      {itemEdit?.purchase_order_product_name}
+                                      {a?.purchase_order_product_name}
                                     </td>
                                   ) : (
                                     <td className=" bg-gray-100! dark:bg-gray-900! ">
@@ -479,8 +462,22 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                       dataVal={items}
                                       item={a}
                                       path={`product-owner/read-by-product-owner`}
-                                      testFilterId="sales_order_product_name"
+                                      testFilterId="purchase_order_product_owner_name"
                                       store={store}
+                                      defaultValue={
+                                        Number(
+                                          isEmptyItem(a?.purchase_order_aid, 0),
+                                        ) !== 0
+                                          ? [
+                                              {
+                                                id: a.purchase_order_product_owner_id,
+                                                value:
+                                                  a.purchase_order_product_owner_name,
+                                                label: `${a.purchase_order_product_owner_name}`,
+                                              },
+                                            ]
+                                          : ""
+                                      }
                                     />
                                   </td>
                                   <td className=" bg-gray-100! dark:bg-gray-900! ">
@@ -522,25 +519,40 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                   </td>
                                   <td className=" bg-gray-100! dark:bg-gray-900! ">
                                     {itemEdit ? (
-                                      <button
-                                        onClick={() =>
-                                          handleDeliveryStatus(
-                                            index,
-                                            "purchase_order_delivery_is_status",
-                                            !a.purchase_order_delivery_is_status,
-                                          )
-                                        }
-                                        className={`text-white ${!a.purchase_order_delivery_is_status ? " bg-gray-500 " : "bg-green-800 "} rounded-sm p-1 text-[10px] mr-3`}
-                                        type="button"
-                                      >
-                                        {!a.purchase_order_delivery_is_status
-                                          ? "Not Delivered"
-                                          : "Delivered"}
-                                      </button>
+                                      <>
+                                        <button
+                                          onClick={() =>
+                                            handleDeliveryStatus(
+                                              index,
+                                              "purchase_order_delivery_is_status",
+                                              !a.purchase_order_delivery_is_status,
+                                            )
+                                          }
+                                          className={`text-white ${!a.purchase_order_delivery_is_status ? " bg-gray-500 " : "bg-green-800 "} rounded-sm p-1 text-[10px] mr-3`}
+                                          type="button"
+                                        >
+                                          {!a.purchase_order_delivery_is_status
+                                            ? "Not Delivered"
+                                            : "Delivered"}
+                                        </button>
+                                        {Number(
+                                          isEmptyItem(a?.purchase_order_aid, 0),
+                                        ) === 0 ? (
+                                          <button
+                                            onClick={() => handleRemoveItem(a)}
+                                            className="text-red-500 text-xl "
+                                            type="button"
+                                          >
+                                            ✕
+                                          </button>
+                                        ) : (
+                                          ""
+                                        )}
+                                      </>
                                     ) : (
                                       <button
                                         onClick={() => handleRemoveItem(a)}
-                                        className="text-red-500 text-xl"
+                                        className="text-red-500 text-xl "
                                         type="button"
                                       >
                                         ✕
@@ -590,14 +602,18 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                       />
                     </div>
                   </div>
-                  <div className="grid grid-cols-2 items items-center gap-2">
-                    <div className="relative mt-3">
-                      <InputText
-                        label="VAT Amount"
-                        type="number"
-                        name="purchase_order_tax"
-                        // placeholder="0"
-                        disabled={mutation.isPending}
+                  <div className="grid grid-cols-3 items items-center gap-2">
+                    <div className="relative mt-3 ">
+                      <InputSelectArrayWithOptions
+                        label="VAT"
+                        type="purchase_order_percent_tax"
+                        name="purchase_order_percent_tax"
+                        defaultValue="--"
+                        options={taxOption()}
+                        onChange={(e) => {
+                          props.values.purchase_order_percent_tax = e.target.id;
+                          return e;
+                        }}
                         required={false}
                       />
                     </div>
@@ -611,28 +627,16 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         required={false}
                       />
                     </div>
-                  </div>
-                  <div className="grid grid-cols-2 items items-center gap-2">
                     {props.values.purchase_order_payment_status === "paid" ? (
-                      <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end my-5 p-2">
-                        <p className="flex flex-col place-self-end text-primary text-lg text-right">
+                      <div className="w-full place-self-end my-5 p-2">
+                        <p className="flex flex-col place-self-end text-primary mb-0 text-lg text-right">
                           <span className="text-black dark:text-light text-sm">
                             Amount Paid
                           </span>
 
                           <AmountWithPesoSign
                             classN="size-5"
-                            amount={
-                              items.reduce(
-                                (sum, item) =>
-                                  sum +
-                                  Number(item.purchase_order_qty || 0) *
-                                    Number(item.purchase_order_price || 0),
-                                0,
-                              ) +
-                              Number(props.values.purchase_order_tax) -
-                              Number(props.values.purchase_order_discount)
-                            }
+                            amount={Number(props.values.total_amount)}
                           />
                         </p>
                       </div>
@@ -647,7 +651,39 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         />
                       </div>
                     )}
-                    <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end my-5 p-2">
+                  </div>
+
+                  <div className="grid grid-cols-2 items-end gap-2 mt-3">
+                    <ul className="grid grid-cols-2  text-xs!">
+                      <li className="text-right text-black dark:text-light">
+                        Sub Amount:
+                      </li>
+                      <li className="place-self-end text-right">
+                        <Amount
+                          classAmnt="text-xs! "
+                          amount={Number(props.values.total_sub_amount)}
+                        />
+                      </li>
+                      <li className="text-right text-black dark:text-light ">
+                        Discount Amount:
+                      </li>
+                      <li className="place-self-end text-right">
+                        <Amount
+                          classAmnt="text-xs! "
+                          amount={Number(props.values.purchase_order_discount)}
+                        />
+                      </li>
+                      <li className="text-right text-black dark:text-light ">
+                        VAT Amount:
+                      </li>
+                      <li className="place-self-end text-right">
+                        <Amount
+                          classAmnt="text-xs! "
+                          amount={Number(props.values.purchase_order_tax)}
+                        />
+                      </li>
+                    </ul>
+                    <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end p-2">
                       <p className="flex flex-col place-self-end text-primary text-lg text-right">
                         <span className="text-black dark:text-light text-sm">
                           Total Amount
@@ -655,17 +691,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
 
                         <AmountWithPesoSign
                           classN="size-5"
-                          amount={
-                            items.reduce(
-                              (sum, item) =>
-                                sum +
-                                Number(item.purchase_order_qty || 0) *
-                                  Number(item.purchase_order_price || 0),
-                              0,
-                            ) +
-                            Number(props.values.purchase_order_tax) -
-                            Number(props.values.purchase_order_discount)
-                          }
+                          amount={Number(props.values.total_amount)}
                         />
                       </p>
                     </div>

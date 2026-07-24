@@ -31,7 +31,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $querySetExpenses = getResultData($queryExpenses);
 
     if (count($dataSet) > 0) {
-        $totalExpenses = array_sum(array_column($querySetExpenses, 'purchase_order_price'));
+        $totalExpenses = array_sum(array_column($querySetExpenses, 'purchase_order_total_amount_per_product'));
         $totalReceivable = array_sum(array_column($dataSet, 'sales_order_discounted_with_vat_amount'));
 
         $totalQty = array_sum(array_column($dataSet, 'qty'));

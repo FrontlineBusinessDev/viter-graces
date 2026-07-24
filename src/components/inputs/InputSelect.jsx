@@ -708,6 +708,7 @@ export const DefaultInputSelectTagArray = ({
   required = true,
   testFilterId = "",
   store,
+  defaultValue = [],
 }) => {
   const userId = ProductOwnerId(store);
   const { data: result } = useQueryData(
@@ -725,14 +726,13 @@ export const DefaultInputSelectTagArray = ({
       userId: userId,
     },
   );
-  const [selected, setSelected] = React.useState("");
+  const [selected, setSelected] = React.useState(defaultValue);
 
   const newDataList = result?.data?.filter((item) => {
     return !dataVal?.find((listItem) => {
       return item.id === Number(listItem.purchase_order_product_id);
     });
   });
-
   const options =
     newDataList?.map((item) => ({
       ...item,
