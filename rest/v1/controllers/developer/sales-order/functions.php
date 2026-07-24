@@ -298,3 +298,31 @@ function installmentDetails($val, $installmentItems)
 
     return;
 }
+
+
+
+
+// Read WEEKLY
+function checkReadSalesPerWeek($object)
+{
+    $query = $object->readSalesPerWeek();
+    checkQuery($query, "Empty records. (read sales per week)");
+    return $query;
+}
+
+
+// Read MONTHLY
+function checkReadSalesPerMonth($object)
+{
+    $query = $object->readSalesPerMonth();
+    checkQuery($query, "Empty records. (read sales per month)");
+    return $query;
+}
+
+// Read YEARLY
+function checkReadSalesPerYear($object)
+{
+    $query = $object->readSalesPerYear();
+    checkQuery($query, "Empty records. (read sales per year)");
+    return $query;
+}

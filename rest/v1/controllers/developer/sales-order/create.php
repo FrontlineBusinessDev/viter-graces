@@ -71,6 +71,12 @@ for ($i = 0; $i < count($ordersItems); $i++) {
         $discountPerItems = (float)$percentDiscount * (float)$val->sales_order_discount;
     }
 
+    // $val->sales_order_balance_per_product = 0;
+
+    // if ((float)$val->sales_order_total_balance_amount != 0) {
+    //     $val->sales_order_balance_per_product = 0;
+    // }
+
     $discountedAmountPerItem = (float)$val->sales_order_total - (float)$discountPerItems;
     $totalVatPerItems = 0;
 

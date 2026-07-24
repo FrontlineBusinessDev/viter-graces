@@ -1,6 +1,6 @@
 import GraphTooltip from "@/components/GraphTooltip";
 import useDarkMode from "@/custom-hooks/useDarkMode";
-import React from "react";
+import React, { useMemo } from "react";
 import {
   Area,
   AreaChart,
@@ -11,45 +11,28 @@ import {
 } from "recharts";
 import WarningNoteForComingSoon from "../WarningNoteForComingSoon";
 import { StoreContext } from "@/store/StoreContext";
+import { apiVersion } from "@/config/config";
+import useQueryData from "@/services/useQueryData";
 const DashboardSalesOverview = () => {
   const { store } = React.useContext(StoreContext);
   const userRole = store.credentials?.data?.role;
-  const [timeframe, setTimeframe] = React.useState("Weekly");
+  const [timeframe, setTimeframe] = React.useState("weekly");
   const { darkMode, toggleDarkMode } = useDarkMode();
 
-  const salesData = {
-    Weekly: [
-      { label: "Mon", value: 2700 },
-      { label: "Tue", value: 3400 },
-      { label: "Wed", value: 900 },
-      { label: "Thu", value: 1800 },
-      { label: "Fri", value: 2900 },
-      { label: "Sat", value: 2300 },
-      { label: "Sun", value: 2600 },
-    ],
-    Monthly: [
-      { label: "Jan", value: 50000 },
-      { label: "Feb", value: 42000 },
-      { label: "Mar", value: 61000 },
-      { label: "Apr", value: 58000 },
-      { label: "May", value: 72000 },
-      { label: "Jun", value: 69000 },
-      { label: "Jul", value: 75000 },
-      { label: "Aug", value: 80000 },
-      { label: "Sep", value: 77000 },
-      { label: "Oct", value: 82000 },
-      { label: "Nov", value: 90000 },
-      { label: "Dec", value: 95000 },
-    ],
-    Yearly: [
-      { label: "2020", value: 50000 },
-      { label: "2021", value: 42000 },
-      { label: "2022", value: 61000 },
-      { label: "2023", value: 58000 },
-      { label: "2024", value: 72000 },
-      { label: "2025", value: 69000 },
-    ],
-  };
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data: result,
+  } = useQueryData(
+    `${apiVersion}/sales-order/sales-overview-graph-value`, // endpoint
+    "post", // method
+  );
+
+  const salesData = useMemo(() => {
+    if (!result?.count) return [];
+    return result?.data[0];
+  }, [result]);
 
   const currentData = salesData[timeframe];
 
@@ -57,7 +40,7 @@ const DashboardSalesOverview = () => {
     <>
       <div className="relative group">
         <div
-          className="bg-white grayscale! dark:bg-gray-900 p-4 rounded-lg shadow group"
+          className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow group"
           data-testid="sales-overview"
         >
           <div className="flex justify-between items-center mb-4">
@@ -65,12 +48,12 @@ const DashboardSalesOverview = () => {
               Sales Overview
             </h2>
             <div className="flex gap-2">
-              {["Weekly", "Monthly", "Yearly"].map((frame) => (
+              {["weekly", "monthly", "yearly"].map((frame) => (
                 <button
                   key={frame}
                   onClick={() => setTimeframe(frame)}
                   data-testid={`timeframe-${frame.toLowerCase()}`}
-                  className={`px-3 py-1 rounded-lg ${
+                  className={`capitalize px-3 py-1 rounded-lg ${
                     timeframe === frame
                       ? "bg-green-600 text-white"
                       : "bg-gray-200 text-gray-700"
@@ -103,13 +86,12 @@ const DashboardSalesOverview = () => {
                 stroke="#2563EB"
                 strokeWidth={2}
                 fill="url(#blueGradient)"
-                //   strokeDasharray="5 5"
+                // strokeDasharray="5 5"
                 dot={false}
               />
             </AreaChart>
           </ResponsiveContainer>
         </div>
-        {userRole !== "developer" ? <WarningNoteForComingSoon /> : ""}
       </div>
     </>
   );
