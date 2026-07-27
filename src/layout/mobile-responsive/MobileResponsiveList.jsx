@@ -1,4 +1,5 @@
 import CustomerMobileReponsive from "./CustomerMobileReponsive";
+import ExpensesReportMobileResponsive from "./ExpensesReportMobileResponsive";
 import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
 import MovementMobileResponsive from "./MovementMobileResponsive";
 import ProductOwnerMobileReponsive from "./ProductOwnerMobileReponsive";
@@ -118,6 +119,14 @@ const MobileResponsiveList = ({
       />
       {/* PRODUCT OWNER RESPONSIVE */}
       <ProductOwnerMobileReponsive
+        rows={rows}
+        setData={setData}
+        setItemEdit={setItemEdit}
+        isDefaultMobile={isDefaultMobile}
+        ishaveSubAdd={ishaveSubAdd}
+      />
+      {/* REPORT OVERDUE RESPONSIVE */}
+      <ExpensesReportMobileResponsive
         rows={rows}
         setData={setData}
         setItemEdit={setItemEdit}

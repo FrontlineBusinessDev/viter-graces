@@ -63,7 +63,10 @@ function getHtmlVerifyEmail(
           </p>
         </div>
         <div style="padding: 10px 0px">
-          <p style="margin: 5px 0px 15px 0px">Hi There ' . $name . ',</p>
+          <p style="margin: 0px">Hello!</p>
+          <p style="margin: 5px 0px 15px 0px; text-transform: capitalize">
+            ' . $name . ',
+          </p>
           <p style="margin-bottom: 5px">
             Hi there, We’ve received a request to change your email address.<br />To
             complete the update and secure your account, please confirm by

@@ -24,6 +24,8 @@ class SuppliersPurchaseOrder
     public $purchase_order_balance;
     public $purchase_order_discount;
     public $purchase_order_tax;
+    public $purchase_order_total_balance_per_product;
+    public $purchase_order_total_paid_per_product;
     public $purchase_order_created;
     public $purchase_order_updated;
 
@@ -90,6 +92,8 @@ class SuppliersPurchaseOrder
             $sql .= "purchase_order_transact_name, ";
             $sql .= "purchase_order_total_amount_per_product, ";
             $sql .= "purchase_order_percent_tax, ";
+            $sql .= "purchase_order_total_balance_per_product, ";
+            $sql .= "purchase_order_total_paid_per_product, ";
             $sql .= "purchase_order_created, ";
             $sql .= "purchase_order_updated ) values ( ";
             $sql .= ":purchase_order_number, ";
@@ -121,6 +125,8 @@ class SuppliersPurchaseOrder
             $sql .= ":purchase_order_transact_name, ";
             $sql .= ":purchase_order_total_amount_per_product, ";
             $sql .= ":purchase_order_percent_tax, ";
+            $sql .= ":purchase_order_total_balance_per_product, ";
+            $sql .= ":purchase_order_total_paid_per_product, ";
             $sql .= ":purchase_order_created, ";
             $sql .= ":purchase_order_updated ) ";
             $query = $this->connection->prepare($sql);
@@ -154,6 +160,8 @@ class SuppliersPurchaseOrder
                 "purchase_order_transact_name" => $this->purchase_order_transact_name,
                 "purchase_order_total_amount_per_product" => $this->purchase_order_total_amount_per_product,
                 "purchase_order_percent_tax" => $this->purchase_order_percent_tax,
+                "purchase_order_total_balance_per_product" => $this->purchase_order_total_balance_per_product,
+                "purchase_order_total_paid_per_product" => $this->purchase_order_total_paid_per_product,
                 "purchase_order_created" => $this->purchase_order_created,
                 "purchase_order_updated" => $this->purchase_order_updated,
             ]);
@@ -382,6 +390,8 @@ class SuppliersPurchaseOrder
             $sql .= "purchase_order_balance = :purchase_order_balance, ";
             $sql .= "purchase_order_total_amount_per_product = :purchase_order_total_amount_per_product, ";
             $sql .= "purchase_order_percent_tax = :purchase_order_percent_tax, ";
+            $sql .= "purchase_order_total_balance_per_product = :purchase_order_total_balance_per_product, ";
+            $sql .= "purchase_order_total_paid_per_product = :purchase_order_total_paid_per_product, ";
             $sql .= "purchase_order_updated = :purchase_order_updated ";
             $sql .= "where purchase_order_aid = :purchase_order_aid ";
             $query = $this->connection->prepare($sql);
@@ -410,6 +420,8 @@ class SuppliersPurchaseOrder
                 "purchase_order_balance" => $this->purchase_order_balance,
                 "purchase_order_total_amount_per_product" => $this->purchase_order_total_amount_per_product,
                 "purchase_order_percent_tax" => $this->purchase_order_percent_tax,
+                "purchase_order_total_balance_per_product" => $this->purchase_order_total_balance_per_product,
+                "purchase_order_total_paid_per_product" => $this->purchase_order_total_paid_per_product,
                 "purchase_order_updated" => $this->purchase_order_updated,
                 "purchase_order_aid" => $this->purchase_order_aid,
             ]);

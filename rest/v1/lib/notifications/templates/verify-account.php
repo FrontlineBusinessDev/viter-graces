@@ -64,7 +64,10 @@ function getHtmlVerifyAccount(
           </p>
         </div>
         <div style="padding: 10px 0px">
-          <p style="margin: 5px 0px 15px 0px">Hi there ' . $name . ',</p>
+          <p style="margin: 0px">Hello!</p>
+          <p style="margin: 5px 0px 15px 0px; text-transform: capitalize">
+            ' . $name . ',
+          </p>
           <p style="margin-bottom: 5px">
             Your account has been created successfully—you’re almost ready to
             get started! <br />

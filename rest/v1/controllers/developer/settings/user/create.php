@@ -28,6 +28,7 @@ $val->user_account_updated = date("Y-m-d H:i:s");
 $val->column_fullname = $val->user_account_first_name . " " . $val->user_account_last_name;
 // check name
 isNameExist($val, $val->column_fullname);
+isEmailExist($val, $val->user_account_email);
 // create
 
 $val->user_account_key = $encrypt->doHash(rand());

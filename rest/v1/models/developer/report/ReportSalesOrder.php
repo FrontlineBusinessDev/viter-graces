@@ -259,10 +259,11 @@ class ReportSalesOrder
     public function readAllExpensesAmount()
     {
         try {
-            $sql = "select * ";
+            $sql = "select *, ";
+            $sql .= "SUM(purchase_order_total_paid_per_product) as total_paid ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
-            $sql .= "where purchase_order_payment_status = 'paid' ";
-            $sql .= "order by purchase_order_aid ";
+            $sql .= " group by purchase_order_number ";
+            $sql .= " order by purchase_order_number ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

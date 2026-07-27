@@ -242,7 +242,6 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     purchase_order_supplier_id: Yup.string().trim().required("Required"),
     purchase_order_date: Yup.string().trim().required("Required"),
     purchase_order_payment_status: Yup.string().trim().required("Required"),
-    purchase_order_payment: Yup.string().trim().required("Required"),
   });
 
   React.useEffect(() => {
@@ -312,9 +311,19 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                   ...values,
                   purchase_order: items,
                   itemsDelete: itemsDelete,
+                  purchase_order_payment: Number(
+                    values?.purchase_order_payment,
+                  ),
                   isHaveNotDelivered: items.filter(
                     (a) => !a.purchase_order_delivery_is_status,
                   )?.length,
+                  order_total_amount: items.reduce(
+                    (sum, item) =>
+                      sum +
+                      Number(item.purchase_order_qty || 0) *
+                        Number(item.purchase_order_price || 0),
+                    0,
+                  ),
                 };
 
                 mutation.mutate(data);
@@ -648,6 +657,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                           name="purchase_order_payment"
                           // placeholder="0"
                           disabled={mutation.isPending}
+                          required={false}
                         />
                       </div>
                     )}

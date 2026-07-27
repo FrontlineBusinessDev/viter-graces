@@ -9,9 +9,9 @@ function checkReadAllSalesOrderAmount($object, $allowedColumns = [])
 }
 
 // Read all
-function checkReadAllExpensesAmount($object, $allowedColumns = [])
+function checkReadAllExpensesAmount($object)
 {
-    $query = $object->readAllExpensesAmount($allowedColumns);
+    $query = $object->readAllExpensesAmount();
     checkQuery($query, "Empty records. (readAllExpensesAmount)");
     return $query;
 }

@@ -61,61 +61,77 @@ if (array_key_exists("id", $_GET)) {
 
     $ordersItems = $data["items"];
     $itemsDelete = $data["itemsDelete"];
+    // Extract fixed order-level values ONCE outside the loop to reduce redundant calls/casting
+    $totalOrderAmount = (float)($val->sales_order_total_amount ?? 0);
+    $totalDiscount = (float)($val->sales_order_discount ?? 0);
+    $totalPaid = (float)($val->sales_order_paid_amount ?? 0);
+    $hasBalance = (float)($val->sales_order_total_balance_amount ?? 0) != 0;
+    $taxRate = (float)($val->sales_order_tax ?? 0);
 
-    for ($i = 0; $i < count($ordersItems); $i++) {
-        $val->sales_order_aid = $ordersItems[$i]['sales_order_aid'];
-        $val->sales_order_product_id = $ordersItems[$i]["sales_order_product_id"];
-        $val->sales_order_product_name = $ordersItems[$i]["sales_order_product_name"];
-        $val->sales_order_product_owner_id = $ordersItems[$i]["sales_order_product_owner_id"];
-        $val->sales_order_product_owner_name = $ordersItems[$i]["sales_order_product_owner_name"];
-        $val->sales_order_qty = $ordersItems[$i]["sales_order_qty"];
-        $val->sales_order_price = $ordersItems[$i]["sales_order_price"];
-        $val->sales_order_total = $ordersItems[$i]["sales_order_total"];
-        $sales_order_qty_old = $ordersItems[$i]["sales_order_qty_old"];
+    foreach ($ordersItems as $item) {
+        // Map item properties directly
+        $val->sales_order_aid = $item['sales_order_aid'] ?? 0;
+        $val->sales_order_product_id = $item['sales_order_product_id'];
+        $val->sales_order_product_name = $item['sales_order_product_name'];
+        $val->sales_order_product_owner_id = $item['sales_order_product_owner_id'];
+        $val->sales_order_product_owner_name = $item['sales_order_product_owner_name'];
+        $val->sales_order_qty = (float)$item['sales_order_qty'];
+        $val->sales_order_price = (float)$item['sales_order_price'];
+        $val->sales_order_total = (float)$item['sales_order_total'];
 
-        // this is for total amount - discount + VAT
-        $discountPerItems = 0;
-        if ((float)$val->sales_order_discount != 0) {
-            $percentDiscount = (float)$val->sales_order_total / (float)$val->sales_order_total_amount;
-            $discountPerItems = (float)$percentDiscount * (float)$val->sales_order_discount;
+        $qtyOld = (float)($item['sales_order_qty_old'] ?? 0);
+
+        // 1. Financial Calculations
+        // Safely calculate proportion share (prevents division by zero)
+        $share = ($totalOrderAmount > 0) ? ($val->sales_order_total / $totalOrderAmount) : 0;
+
+        $discountPerItem  = ($totalDiscount != 0) ? ($totalDiscount * $share) : 0;
+        $discountedAmount = $val->sales_order_total - $discountPerItem;
+        $balancePerItem   = $hasBalance ? ($totalPaid * $share) : 0;
+
+        // Tax & Balance Handling
+        if ($taxRate === 0.12) {
+            $vatPerItem = $discountedAmount * 0.12;
+            $totalVAT   = $discountedAmount * 1.12;
+            $val->sales_order_balance_per_product = $totalVAT - $balancePerItem;
+        } else {
+            $vatPerItem = 0;
+            $val->sales_order_balance_per_product = $discountedAmount - $balancePerItem;
         }
-        $discountedAmountPerItem = (float)$val->sales_order_total - (float)$discountPerItems;
-        $totalVatPerItems = 0;
 
-        // $val->sales_order_tax_amount = (float)$data["sales_order_tax_amount"] * 0.12;
-        // COMPUTATION OF EXCLUSIVE TAX
-        if ((float)$val->sales_order_tax == 0.12) {
-            $totalVatPerItems = (float)$discountedAmountPerItem * 0.12;
-        }
+        $val->sales_order_vat = $vatPerItem;
+        $val->sales_order_discounted_with_vat_amount = max(0, $discountedAmount) + $vatPerItem;
 
-        $val->sales_order_vat = (float)$totalVatPerItems; // not accepting negative
-        $val->sales_order_discounted_with_vat_amount = max(0, (float)$discountedAmountPerItem) + (float)$totalVatPerItems; // not accepting negative
-
-        if ((float)$val->sales_order_aid == 0) {
+        // 2. Insert or Update Record
+        if ((int)$val->sales_order_aid === 0) {
             $query = checkCreate($val);
         } else {
             checkId($val->sales_order_aid);
             $query = checkUpdate($val);
         }
 
-        $val->lastInsertedId = $val->sales_order_product_id;
-        $val->stock_movement_type = "stock out - sales";
+        // 3. Stock Movement Logic
+        $val->lastInsertedId        = $val->sales_order_product_id;
+        $val->stock_movement_type   = "stock out - sales";
+        $val->stock_movement_status = "active";
+        $val->stock_movement_qty    = $val->sales_order_qty;
+
         $queryQty = getResultData($val->readtotalQTY());
-        if (count($queryQty) > 0) {
-            $val->stock_movement_before_qty = $queryQty[0]['current_qty'] + (float)$val->sales_order_qty + (float)$sales_order_qty_old;
-            $val->stock_movement_after_qty = $queryQty[0]['current_qty'];
+
+        if (!empty($queryQty)) {
+            $currentQty = (float)$queryQty[0]['current_qty'];
+            $val->stock_movement_before_qty = $currentQty + $val->sales_order_qty + $qtyOld;
+            $val->stock_movement_after_qty  = $currentQty;
         } else {
             $val->stock_movement_before_qty = 0;
-            $val->stock_movement_after_qty = 0;
-        };
-        $val->stock_movement_qty = (float)$val->sales_order_qty;
-        $val->stock_movement_status = "active";
+            $val->stock_movement_after_qty  = 0;
+        }
 
-        if ((float)$val->sales_order_qty != (float)$sales_order_qty_old) {
+        // Only log stock movement if quantity changed
+        if ($val->sales_order_qty !== $qtyOld) {
             $query = checkCreateMovementStock($val);
         }
     }
-
     for ($i = 0; $i < count($itemsDelete); $i++) {
         $val->sales_order_aid = $itemsDelete[$i]['sales_order_aid'];
         $query = checkDeleteById($val);

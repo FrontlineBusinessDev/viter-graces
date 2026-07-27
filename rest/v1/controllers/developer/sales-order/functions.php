@@ -286,7 +286,7 @@ function installmentDetails($val, $installmentItems)
         $val->installmet_payment_code_number = $val->sales_order_number;
         $val->installmet_payment_customer_id = $val->sales_order_customer_id;
         $val->installmet_payment_customer_name = $val->sales_order_customer_name;
-        $val->installmet_payment_method = "";
+        $val->installmet_payment_method = $val->sales_order_payment_method;
         $val->installmet_payment_amount = $val->sales_order_total_balance_amount;
 
         if ((float)$val->sales_order_total_balance_amount <= 0) {

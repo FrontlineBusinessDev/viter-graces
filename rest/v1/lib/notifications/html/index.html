@@ -32,9 +32,9 @@
   <div style="width: 100%; max-width: 550px; margin: 10px auto">
     <div style="padding: 10px 10px 0px; text-align: center">
       <img
-        src="http://localhost:5174/public/img/Graces_Logos.png"
+        src="' . $IMAGES_URL . '/Graces_Logos.png"
         alt="graces-logo"
-        style="max-width: 100%"
+        style="max-width: 150px"
       />
     </div>
     <div style="padding: 0 10px 0px">
@@ -54,7 +54,10 @@
           </p>
         </div>
         <div style="padding: 10px 0px">
-          <p style="margin: 5px 0px 15px 0px">Hi There ' . $name . ',</p>
+          <p style="margin: 0px">Hello!</p>
+          <p style="margin: 5px 0px 15px 0px; text-transform: capitalize">
+            ' . $name . ',
+          </p>
           <p style="margin-bottom: 5px">
             Hi there, We’ve received a request to change your email address.<br />To
             complete the update and secure your account, please confirm by
