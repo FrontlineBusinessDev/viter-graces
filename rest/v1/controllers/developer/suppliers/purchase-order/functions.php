@@ -32,6 +32,7 @@ function allowedColumns()
         "purchase_order_product_owner_name",
         "purchase_order_qty",
         "purchase_order_payment",
+        "total_amount",
     ];
     return $query;
 }

@@ -13,6 +13,7 @@ import {
   ActivityLogDetails,
   PaymentMethodList,
   PaymentTermsList,
+  taxOption,
 } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
@@ -322,12 +323,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     dispatch(setError(false));
   }, []);
 
-  let taxOption = [
-    { id: 0, name: "--" },
-    { id: 1.12, name: "inclusive" },
-    { id: 0.12, name: "exclusive" },
-  ];
-
   // console.log("items123", items);
   return (
     <>
@@ -601,12 +596,12 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                     <div className="relative ">
                       <InputSelectArrayWithOptions
                         label="VAT"
-                        type="sales_order_tax"
-                        name="sales_order_tax"
+                        type="purchase_order_percent_tax"
+                        name="purchase_order_percent_tax"
                         defaultValue="--"
-                        options={taxOption}
+                        options={taxOption()}
                         onChange={(e) => {
-                          props.values.sales_order_tax = e.target.id;
+                          props.values.purchase_order_percent_tax = e.target.id;
                           return e;
                         }}
                         required={false}

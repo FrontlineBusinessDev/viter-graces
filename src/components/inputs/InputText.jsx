@@ -295,7 +295,7 @@ export const DebouncedInput = ({
     return () => clearTimeout(timeout);
   }, [value]);
 
-  // console.log("value", value);
+  console.log("value", value);
   return (
     <>
       {(isEmptyItem(filterFn, "auto") === "auto" ||
@@ -358,6 +358,55 @@ export const DebouncedInput = ({
           />
         </div>
       )}
+      {/* {isEmptyItem(filterFn, "") === "between" && (
+        <div className="flex items-center gap-1">
+          <input
+            {...props}
+            value={value?.min ?? ""}
+            type="search"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            // oninput={(this?.value = this?.value?.replaceAll(/[^0-9]/g, ""))}
+            onChange={(e) => {
+              let min = e.target.value?.replaceAll(/[^0-9]/g, "")
+                ? Number(e.target.value?.replaceAll(/[^0-9]/g, ""))
+                : "";
+              let max = value?.max ?? "";
+              const newValue = {
+                ...value,
+                min,
+                max,
+              };
+              setValue(newValue);
+            }}
+            data-testid={`${cypressTesting}_min`}
+            placeholder="min"
+          />
+          <span className="font-bold">-</span>
+          <input
+            {...props}
+            value={value?.max ?? ""}
+            type="search"
+            inputMode="numeric"
+            pattern="[0-9]*"
+            // oninput={(this?.value = this?.value?.replaceAll(/[^0-9]/g, ""))}
+            onChange={(e) => {
+              let max = e.target.value?.replaceAll(/[^0-9]/g, "")
+                ? Number(e.target.value?.replaceAll(/[^0-9]/g, ""))
+                : "";
+              let min = value?.min ?? "0";
+              const newValue = {
+                ...value,
+                min,
+                max,
+              };
+              setValue(newValue);
+            }}
+            data-testid={`${cypressTesting}_max`}
+            placeholder="max"
+          />
+        </div>
+      )} */}
     </>
   );
 };

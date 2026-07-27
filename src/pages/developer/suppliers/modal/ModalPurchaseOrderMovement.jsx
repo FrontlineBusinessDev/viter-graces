@@ -183,6 +183,13 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
 
               const data = {
                 ...values,
+                total_amount_without_discount_and_vat: items.reduce(
+                  (sum, item) =>
+                    sum +
+                    Number(item.purchase_order_qty || 0) *
+                      Number(item.purchase_order_price || 0),
+                  0,
+                ),
                 items: items || [],
                 ...ActivityLogDetails(
                   "purchase-order-movement",

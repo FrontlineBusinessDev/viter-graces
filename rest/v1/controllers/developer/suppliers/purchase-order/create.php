@@ -25,6 +25,7 @@ $val->purchase_order_payment_status = $data["purchase_order_payment_status"];
 $val->purchase_order_note = $data["purchase_order_note"];
 $val->purchase_order_balance = $data["purchase_order_balance"];
 $val->purchase_order_tax = $data["purchase_order_tax"];
+$val->purchase_order_percent_tax = $data["purchase_order_percent_tax"];
 $val->purchase_order_transact_id = $data["purchase_order_transact_id"];
 $val->purchase_order_transact_name = $data["purchase_order_transact_name"];
 $val->purchase_order_discount = max(0, $data["purchase_order_discount"]);
@@ -45,6 +46,11 @@ if ($data["purchase_order_payment_status"] == "paid") {
     $val->purchase_order_delivery_status = "";
     $val->purchase_order_delivery_is_status = 0;
 }
+
+$val->purchase_order_total_amount_per_product = 0;
+
+$total_amount_without_discount_and_vat = $data["total_amount_without_discount_and_vat"];
+
 for ($i = 0; $i < count($purchase_order); $i++) {
     $val->purchase_order_product_id = $purchase_order[$i]["purchase_order_product_id"];
     $val->purchase_order_product_name = $purchase_order[$i]["purchase_order_product_name"];
@@ -56,7 +62,24 @@ for ($i = 0; $i < count($purchase_order); $i++) {
     $val->purchase_order_price = $purchase_order[$i]["purchase_order_price"];
     $val->purchase_order_total_amount = $purchase_order[$i]["purchase_order_total_amount"];
     $val->purchase_order_expected_delivery = date('Y-m-d', strtotime('next ' . strtolower($data["suppliers_delivery"])));
-    // create
+    // create 
+    // this is for total amount - discount + VAT
+    $discountPerItems = 0;
+    if ((float)$val->purchase_order_discount != 0) {
+        $percentDiscount = (float)$val->purchase_order_total_amount / (float)$total_amount_without_discount_and_vat;
+        $discountPerItems = (float)$percentDiscount * (float)$val->purchase_order_discount;
+    }
+
+    $discountedAmountPerItem = (float)$val->purchase_order_total_amount - (float)$discountPerItems;
+    $totalVatPerItems = 0;
+
+    // COMPUTATION OF EXCLUSIVE TAX
+    if ((float)$val->purchase_order_percent_tax == 0.12) {
+        $totalVatPerItems = (float)$discountedAmountPerItem * 0.12;
+    }
+
+    $val->purchase_order_total_amount_per_product = max(0, (float)$discountedAmountPerItem) + (float)$totalVatPerItems; // not accepting negative
+
     $query = checkCreate($val);
 }
 // create activity log  

@@ -39,6 +39,10 @@ if (array_key_exists("id", $_GET)) {
     $val->sales_order_created = date("Y-m-d H:i:s");
     $val->sales_order_updated = date("Y-m-d H:i:s");
 
+    if ((float)$data["sales_order_paid_amount"] > (float)$data["sales_order_total_receivable_amount"]) {
+        $val->sales_order_paid_amount = $data["sales_order_total_receivable_amount"];
+    }
+
     $val->sales_order_customer_id = $data["sales_order_customer_id"];
     $val->sales_order_customer_name = $data["sales_order_customer_name"];
 

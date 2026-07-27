@@ -357,3 +357,13 @@ export const ActivityLogResetPassDetails = (path, action, values) => {
 
   return data;
 };
+
+export const taxOption = () => {
+  let data = [
+    { id: 0, name: "--" },
+    { id: 1.12, name: "inclusive" },
+    { id: 0.12, name: "exclusive" },
+  ];
+
+  return data;
+};

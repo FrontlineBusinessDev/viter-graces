@@ -41,8 +41,9 @@ for ($i = 0; $i < count($ordersItems); $i++) {
     $val->purchase_order_delivery_status = $oldData["purchase_order_delivery_status"];
     $val->purchase_order_delivery_is_status = $oldData["purchase_order_delivery_is_status"];
     $val->purchase_order_price = $oldData["purchase_order_price"];
-    $val->purchase_order_total_amount = $oldData["purchase_order_total_amount"];
     $val->purchase_order_expected_delivery = $oldData["purchase_order_expected_delivery"];
+    $val->purchase_order_tax = $oldData["purchase_order_tax"];
+    $val->purchase_order_percent_tax = $oldData["purchase_order_percent_tax"];
 
     $val->purchase_order_transfer_from_id = $ordersItems[$i]["purchase_order_transfer_from_id"];
     $val->purchase_order_product_owner_id = $ordersItems[$i]["purchase_order_product_owner_id"];
@@ -54,6 +55,10 @@ for ($i = 0; $i < count($ordersItems); $i++) {
     $val->purchase_order_before_qty = 0;
     $val->purchase_order_after_qty = $val->purchase_order_qty;
 
+    $per_product_amount = (float)$oldData["purchase_order_total_amount_per_product"] / (float)$ordersItems[$i]["purchase_order_qty"];
+    $val->purchase_order_total_amount_per_product = (float)$per_product_amount * (float)$val->purchase_order_qty;
+    $val->purchase_order_total_amount =  (float)$val->purchase_order_price * (float)$val->purchase_order_qty;
+
     // check name  
     $query = checkCreate($val);
 
@@ -61,6 +66,10 @@ for ($i = 0; $i < count($ordersItems); $i++) {
     $val->purchase_order_qty = (float)$ordersItems[$i]["purchase_order_qty"] - (float)$ordersItems[$i]["current_order_qty"];
     $val->purchase_order_before_qty = $ordersItems[$i]["purchase_order_qty"];
     $val->purchase_order_after_qty = (float)$ordersItems[$i]["purchase_order_qty"] - (float)$ordersItems[$i]["current_order_qty"];
+
+    $per_product_amount = (float)$oldData["purchase_order_total_amount_per_product"] / (float)$ordersItems[$i]["purchase_order_qty"];
+    $val->purchase_order_total_amount_per_product = (float)$per_product_amount * (float)$val->purchase_order_qty;
+    $val->purchase_order_total_amount =  (float)$val->purchase_order_price * (float)$val->purchase_order_qty;
 
     $query = checkUpdate($val);
 }

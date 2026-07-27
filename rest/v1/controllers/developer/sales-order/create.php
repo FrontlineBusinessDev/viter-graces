@@ -39,6 +39,10 @@ $val->sales_order_updated = date("Y-m-d H:i:s");
 $val->stock_movement_status = "active";
 $val->sales_order_due_date = date("Y-m-d");
 
+if ((float)$data["sales_order_paid_amount"] > (float)$data["sales_order_total_receivable_amount"]) {
+    $val->sales_order_paid_amount = $data["sales_order_total_receivable_amount"];
+}
+
 $val->sales_order_number = setIdNumber($val, "ORD");
 
 $installmentItems = $data["installmentItems"];
@@ -67,10 +71,15 @@ for ($i = 0; $i < count($ordersItems); $i++) {
         $discountPerItems = (float)$percentDiscount * (float)$val->sales_order_discount;
     }
 
+    // $val->sales_order_balance_per_product = 0;
+
+    // if ((float)$val->sales_order_total_balance_amount != 0) {
+    //     $val->sales_order_balance_per_product = 0;
+    // }
+
     $discountedAmountPerItem = (float)$val->sales_order_total - (float)$discountPerItems;
     $totalVatPerItems = 0;
 
-    // $val->sales_order_tax_amount = (float)$data["sales_order_tax_amount"] * 0.12;
     // COMPUTATION OF EXCLUSIVE TAX
     if ((float)$val->sales_order_tax == 0.12) {
         $totalVatPerItems = (float)$discountedAmountPerItem * 0.12;

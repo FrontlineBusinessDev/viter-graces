@@ -16,6 +16,22 @@ export const AmountsWithPesoSign = ({
   );
 };
 
+export const Amount = ({
+  classN,
+  classAmnt = " ",
+  amount = 0,
+  decimalNumber = 4,
+}) => {
+  return (
+    <span
+      className={`flex items-center text-sm text-black dark:text-light ${classAmnt}`}
+    >
+      <PhilippinePeso className={`${classN} mr-1 size-3`} />
+      {numberWithCommasToFixed(isEmptyItem(amount, 0), Number(decimalNumber))}
+    </span>
+  );
+};
+
 export const AmountWithPesoSign = ({
   classN,
   classAmnt = "text-right text-black dark:text-light",

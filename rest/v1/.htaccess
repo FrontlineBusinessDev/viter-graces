@@ -120,6 +120,7 @@ RewriteRule ^sales-order/read-sales-today$ controllers/developer/sales-order/rea
 RewriteRule ^sales-order/read-top-selling-product$ controllers/developer/sales-order/read-top-selling-product.php [L]
 RewriteRule ^sales-order/page-by-id/([0-9]+)$ controllers/developer/sales-order/page-by-cutomer-id.php?start=$1 [L]
 RewriteRule ^sales-order/read-all-sales-order$ controllers/developer/sales-order/read-all-sales-order.php [L]
+RewriteRule ^sales-order/sales-overview-graph-value$ controllers/developer/sales-order/sales-overview-graph-value.php [L]
  
 ### REPORT SALES ORDER ###
 RewriteRule ^report-sales-order/page-all-sales-order/page/([0-9]+)$ controllers/developer/reports/page-all-sales-order.php?start=$1 [L]
@@ -145,3 +146,6 @@ RewriteRule ^purchase-order-movement$ controllers/developer/suppliers/purchase-o
 RewriteRule ^purchase-order-movement/read-search-data$ controllers/developer/suppliers/purchase-order-movement/read-search-data.php [L] 
 RewriteRule ^purchase-order-movement/([0-9]+)$$ controllers/developer/suppliers/purchase-order-movement/purchase-order-movement.php?id=$1 [L] 
 RewriteRule ^purchase-order-movement/page/([0-9]+)$ controllers/developer/suppliers/purchase-order-movement/page.php?start=$1 [L] 
+
+
+ 

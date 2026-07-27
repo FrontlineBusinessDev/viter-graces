@@ -261,7 +261,7 @@ class ReportSalesOrder
         try {
             $sql = "select * ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
-            $sql .= "where purchase_order_status = 'paid' ";
+            $sql .= "where purchase_order_payment_status = 'paid' ";
             $sql .= "order by purchase_order_aid ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
@@ -965,6 +965,8 @@ class ReportSalesOrder
             $sql .= "DATE_FORMAT(purchase_order_date, '%b %d, %Y') as purchase_order_date, ";
             $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as purchase_order_expected_delivery, ";
             $sql .= "purchase_order_status as status, ";
+            $sql .= "purchase_order_payment_status as payment_status, ";
+            $sql .= "purchase_order_total_amount_per_product as amount, ";
             $sql .= "purchase_order_is_active as is_active, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
@@ -1025,6 +1027,8 @@ class ReportSalesOrder
             $sql .= "DATE_FORMAT(purchase_order_date, '%b %d, %Y') as purchase_order_date, ";
             $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as purchase_order_expected_delivery, ";
             $sql .= "purchase_order_status as status, ";
+            $sql .= "purchase_order_payment_status as payment_status, ";
+            $sql .= "purchase_order_total_amount_per_product as amount, ";
             $sql .= "purchase_order_is_active as is_active, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";

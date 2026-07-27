@@ -73,6 +73,7 @@ const InfiniteTable = ({
   const [columnFilters, setColumnFilters] = useState(
     search.current?.value ? [] : filterName !== "" ? filterName : defaultValue,
   );
+
   const searchPayload = useMemo(
     () => ({
       searchValue: search.current?.value || "",
@@ -87,7 +88,12 @@ const InfiniteTable = ({
   );
 
   const queryKey = useMemo(
-    () => [path, store.isSearch, search.current?.value || "", columnFilters],
+    () => [
+      path,
+      store.isSearch,
+      search.current?.value || "",
+      JSON.stringify({ columnFilters }),
+    ],
     [path, search.current?.value || "", JSON.stringify({ columnFilters })],
   );
 
@@ -227,6 +233,7 @@ const InfiniteTable = ({
     }
   }, [columnFilters]);
 
+  console.log("columnFilters", columnFilters);
   return (
     <>
       <div className="md:flex md:justify-between flex-row-reverse my-2 gap-4 items-center">

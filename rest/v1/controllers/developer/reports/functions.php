@@ -167,7 +167,8 @@ function allowedColumns()
         "stock_movement_location",
         "stock_movement_product_name",
         "stock_movement_product_owner_name",
-        "stock_qty"
+        "stock_qty",
+        "amount"
     ];
     return $query;
 }
