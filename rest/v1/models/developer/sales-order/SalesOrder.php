@@ -31,6 +31,7 @@ class SalesOrder
     public $sales_order_payment_terms;
     public $sales_order_discounted_with_vat_amount;
     public $sales_order_vat;
+    public $sales_order_balance_per_product;
     public $sales_order_created;
     public $sales_order_updated;
 

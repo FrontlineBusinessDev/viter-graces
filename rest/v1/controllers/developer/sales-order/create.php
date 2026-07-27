@@ -64,18 +64,20 @@ for ($i = 0; $i < count($ordersItems); $i++) {
     $val->sales_order_price = $ordersItems[$i]["sales_order_price"];
     $val->sales_order_total = $ordersItems[$i]["sales_order_total"];
 
+    $percentagePerTotalPrice = (float)$val->sales_order_total / (float)$val->sales_order_total_amount;
+
     // this is for total amount - discount + VAT
     $discountPerItems = 0;
     if ((float)$val->sales_order_discount != 0) {
-        $percentDiscount = (float)$val->sales_order_total / (float)$val->sales_order_total_amount;
+        $percentDiscount = (float)$percentagePerTotalPrice;
         $discountPerItems = (float)$percentDiscount * (float)$val->sales_order_discount;
     }
 
-    // $val->sales_order_balance_per_product = 0;
+    $val->sales_order_balance_per_product = 0;
 
-    // if ((float)$val->sales_order_total_balance_amount != 0) {
-    //     $val->sales_order_balance_per_product = 0;
-    // }
+    if ((float)$val->sales_order_total_balance_amount != 0) {
+        $val->sales_order_balance_per_product = 0;
+    }
 
     $discountedAmountPerItem = (float)$val->sales_order_total - (float)$discountPerItems;
     $totalVatPerItems = 0;
