@@ -131,6 +131,15 @@ function allowedColumns()
         "sales_order_installment",
         "sales_order_due_date",
         "sales_order_total_receivable_amount",
+        "sales_order_paid_per_product",
+        "name",
+        "id",
+        "order_date",
+        "is_active",
+        "total_paid",
+        "total_sub_amount",
+        "total_amount",
+        "is_status",
     ];
     return $query;
 }
@@ -286,7 +295,7 @@ function installmentDetails($val, $installmentItems)
         $val->installmet_payment_code_number = $val->sales_order_number;
         $val->installmet_payment_customer_id = $val->sales_order_customer_id;
         $val->installmet_payment_customer_name = $val->sales_order_customer_name;
-        $val->installmet_payment_method = "";
+        $val->installmet_payment_method = $val->sales_order_payment_method;
         $val->installmet_payment_amount = $val->sales_order_total_balance_amount;
 
         if ((float)$val->sales_order_total_balance_amount <= 0) {

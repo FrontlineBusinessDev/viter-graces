@@ -54,52 +54,69 @@ $val->sales_order_number = setIdNumber($val, "ORD");
 
 $ordersItems = $data["items"];
 // CREATE STOCK MOVEMENT
-for ($i = 0; $i < count($ordersItems); $i++) {
 
-    $val->sales_order_product_id = $ordersItems[$i]["sales_order_product_id"];
-    $val->sales_order_product_name = $ordersItems[$i]["sales_order_product_name"];
-    $val->sales_order_product_owner_id = $ordersItems[$i]["sales_order_product_owner_id"];
-    $val->sales_order_product_owner_name = $ordersItems[$i]["sales_order_product_owner_name"];
-    $val->sales_order_qty = $ordersItems[$i]["sales_order_qty"];
-    $val->sales_order_price = $ordersItems[$i]["sales_order_price"];
-    $val->sales_order_total = $ordersItems[$i]["sales_order_total"];
+// Extract fixed order-level values once outside the loop
+$totalOrderAmount = (float)($val->sales_order_total_amount ?? 0);
+$totalOrderDiscount = (float)($val->sales_order_discount ?? 0);
+$totalPaidAmount = (float)($val->sales_order_paid_amount ?? 0);
+$hasBalance = (float)($val->sales_order_total_balance_amount ?? 0) != 0;
+$taxRate = (float)($val->sales_order_tax ?? 0);
 
-    // this is for total amount - discount + VAT
-    $discountPerItems = 0;
-    if ((float)$val->sales_order_discount != 0) {
-        $percentDiscount = (float)$val->sales_order_total / (float)$val->sales_order_total_amount;
-        $discountPerItems = (float)$percentDiscount * (float)$val->sales_order_discount;
+foreach ($ordersItems as $item) {
+
+    // Map item properties directly
+    $val->sales_order_product_id = $item["sales_order_product_id"];
+    $val->sales_order_product_name = $item["sales_order_product_name"];
+    $val->sales_order_product_owner_id = $item["sales_order_product_owner_id"];
+    $val->sales_order_product_owner_name = $item["sales_order_product_owner_name"];
+    $val->sales_order_qty = (float)$item["sales_order_qty"];
+    $val->sales_order_price = (float)$item["sales_order_price"];
+    $val->sales_order_total = (float)$item["sales_order_total"];
+
+    // 1. Financial Calculations
+    // Prevent division by zero if $totalOrderAmount is 0
+    $share = ($totalOrderAmount > 0) ? ($val->sales_order_total / $totalOrderAmount) : 0;
+
+    $discountPerItem = ($totalOrderDiscount != 0) ? ($totalOrderDiscount * $share) : 0;
+    $discountedAmount = $val->sales_order_total - $discountPerItem;
+
+    $balancePerItem = $hasBalance ? ($totalPaidAmount * $share) : 0;
+    $paidPerItem = $val->sales_order_paid_amount ? ($val->sales_order_paid_amount * $share) : 0;
+    $remainingPerItem = $val->sales_order_paid_amount ? ($val->sales_order_paid_amount * $share) : 0;
+
+    // Default balance calculation (Exclusive Tax handling)
+    if ($taxRate === 0.12) {
+        $vatPerItem = $discountedAmount * 0.12;
+        $totalVatItem = $discountedAmount * 1.12;
+        $val->sales_order_balance_per_product = $totalVatItem - $balancePerItem;
+    } else {
+        $vatPerItem = 0;
+        $val->sales_order_balance_per_product = $discountedAmount - $balancePerItem;
     }
 
-    // $val->sales_order_balance_per_product = 0;
+    $val->sales_order_vat = $vatPerItem;
+    $val->sales_order_discounted_with_vat_amount = max(0, $discountedAmount) + $vatPerItem;
+    $val->sales_order_paid_per_product = max(0, $remainingPerItem);
 
-    // if ((float)$val->sales_order_total_balance_amount != 0) {
-    //     $val->sales_order_balance_per_product = 0;
-    // }
-
-    $discountedAmountPerItem = (float)$val->sales_order_total - (float)$discountPerItems;
-    $totalVatPerItems = 0;
-
-    // COMPUTATION OF EXCLUSIVE TAX
-    if ((float)$val->sales_order_tax == 0.12) {
-        $totalVatPerItems = (float)$discountedAmountPerItem * 0.12;
+    if ((float)$balancePerItem <= 0) {
+        $val->sales_order_balance_per_product = 0;
     }
 
-    $val->sales_order_vat = (float)$totalVatPerItems; // not accepting negative
-    $val->sales_order_discounted_with_vat_amount = max(0, (float)$discountedAmountPerItem) + (float)$totalVatPerItems; // not accepting negative
-
+    // 2. Database & Stock Updates
     $query = checkCreate($val);
     $val->stock_movement_type = "stock out - sales";
 
     $queryQty = getResultData($val->readtotalQTY());
-    if (count($queryQty) > 0) {
-        $val->stock_movement_before_qty = (float)$queryQty[0]['current_qty'] + (float)$val->sales_order_qty;
-        $val->stock_movement_after_qty = (float)$queryQty[0]['current_qty'];
+    if (!empty($queryQty)) {
+        $currentQty = (float)$queryQty[0]['current_qty'];
+        $val->stock_movement_before_qty = $currentQty + $val->sales_order_qty;
+        $val->stock_movement_after_qty  = $currentQty;
     } else {
         $val->stock_movement_before_qty = 0;
-        $val->stock_movement_after_qty = 0;
-    };
-    $val->stock_movement_qty = (float)$val->sales_order_qty;
+        $val->stock_movement_after_qty  = 0;
+    }
+
+    $val->stock_movement_qty = $val->sales_order_qty;
 
     checkCreateMovementStock($val);
 }

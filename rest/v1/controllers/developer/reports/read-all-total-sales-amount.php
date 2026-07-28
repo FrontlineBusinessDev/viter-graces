@@ -25,16 +25,18 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $val->filters = $data['columnFilters'];
     $total_result_final = [];
     $query = checkReadAllSalesOrderAmount($val, allowedColumns());
-    $queryExpenses = checkReadAllExpensesAmount($val, allowedColumns());
+    $queryExpenses = checkReadAllExpensesAmount($val);
 
     $dataSet = getResultData($query);
     $querySetExpenses = getResultData($queryExpenses);
 
+
     if (count($dataSet) > 0) {
-        $totalExpenses = array_sum(array_column($querySetExpenses, 'purchase_order_total_amount_per_product'));
+        $totalExpenses = array_sum(array_column($querySetExpenses, 'total_paid'));
         $totalReceivable = array_sum(array_column($dataSet, 'sales_order_discounted_with_vat_amount'));
 
         $totalQty = array_sum(array_column($dataSet, 'qty'));
+
 
         $totalAllSalesAmount = (float)$totalReceivable - (float)$totalExpenses;
         $totalAmount = (float)$totalReceivable;

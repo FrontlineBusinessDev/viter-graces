@@ -372,6 +372,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
           >
             {(props) => {
               PropsValues(props, items, installmentItems);
+
               return (
                 <Form>
                   <div className="grid grid-cols-2 gap-4">
@@ -596,12 +597,12 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                     <div className="relative ">
                       <InputSelectArrayWithOptions
                         label="VAT"
-                        type="purchase_order_percent_tax"
-                        name="purchase_order_percent_tax"
+                        type="sales_order_tax"
+                        name="sales_order_tax"
                         defaultValue="--"
                         options={taxOption()}
                         onChange={(e) => {
-                          props.values.purchase_order_percent_tax = e.target.id;
+                          props.values.sales_order_tax = e.target.id;
                           return e;
                         }}
                         required={false}

@@ -173,10 +173,10 @@
     @apply text-left w-full table-auto shadow-md dark:border dark:border-[#1f2b47];
   }
   table tr:hover {
-    @apply bg-gray-100 dark:border-[#1f2b47]/20!;
+    @apply bg-gray-100 dark:border-[#1f2b47]/20;
   }
   table tr {
-    @apply border-b border-solid border-gray-200 dark:border-[#1f2b47] hover:bg-[#1f2b47]/30;
+    @apply border-b border-solid border-gray-200 dark:border-[#1f2b47] dark:hover:bg-[#1f2b47]/30 hover:bg-[#1f2b47]/10;
   }
   table tr.currentUser .table-action {
     @apply bg-primary/5 backdrop-opacity-100;
@@ -185,7 +185,7 @@
     @apply font-bold bg-[#F6F7F9] dark:bg-[#1f2b47]/20 py-2 px-3;
   }
   table td {
-    @apply px-3 py-2 bg-light dark:bg-[#1f2b47]/10;
+    @apply px-3 py-2;
   }
   input,
   select {

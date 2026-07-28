@@ -175,7 +175,7 @@ export const titleHeaderTab = () => {
           title_tab: "expenses-report",
           description_tab: "Track business expenses and spending trends.",
           on_click: onClickTab,
-          ongoingDevelopment: true,
+          ongoingDevelopment: false,
         },
         {
           icon: "",

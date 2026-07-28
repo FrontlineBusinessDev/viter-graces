@@ -147,5 +147,9 @@ RewriteRule ^purchase-order-movement/read-search-data$ controllers/developer/sup
 RewriteRule ^purchase-order-movement/([0-9]+)$$ controllers/developer/suppliers/purchase-order-movement/purchase-order-movement.php?id=$1 [L] 
 RewriteRule ^purchase-order-movement/page/([0-9]+)$ controllers/developer/suppliers/purchase-order-movement/page.php?start=$1 [L] 
 
+### FINANCE CASH SALES ### 
+RewriteRule ^finance-cash-sales/page/([0-9]+)$ controllers/developer/finance/cash-sales/page-by-cash-sales.php?start=$1 [L] 
+RewriteRule ^finance-account-receivable/page/([0-9]+)$ controllers/developer/finance/account-receivable/page-by-account-receivable.php?start=$1 [L] 
+
 
  

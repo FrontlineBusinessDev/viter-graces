@@ -81,7 +81,7 @@ export const PropsValues = (props, items) => {
   values.purchase_order_balance =
     Number(values.purchase_order_payment) <= 0
       ? Number(values.total_amount)
-      : Number(values.purchase_order_payment) - Number(values.total_amount);
+      : Number(values.total_amount) - Number(values.purchase_order_payment);
 
   console.log("values", values);
   return;

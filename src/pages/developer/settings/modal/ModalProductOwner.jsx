@@ -65,6 +65,7 @@ const ModalProductOwner = ({ itemEdit }) => {
     user_account_first_name: isEmptyItem(itemEdit?.user_account_first_name, ""),
     user_account_last_name: isEmptyItem(itemEdit?.user_account_last_name, ""),
     user_account_email: isEmptyItem(itemEdit?.user_account_email, ""),
+    email_old: isEmptyItem(itemEdit?.user_account_email, ""),
 
     name: isEmptyItem(itemEdit?.name, ""),
     password_link: `/create-password`,
