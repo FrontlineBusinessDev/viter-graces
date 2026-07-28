@@ -55,8 +55,8 @@ if (array_key_exists("id", $_GET)) {
     // INSTALLMENT DATA
     updateStatus($val, $data);
     for ($i = 0; $i < count($installmentItemsDelete); $i++) {
-        $val->installmet_payment_aid = $installmentItemsDelete[$i]['installmet_payment_aid'];
-        $query = checkDeleteInstallmetById($val);
+        $val->installment_payment_aid = $installmentItemsDelete[$i]['installment_payment_aid'];
+        $query = checkDeleteinstallmentById($val);
     }
 
     $ordersItems = $data["items"];

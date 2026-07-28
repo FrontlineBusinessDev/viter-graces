@@ -11,14 +11,14 @@ const OverduePayments = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "installmet_payment_is_paid",
+      accessorKey: "installment_payment_is_paid",
       header: "status",
       classTh: "w-[8rem]",
       classTd: "",
       status_option: ActiveInActiveStatus("installment-status"),
     },
     {
-      accessorKey: "installmet_payment_code_number",
+      accessorKey: "installment_payment_code_number",
       header: "Order #",
       classTh: "",
       classTd: "",
@@ -26,7 +26,7 @@ const OverduePayments = () => {
       meta: "",
     },
     {
-      accessorKey: "installmet_payment_due_date",
+      accessorKey: "installment_payment_due_date",
       header: "Date",
       classTh: "",
       classTd: "",
@@ -34,14 +34,14 @@ const OverduePayments = () => {
       meta: "",
     },
     {
-      accessorKey: "installmet_payment_customer_name",
+      accessorKey: "installment_payment_customer_name",
       header: "Customer",
       classTh: "",
       classTd: "",
       meta: "",
     },
     {
-      accessorKey: "installmet_payment_amount",
+      accessorKey: "installment_payment_amount",
       amount: true,
       header: "Amount",
       classTh: "min-w-20",
