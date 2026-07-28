@@ -24,6 +24,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
     http_response_code(200);
 
+
     $weeklyData = [
         ["label" => "Mon", "value" => (string)($weekAllData['monday'] ?? 0)],
         ["label" => "Tue", "value" => (string)($weekAllData['tuesday'] ?? 0)],

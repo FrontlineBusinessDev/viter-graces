@@ -4,6 +4,7 @@ import { StoreContext } from "@/store/StoreContext";
 import { Eye } from "lucide-react";
 import React from "react";
 import ViewAccountsReceivableDetails from "./ViewAccountsReceivableDetails";
+import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
 
 const AccountsReceivable = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -18,55 +19,83 @@ const AccountsReceivable = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "status",
-      header: "Status",
-      classTh: "w-[5rem]",
-      classTd: "",
-    },
-    {
-      accessorKey: "order_no",
+      accessorKey: "sales_order_number",
       header: "Order #",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
-      accessorKey: "date",
+      accessorKey: "sales_order_date",
       header: "Date",
       classTh: "",
       classTd: "",
+      filterFn: "date",
+      meta: "",
     },
     {
-      accessorKey: "customer",
+      accessorKey: "sales_order_customer_name",
       header: "Customers",
       classTh: "",
       classTd: "",
       isMobileTitle: true,
+      meta: "",
     },
     {
-      accessorKey: "amount",
+      accessorKey: "sales_order_product_name",
+      header: "Items",
+      classTh: "",
+      classTd: "",
+      isMobileTitle: true,
+      meta: "",
+    },
+    {
+      accessorKey: "total_amount_per_product",
       header: "Amount",
+      amount: true,
       classTh: "",
       classTd: "",
+      filterFn: "between",
+      meta: "",
     },
     {
-      accessorKey: "paid",
-      header: "Paid",
+      accessorKey: "sales_order_paid_per_product",
+      header: "paid",
+      amount: true,
       classTh: "",
       classTd: "",
+      filterFn: "between",
+      meta: "",
+    },
+    {
+      accessorKey: "sales_order_balance_per_product",
+      header: "balance",
+      amount: true,
+      classTh: "",
+      classTd: "",
+      filterFn: "between",
+      meta: "",
+    },
+    {
+      accessorKey: "sales_order_product_owner_name",
+      header: "Product Owner",
+      classTh: "min-w-[10rem]",
+      classTd: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="product-owner/read-by-product-owner"
+            testFilterId={"filter-owner"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "action",
-      action_array: [
-        {
-          name: "view",
-          path: "suppliers",
-          icon: <Eye className="h-3 w-3" />,
-          isActive: 1,
-        },
-      ],
-      header: "Action",
-      classTh: "text-center w-[7rem]",
-      classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
+      header: "action",
+      classTh: "",
+      classTd: "",
     },
   ];
 
@@ -75,9 +104,10 @@ const AccountsReceivable = () => {
       <HeaderNav menu={"finance"} activeTab="accounts-receivable">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
-          path=""
-          setItemEdit={setItemEdit}
+          className={`sm:overflow-auto sm:h-[calc(100dvh-203px)] h-[calc(97dvh-250px)]`}
+          path="finance-account-receivable"
+          haveFilterTable={true}
+          ishaveAdd={false}
         />
       </HeaderNav>
       {isView && (

@@ -131,6 +131,15 @@ function allowedColumns()
         "sales_order_installment",
         "sales_order_due_date",
         "sales_order_total_receivable_amount",
+        "sales_order_paid_per_product",
+        "name",
+        "id",
+        "order_date",
+        "is_active",
+        "total_paid",
+        "total_sub_amount",
+        "total_amount",
+        "is_status",
     ];
     return $query;
 }

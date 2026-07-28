@@ -88,6 +88,7 @@ if (array_key_exists("id", $_GET)) {
         $discountPerItem  = ($totalDiscount != 0) ? ($totalDiscount * $share) : 0;
         $discountedAmount = $val->sales_order_total - $discountPerItem;
         $balancePerItem   = $hasBalance ? ($totalPaid * $share) : 0;
+        $remainingPerItem = $val->sales_order_paid_amount ? ($val->sales_order_paid_amount * $share) : 0;
 
         // Tax & Balance Handling
         if ($taxRate === 0.12) {
@@ -101,7 +102,11 @@ if (array_key_exists("id", $_GET)) {
 
         $val->sales_order_vat = $vatPerItem;
         $val->sales_order_discounted_with_vat_amount = max(0, $discountedAmount) + $vatPerItem;
+        $val->sales_order_paid_per_product = max(0, $remainingPerItem);
 
+        if ((float)$balancePerItem <= 0) {
+            $val->sales_order_balance_per_product = 0;
+        }
         // 2. Insert or Update Record
         if ((int)$val->sales_order_aid === 0) {
             $query = checkCreate($val);

@@ -81,6 +81,8 @@ foreach ($ordersItems as $item) {
     $discountedAmount = $val->sales_order_total - $discountPerItem;
 
     $balancePerItem = $hasBalance ? ($totalPaidAmount * $share) : 0;
+    $paidPerItem = $val->sales_order_paid_amount ? ($val->sales_order_paid_amount * $share) : 0;
+    $remainingPerItem = $val->sales_order_paid_amount ? ($val->sales_order_paid_amount * $share) : 0;
 
     // Default balance calculation (Exclusive Tax handling)
     if ($taxRate === 0.12) {
@@ -94,6 +96,11 @@ foreach ($ordersItems as $item) {
 
     $val->sales_order_vat = $vatPerItem;
     $val->sales_order_discounted_with_vat_amount = max(0, $discountedAmount) + $vatPerItem;
+    $val->sales_order_paid_per_product = max(0, $remainingPerItem);
+
+    if ((float)$balancePerItem <= 0) {
+        $val->sales_order_balance_per_product = 0;
+    }
 
     // 2. Database & Stock Updates
     $query = checkCreate($val);
