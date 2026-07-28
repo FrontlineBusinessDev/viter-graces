@@ -150,6 +150,7 @@ RewriteRule ^purchase-order-movement/page/([0-9]+)$ controllers/developer/suppli
 ### FINANCE CASH SALES ### 
 RewriteRule ^finance-cash-sales/page/([0-9]+)$ controllers/developer/finance/cash-sales/page-by-cash-sales.php?start=$1 [L] 
 RewriteRule ^finance-account-receivable/page/([0-9]+)$ controllers/developer/finance/account-receivable/page-by-account-receivable.php?start=$1 [L] 
+RewriteRule ^finance-expenses/page/([0-9]+)$ controllers/developer/finance/expenses/page-by-expenses.php?start=$1 [L] 
 
 
  

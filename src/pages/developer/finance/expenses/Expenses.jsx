@@ -74,9 +74,11 @@ const Expenses = () => {
       <HeaderNav menu={"finance"} activeTab="expenses">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
-          path="Expenses"
+          className={`sm:overflow-auto sm:h-[calc(100dvh-203px)] h-[calc(97dvh-250px)]`}
+          path="finance-expenses"
           setItemEdit={setItemEdit}
+          haveFilterTable={true}
+          ishaveAdd={false}
         />
       </HeaderNav>
       {store.isAdd && <ModalExpenses itemEdit={itemEdit} />}
