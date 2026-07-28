@@ -9,6 +9,14 @@ function checkReadByProductOwner($object, $readByProductOwner = [])
     return $query;
 }
 
+// Read all
+function checkReadByReceivedBy($object, $readByProductOwner = [])
+{
+    $query = $object->readByReceivedBy($readByProductOwner);
+    checkQuery($query, "Empty records. (read All)");
+    return $query;
+}
+
 // Read limit
 function checkReadByProductOwnerLimit($object, $readByProductOwner = [])
 {

@@ -102,7 +102,7 @@ const SalesReports = () => {
         filterComponent: (column) => (
           <SearchableSelectFilter
             column={column}
-            path="product-owner/read-by-product-owner"
+            path="product-owner/read-by-received-by"
             testFilterId={"filter-owner"}
           />
         ),

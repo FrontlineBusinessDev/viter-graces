@@ -48,6 +48,7 @@ RewriteRule ^product-owner/reset-password/([0-9]+)$ controllers/developer/settin
 RewriteRule ^product-owner/read-by-product-owner$ controllers/developer/settings/product-owner/read-by-product-owner.php [L] 
 RewriteRule ^product-owner/read-in-modal/([0-9]+)$ controllers/developer/settings/product-owner/read-in-modal.php?id=$1 [L] 
 RewriteRule ^product-owner/read-in-modal$ controllers/developer/settings/product-owner/read-in-modal.php [L] 
+RewriteRule ^product-owner/read-by-received-by$ controllers/developer/settings/product-owner/read-by-received-by.php [L] 
 
 ### CUSTOMER ###
 RewriteRule ^customer$ controllers/developer/customer/customer.php [L]
