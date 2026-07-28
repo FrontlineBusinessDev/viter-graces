@@ -258,6 +258,7 @@ function installmentDetails($val, $installmentItems)
 
         $val->installment_payment_code_id = 0;
         $val->installment_payment_is_paid = 0;
+        $val->installment_payment_aid = 0;
         $val->installment_payment_code = 'sales-order';
         $val->installment_payment_due_date = $val->sales_order_due_date;
         $val->installment_payment_code_number = $val->sales_order_number;
@@ -290,6 +291,7 @@ function installmentDetails($val, $installmentItems)
 
         $val->installment_payment_code_id = 0;
         $val->installment_payment_is_paid = 0;
+        $val->installment_payment_aid = 0;
         $val->installment_payment_code = 'sales-order';
         $val->installment_payment_due_date = $val->sales_order_due_date;
         $val->installment_payment_code_number = $val->sales_order_number;
