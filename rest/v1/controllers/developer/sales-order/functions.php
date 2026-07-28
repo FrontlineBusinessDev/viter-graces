@@ -212,8 +212,6 @@ function checkReadSalesOrder($object, $allowedColumns = [])
     return $query;
 }
 
-
-
 // Update 
 function installmentDetails($val, $installmentItems)
 {
@@ -272,10 +270,12 @@ function installmentDetails($val, $installmentItems)
         }
         checkCreateInstallment($val);
 
-        // if cahnges in to not due on receipt and not inatallment
-        for ($a = 0; $a < count($installmentItems); $a++) {
-            $val->installment_payment_aid = $installmentItems[$a]['installment_payment_aid'];
-            checkDeleteinstallmentById($val);
+        if (count($installmentItems) > 0) {
+            // if cahnges in to not due on receipt and not inatallment
+            for ($a = 0; $a < count($installmentItems); $a++) {
+                $val->installment_payment_aid = $installmentItems[$a]['installment_payment_aid'];
+                checkDeleteinstallmentById($val);
+            }
         }
     }
 
@@ -305,6 +305,14 @@ function installmentDetails($val, $installmentItems)
         }
 
         checkCreateInstallment($val);
+
+        if (count($installmentItems) > 0) {
+            // if cahnges in to not due on receipt and not inatallment
+            for ($a = 0; $a < count($installmentItems); $a++) {
+                $val->installment_payment_aid = $installmentItems[$a]['installment_payment_aid'];
+                checkDeleteinstallmentById($val);
+            }
+        }
     }
 
     return;
