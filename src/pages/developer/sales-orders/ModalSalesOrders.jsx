@@ -46,12 +46,12 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
       ? itemEdit?.installmentItems
       : [
           {
-            installmet_payment_aid: 0,
-            installmet_payment_code: "sales-order",
-            installmet_payment_due_date: store?.credentials?.data?.server_date,
-            installmet_payment_code_number: "",
-            installmet_payment_code_id: "",
-            installmet_payment_amount: "",
+            installment_payment_aid: 0,
+            installment_payment_code: "sales-order",
+            installment_payment_due_date: store?.credentials?.data?.server_date,
+            installment_payment_code_number: "",
+            installment_payment_code_id: "",
+            installment_payment_amount: "",
             id: 0,
           },
         ],
@@ -153,12 +153,12 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     setInstallmentItems([
       ...installmentItems,
       {
-        installmet_payment_aid: 0,
-        installmet_payment_code: "sales-order",
-        installmet_payment_due_date: store?.credentials?.data?.server_date,
-        installmet_payment_code_number: "",
-        installmet_payment_code_id: "",
-        installmet_payment_amount: "",
+        installment_payment_aid: 0,
+        installment_payment_code: "sales-order",
+        installment_payment_due_date: store?.credentials?.data?.server_date,
+        installment_payment_code_number: "",
+        installment_payment_code_id: "",
+        installment_payment_amount: "",
         id: installmentCounter,
       },
     ]);
@@ -173,7 +173,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     setInstallmentItemsDelete([
       ...installmentItemsDelete,
       {
-        installmet_payment_aid: isEmptyItem(a?.installmet_payment_aid, 0),
+        installment_payment_aid: isEmptyItem(a?.installment_payment_aid, 0),
         id: a.id,
       },
     ]);
@@ -727,12 +727,12 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                     onChange={(e) => {
                                       handleChangeInstallment(
                                         index,
-                                        "installmet_payment_due_date",
+                                        "installment_payment_due_date",
                                         e.target.value,
                                       );
                                     }}
                                     defaultValue={isEmptyItem(
-                                      a["installmet_payment_due_date"],
+                                      a["installment_payment_due_date"],
                                       1,
                                     )}
                                     type="date"
@@ -741,13 +741,13 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                     onChange={(e) => {
                                       handleChangeInstallment(
                                         index,
-                                        "installmet_payment_amount",
+                                        "installment_payment_amount",
                                         e.target.value,
                                         0,
                                       );
                                     }}
                                     defaultValue={isEmptyItem(
-                                      a["installmet_payment_amount"],
+                                      a["installment_payment_amount"],
                                       "",
                                     )}
                                     placeholder="0"

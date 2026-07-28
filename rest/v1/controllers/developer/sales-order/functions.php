@@ -56,10 +56,10 @@ function checkDeleteById($object)
 }
 
 // Delete 
-function checkDeleteInstallmetById($object)
+function checkDeleteinstallmentById($object)
 {
-    $query = $object->deleteInstallmetById();
-    checkQuery($query, "There's a problem processing your request. (deleteInstallmetById)");
+    $query = $object->deleteinstallmentById();
+    checkQuery($query, "There's a problem processing your request. (deleteinstallmentById)");
     return $query;
 }
 
@@ -222,22 +222,22 @@ function installmentDetails($val, $installmentItems)
             // CREATE INSTALLMENT PAYMENT
             for ($a = 0; $a < count($installmentItems); $a++) {
                 if ($a === 0) {
-                    $val->sales_order_due_date = $installmentItems[$a]["installmet_payment_due_date"];
+                    $val->sales_order_due_date = $installmentItems[$a]["installment_payment_due_date"];
                 }
-                $val->installmet_payment_code_id = 0;
-                $val->installmet_payment_is_paid = 0;
-                $val->installmet_payment_aid = $installmentItems[$a]["installmet_payment_aid"];
-                $val->installmet_payment_code = $installmentItems[$a]["installmet_payment_code"];
-                $val->installmet_payment_due_date = $installmentItems[$a]["installmet_payment_due_date"];
-                $val->installmet_payment_code_number = $val->sales_order_number;
-                $val->installmet_payment_customer_id = $val->sales_order_customer_id;
-                $val->installmet_payment_customer_name = $val->sales_order_customer_name;
-                $val->installmet_payment_method = "";
-                $val->installmet_payment_amount = $installmentItems[$a]["installmet_payment_amount"];
-                if ((float)$val->installmet_payment_aid == 0) {
+                $val->installment_payment_code_id = 0;
+                $val->installment_payment_is_paid = 0;
+                $val->installment_payment_aid = $installmentItems[$a]["installment_payment_aid"];
+                $val->installment_payment_code = $installmentItems[$a]["installment_payment_code"];
+                $val->installment_payment_due_date = $installmentItems[$a]["installment_payment_due_date"];
+                $val->installment_payment_code_number = $val->sales_order_number;
+                $val->installment_payment_customer_id = $val->sales_order_customer_id;
+                $val->installment_payment_customer_name = $val->sales_order_customer_name;
+                $val->installment_payment_method = "";
+                $val->installment_payment_amount = $installmentItems[$a]["installment_payment_amount"];
+                if ((float)$val->installment_payment_aid == 0) {
                     checkCreateInstallment($val);
                 } else {
-                    checkId($val->installmet_payment_aid);
+                    checkId($val->installment_payment_aid);
                     checkUpdateInstallment($val);
                 }
             }
@@ -256,25 +256,25 @@ function installmentDetails($val, $installmentItems)
 
         $val->sales_order_due_date = date("Y-m-d", strtotime($val->sales_order_date . ' +' . (float)$termsDaysCount . ' days'));
 
-        $val->installmet_payment_code_id = 0;
-        $val->installmet_payment_is_paid = 0;
-        $val->installmet_payment_code = 'sales-order';
-        $val->installmet_payment_due_date = $val->sales_order_due_date;
-        $val->installmet_payment_code_number = $val->sales_order_number;
-        $val->installmet_payment_customer_id = $val->sales_order_customer_id;
-        $val->installmet_payment_customer_name = $val->sales_order_customer_name;
-        $val->installmet_payment_method = "";
-        $val->installmet_payment_amount = $val->sales_order_total_balance_amount;
+        $val->installment_payment_code_id = 0;
+        $val->installment_payment_is_paid = 0;
+        $val->installment_payment_code = 'sales-order';
+        $val->installment_payment_due_date = $val->sales_order_due_date;
+        $val->installment_payment_code_number = $val->sales_order_number;
+        $val->installment_payment_customer_id = $val->sales_order_customer_id;
+        $val->installment_payment_customer_name = $val->sales_order_customer_name;
+        $val->installment_payment_method = "";
+        $val->installment_payment_amount = $val->sales_order_total_balance_amount;
 
         if ((float)$val->sales_order_total_balance_amount <= 0) {
-            $val->installmet_payment_is_paid = 1;
+            $val->installment_payment_is_paid = 1;
         }
         checkCreateInstallment($val);
 
         // if cahnges in to not due on receipt and not inatallment
         for ($a = 0; $a < count($installmentItems); $a++) {
-            $val->installmet_payment_aid = $installmentItems[$a]['installmet_payment_aid'];
-            checkDeleteInstallmetById($val);
+            $val->installment_payment_aid = $installmentItems[$a]['installment_payment_aid'];
+            checkDeleteinstallmentById($val);
         }
     }
 
@@ -282,24 +282,24 @@ function installmentDetails($val, $installmentItems)
 
         // if changes in to due on receipt
         for ($a = 0; $a < count($installmentItems); $a++) {
-            $val->installmet_payment_aid = $installmentItems[$a]['installmet_payment_aid'];
-            checkDeleteInstallmetById($val);
+            $val->installment_payment_aid = $installmentItems[$a]['installment_payment_aid'];
+            checkDeleteinstallmentById($val);
         }
 
         $val->sales_order_due_date = $val->sales_order_date;
 
-        $val->installmet_payment_code_id = 0;
-        $val->installmet_payment_is_paid = 0;
-        $val->installmet_payment_code = 'sales-order';
-        $val->installmet_payment_due_date = $val->sales_order_due_date;
-        $val->installmet_payment_code_number = $val->sales_order_number;
-        $val->installmet_payment_customer_id = $val->sales_order_customer_id;
-        $val->installmet_payment_customer_name = $val->sales_order_customer_name;
-        $val->installmet_payment_method = $val->sales_order_payment_method;
-        $val->installmet_payment_amount = $val->sales_order_total_balance_amount;
+        $val->installment_payment_code_id = 0;
+        $val->installment_payment_is_paid = 0;
+        $val->installment_payment_code = 'sales-order';
+        $val->installment_payment_due_date = $val->sales_order_due_date;
+        $val->installment_payment_code_number = $val->sales_order_number;
+        $val->installment_payment_customer_id = $val->sales_order_customer_id;
+        $val->installment_payment_customer_name = $val->sales_order_customer_name;
+        $val->installment_payment_method = $val->sales_order_payment_method;
+        $val->installment_payment_amount = $val->sales_order_total_balance_amount;
 
         if ((float)$val->sales_order_total_balance_amount <= 0) {
-            $val->installmet_payment_is_paid = 1;
+            $val->installment_payment_is_paid = 1;
         }
 
         checkCreateInstallment($val);

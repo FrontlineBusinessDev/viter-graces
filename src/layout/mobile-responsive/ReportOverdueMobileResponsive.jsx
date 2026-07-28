@@ -32,18 +32,18 @@ const ReportOverdueMobileResponsive = ({
                       <span
                         className={`font-semibold text-black dark:text-light text-lg capitalize`}
                       >
-                        {rowData?.installmet_payment_customer_name}
+                        {rowData?.installment_payment_customer_name}
                       </span>
 
                       <span className={`font-semibold text-xs ml-1  `}>
-                        ({rowData?.installmet_payment_code_number})
+                        ({rowData?.installment_payment_code_number})
                       </span>
                     </div>
                     <span className={`font-semibold text-left! text-xs `}>
                       <AmountWithPesoSign
                         classN={"size-3"}
                         classAmnt={" justify-start "}
-                        amount={rowData?.installmet_payment_amount}
+                        amount={rowData?.installment_payment_amount}
                       />
                     </span>
                   </div>
@@ -55,7 +55,7 @@ const ReportOverdueMobileResponsive = ({
                     </li>
                     <li>
                       <span className={`font-semibold text-left! text-xs `}>
-                        {rowData?.installmet_payment_due_date}
+                        {rowData?.installment_payment_due_date}
                       </span>
                     </li>
                   </ul>

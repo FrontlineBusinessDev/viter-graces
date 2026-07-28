@@ -61,7 +61,7 @@ export const PropsValues = (props, items, installmentItems) => {
 
   values.total =
     installmentItems?.reduce(
-      (isum, itemIns) => isum + Number(itemIns.installmet_payment_amount),
+      (isum, itemIns) => isum + Number(itemIns.installment_payment_amount),
       0,
     ) + Number(values.sales_order_paid_amount);
   values.validationAmount =

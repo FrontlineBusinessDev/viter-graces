@@ -36,16 +36,16 @@ class SalesOrder
     public $sales_order_created;
     public $sales_order_updated;
 
-    public $installmet_payment_aid;
-    public $installmet_payment_code_id;
-    public $installmet_payment_code;
-    public $installmet_payment_is_paid;
-    public $installmet_payment_due_date;
-    public $installmet_payment_code_number;
-    public $installmet_payment_method;
-    public $installmet_payment_amount;
-    public $installmet_payment_customer_id;
-    public $installmet_payment_customer_name;
+    public $installment_payment_aid;
+    public $installment_payment_code_id;
+    public $installment_payment_code;
+    public $installment_payment_is_paid;
+    public $installment_payment_due_date;
+    public $installment_payment_code_number;
+    public $installment_payment_method;
+    public $installment_payment_amount;
+    public $installment_payment_customer_id;
+    public $installment_payment_customer_name;
 
     public $stock_movement_before_qty;
     public $stock_movement_after_qty;
@@ -62,7 +62,7 @@ class SalesOrder
     public $tblStockMovements;
     public $tblMovementStock;
     public $tblProducts;
-    public $tblInstallmetPayment;
+    public $tblinstallmentPayment;
 
     public $filters;
     public $column_start;
@@ -79,7 +79,7 @@ class SalesOrder
         $this->tblStockMovements = "graces_stock_movement";
         $this->tblMovementStock = "graces_stock_movement";
         $this->tblProducts = "graces_products";
-        $this->tblInstallmetPayment = "graces_installment_payment";
+        $this->tblinstallmentPayment = "graces_installment_payment";
     }
 
     // create
@@ -669,14 +669,14 @@ class SalesOrder
     }
 
     // delete
-    public function deleteInstallmetById()
+    public function deleteinstallmentById()
     {
         try {
-            $sql = "delete from {$this->tblInstallmetPayment} ";
-            $sql .= "where installmet_payment_aid = :installmet_payment_aid ";
+            $sql = "delete from {$this->tblinstallmentPayment} ";
+            $sql .= "where installment_payment_aid = :installment_payment_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "installmet_payment_aid" => $this->installmet_payment_aid,
+                "installment_payment_aid" => $this->installment_payment_aid,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
@@ -689,12 +689,12 @@ class SalesOrder
     public function deleteInstallment()
     {
         try {
-            $sql = "delete from {$this->tblInstallmetPayment} ";
-            $sql .= "where installmet_payment_code_number = :installmet_payment_code_number ";
-            $sql .= "and installmet_payment_code = 'sales-order' ";
+            $sql = "delete from {$this->tblinstallmentPayment} ";
+            $sql .= "where installment_payment_code_number = :installment_payment_code_number ";
+            $sql .= "and installment_payment_code = 'sales-order' ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "installmet_payment_code_number" => $this->sales_order_number,
+                "installment_payment_code_number" => $this->sales_order_number,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
@@ -762,42 +762,42 @@ class SalesOrder
     public function createInstallment()
     {
         try {
-            $sql = "insert into {$this->tblInstallmetPayment} ";
-            $sql .= "( installmet_payment_code_id, ";
-            $sql .= "installmet_payment_code, ";
-            $sql .= "installmet_payment_is_paid, ";
-            $sql .= "installmet_payment_due_date, ";
-            $sql .= "installmet_payment_code_number, ";
-            $sql .= "installmet_payment_amount, ";
-            $sql .= "installmet_payment_method, ";
-            $sql .= "installmet_payment_customer_id, ";
-            $sql .= "installmet_payment_customer_name, ";
-            $sql .= "installmet_payment_created, ";
-            $sql .= "installmet_payment_updated ) values ( ";
-            $sql .= ":installmet_payment_code_id, ";
-            $sql .= ":installmet_payment_code, ";
-            $sql .= ":installmet_payment_is_paid, ";
-            $sql .= ":installmet_payment_due_date, ";
-            $sql .= ":installmet_payment_code_number, ";
-            $sql .= ":installmet_payment_amount, ";
-            $sql .= ":installmet_payment_method, ";
-            $sql .= ":installmet_payment_customer_id, ";
-            $sql .= ":installmet_payment_customer_name, ";
-            $sql .= ":installmet_payment_created, ";
-            $sql .= ":installmet_payment_updated ) ";
+            $sql = "insert into {$this->tblinstallmentPayment} ";
+            $sql .= "( installment_payment_code_id, ";
+            $sql .= "installment_payment_code, ";
+            $sql .= "installment_payment_is_paid, ";
+            $sql .= "installment_payment_due_date, ";
+            $sql .= "installment_payment_code_number, ";
+            $sql .= "installment_payment_amount, ";
+            $sql .= "installment_payment_method, ";
+            $sql .= "installment_payment_customer_id, ";
+            $sql .= "installment_payment_customer_name, ";
+            $sql .= "installment_payment_created, ";
+            $sql .= "installment_payment_updated ) values ( ";
+            $sql .= ":installment_payment_code_id, ";
+            $sql .= ":installment_payment_code, ";
+            $sql .= ":installment_payment_is_paid, ";
+            $sql .= ":installment_payment_due_date, ";
+            $sql .= ":installment_payment_code_number, ";
+            $sql .= ":installment_payment_amount, ";
+            $sql .= ":installment_payment_method, ";
+            $sql .= ":installment_payment_customer_id, ";
+            $sql .= ":installment_payment_customer_name, ";
+            $sql .= ":installment_payment_created, ";
+            $sql .= ":installment_payment_updated ) ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "installmet_payment_code_id" => $this->installmet_payment_code_id,
-                "installmet_payment_code" => $this->installmet_payment_code,
-                "installmet_payment_is_paid" => $this->installmet_payment_is_paid,
-                "installmet_payment_due_date" => $this->installmet_payment_due_date,
-                "installmet_payment_code_number" => $this->installmet_payment_code_number,
-                "installmet_payment_amount" => $this->installmet_payment_amount,
-                "installmet_payment_method" => $this->installmet_payment_method,
-                "installmet_payment_customer_id" => $this->installmet_payment_customer_id,
-                "installmet_payment_customer_name" => $this->installmet_payment_customer_name,
-                "installmet_payment_created" => $this->sales_order_created,
-                "installmet_payment_updated" => $this->sales_order_updated,
+                "installment_payment_code_id" => $this->installment_payment_code_id,
+                "installment_payment_code" => $this->installment_payment_code,
+                "installment_payment_is_paid" => $this->installment_payment_is_paid,
+                "installment_payment_due_date" => $this->installment_payment_due_date,
+                "installment_payment_code_number" => $this->installment_payment_code_number,
+                "installment_payment_amount" => $this->installment_payment_amount,
+                "installment_payment_method" => $this->installment_payment_method,
+                "installment_payment_customer_id" => $this->installment_payment_customer_id,
+                "installment_payment_customer_name" => $this->installment_payment_customer_name,
+                "installment_payment_created" => $this->sales_order_created,
+                "installment_payment_updated" => $this->sales_order_updated,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
@@ -1146,13 +1146,13 @@ class SalesOrder
     public function readByInstallment()
     {
         try {
-            $sql = "select *, installmet_payment_aid as id from {$this->tblInstallmetPayment} ";
-            $sql .= "where installmet_payment_code_number = :installmet_payment_code_number ";
-            $sql .= "and installmet_payment_code = 'sales-order' ";
-            $sql .= "order by installmet_payment_code_number asc ";
+            $sql = "select *, installment_payment_aid as id from {$this->tblinstallmentPayment} ";
+            $sql .= "where installment_payment_code_number = :installment_payment_code_number ";
+            $sql .= "and installment_payment_code = 'sales-order' ";
+            $sql .= "order by installment_payment_code_number asc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "installmet_payment_code_number" => $this->sales_order_number,
+                "installment_payment_code_number" => $this->sales_order_number,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
@@ -1166,17 +1166,17 @@ class SalesOrder
     {
         try {
             $sql = "select ";
-            $sql .= "DATE_FORMAT(installmet_payment_due_date, '%b %d, %Y') as sales_order_due_date, ";
-            $sql .= "from {$this->tblInstallmetPayment} ";
-            $sql .= "where installmet_payment_code_number = :installmet_payment_code_number ";
-            $sql .= "and installmet_payment_code = 'sales-order' ";
-            $sql .= "and installmet_payment_is_paid = '0' ";
-            $sql .= "and DATE(installmet_payment_due_date) = DATE(:date_today) ";
-            $sql .= "order by DATE(installmet_payment_due_date) desc ";
+            $sql .= "DATE_FORMAT(installment_payment_due_date, '%b %d, %Y') as sales_order_due_date, ";
+            $sql .= "from {$this->tblinstallmentPayment} ";
+            $sql .= "where installment_payment_code_number = :installment_payment_code_number ";
+            $sql .= "and installment_payment_code = 'sales-order' ";
+            $sql .= "and installment_payment_is_paid = '0' ";
+            $sql .= "and DATE(installment_payment_due_date) = DATE(:date_today) ";
+            $sql .= "order by DATE(installment_payment_due_date) desc ";
             $sql .= "limit 1 ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "installmet_payment_code_number" => $this->sales_order_number,
+                "installment_payment_code_number" => $this->sales_order_number,
                 "date_today" => $this->date_today,
             ]);
         } catch (PDOException $ex) {
@@ -1190,17 +1190,17 @@ class SalesOrder
     public function updateInstallment()
     {
         try {
-            $sql = "update {$this->tblInstallmetPayment} set ";
-            $sql .= "installmet_payment_due_date = :installmet_payment_due_date, ";
-            $sql .= "installmet_payment_amount = :installmet_payment_amount, ";
-            $sql .= "installmet_payment_updated = :installmet_payment_updated ";
-            $sql .= "where installmet_payment_aid = :installmet_payment_aid ";
+            $sql = "update {$this->tblinstallmentPayment} set ";
+            $sql .= "installment_payment_due_date = :installment_payment_due_date, ";
+            $sql .= "installment_payment_amount = :installment_payment_amount, ";
+            $sql .= "installment_payment_updated = :installment_payment_updated ";
+            $sql .= "where installment_payment_aid = :installment_payment_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "installmet_payment_due_date" => $this->installmet_payment_due_date,
-                "installmet_payment_amount" => $this->installmet_payment_amount,
-                "installmet_payment_updated" => $this->sales_order_updated,
-                "installmet_payment_aid" => $this->installmet_payment_aid,
+                "installment_payment_due_date" => $this->installment_payment_due_date,
+                "installment_payment_amount" => $this->installment_payment_amount,
+                "installment_payment_updated" => $this->sales_order_updated,
+                "installment_payment_aid" => $this->installment_payment_aid,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

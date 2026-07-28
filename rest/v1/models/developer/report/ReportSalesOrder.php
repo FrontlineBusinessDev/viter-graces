@@ -45,7 +45,7 @@ class ReportSalesOrder
     public $tblMovementStock;
     public $tblProducts;
     public $tblSuppliersPurchaseOrder;
-    public $tblInstallmetPayment;
+    public $tblinstallmentPayment;
 
     public $filters;
     public $column_start;
@@ -61,7 +61,7 @@ class ReportSalesOrder
         $this->tblMovementStock = "graces_stock_movement";
         $this->tblProducts = "graces_products";
         $this->tblSuppliersPurchaseOrder = "graces_suppliers_purchase_order";
-        $this->tblInstallmetPayment = "graces_installment_payment";
+        $this->tblinstallmentPayment = "graces_installment_payment";
     }
 
     // read all
@@ -1063,8 +1063,8 @@ class ReportSalesOrder
         $params = [
             "due_date" => $this->due_date,
             ...$this->column_search != "" ? [
-                "installmet_payment_due_date" => "%{$this->column_search}%",
-                "installmet_payment_code_number" => "%{$this->column_search}%",
+                "installment_payment_due_date" => "%{$this->column_search}%",
+                "installment_payment_code_number" => "%{$this->column_search}%",
             ] : [],
         ];
 
@@ -1087,21 +1087,21 @@ class ReportSalesOrder
         }
         try {
             $sql = "select *, ";
-            $sql .= "DATE_FORMAT(installmet_payment_due_date, '%b %d, %Y') as installmet_payment_due_date, ";
-            $sql .= "DATEDIFF(NOW(), installmet_payment_due_date) as days_ago, ";
-            $sql .= "installmet_payment_aid as id, ";
-            $sql .= "installmet_payment_is_paid as is_active, ";
-            $sql .= "installmet_payment_code_number as name ";
-            $sql .= "from {$this->tblInstallmetPayment} ";
-            $sql .= "where installmet_payment_is_paid = '0' ";
-            $sql .= "and DATE(installmet_payment_due_date) <= DATE(:due_date) ";
+            $sql .= "DATE_FORMAT(installment_payment_due_date, '%b %d, %Y') as installment_payment_due_date, ";
+            $sql .= "DATEDIFF(NOW(), installment_payment_due_date) as days_ago, ";
+            $sql .= "installment_payment_aid as id, ";
+            $sql .= "installment_payment_is_paid as is_active, ";
+            $sql .= "installment_payment_code_number as name ";
+            $sql .= "from {$this->tblinstallmentPayment} ";
+            $sql .= "where installment_payment_is_paid = '0' ";
+            $sql .= "and DATE(installment_payment_due_date) <= DATE(:due_date) ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
-                $sql .= ($this->column_search != "" ? "and (installmet_payment_due_date like :installmet_payment_due_date 
-                or installmet_payment_code_number like :installmet_payment_code_number) " : " ");
+                $sql .= ($this->column_search != "" ? "and (installment_payment_due_date like :installment_payment_due_date 
+                or installment_payment_code_number like :installment_payment_code_number) " : " ");
             }
-            $sql .= " order by DATE(installmet_payment_due_date) asc ";
+            $sql .= " order by DATE(installment_payment_due_date) asc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
@@ -1120,8 +1120,8 @@ class ReportSalesOrder
             "total" => $this->column_total,
             "due_date" => $this->due_date,
             ...$this->column_search != "" ? [
-                "installmet_payment_due_date" => "%{$this->column_search}%",
-                "installmet_payment_code_number" => "%{$this->column_search}%",
+                "installment_payment_due_date" => "%{$this->column_search}%",
+                "installment_payment_code_number" => "%{$this->column_search}%",
             ] : [],
         ];
 
@@ -1144,21 +1144,21 @@ class ReportSalesOrder
         }
         try {
             $sql = "select *, ";
-            $sql .= "DATE_FORMAT(installmet_payment_due_date, '%b %d, %Y') as installmet_payment_due_date, ";
-            $sql .= "DATEDIFF(NOW(), installmet_payment_due_date) as days_ago, ";
-            $sql .= "installmet_payment_aid as id, ";
-            $sql .= "installmet_payment_is_paid as is_active, ";
-            $sql .= "installmet_payment_code_number as name ";
-            $sql .= "from {$this->tblInstallmetPayment} ";
-            $sql .= "where installmet_payment_is_paid = '0' ";
-            $sql .= "and DATE(installmet_payment_due_date) <= DATE(:due_date) ";
+            $sql .= "DATE_FORMAT(installment_payment_due_date, '%b %d, %Y') as installment_payment_due_date, ";
+            $sql .= "DATEDIFF(NOW(), installment_payment_due_date) as days_ago, ";
+            $sql .= "installment_payment_aid as id, ";
+            $sql .= "installment_payment_is_paid as is_active, ";
+            $sql .= "installment_payment_code_number as name ";
+            $sql .= "from {$this->tblinstallmentPayment} ";
+            $sql .= "where installment_payment_is_paid = '0' ";
+            $sql .= "and DATE(installment_payment_due_date) <= DATE(:due_date) ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
-                $sql .= ($this->column_search != "" ? "and (installmet_payment_due_date like :installmet_payment_due_date 
-                or installmet_payment_code_number like :installmet_payment_code_number) " : " ");
+                $sql .= ($this->column_search != "" ? "and (installment_payment_due_date like :installment_payment_due_date 
+                or installment_payment_code_number like :installment_payment_code_number) " : " ");
             }
-            $sql .= " order by DATE(installmet_payment_due_date) asc ";
+            $sql .= " order by DATE(installment_payment_due_date) asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -1176,14 +1176,14 @@ class ReportSalesOrder
     {
         try {
             $sql = "select *, ";
-            $sql .= "DATE_FORMAT(installmet_payment_due_date, '%b %d, %Y') as installmet_payment_due_date, ";
-            $sql .= "DATEDIFF(NOW(), installmet_payment_due_date) as days_ago, ";
-            $sql .= "installmet_payment_aid as id, ";
-            $sql .= "installmet_payment_code_number as name ";
-            $sql .= "from {$this->tblInstallmetPayment} ";
-            $sql .= "where installmet_payment_is_paid = '0' ";
-            $sql .= "and DATE(installmet_payment_due_date) <= DATE(:due_date) ";
-            $sql .= " order by DATE(installmet_payment_due_date) desc ";
+            $sql .= "DATE_FORMAT(installment_payment_due_date, '%b %d, %Y') as installment_payment_due_date, ";
+            $sql .= "DATEDIFF(NOW(), installment_payment_due_date) as days_ago, ";
+            $sql .= "installment_payment_aid as id, ";
+            $sql .= "installment_payment_code_number as name ";
+            $sql .= "from {$this->tblinstallmentPayment} ";
+            $sql .= "where installment_payment_is_paid = '0' ";
+            $sql .= "and DATE(installment_payment_due_date) <= DATE(:due_date) ";
+            $sql .= " order by DATE(installment_payment_due_date) desc ";
             $sql .= "limit :total ";
             $query = $this->connection->prepare($sql);
             $query->execute([

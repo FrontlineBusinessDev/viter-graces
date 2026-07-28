@@ -24,7 +24,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkPayload($data);
 
     $val->due_date = date('Y-m-d');
-    $val->installmet_payment_customer_id = $data["id"];
+    $val->installment_payment_customer_id = $data["id"];
 
     $val->column_search = $data["searchValue"];    // get data 
     $val->filters = $data['columnFilters'];

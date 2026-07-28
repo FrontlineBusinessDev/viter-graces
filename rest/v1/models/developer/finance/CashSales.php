@@ -36,16 +36,16 @@ class CashSales
     public $sales_order_created;
     public $sales_order_updated;
 
-    public $installmet_payment_aid;
-    public $installmet_payment_code_id;
-    public $installmet_payment_code;
-    public $installmet_payment_is_paid;
-    public $installmet_payment_due_date;
-    public $installmet_payment_code_number;
-    public $installmet_payment_method;
-    public $installmet_payment_amount;
-    public $installmet_payment_customer_id;
-    public $installmet_payment_customer_name;
+    public $installment_payment_aid;
+    public $installment_payment_code_id;
+    public $installment_payment_code;
+    public $installment_payment_is_paid;
+    public $installment_payment_due_date;
+    public $installment_payment_code_number;
+    public $installment_payment_method;
+    public $installment_payment_amount;
+    public $installment_payment_customer_id;
+    public $installment_payment_customer_name;
 
     public $stock_movement_before_qty;
     public $stock_movement_after_qty;
@@ -62,7 +62,7 @@ class CashSales
     public $tblStockMovements;
     public $tblMovementStock;
     public $tblProducts;
-    public $tblInstallmetPayment;
+    public $tblinstallmentPayment;
 
     public $filters;
     public $column_start;
