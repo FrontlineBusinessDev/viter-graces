@@ -271,7 +271,6 @@ function installmentDetails($val, $installmentItems)
         }
         checkCreateInstallment($val);
 
-        returnError($installmentItems);
         // if cahnges in to not due on receipt and not inatallment
         for ($a = 0; $a < count($installmentItems); $a++) {
             $val->installmet_payment_aid = $installmentItems[$a]['installmet_payment_aid'];
