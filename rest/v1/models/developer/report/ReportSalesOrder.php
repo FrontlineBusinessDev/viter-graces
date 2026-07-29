@@ -64,6 +64,7 @@ class ReportSalesOrder
         $this->tblinstallmentPayment = "graces_installment_payment";
     }
 
+
     // read all
     public function readAllSalesOrder($allowedColumns)
     {
@@ -97,11 +98,16 @@ class ReportSalesOrder
         }
         try {
             $sql = "select *, ";
+            $sql .= "sales_order_number, ";
             $sql .= "sales_order_status as is_status, ";
-            $sql .= "sales_order_is_active as is_active, ";
+            $sql .= "sales_order_total_receivable_amount as total_amount, ";
+            $sql .= "sales_order_total_amount as total_sub_amount, ";
+            $sql .= "sales_order_paid_amount as total_paid, ";
             $sql .= "sales_order_aid as id, ";
+            $sql .= "sales_order_is_active as is_active, ";
             $sql .= "sales_order_date as order_date, ";
             $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";
@@ -114,7 +120,7 @@ class ReportSalesOrder
             or sales_order_product_owner_name like :sales_order_product_owner_name 
             or sales_order_product_name like :sales_order_product_name ) " : " ");
             }
-            $sql .= " order by sales_order_is_active desc, ";
+            $sql .= " order by MAX(sales_order_is_active) desc, ";
             $sql .= "sales_order_number desc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
@@ -122,7 +128,6 @@ class ReportSalesOrder
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
-
         return $query;
     }
 
@@ -161,11 +166,16 @@ class ReportSalesOrder
         }
         try {
             $sql = "select *, ";
+            $sql .= "sales_order_number, ";
             $sql .= "sales_order_status as is_status, ";
-            $sql .= "sales_order_is_active as is_active, ";
+            $sql .= "sales_order_total_receivable_amount as total_amount, ";
+            $sql .= "sales_order_total_amount as total_sub_amount, ";
+            $sql .= "sales_order_paid_amount as total_paid, ";
             $sql .= "sales_order_aid as id, ";
+            $sql .= "sales_order_is_active as is_active, ";
             $sql .= "sales_order_date as order_date, ";
             $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";
@@ -188,7 +198,6 @@ class ReportSalesOrder
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
-
         return $query;
     }
 

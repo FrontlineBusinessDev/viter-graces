@@ -17,7 +17,7 @@ if (array_key_exists("id", $_GET)) {
     // get data
     $val->return_product_aid = $_GET['id'];
 
-    $val->return_product_is_restocked = $data["return_product_is_restocked"];
+    $val->return_product_is_restocked = $data["return_product_is_restocked"] == "no" ? 0 : 1;
     $val->return_product_reason = $data["return_product_reason"];
     $val->return_product_notes = $data["return_product_notes"];
     $val->return_product_date = $data["return_product_date"];

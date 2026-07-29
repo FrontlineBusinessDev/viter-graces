@@ -6,13 +6,20 @@ import TitleHeader from "./TitleHeader";
 import { setTabValue } from "@/store/StoreAction";
 import Toast from "@/components/Toast";
 
-const HeaderNav = ({ children, menu, submenu, activeTab = "" }) => {
+const HeaderNav = ({
+  children,
+  menu,
+  submenu,
+  description = "",
+  activeTab = "",
+}) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
   const toggleMobileNav = () => setMobileNavOpen(!mobileNavOpen);
   React.useEffect(() => {
     dispatch(setTabValue(activeTab));
   }, [menu]);
+
   return (
     <>
       <div className="hidden sm:block">
@@ -45,7 +52,7 @@ const HeaderNav = ({ children, menu, submenu, activeTab = "" }) => {
             : "sm:pl-[250px] md:pl-[220px] "
         } `}
       >
-        {activeTab !== "" ? <TitleHeader /> : ""}
+        {activeTab !== "" ? <TitleHeader description={description} /> : ""}
         {children}
       </div>
       {store.success && <Toast variant="success" />}

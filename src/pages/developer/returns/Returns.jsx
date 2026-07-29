@@ -13,6 +13,7 @@ import {
 const Returns = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
+  const [dataCount, setDataCount] = React.useState("...Loading");
 
   // Columns
   const columns = [
@@ -117,13 +118,18 @@ const Returns = () => {
 
   return (
     <>
-      <HeaderNav menu={"returns"} activeTab="returns">
+      <HeaderNav
+        menu={"returns"}
+        description={`${dataCount} total returns`}
+        activeTab="returns"
+      >
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
           path="returns-products"
           haveFilterTable={true}
           setItemEdit={setItemEdit}
+          setDataCount={setDataCount}
         />
       </HeaderNav>
       {store.isAdd && <ModalReturns itemEdit={itemEdit} />}

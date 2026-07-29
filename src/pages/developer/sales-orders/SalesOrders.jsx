@@ -12,17 +12,16 @@ import {
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import useQueryData from "@/services/useQueryData";
+import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalSalesOrders from "./ModalSalesOrders";
 import ViewSalesDetails from "./ViewSalesDetails";
-import { setIsAdd } from "@/store/StoreAction";
-import { DateFormat } from "@/components/DateFormat";
-import { getDateNow } from "@/components/getDateNow";
 
 const SalesOrders = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
+  const [dataCount, setDataCount] = React.useState("...Loading");
 
   // Columns
   const columns = [
@@ -187,12 +186,17 @@ const SalesOrders = () => {
 
   return (
     <>
-      <HeaderNav menu={"sales orders"} activeTab="sales-orders">
+      <HeaderNav
+        menu={"sales orders"}
+        description={`${dataCount} total order`}
+        activeTab="sales-orders"
+      >
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(100dvh-203px)] h-[calc(97dvh-250px)]`}
           path="sales-order"
           setItemEdit={setItemEdit}
+          setDataCount={setDataCount}
           haveFilterTable={true}
         />
       </HeaderNav>

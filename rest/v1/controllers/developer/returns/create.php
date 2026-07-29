@@ -18,7 +18,7 @@ checkPayload($data);
 
 $val->return_product_status = "pending";
 $val->return_product_number = "";
-$val->return_product_is_restocked = $data["return_product_is_restocked"];
+$val->return_product_is_restocked = $data["return_product_is_restocked"] == "no" ? 0 : 1;
 $val->return_product_reason = $data["return_product_reason"];
 $val->return_product_notes = $data["return_product_notes"];
 $val->return_product_date = $data["return_product_date"];

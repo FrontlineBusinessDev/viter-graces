@@ -4,7 +4,7 @@ import React from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { titleHeaderTab } from "./function-header";
 
-const TitleHeader = ({}) => {
+const TitleHeader = ({ description }) => {
   const { store } = React.useContext(StoreContext);
   const userRole = store.credentials?.data?.role;
   const navigate = useNavigate();
@@ -12,7 +12,7 @@ const TitleHeader = ({}) => {
   const location = useLocation();
   const currentTab = location.pathname.split("/")[2];
 
-  const currentHeader = titleHeaderTab().find((item) => {
+  const currentHeader = titleHeaderTab(description).find((item) => {
     const hasTabs = item.array_tab.length > 0;
 
     if (!item.roles?.includes(userRole)) return false;

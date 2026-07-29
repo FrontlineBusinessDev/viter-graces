@@ -16,14 +16,13 @@ import {
 
 import React from "react";
 
-export const titleHeaderTab = () => {
+export const titleHeaderTab = (description) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
   const onClickTab = () => {
     dispatch(setIsSearch(false));
     sessionStorage.removeItem("quickAdd");
   };
-
   let navItems = [
     {
       title: "products",
@@ -59,13 +58,13 @@ export const titleHeaderTab = () => {
     },
     {
       title: "sales-orders",
-      description: "6 orders total",
+      description: `${description}`,
       roles: ["admin", "developer"],
       array_tab: [],
     },
     {
       title: "returns",
-      description: "6 orders total",
+      description: `${description}`,
       roles: ["admin", "developer", "product_owner"],
       array_tab: [],
     },

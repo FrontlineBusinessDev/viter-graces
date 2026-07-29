@@ -36,6 +36,7 @@ const InfiniteTable = ({
   setItemEdit = () => {},
   setSearchValue = () => {},
   setFilterColumns = () => {},
+  setDataCount = () => {},
   haveFilterTable = false,
   hasExport = false,
   isSearch = true,
@@ -178,18 +179,7 @@ const InfiniteTable = ({
         return row.getValue(columnId) === value;
       },
       date: (row, columnId, value) => {
-        if (
-          path === "sales-order" &&
-          columnId === "sales_order_date" &&
-          value !== store.credentials?.data?.server_date
-        ) {
-          return row.getValue(columnId) === DateFormat(value);
-        } else {
-          return (
-            row.getValue(columnId) ===
-            DateFormat(store.credentials?.data?.server_date)
-          );
-        }
+        return row.getValue(columnId) === DateFormat(value);
       },
       between: (row, columnId, value) => {
         const rowValue = row.getValue(columnId);
@@ -231,9 +221,13 @@ const InfiniteTable = ({
     if (columnFilters !== "") {
       setFilterColumns(columnFilters);
     }
-  }, [columnFilters]);
+    if (isFetching) {
+      setDataCount("...Loading");
+    } else {
+      setDataCount(rows?.length);
+    }
+  }, [columnFilters, isFetching]);
 
-  console.log("columnFilters", columnFilters);
   return (
     <>
       <div className="md:flex md:justify-between flex-row-reverse my-2 gap-4 items-center">
@@ -269,7 +263,12 @@ const InfiniteTable = ({
               <div className="mt-1 md:mt-3">
                 <input
                   type={"date"}
-                  value={isEmptyItem(columnFilters[0]?.value, "")}
+                  value={
+                    isEmptyItem(columnFilters[0]?.value?.min, "") === "" &&
+                    isEmptyItem(columnFilters[0]?.value?.max, "") === ""
+                      ? isEmptyItem(columnFilters[0]?.value, "")
+                      : ""
+                  }
                   onChange={(e) => {
                     setColumnFilters([
                       {
@@ -300,7 +299,12 @@ const InfiniteTable = ({
             <li>Filtered by:</li>
             {columnFilters?.map((a) => (
               <li key={a?.id} className="bg-gray-100 px-2 py-1 rounded-sm">
-                {a.value}
+                {console.log("123", isEmptyItem(a.value?.min, ""))}
+                {isEmptyItem(a.value?.min, "") === "" &&
+                isEmptyItem(a.value?.max, "") === ""
+                  ? a.value
+                  : Number(isEmptyItem(a.value?.min, "")) -
+                    isEmptyItem(a.value?.max, "max amount")}
               </li>
             ))}
             <li className="bg-gray-400 cursor-pointer hover:bg-primary text-white px-2 py-1 rounded-sm">

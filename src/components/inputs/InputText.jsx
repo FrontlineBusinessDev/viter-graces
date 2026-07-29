@@ -295,7 +295,6 @@ export const DebouncedInput = ({
     return () => clearTimeout(timeout);
   }, [value]);
 
-  console.log("value", value);
   return (
     <>
       {(isEmptyItem(filterFn, "auto") === "auto" ||
@@ -314,21 +313,18 @@ export const DebouncedInput = ({
           <input
             {...props}
             value={value?.min ?? ""}
-            type="search"
+            type="text"
             inputMode="numeric"
             pattern="[0-9]*"
-            // oninput={(this?.value = this?.value?.replaceAll(/[^0-9]/g, ""))}
             onChange={(e) => {
-              let min = e.target.value?.replaceAll(/[^0-9]/g, "")
-                ? Number(e.target.value?.replaceAll(/[^0-9]/g, ""))
-                : "";
-              let max = value?.max ?? "";
-              const newValue = {
+              const cleaned = e.target.value.replace(/[^0-9]/g, "");
+              const min = cleaned !== "" ? Number(cleaned) : "";
+
+              setValue({
                 ...value,
                 min,
-                max,
-              };
-              setValue(newValue);
+                max: value?.max ?? "",
+              });
             }}
             data-testid={`${cypressTesting}_min`}
             placeholder="min"
@@ -337,21 +333,18 @@ export const DebouncedInput = ({
           <input
             {...props}
             value={value?.max ?? ""}
-            type="search"
+            type="text"
             inputMode="numeric"
             pattern="[0-9]*"
-            // oninput={(this?.value = this?.value?.replaceAll(/[^0-9]/g, ""))}
             onChange={(e) => {
-              let max = e.target.value?.replaceAll(/[^0-9]/g, "")
-                ? Number(e.target.value?.replaceAll(/[^0-9]/g, ""))
-                : "";
-              let min = value?.min ?? "0";
-              const newValue = {
+              const cleaned = e.target.value.replace(/[^0-9]/g, "");
+              const max = cleaned !== "" ? Number(cleaned) : "";
+
+              setValue({
                 ...value,
-                min,
+                min: value?.min ?? "", // Keep existing min without forced "0" defaults
                 max,
-              };
-              setValue(newValue);
+              });
             }}
             data-testid={`${cypressTesting}_max`}
             placeholder="max"

@@ -50,9 +50,9 @@ const SalesReports = () => {
     {
       accessorKey: "sales_order_date",
       header: "date",
-      classTh: "min-w-40 ",
-      filterFn: "date",
+      classTh: "min-w-[7rem]",
       classTd: "",
+      filterFn: "date",
       meta: "",
     },
     {
