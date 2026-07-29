@@ -274,6 +274,7 @@ export const ActionTableList = (path, val = "default-status") => {
         "status-with-view",
         "default-status",
         "user-status",
+        "finance-ar",
         "edit-delete-status",
       ],
       name: "edit",
@@ -283,7 +284,12 @@ export const ActionTableList = (path, val = "default-status") => {
       testId: "action-edit",
     },
     {
-      filter_status: ["status-with-view", "default-status", "user-status"],
+      filter_status: [
+        "status-with-view",
+        "finance-expenses",
+        "default-status",
+        "user-status",
+      ],
       name: "archive",
       path: "active",
       icon: <ArchiveRestore className="size-5 lg:size-4" />,
@@ -299,7 +305,12 @@ export const ActionTableList = (path, val = "default-status") => {
       testId: "action-reset",
     },
     {
-      filter_status: ["status-with-view", "default-status", "user-status"],
+      filter_status: [
+        "status-with-view",
+        "default-status",
+        "finance-expenses",
+        "user-status",
+      ],
       name: "restore",
       path: "active",
       icon: <RotateCcw className="size-5 lg:size-4" />,
@@ -319,6 +330,7 @@ export const ActionTableList = (path, val = "default-status") => {
         "status-with-view",
         "default-status",
         "user-status",
+        "finance-expenses",
         "edit-delete-status",
       ],
       name: "delete",

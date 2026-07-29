@@ -77,8 +77,9 @@ RewriteRule ^suppliers-product/page-by-id/([0-9]+)$ controllers/developer/suppli
 RewriteRule ^suppliers-product/search$ controllers/developer/suppliers/product/search.php [L]
 RewriteRule ^suppliers-product/read-in-modal/([0-9]+)$ controllers/developer/suppliers/product/read-in-modal.php?id=$1 [L]
 RewriteRule ^suppliers-product/read-in-modal$ controllers/developer/suppliers/product/read-in-modal.php [L]
+RewriteRule ^suppliers-product/read-other-supplier-modal$ controllers/developer/suppliers/product/read-other-supplier-modal.php [L] 
 
-### PRODUCTS ###
+### PRODUCTS ### 
 RewriteRule ^products$ controllers/developer/products/products.php [L]
 RewriteRule ^products/([0-9]+)$ controllers/developer/products/products.php?id=$1 [L] 
 RewriteRule ^products/active/([0-9]+)$ controllers/developer/products/active.php?id=$1 [L] 
@@ -132,9 +133,10 @@ RewriteRule ^report-sales-order/page-all-inventory-movement/page/([0-9]+)$ contr
 RewriteRule ^report-sales-order/page-all-expenses/page/([0-9]+)$ controllers/developer/reports/page-all-expenses.php?start=$1 [L]
 RewriteRule ^report-sales-order/page-all-overdue-payment/page/([0-9]+)$ controllers/developer/reports/page-all-overdue-payment.php?start=$1 [L]
 RewriteRule ^report-sales-order/read-overdue-payment$ controllers/developer/reports/read-overdue-payment.php [L]
+RewriteRule ^report-sales-order/page-all-account-receivable/page/([0-9]+)$ controllers/developer/reports/page-all-account-receivable.php?start=$1 [L]
 
-### RETURN PRODUCTS ### 
-RewriteRule ^returns-products$ controllers/developer/returns/returns.php [L]
+### RETURN PRODUCTS ###
+RewriteRule ^returns-products$ controllers/developer/returns/returns.php [L] 
 RewriteRule ^returns-products/([0-9]+)$ controllers/developer/returns/returns.php?id=$1 [L] 
 RewriteRule ^returns-products/active/([0-9]+)$ controllers/developer/returns/active.php?id=$1 [L] 
 RewriteRule ^returns-products/page/([0-9]+)$ controllers/developer/returns/page.php?start=$1 [L]
@@ -152,6 +154,9 @@ RewriteRule ^purchase-order-movement/page/([0-9]+)$ controllers/developer/suppli
 RewriteRule ^finance-cash-sales/page/([0-9]+)$ controllers/developer/finance/cash-sales/page-by-cash-sales.php?start=$1 [L] 
 RewriteRule ^finance-account-receivable/page/([0-9]+)$ controllers/developer/finance/account-receivable/page-by-account-receivable.php?start=$1 [L] 
 RewriteRule ^finance-expenses/page/([0-9]+)$ controllers/developer/finance/expenses/page-by-expenses.php?start=$1 [L] 
+RewriteRule ^finance-expenses$ controllers/developer/finance/expenses/expenses.php [L] 
+RewriteRule ^finance-expenses/([0-9]+)$ controllers/developer/finance/expenses/expenses.php?id=$1  [L] 
+RewriteRule ^finance-expenses/active/([0-9]+)$ controllers/developer/finance/expenses/active.php?id=$1 [L] 
 
 
  

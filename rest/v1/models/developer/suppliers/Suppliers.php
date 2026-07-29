@@ -13,6 +13,7 @@ class Suppliers
     public $suppliers_notes;
     public $suppliers_delivery;
     public $suppliers_contact_person;
+    public $suppliers_is_default;
     public $suppliers_created;
     public $suppliers_updated;
 
@@ -63,6 +64,7 @@ class Suppliers
             $sql .= "suppliers_notes, ";
             $sql .= "suppliers_delivery, ";
             $sql .= "suppliers_contact_person, ";
+            $sql .= "suppliers_is_default, ";
             $sql .= "suppliers_created, ";
             $sql .= "suppliers_updated ) values ( ";
             $sql .= ":suppliers_is_active, ";
@@ -76,6 +78,7 @@ class Suppliers
             $sql .= ":suppliers_notes, ";
             $sql .= ":suppliers_delivery, ";
             $sql .= ":suppliers_contact_person, ";
+            $sql .= ":suppliers_is_default, ";
             $sql .= ":suppliers_created, ";
             $sql .= ":suppliers_updated ) ";
             $query = $this->connection->prepare($sql);
@@ -91,6 +94,38 @@ class Suppliers
                 "suppliers_notes" => $this->suppliers_notes,
                 "suppliers_delivery" => $this->suppliers_delivery,
                 "suppliers_contact_person" => $this->suppliers_contact_person,
+                "suppliers_is_default" => $this->suppliers_is_default,
+                "suppliers_created" => $this->suppliers_created,
+                "suppliers_updated" => $this->suppliers_updated,
+            ]);
+            $this->lastInsertedId = $this->connection->lastInsertId();
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // create
+    public function createOtherSupplier()
+    {
+        try {
+            $sql = "insert into {$this->tblSuppliers} ";
+            $sql .= "( suppliers_is_active, ";
+            $sql .= "suppliers_name, ";
+            $sql .= "suppliers_is_default, ";
+            $sql .= "suppliers_created, ";
+            $sql .= "suppliers_updated ) values ( ";
+            $sql .= ":suppliers_is_active, ";
+            $sql .= ":suppliers_name, ";
+            $sql .= ":suppliers_is_default, ";
+            $sql .= ":suppliers_created, ";
+            $sql .= ":suppliers_updated ) ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "suppliers_is_active" => $this->suppliers_is_active,
+                "suppliers_name" => $this->suppliers_name,
+                "suppliers_is_default" => $this->suppliers_is_default,
                 "suppliers_created" => $this->suppliers_created,
                 "suppliers_updated" => $this->suppliers_updated,
             ]);
@@ -417,6 +452,20 @@ class Suppliers
             $query->execute([
                 "suppliers_product_supplier_id" => "{$this->suppliers_aid}",
             ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function readOtherSupplier()
+    {
+        try {
+            $sql = "select * from {$this->tblSuppliers} ";
+            $sql .= "where suppliers_is_default = 1 ";
+            $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;

@@ -26,6 +26,7 @@ $val->suppliers_notes = $data["suppliers_notes"];
 $val->suppliers_delivery = $data["suppliers_delivery"];
 $val->suppliers_contact_person = $data["suppliers_contact_person"];
 $val->suppliers_is_active = 1;
+$val->suppliers_is_default = 0;
 $val->suppliers_created = date("Y-m-d H:i:s");
 $val->suppliers_updated = date("Y-m-d H:i:s");
 

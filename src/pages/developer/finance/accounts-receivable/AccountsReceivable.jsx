@@ -1,10 +1,9 @@
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
-import { Eye } from "lucide-react";
 import React from "react";
 import ViewAccountsReceivableDetails from "./ViewAccountsReceivableDetails";
-import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
+import { ActionTableList } from "@/layout/ArrayValue";
 
 const AccountsReceivable = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -42,15 +41,7 @@ const AccountsReceivable = () => {
       meta: "",
     },
     {
-      accessorKey: "sales_order_product_name",
-      header: "Items",
-      classTh: "",
-      classTd: "",
-      isMobileTitle: true,
-      meta: "",
-    },
-    {
-      accessorKey: "total_amount_per_product",
+      accessorKey: "sales_order_total_receivable_amount",
       header: "Amount",
       amount: true,
       classTh: "",
@@ -59,7 +50,7 @@ const AccountsReceivable = () => {
       meta: "",
     },
     {
-      accessorKey: "sales_order_paid_per_product",
+      accessorKey: "sales_order_paid_amount",
       header: "paid",
       amount: true,
       classTh: "",
@@ -68,7 +59,7 @@ const AccountsReceivable = () => {
       meta: "",
     },
     {
-      accessorKey: "sales_order_balance_per_product",
+      accessorKey: "sales_order_total_balance_amount",
       header: "balance",
       amount: true,
       classTh: "",
@@ -77,25 +68,11 @@ const AccountsReceivable = () => {
       meta: "",
     },
     {
-      accessorKey: "sales_order_product_owner_name",
-      header: "Product Owner",
-      classTh: "min-w-[10rem]",
-      classTd: "",
-      meta: {
-        filterComponent: (column) => (
-          <SearchableSelectFilter
-            column={column}
-            path="product-owner/read-by-product-owner"
-            testFilterId={"filter-owner"}
-          />
-        ),
-      },
-    },
-    {
       accessorKey: "action",
-      header: "action",
-      classTh: "",
-      classTd: "",
+      action_array: ActionTableList("expenses", "finance-ar"),
+      header: "Action",
+      classTh: " text-center ",
+      classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
     },
   ];
 
@@ -108,11 +85,10 @@ const AccountsReceivable = () => {
           path="finance-account-receivable"
           haveFilterTable={true}
           ishaveAdd={false}
+          setItemEdit={setItemEdit}
         />
       </HeaderNav>
-      {isView && (
-        <ViewAccountsReceivableDetails itemEdit={itemEdit} setView={setView} />
-      )}
+      {store.isAdd && <ViewAccountsReceivableDetails itemEdit={itemEdit} />}
     </>
   );
 };

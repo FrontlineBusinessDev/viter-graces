@@ -1,5 +1,20 @@
 <?php
 
+
+// Read all
+function deliveryStatus($val, $data)
+{
+
+    if ($val->purchase_order_payment_status == "paid") {
+        $val->purchase_order_delivery_status = "delivered - completed / paid";
+    }
+    if ($val->purchase_order_payment_status == "partially paid") {
+        $val->purchase_order_delivery_status = "delivered - completed / partially paid";
+    }
+    return;
+}
+
+
 // check association
 function allowedColumns()
 {

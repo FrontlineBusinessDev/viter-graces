@@ -119,6 +119,21 @@ function checkReadAllOverduePaymentLimit($object, $allowedColumns = [])
     checkQuery($query, "Empty records. (limit)");
     return $query;
 }
+// Read all
+function checkReadAllAR($object, $allowedColumns = [])
+{
+    $query = $object->readAllAR($allowedColumns);
+    checkQuery($query, "Empty records. (readAllAR)");
+    return $query;
+}
+
+// Read limit
+function checkReadARLimit($object, $allowedColumns = [])
+{
+    $query = $object->readARLimit($allowedColumns);
+    checkQuery($query, "Empty records. (read AR Limit)");
+    return $query;
+}
 
 // check association
 function allowedColumns()
@@ -148,7 +163,9 @@ function allowedColumns()
         "sales_order_installment",
         "sales_order_due_date",
         "sales_order_total_receivable_amount",
+        "sales_order_payment_method",
         "sales_order_paid_per_product",
+        "total_amount_per_product",
         "name",
         "id",
         "order_date",

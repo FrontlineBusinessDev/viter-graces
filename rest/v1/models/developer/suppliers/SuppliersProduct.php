@@ -13,6 +13,7 @@ class SuppliersProduct
 
     public $connection;
     public $lastInsertedId;
+    public $tblSuppliers;
     public $tblSuppliersProduct;
 
     public $filters;
@@ -24,6 +25,7 @@ class SuppliersProduct
     public function __construct($db)
     {
         $this->connection = $db;
+        $this->tblSuppliers = "graces_suppliers";
         $this->tblSuppliersProduct = "graces_suppliers_product";
     }
 
@@ -215,6 +217,40 @@ class SuppliersProduct
             $query->execute([
                 "suppliers_product_aid" => $this->suppliers_product_aid,
             ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function readOtherSupplier()
+    {
+        try {
+            $sql = "select * from {$this->tblSuppliers} ";
+            $sql .= "where suppliers_is_default = 1 ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function readOtherSupplierByProductOwnerId()
+    {
+        try {
+            $sql = "select sp.*, ";
+            $sql .= "sp.suppliers_product_aid as id, ";
+            $sql .= "sp.suppliers_product_name as name ";
+            $sql .= "from {$this->tblSuppliersProduct} as sp, ";
+            $sql .= "{$this->tblSuppliers} as s ";
+            $sql .= "where sp.suppliers_product_supplier_id = s.suppliers_aid ";
+            $sql .= "and s.suppliers_is_default = 1 ";
+            $sql .= "order by sp.suppliers_product_name asc ";
+            $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;

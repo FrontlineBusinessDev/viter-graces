@@ -7,14 +7,15 @@ require '../../../core/functions.php';
 require 'functions.php';
 // use needed classes
 require '../../../models/developer/activity-log/ActivityLog.php';
-require '../../../controllers/developer/customer/functions.php';
 require '../../../models/developer/customer/Customer.php';
+require '../../../models/developer/suppliers/Suppliers.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new ActivityLog($conn);
 $valCustomer = new Customer($conn);
+$valSupplier = new Suppliers($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -29,6 +30,10 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $queryCustomer = getResultData($valCustomer->readWalkInCustomer());
         if (count($queryCustomer) == 0) {
             checkCreateWalkInCustomer($valCustomer);
+        }
+        $querySupplier = getResultData($valSupplier->readOtherSupplier());
+        if (count($querySupplier) == 0) {
+            checkCreateOtherSupplier($valSupplier);
         }
 
         $val->column_total = $data['limit'];

@@ -3,6 +3,7 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ReportsStats from "../ReportsStats";
+import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
 
 const ArReport = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -10,41 +11,77 @@ const ArReport = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "status",
-      header: "Status",
-      classTh: "w-[8rem]",
-      classTd: "",
-    },
-    {
-      accessorKey: "order_no",
+      accessorKey: "sales_order_number",
       header: "Order #",
       classTh: "",
       classTd: "",
-      isMobileTitle: true,
+      meta: "",
     },
     {
-      accessorKey: "date",
+      accessorKey: "sales_order_date",
       header: "Date",
       classTh: "",
       classTd: "",
+      filterFn: "date",
+      meta: "",
     },
     {
-      accessorKey: "customer",
-      header: "Customer",
+      accessorKey: "sales_order_customer_name",
+      header: "Customers",
       classTh: "",
       classTd: "",
+      isMobileTitle: true,
+      meta: "",
     },
     {
-      accessorKey: "amount",
+      accessorKey: "sales_order_product_name",
+      header: "Items",
+      classTh: "",
+      classTd: "",
+      isMobileTitle: true,
+      meta: "",
+    },
+    {
+      accessorKey: "total_amount_per_product",
       header: "Amount",
+      amount: true,
       classTh: "",
       classTd: "",
+      filterFn: "between",
+      meta: "",
     },
     {
-      accessorKey: "method",
-      header: "Method",
+      accessorKey: "sales_order_paid_per_product",
+      header: "paid",
+      amount: true,
       classTh: "",
       classTd: "",
+      filterFn: "between",
+      meta: "",
+    },
+    {
+      accessorKey: "sales_order_balance_per_product",
+      header: "balance",
+      amount: true,
+      classTh: "",
+      classTd: "",
+      filterFn: "between",
+      meta: "",
+    },
+    {
+      accessorKey: "sales_order_product_owner_name",
+      header: "Product Owner",
+      classTh: "min-w-[10rem]",
+      classTd: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="product-owner/read-by-product-owner"
+            testFilterId={"filter-owner"}
+          />
+        ),
+      },
     },
   ];
 
@@ -55,7 +92,7 @@ const ArReport = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(82dvh-230px)] h-[calc(97dvh-250px)]`}
-          path="report-sales-order/page-all-low-stock"
+          path="report-sales-order/page-all-account-receivable"
           hasExport={true}
           haveFilterTable={true}
           ishaveAdd={false}

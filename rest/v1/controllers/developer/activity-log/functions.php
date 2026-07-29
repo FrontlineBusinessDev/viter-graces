@@ -47,3 +47,50 @@ function allowedColumnsActivityLog()
     ];
     return $query;
 }
+
+// Create 
+function checkCreateWalkInCustomer($object)
+{
+    $object->customer_name = "Walk in customer";
+    $object->customer_is_active = 1;
+    $object->customer_is_walk_in_customer = 1;
+    $object->customer_email = "";
+    $object->customer_phone = "";
+    $object->customer_address = "";
+    $object->customer_messenger = "";
+    $object->customer_whatsapp = "";
+    $object->customer_other = "";
+    $object->customer_notes = "";
+    $object->customer_created = date("Y-m-d H:i:s");
+    $object->customer_updated = date("Y-m-d H:i:s");
+
+
+    $query = $object->create();
+    checkQuery($query, "There's a problem processing your request. (create walk in customer data.)");
+    return $query;
+}
+
+// Create Product
+function checkCreateOtherSupplier($object)
+{
+    $object->suppliers_name = "Other";
+    $object->suppliers_is_active = 1;
+    $object->suppliers_is_default = 1;
+    $object->suppliers_created = date("Y-m-d H:i:s");
+    $object->suppliers_updated = date("Y-m-d H:i:s");
+
+    $query = $object->createOtherSupplier();
+
+    $object->suppliers_product_name = "other";
+    $object->suppliers_product_price = "0";
+    $object->suppliers_product_unit = "--";
+    $object->suppliers_product_is_active = 1;
+    $object->suppliers_product_supplier_id = $object->lastInsertedId;
+    $object->suppliers_product_supplier_name = "Other";
+    $object->suppliers_product_created = date("Y-m-d H:i:s");
+    $object->suppliers_product_updated = date("Y-m-d H:i:s");
+
+    $query = $object->createProduct();
+    checkQuery($query, "There's a problem processing your request. (create other supplier)");
+    return $query;
+}

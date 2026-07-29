@@ -160,7 +160,7 @@ export const titleHeaderTab = (description) => {
           title_tab: "AR-report",
           description_tab: "Monitor outstanding customer balances.",
           on_click: onClickTab,
-          ongoingDevelopment: true,
+          ongoingDevelopment: false,
         },
         {
           icon: "",

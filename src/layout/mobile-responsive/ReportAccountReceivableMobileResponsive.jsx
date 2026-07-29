@@ -1,9 +1,8 @@
-import Pills from "@/components/Pills";
+import { AmountWithPesoSign } from "@/components/PesoSign";
 import ActionButtonMobile from "../ActionButtonMobile";
 import { ActionTableList } from "../ArrayValue";
-import { AmountWithPesoSign } from "@/components/PesoSign";
 
-const FinanceCashSalesMobileResponsive = ({
+const ReportAccountReceivableMobileResponsive = ({
   rows,
   setData,
   setItemEdit,
@@ -14,7 +13,7 @@ const FinanceCashSalesMobileResponsive = ({
 }) => {
   return (
     <>
-      {isDefaultMobile === "finance-cash-sales" && (
+      {isDefaultMobile === "report-sales-order/page-all-account-receivable" && (
         <div>
           {rows?.map((row, index) => {
             const rowData = row.original;
@@ -86,6 +85,16 @@ const FinanceCashSalesMobileResponsive = ({
                         />
                       </span>
                     </li>
+                    <li className="flex text-left! text-xs">
+                      <span className={`text-gray-500 mr-2`}>Balance: </span>
+                      <span className="wrap-break-word font-semibold ml-1">
+                        <AmountWithPesoSign
+                          classN="size-3"
+                          classAmnt="flex justify-start text-red-800"
+                          amount={rowData?.sales_order_balance_per_product}
+                        />
+                      </span>
+                    </li>
                   </ul>
                   <div className=" ">
                     <ActionButtonMobile
@@ -110,4 +119,4 @@ const FinanceCashSalesMobileResponsive = ({
   );
 };
 
-export default FinanceCashSalesMobileResponsive;
+export default ReportAccountReceivableMobileResponsive;

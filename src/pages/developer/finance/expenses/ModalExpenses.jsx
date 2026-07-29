@@ -1,9 +1,15 @@
 import ModalButton from "@/components/buttons/ModalButton";
-import { InputSelectArray } from "@/components/inputs/InputSelect";
+import {
+  DefaultInputSelectTagArray,
+  InputSelectArray,
+  InputSelectArrayWithOptions,
+  InputSelectFilterTagArray,
+} from "@/components/inputs/InputSelect";
 import { InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { apiVersion } from "@/config/config";
+import { ActivityLogDetails } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
 import useQueryData from "@/services/useQueryData";
@@ -27,15 +33,6 @@ const ModalExpenses = ({ itemEdit }) => {
   const [items, setItems] = React.useState([]);
   const [counter, setCounter] = React.useState(0);
 
-  const handleAddItem = () => {
-    setItems((prev) => [...prev, { id: counter }]);
-    setCounter((prev) => prev + 1);
-  };
-
-  const handleRemoveItem = (id) => {
-    setItems((prev) => prev.filter((item) => item.id !== id));
-  };
-
   const handleClose = () => {
     dispatch(setIsAdd(false));
     dispatch(setError(false));
@@ -43,31 +40,16 @@ const ModalExpenses = ({ itemEdit }) => {
 
   handleEscape(() => handleClose());
 
-  const {
-    isLoading,
-    isFetching,
-    error,
-    data: supplier,
-  } = useQueryData(
-    `${apiVersion}/supplier`, // endpoint
-    "get", // method
-    "supplier", // key
-  );
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
     mutationFn: (values) =>
-      queryData(
-        itemEdit
-          ? `${apiVersion}/users/${itemEdit?.id}`
-          : `${apiVersion}/users`,
-        itemEdit ? "put" : "post",
-        values,
-      ),
+      queryData(`${apiVersion}/finance-expenses`, "post", values),
     onSuccess: (data) => {
       // Invalidate and refetch
-      queryClient.invalidateQueries({ queryKey: ["users"] });
+      queryClient.invalidateQueries({
+        queryKey: ["finance-expenses"],
+      });
 
       if (data.success) {
         dispatch(setIsAdd(false));
@@ -86,30 +68,50 @@ const ModalExpenses = ({ itemEdit }) => {
   });
 
   const initVal = {
-    user_account_aid: isEmptyItem(itemEdit?.user_account_aid, ""),
-    user_account_first_name: isEmptyItem(itemEdit?.user_account_first_name, ""),
-    user_account_last_name: isEmptyItem(itemEdit?.user_account_last_name, ""),
-    user_account_email: isEmptyItem(itemEdit?.user_account_email, ""),
-    user_account_role_id: isEmptyItem(itemEdit?.user_account_role_id, ""),
-    user_account_role: isEmptyItem(itemEdit?.user_account_role, ""),
-
-    name: isEmptyItem(itemEdit?.name, ""),
-    password_link: `/create-password`,
+    purchase_order_supplier_id: "",
+    purchase_order_supplier_name: "",
+    purchase_order_date: store?.credentials?.data?.server_date,
+    purchase_order_expected_delivery: store?.credentials?.data?.server_date,
+    purchase_order_total_amount: "",
+    purchase_order_transact_id: store?.credentials?.data?.id,
+    purchase_order_transact_name: store?.credentials?.data?.name,
+    purchase_order_tax: 0,
+    purchase_order_balance: 0,
+    purchase_order_discount: 0,
+    purchase_order_payment: 0,
+    total_amount: 0,
+    total_sub_amount: 0,
+    total_amount_without_discount_and_vat: 0,
+    purchase_order_status: "draft",
+    purchase_order_payment_status: "paid",
+    purchase_order_note: "",
+    suppliers_delivery: "monday",
+    purchase_order_percent_tax: "",
+    purchase_order_product_id: "",
+    purchase_order_product_name: "",
+    purchase_order_product_owner_id: "",
+    purchase_order_product_owner_name: "",
+    purchase_order_qty: "1",
+    purchase_order_price: 0,
+    purchase_order_product_name_other: "",
+    purchase_order_delivery_is_status: true,
   };
 
   const yupSchema = Yup.object({
-    user_account_first_name: Yup.string().trim().required("Required"),
-    user_account_last_name: Yup.string().trim().required("Required"),
-    user_account_email: Yup.string()
-      .trim()
-      .email("Invalid email")
-      .required("Required"),
-    user_account_role_id: Yup.string().trim().required("Required"),
+    purchase_order_date: Yup.string().trim().required("Required"),
+    purchase_order_payment_status: Yup.string().trim().required("Required"),
+    purchase_order_payment: Yup.string().trim().required("Required"),
+    purchase_order_price: Yup.string().trim().required("Required"),
   });
 
   React.useEffect(() => {
     dispatch(setError(false));
   }, []);
+
+  let paymentOption = [
+    { id: "partially paid", name: "Partially Paid" },
+    { id: "paid", name: "Paid" },
+  ];
 
   return (
     <>
@@ -127,110 +129,151 @@ const ModalExpenses = ({ itemEdit }) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
               // mutate data
-              mutation.mutate(values);
+
+              let data = {
+                ...ActivityLogDetails("purchase order", "create", store, {
+                  ...values,
+                }),
+                ...values,
+              };
+
+              // console.log(data);
+              mutation.mutate(data);
             }}
           >
             {(props) => {
+              if (props.values.purchase_order_payment_status === "paid") {
+                props.values.purchase_order_price =
+                  props.values.purchase_order_payment;
+              }
+              if (props.values.purchase_order_product_name !== "other") {
+                props.values.purchase_order_product_name_other = "";
+              }
               return (
                 <Form>
-                  <div className="relative mb-3">
-                    <InputSelectArray
-                      label="Supplier"
-                      type="text"
-                      name="user_account_role_id"
+                  <p>
+                    Supplier :{" "}
+                    <span className="uppercase font-bold">other</span>
+                  </p>
+                  <div className="relative ">
+                    <InputText
+                      label="Order Date"
+                      type="date"
+                      name="purchase_order_date"
                       disabled={mutation.isPending}
-                      isLoading={isLoading || isFetching}
-                      error={error}
-                      result={supplier}
+                    />
+                  </div>
+                  <div className="relative capitalize mt-3">
+                    <InputSelectArrayWithOptions
+                      label="Payment Status"
+                      type="text"
+                      name="purchase_order_payment_status"
+                      defaultValue="unpaid"
+                      options={paymentOption}
                       onChange={(e) => {
-                        props.values.user_account_role_id = e.target.value;
-                        props.values.user_account_role =
-                          e.target.options[e.target.selectedIndex].text;
+                        if (e.target.value === "partially paid") {
+                          props.setFieldValue("purchase_order_price", "0");
+                        }
+                        props.setFieldValue(
+                          "purchase_order_payment_status",
+                          e.target.value,
+                        );
                         return e;
                       }}
                     />
                   </div>
-                  <div className="grid grid-cols-2 gap-4">
-                    <div className="relative">
-                      <InputSelectArray
-                        label="Category"
-                        type="text"
-                        name="user_account_role_id"
-                        disabled={mutation.isPending}
-                        isLoading={isLoading || isFetching}
-                        error={error}
-                        result={supplier}
-                        onChange={(e) => {
-                          props.values.user_account_role_id = e.target.value;
-                          props.values.user_account_role =
-                            e.target.options[e.target.selectedIndex].text;
-                          return e;
-                        }}
-                      />
-                    </div>
-                    <div className="relative ">
-                      <InputText
-                        label="Amount"
-                        type="number"
-                        name="user_account_first_name"
-                        placeholder={`${itemEdit ? "0.00" : "0.00"}`}
-                        disabled={mutation.isPending}
-                      />
-                    </div>
-                    <div className="relative">
-                      <InputSelectArray
-                        label="VAT (Optional)"
-                        type="text"
-                        name="user_account_role_id"
-                        disabled={mutation.isPending}
-                        isLoading={isLoading || isFetching}
-                        error={error}
-                        result={supplier}
-                        onChange={(e) => {
-                          props.values.user_account_role_id = e.target.value;
-                          props.values.user_account_role =
-                            e.target.options[e.target.selectedIndex].text;
-                          return e;
-                        }}
-                      />
-                    </div>
-                    <div className="relative ">
-                      <InputText
-                        label="Date"
-                        type="date"
-                        name="user_account_last_name"
-                        disabled={mutation.isPending}
-                      />
-                    </div>
+                  <div className="relative capitalize mt-3">
+                    <DefaultInputSelectTagArray
+                      label="Product Owner"
+                      onChange={(e) => {
+                        props.setFieldValue(
+                          "purchase_order_product_owner_id",
+                          e.id,
+                        );
+                        props.setFieldValue(
+                          "purchase_order_product_owner_name",
+                          e.name,
+                        );
+                      }}
+                      dataVal={items}
+                      path={`product-owner/read-by-product-owner`}
+                      testFilterId="purchase_order_product_owner_id"
+                      store={store}
+                    />
                   </div>
                   <div className="relative my-3">
-                    <InputSelectArray
-                      label="Payment Method"
-                      type="text"
-                      name="user_account_role_id"
-                      disabled={mutation.isPending}
-                      isLoading={isLoading || isFetching}
-                      error={error}
-                      result={supplier}
-                      onChange={(e) => {
-                        props.values.user_account_role_id = e.target.value;
-                        props.values.user_account_role =
-                          e.target.options[e.target.selectedIndex].text;
-                        return e;
+                    <DefaultInputSelectTagArray
+                      label="Item"
+                      onChange={(e, selectedItem) => {
+                        if (selectedItem) {
+                          props.setFieldValue(
+                            "purchase_order_product_id",
+                            isEmptyItem(selectedItem.id, ""),
+                          );
+                          props.setFieldValue(
+                            "purchase_order_product_name",
+                            isEmptyItem(selectedItem.name, ""),
+                          );
+                        } else {
+                          props.setFieldValue("purchase_order_product_id", "");
+                          props.setFieldValue(
+                            "purchase_order_product_name",
+                            "",
+                          );
+                        }
                       }}
+                      dataVal={items}
+                      path={`suppliers-product/read-other-supplier-modal`}
+                      testFilterId="purchase_order_product_id"
+                      store={store}
                     />
                   </div>
+                  {props?.values?.purchase_order_product_name === "other" ? (
+                    <div className="relative mb-3">
+                      <InputText
+                        label="Other Item"
+                        type="text"
+                        name="purchase_order_product_name_other"
+                        disabled={mutation.isPending}
+                      />
+                    </div>
+                  ) : (
+                    ""
+                  )}
+                  <div className="relative mb-3">
+                    <InputText
+                      label="Amount Paid"
+                      type="number"
+                      number="number"
+                      name="purchase_order_payment"
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  {props?.values?.purchase_order_payment_status ===
+                  "partially paid" ? (
+                    <div className="relative mb-3">
+                      <InputText
+                        label="Total Amount"
+                        type="number"
+                        number="number"
+                        name="purchase_order_price"
+                        disabled={mutation.isPending}
+                      />
+                    </div>
+                  ) : (
+                    ""
+                  )}
 
                   <div className="relative">
                     <InputTextArea
-                      label="Description"
+                      label="Note"
                       type="text"
-                      name="user_account_email"
-                      placeholder={`${itemEdit ? "Update Description" : "Enter Description"}`}
+                      name="purchase_order_note"
+                      placeholder={`${itemEdit ? "Update notes" : "Enter notes"}`}
                       disabled={mutation.isPending}
+                      required={false}
                     />
                   </div>
-
                   {store.error && <MessageError />}
                   <div className="modal-action">
                     <ModalButton

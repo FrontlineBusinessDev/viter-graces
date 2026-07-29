@@ -451,14 +451,36 @@ const InfiniteTable = ({
                             {/* FOR ACTION BUTTONS */}
                             {item?.column?.columnDef?.accessorKey ===
                               "action" && (
-                              <ActionButtonTable
-                                item={item?.column?.columnDef}
-                                dataArray={rowData}
-                                setData={setData}
-                                setItemEdit={setItemEdit}
-                                ishaveSubAdd={ishaveSubAdd}
-                                path={path}
-                              />
+                              <>
+                                {item?.column?.columnDef?.haveAction ? (
+                                  <>
+                                    {rowData?.is_view === 1 && (
+                                      <ActionButtonTable
+                                        item={item?.column?.columnDef}
+                                        dataArray={rowData}
+                                        setData={setData}
+                                        setItemEdit={setItemEdit}
+                                        ishaveSubAdd={ishaveSubAdd}
+                                        path={path}
+                                      />
+                                    )}
+                                  </>
+                                ) : (
+                                  <>
+                                    {item?.column?.columnDef?.accessorKey ===
+                                      "action" && (
+                                      <ActionButtonTable
+                                        item={item?.column?.columnDef}
+                                        dataArray={rowData}
+                                        setData={setData}
+                                        setItemEdit={setItemEdit}
+                                        ishaveSubAdd={ishaveSubAdd}
+                                        path={path}
+                                      />
+                                    )}
+                                  </>
+                                )}
+                              </>
                             )}
                           </td>
                         ))}

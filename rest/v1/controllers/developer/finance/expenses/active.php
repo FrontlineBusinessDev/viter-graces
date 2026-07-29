@@ -1,0 +1,59 @@
+<?php
+// set http header
+require '../../../../core/header.php';
+// use needed functions
+require '../../../../core/functions.php';
+require 'functions.php';
+// use needed classes
+require '../../../../models/developer/suppliers/SuppliersPurchaseOrder.php';
+// ACTIVITY LOG DETAILS
+require '../../../../controllers/developer/activity-log/functions.php';
+require '../../../../models/developer/activity-log/ActivityLog.php';
+// check database connection
+$conn = null;
+$conn = checkDbConnection();
+// make instance of classes
+$val = new SuppliersPurchaseOrder($conn);
+$valActivity = new ActivityLog($conn);
+// get payload
+$body = file_get_contents("php://input");
+$data = json_decode($body, true);
+// get $_GET data
+// validate api key
+if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
+    checkApiKey();
+    if (array_key_exists("id", $_GET)) {
+        // check data
+        checkPayload($data);
+        $val->purchase_order_aid = $_GET['id'];
+        $val->purchase_order_is_active = trim($data["isActive"]);
+
+        if ((float)$val->purchase_order_is_active == 0) {
+            $val->purchase_order_status = 'inactive';
+            $val->purchase_order_payment_status = $data['purchase_order_payment_status'];
+            $val->purchase_order_delivery_status = 'not delivered / unpaid';
+        } else {
+            deliveryStatus($val, $data);
+            $val->purchase_order_status = 'draft';
+            $val->purchase_order_payment_status = 'unpaid';
+            $val->purchase_order_delivery_status = '';
+        }
+        $val->purchase_order_updated = date("Y-m-d H:i:s");
+
+
+        // INSTALLMENT DATA
+        checkId($val->purchase_order_aid);
+        $query = checkActive($val);
+        // create activity log
+        createActivityLog($valActivity, $data);
+        http_response_code(200);
+        returnSuccess($val, "Suppliers Product", $query);
+    }
+    // return 404 error if endpoint not available
+    checkEndpoint();
+}
+
+http_response_code(200);
+// when authentication is cancelled
+// header('HTTP/1.0 401 Unauthorized');
+checkAccess();

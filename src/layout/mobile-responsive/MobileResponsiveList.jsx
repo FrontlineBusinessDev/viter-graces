@@ -1,12 +1,14 @@
 import CustomerMobileReponsive from "./CustomerMobileReponsive";
 import ExpensesReportMobileResponsive from "./ExpensesReportMobileResponsive";
 import FinanceCashSalesMobileResponsive from "./FinanceCashSalesMobileResponsive";
+import FinanceExpensestMobileResponsive from "./FinanceExpensestMobileResponsive";
 import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
 import MovementMobileResponsive from "./MovementMobileResponsive";
 import ProductOwnerMobileReponsive from "./ProductOwnerMobileReponsive";
 import ProductsMobileResponsive from "./ProductsMobileResponsive";
 import PurchaseMovementMobileReponsive from "./PurchaseMovementMobileReponsive";
 import PurchaseOrderMobileReponsive from "./PurchaseOrderMobileReponsive";
+import ReportAccountReceivableMobileResponsive from "./ReportAccountReceivableMobileResponsive";
 import ReportOverdueMobileResponsive from "./ReportOverdueMobileResponsive";
 import ReturnsMobileReponsive from "./ReturnsMobileReponsive";
 import RoleMobileReponsive from "./RoleMobileReponsive";
@@ -136,6 +138,22 @@ const MobileResponsiveList = ({
       />
       {/* REPORT OVERDUE RESPONSIVE */}
       <FinanceCashSalesMobileResponsive
+        rows={rows}
+        setData={setData}
+        setItemEdit={setItemEdit}
+        isDefaultMobile={isDefaultMobile}
+        ishaveSubAdd={ishaveSubAdd}
+      />
+      {/* REPORT OVERDUE RESPONSIVE */}
+      <ReportAccountReceivableMobileResponsive
+        rows={rows}
+        setData={setData}
+        setItemEdit={setItemEdit}
+        isDefaultMobile={isDefaultMobile}
+        ishaveSubAdd={ishaveSubAdd}
+      />
+      {/* REPORT OVERDUE RESPONSIVE */}
+      <FinanceExpensestMobileResponsive
         rows={rows}
         setData={setData}
         setItemEdit={setItemEdit}

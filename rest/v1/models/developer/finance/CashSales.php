@@ -59,10 +59,6 @@ class CashSales
     public $connection;
     public $lastInsertedId;
     public $tblSalesOrder;
-    public $tblStockMovements;
-    public $tblMovementStock;
-    public $tblProducts;
-    public $tblinstallmentPayment;
 
     public $filters;
     public $column_start;

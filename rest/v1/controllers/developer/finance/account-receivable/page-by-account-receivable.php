@@ -35,52 +35,39 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
         $query = checkReadLimit($val);
         $total_result = checkReadAll($val);
+        $data = getResultData($query);
+
+        for ($i = 0; $i < count($data); $i++) {
+
+            $val->sales_order_number = $data[$i]["sales_order_number"];
+
+            $queryInstallment = $val->readByInstallment();
+
+            $queryDataInstallment = $queryInstallment
+                ? getResultData($queryInstallment)
+                : [];
+
+            $total_result_final[] = [
+                ...$data[$i],
+                "installmentItems" => $queryDataInstallment
+            ];
+        }
+
         http_response_code(200);
 
-        checkReadQuery(
-            $query,
-            $total_result,
-            $val->column_total,
-            $val->column_start
-        );
+        $response = new Response();
+        $returnData = [];
 
-
-        // for ($i = 0; $i < count($data); $i++) {
-
-        //     $val->sales_order_number = $data[$i]["sales_order_number"];
-
-        //     $queryLogin = $val->readBySoNumber();
-        //     $queryInstallment = $val->readByInstallment();
-
-        //     $queryLogin = $queryLogin
-        //         ? getResultData($queryLogin)
-        //         : [];
-        //     $queryDataInstallment = $queryInstallment
-        //         ? getResultData($queryInstallment)
-        //         : [];
-
-        //     $total_result_final[] = [
-        //         ...$data[$i],
-        //         "items" => $queryLogin,
-        //         "installmentItems" => $queryDataInstallment
-        //     ];
-        // }
-
-        // http_response_code(200);
-
-        // $response = new Response();
-        // $returnData = [];
-
-        // $returnData["data"] = $total_result_final;
-        // $returnData["count"] = count($total_result_final);
-        // $returnData["total"] = $total_result->rowCount();
-        // $returnData["per_page"] = $val->column_total;
-        // $returnData["page"] = (int)$val->column_start;
-        // $returnData["total_pages"] = ceil($total_result->rowCount() / $val->column_total);
-        // $returnData["success"] = true;
-        // $response->setData($returnData);
-        // $response->send();
-        // exit;
+        $returnData["data"] = $total_result_final;
+        $returnData["count"] = count($total_result_final);
+        $returnData["total"] = $total_result->rowCount();
+        $returnData["per_page"] = $val->column_total;
+        $returnData["page"] = (int)$val->column_start;
+        $returnData["total_pages"] = ceil($total_result->rowCount() / $val->column_total);
+        $returnData["success"] = true;
+        $response->setData($returnData);
+        $response->send();
+        exit;
     }
 }
 

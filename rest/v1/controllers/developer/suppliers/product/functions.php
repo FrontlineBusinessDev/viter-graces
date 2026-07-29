@@ -19,3 +19,11 @@ function allowedColumns()
     ];
     return $query;
 }
+
+// Read all
+function checkReadOtherSupplierByProductOwnerId($object)
+{
+    $query = $object->readOtherSupplierByProductOwnerId();
+    checkQuery($query, "Empty records. (read Other Supplier By Product Owner Id)");
+    return $query;
+}
