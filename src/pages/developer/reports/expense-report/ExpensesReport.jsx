@@ -50,7 +50,7 @@ const ExpensesReport = () => {
     {
       accessorKey: "purchase_order_product_name",
       header: "Product",
-      classTh: "w-[10rem]",
+      classTh: "min-w-[20rem]",
       classTd: "",
       meta: "",
     },

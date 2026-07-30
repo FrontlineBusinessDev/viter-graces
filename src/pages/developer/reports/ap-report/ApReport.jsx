@@ -3,48 +3,67 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ReportsStats from "../ReportsStats";
+import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
 
 const ApReport = () => {
   const { store, dispatch } = React.useContext(StoreContext);
 
+  //
   // Columns
   const columns = [
     {
-      accessorKey: "status",
-      header: "Status",
+      accessorKey: "purchase_order_number",
+      header: "PO Number",
+      orderNumber: "1",
+      classTh: "min-w-[8rem] ",
+      classTd: "",
+      meta: "",
+    },
+    {
+      accessorKey: "purchase_order_product_name",
+      header: "Product",
+      classTh: "min-w-[20rem]",
+      classTd: "",
+      meta: "",
+    },
+    {
+      accessorKey: "purchase_order_date",
+      header: "Order Date",
+      filterFn: "date",
       classTh: "w-[8rem]",
       classTd: "",
+      meta: "",
     },
     {
-      accessorKey: "order_no",
-      header: "Order #",
-      classTh: "",
+      accessorKey: "purchase_order_total_balance_per_product",
+      header: "balance",
+      amount: true,
+      classTh: "min-w-[20rem]",
       classTd: "",
-      isMobileTitle: true,
+      filterFn: "between",
+      meta: "",
     },
     {
-      accessorKey: "date",
-      header: "Date",
-      classTh: "",
+      accessorKey: "purchase_order_product_owner_name",
+      header: "Product Owner",
+      classTh: "min-w-[10rem]",
       classTd: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="product-owner/read-by-product-owner"
+            testFilterId={"filter-owner"}
+          />
+        ),
+      },
     },
     {
-      accessorKey: "customer",
-      header: "Customer",
-      classTh: "",
-      classTd: "",
-    },
-    {
-      accessorKey: "amount",
-      header: "Amount",
-      classTh: "",
-      classTd: "",
-    },
-    {
-      accessorKey: "method",
-      header: "Method",
-      classTh: "",
-      classTd: "",
+      accessorKey: "purchase_order_note",
+      header: "Note",
+      classTh: "w-[20rem]",
+      classTd: "truncate block! w-[20rem]",
+      meta: "",
     },
   ];
 
@@ -55,7 +74,7 @@ const ApReport = () => {
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(82dvh-230px)] h-[calc(97dvh-250px)]`}
-          path="report-sales-order/page-all-low-stock"
+          path="report-sales-order/page-all-account-payable"
           hasExport={true}
           haveFilterTable={true}
           ishaveAdd={false}

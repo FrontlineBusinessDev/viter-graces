@@ -1345,4 +1345,131 @@ class ReportSalesOrder
         }
         return $query;
     }
+
+
+
+    // read all
+    public function readAllAP($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            ...$this->column_search != "" ? [
+                "purchase_order_number" => "%{$this->column_search}%",
+                "purchase_order_supplier_name" => "%{$this->column_search}%",
+                "purchase_order_product_owner_name" => "%{$this->column_search}%",
+                "purchase_order_product_name" => "%{$this->column_search}%",
+            ] : [],
+        ];
+
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
+            if (is_array($item['value'])) {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
+            }
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "DATE_FORMAT(purchase_order_date, '%b %d, %Y') as purchase_order_date, ";
+            $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as purchase_order_expected_delivery, ";
+            $sql .= "purchase_order_status as status, ";
+            $sql .= "purchase_order_payment_status as payment_status, ";
+            $sql .= "purchase_order_total_amount_per_product as amount, ";
+            $sql .= "purchase_order_is_active as is_active, ";
+            $sql .= "purchase_order_number as name ";
+            $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
+            $sql .= " where CAST(purchase_order_total_balance_per_product AS DECIMAL(10, 2)) != 0 ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and (purchase_order_number like :purchase_order_number
+                or purchase_order_supplier_name like :purchase_order_supplier_name 
+                or purchase_order_product_owner_name like :purchase_order_product_owner_name 
+                or purchase_order_product_name like :purchase_order_product_name) " : " ");
+            }
+            $sql .= " order by purchase_order_is_active desc, ";
+            $sql .= " purchase_order_aid desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readAPLimit($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            "start" => $this->column_start - 1,
+            "total" => $this->column_total,
+            ...$this->column_search != "" ? [
+                "purchase_order_number" => "%{$this->column_search}%",
+                "purchase_order_supplier_name" => "%{$this->column_search}%",
+                "purchase_order_product_owner_name" => "%{$this->column_search}%",
+                "purchase_order_product_name" => "%{$this->column_search}%",
+            ] : [],
+        ];
+
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
+            if (is_array($item['value'])) {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
+            }
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "DATE_FORMAT(purchase_order_date, '%b %d, %Y') as purchase_order_date, ";
+            $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as purchase_order_expected_delivery, ";
+            $sql .= "purchase_order_status as status, ";
+            $sql .= "purchase_order_payment_status as payment_status, ";
+            $sql .= "purchase_order_total_amount_per_product as amount, ";
+            $sql .= "purchase_order_is_active as is_active, ";
+            $sql .= "purchase_order_number as name ";
+            $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
+            $sql .= " where CAST(purchase_order_total_balance_per_product AS DECIMAL(10, 2)) != 0 ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and (purchase_order_number like :purchase_order_number
+                or purchase_order_supplier_name like :purchase_order_supplier_name 
+                or purchase_order_product_owner_name like :purchase_order_product_owner_name 
+                or purchase_order_product_name like :purchase_order_product_name) " : " ");
+            }
+            $sql .= "order by purchase_order_is_active desc, ";
+            $sql .= "purchase_order_aid desc ";
+            $sql .= "limit :start, ";
+            $sql .= ":total ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
 }

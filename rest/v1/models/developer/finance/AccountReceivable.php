@@ -40,12 +40,16 @@ class AccountReceivable
     public $installment_payment_code_id;
     public $installment_payment_code;
     public $installment_payment_is_paid;
+    public $installment_payment_received_id;
+    public $installment_payment_received_name;
+    public $installment_payment_paid_amount;
     public $installment_payment_due_date;
     public $installment_payment_code_number;
     public $installment_payment_method;
     public $installment_payment_amount;
     public $installment_payment_customer_id;
     public $installment_payment_customer_name;
+    public $installment_payment_updated;
 
     public $stock_movement_before_qty;
     public $stock_movement_after_qty;
@@ -221,6 +225,83 @@ class AccountReceivable
                 "installment_payment_code_number" => $this->sales_order_number,
             ]);
         } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readAllSaleByOrderNumber()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= "where sales_order_number = :sales_order_number ";
+            $sql .= "order by sales_order_number asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_order_number" => $this->installment_payment_code_number,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
+    public function update()
+    {
+        try {
+            $sql = "update {$this->tblinstallmentPayment} set ";
+            $sql .= "installment_payment_is_paid = :installment_payment_is_paid, ";
+            $sql .= "installment_payment_received_id = :installment_payment_received_id, ";
+            $sql .= "installment_payment_received_name = :installment_payment_received_name, ";
+            $sql .= "installment_payment_paid_amount = :installment_payment_paid_amount, ";
+            $sql .= "installment_payment_updated = :installment_payment_updated ";
+            $sql .= "where installment_payment_aid = :installment_payment_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "installment_payment_is_paid" => $this->installment_payment_is_paid,
+                "installment_payment_received_id" => $this->installment_payment_received_id,
+                "installment_payment_received_name" => $this->installment_payment_received_name,
+                "installment_payment_paid_amount" => $this->installment_payment_paid_amount,
+                "installment_payment_updated" => $this->installment_payment_updated,
+                "installment_payment_aid" => $this->installment_payment_aid,
+            ]);
+        } catch (PDOException $ex) {
+
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
+    public function updateSales()
+    {
+        try {
+            $sql = "update {$this->tblSalesOrder} set ";
+            $sql .= "sales_order_balance_per_product = :sales_order_balance_per_product, ";
+            $sql .= "sales_order_paid_per_product = :sales_order_paid_per_product, ";
+            $sql .= "sales_order_total_balance_amount = :sales_order_total_balance_amount, ";
+            $sql .= "sales_order_paid_amount = :sales_order_paid_amount, ";
+            $sql .= "sales_order_status = :sales_order_status, ";
+            $sql .= "sales_order_updated = :sales_order_updated ";
+            $sql .= "where sales_order_aid = :sales_order_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_order_balance_per_product" => $this->sales_order_balance_per_product,
+                "sales_order_paid_per_product" => $this->sales_order_paid_per_product,
+                "sales_order_total_balance_amount" => $this->sales_order_total_balance_amount,
+                "sales_order_paid_amount" => $this->sales_order_paid_amount,
+                "sales_order_status" => $this->sales_order_status,
+                "sales_order_updated" => $this->sales_order_updated,
+                "sales_order_aid" => $this->sales_order_aid,
+            ]);
+        } catch (PDOException $ex) {
+
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }

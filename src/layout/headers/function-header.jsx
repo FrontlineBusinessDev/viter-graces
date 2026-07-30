@@ -167,7 +167,7 @@ export const titleHeaderTab = (description) => {
           title_tab: "AP-report",
           description_tab: "Review supplier balances and payables.",
           on_click: onClickTab,
-          ongoingDevelopment: true,
+          ongoingDevelopment: false,
         },
         {
           icon: "",

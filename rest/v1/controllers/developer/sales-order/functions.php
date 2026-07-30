@@ -215,6 +215,9 @@ function checkReadSalesOrder($object, $allowedColumns = [])
 // Update 
 function installmentDetails($val, $installmentItems)
 {
+    $val->installment_payment_received_id = "";
+    $val->installment_payment_received_name = "";
+    $val->installment_payment_paid_amount = 0;
     if (strtolower($val->sales_order_payment_terms) === "installment") {
         if (count($installmentItems) > 0) {
             // CREATE INSTALLMENT PAYMENT
@@ -230,7 +233,7 @@ function installmentDetails($val, $installmentItems)
                 $val->installment_payment_code_number = $val->sales_order_number;
                 $val->installment_payment_customer_id = $val->sales_order_customer_id;
                 $val->installment_payment_customer_name = $val->sales_order_customer_name;
-                $val->installment_payment_method = "";
+                $val->installment_payment_method = $val->sales_order_payment_method;
                 $val->installment_payment_amount = $installmentItems[$a]["installment_payment_amount"];
                 if ((float)$val->installment_payment_aid == 0) {
                     checkCreateInstallment($val);
@@ -262,11 +265,14 @@ function installmentDetails($val, $installmentItems)
         $val->installment_payment_code_number = $val->sales_order_number;
         $val->installment_payment_customer_id = $val->sales_order_customer_id;
         $val->installment_payment_customer_name = $val->sales_order_customer_name;
-        $val->installment_payment_method = "";
+        $val->installment_payment_method = $val->sales_order_payment_method;
         $val->installment_payment_amount = $val->sales_order_total_balance_amount;
 
         if ((float)$val->sales_order_total_balance_amount <= 0) {
             $val->installment_payment_is_paid = 1;
+            $val->installment_payment_paid_amount = $val->installment_payment_amount;
+            $val->installment_payment_received_id = $val->sales_order_received_by_id;
+            $val->installment_payment_received_name = $val->sales_order_received_by_name;
         }
         checkCreateInstallment($val);
 
@@ -302,6 +308,9 @@ function installmentDetails($val, $installmentItems)
 
         if ((float)$val->sales_order_total_balance_amount <= 0) {
             $val->installment_payment_is_paid = 1;
+            $val->installment_payment_paid_amount = $val->installment_payment_amount;
+            $val->installment_payment_received_id = $val->sales_order_received_by_id;
+            $val->installment_payment_received_name = $val->sales_order_received_by_name;
         }
 
         checkCreateInstallment($val);
@@ -317,9 +326,6 @@ function installmentDetails($val, $installmentItems)
 
     return;
 }
-
-
-
 
 // Read WEEKLY
 function checkReadSalesPerWeek($object)

@@ -42,3 +42,11 @@ function allowedColumns()
     ];
     return $query;
 }
+
+// Update Sales 
+function checkUpdateSales($object)
+{
+    $query = $object->updateSales();
+    checkQuery($query, "There's a problem processing your request. (Update Sales)");
+    return $query;
+}

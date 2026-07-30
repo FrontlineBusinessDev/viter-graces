@@ -134,6 +134,21 @@ function checkReadARLimit($object, $allowedColumns = [])
     checkQuery($query, "Empty records. (read AR Limit)");
     return $query;
 }
+// Read all
+function checkReadAllAP($object, $allowedColumns = [])
+{
+    $query = $object->readAllAP($allowedColumns);
+    checkQuery($query, "Empty records. (readAllAP)");
+    return $query;
+}
+
+// Read limit
+function checkReadAPLimit($object, $allowedColumns = [])
+{
+    $query = $object->readAPLimit($allowedColumns);
+    checkQuery($query, "Empty records. (read AP Limit)");
+    return $query;
+}
 
 // check association
 function allowedColumns()

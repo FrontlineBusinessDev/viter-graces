@@ -46,6 +46,9 @@ class SalesOrder
     public $installment_payment_amount;
     public $installment_payment_customer_id;
     public $installment_payment_customer_name;
+    public $installment_payment_paid_amount;
+    public $installment_payment_received_id;
+    public $installment_payment_received_name;
 
     public $stock_movement_before_qty;
     public $stock_movement_after_qty;
@@ -191,7 +194,6 @@ class SalesOrder
             ]);
             $this->lastInsertedId = $this->connection->lastInsertId();
         } catch (PDOException $ex) {
-
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
@@ -772,6 +774,9 @@ class SalesOrder
             $sql .= "installment_payment_method, ";
             $sql .= "installment_payment_customer_id, ";
             $sql .= "installment_payment_customer_name, ";
+            $sql .= "installment_payment_paid_amount, ";
+            $sql .= "installment_payment_received_id, ";
+            $sql .= "installment_payment_received_name, ";
             $sql .= "installment_payment_created, ";
             $sql .= "installment_payment_updated ) values ( ";
             $sql .= ":installment_payment_code_id, ";
@@ -783,6 +788,9 @@ class SalesOrder
             $sql .= ":installment_payment_method, ";
             $sql .= ":installment_payment_customer_id, ";
             $sql .= ":installment_payment_customer_name, ";
+            $sql .= ":installment_payment_paid_amount, ";
+            $sql .= ":installment_payment_received_id, ";
+            $sql .= ":installment_payment_received_name, ";
             $sql .= ":installment_payment_created, ";
             $sql .= ":installment_payment_updated ) ";
             $query = $this->connection->prepare($sql);
@@ -796,6 +804,9 @@ class SalesOrder
                 "installment_payment_method" => $this->installment_payment_method,
                 "installment_payment_customer_id" => $this->installment_payment_customer_id,
                 "installment_payment_customer_name" => $this->installment_payment_customer_name,
+                "installment_payment_paid_amount" => $this->installment_payment_paid_amount,
+                "installment_payment_received_id" => $this->installment_payment_received_id,
+                "installment_payment_received_name" => $this->installment_payment_received_name,
                 "installment_payment_created" => $this->sales_order_created,
                 "installment_payment_updated" => $this->sales_order_updated,
             ]);
