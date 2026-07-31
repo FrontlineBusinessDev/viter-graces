@@ -75,8 +75,10 @@ const AccountsPayable = () => {
       <HeaderNav menu={"finance"} activeTab="accounts-payable">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
-          path=""
+          className={`sm:overflow-auto sm:h-[calc(100dvh-203px)] h-[calc(97dvh-250px)]`}
+          path="finance-account-payable"
+          haveFilterTable={true}
+          ishaveAdd={false}
           setItemEdit={setItemEdit}
         />
       </HeaderNav>

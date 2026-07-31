@@ -17,6 +17,7 @@ const ActionButtonMobile = ({
   setItemEdit,
   path,
   itemVal = [],
+  updateOnly = false,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
@@ -51,121 +52,145 @@ const ActionButtonMobile = ({
   return (
     <>
       <div className="flex items-center justify-end gap-3 ">
-        {itemVal?.map((a, akey) => {
-          return (
-            isEmptyItem(a?.name, "") === "view" &&
-            Number(isEmptyItem(a?.isActive, 1)) ===
-              Number(isEmptyItem(dataArray?.is_active, 1)) && (
-              <div key={akey}>
-                <ActionButton
-                  item={a}
-                  onClick={() => handleView(a)}
-                  data-testid={a.testId}
-                />
-              </div>
-            )
-          );
-        })}
-        {dataArray?.is_active > 0 ? (
-          <>
-            <ActionButton
-              item={{
+        {updateOnly ? (
+          <ActionButton
+            item={{
+              ...dataArray,
+              name: "edit",
+              path: path,
+              isActive: 1,
+              testId: "action-edit",
+              icon: <Edit className="size-5 lg:size-4" />,
+            }}
+            onClick={() =>
+              handleUpdate({
                 ...dataArray,
                 name: "edit",
                 path: path,
                 isActive: 1,
-                testId: "action-edit",
-                icon: <Edit className="size-5 lg:size-4" />,
-              }}
-              onClick={() =>
-                handleUpdate({
-                  ...dataArray,
-                  name: "edit",
-                  path: path,
-                  isActive: 1,
-                })
-              }
-              data-testid={"action-edit"}
-            />
-            <ActionButton
-              item={{
-                ...dataArray,
-                name: "archive",
-                path: "active",
-                isActive: 1,
-                testId: "action-archive",
-                icon: <ArchiveRestore className="size-5 lg:size-4" />,
-              }}
-              onClick={() =>
-                handleAction({
-                  ...dataArray,
-                  name: "archive",
-                  path: "active",
-                  isActive: 1,
-                  testId: "action-archive",
-                })
-              }
-              data-testid={"action-archive"}
-            />
-            {path === "users" && (
-              <div>
+              })
+            }
+            data-testid={"action-edit"}
+          />
+        ) : (
+          <>
+            {itemVal?.map((a, akey) => {
+              return (
+                isEmptyItem(a?.name, "") === "view" &&
+                Number(isEmptyItem(a?.isActive, 1)) ===
+                  Number(isEmptyItem(dataArray?.is_active, 1)) && (
+                  <div key={akey}>
+                    <ActionButton
+                      item={a}
+                      onClick={() => handleView(a)}
+                      data-testid={a.testId}
+                    />
+                  </div>
+                )
+              );
+            })}
+            {dataArray?.is_active > 0 ? (
+              <>
                 <ActionButton
                   item={{
                     ...dataArray,
-                    name: "reset",
-                    path: "reset-password",
-                    icon: <KeySquare className="size-5 lg:size-4" />,
+                    name: "edit",
+                    path: path,
                     isActive: 1,
-                    testId: "action-reset",
+                    testId: "action-edit",
+                    icon: <Edit className="size-5 lg:size-4" />,
+                  }}
+                  onClick={() =>
+                    handleUpdate({
+                      ...dataArray,
+                      name: "edit",
+                      path: path,
+                      isActive: 1,
+                    })
+                  }
+                  data-testid={"action-edit"}
+                />
+                <ActionButton
+                  item={{
+                    ...dataArray,
+                    name: "archive",
+                    path: "active",
+                    isActive: 1,
+                    testId: "action-archive",
+                    icon: <ArchiveRestore className="size-5 lg:size-4" />,
                   }}
                   onClick={() =>
                     handleAction({
                       ...dataArray,
-                      name: "reset",
-                      path: "reset-password",
+                      name: "archive",
+                      path: "active",
                       isActive: 1,
-                      testId: "action-reset",
+                      testId: "action-archive",
                     })
                   }
-                  data-testid={"action-reset"}
+                  data-testid={"action-archive"}
                 />
-              </div>
+                {path === "users" && (
+                  <div>
+                    <ActionButton
+                      item={{
+                        ...dataArray,
+                        name: "reset",
+                        path: "reset-password",
+                        icon: <KeySquare className="size-5 lg:size-4" />,
+                        isActive: 1,
+                        testId: "action-reset",
+                      }}
+                      onClick={() =>
+                        handleAction({
+                          ...dataArray,
+                          name: "reset",
+                          path: "reset-password",
+                          isActive: 1,
+                          testId: "action-reset",
+                        })
+                      }
+                      data-testid={"action-reset"}
+                    />
+                  </div>
+                )}
+              </>
+            ) : (
+              <>
+                <ActionButton
+                  item={{
+                    ...dataArray,
+                    name: "restore",
+                    path: "active",
+                    isActive: 1,
+                    testId: "action-restore",
+                    icon: <RotateCcw className="size-5 lg:size-4" />,
+                  }}
+                  onClick={() =>
+                    handleAction({
+                      ...dataArray,
+                      name: "restore",
+                      path: "active",
+                      isActive: 1,
+                      testId: "action-restore",
+                    })
+                  }
+                  data-testid={"action-restore"}
+                />
+                <ActionButton
+                  item={{
+                    ...dataArray,
+                    name: "delete",
+                    path: path,
+                    isActive: 1,
+                    testId: "action-delete",
+                    icon: <Trash className="size-5 lg:size-4" />,
+                  }}
+                  onClick={() => handleAction({ ...dataArray, name: "delete" })}
+                  data-testid={"action-delete"}
+                />
+              </>
             )}
-          </>
-        ) : (
-          <>
-            <ActionButton
-              item={{
-                ...dataArray,
-                name: "restore",
-                path: "active",
-                isActive: 1,
-                testId: "action-restore",
-                icon: <RotateCcw className="size-5 lg:size-4" />,
-              }}
-              onClick={() =>
-                handleAction({
-                  ...dataArray,
-                  name: "restore",
-                  path: "active",
-                  isActive: 1,
-                  testId: "action-restore",
-                })
-              }
-              data-testid={"action-restore"}
-            />
-            <ActionButton
-              item={{
-                ...dataArray,
-                name: "delete",
-                path: path,
-                isActive: 1,
-                testId: "action-delete",
-                icon: <Trash className="size-5 lg:size-4" />,
-              }}
-              onClick={() => handleAction({ ...dataArray, name: "delete" })}
-              data-testid={"action-delete"}
-            />
           </>
         )}
       </div>

@@ -25,63 +25,53 @@ const FinanceARMobileResponsive = ({
                 className="lg:hidden border rounded-xl p-4 mb-4 shadow-sm"
               >
                 {/* HEADER */}
-                <div className="xs:flex flex-wrap gap-2 justify-between mb-3">
+                <div className="xs:flex flex-wrap gap-2 justify-between mb-1">
                   <ul className="flex flex-col">
                     <li className="flex gap-2 flex-wrap items-center">
                       <span
                         className={`font-semibold text-black dark:text-light text-lg capitalize`}
                       >
-                        {rowData?.sales_order_number}
+                        {rowData?.sales_order_customer_name}
                       </span>
                       <span className={`font-semibold text-xs `}>
-                        ({rowData?.sales_order_payment_method})
+                        ({rowData?.sales_order_number})
                       </span>
-                    </li>
-                    <li className={`font-semibold text-left text-xs `}>
-                      {rowData?.sales_order_customer_name}
                     </li>
                     <li className={`font-semibold text-left text-xs `}>
                       {rowData?.sales_order_product_owner_name}
                     </li>
-                  </ul>
-
-                  {/* STATUS */}
-                  <ul>
-                    <li className="mb-2 capitalize">
-                      <Pills variant={rowData?.is_status}>
-                        {rowData?.is_status}
-                      </Pills>
+                    <li className="text-left mb-0">
+                      {rowData?.sales_order_date}
                     </li>
-                    <li className="mb-0">{rowData?.sales_order_date}</li>
                   </ul>
                 </div>
                 {/* OTHER FIELDS */}
                 <div className="flex flex-wrap justify-between items-end border-t border-gray-200">
                   <ul className=" py-2 gap-2 sm:gap-5  ">
                     <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2`}>Total: </span>
-                      <span className="wrap-break-word font-semibold ml-5">
+                      <span className={`text-gray-500 mr-2`}>Amount: </span>
+                      <span className="wrap-break-word font-semibold ">
                         <AmountWithPesoSign
                           classN="size-3"
-                          amount={rowData?.total_amount}
+                          amount={rowData?.sales_order_total_receivable_amount}
                         />
                       </span>
                     </li>
                     <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2`}>Paid: </span>
+                      <span className={`text-gray-500 `}>Paid : </span>
                       <span className="wrap-break-word font-semibold ml-5">
                         <AmountWithPesoSign
                           classN="size-3"
-                          amount={rowData?.total_paid}
+                          amount={rowData?.sales_order_paid_amount}
                         />
                       </span>
                     </li>
                     <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2`}>Balance: </span>
+                      <span className={`text-gray-500 mr-1`}>Balance: </span>
                       <span className="wrap-break-word font-semibold">
                         <AmountWithPesoSign
                           classN="size-3"
-                          amount={`${Number(rowData?.total_amount) - Number(rowData?.total_paid) < 0 ? 0.0 : Number(rowData?.total_amount) - Number(rowData?.total_paid)}`}
+                          amount={`${Number(rowData?.sales_order_total_balance_amount)}`}
                         />
                       </span>
                     </li>
@@ -97,6 +87,7 @@ const FinanceARMobileResponsive = ({
                         "finance-account-receivable",
                         "finance-ar",
                       )}
+                      updateOnly={true}
                     />
                   </div>
                 </div>

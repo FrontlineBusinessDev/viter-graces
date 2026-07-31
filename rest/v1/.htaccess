@@ -159,6 +159,7 @@ RewriteRule ^finance-expenses$ controllers/developer/finance/expenses/expenses.p
 RewriteRule ^finance-expenses/([0-9]+)$ controllers/developer/finance/expenses/expenses.php?id=$1  [L] 
 RewriteRule ^finance-expenses/active/([0-9]+)$ controllers/developer/finance/expenses/active.php?id=$1 [L] 
 RewriteRule ^finance-account-receivable/account-receivable/([0-9]+)$ controllers/developer/finance/account-receivable/account-receivable.php?id=$1 [L] 
+RewriteRule ^finance-account-payable/page/([0-9]+)$ controllers/developer/finance/account-payable/page-by-account-payable.php?start=$1 [L] 
 
 
  

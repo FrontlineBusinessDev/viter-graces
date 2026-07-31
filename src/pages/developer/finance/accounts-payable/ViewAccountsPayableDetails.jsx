@@ -1,7 +1,6 @@
 import CloseButton from "@/components/buttons/CloseButton";
 import ExportCSVButton from "@/components/buttons/ExportCSVButton";
-import { Download, Pencil, Plus, Trash2 } from "lucide-react";
-import React from "react";
+import { Pencil, Plus, Trash2 } from "lucide-react";
 
 const ViewAccountsPayableDetails = ({ setView, itemEdit }) => {
   const handleClose = () => {
