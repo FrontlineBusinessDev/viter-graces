@@ -70,10 +70,11 @@ class AccountPayable
     }
 
     // read all
-    public function readAll($allowedColumns)
+    public function readByPurchaseNumber($allowedColumns)
     {
         $filterColumn = [];
         $params = [
+            "purchase_order_number" => $this->purchase_order_number,
             ...$this->column_search != "" ? [
                 "purchase_order_number" => "%{$this->column_search}%",
                 "purchase_order_supplier_name" => "%{$this->column_search}%",
@@ -110,6 +111,7 @@ class AccountPayable
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
             $sql .= " where CAST(purchase_order_total_balance_per_product AS DECIMAL(10, 2)) != 0 ";
+            $sql .= " and purchase_order_number = :purchase_order_number ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -126,7 +128,68 @@ class AccountPayable
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
+        return $query;
+    }
+    // read all
+    public function readAll($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            ...$this->column_search != "" ? [
+                "purchase_order_number" => "%{$this->column_search}%",
+                "purchase_order_supplier_name" => "%{$this->column_search}%",
+                "purchase_order_product_owner_name" => "%{$this->column_search}%",
+                "purchase_order_product_name" => "%{$this->column_search}%",
+            ] : [],
+        ];
 
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
+            if (is_array($item['value'])) {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
+            }
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "DATE_FORMAT(purchase_order_date, '%b %d, %Y') as purchase_order_date, ";
+            $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as purchase_order_expected_delivery, ";
+            $sql .= "purchase_order_status as status, ";
+            $sql .= "purchase_order_payment_status as payment_status, ";
+            $sql .= "SUM(purchase_order_total_amount_per_product) as amount, ";
+            $sql .= "SUM(purchase_order_total_amount_per_product) as paid_amount, ";
+            $sql .= "SUM(purchase_order_total_balance_per_product) as balance_amount, ";
+            $sql .= "purchase_order_is_active as is_active, ";
+            $sql .= "purchase_order_number as name ";
+            $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
+            $sql .= " where CAST(purchase_order_total_balance_per_product AS DECIMAL(10, 2)) != 0 ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and (purchase_order_number like :purchase_order_number
+                or purchase_order_supplier_name like :purchase_order_supplier_name 
+                or purchase_order_product_owner_name like :purchase_order_product_owner_name 
+                or purchase_order_product_name like :purchase_order_product_name) " : " ");
+            }
+            $sql .= " group by purchase_order_number ";
+            $sql .= " order by purchase_order_is_active desc, ";
+            $sql .= " purchase_order_aid desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
         return $query;
     }
 
@@ -168,7 +231,9 @@ class AccountPayable
             $sql .= "DATE_FORMAT(purchase_order_expected_delivery, '%b %d, %Y') as purchase_order_expected_delivery, ";
             $sql .= "purchase_order_status as status, ";
             $sql .= "purchase_order_payment_status as payment_status, ";
-            $sql .= "purchase_order_total_amount_per_product as amount, ";
+            $sql .= "SUM(purchase_order_total_amount_per_product) as amount, ";
+            $sql .= "SUM(purchase_order_total_paid_per_product) as paid_amount, ";
+            $sql .= "SUM(purchase_order_total_balance_per_product) as balance_amount, ";
             $sql .= "purchase_order_is_active as is_active, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
@@ -181,6 +246,7 @@ class AccountPayable
                 or purchase_order_product_owner_name like :purchase_order_product_owner_name 
                 or purchase_order_product_name like :purchase_order_product_name) " : " ");
             }
+            $sql .= " group by purchase_order_number ";
             $sql .= "order by purchase_order_is_active desc, ";
             $sql .= "purchase_order_aid desc ";
             $sql .= "limit :start, ";
@@ -192,6 +258,39 @@ class AccountPayable
             $query = false;
         }
 
+        return $query;
+    }
+
+
+    // update
+    public function update()
+    {
+        try {
+            $sql = "update {$this->tblSuppliersPurchaseOrder} set ";
+            $sql .= "purchase_order_status = :purchase_order_status, ";
+            $sql .= "purchase_order_payment = :purchase_order_payment, ";
+            $sql .= "purchase_order_balance = :purchase_order_balance, ";
+            $sql .= "purchase_order_total_balance_per_product = :purchase_order_total_balance_per_product, ";
+            $sql .= "purchase_order_total_paid_per_product = :purchase_order_total_paid_per_product, ";
+            $sql .= "purchase_order_payment_status = :purchase_order_payment_status, ";
+            $sql .= "purchase_order_updated = :purchase_order_updated ";
+            $sql .= "where purchase_order_aid = :purchase_order_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "purchase_order_status" => $this->purchase_order_status,
+                "purchase_order_payment" => $this->purchase_order_payment,
+                "purchase_order_balance" => $this->purchase_order_balance,
+                "purchase_order_total_balance_per_product" => $this->purchase_order_total_balance_per_product,
+                "purchase_order_total_paid_per_product" => $this->purchase_order_total_paid_per_product,
+                "purchase_order_payment_status" => $this->purchase_order_payment_status,
+                "purchase_order_updated" => $this->purchase_order_updated,
+                "purchase_order_aid" => $this->purchase_order_aid,
+            ]);
+        } catch (PDOException $ex) {
+
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
         return $query;
     }
 }

@@ -275,6 +275,7 @@ export const ActionTableList = (path, val = "default-status") => {
         "default-status",
         "user-status",
         "finance-ar",
+        "finance-ap",
         "edit-delete-status",
       ],
       name: "edit",

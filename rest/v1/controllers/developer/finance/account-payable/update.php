@@ -16,96 +16,67 @@ if (array_key_exists("id", $_GET)) {
     checkPayload($data);
     // get data
 
-    $val->installment_payment_aid = $_GET['id'];
-    $val->installment_payment_is_paid = 0;
-    $val->installment_payment_paid_amount = $data["installment_payment_paid_amount"];
-    $val->installment_payment_received_id = $data["installment_payment_received_id"];
-    $val->installment_payment_received_name = $data["installment_payment_received_name"];
-    $val->installment_payment_code_number = $data["installment_payment_code_number"];
-    $val->installment_payment_updated = date("Y-m-d H:i:s");
-    $val->sales_order_updated = date("Y-m-d H:i:s");
+    $id = $_GET['id'];
+    $val->purchase_order_payment_status = ['purchase_order_payment_status'];
+    $val->purchase_order_updated = date("Y-m-d H:i:s");
 
-    if ((float)$val->installment_payment_amount <= (float)$val->installment_payment_paid_amount) {
-        $val->installment_payment_is_paid = 1;
+    $val->purchase_order_balance = max($data["totalBalanceAmount"], 0);
+    $val->purchase_order_payment = $data["totalPaidAmount"];
+
+    $val->purchase_order_status = 'completed';
+    $val->purchase_order_payment_status = 'partially paid';
+    if ((float)$val->purchase_order_balance <= 0) {
+        $val->purchase_order_payment_status = 'paid';
     }
-
-    checkId($val->installment_payment_aid);
-    // update
-
-    $ordersItems = getResultData($val->readAllSaleByOrderNumber());
+    if ((float)$val->purchase_order_payment <= 0) {
+        $val->purchase_order_payment_status = 'partially paid';
+    }
+    // update 
+    $ordersItems = $data["items"];
     if (count($ordersItems) == 0) {
         $ordersItems = [];
     }
-
-    $val->sales_order_total_amount = $data["sales_order_total_amount"];
-    $val->sales_order_discount = $data["sales_order_discount"];
-    $val->sales_order_paid_amount = max($data["totalPaidAmount"], 0);
-    $val->sales_order_total_balance_amount = max($data["totalBalanceAmount"], 0);
-    $val->sales_order_tax = $data["sales_order_tax"];
-    $totalPaidAmount = $val->sales_order_paid_amount;
-    $totalBalanceAmount = $val->sales_order_total_balance_amount;
-
-    // CREATE STOCK MOVEMENT 
-    // Extract fixed order-level values once outside the loop
-    $totalOrderAmount = (float)($val->sales_order_total_amount ?? 0);
-    $totalOrderDiscount = (float)($val->sales_order_discount ?? 0);
-    $totalPaidAmount = (float)($totalPaidAmount ?? 0);
-    $hasBalance = (float)($totalBalanceAmount ?? 0) != 0;
-    $taxRate = (float)($val->sales_order_tax ?? 0);
+    // Cast and parse static payload values once
+    $totalAmount = (float)($data['totalAmount'] ?? 0);
+    $discount = max(0, (float)($data['purchase_order_discount'] ?? 0));
+    $payment = (float)($data["totalPaidAmount"] ?? 0);
+    $percentTax = (float)($data['purchase_order_percent_tax'] ?? 0);
+    // Normalize percentTax (handles both 12 and 0.12 inputs)
+    $taxRate = ($percentTax > 1) ? ($percentTax / 100) : $percentTax;
 
     foreach ($ordersItems as $item) {
+        // Prevent object reference mutation 
 
-        // Map item properties directly
-        $val->sales_order_aid = $item["sales_order_aid"];
-        $val->sales_order_price = (float)$item["sales_order_price"];
-        $val->sales_order_total = (float)$item["sales_order_total"];
+        $itemAid = (int)($item["purchase_order_aid"] ?? 0);
+        $itemTotalAmount = (float)($item["purchase_order_total_amount_per_product"] ?? 0);
 
-        // 1. Financial Calculations
-        // Prevent division by zero if $totalOrderAmount is 0
-        $share = ($totalOrderAmount > 0) ? ($val->sales_order_total / $totalOrderAmount) : 0;
+        // Item share calculation ratio (prevent division by zero)
+        $percentagePerProduct = ($totalAmount > 0) ? ($itemTotalAmount / $totalAmount) : 0;
 
-        $discountPerItem = ($totalOrderDiscount != 0) ? ($totalOrderDiscount * $share) : 0;
-        $discountedAmount = $val->sales_order_total - $discountPerItem;
+        // Item discount allocation
+        $discountPerItem = $discount * $percentagePerProduct;
+        $discountedBaseAmount = max(0, $itemTotalAmount - $discountPerItem);
 
-        $balancePerItem = $hasBalance ? ($totalPaidAmount * $share) : 0;
-        $paidPerItem = $val->sales_order_paid_amount ? ($val->sales_order_paid_amount * $share) : 0;
-        $remainingPerItem = $val->sales_order_paid_amount ? ($val->sales_order_paid_amount * $share) : 0;
+        // Calculate Tax & Gross Amount per Item
+        $vatAmount = $discountedBaseAmount * $taxRate;
+        $grossTotalPerItem = $discountedBaseAmount + $vatAmount;
 
-        // Default balance calculation (Exclusive Tax handling)
-        if ($taxRate === 0.12) {
-            $vatPerItem = $discountedAmount * 0.12;
-            $totalVatItem = $discountedAmount * 1.12;
-            $val->sales_order_balance_per_product = $totalVatItem - $balancePerItem;
-        } else {
-            $vatPerItem = 0;
-            $val->sales_order_balance_per_product = $discountedAmount - $balancePerItem;
-        }
+        // Allocate payment proportionally based on Gross Total
+        $paidPerItem = $payment * $percentagePerProduct;
+        $balancePerItem = $val->purchase_order_balance * $percentagePerProduct;
 
-        $val->sales_order_paid_per_product = max(0, $remainingPerItem);
+        // Assign properties to the clean object
+        $val->purchase_order_aid = $itemAid;
+        $val->purchase_order_total_amount = $itemTotalAmount;
+        $val->purchase_order_total_amount_per_product = $grossTotalPerItem;
+        $val->purchase_order_total_paid_per_product = $paidPerItem;
+        $val->purchase_order_total_balance_per_product = $balancePerItem;
 
-        if ((float)$balancePerItem <= 0) {
-            $val->sales_order_balance_per_product = 0;
-        }
-
-        if ($totalPaidAmount >= 0) {
-            $val->sales_order_status = "partial";
-        }
-
-        if ($totalBalanceAmount <= 0) {
-            $val->sales_order_status = "paid";
-        }
-
-        if ($totalPaidAmount <= 0) {
-            $val->sales_order_status = "unpaid";
-        }
-
-
-        checkUpdateSales($val);
+        checkId($itemAid);
+        $query = checkUpdate($val);
     }
-
-    $query = checkUpdate($val);
     createActivityLog($valActivity, $data);
-    returnSuccess($val, "Account Receivable", $query);
+    returnSuccess($val, "Account Payable", $query);
 }
 
 // return 404 error if endpoint not available

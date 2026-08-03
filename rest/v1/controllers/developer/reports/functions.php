@@ -207,8 +207,72 @@ function allowedColumns()
         "stock_movement_product_name",
         "stock_movement_product_owner_name",
         "stock_qty",
-        "amount"
+        "amount",
+        "purchase_order_number",
+        "purchase_order_supplier_name",
+        "purchase_order_date",
+        "purchase_order_expected_delivery",
+        "purchase_order_total_amount",
+        "purchase_order_is_active",
+        "purchase_order_status",
+        "purchase_order_payment_status",
+        "purchase_order_note",
+        "purchase_order_product_name",
+        "purchase_order_product_owner_name",
+        "purchase_order_qty",
+        "purchase_order_payment",
+        "total_amount",
     ];
+    return $query;
+}
+
+// Read WEEKLY
+function checkReadSalesPerWeek($object)
+{
+    $query = $object->readSalesPerWeek();
+    checkQuery($query, "Empty records. (read sales per week)");
+    return $query;
+}
+
+
+// Read MONTHLY
+function checkReadSalesPerMonth($object)
+{
+    $query = $object->readSalesPerMonth();
+    checkQuery($query, "Empty records. (read sales per month)");
+    return $query;
+}
+
+// Read YEARLY
+function checkReadSalesPerYear($object)
+{
+    $query = $object->readSalesPerYear();
+    checkQuery($query, "Empty records. (read sales per year)");
+    return $query;
+}
+
+// Read WEEKLY
+function checkReadExpensesPerWeek($object)
+{
+    $query = $object->readExpensesPerWeek();
+    checkQuery($query, "Empty records. (read sales per week)");
+    return $query;
+}
+
+
+// Read MONTHLY
+function checkReadExpensesPerMonth($object)
+{
+    $query = $object->readExpensesPerMonth();
+    checkQuery($query, "Empty records. (read sales per month)");
+    return $query;
+}
+
+// Read YEARLY
+function checkReadExpensesPerYear($object)
+{
+    $query = $object->readExpensesPerYear();
+    checkQuery($query, "Empty records. (read sales per year)");
     return $query;
 }
 

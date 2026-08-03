@@ -92,7 +92,7 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
     let data = {
       ...itemEdit,
       icon: "",
-      ...ActivityLogDetails("purchase order", "create", store, {
+      ...ActivityLogDetails("finance account receivable", "update", store, {
         ...itemEdit,
         icon: "",
         ...a,
@@ -178,7 +178,7 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
                             type="button"
                             onClick={() => handleSave(a)}
                           >
-                            save
+                            Save
                           </button>
                         </td>
                       </>

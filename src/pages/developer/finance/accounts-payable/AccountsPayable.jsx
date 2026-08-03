@@ -4,6 +4,7 @@ import { StoreContext } from "@/store/StoreContext";
 import { Eye } from "lucide-react";
 import React from "react";
 import ViewAccountsPayableDetails from "./ViewAccountsPayableDetails";
+import { ActionTableList } from "@/layout/ArrayValue";
 
 const AccountsPayable = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -18,52 +19,58 @@ const AccountsPayable = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "status",
-      header: "Status",
-      classTh: "w-[5rem]",
+      accessorKey: "purchase_order_number",
+      header: "PO Number",
+      classTh: "min-w-[10rem]",
       classTd: "",
+      meta: "",
     },
     {
-      accessorKey: "order_no",
-      header: "Order #",
-      classTh: "",
-      classTd: "",
-    },
-    {
-      accessorKey: "date",
+      accessorKey: "purchase_order_date",
       header: "Date",
       classTh: "",
       classTd: "",
+      filterFn: "date",
+      meta: "",
     },
     {
-      accessorKey: "supplier",
+      accessorKey: "purchase_order_supplier_name",
       header: "Supplier",
-      classTh: "",
+      classTh: "min-w-[10rem]",
       classTd: "",
       isMobileTitle: true,
+      meta: "",
     },
     {
       accessorKey: "amount",
       header: "Amount",
-      classTh: "",
+      amount: true,
+      classTh: "min-w-[10rem]",
       classTd: "",
+      filterFn: "between",
+      meta: "",
     },
     {
-      accessorKey: "paid",
+      accessorKey: "paid_amount",
       header: "Paid",
+      amount: true,
+      classTh: "min-w-[10rem]",
+      classTd: "",
+      filterFn: "between",
+      meta: "",
+    },
+    {
+      accessorKey: "balance_amount",
+      header: "Balance",
+      amount: true,
       classTh: "",
       classTd: "",
+      filterFn: "between",
+      meta: "",
     },
     {
       accessorKey: "action",
-      action_array: [
-        {
-          name: "view",
-          path: "suppliers",
-          icon: <Eye className="h-3 w-3" />,
-          isActive: 1,
-        },
-      ],
+      action_array: ActionTableList("finance", "finance-ap"),
       header: "Action",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
@@ -82,9 +89,7 @@ const AccountsPayable = () => {
           setItemEdit={setItemEdit}
         />
       </HeaderNav>
-      {isView && (
-        <ViewAccountsPayableDetails itemEdit={itemEdit} setView={setView} />
-      )}
+      {store.isAdd && <ViewAccountsPayableDetails itemEdit={itemEdit} />}
     </>
   );
 };

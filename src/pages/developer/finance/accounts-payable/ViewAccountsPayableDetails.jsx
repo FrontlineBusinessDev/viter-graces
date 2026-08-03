@@ -1,131 +1,284 @@
-import CloseButton from "@/components/buttons/CloseButton";
 import ExportCSVButton from "@/components/buttons/ExportCSVButton";
-import { Pencil, Plus, Trash2 } from "lucide-react";
+import { AmountWithPesoSign } from "@/components/PesoSign";
+import { apiVersion } from "@/config/config";
+import { ActivityLogDetails } from "@/layout/ArrayValue";
+import ModalWrapper from "@/layout/modal/ModalWrapper";
+import { queryData } from "@/services/queryData";
+import {
+  setError,
+  setIsAdd,
+  setMessage,
+  setSuccess,
+} from "@/store/StoreAction";
+import { StoreContext } from "@/store/StoreContext";
+import { handleEscape } from "@/utilities/handleEscape";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
+import React from "react";
 
-const ViewAccountsPayableDetails = ({ setView, itemEdit }) => {
+const ViewAccountsPayableDetails = ({ itemEdit }) => {
+  const { store, dispatch } = React.useContext(StoreContext);
+  const [items, setItems] = React.useState([{ paid_amount: 0 }]);
+
+  const queryClient = useQueryClient();
+
   const handleClose = () => {
-    setView(false);
+    queryClient.invalidateQueries({
+      queryKey: ["finance-account-payable"],
+    });
+    dispatch(setIsAdd(false));
+    dispatch(setError(false));
+  };
+
+  handleEscape(() => handleClose());
+
+  const mutation = useMutation({
+    mutationFn: (values) =>
+      queryData(
+        `${apiVersion}/finance-account-payable/account-payable/1`,
+        "put",
+        values,
+      ),
+    onSuccess: (data) => {
+      // Invalidate and refetch
+      queryClient.invalidateQueries({
+        queryKey: ["finance-account-payable"],
+      });
+
+      if (data.success) {
+        dispatch(setSuccess(true));
+        dispatch(setMessage("Updated successfully."));
+      }
+      if (!data.success) {
+        dispatch(setError(true));
+        dispatch(setMessage(data.error));
+      }
+    },
+  });
+
+  let totalPaidAmount = isEmptyItem(itemEdit?.paid_amount, 0);
+  let totalAmount = isEmptyItem(itemEdit?.amount, 0);
+  let totalBalanceAmount = isEmptyItem(itemEdit?.balance_amount, 0);
+
+  const handleChangeSave = (e, index) => {
+    const updated = [...items];
+    updated[index]["paid_amount"] = e.target.value;
+    setItems(updated);
+    return;
+  };
+
+  let paidAmount = items?.reduce(
+    (sum, item) => Number(sum) + Number(item.paid_amount || 0),
+    0,
+  );
+
+  const handleSave = (a) => {
+    let data = {
+      ...itemEdit,
+      icon: "",
+      ...ActivityLogDetails("finance account payable", "update", store, {
+        ...itemEdit,
+        icon: "",
+        ...a,
+        totalPaidAmount: Number(totalPaidAmount) + Number(paidAmount),
+        totalBalanceAmount: Number(totalBalanceAmount) - Number(paidAmount),
+      }),
+      ...a,
+      totalAmount: Number(totalAmount),
+      totalPaidAmount: Number(totalPaidAmount) + Number(paidAmount),
+      totalBalanceAmount: Number(totalBalanceAmount) - Number(paidAmount),
+    };
+
+    // console.log("data", data);
+    mutation.mutate(data);
   };
   return (
-    <div
-      className="bg-dark/50 dark:bg-dark-mode/90 fixed inset-0 z-999 flex justify-center items-center overflow-y-auto animate-fadeIn"
-      onClick={handleClose}
+    <ModalWrapper
+      val={`Order Details - ${itemEdit?.purchase_order_number}`}
+      itemEdit={itemEdit}
+      mutation={mutation}
+      isOpen={true}
+      handleClose={handleClose}
+      width="min-w-[550px]!"
     >
-      <div
-        className={`p-1 min-w-[350px] animate-slideUp w-full max-w-lg my-10`}
-        onClick={(e) => e.stopPropagation()}
-      >
-        <div className="bg-light dark:bg-gray-900 rounded-lg dark:border dark:border-gray-800 flex flex-col max-h-[90vh] p-4">
-          <div className="modal-header relative p-4">
-            <CloseButton handleClose={handleClose} />
-          </div>
-          <h3 className="text-black dark:text-light text-lg mb-2">
-            Order Details - {itemEdit.order_no}
-          </h3>
+      <ul className="grid grid-cols-2 [&>li]:flex [&>li]:items-center [&>li]:gap-2 ">
+        <li>
+          <p>Supplier:</p>
+          <p className="text-black dark:text-light">
+            {itemEdit?.purchase_order_supplier_name}
+          </p>
+        </li>
+        <li className="justify-end">
+          <p>Order Date:</p>
+          <p className="text-black dark:text-light">
+            {itemEdit?.purchase_order_date}
+          </p>
+        </li>
+        <li className="">
+          <p>Order Date:</p>
+          <p className="text-black dark:text-light">
+            {itemEdit?.purchase_order_date}
+          </p>
+        </li>
+        <li className="justify-end">
+          <p>TAX:</p>
+          <p className="text-black dark:text-light">
+            {Number(itemEdit?.purchase_order_percent_tax) === 1.12
+              ? "Inclusive"
+              : Number(itemEdit?.purchase_order_percent_tax) === 1.12
+                ? "Exclusive"
+                : "--"}
+          </p>
+        </li>
+      </ul>
 
-          <ul className="grid grid-cols-2 [&>li]:flex [&>li]:items-center [&>li]:gap-2 my-3">
-            <li>
-              <p>Customer:</p>
-              <p className="text-black dark:text-light">{itemEdit.name}</p>
-            </li>
-            <li className="justify-end">
-              <p>Date:</p>
-              <p className="text-black dark:text-light">{itemEdit.date}</p>
-            </li>
-            <li>
-              <p>Payment:</p>
-              <p className="text-black dark:text-light">{itemEdit.method}</p>
-            </li>
-            <li className="justify-end">
-              <p>Status:</p>
-              <p
-                className={`inline-block px-2 py-1 text-xs rounded-full ${
-                  itemEdit?.payment_status === "Paid"
-                    ? "bg-green-100 text-green-700"
-                    : "bg-red-100 text-red-700"
-                }`}
-              >
-                {itemEdit?.payment_status}
-              </p>
-            </li>
-          </ul>
+      <div className="border shadow border-gray-300 rounded-lg dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out ">
+        <div className="relative overflow-auto w-full h-full min-h-80 dark:bg-gray-900! ">
+          <table className="shadow-none! ">
+            <thead className={`relative z-50 table-header-group`}>
+              <tr className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0! ">
+                <th className="w-px dark:bg-gray-900! bg-gray-100!">#</th>
+                <th className={`min-w-24  dark:bg-gray-900! bg-gray-100!`}>
+                  Due Date
+                </th>
+                <th className={` dark:bg-gray-900! bg-gray-100!`}>Amount</th>
+                <th
+                  className={`min-w-30! dark:bg-gray-900! bg-gray-100! text-center`}
+                >
+                  Paid Amount
+                </th>
+                <th
+                  className={`min-w-35! dark:bg-gray-900! bg-gray-100! text-center`}
+                >
+                  Balance Amount
+                </th>
+              </tr>
+            </thead>
+            <tbody className="">
+              {itemEdit?.items?.map((a, index) => {
+                return (
+                  <tr key={index} className="border-0!">
+                    <td className="text-center dark:bg-gray-900! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
+                      {index + 1}.
+                    </td>
+                    <td className=" dark:bg-gray-900! ">
+                      {a?.purchase_order_date}
+                    </td>
+                    <td className=" dark:bg-gray-900! ">
+                      <AmountWithPesoSign
+                        classN="size-3"
+                        amount={Number(
+                          a.purchase_order_total_amount_per_product,
+                        )}
+                      />
+                    </td>
 
-          <button className="btn--green mb-2 place-self-end py-2!">
-            <Plus size={15} /> <span className="leading-0">Add Payment</span>
-          </button>
+                    <td className="">
+                      <AmountWithPesoSign
+                        classN="size-3"
+                        classAmnt="text-primary "
+                        amount={Number(a.purchase_order_total_paid_per_product)}
+                      />
+                    </td>
+                    <td className="">
+                      <AmountWithPesoSign
+                        classN="size-3"
+                        classAmnt="text-primary text-warning "
+                        amount={Number(
+                          a.purchase_order_total_balance_per_product,
+                        )}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+              <tr className="border-0!">
+                <td
+                  className="dark:bg-gray-900! text-right font-bold "
+                  colSpan={2}
+                >
+                  TOTAL
+                </td>
+                <td className="dark:bg-gray-900! text-right font-bold ">
+                  <AmountWithPesoSign
+                    classN="size-3"
+                    classAmnt="text-primary text-black! "
+                    amount={itemEdit.amount}
+                  />
+                </td>
+                <td className="dark:bg-gray-900! text-right font-bold ">
+                  <AmountWithPesoSign
+                    classN="size-3"
+                    classAmnt="text-primary"
+                    amount={itemEdit.paid_amount}
+                  />
+                </td>
 
-          <div className="overflow-y-auto flex-1">
-            <div className="">
-              <div className="rounded-2xl border border-gray-300 bg-white dark:bg-[#0b111e] overflow-x-hidden dark:border-gray-700 max-h-[200px]">
-                {/* desktop header */}
-                <div className="hidden sticky top-0 lg:grid lg:grid-cols-4 lg:items-center border-b bg-gray-50 px-4 py-3 text-xs font-medium text-gray-500 dark:bg-[#0b111e]">
-                  <div>#</div>
-                  <div>Date</div>
-                  <div>Amount</div>
-                  <div>Action</div>
-                </div>
-
-                {/* row */}
-                <ul className="p-4 grid grid-cols-[.5fr_1fr_1fr_1fr] lg:grid-cols-4 gap-1 text-sm">
-                  <li>
-                    <p className="text-xs text-gray-400 lg:hidden">#</p>1
-                  </li>
-
-                  <li>
-                    <p className="text-xs text-gray-400 lg:hidden">Date</p>
-                    03/07/2026
-                  </li>
-
-                  <li>
-                    <p className="text-xs text-gray-400 lg:hidden">Amount</p>
-                    ₱100.00
-                  </li>
-                  <li>
-                    <p className="text-xs text-gray-400 lg:hidden">Action</p>
-                    <span className="flex gap-2">
+                <td className=" dark:bg-gray-900! ">
+                  <AmountWithPesoSign
+                    classN="size-3"
+                    classAmnt="text-primary text-warning"
+                    amount={itemEdit.balance_amount}
+                  />
+                </td>
+              </tr>
+              {items?.map((i, aIndex) => {
+                return (
+                  <tr key={aIndex} className="border-0!">
+                    <td className="text-center dark:bg-gray-900! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10"></td>
+                    <td className=" dark:bg-gray-900! "></td>
+                    <td className=" dark:bg-gray-900! "></td>
+                    <td className="dark:bg-gray-900! text-right">
                       <button
+                        className={`text-white bg-gray-500 hover:bg-green-800 rounded-sm p-1 text-[10px]`}
                         type="button"
-                        className="tooltip-action-table capitalize z-0!"
-                        data-tooltip={"Edit"}
+                        onClick={() => handleSave(i)}
                       >
-                        <Pencil size={16} />
+                        Save
                       </button>
-                      <button
-                        type="button"
-                        className="tooltip-action-table capitalize z-0!"
-                        data-tooltip={"Delete"}
-                      >
-                        <Trash2 size={16} />
-                      </button>
-                    </span>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          </div>
+                    </td>
 
-          <ul className="grid grid-cols-2 my-3 [&>li]:border-b [&>li]:border-b-gray-200 gap-y-2">
-            <li>Total Paid</li>
-            <li className="text-right text-green-600 font-bold">
-              ₱ {itemEdit.total}
-            </li>
-            <li>Balance</li>
-            <li className="text-right text-red-600 font-bold">₱ 0.00</li>
-          </ul>
-
-          <div className="grid grid-cols-2 bg-[#F5F5EC] dark:bg-gray-600 py-2">
-            <span className="font-bold text-lg text-black dark:text-light">
-              Total
-            </span>
-            <span className="font-bold text-lg text-right text-black dark:text-light">
-              ₱ {itemEdit.total}
-            </span>
-          </div>
-
-          <ExportCSVButton />
+                    <td className=" dark:bg-gray-900! ">
+                      <input
+                        type="number"
+                        className="text-right! mt-0!"
+                        onChange={(e) => handleChangeSave(e, aIndex)}
+                      />
+                    </td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </table>
         </div>
       </div>
-    </div>
+
+      <ul className="grid grid-cols-2 my-3 [&>li]:border-b [&>li]:border-b-gray-200 gap-y-2 ">
+        <li>Total Amount</li>
+        <li className="text-right text-black font-bold">
+          <AmountWithPesoSign classN="size-3" amount={Number(totalAmount)} />
+        </li>
+        <li>Total Paid</li>
+        <li className="text-right text-green-600 font-bold">
+          <AmountWithPesoSign
+            classN="size-3"
+            amount={Number(totalPaidAmount) + Number(paidAmount)}
+          />
+        </li>
+      </ul>
+      <div className="grid grid-cols-2 bg-[#F5F5EC] dark:bg-gray-600 p-2">
+        <span className="font-bold text-lg text-red-600 dark:text-light">
+          Balance
+        </span>
+        <span className="font-bold text-lg text-right text-red-600 dark:text-light">
+          <AmountWithPesoSign
+            amount={Number(totalBalanceAmount) - Number(paidAmount)}
+          />
+        </span>
+      </div>
+
+      <ExportCSVButton />
+    </ModalWrapper>
   );
 };
 

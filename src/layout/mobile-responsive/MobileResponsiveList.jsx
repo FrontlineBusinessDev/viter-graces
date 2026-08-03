@@ -1,6 +1,7 @@
 import APReportMobileResponsive from "./APReportMobileResponsive";
 import CustomerMobileReponsive from "./CustomerMobileReponsive";
 import ExpensesReportMobileResponsive from "./ExpensesReportMobileResponsive";
+import FinanceAPMobileResponsive from "./FinanceAPMobileResponsive";
 import FinanceARMobileResponsive from "./FinanceARMobileResponsive";
 import FinanceCashSalesMobileResponsive from "./FinanceCashSalesMobileResponsive";
 import FinanceExpensestMobileResponsive from "./FinanceExpensestMobileResponsive";
@@ -172,6 +173,14 @@ const MobileResponsiveList = ({
       />
       {/* REPORT OVERDUE RESPONSIVE */}
       <FinanceARMobileResponsive
+        rows={rows}
+        setData={setData}
+        setItemEdit={setItemEdit}
+        isDefaultMobile={isDefaultMobile}
+        ishaveSubAdd={ishaveSubAdd}
+      />
+      {/* REPORT OVERDUE RESPONSIVE */}
+      <FinanceAPMobileResponsive
         rows={rows}
         setData={setData}
         setItemEdit={setItemEdit}

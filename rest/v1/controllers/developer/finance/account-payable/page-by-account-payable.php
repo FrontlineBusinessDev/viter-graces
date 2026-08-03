@@ -36,6 +36,22 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $total_result = checkReadAll($val);
         $data = getResultData($query);
 
+        for ($i = 0; $i < count($data); $i++) {
+
+            $val->purchase_order_number = $data[$i]["purchase_order_number"];
+
+            $queryItems = $val->readByPurchaseNumber(allowedColumns());
+
+            $queryDataItems = $queryItems
+                ? getResultData($queryItems)
+                : [];
+
+            $total_result_final[] = [
+                ...$data[$i],
+                "items" => $queryDataItems
+            ];
+        }
+
         http_response_code(200);
 
         $response = new Response();

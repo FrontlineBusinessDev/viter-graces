@@ -1,9 +1,8 @@
 import { AmountWithPesoSign } from "@/components/PesoSign";
-import Pills from "@/components/Pills";
 import ActionButtonMobile from "../ActionButtonMobile";
 import { ActionTableList } from "../ArrayValue";
 
-const FinanceARMobileResponsive = ({
+const FinanceAPMobileResponsive = ({
   rows,
   setData,
   setItemEdit,
@@ -14,7 +13,7 @@ const FinanceARMobileResponsive = ({
 }) => {
   return (
     <>
-      {isDefaultMobile === "finance-account-receivable" && (
+      {isDefaultMobile === "finance-account-payable" && (
         <div>
           {rows?.map((row, index) => {
             const rowData = row.original;
@@ -31,14 +30,14 @@ const FinanceARMobileResponsive = ({
                       <span
                         className={`font-semibold text-black dark:text-light text-lg capitalize`}
                       >
-                        {rowData?.sales_order_customer_name}
+                        {rowData?.purchase_order_supplier_name}
                       </span>
                       <span className={`font-semibold text-xs `}>
-                        ({rowData?.sales_order_number})
+                        ({rowData?.purchase_order_number})
                       </span>
                     </li>
                     <li className="text-left mb-0">
-                      {rowData?.sales_order_date}
+                      {rowData?.purchase_order_date}
                     </li>
                   </ul>
                 </div>
@@ -50,7 +49,7 @@ const FinanceARMobileResponsive = ({
                       <span className="wrap-break-word font-semibold ">
                         <AmountWithPesoSign
                           classN="size-3"
-                          amount={rowData?.sales_order_total_receivable_amount}
+                          amount={rowData?.amount}
                         />
                       </span>
                     </li>
@@ -59,7 +58,7 @@ const FinanceARMobileResponsive = ({
                       <span className="wrap-break-word font-semibold ml-5">
                         <AmountWithPesoSign
                           classN="size-3"
-                          amount={rowData?.sales_order_paid_amount}
+                          amount={rowData?.paid_amount}
                         />
                       </span>
                     </li>
@@ -68,7 +67,7 @@ const FinanceARMobileResponsive = ({
                       <span className="wrap-break-word font-semibold">
                         <AmountWithPesoSign
                           classN="size-3"
-                          amount={`${Number(rowData?.sales_order_total_balance_amount)}`}
+                          amount={`${Number(rowData?.balance_amount)}`}
                         />
                       </span>
                     </li>
@@ -97,4 +96,4 @@ const FinanceARMobileResponsive = ({
   );
 };
 
-export default FinanceARMobileResponsive;
+export default FinanceAPMobileResponsive;
