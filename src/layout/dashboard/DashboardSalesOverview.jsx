@@ -1,5 +1,8 @@
 import GraphTooltip from "@/components/GraphTooltip";
+import { apiVersion } from "@/config/config";
 import useDarkMode from "@/custom-hooks/useDarkMode";
+import useQueryData from "@/services/useQueryData";
+import { StoreContext } from "@/store/StoreContext";
 import React, { useMemo } from "react";
 import {
   Area,
@@ -9,10 +12,6 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import WarningNoteForComingSoon from "../WarningNoteForComingSoon";
-import { StoreContext } from "@/store/StoreContext";
-import { apiVersion } from "@/config/config";
-import useQueryData from "@/services/useQueryData";
 const DashboardSalesOverview = () => {
   const { store } = React.useContext(StoreContext);
   const userRole = store.credentials?.data?.role;
@@ -27,6 +26,7 @@ const DashboardSalesOverview = () => {
   } = useQueryData(
     `${apiVersion}/sales-order/sales-overview-graph-value`, // endpoint
     "post", // method
+    "sales-order/sales-overview-graph-value",
   );
 
   const salesData = useMemo(() => {
@@ -38,7 +38,7 @@ const DashboardSalesOverview = () => {
 
   return (
     <>
-      <div className="relative group">
+      <div className="relative group ">
         <div
           className="bg-white dark:bg-gray-900 p-4 rounded-lg shadow group"
           data-testid="sales-overview"
@@ -64,7 +64,7 @@ const DashboardSalesOverview = () => {
               ))}
             </div>
           </div>
-          <ResponsiveContainer width="100%" height={220}>
+          <ResponsiveContainer width="100%" height={340}>
             <AreaChart data={currentData}>
               <defs>
                 <linearGradient id="blueGradient" x1="0" y1="0" x2="0" y2="1">

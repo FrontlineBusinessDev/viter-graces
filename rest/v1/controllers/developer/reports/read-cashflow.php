@@ -12,196 +12,103 @@ $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new ReportSalesOrder($conn);
-// get payload
-$body = file_get_contents("php://input");
-$data = json_decode($body, true);
 // validate api key
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
-    // check data
-    checkPayload($data);
 
     $total_result_final = [];
 
     // WEEKLY SALES 
-    $query = checkReadSalesPerWeek($val);
-    $weekAllData = getResultData($query)[0] ?? [];
+    $queryS = checkReadSalesPerWeek($val);
+    $weekAllData = getResultData($queryS)[0] ?? [];
+    $queryE = checkReadExpensesPerWeek($val);
+    $weekExpAllData = getResultData($queryE)[0] ?? [];
 
-    http_response_code(200);
-
-
-    $weeklyData = [
-        [
-            "label" => "Mon",
-            "in" => (string)($weekAllData['monday'] ?? 0),
-            "out" => (string)($weekAllData['monday'] ?? 0),
-            "balance" => (string)($weekAllData['monday'] ?? 0)
-        ],
-        [
-            "label" => "Tue",
-            "in" => (string)($weekAllData['tuesday'] ?? 0),
-            "out" => (string)($weekAllData['tuesday'] ?? 0),
-            "balance" => (string)($weekAllData['tuesday'] ?? 0)
-        ],
-        [
-            "label" => "Wed",
-            "in" => (string)($weekAllData['wednesday'] ?? 0),
-            "out" => (string)($weekAllData['wednesday'] ?? 0),
-            "balance" => (string)($weekAllData['wednesday'] ?? 0)
-        ],
-        [
-            "label" => "Thu",
-            "in" => (string)($weekAllData['thursday'] ?? 0),
-            "out" => (string)($weekAllData['thursday'] ?? 0),
-            "balance" => (string)($weekAllData['thursday'] ?? 0)
-        ],
-        [
-            "label" => "Fri",
-            "in" => (string)($weekAllData['friday'] ?? 0),
-            "out" => (string)($weekAllData['friday'] ?? 0),
-            "balance" => (string)($weekAllData['friday'] ?? 0)
-        ],
-        [
-            "label" => "Sat",
-            "in" => (string)($weekAllData['saturday'] ?? 0),
-            "out" => (string)($weekAllData['saturday'] ?? 0),
-            "balance" => (string)($weekAllData['saturday'] ?? 0)
-        ],
-        [
-            "label" => "Sun",
-            "in" => (string)($weekAllData['sunday'] ?? 0),
-            "out" => (string)($weekAllData['sunday'] ?? 0),
-            "balance" => (string)($weekAllData['sunday'] ?? 0)
-        ],
+    $days = [
+        'monday'    => 'Mon',
+        'tuesday'   => 'Tue',
+        'wednesday' => 'Wed',
+        'thursday'  => 'Thu',
+        'friday'    => 'Fri',
+        'saturday'  => 'Sat',
+        'sunday'    => 'Sun',
     ];
 
+    $weeklyData = [];
+
+    foreach ($days as $key => $label) {
+        $in  = (float)($weekAllData[$key] ?? 0);
+        $out = (float)($weekExpAllData[$key] ?? 0);
+
+        $weeklyData[] = [
+            "label"   => $label,
+            "in"      => (string)$in,
+            "out"     => (string)$out,
+            "balance" => (string)($in - $out)
+        ];
+    }
     // MONTHLY SALES 
-    $query = checkReadSalesPerMonth($val);
-    $monthAllData = getResultData($query)[0] ?? [];
+    $queryMS = checkReadSalesPerMonth($val);
+    $monthAllData = getResultData($queryMS)[0] ?? [];
+    $queryME = checkReadExpensesPerMonth($val);
+    $monthExpAllData = getResultData($queryME)[0] ?? [];
 
-    http_response_code(200);
-    $monthlyData = [
-        [
-            "label" => "Jan",
-            "in" => (string)($monthAllData['january'] ?? 0),
-            "out" => (string)($monthAllData['january'] ?? 0),
-            "balance" => (string)($monthAllData['january'] ?? 0)
-        ],
-        [
-            "label" => "Feb",
-            "in" => (string)($monthAllData['february'] ?? 0),
-            "out" => (string)($monthAllData['february'] ?? 0),
-            "balance" => (string)($monthAllData['february'] ?? 0)
-        ],
-        [
-            "label" => "Mar",
-            "in" => (string)($monthAllData['march'] ?? 0),
-            "out" => (string)($monthAllData['march'] ?? 0),
-            "balance" => (string)($monthAllData['march'] ?? 0)
-        ],
-        [
-            "label" => "Apr",
-            "in" => (string)($monthAllData['april'] ?? 0),
-            "out" => (string)($monthAllData['april'] ?? 0),
-            "balance" => (string)($monthAllData['april'] ?? 0)
-        ],
-        [
-            "label" => "May",
-            "in" => (string)($monthAllData['may'] ?? 0),
-            "out" => (string)($monthAllData['may'] ?? 0),
-            "balance" => (string)($monthAllData['may'] ?? 0)
-        ],
-        [
-            "label" => "Jun",
-            "in" => (string)($monthAllData['june'] ?? 0),
-            "out" => (string)($monthAllData['june'] ?? 0),
-            "balance" => (string)($monthAllData['june'] ?? 0)
-        ],
-        [
-            "label" => "Jul",
-            "in" => (string)($monthAllData['july'] ?? 0),
-            "out" => (string)($monthAllData['july'] ?? 0),
-            "balance" => (string)($monthAllData['july'] ?? 0)
-        ],
-        [
-            "label" => "Aug",
-            "in" => (string)($monthAllData['august'] ?? 0),
-            "out" => (string)($monthAllData['august'] ?? 0),
-            "balance" => (string)($monthAllData['august'] ?? 0)
-        ],
-        [
-            "label" => "Sep",
-            "in" => (string)($monthAllData['september'] ?? 0),
-            "out" => (string)($monthAllData['september'] ?? 0),
-            "balance" => (string)($monthAllData['september'] ?? 0)
-        ],
-        [
-            "label" => "Oct",
-            "in" => (string)($monthAllData['october'] ?? 0),
-            "out" => (string)($monthAllData['october'] ?? 0),
-            "balance" => (string)($monthAllData['october'] ?? 0)
-        ],
-        [
-            "label" => "Nov",
-            "in" => (string)($monthAllData['november'] ?? 0),
-            "out" => (string)($monthAllData['november'] ?? 0),
-            "balance" => (string)($monthAllData['november'] ?? 0)
-        ],
-        [
-            "label" => "Dec",
-            "in" => (string)($monthAllData['december'] ?? 0),
-            "out" => (string)($monthAllData['december'] ?? 0),
-            "balance" => (string)($monthAllData['december'] ?? 0)
-        ],
+    $months = [
+        'january'   => 'Jan',
+        'february'  => 'Feb',
+        'march'     => 'Mar',
+        'april'     => 'Apr',
+        'may'       => 'May',
+        'june'      => 'Jun',
+        'july'      => 'Jul',
+        'august'    => 'Aug',
+        'september' => 'Sep',
+        'october'   => 'Oct',
+        'november'  => 'Nov',
+        'december'  => 'Dec',
     ];
 
-    // YEARLY SALES 
-    $query = checkReadSalesPerYear($val);
-    $yearAllData = getResultData($query)[0] ?? [];
+    $monthlyData = [];
 
-    http_response_code(200);
+    foreach ($months as $key => $label) {
+        $in  = (float)($monthAllData[$key] ?? 0);
+        $out = (float)($monthExpAllData[$key] ?? 0);
+
+        $monthlyData[] = [
+            "label"   => $label,
+            "in"      => (string)$in,
+            "out"     => (string)$out,
+            "balance" => (string)($in - $out)
+        ];
+    }
+    // YEARLY SALES 
+    $queryYS = checkReadSalesPerYear($val);
+    $yearAllData = getResultData($queryYS)[0] ?? [];
+
+    // Fixed function call from checkReadExpensesPerMonth to checkReadExpensesPerYear
+    $queryYE = checkReadExpensesPerYear($val);
+    $yearExpAllDataYE = getResultData($queryYE)[0] ?? [];
 
     $currentYear = (int)date('Y');
+    $yearlyData = [];
 
-    $yearlyData = [
-        [
-            "label" => (string)($currentYear - 5),
-            "in" => (string)($yearAllData['year_5'] ?? 0),
-            "out" => (string)($yearAllData['year_5'] ?? 0),
-            "balance" => (string)($yearAllData['year_5'] ?? 0)
-        ],
-        [
-            "label" => (string)($currentYear - 4),
-            "in" => (string)($yearAllData['year_4'] ?? 0),
-            "out" => (string)($yearAllData['year_4'] ?? 0),
-            "balance" => (string)($yearAllData['year_4'] ?? 0)
-        ],
-        [
-            "label" => (string)($currentYear - 3),
-            "in" => (string)($yearAllData['year_3'] ?? 0),
-            "out" => (string)($yearAllData['year_3'] ?? 0),
-            "balance" => (string)($yearAllData['year_3'] ?? 0)
-        ],
-        [
-            "label" => (string)($currentYear - 2),
-            "in" => (string)($yearAllData['year_2'] ?? 0),
-            "out" => (string)($yearAllData['year_2'] ?? 0),
-            "balance" => (string)($yearAllData['year_2'] ?? 0)
-        ],
-        [
-            "label" => (string)($currentYear - 1),
-            "in" => (string)($yearAllData['year_1'] ?? 0),
-            "out" => (string)($yearAllData['year_1'] ?? 0),
-            "balance" => (string)($yearAllData['year_1'] ?? 0)
-        ],
-        [
-            "label" => (string)$currentYear,
-            "in" => (string)($yearAllData['year_0'] ?? 0),
-            "out" => (string)($yearAllData['year_0'] ?? 0),
-            "balance" => (string)($yearAllData['year_0'] ?? 0)
-        ],
-    ];
+    // Loop from 5 years ago up to the current year
+    for ($i = 5; $i >= 0; $i--) {
+        $key   = 'year_' . $i;
+        $label = (string)($currentYear - $i);
 
+        $in  = (float)($yearAllData[$key] ?? 0);
+        $out = (float)($yearExpAllDataYE[$key] ?? 0);
+
+        $yearlyData[] = [
+            "label"   => $label,
+            "in"      => (string)$in,
+            "out"     => (string)$out,
+            "balance" => (string)($in - $out)
+        ];
+    }
+
+    http_response_code(200);
     $total_result_final[] = [
         "weekly" => $weeklyData,
         "monthly" => $monthlyData,

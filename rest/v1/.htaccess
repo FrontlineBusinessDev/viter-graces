@@ -136,7 +136,7 @@ RewriteRule ^report-sales-order/read-overdue-payment$ controllers/developer/repo
 RewriteRule ^report-sales-order/page-all-account-receivable/page/([0-9]+)$ controllers/developer/reports/page-all-account-receivable.php?start=$1 [L]
 RewriteRule ^report-sales-order/page-all-account-payable/page/([0-9]+)$ controllers/developer/reports/page-all-account-payable.php?start=$1 [L]
 
-### DASHBOARD ###
+### DASHBOARD ### 
 RewriteRule ^dashboard/read-cashflow$ controllers/developer/reports/read-cashflow.php [L]
 
 ### RETURN PRODUCTS ###
@@ -164,5 +164,6 @@ RewriteRule ^finance-expenses/active/([0-9]+)$ controllers/developer/finance/exp
 RewriteRule ^finance-account-receivable/account-receivable/([0-9]+)$ controllers/developer/finance/account-receivable/account-receivable.php?id=$1 [L] 
 RewriteRule ^finance-account-payable/page/([0-9]+)$ controllers/developer/finance/account-payable/page-by-account-payable.php?start=$1 [L] 
 RewriteRule ^finance-account-payable/account-payable/([0-9]+)$ controllers/developer/finance/account-payable/account-payable.php?id=$1 [L] 
+RewriteRule ^finance-sales-journal/page/([0-9]+)$ controllers/developer/finance/sales-journal/page-by-sales-journal.php?start=$1 [L] 
  
  

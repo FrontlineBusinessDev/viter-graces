@@ -1,3 +1,4 @@
+import { Amount } from "@/components/PesoSign";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -11,53 +12,61 @@ const SalesJournal = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "status",
-      header: "Status",
-      classTh: "w-[5rem]",
-      classTd: "",
-    },
-    {
-      accessorKey: "reference_no",
-      header: "Reference #",
+      accessorKey: "sales_journal_order_number",
+      header: "Sales Order #",
       classTh: "",
       classTd: "",
       isMobileTitle: true,
+      meta: "",
     },
     {
-      accessorKey: "date",
+      accessorKey: "sales_journal_date",
       header: "Date",
       classTh: "",
       classTd: "",
+      filterFn: "date",
+      meta: "",
     },
     {
-      accessorKey: "account",
-      header: "Account",
+      accessorKey: "sales_journal_customer",
+      header: "Customer",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
-      accessorKey: "type",
-      header: "Type",
+      accessorKey: "sales_journal_method",
+      header: "Method",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
-      accessorKey: "debit",
+      accessorKey: "sales_journal_debit",
+      amount: true,
       header: "Debit",
       classTh: "",
       classTd: "",
+      filterFn: "between",
+      meta: "",
     },
     {
-      accessorKey: "credit",
+      accessorKey: "sales_journal_credit",
+      amount: true,
       header: "Credit",
       classTh: "",
       classTd: "",
+      filterFn: "between",
+      meta: "",
     },
     {
-      accessorKey: "balance",
+      accessorKey: "sales_journal_balance",
+      amount: true,
       header: "Balance",
       classTh: "",
       classTd: "",
+      filterFn: "between",
+      meta: "",
     },
   ];
 
@@ -66,8 +75,10 @@ const SalesJournal = () => {
       <HeaderNav menu={"finance"} activeTab="sales-journal">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
-          path=""
+          className={`sm:overflow-auto sm:h-[calc(100dvh-203px)] h-[calc(97dvh-250px)]`}
+          path="finance-sales-journal"
+          haveFilterTable={true}
+          ishaveAdd={false}
           setItemEdit={setItemEdit}
         />
       </HeaderNav>

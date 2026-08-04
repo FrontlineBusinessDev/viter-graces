@@ -234,7 +234,6 @@ function checkReadSalesPerWeek($object)
     return $query;
 }
 
-
 // Read MONTHLY
 function checkReadSalesPerMonth($object)
 {

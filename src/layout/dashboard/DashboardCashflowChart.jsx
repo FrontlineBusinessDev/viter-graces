@@ -1,8 +1,11 @@
+import GraphTooltip from "@/components/GraphTooltip";
+import { apiVersion } from "@/config/config";
 import useDarkMode from "@/custom-hooks/useDarkMode";
+import useQueryData from "@/services/useQueryData";
+import { StoreContext } from "@/store/StoreContext";
 import { DollarSign, TrendingDown, TrendingUp } from "lucide-react";
-import React from "react";
+import React, { useMemo } from "react";
 import {
-  Area,
   Bar,
   ComposedChart,
   Legend,
@@ -12,57 +15,38 @@ import {
   XAxis,
   YAxis,
 } from "recharts";
-import GraphTooltip from "./GraphTooltip";
-import WarningNoteForComingSoon from "@/layout/WarningNoteForComingSoon";
-import { StoreContext } from "@/store/StoreContext";
 
-const cashflowData = {
-  Weekly: [
-    { label: "Mon", in: 6000, out: 2500, balance: 8000 },
-    { label: "Tue", in: 14000, out: 6000, balance: 5000 },
-    { label: "Wed", in: 5000, out: 7000, balance: 13000 },
-    { label: "Thu", in: 4500, out: 8000, balance: 12000 },
-    { label: "Fri", in: 13000, out: 5000, balance: 3000 },
-    { label: "Sat", in: 12000, out: 1500, balance: 6000 },
-    { label: "Sun", in: 4000, out: 7000, balance: 4500 },
-  ],
-  Monthly: [
-    { label: "Jan", in: 14000, out: 6000, balance: 5000 },
-    { label: "Feb", in: 4000, out: 7000, balance: 4500 },
-    { label: "Mar", in: 4500, out: 8000, balance: 12000 },
-    { label: "Apr", in: 14000, out: 6000, balance: 5000 },
-    { label: "May", in: 12000, out: 1500, balance: 6000 },
-    { label: "Jun", in: 4500, out: 8000, balance: 12000 },
-    { label: "Jul", in: 4000, out: 7000, balance: 4500 },
-    { label: "Aug", in: 14000, out: 6000, balance: 5000 },
-    { label: "Sep", in: 14000, out: 6000, balance: 5000 },
-    { label: "Oct", in: 14000, out: 6000, balance: 5000 },
-    { label: "Nov", in: 4500, out: 8000, balance: 12000 },
-    { label: "Dec", in: 12000, out: 1500, balance: 6000 },
-  ],
-  Yearly: [
-    { label: "2020", in: 12000, out: 1500, balance: 6000 },
-    { label: "2021", in: 4500, out: 8000, balance: 12000 },
-    { label: "2022", in: 14000, out: 6000, balance: 5000 },
-    { label: "2023", in: 4000, out: 7000, balance: 4500 },
-    { label: "2024", in: 4000, out: 7000, balance: 4500 },
-    { label: "2025", in: 14000, out: 6000, balance: 5000 },
-  ],
-};
-
-export default function CashflowChart() {
+const DashboardCashflowChart = () => {
   const { store } = React.useContext(StoreContext);
   const userRole = store.credentials?.data?.role;
-  const [timeframe, setTimeframe] = React.useState("Weekly");
+  const [timeframeCF, setTimeframeCF] = React.useState("weekly");
   const { darkMode } = useDarkMode();
 
-  const currentData = cashflowData[timeframe];
-  // dashboard/read-cashflow
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data: dataResult,
+  } = useQueryData(
+    `${apiVersion}/dashboard/read-cashflow`, // endpoint
+    "get", // method
+    "dashboard/read-cashflow",
+    {},
+  );
+
+  const cashflowData = useMemo(() => {
+    if (!dataResult?.count) return [];
+    return dataResult?.data[0];
+  }, [dataResult]);
+
+  const currentData = cashflowData[timeframeCF];
+
+  console.log("currentData", currentData);
   return (
     <>
       <div className="relative group">
         <div
-          className="bg-white grayscale! dark:bg-gray-900 rounded-xl p-4 shadow"
+          className="bg-white dark:bg-gray-900 rounded-xl p-4 shadow"
           data-testid="cashflow-chart"
         >
           <div className="flex justify-between mb-4">
@@ -70,13 +54,13 @@ export default function CashflowChart() {
               Cashflow
             </h2>
             <div className="flex gap-2">
-              {["Weekly", "Monthly", "Yearly"].map((frame) => (
+              {["weekly", "monthly", "yearly"].map((frame) => (
                 <button
                   key={frame}
-                  onClick={() => setTimeframe(frame)}
-                  data-testid={`timeframe-${frame.toLowerCase()}`}
-                  className={`px-3 py-1 rounded-lg ${
-                    timeframe === frame
+                  onClick={() => setTimeframeCF(frame)}
+                  data-testid={`timeframeCF-${frame.toLowerCase()}`}
+                  className={`px-3 py-1 rounded-lg capitalize ${
+                    timeframeCF === frame
                       ? "bg-primary text-white"
                       : "bg-gray-200 text-gray-700"
                   }`}
@@ -164,8 +148,9 @@ export default function CashflowChart() {
             </ComposedChart>
           </ResponsiveContainer>
         </div>
-        {userRole !== "developer" ? <WarningNoteForComingSoon /> : ""}
       </div>
     </>
   );
-}
+};
+
+export default DashboardCashflowChart;

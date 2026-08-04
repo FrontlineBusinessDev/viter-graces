@@ -122,6 +122,7 @@ foreach ($ordersItems as $item) {
 }
 
 // create activity log
+checkCreateSalesJornal($val);
 createActivityLog($valActivity, $data);
 
 returnSuccess($val, "Products", $query);

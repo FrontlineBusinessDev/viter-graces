@@ -1,5 +1,5 @@
-import CashflowChart from "@/components/CashflowChart";
 import ProfitLossChart from "@/components/ProfitLossChart";
+import DashboardCashflowChart from "@/layout/dashboard/DashboardCashflowChart";
 import DashboardExpensesToday from "@/layout/dashboard/DashboardExpensesToday";
 import DashboardLowStockAlert from "@/layout/dashboard/DashboardLowStockAlert";
 import DashboardOverduePayments from "@/layout/dashboard/DashboardOverduePayments";
@@ -28,15 +28,13 @@ const Dashboard = () => {
             <DashboardTopSellingProduct path="sales-order/read-top-selling-product" />
             <DashboardExpensesToday path="purchase-order/read-expenses-today" />
           </div>
-
           <div className="grid grid-cols-1 xl:grid-cols-[2fr_1fr_1fr] gap-6 py-6 ">
             <DashboardSalesOverview />
             <DashboardOverduePayments />
             <DashboardRecentActivities />
           </div>
-
           <div className="grid xl:grid-cols-2 gap-6 ">
-            <CashflowChart />
+            <DashboardCashflowChart />
             <ProfitLossChart />
           </div>
         </HeaderNav>

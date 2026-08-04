@@ -1491,14 +1491,6 @@ class ReportSalesOrder
         return $query;
     }
 
-
-
-
-
-
-
-
-
     // read all
     public function readSalesPerWeek()
     {

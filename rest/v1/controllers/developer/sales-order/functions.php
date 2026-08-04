@@ -153,6 +153,14 @@ function checkUpdateInstallment($object)
 }
 
 // Update 
+function checkUpdateSalesJournalRemovedByOrderId($object)
+{
+    $query = $object->updateSalesJournalRemovedByOrderId();
+    checkQuery($query, "There's a problem processing your request. (Update Sales Journal Removed By Id)");
+    return $query;
+}
+
+// Update 
 function updateStatus($val, $data)
 {
     // DEFAULT VALUE
@@ -349,5 +357,110 @@ function checkReadSalesPerYear($object)
 {
     $query = $object->readSalesPerYear();
     checkQuery($query, "Empty records. (read sales per year)");
+    return $query;
+}
+
+// Read YEARLY
+function checkReadAllSales($object)
+{
+    $query = $object->readAllSales();
+    checkQuery($query, "Empty records. (Read All Sales)");
+    return $query;
+}
+
+// Read YEARLY
+function checkReadAllSalesJournal($object)
+{
+    $query = $object->readAllSalesJournal();
+    checkQuery($query, "Empty records. (Read All Sales Journal)");
+    return $query;
+}
+
+// Create 
+function checkCreateSalesJornal($object)
+{
+    $now = date("Y-m-d H:i:s");
+
+    // Bulk mapping repeated properties
+    $object->sales_journal_customer = $object->sales_order_customer_name;
+    $object->sales_journal_customer_id = $object->sales_order_customer_id;
+    $object->sales_journal_order_number = $object->sales_order_number;
+    $object->sales_journal_order_id = $object->lastInsertedId;
+    $object->sales_journal_method = $object->sales_order_payment_method;
+    $object->sales_journal_date = date("Y-m-d");
+    $object->sales_journal_create = $now;
+    $object->sales_journal_update = $now;
+    $object->sales_journal_note = "";
+
+    $countQuery = getResultData(checkReadAllSales($object)) ?? [];
+
+    $isFirstEntry = (count($countQuery) == 1);
+    $paidAmount = max((float)$object->sales_order_paid_amount, 0);
+    $dueAmount = max((float)$object->sales_order_total_receivable_amount, 0);
+
+    if ($isFirstEntry) {
+        $object->sales_journal_debit = 0;
+        $object->sales_journal_credit = 0;
+        $object->sales_journal_balance = $dueAmount;
+        $query = $object->createSalesJornal(); // First journal entry
+    }
+
+    $jornalDebitQuery = getResultData(checkReadAllSalesJournal($object))[0] ?? [];
+    if (!empty($jornalDebitQuery)) {
+        $lastBalance = (float)($jornalDebitQuery['sales_journal_balance'] ?? 0);
+        if (!$isFirstEntry && $dueAmount > 0) {
+            $object->sales_journal_debit = $dueAmount;
+            $object->sales_journal_credit = 0;
+            $object->sales_journal_balance = $dueAmount + $lastBalance;
+            $query = $object->createSalesJornal();
+        }
+    }
+
+    $jornalCreditQuery = getResultData(checkReadAllSalesJournal($object))[0] ?? [];
+    if (!empty($jornalCreditQuery)) {
+        $lastBalance = (float)($jornalCreditQuery['sales_journal_balance'] ?? 0);
+
+        if ($paidAmount > 0) {
+            $object->sales_journal_debit = 0;
+            $object->sales_journal_credit = $paidAmount;
+            $object->sales_journal_balance = $lastBalance - $paidAmount;
+            $query = $object->createSalesJornal();
+        }
+    }
+
+    checkQuery($query, "There's a problem processing your request. (create Sales Jornal)");
+    return $query;
+}
+
+// Read all
+function checkCreateSalesJournalRemoved($object, $data)
+{
+    $now = date("Y-m-d H:i:s");
+    $dueAmount = max((float)$data['sales_order_total_balance_amount'], 0);
+    $paidAmount = max((float)$data['sales_order_paid_amount'], 0);
+    $totalAmount = max((float)$data['sales_order_discounted_with_vat_amount'], 0);
+
+    // Bulk mapping repeated properties
+    $object->sales_journal_customer = $data['sales_order_customer_name'];
+    $object->sales_journal_customer_id = $data['sales_order_customer_id'];
+    $object->sales_journal_order_number = $object->sales_order_number;
+    $object->sales_journal_order_id = $object->sales_order_aid;
+    $object->sales_journal_method = $object->sales_order_payment_method;
+    $object->sales_journal_date = date("Y-m-d");
+    $object->sales_journal_create = $now;
+    $object->sales_journal_update = $now;
+    $object->sales_journal_debit = 0;
+    $object->sales_journal_credit = 0;
+    $object->sales_journal_balance = 0;
+    $object->sales_journal_note = "Deleted details in sales order total amount of {$totalAmount}, total paid amount {$paidAmount} the total balance amount is {$dueAmount}.";
+
+    $jornalCreditQuery = getResultData(checkReadAllSalesJournal($object))[0] ?? [];
+    if (!empty($jornalCreditQuery)) {
+        $lastBalance = (float)($jornalCreditQuery['sales_journal_balance'] ?? 0);
+        $object->sales_journal_balance = $lastBalance - $dueAmount;
+    }
+
+    $query = $object->createSalesJornal();
+    checkQuery($query, "There's a problem processing your request. (create Sales Jornal)");
     return $query;
 }
