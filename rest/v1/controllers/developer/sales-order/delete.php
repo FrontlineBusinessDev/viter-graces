@@ -23,7 +23,7 @@ if (array_key_exists("id", $_GET)) {
 
 
     checkUpdateSalesJournalRemovedByOrderId($val);
-    checkCreateSalesJournalRemoved($val, $data);
+    // checkCreateSalesJournalRemoved($val, $data);
     checkDeleteInstallment($val);
     $query = checkDelete($val);
     // create activity log

@@ -1,3 +1,5 @@
+import useDarkMode from "@/custom-hooks/useDarkMode";
+import { StoreContext } from "@/store/StoreContext";
 import { DollarSign, TrendingDown, TrendingUp } from "lucide-react";
 import React from "react";
 import {
@@ -10,9 +12,6 @@ import {
   YAxis,
 } from "recharts";
 import GraphTooltip from "./GraphTooltip";
-import useDarkMode from "@/custom-hooks/useDarkMode";
-import WarningNoteForComingSoon from "@/layout/WarningNoteForComingSoon";
-import { StoreContext } from "@/store/StoreContext";
 
 const profitLossData = {
   Weekly: [

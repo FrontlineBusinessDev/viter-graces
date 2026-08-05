@@ -67,6 +67,7 @@ class SalesOrder
     public $sales_journal_customer;
     public $sales_journal_customer_id;
     public $sales_journal_note;
+    public $sales_journal_from;
     public $sales_journal_create;
     public $sales_journal_update;
 
@@ -231,6 +232,7 @@ class SalesOrder
             $sql .= "sales_journal_customer, ";
             $sql .= "sales_journal_customer_id, ";
             $sql .= "sales_journal_note, ";
+            $sql .= "sales_journal_from, ";
             $sql .= "sales_journal_create, ";
             $sql .= "sales_journal_update ) values ( ";
             $sql .= ":sales_journal_order_number, ";
@@ -243,6 +245,7 @@ class SalesOrder
             $sql .= ":sales_journal_customer, ";
             $sql .= ":sales_journal_customer_id, ";
             $sql .= ":sales_journal_note, ";
+            $sql .= ":sales_journal_from, ";
             $sql .= ":sales_journal_create, ";
             $sql .= ":sales_journal_update ) ";
             $query = $this->connection->prepare($sql);
@@ -257,6 +260,7 @@ class SalesOrder
                 "sales_journal_customer" => $this->sales_journal_customer,
                 "sales_journal_customer_id" => $this->sales_journal_customer_id,
                 "sales_journal_note" => $this->sales_journal_note,
+                "sales_journal_from" => $this->sales_journal_from,
                 "sales_journal_create" => $this->sales_journal_create,
                 "sales_journal_update" => $this->sales_journal_update,
             ]);
@@ -1564,7 +1568,7 @@ class SalesOrder
     }
 
     // read by id
-    public function readAllSalesJournal()
+    public function readLastSalesJournal()
     {
         try {
             $sql = "select sales_journal_balance ";
@@ -1578,19 +1582,58 @@ class SalesOrder
         }
         return $query;
     }
+    // read by id
+    public function readAllSalesJournal()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblSalesJournal} ";
+            $sql .= "order by sales_journal_aid asc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
 
     // update
     public function updateSalesJournalRemovedByOrderId()
     {
         try {
             $sql = "update {$this->tblSalesJournal} set ";
-            $sql .= "sales_journal_is_removed = '1' ";
+            $sql .= "sales_journal_is_removed = '1', ";
             $sql .= "sales_journal_update = :sales_journal_update ";
             $sql .= "where sales_journal_order_id = :sales_journal_order_id ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "sales_journal_update" => $this->sales_journal_update,
                 "sales_journal_order_id" => $this->sales_journal_order_id,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
+    public function updateSalesJournal()
+    {
+        try {
+            $sql = "update {$this->tblSalesJournal} set ";
+            $sql .= "sales_journal_debit = :sales_journal_debit, ";
+            $sql .= "sales_journal_credit = :sales_journal_credit, ";
+            $sql .= "sales_journal_balance = :sales_journal_balance, ";
+            $sql .= "sales_journal_update = :sales_journal_update ";
+            $sql .= "where sales_journal_aid = :sales_journal_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_journal_debit" => $this->sales_journal_debit,
+                "sales_journal_credit" => $this->sales_journal_credit,
+                "sales_journal_balance" => $this->sales_journal_balance,
+                "sales_journal_update" => $this->sales_journal_update,
+                "sales_journal_aid" => $this->sales_journal_aid,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

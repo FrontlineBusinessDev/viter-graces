@@ -1,8 +1,8 @@
-import ProfitLossChart from "@/components/ProfitLossChart";
 import DashboardCashflowChart from "@/layout/dashboard/DashboardCashflowChart";
 import DashboardExpensesToday from "@/layout/dashboard/DashboardExpensesToday";
 import DashboardLowStockAlert from "@/layout/dashboard/DashboardLowStockAlert";
 import DashboardOverduePayments from "@/layout/dashboard/DashboardOverduePayments";
+import DashboardProfitAndLoss from "@/layout/dashboard/DashboardProfitAndLoss";
 import DashboardRecentActivities from "@/layout/dashboard/DashboardRecentActivities";
 import DashboardSalesOverview from "@/layout/dashboard/DashboardSalesOverview";
 import DashboardSalesToday from "@/layout/dashboard/DashboardSalesToday";
@@ -35,7 +35,7 @@ const Dashboard = () => {
           </div>
           <div className="grid xl:grid-cols-2 gap-6 ">
             <DashboardCashflowChart />
-            <ProfitLossChart />
+            <DashboardProfitAndLoss />
           </div>
         </HeaderNav>
       </div>

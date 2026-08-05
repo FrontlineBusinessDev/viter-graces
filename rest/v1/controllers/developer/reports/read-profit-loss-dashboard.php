@@ -25,13 +25,13 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $weekExpAllData = getResultData($queryE)[0] ?? [];
 
     $days = [
-        'monday'    => 'Mon',
-        'tuesday'   => 'Tue',
+        'monday'  => 'Mon',
+        'tuesday' => 'Tue',
         'wednesday' => 'Wed',
         'thursday'  => 'Thu',
-        'friday'    => 'Fri',
+        'friday'  => 'Fri',
         'saturday'  => 'Sat',
-        'sunday'    => 'Sun',
+        'sunday'  => 'Sun',
     ];
 
     $weeklyData = [];
@@ -40,6 +40,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $weeklyTotalIn = 0;
     $weeklyTotalOut = 0;
     $weeklyTotalBalance = 0;
+
 
     foreach ($days as $key => $label) {
         $in  = (float)($weekAllData[$key] ?? 0);
@@ -50,18 +51,18 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $weeklyTotalBalance = $weeklyTotalIn - $weeklyTotalOut;
 
         $weeklyData[] = [
-            "label"   => $label,
-            "in"      => (string)$in,
-            "out"     => (string)$out,
-            "balance" => (string)($in - $out)
+            "label" => $label,
+            "income" => (string)$in,
+            "expenses" => (string)$out,
+            "net" => (string)($in - $out)
         ];
     }
 
     $totalData[] = [
-        "label"   => 'weekly',
-        "in"      => (string)$weeklyTotalIn,
-        "out"     => (string)$weeklyTotalOut,
-        "balance" => (string)$weeklyTotalBalance
+        "label" => 'weekly',
+        "income" => (string)$weeklyTotalIn,
+        "expenses" => (string)$weeklyTotalOut,
+        "net" => (string)$weeklyTotalBalance
     ];
 
     $monthlyTotalIn = 0;
@@ -75,16 +76,16 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $monthExpAllData = getResultData($queryME)[0] ?? [];
 
     $months = [
-        'january'   => 'Jan',
+        'january' => 'Jan',
         'february'  => 'Feb',
-        'march'     => 'Mar',
-        'april'     => 'Apr',
-        'may'       => 'May',
-        'june'      => 'Jun',
-        'july'      => 'Jul',
-        'august'    => 'Aug',
+        'march' => 'Mar',
+        'april' => 'Apr',
+        'may'  => 'May',
+        'june' => 'Jun',
+        'july' => 'Jul',
+        'august'  => 'Aug',
         'september' => 'Sep',
-        'october'   => 'Oct',
+        'october' => 'Oct',
         'november'  => 'Nov',
         'december'  => 'Dec',
     ];
@@ -100,18 +101,18 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $monthlyTotalBalance += $monthlyTotalIn - $monthlyTotalOut;
 
         $monthlyData[] = [
-            "label"   => $label,
-            "in"      => (string)$in,
-            "out"     => (string)$out,
-            "balance" => (string)($in - $out)
+            "label" => $label,
+            "income" => (string)$in,
+            "expenses" => (string)$out,
+            "net" => (string)($in - $out)
         ];
     }
 
     $totalData[] = [
-        "label"   => 'monthly',
-        "in"      => (string)$in,
-        "out"     => (string)$out,
-        "balance" => (string)($in - $out)
+        "label" => 'monthly',
+        "income" => (string)$in,
+        "expenses" => (string)$out,
+        "net" => (string)($in - $out)
     ];
 
     $yearlyTotalIn = 0;
@@ -142,22 +143,21 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $yearlyTotalBalance = $yearlyTotalIn - $yearlyTotalOut;
 
         $yearlyData[] = [
-            "label"   => $label,
-            "in"      => (string)$in,
-            "out"     => (string)$out,
-            "balance" => (string)($in - $out)
+            "label" => $label,
+            "income" => (string)$in,
+            "expenses" => (string)$out,
+            "net" => (string)($in - $out)
         ];
     }
-
     $totalData[] = [
-        "label"   => 'yearly',
-        "in"      => (string)$in,
-        "out"     => (string)$out,
-        "balance" => (string)($in - $out)
+        "label" => 'yearly',
+        "income" => (string)$in,
+        "expenses" => (string)$out,
+        "net" => (string)($in - $out)
     ];
 
-
     http_response_code(200);
+
     $total_result_final[] = [
         "weekly" => $weeklyData,
         "monthly" => $monthlyData,

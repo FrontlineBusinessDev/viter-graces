@@ -148,8 +148,76 @@ function allowedColumns()
 function checkUpdateInstallment($object)
 {
     $query = $object->updateInstallment();
-    checkQuery($query, "There's a problem processing your request. (update installment)");
+    checkQuery($query, "There's a problem processing your request. (Update installment)");
     return $query;
+}
+
+// Update 
+function checkUpdateSalesJournalLoop($object)
+{
+    $query = $object->updateSalesJournal();
+    checkQuery($query, "There's a problem processing your request. (Update installment)");
+    return $query;
+}
+
+// Update 
+function checkUpdateSalesJournal($object)
+{
+    $now = date("Y-m-d H:i:s");
+
+    $query = checkReadAllSalesJournal($object);
+    $dataVal = getResultData($query) ?? [];
+
+    // 1. Ensure array is ordered Oldest First (ASC) for running balance
+    // Remove array_reverse() if checkReadAllSalesJournal already returns ASC order.
+    // If checkReadAllSalesJournal returns DESC (Row 1 first), array_reverse is required.
+    if (isset($dataVal[0]) && isset($dataVal[count($dataVal) - 1])) {
+        // Reversing ensures index 0 is the oldest transaction (ORD001)
+        $dataVal = array_reverse($dataVal);
+    }
+
+    $journal_balance = 0.00;
+    $last_query = true;
+    returnError($object);
+    for ($i = 0; $i < count($dataVal); $i++) {
+        $row = $dataVal[$i];
+
+        $object->sales_journal_aid = $row['sales_journal_aid'];
+
+        // 2. Preserve row nature (Debit row vs Credit row) instead of combining them
+        $debit = (float)($row['sales_journal_debit'] ?? 0);
+        $credit = (float)($row['sales_journal_credit'] ?? 0);
+
+        $isMatchingOrder = ((string)$object->sales_order_number == (string)$row['sales_journal_order_number']);
+
+        if ($isMatchingOrder) {
+            // Update total sale amount if this row represents the initial sales invoice
+            if ($row['sales_journal_from'] == 'sales-order' && isset($object->sales_order_total_amount)) {
+                $debit = (float)$object->sales_order_total_amount;
+                $credit = 0.00;
+            }
+            // Update payment amount if this row represents a payment
+            elseif ($row['sales_journal_from'] == 'sales-order' && isset($object->sales_order_paid_amount)) {
+                $debit = 0.00;
+                $credit = (float)$object->sales_order_paid_amount;
+            }
+        }
+
+        // 3. Compute running balance (Previous Balance + Debit - Credit)
+        $journal_balance += ($debit - $credit);
+
+        // 4. Assign properties
+        $object->sales_journal_debit = number_format($debit, 2, '.', '');
+        $object->sales_journal_credit = number_format($credit, 2, '.', '');
+        $object->sales_journal_balance = number_format($journal_balance, 2, '.', '');
+        $object->sales_journal_update = $now;
+
+        // 5. Update individual row
+        $last_query = $object->updateSalesJournal();
+    }
+
+    checkQuery($last_query, "There's a problem processing your request. (Update Sales Journal)");
+    return $last_query;
 }
 
 // Update 
@@ -166,7 +234,7 @@ function updateStatus($val, $data)
     // DEFAULT VALUE
     $val->sales_order_status = 'paid';
     $installmentData = $data["installmentItems"];
-    $val->sales_order_paid_amount = $data["sales_order_paid_amount"];
+    $val->sales_order_paid_amount = $val->sales_order_paid_amount;
     $val->sales_order_total_receivable_amount = $data["sales_order_total_receivable_amount"];
 
     //  IF THE PAYMENT IS PARTIAL AND HAVE INSTALLMENT DATA
@@ -226,11 +294,11 @@ function installmentDetails($val, $installmentItems)
     $val->installment_payment_received_id = "";
     $val->installment_payment_received_name = "";
     $val->installment_payment_paid_amount = 0;
-    if (strtolower($val->sales_order_payment_terms) === "installment") {
+    if (strtolower($val->sales_order_payment_terms) == "installment") {
         if (count($installmentItems) > 0) {
             // CREATE INSTALLMENT PAYMENT
             for ($a = 0; $a < count($installmentItems); $a++) {
-                if ($a === 0) {
+                if ($a == 0) {
                     $val->sales_order_due_date = $installmentItems[$a]["installment_payment_due_date"];
                 }
                 $val->installment_payment_code_id = 0;
@@ -375,6 +443,13 @@ function checkReadAllSalesJournal($object)
     checkQuery($query, "Empty records. (Read All Sales Journal)");
     return $query;
 }
+// Read YEARLY
+function checkReadLastSalesJournal($object)
+{
+    $query = $object->readLastSalesJournal();
+    checkQuery($query, "Empty records. (Read Last Sales Journal)");
+    return $query;
+}
 
 // Create 
 function checkCreateSalesJornal($object)
@@ -390,6 +465,7 @@ function checkCreateSalesJornal($object)
     $object->sales_journal_date = date("Y-m-d");
     $object->sales_journal_create = $now;
     $object->sales_journal_update = $now;
+    $object->sales_journal_from = "sales-order";
     $object->sales_journal_note = "";
 
     $countQuery = getResultData(checkReadAllSales($object)) ?? [];
@@ -405,7 +481,7 @@ function checkCreateSalesJornal($object)
         $query = $object->createSalesJornal(); // First journal entry
     }
 
-    $jornalDebitQuery = getResultData(checkReadAllSalesJournal($object))[0] ?? [];
+    $jornalDebitQuery = getResultData(checkReadLastSalesJournal($object))[0] ?? [];
     if (!empty($jornalDebitQuery)) {
         $lastBalance = (float)($jornalDebitQuery['sales_journal_balance'] ?? 0);
         if (!$isFirstEntry && $dueAmount > 0) {
@@ -416,7 +492,7 @@ function checkCreateSalesJornal($object)
         }
     }
 
-    $jornalCreditQuery = getResultData(checkReadAllSalesJournal($object))[0] ?? [];
+    $jornalCreditQuery = getResultData(checkReadLastSalesJournal($object))[0] ?? [];
     if (!empty($jornalCreditQuery)) {
         $lastBalance = (float)($jornalCreditQuery['sales_journal_balance'] ?? 0);
 
@@ -454,7 +530,7 @@ function checkCreateSalesJournalRemoved($object, $data)
     $object->sales_journal_balance = 0;
     $object->sales_journal_note = "Deleted details in sales order total amount of {$totalAmount}, total paid amount {$paidAmount} the total balance amount is {$dueAmount}.";
 
-    $jornalCreditQuery = getResultData(checkReadAllSalesJournal($object))[0] ?? [];
+    $jornalCreditQuery = getResultData(checkReadLastSalesJournal($object))[0] ?? [];
     if (!empty($jornalCreditQuery)) {
         $lastBalance = (float)($jornalCreditQuery['sales_journal_balance'] ?? 0);
         $object->sales_journal_balance = $lastBalance - $dueAmount;

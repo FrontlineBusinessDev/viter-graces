@@ -143,6 +143,7 @@ if (array_key_exists("id", $_GET)) {
     }
 
     // update
+    checkUpdateSalesJournal($val);
     updateConnectedMenu($val);
     // create activity log
     createActivityLog($valActivity, $data);

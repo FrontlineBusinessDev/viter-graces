@@ -138,6 +138,7 @@ RewriteRule ^report-sales-order/page-all-account-payable/page/([0-9]+)$ controll
 
 ### DASHBOARD ### 
 RewriteRule ^dashboard/read-cashflow$ controllers/developer/reports/read-cashflow.php [L]
+RewriteRule ^dashboard/read-profit-loss-dashboard$ controllers/developer/reports/read-profit-loss-dashboard.php [L]
 
 ### RETURN PRODUCTS ###
 RewriteRule ^returns-products$ controllers/developer/returns/returns.php [L] 
