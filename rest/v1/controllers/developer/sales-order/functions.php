@@ -165,54 +165,48 @@ function checkUpdateSalesJournal($object)
 {
     $now = date("Y-m-d H:i:s");
 
-    $query = checkReadAllSalesJournal($object);
+    $query = checkReadAllSalesJournal($object); // Ensure this query uses ASC ordering!
     $dataVal = getResultData($query) ?? [];
-
-    // 1. Ensure array is ordered Oldest First (ASC) for running balance
-    // Remove array_reverse() if checkReadAllSalesJournal already returns ASC order.
-    // If checkReadAllSalesJournal returns DESC (Row 1 first), array_reverse is required.
-    if (isset($dataVal[0]) && isset($dataVal[count($dataVal) - 1])) {
-        // Reversing ensures index 0 is the oldest transaction (ORD001)
-        $dataVal = array_reverse($dataVal);
-    }
 
     $journal_balance = 0.00;
     $last_query = true;
-    returnError($object);
+
     for ($i = 0; $i < count($dataVal); $i++) {
         $row = $dataVal[$i];
-
         $object->sales_journal_aid = $row['sales_journal_aid'];
 
-        // 2. Preserve row nature (Debit row vs Credit row) instead of combining them
         $debit = (float)($row['sales_journal_debit'] ?? 0);
         $credit = (float)($row['sales_journal_credit'] ?? 0);
 
-        $isMatchingOrder = ((string)$object->sales_order_number == (string)$row['sales_journal_order_number']);
+        $isMatchingOrder = (trim($object->sales_order_number) == trim($row['sales_journal_order_number']));
 
-        if ($isMatchingOrder) {
-            // Update total sale amount if this row represents the initial sales invoice
-            if ($row['sales_journal_from'] == 'sales-order' && isset($object->sales_order_total_amount)) {
+        // Update values based on specific entry type rather than overwriting all rows
+        if ($isMatchingOrder && $row['sales_journal_from'] == 'sales-order') {
+            if (isset($object->sales_order_total_amount)) {
                 $debit = (float)$object->sales_order_total_amount;
                 $credit = 0.00;
-            }
-            // Update payment amount if this row represents a payment
-            elseif ($row['sales_journal_from'] == 'sales-order' && isset($object->sales_order_paid_amount)) {
+            } elseif (isset($object->sales_order_paid_amount)) {
                 $debit = 0.00;
                 $credit = (float)$object->sales_order_paid_amount;
             }
         }
 
-        // 3. Compute running balance (Previous Balance + Debit - Credit)
-        $journal_balance += ($debit - $credit);
+        // Initialize running balance with existing starting balance on first iteration
+        if ($i == 0) {
+            $journal_balance = $isMatchingOrder
+                ? (float)($object->sales_order_total_receivable_amount ?? 0)
+                : (float)($row['sales_journal_balance'] ?? ($debit - $credit));
+        } else {
+            $journal_balance += ($debit - $credit);
+        }
 
-        // 4. Assign properties
+        // Assign property values
         $object->sales_journal_debit = number_format($debit, 2, '.', '');
         $object->sales_journal_credit = number_format($credit, 2, '.', '');
         $object->sales_journal_balance = number_format($journal_balance, 2, '.', '');
         $object->sales_journal_update = $now;
 
-        // 5. Update individual row
+        // Update individual row
         $last_query = $object->updateSalesJournal();
     }
 
