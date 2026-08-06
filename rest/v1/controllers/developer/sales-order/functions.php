@@ -171,6 +171,8 @@ function checkUpdateSalesJournal($object)
     $journal_balance = 0.00;
     $last_query = true;
 
+    $thefirstLoopMatches = 0;
+
     for ($i = 0; $i < count($dataVal); $i++) {
         $row = $dataVal[$i];
         $object->sales_journal_aid = $row['sales_journal_aid'];
@@ -182,10 +184,12 @@ function checkUpdateSalesJournal($object)
 
         // Update values based on specific entry type rather than overwriting all rows
         if ($isMatchingOrder && $row['sales_journal_from'] == 'sales-order') {
-            if (isset($object->sales_order_total_amount)) {
-                $debit = (float)$object->sales_order_total_amount;
+            $thefirstLoopMatches += 1;
+            if ((float)$object->sales_order_total_receivable_amount > 0 && (float)$thefirstLoopMatches == 1) {
+                $debit = (float)$object->sales_order_total_receivable_amount;
                 $credit = 0.00;
-            } elseif (isset($object->sales_order_paid_amount)) {
+            }
+            if ((float)$object->sales_order_paid_amount > 0 && (float)$thefirstLoopMatches != 1) {
                 $debit = 0.00;
                 $credit = (float)$object->sales_order_paid_amount;
             }
@@ -193,7 +197,7 @@ function checkUpdateSalesJournal($object)
 
         // Initialize running balance with existing starting balance on first iteration
         if ($i == 0) {
-            $journal_balance = $isMatchingOrder
+            $journal_balance += $isMatchingOrder
                 ? (float)($object->sales_order_total_receivable_amount ?? 0)
                 : (float)($row['sales_journal_balance'] ?? ($debit - $credit));
         } else {

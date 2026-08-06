@@ -21,7 +21,6 @@ if (array_key_exists("id", $_GET)) {
     $val->sales_journal_order_id = $_GET['id'];
     $val->sales_journal_update = date("Y-m-d H:i:s");
 
-
     checkUpdateSalesJournalRemovedByOrderId($val);
     // checkCreateSalesJournalRemoved($val, $data);
     checkDeleteInstallment($val);
