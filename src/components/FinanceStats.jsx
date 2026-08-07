@@ -1,3 +1,4 @@
+import { AmountWithPesoSign } from "./PesoSign";
 import TableLoading from "./spinners/TableLoading";
 
 const FinanceStats = ({
@@ -26,7 +27,7 @@ const FinanceStats = ({
               <TableLoading count={1} cols={1} />
             </span>
           ) : (
-            <>{value}</>
+            <AmountWithPesoSign classAmnt="" classN="size-4" amount={value} />
           )}
         </h2>
       </div>

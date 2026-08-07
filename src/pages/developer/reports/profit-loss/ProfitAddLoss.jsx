@@ -1,6 +1,58 @@
+import { DateFormat } from "@/components/DateFormat";
+import { SearchableSelectFilterProductOwner } from "@/components/inputs/InputSelect";
+import { AmountWithPesoSign } from "@/components/PesoSign";
+import ServerError from "@/components/ServerError";
+import TableLoading from "@/components/spinners/TableLoading";
+import { apiVersion } from "@/config/config";
 import HeaderNav from "@/layout/headers/HeaderNav";
+import useQueryData from "@/services/useQueryData";
+import { StoreContext } from "@/store/StoreContext";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
+import React, { useMemo } from "react";
 
 const ProfitAddLoss = () => {
+  const { store } = React.useContext(StoreContext);
+  const [dateFrom, setDateFrom] = React.useState(
+    store.credentials?.data?.server_date,
+  );
+  const [dateTo, setDateTo] = React.useState(
+    store.credentials?.data?.server_date,
+  );
+  const [productOwner, setProductOwner] = React.useState([
+    {
+      id: 0,
+      value: "",
+      label: "",
+    },
+  ]);
+
+  const {
+    isLoading,
+    isFetching,
+    error,
+    data: result,
+  } = useQueryData(
+    `${apiVersion}/report-sales-order/read-profite-and-loss`, // endpoint
+    "post", // method
+    `read-profite-and-loss`, // key
+    {
+      id: Number(isEmptyItem(productOwner?.id, 0)),
+      from: dateFrom,
+      to: dateTo,
+    },
+    {
+      id: Number(isEmptyItem(productOwner?.id, 0)),
+      from: dateFrom,
+      to: dateTo,
+    },
+  );
+
+  const item = useMemo(() => {
+    if (!result?.count) return [];
+
+    return isEmptyItem(result?.data[0], []);
+  }, [result]);
+
   return (
     <HeaderNav menu={"reports"} activeTab="profit-&-loss">
       <div className="max-w-2xl my-4 place-self-center text-sm ">
@@ -9,25 +61,35 @@ const ProfitAddLoss = () => {
             <label htmlFor="" className="text-black dark:text-light">
               From
             </label>
-            <input type="date" />
+            <input
+              type="date"
+              defaultValue={dateFrom}
+              onChange={(e) => setDateFrom(e.target.value)}
+            />
           </div>
           <div>
             <label htmlFor="" className="text-black dark:text-light">
               To
             </label>
-            <input type="date" />
+            <input
+              type="date"
+              defaultValue={dateTo}
+              onChange={(e) => setDateTo(e.target.value)}
+            />
           </div>
           <div>
-            <label htmlFor="" className="text-black dark:text-light">
+            <label htmlFor="" className="text-black dark:text-light ">
               Product Owner
             </label>
-            <select name="" id="">
-              <option value="">Louren Rubico</option>
-              <option value="">Cyrene Lumabas</option>
-            </select>
+            <SearchableSelectFilterProductOwner
+              setColumn={setProductOwner}
+              column={productOwner}
+              path="product-owner/read-by-product-owner"
+              testFilterId={"filter-owner"}
+            />
           </div>
         </div>
-
+        {error && <ServerError />}
         <div className="my-3 space-y-3">
           {/* Profit and loss */}
           <div
@@ -36,15 +98,36 @@ const ProfitAddLoss = () => {
             <h1 className="text-black dark:text-light md:text-2xl text-lg">
               Profit and Loss
             </h1>
-            <div className="flex justify-between mt-3">
-              <p>As of April 13, 2026</p>
-              <p>
-                Product Owner:{" "}
-                <span className="text-black dark:text-light font-semibold">
-                  Louren Rubico
+            <ul className="flex justify-between mt-3">
+              <li>
+                As of
+                {dateFrom === dateTo ? (
+                  <span className="font-semibold mx-1">
+                    {DateFormat(dateFrom)}
+                  </span>
+                ) : (
+                  <>
+                    <span className="font-semibold mx-1">
+                      {DateFormat(dateFrom)}
+                    </span>
+                    -
+                    <span className="font-semibold ml-1">
+                      {DateFormat(dateTo)}
+                    </span>
+                  </>
+                )}
+              </li>
+              <li>
+                Product Owner:
+                <span className="text-black dark:text-light font-semibold capitalize ml-1">
+                  {isLoading || isFetching ? (
+                    <TableLoading count={1} cols={1} />
+                  ) : (
+                    productOwner?.label
+                  )}
                 </span>
-              </p>
-            </div>
+              </li>
+            </ul>
           </div>
 
           {/* Income */}
@@ -55,47 +138,51 @@ const ProfitAddLoss = () => {
             <ul className="grid grid-cols-2 indent-3 gap-2 border-b pb-2">
               <li>Gross Sales</li>
               <li className="text-black dark:text-light text-right">
-                ₱6,722.00
+                {isLoading || isFetching ? (
+                  <TableLoading count={1} cols={1} />
+                ) : (
+                  <AmountWithPesoSign
+                    classN="size-3"
+                    amount={item?.gross_sales}
+                  />
+                )}
+              </li>
+              <li className="">Tax</li>
+              <li className=" text-right">
+                {isLoading || isFetching ? (
+                  <TableLoading count={1} cols={1} />
+                ) : (
+                  <AmountWithPesoSign
+                    classN="size-3"
+                    amount={item?.tax_amount}
+                  />
+                )}
               </li>
               <li className="text-red-500">Less: Discounts</li>
-              <li className="text-red-500 text-right">₱-10.00</li>
-            </ul>
-            <div className="flex justify-between mt-3 text-black dark:text-white font-semibold">
-              <p>Net Sales</p>
-              <p>₱6,722.00</p>
-            </div>
-          </div>
-
-          {/* Cost of goods sold */}
-          <div
-            className={`bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 shadow-xs w-full `}
-          >
-            <p className="text-orange-500 font-semibold">COST OF GOODS SOLD</p>
-            <ul className="grid grid-cols-2 indent-3 gap-2 border-b pb-2">
-              <li>Cost of Goods Sold</li>
-              <li className="text-black dark:text-light text-right">
-                ₱3,100.00
+              <li className="text-red-500 text-right">
+                {isLoading || isFetching ? (
+                  <TableLoading count={1} cols={1} />
+                ) : (
+                  <AmountWithPesoSign
+                    classN="size-3"
+                    amount={item?.less_discount}
+                  />
+                )}
               </li>
             </ul>
-            <div className="flex justify-between mt-3 text-black dark:text-white font-semibold">
-              <p>Total Cost of Goods Sold</p>
-              <p>₱3,100.00</p>
-            </div>
-          </div>
-
-          {/* Gross Profit */}
-          <div
-            className={`bg-[#ECFDF5] dark:bg-[#ECFDF5]/30 rounded-xl p-5 shadow-xs w-full flex justify-between items-center `}
-          >
-            <div>
-              <p className=" text-black dark:text-white font-semibold">
-                Gross Profit
-              </p>
-              <p>Gross Margin: 53.8%</p>
-            </div>
-            <p className="text-green-500 md:text-xl text-lg font-semibold ">
-              ₱3,612.00
-            </p>
+            <ul className="grid grid-cols-2 mt-3 text-black dark:text-white font-semibold">
+              <li>Net Sales</li>
+              <li>
+                {isLoading || isFetching ? (
+                  <TableLoading count={1} cols={1} />
+                ) : (
+                  <AmountWithPesoSign
+                    classN="size-3"
+                    amount={item?.net_sales}
+                  />
+                )}
+              </li>
+            </ul>
           </div>
 
           {/* Operating Expenses */}
@@ -103,47 +190,74 @@ const ProfitAddLoss = () => {
             className={`bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 shadow-xs w-full `}
           >
             <p className="text-red-500 font-semibold">OPERATING EXPENSES</p>
+            {item.operating_expenses?.length > 0
+              ? item.operating_expenses?.map((i, key) => {
+                  return (
+                    <ul
+                      key={key}
+                      className="grid grid-cols-2 indent-3 gap-2 pb-2"
+                    >
+                      <li>{i?.name}</li>
+                      <li className="text-black dark:text-light text-right">
+                        {isLoading || isFetching ? (
+                          <TableLoading count={1} cols={1} />
+                        ) : (
+                          <AmountWithPesoSign
+                            classN="size-3"
+                            amount={i?.amount}
+                          />
+                        )}
+                      </li>
+                    </ul>
+                  );
+                })
+              : ""}
             <ul className="grid grid-cols-2 indent-3 gap-2 border-b pb-2">
-              <li>Rent</li>
-              <li className="text-black dark:text-light text-right">
-                ₱2,500.00
-              </li>
-              <li>Salaries</li>
-              <li className="text-black dark:text-light text-right">
-                ₱8,000.00
-              </li>
-              <li>Utilities</li>
-              <li className="text-black dark:text-light text-right">₱350.00</li>
-              <li>Marketing</li>
-              <li className="text-black dark:text-light text-right">₱600.00</li>
               <li>Supplies</li>
-              <li className="text-black dark:text-light text-right">₱180.00</li>
+              <li className="text-black dark:text-light text-right">
+                {isLoading || isFetching ? (
+                  <TableLoading count={1} cols={1} />
+                ) : (
+                  <AmountWithPesoSign
+                    classN="size-3"
+                    amount={item?.supplier_amount}
+                  />
+                )}
+              </li>
             </ul>
-            <div className="flex justify-between mt-3 text-black dark:text-white font-semibold">
-              <p>Total Operating Expenses</p>
-              <p>₱11,630.00</p>
-            </div>
-          </div>
-
-          {/* Operating Income */}
-          <div
-            className={`bg-white dark:bg-gray-900 rounded-xl p-5 border border-gray-200 shadow-xs w-full flex justify-between `}
-          >
-            <p className="text-red-500 font-semibold">Operating Income</p>
-            <p className="text-red-500 font-semibold">₱-8,018.00</p>
+            <ul className="grid grid-cols-2 mt-3 text-black dark:text-white font-semibold">
+              <li>Total Operating Expenses</li>
+              <li>
+                {isLoading || isFetching ? (
+                  <TableLoading count={1} cols={1} />
+                ) : (
+                  <AmountWithPesoSign
+                    classN="size-3"
+                    amount={item?.total_oe_amount}
+                  />
+                )}
+              </li>
+            </ul>
           </div>
 
           {/* Net Income */}
-          <div
-            className={`bg-red-500 dark:bg-red-500/30 rounded-xl p-5  shadow-xs w-full flex justify-between `}
+          <ul
+            className={`bg-red-500 dark:bg-red-500/30 rounded-xl p-5 shadow-xs w-full grid grid-cols-2 `}
           >
-            <p className="text-light font-semibold md:text-lg text-base">
+            <li className="text-light font-semibold md:text-lg text-base">
               Net Income
-            </p>
-            <p className="text-light font-semibold md:text-xl text-lg">
-              ₱-8,018.00
-            </p>
-          </div>
+            </li>
+            <li className="text-light font-semibold md:text-xl text-lg">
+              {isLoading || isFetching ? (
+                <TableLoading count={1} cols={1} />
+              ) : (
+                <AmountWithPesoSign
+                  classAmnt="text-white!"
+                  amount={item?.net_income}
+                />
+              )}
+            </li>
+          </ul>
         </div>
       </div>
     </HeaderNav>

@@ -18,11 +18,8 @@ if (array_key_exists("id", $_GET)) {
     $val->sales_order_number = trim($data["sales_order_number"]);
     checkId($val->sales_order_aid);
 
-    $val->sales_journal_order_id = $_GET['id'];
-    $val->sales_journal_update = date("Y-m-d H:i:s");
-
-    checkUpdateSalesJournalRemovedByOrderId($val);
-    // checkCreateSalesJournalRemoved($val, $data);
+    checkDeleteSalesJournal($val);
+    checkUpdateDeleteSalesJournal($val);
     checkDeleteInstallment($val);
     $query = checkDelete($val);
     // create activity log

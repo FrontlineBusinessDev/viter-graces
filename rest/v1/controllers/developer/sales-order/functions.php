@@ -153,14 +153,6 @@ function checkUpdateInstallment($object)
 }
 
 // Update 
-function checkUpdateSalesJournalLoop($object)
-{
-    $query = $object->updateSalesJournal();
-    checkQuery($query, "There's a problem processing your request. (Update installment)");
-    return $query;
-}
-
-// Update 
 function checkUpdateSalesJournal($object)
 {
     $now = date("Y-m-d H:i:s");
@@ -197,12 +189,50 @@ function checkUpdateSalesJournal($object)
 
         // Initialize running balance with existing starting balance on first iteration
         if ($i == 0) {
+            $debit =  $isMatchingOrder
+                ? (float)($object->sales_order_total_receivable_amount ?? 0) : (float)($row['sales_journal_balance'] ?? 0);
             $journal_balance += $isMatchingOrder
                 ? (float)($object->sales_order_total_receivable_amount ?? 0)
                 : (float)($row['sales_journal_balance'] ?? ($debit - $credit));
         } else {
             $journal_balance += ($debit - $credit);
         }
+
+        // Assign property values
+        $object->sales_journal_debit = number_format($debit, 2, '.', '');
+        $object->sales_journal_credit = number_format($credit, 2, '.', '');
+        $object->sales_journal_balance = number_format($journal_balance, 2, '.', '');
+        $object->sales_journal_update = $now;
+
+        // Update individual row
+        $last_query = $object->updateSalesJournal();
+    }
+
+    checkQuery($last_query, "There's a problem processing your request. (Update Sales Journal)");
+    return $last_query;
+}
+
+// Update 
+function checkUpdateDeleteSalesJournal($object)
+{
+    $now = date("Y-m-d H:i:s");
+
+    $query = checkReadAllSalesJournal($object); // Ensure this query uses ASC ordering!
+    $dataVal = getResultData($query) ?? [];
+
+    $journal_balance = 0.00;
+    $last_query = true;
+
+    $thefirstLoopMatches = 0;
+
+    for ($i = 0; $i < count($dataVal); $i++) {
+        $row = $dataVal[$i];
+        $object->sales_journal_aid = $row['sales_journal_aid'];
+
+        $debit = (float)($row['sales_journal_debit'] ?? 0);
+        $credit = (float)($row['sales_journal_credit'] ?? 0);
+
+        $journal_balance += ($debit - $credit);
 
         // Assign property values
         $object->sales_journal_debit = number_format($debit, 2, '.', '');
@@ -473,7 +503,7 @@ function checkCreateSalesJornal($object)
     $dueAmount = max((float)$object->sales_order_total_receivable_amount, 0);
 
     if ($isFirstEntry) {
-        $object->sales_journal_debit = 0;
+        $object->sales_journal_debit = $dueAmount;
         $object->sales_journal_credit = 0;
         $object->sales_journal_balance = $dueAmount;
         $query = $object->createSalesJornal(); // First journal entry
@@ -536,5 +566,13 @@ function checkCreateSalesJournalRemoved($object, $data)
 
     $query = $object->createSalesJornal();
     checkQuery($query, "There's a problem processing your request. (create Sales Jornal)");
+    return $query;
+}
+
+// Delete 
+function checkDeleteSalesJournal($object)
+{
+    $query = $object->deleteSalesJournal();
+    checkQuery($query, "There's a problem processing your request. (deleteSalesJournal)");
     return $query;
 }

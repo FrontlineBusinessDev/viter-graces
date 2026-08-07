@@ -275,6 +275,30 @@ function checkReadExpensesPerYear($object)
     return $query;
 }
 
+// Read report profit and loss
+function checkReadPalIncome($object)
+{
+    $query = $object->readPalIncome();
+    checkQuery($query, "Empty records. (read profit and loss Income)");
+    return $query;
+}
+
+// Read report profit and loss
+function checkReadPalSupplierExpenses($object)
+{
+    $query = $object->readPalSupplierExpenses();
+    checkQuery($query, "Empty records. (read profit and loss Supplier Expenses)");
+    return $query;
+}
+
+// Read report profit and loss
+function checkReadPalOperatingExpenses($object)
+{
+    $query = $object->readPalOperatingExpenses();
+    checkQuery($query, "Empty records. (read profit and loss Operating Expenses)");
+    return $query;
+}
+
 // Update 
 function updateConnectedMenu($object)
 {

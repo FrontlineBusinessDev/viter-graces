@@ -35,6 +35,9 @@ class ReportSalesOrder
     public $stock_movement_qty;
     public $stock_movement_type;
 
+    public $to;
+    public $from;
+
     public $date_today;
     public $date_yesterday;
 
@@ -44,6 +47,7 @@ class ReportSalesOrder
     public $tblStockMovements;
     public $tblMovementStock;
     public $tblProducts;
+    public $tblSupplier;
     public $tblSuppliersPurchaseOrder;
     public $tblinstallmentPayment;
 
@@ -60,6 +64,7 @@ class ReportSalesOrder
         $this->tblStockMovements = "graces_stock_movement";
         $this->tblMovementStock = "graces_stock_movement";
         $this->tblProducts = "graces_products";
+        $this->tblSupplier = "graces_suppliers";
         $this->tblSuppliersPurchaseOrder = "graces_suppliers_purchase_order";
         $this->tblinstallmentPayment = "graces_installment_payment";
     }
@@ -1680,6 +1685,141 @@ class ReportSalesOrder
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
+        return $query;
+    }
+
+    // read all
+    public function readPalIncome()
+    {
+        $filterColumn = [];
+        $params = [
+            "from" => $this->from,
+            "to" => $this->to,
+            ...($this->sales_order_product_owner_id != 0 ? [
+                "sales_order_product_owner_id" => $this->sales_order_product_owner_id,
+            ] : []),
+        ];
+
+        if ($this->from != "" && $this->to != "") {
+
+            $filterColumn[] = " DATE(sales_order_date) BETWEEN DATE(:from) and DATE(:to) ";
+        } else {
+            $filterColumn[] = " ( DATE(sales_order_date) = DATE(:from) or DATE(sales_order_date) = DATE(:to) ) ";
+        }
+
+        if ($this->sales_order_product_owner_id != 0) {
+            $filterColumn[] = "sales_order_product_owner_id = :sales_order_product_owner_id ";
+        }
+
+        try {
+            $sql = "select ";
+            $sql .= "SUM(sales_order_total) as total_amount, ";
+            $sql .= "SUM(sales_order_vat) as tax_amount, ";
+            $sql .= "SUM(sales_order_discount) as discount_amount, ";
+            $sql .= "SUM(sales_order_discounted_with_vat_amount) as discounted_with_vat_amount ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= " where true ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            }
+            $sql .= " group by sales_order_product_owner_id ";
+            $sql .= " order by sales_order_product_owner_id asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
+
+    // read all
+    public function readPalSupplierExpenses()
+    {
+        $filterColumn = [];
+        $params = [
+            "from" => $this->from,
+            "to" => $this->to,
+            ...($this->sales_order_product_owner_id != 0 ? [
+                "sales_order_product_owner_id" => $this->sales_order_product_owner_id,
+            ] : []),
+        ];
+
+        if ($this->from != "" && $this->to != "") {
+
+            $filterColumn[] = " DATE(sp.purchase_order_date) BETWEEN DATE(:from) and DATE(:to) ";
+        } else {
+            $filterColumn[] = " ( DATE(sp.purchase_order_date) = DATE(:from) or DATE(sp.purchase_order_date) = DATE(:to) ) ";
+        }
+
+        if ($this->sales_order_product_owner_id != 0) {
+            $filterColumn[] = "sp.purchase_order_product_owner_id = :sales_order_product_owner_id ";
+        }
+
+        try {
+            $sql = "select ";
+            $sql .= "SUM(sp.purchase_order_total_amount_per_product) as amount ";
+            $sql .= "from {$this->tblSuppliersPurchaseOrder} as sp, ";
+            $sql .= "{$this->tblSupplier} as s ";
+            $sql .= " where sp.purchase_order_supplier_id = s.suppliers_aid ";
+            $sql .= " and s.suppliers_is_default != '1' ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            }
+            $sql .= " group by s.suppliers_name ";
+            $sql .= " order by s.suppliers_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
+    public function readPalOperatingExpenses()
+    {
+        $filterColumn = [];
+        $params = [
+            "from" => $this->from,
+            "to" => $this->to,
+            ...($this->sales_order_product_owner_id != 0 ? [
+                "sales_order_product_owner_id" => $this->sales_order_product_owner_id,
+            ] : []),
+        ];
+
+        if ($this->from != "" && $this->to != "") {
+
+            $filterColumn[] = " DATE(sp.purchase_order_date) BETWEEN DATE(:from) and DATE(:to) ";
+        } else {
+            $filterColumn[] = " ( DATE(sp.purchase_order_date) = DATE(:from) or DATE(sp.purchase_order_date) = DATE(:to) ) ";
+        }
+
+        if ($this->sales_order_product_owner_id != 0) {
+            $filterColumn[] = "sp.purchase_order_product_owner_id = :sales_order_product_owner_id ";
+        }
+
+        try {
+            $sql = "select ";
+            $sql .= "s.suppliers_name as name, ";
+            $sql .= "SUM(sp.purchase_order_total_amount_per_product) as amount ";
+            $sql .= "from {$this->tblSuppliersPurchaseOrder} as sp, ";
+            $sql .= "{$this->tblSupplier} as s ";
+            $sql .= " where sp.purchase_order_supplier_id = s.suppliers_aid ";
+            $sql .= " and s.suppliers_is_default = '1' ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            }
+            $sql .= " group by s.suppliers_name ";
+            $sql .= " order by s.suppliers_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
         return $query;
     }
 }

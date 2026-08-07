@@ -849,9 +849,7 @@ export const InputSelectFilterTagArray = ({
       label: item.name,
     })) || [];
 
-  // console.log("selected", selected);
-  // console.log("options", options);
-
+  const supplierOption = options.filter((i) => !i.value.includes("Other"));
   return (
     <>
       {label ? (
@@ -868,10 +866,9 @@ export const InputSelectFilterTagArray = ({
         <div data-testid={testFilterId}>
           <Select
             placeholder="--"
-            options={options}
+            options={label === "Supplier" ? supplierOption : options}
             value={selected}
             onChange={(e) => {
-              // console.log("e", e);
               if (!e) {
                 setSelected(null);
                 onChange(null, null);
@@ -1020,5 +1017,85 @@ export const InputPurchaseOrderSelectTagArray = ({
         </select>
       )}
     </>
+  );
+};
+
+export const SearchableSelectFilterProductOwner = ({
+  setColumn,
+  column,
+  path,
+  testFilterId,
+}) => {
+  const { data: result } = useQueryData(
+    `${apiVersion}/${path}`, // endpoint
+    "get", // method
+    `${path}`, // key
+  );
+
+  let options = result?.data?.map((item) => ({
+    id: item.id,
+    value: item.name,
+    label: item.name,
+  }));
+
+  const selected =
+    options?.find((opt) => Number(opt.id) === Number(column.id)) || null;
+
+  console.log("column", column);
+
+  return (
+    <div data-testid={testFilterId}>
+      <Select
+        placeholder="--"
+        classNamePrefix="react-select"
+        options={options}
+        value={selected}
+        onChange={(option) => {
+          const value = option ? option.id : 0;
+
+          const selectedItem = options?.find(
+            (a) => Number(a.id) === Number(value),
+          );
+
+          setColumn(value ? selectedItem : []);
+        }}
+        isClearable
+        classNames={{
+          control: ({ isFocused }) =>
+            `mt-1 w-full! h-full! text-sm border rounded-lg! px-1 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
+         ${isFocused ? " border-primary! " : " border-gray-300 "}
+         hover:border-primary! `,
+
+          valueContainer: () => "px-1 py-0",
+
+          input: () => "text-sm text-gray-500! dark:text-white mt-1 ",
+
+          placeholder: () => "text-gray-400! text-sm dark:text-white!",
+
+          singleValue: () =>
+            "normal-case! text-sm text-gray-500! dark:text-white!",
+
+          indicatorsContainer: () => "",
+
+          indicatorSeparator: () => "w-0!",
+
+          dropdownIndicator: () =>
+            "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
+
+          clearIndicator: () =>
+            "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
+
+          menu: () =>
+            "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white dark:bg-[#0b111e]! z-50",
+
+          menuList: () => "py-1 max-h-60 overflow-auto ",
+
+          option: ({ isFocused, isSelected }) =>
+            ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  
+         ${isSelected ? "bg-primary! text-secondary!" : " "}
+         ${!isSelected && isFocused ? "bg-primary! text-secondary! " : " "}`,
+        }}
+      />
+    </div>
   );
 };

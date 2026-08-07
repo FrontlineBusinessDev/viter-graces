@@ -1598,26 +1598,6 @@ class SalesOrder
     }
 
     // update
-    public function updateSalesJournalRemovedByOrderId()
-    {
-        try {
-            $sql = "update {$this->tblSalesJournal} set ";
-            $sql .= "sales_journal_is_removed = '1', ";
-            $sql .= "sales_journal_update = :sales_journal_update ";
-            $sql .= "where sales_journal_order_id = :sales_journal_order_id ";
-            $query = $this->connection->prepare($sql);
-            $query->execute([
-                "sales_journal_update" => $this->sales_journal_update,
-                "sales_journal_order_id" => $this->sales_journal_order_id,
-            ]);
-        } catch (PDOException $ex) {
-            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
-            $query = false;
-        }
-        return $query;
-    }
-
-    // update
     public function updateSalesJournal()
     {
         try {
@@ -1634,6 +1614,23 @@ class SalesOrder
                 "sales_journal_balance" => $this->sales_journal_balance,
                 "sales_journal_update" => $this->sales_journal_update,
                 "sales_journal_aid" => $this->sales_journal_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // delete
+    public function deleteSalesJournal()
+    {
+        try {
+            $sql = "delete from {$this->tblSalesJournal} ";
+            $sql .= "where sales_journal_order_number = :sales_journal_order_number ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_journal_order_number" => $this->sales_order_number,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
