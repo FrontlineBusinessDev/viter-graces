@@ -1,7 +1,7 @@
 import LoadImages from "@/components/LoadImages";
 import { AmountWithPesoSign } from "@/components/PesoSign";
 import { getConvertStringToJSONparseData } from "@/utilities/getConvertStringToJSONparseData";
-import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { isEmptyItem, isYesOrNo } from "@/utilities/isEmptyItem";
 import { flexRender } from "@tanstack/react-table";
 import { Image } from "lucide-react";
 import TableStatus from "../TableStatus";
@@ -47,6 +47,9 @@ export const renderCellContent = (item, rowData, path = "") => {
 
   if (column.header === "status" || column.header === "payment status") {
     return <TableStatus item={column} dataArray={rowData} />;
+  }
+  if (column.header === "restocked") {
+    return <span>{isYesOrNo(rowData[column.accessorKey])}</span>;
   }
 
   if (column.isViewItems) {

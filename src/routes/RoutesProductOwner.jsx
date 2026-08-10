@@ -4,6 +4,8 @@ import Dashboard from "@/pages/developer/dashboard/Dashboard";
 import MovementHistory from "@/pages/developer/inventory/MovementHistory";
 import StockOverview from "@/pages/developer/inventory/StockOverview";
 import Products from "@/pages/developer/products/Products";
+import Returns from "@/pages/developer/returns/Returns";
+import SalesOrders from "@/pages/developer/sales-orders/SalesOrders";
 import PurchaseOrder from "@/pages/developer/suppliers/PurchaseOrder";
 import Suppliers from "@/pages/developer/suppliers/Suppliers";
 import ProtectedRouteUser from "@/pages/login/ProtectedRouteUser";
@@ -62,6 +64,22 @@ export const routesProductOwner = [
     element: (
       <ProtectedRouteUser>
         <PurchaseOrder />
+      </ProtectedRouteUser>
+    ),
+  },
+  {
+    path: `${devNavUrl}/product_owner/sales-orders`,
+    element: (
+      <ProtectedRouteUser>
+        <SalesOrders />
+      </ProtectedRouteUser>
+    ),
+  },
+  {
+    path: `${devNavUrl}/product_owner/returns`,
+    element: (
+      <ProtectedRouteUser>
+        <Returns />
       </ProtectedRouteUser>
     ),
   },

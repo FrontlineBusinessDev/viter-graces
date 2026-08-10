@@ -9,6 +9,8 @@ import ViewSalesDetails from "../sales-orders/ViewSalesDetails";
 import ModalCustomer from "./ModalCustomer";
 import ModalSalesOrders from "./ModalSalesOrders";
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import { getAdminDeveloperRole } from "@/utilities/roleValidation";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 
 const Customers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -91,13 +93,17 @@ const Customers = () => {
       classTh: "",
       classTd: "",
     },
-    {
-      accessorKey: "action",
-      action_array: ActionTableList("customer"),
-      header: "action",
-      classTh: "text-center w-[7rem]",
-      classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
-    },
+    ...(Number(ProductOwnerId(store)) > 0
+      ? []
+      : [
+          {
+            accessorKey: "action",
+            action_array: ActionTableList("customer"),
+            header: "action",
+            classTh: "text-center w-[7rem]",
+            classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
+          },
+        ]),
   ];
 
   React.useEffect(() => {
@@ -116,6 +122,7 @@ const Customers = () => {
           setItemEdit={setItemEdit}
           productMobile={true}
           haveFilterTable={true}
+          ishaveAdd={getAdminDeveloperRole(store)}
           dataTestidAddButton="add-product-btn"
         />
       </HeaderNav>

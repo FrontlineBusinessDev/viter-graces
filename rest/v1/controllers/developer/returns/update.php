@@ -42,10 +42,10 @@ if (array_key_exists("id", $_GET)) {
     $query = checkUpdate($val);
     updateConnectedMenu($val);
 
-    if ($val->return_product_is_restocked == true && $val->return_product_status == "processed") {
+    if ((float)$val->return_product_is_restocked == 1 && $val->return_product_status == "processed") {
         $val->stock_movement_type = "stock in - return";
         $val->stock_movement_status = "active";
-        $val->stock_movement_date = $val->return_product_date;
+        $val->stock_movement_date = $data["return_product_date"];
         $val->stock_movement_is_active = 1;
         $val->stock_movement_location = "";
 

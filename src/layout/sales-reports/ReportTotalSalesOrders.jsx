@@ -44,6 +44,8 @@ const ReportTotalSalesOrders = ({
     return isEmptyItem(result?.data?.[0]?.net_revenue, "0");
   }, [result]);
 
+  console.log("valDataQty", valDataTotalSales);
+
   return (
     <>
       {error ? (
@@ -61,7 +63,7 @@ const ReportTotalSalesOrders = ({
           />
           <FinanceStats
             title="Total Sales"
-            value={`₱${numberWithCommasToFixed(valDataTotalSales, 4)}`}
+            value={valDataTotalSales}
             icon={<TrendingUp className="text-blue-600" size={20} />}
             iconBg="bg-blue-100 dark:bg-[#082125]"
             valueColor="text-blue-600"
@@ -70,7 +72,7 @@ const ReportTotalSalesOrders = ({
           />
           <FinanceStats
             title="Net Revenue"
-            value={`₱${numberWithCommasToFixed(valDataNetRevenue, 4)}`}
+            value={valDataNetRevenue}
             icon={<PhilippinePeso className="text-green-600" size={20} />}
             iconBg="bg-green-100 dark:bg-[#082125]"
             valueColor="text-green-600"

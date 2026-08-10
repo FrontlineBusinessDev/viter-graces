@@ -49,7 +49,7 @@ const TableUpdateStatus = ({ path, item, dataArray }) => {
         >
           <optgroup label={`Select status`}>
             <option value="pending">Pending</option>
-            <option value="pending">Pending</option>
+            {/* <option value="pending">Pending</option> */}
             <option value="processed">Processed</option>
             <option value="rejected">Rejected</option>
           </optgroup>
