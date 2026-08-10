@@ -141,6 +141,11 @@ export const ActiveInActiveStatus = (val = "default-status") => {
       value: "stock out - reject/defective items",
     },
     {
+      name: ["stock-type-status"],
+      label: "STOCK IN - RETURN",
+      value: "stock in - return",
+    },
+    {
       name: ["return-status"],
       label: "pending",
       value: "pending",
@@ -235,6 +240,7 @@ export const variantsStatus = (val = "active") => {
     stock_in_adjustments: "bg-blue-300 text-blue-700",
     purchases: "bg-violet-300 text-violet-700 ",
     stock_out__sales: "bg-gray-100 text-gray-500",
+    stock_in__return: "bg-success/20 text-success",
     stock_out__reject_defectiveitems: "bg-warning/10 text-warning",
     // other
     draft: "bg-gray-300 text-gray-700",
@@ -262,7 +268,7 @@ export const variantsStatus = (val = "active") => {
 export const ActionTableList = (path, val = "default-status") => {
   const result = [
     {
-      filter_status: ["status-with-view"],
+      filter_status: ["status-with-view", "product_owner_sales_order"],
       name: "view",
       path: path,
       icon: <LucideTableOfContents className="size-5 lg:size-4" />,

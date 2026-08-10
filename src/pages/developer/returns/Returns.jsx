@@ -9,6 +9,7 @@ import {
   SearchableSelectFilter,
   SearchableSelectFilterStatus,
 } from "@/components/inputs/InputSelect";
+import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 
 const Returns = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -20,9 +21,9 @@ const Returns = () => {
     {
       accessorKey: "is_status",
       header: "status",
-      classTh: "w-[5rem]",
-      classTd: "w-[10rem]",
-      updateDataColumn: true,
+      classTh: "min-w-[10rem]",
+      classTd: "min-w-[10rem]",
+      updateDataColumn: getAdminDeveloperRole(store),
       filterFn: "equals",
       meta: {
         filterComponent: (column) => (
@@ -128,6 +129,7 @@ const Returns = () => {
           className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
           path="returns-products"
           haveFilterTable={true}
+          ishaveAdd={getAdminDeveloperRole(store)}
           setItemEdit={setItemEdit}
           setDataCount={setDataCount}
         />

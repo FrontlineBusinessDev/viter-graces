@@ -27,3 +27,17 @@ export const isEmptyUseDefault = (item, newItem = "", x = "") => {
   }
   return result;
 };
+
+// if item is not empty use the default value
+export const isYesOrNo = (item, x = "no") => {
+  let result = x;
+
+  if (typeof item !== "undefined" && item !== "") {
+    if (Number(item) === 1) {
+      result = "yes";
+    } else {
+      result = "no";
+    }
+  }
+  return result;
+};

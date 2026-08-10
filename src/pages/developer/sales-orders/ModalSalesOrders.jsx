@@ -32,6 +32,7 @@ import { Plus } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
 import { PropsValues, Validations } from "./functions";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 
 const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -873,43 +874,45 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                     />
                   </div>
 
-                  <div className="relative my-3 ">
-                    <InputSelectFilterTagArray
-                      label="Received by:"
-                      defaultValue={{
-                        id: isEmptyItem(
-                          itemEdit?.sales_order_received_by_id,
-                          isEmptyItem(
-                            store.credentials?.data?.user_account_aid,
-                            0,
+                  {Number(ProductOwnerId(store)) > 0 ? (
+                    ""
+                  ) : (
+                    <div className="relative my-3 ">
+                      <InputSelectFilterTagArray
+                        label="Received by:"
+                        defaultValue={{
+                          id: isEmptyItem(
+                            itemEdit?.sales_order_received_by_id,
+                            isEmptyItem(
+                              store.credentials?.data?.user_account_aid,
+                              0,
+                            ),
                           ),
-                        ),
-                        label: isEmptyItem(
-                          itemEdit?.sales_order_received_by_name,
-                          isEmptyItem(store.credentials?.data?.name, ""),
-                        ),
-                        value: isEmptyItem(
-                          itemEdit?.sales_order_received_by_name,
-                          isEmptyItem(store.credentials?.data?.name, ""),
-                        ),
-                      }}
-                      onChange={(e) => {
-                        props.values.sales_order_received_by_id = isEmptyItem(
-                          e?.id,
-                          "",
-                        );
-                        props.values.sales_order_received_by_name = isEmptyItem(
-                          e?.value,
-                          "",
-                        );
-                        return e;
-                      }}
-                      itemEdit={itemEdit}
-                      path={`product-owner/read-by-product-owner`}
-                      testFilterId="sales_order_received_by_id"
-                      store={store}
-                    />
-                  </div>
+                          label: isEmptyItem(
+                            itemEdit?.sales_order_received_by_name,
+                            isEmptyItem(store.credentials?.data?.name, ""),
+                          ),
+                          value: isEmptyItem(
+                            itemEdit?.sales_order_received_by_name,
+                            isEmptyItem(store.credentials?.data?.name, ""),
+                          ),
+                        }}
+                        onChange={(e) => {
+                          props.values.sales_order_received_by_id = isEmptyItem(
+                            e?.id,
+                            "",
+                          );
+                          props.values.sales_order_received_by_name =
+                            isEmptyItem(e?.value, "");
+                          return e;
+                        }}
+                        itemEdit={itemEdit}
+                        path={`product-owner/read-by-product-owner`}
+                        testFilterId="sales_order_received_by_id"
+                        store={store}
+                      />
+                    </div>
+                  )}
 
                   {store.error && <MessageError />}
                   <div className="modal-action">

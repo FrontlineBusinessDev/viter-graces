@@ -27,7 +27,6 @@ const HeaderNav = ({
       </div>
 
       <Header menu={menu} toggleMobileNav={toggleMobileNav} />
-
       {/* Mobile */}
       {mobileNavOpen && (
         <>

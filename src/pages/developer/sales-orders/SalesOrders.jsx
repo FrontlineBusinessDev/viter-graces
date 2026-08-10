@@ -17,6 +17,7 @@ import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalSalesOrders from "./ModalSalesOrders";
 import ViewSalesDetails from "./ViewSalesDetails";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 
 const SalesOrders = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -165,7 +166,12 @@ const SalesOrders = () => {
     },
     {
       accessorKey: "action",
-      action_array: ActionTableList("sales-order", "status-with-view"),
+      action_array: ActionTableList(
+        "sales-order",
+        Number(ProductOwnerId(store)) > 0
+          ? "product_owner_sales_order"
+          : "status-with-view",
+      ),
       header: "Action",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
