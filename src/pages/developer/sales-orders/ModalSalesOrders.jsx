@@ -47,6 +47,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
       : [
           {
             installment_payment_aid: 0,
+            installment_payment_is_paid: 0,
             installment_payment_code: "sales-order",
             installment_payment_due_date: store?.credentials?.data?.server_date,
             installment_payment_code_number: "",
@@ -723,46 +724,71 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                   key={a.id}
                                   className="grid grid-cols-[10rem_1fr_1rem] sm:grid-cols-[1fr_1fr_1rem] gap-3 items-center px-3 py-2"
                                 >
-                                  <input
-                                    onChange={(e) => {
-                                      handleChangeInstallment(
-                                        index,
-                                        "installment_payment_due_date",
-                                        e.target.value,
-                                      );
-                                    }}
-                                    defaultValue={isEmptyItem(
-                                      a["installment_payment_due_date"],
-                                      1,
-                                    )}
-                                    type="date"
-                                  />
-                                  <input
-                                    onChange={(e) => {
-                                      handleChangeInstallment(
-                                        index,
-                                        "installment_payment_amount",
-                                        e.target.value,
-                                        0,
-                                      );
-                                    }}
-                                    defaultValue={isEmptyItem(
-                                      a["installment_payment_amount"],
-                                      "",
-                                    )}
-                                    placeholder="0"
-                                    type="number"
-                                  />
+                                  {a?.installment_payment_is_paid == 0 ? (
+                                    <>
+                                      <input
+                                        onChange={(e) => {
+                                          handleChangeInstallment(
+                                            index,
+                                            "installment_payment_due_date",
+                                            e.target.value,
+                                          );
+                                        }}
+                                        defaultValue={isEmptyItem(
+                                          a["installment_payment_due_date"],
+                                          1,
+                                        )}
+                                        type="date"
+                                      />
+                                      <input
+                                        onChange={(e) => {
+                                          handleChangeInstallment(
+                                            index,
+                                            "installment_payment_amount",
+                                            e.target.value,
+                                            0,
+                                          );
+                                        }}
+                                        defaultValue={isEmptyItem(
+                                          a["installment_payment_amount"],
+                                          "",
+                                        )}
+                                        placeholder="0"
+                                        type="number"
+                                      />
 
-                                  <button
-                                    type="button"
-                                    onClick={() =>
-                                      handleRemoveInstallmentItems(a)
-                                    }
-                                    className="text-red-500 text-xl"
-                                  >
-                                    ✕
-                                  </button>
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          handleRemoveInstallmentItems(a)
+                                        }
+                                        className="text-red-500 text-xl"
+                                      >
+                                        ✕
+                                      </button>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <input
+                                        defaultValue={isEmptyItem(
+                                          a["installment_payment_due_date"],
+                                          1,
+                                        )}
+                                        type="date"
+                                        readOnly
+                                        className="border-t-0! border-x-0! text-primary"
+                                      />
+                                      <input
+                                        defaultValue={isEmptyItem(
+                                          a["installment_payment_amount"],
+                                          "",
+                                        )}
+                                        type="number"
+                                        readOnly
+                                        className="border-t-0! border-x-0! text-primary"
+                                      />
+                                    </>
+                                  )}
                                 </div>
                               );
                             })}

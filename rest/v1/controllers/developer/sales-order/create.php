@@ -105,6 +105,9 @@ foreach ($ordersItems as $item) {
     if ((float)$balancePerItem <= 0) {
         $val->sales_order_balance_per_product = 0;
     }
+    if ((float)$totalPaidAmount <= 0) {
+        $val->sales_order_balance_per_product = $val->sales_order_discounted_with_vat_amount;
+    }
 
     // 2. Database & Stock Updates
     $query = checkCreate($val);
