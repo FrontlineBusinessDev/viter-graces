@@ -20,9 +20,11 @@ if (array_key_exists("id", $_GET)) {
     $val->return_product_is_restocked = $data["return_product_is_restocked"] == "no" ? 0 : 1;
     $val->return_product_reason = $data["return_product_reason"];
     $val->return_product_notes = $data["return_product_notes"];
-    $val->return_product_date = $data["return_product_date"];
     $val->return_product_created = date("Y-m-d H:i:s");
     $val->return_product_updated = date("Y-m-d H:i:s");
+
+    $returnDate = $data["return_product_date"] ?? '';
+    $val->return_product_date = !empty($returnDate) ? date("Y-m-d", strtotime($returnDate)) : '';
 
     $val->return_product_status = $data["return_product_status"];
     $val->return_product_order_id = $data["return_product_order_id"];
@@ -45,7 +47,7 @@ if (array_key_exists("id", $_GET)) {
     if ((float)$val->return_product_is_restocked == 1 && $val->return_product_status == "processed") {
         $val->stock_movement_type = "stock in - return";
         $val->stock_movement_status = "active";
-        $val->stock_movement_date = $data["return_product_date"];
+        $val->stock_movement_date = $val->return_product_date;
         $val->stock_movement_is_active = 1;
         $val->stock_movement_location = "";
 
