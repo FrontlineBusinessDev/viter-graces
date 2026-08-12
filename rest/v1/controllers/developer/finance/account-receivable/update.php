@@ -37,6 +37,12 @@ if (array_key_exists("id", $_GET)) {
         $ordersItems = [];
     }
 
+    $val->sales_order_customer_name = $data["sales_order_customer_name"];
+    $val->sales_order_customer_id = $data["sales_order_customer_id"];
+    $val->sales_order_number = $data["sales_order_number"];
+    $val->sales_order_payment_method = $data["sales_order_payment_method"];
+    $val->sales_order_total_receivable_amount = 0;
+
     $val->sales_order_total_amount = $data["sales_order_total_amount"];
     $val->sales_order_discount = $data["sales_order_discount"];
     $val->sales_order_paid_amount = max($data["totalPaidAmount"], 0);
@@ -104,6 +110,9 @@ if (array_key_exists("id", $_GET)) {
     }
 
     $query = checkUpdate($val);
+    $val->lastInsertedId = $data["installment_payment_aid"];
+    $val->sales_order_paid_amount = $data["installment_payment_paid_amount"];
+    checkCreateSalesJornal($val);
     createActivityLog($valActivity, $data);
     returnSuccess($val, "Account Receivable", $query);
 }

@@ -161,6 +161,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
         installment_payment_code_number: "",
         installment_payment_code_id: "",
         installment_payment_amount: "",
+        installment_payment_is_paid: 0,
         id: installmentCounter,
       },
     ]);
@@ -325,7 +326,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     dispatch(setError(false));
   }, []);
 
-  // console.log("items123", items);
+  console.log("installmentItems", installmentItems);
   return (
     <>
       {/*  */}
@@ -720,12 +721,14 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                               <li>Amount</li>
                             </ul>
                             {installmentItems.map((a, index) => {
+                              console.log("a", a);
                               return (
                                 <div
                                   key={a.id}
                                   className="grid grid-cols-[10rem_1fr_1rem] sm:grid-cols-[1fr_1fr_1rem] gap-3 items-center px-3 py-2"
                                 >
-                                  {a?.installment_payment_is_paid == 0 ? (
+                                  {Number(a?.installment_payment_is_paid) ==
+                                  0 ? (
                                     <>
                                       <input
                                         onChange={(e) => {

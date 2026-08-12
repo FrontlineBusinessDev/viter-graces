@@ -17,6 +17,7 @@ checkPayload($data);
 // get data
 
 $val->sales_order_is_active = 1;
+$val->sales_order_is_return = 0;
 $val->sales_order_status = 'paid';
 $val->sales_order_date = $data["sales_order_date"];
 $val->sales_order_customer_id = $data["sales_order_customer_id"];
@@ -42,7 +43,6 @@ $val->sales_order_due_date = date("Y-m-d");
 if ((float)$data["sales_order_paid_amount"] >= (float)$data["sales_order_total_receivable_amount"]) {
     $val->sales_order_paid_amount = $data["sales_order_total_receivable_amount"];
 }
-
 
 $val->sales_order_number = setIdNumber($val, "ORD");
 

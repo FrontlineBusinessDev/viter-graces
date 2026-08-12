@@ -88,7 +88,11 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
     0,
   );
 
-  const handleSave = (a) => {
+  const handleSave = (a, index) => {
+    const updated = [...items];
+    updated[index]["installment_payment_is_paid"] = 1;
+    setItems(updated);
+
     let data = {
       ...itemEdit,
       icon: "",
@@ -106,6 +110,8 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
 
     mutation.mutate(data);
   };
+
+  console.log("items", items);
   return (
     <ModalWrapper
       val={`Order Details - ${itemEdit?.sales_order_number}`}
@@ -149,6 +155,7 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
             </thead>
             <tbody className="">
               {items?.map((a, index) => {
+                console.log("a", a);
                 return (
                   <tr key={index} className="border-0!">
                     <td className="text-center dark:bg-gray-900! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
@@ -176,7 +183,7 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
                           <button
                             className={`text-white bg-gray-500 hover:bg-green-800 rounded-sm p-1 text-[10px]`}
                             type="button"
-                            onClick={() => handleSave(a)}
+                            onClick={() => handleSave(a, index)}
                           >
                             Save
                           </button>

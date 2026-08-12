@@ -33,6 +33,7 @@ class SalesOrder
     public $sales_order_vat;
     public $sales_order_balance_per_product;
     public $sales_order_paid_per_product;
+    public $sales_order_is_return;
     public $sales_order_created;
     public $sales_order_updated;
 

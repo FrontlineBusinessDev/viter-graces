@@ -50,3 +50,53 @@ function checkUpdateSales($object)
     checkQuery($query, "There's a problem processing your request. (Update Sales)");
     return $query;
 }
+
+// Read YEARLY
+function checkReadAllSales($object)
+{
+    $query = $object->readAllSales();
+    checkQuery($query, "Empty records. (Read All Sales)");
+    return $query;
+}
+// Read YEARLY
+function checkReadLastSalesJournal($object)
+{
+    $query = $object->readLastSalesJournal();
+    checkQuery($query, "Empty records. (Read Last Sales Journal)");
+    return $query;
+}
+
+// Create 
+function checkCreateSalesJornal($object)
+{
+    $now = date("Y-m-d H:i:s");
+
+    // Bulk mapping repeated properties
+    $object->sales_journal_customer = $object->sales_order_customer_name;
+    $object->sales_journal_customer_id = $object->sales_order_customer_id;
+    $object->sales_journal_order_number = $object->sales_order_number;
+    $object->sales_journal_order_id = $object->lastInsertedId;
+    $object->sales_journal_method = $object->sales_order_payment_method;
+    $object->sales_journal_date = date("Y-m-d");
+    $object->sales_journal_create = $now;
+    $object->sales_journal_update = $now;
+    $object->sales_journal_from = "sales-order";
+    $object->sales_journal_note = "";
+
+    $paidAmount = max((float)$object->sales_order_paid_amount, 0);
+
+    $jornalCreditQuery = getResultData(checkReadLastSalesJournal($object))[0] ?? [];
+    if (!empty($jornalCreditQuery)) {
+        $lastBalance = (float)($jornalCreditQuery['sales_journal_balance'] ?? 0);
+
+        if ($paidAmount > 0) {
+            $object->sales_journal_debit = 0;
+            $object->sales_journal_credit = $paidAmount;
+            $object->sales_journal_balance = $lastBalance - $paidAmount;
+            $query = $object->createSalesJornal();
+        }
+    }
+
+    checkQuery($query, "There's a problem processing your request. (create Sales Jornal)");
+    return $query;
+}

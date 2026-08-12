@@ -57,6 +57,21 @@ class AccountReceivable
     public $stock_movement_type;
     public $stock_movement_status;
 
+    public $sales_journal_aid;
+    public $sales_journal_order_number;
+    public $sales_journal_order_id;
+    public $sales_journal_debit;
+    public $sales_journal_credit;
+    public $sales_journal_balance;
+    public $sales_journal_method;
+    public $sales_journal_date;
+    public $sales_journal_customer;
+    public $sales_journal_customer_id;
+    public $sales_journal_note;
+    public $sales_journal_from;
+    public $sales_journal_create;
+    public $sales_journal_update;
+
     public $date_today;
     public $date_yesterday;
 
@@ -64,6 +79,7 @@ class AccountReceivable
     public $lastInsertedId;
     public $tblSalesOrder;
     public $tblinstallmentPayment;
+    public $tblSalesJournal;
 
     public $filters;
     public $column_start;
@@ -78,6 +94,7 @@ class AccountReceivable
         $this->connection = $db;
         $this->tblSalesOrder = "graces_sales_order";
         $this->tblinstallmentPayment = "graces_installment_payment";
+        $this->tblSalesJournal = "graces_sales_journal";
     }
 
     // read all
@@ -302,6 +319,93 @@ class AccountReceivable
             ]);
         } catch (PDOException $ex) {
 
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read by id
+    public function readAllSales()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= "group by sales_order_number ";
+            $sql .= "order by sales_order_number asc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read by id
+    public function readLastSalesJournal()
+    {
+        try {
+            $sql = "select sales_journal_balance ";
+            $sql .= "from {$this->tblSalesJournal} ";
+            $sql .= "order by sales_journal_aid desc ";
+            $sql .= "limit 1 ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // create
+    public function createSalesJornal()
+    {
+        try {
+            $sql = "insert into {$this->tblSalesJournal} ";
+            $sql .= "( sales_journal_order_number, ";
+            $sql .= "sales_journal_order_id, ";
+            $sql .= "sales_journal_debit, ";
+            $sql .= "sales_journal_credit, ";
+            $sql .= "sales_journal_balance, ";
+            $sql .= "sales_journal_method, ";
+            $sql .= "sales_journal_date, ";
+            $sql .= "sales_journal_customer, ";
+            $sql .= "sales_journal_customer_id, ";
+            $sql .= "sales_journal_note, ";
+            $sql .= "sales_journal_from, ";
+            $sql .= "sales_journal_create, ";
+            $sql .= "sales_journal_update ) values ( ";
+            $sql .= ":sales_journal_order_number, ";
+            $sql .= ":sales_journal_order_id, ";
+            $sql .= ":sales_journal_debit, ";
+            $sql .= ":sales_journal_credit, ";
+            $sql .= ":sales_journal_balance, ";
+            $sql .= ":sales_journal_method, ";
+            $sql .= ":sales_journal_date, ";
+            $sql .= ":sales_journal_customer, ";
+            $sql .= ":sales_journal_customer_id, ";
+            $sql .= ":sales_journal_note, ";
+            $sql .= ":sales_journal_from, ";
+            $sql .= ":sales_journal_create, ";
+            $sql .= ":sales_journal_update ) ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_journal_order_number" => $this->sales_journal_order_number,
+                "sales_journal_order_id" => $this->sales_journal_order_id,
+                "sales_journal_debit" => $this->sales_journal_debit,
+                "sales_journal_credit" => $this->sales_journal_credit,
+                "sales_journal_balance" => $this->sales_journal_balance,
+                "sales_journal_method" => $this->sales_journal_method,
+                "sales_journal_date" => $this->sales_journal_date,
+                "sales_journal_customer" => $this->sales_journal_customer,
+                "sales_journal_customer_id" => $this->sales_journal_customer_id,
+                "sales_journal_note" => $this->sales_journal_note,
+                "sales_journal_from" => $this->sales_journal_from,
+                "sales_journal_create" => $this->sales_journal_create,
+                "sales_journal_update" => $this->sales_journal_update,
+            ]);
+        } catch (PDOException $ex) {
+            returnError($ex);
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
