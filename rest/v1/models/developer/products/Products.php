@@ -255,31 +255,15 @@ class Products
     public function readAll($allowedColumns)
     {
         $filterColumn = [];
-        $params = [
-            ...$this->column_search != "" ? [
-                "products_name" => "%{$this->column_search}%",
-                "products_sku" => "%{$this->column_search}%",
-                "products_owner_name" => "%{$this->column_search}%",
-                "products_suppliers_name" => "%{$this->column_search}%",
-            ] : [],
-        ];
+        $params = [];
 
         foreach ($this->filters as $i => $item) {
             if (!in_array($item['id'], $allowedColumns, true)) {
                 continue;
             }
             $col = $item['id'];
-            if (is_array($item['value'])) {
-                $params["min$i"] = (float) $item['value']['min'];
-                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
-
-                $params["max$i"] = $item['value']['max'] === ""
-                    ? (float) $this->max
-                    : (float) $item['value']['max'];
-            } else {
-                $filterColumn[] = "$col LIKE :search$i";
-                $params["search$i"] = "%" . trim($item['value']) . "%";
-            }
+            $filterColumn[] = "$col LIKE :search$i";
+            $params["search$i"] = "%" . trim($item['value']) . "%";
         }
         try {
             $sql = "select *, ";
