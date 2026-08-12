@@ -612,4 +612,22 @@ class ProductOwner
         }
         return $query;
     }
+
+    // name
+    public function checkEmail()
+    {
+        try {
+            $sql = "select user_account_email ";
+            $sql .= "from {$this->tblUserAccount} ";
+            $sql .= "where user_account_email = :user_account_email ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "user_account_email" => "{$this->user_account_email}",
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
 }
