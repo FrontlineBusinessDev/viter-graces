@@ -103,7 +103,7 @@ export const getNavList = () => {
       isOpenSubmenu: "",
       on_click: onClickNav,
       subList: [],
-      ongoing: [{ role: "product_owner" }, { role: "admin" }],
+      ongoing: [{ role: "admin" }],
       roles: ["developer", "admin", "product_owner"],
       title_tab: "",
     },
