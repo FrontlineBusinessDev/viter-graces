@@ -8,6 +8,7 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalPurchaseOrderMovement from "./modal/ModalPurchaseOrderMovement";
+import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 
 const PurchaseOrderMovement = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -120,6 +121,7 @@ const PurchaseOrderMovement = () => {
           path="purchase-order-movement"
           addLabel={"Transfer supply"}
           haveFilterTable={true}
+          ishaveAdd={getAdminDeveloperRole(store)}
           setItemEdit={setItemEdit}
         />
       </HeaderNav>

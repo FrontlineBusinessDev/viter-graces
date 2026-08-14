@@ -7,6 +7,7 @@ import Products from "@/pages/developer/products/Products";
 import Returns from "@/pages/developer/returns/Returns";
 import SalesOrders from "@/pages/developer/sales-orders/SalesOrders";
 import PurchaseOrder from "@/pages/developer/suppliers/PurchaseOrder";
+import PurchaseOrderMovement from "@/pages/developer/suppliers/PurchaseOrderMovement";
 import Suppliers from "@/pages/developer/suppliers/Suppliers";
 import ProtectedRouteUser from "@/pages/login/ProtectedRouteUser";
 
@@ -80,6 +81,14 @@ export const routesProductOwner = [
     element: (
       <ProtectedRouteUser>
         <Returns />
+      </ProtectedRouteUser>
+    ),
+  },
+  {
+    path: `${devNavUrl}/product_owner/purchase-movement-history`,
+    element: (
+      <ProtectedRouteUser>
+        <PurchaseOrderMovement />
       </ProtectedRouteUser>
     ),
   },
