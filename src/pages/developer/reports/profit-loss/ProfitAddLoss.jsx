@@ -8,6 +8,11 @@ import HeaderNav from "@/layout/headers/HeaderNav";
 import useQueryData from "@/services/useQueryData";
 import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
+import {
+  ProductOwnerId,
+  ProductOwnerName,
+} from "@/utilities/productOwnerToken";
+import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 import React, { useMemo } from "react";
 
 const ProfitAddLoss = () => {
@@ -19,11 +24,17 @@ const ProfitAddLoss = () => {
     store.credentials?.data?.server_date,
   );
   const [productOwner, setProductOwner] = React.useState([
-    {
-      id: 0,
-      value: "",
-      label: "",
-    },
+    getAdminDeveloperRole(store)
+      ? {
+          id: 0,
+          value: "",
+          label: "",
+        }
+      : {
+          id: ProductOwnerId(store),
+          value: ProductOwnerName(store),
+          label: ProductOwnerName(store),
+        },
   ]);
 
   const {
@@ -36,7 +47,9 @@ const ProfitAddLoss = () => {
     "post", // method
     `read-profite-and-loss`, // key
     {
-      id: Number(isEmptyItem(productOwner?.id, 0)),
+      id: getAdminDeveloperRole(store)
+        ? Number(isEmptyItem(productOwner?.id, 0))
+        : Number(ProductOwnerId(store)),
       from: dateFrom,
       to: dateTo,
     },
@@ -55,8 +68,10 @@ const ProfitAddLoss = () => {
 
   return (
     <HeaderNav menu={"reports"} activeTab="profit-&-loss">
-      <div className="max-w-2xl my-4 place-self-center text-sm ">
-        <div className="grid grid-cols-3 gap-3">
+      <div className="w-full max-w-2xl my-4 place-self-center text-sm ">
+        <div
+          className={`grid ${getAdminDeveloperRole(store) ? "  xs:grid-cols-3 " : " xs:grid-cols-2 "} gap-3 `}
+        >
           <div>
             <label htmlFor="" className="text-black dark:text-light">
               From
@@ -77,17 +92,21 @@ const ProfitAddLoss = () => {
               onChange={(e) => setDateTo(e.target.value)}
             />
           </div>
-          <div>
-            <label htmlFor="" className="text-black dark:text-light ">
-              Product Owner
-            </label>
-            <SearchableSelectFilterProductOwner
-              setColumn={setProductOwner}
-              column={productOwner}
-              path="product-owner/read-by-product-owner"
-              testFilterId={"filter-owner"}
-            />
-          </div>
+          {getAdminDeveloperRole(store) ? (
+            <div>
+              <label htmlFor="" className="text-black dark:text-light ">
+                Product Owner
+              </label>
+              <SearchableSelectFilterProductOwner
+                setColumn={setProductOwner}
+                column={productOwner}
+                path="product-owner/read-by-product-owner"
+                testFilterId={"filter-owner"}
+              />
+            </div>
+          ) : (
+            ""
+          )}
         </div>
         {error && <ServerError />}
         <div className="my-3 space-y-3">
@@ -122,8 +141,10 @@ const ProfitAddLoss = () => {
                 <span className="text-black dark:text-light font-semibold capitalize ml-1">
                   {isLoading || isFetching ? (
                     <TableLoading count={1} cols={1} />
-                  ) : (
+                  ) : getAdminDeveloperRole(store) ? (
                     productOwner?.label
+                  ) : (
+                    ProductOwnerName(store)
                   )}
                 </span>
               </li>

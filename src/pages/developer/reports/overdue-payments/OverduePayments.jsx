@@ -10,13 +10,13 @@ const OverduePayments = () => {
 
   // Columns
   const columns = [
-    {
-      accessorKey: "installment_payment_is_paid",
-      header: "status",
-      classTh: "w-[8rem]",
-      classTd: "",
-      status_option: ActiveInActiveStatus("installment-status"),
-    },
+    // {
+    //   accessorKey: "installment_payment_is_paid",
+    //   header: "status",
+    //   classTh: "w-[8rem]",
+    //   classTd: "",
+    //   status_option: ActiveInActiveStatus("installment-status"),
+    // },
     {
       accessorKey: "installment_payment_code_number",
       header: "Order #",

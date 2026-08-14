@@ -14,17 +14,22 @@ $conn = checkDbConnection();
 
 // make instance of classes
 $val = new Overview($conn);
+// get payload
+$body = file_get_contents("php://input");
+$data = json_decode($body, true);
 
 // validate api key
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
+    // check data
+    checkPayload($data);
 
+    $val->userId = (float)$data["userId"];    // get data 
     $total_result_final = [];
     $SalesExpensProfit = [];
     $totalData = [];
 
-    // WEEKLY SALES
-
+    // WEEKLY SALES 
     $queryS = checkReadSalesPerWeek($val);
     $weekAllData = getResultData($queryS)[0] ?? [];
     $queryE = checkReadExpensesPerWeek($val);

@@ -4,6 +4,8 @@ import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ViewAccountsReceivableDetails from "./ViewAccountsReceivableDetails";
 import { ActionTableList } from "@/layout/ArrayValue";
+import UpdateAccountsReceivableDetails from "./UpdateAccountsReceivableDetails";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 
 const AccountsReceivable = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -67,13 +69,28 @@ const AccountsReceivable = () => {
       filterFn: "between",
       meta: "",
     },
-    {
-      accessorKey: "action",
-      action_array: ActionTableList("expenses", "finance-ar"),
-      header: "Action",
-      classTh: " text-center ",
-      classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
-    },
+    ...(Number(ProductOwnerId(store)) > 0
+      ? [
+          {
+            accessorKey: "action",
+            action_array: ActionTableList(
+              "expenses",
+              "finance_ar_product_owner",
+            ),
+            header: "Action",
+            classTh: " text-center ",
+            classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
+          },
+        ]
+      : [
+          {
+            accessorKey: "action",
+            action_array: ActionTableList("expenses", "finance-ar"),
+            header: "Action",
+            classTh: " text-center ",
+            classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
+          },
+        ]),
   ];
 
   return (
@@ -88,7 +105,8 @@ const AccountsReceivable = () => {
           setItemEdit={setItemEdit}
         />
       </HeaderNav>
-      {store.isAdd && <ViewAccountsReceivableDetails itemEdit={itemEdit} />}
+      {store.isAdd && <UpdateAccountsReceivableDetails itemEdit={itemEdit} />}
+      {store.isView && <ViewAccountsReceivableDetails itemEdit={itemEdit} />}
     </>
   );
 };

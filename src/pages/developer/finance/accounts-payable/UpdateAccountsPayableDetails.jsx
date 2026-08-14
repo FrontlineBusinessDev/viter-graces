@@ -6,7 +6,7 @@ import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
 import {
   setError,
-  setIsView,
+  setIsAdd,
   setMessage,
   setSuccess,
 } from "@/store/StoreAction";
@@ -16,17 +16,17 @@ import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 
-const ViewAccountsReceivableDetails = ({ itemEdit }) => {
+const UpdateAccountsPayableDetails = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const [items, setItems] = React.useState(itemEdit?.installmentItems);
+  const [items, setItems] = React.useState([{ paid_amount: 0 }]);
 
   const queryClient = useQueryClient();
 
   const handleClose = () => {
     queryClient.invalidateQueries({
-      queryKey: ["finance-account-receivable"],
+      queryKey: ["finance-account-payable"],
     });
-    dispatch(setIsView(false));
+    dispatch(setIsAdd(false));
     dispatch(setError(false));
   };
 
@@ -35,18 +35,17 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
-        `${apiVersion}/finance-account-receivable/account-receivable/${values?.installment_payment_aid}`,
+        `${apiVersion}/finance-account-payable/account-payable/1`,
         "put",
         values,
       ),
     onSuccess: (data) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
-        queryKey: ["finance-account-receivable"],
+        queryKey: ["finance-account-payable"],
       });
 
       if (data.success) {
-        console.log("data.success", data.success);
         dispatch(setSuccess(true));
         dispatch(setMessage("Updated successfully."));
       }
@@ -57,46 +56,27 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
     },
   });
 
-  let totalPaidAmount = isEmptyItem(itemEdit?.sales_order_paid_amount, 0);
-  let totalAmount = isEmptyItem(
-    itemEdit?.sales_order_total_receivable_amount,
-    0,
-  );
-  let totalBalanceAmount = isEmptyItem(
-    itemEdit?.sales_order_total_balance_amount,
-    0,
-  );
+  let totalPaidAmount = isEmptyItem(itemEdit?.paid_amount, 0);
+  let totalAmount = isEmptyItem(itemEdit?.amount, 0);
+  let totalBalanceAmount = isEmptyItem(itemEdit?.balance_amount, 0);
 
   const handleChangeSave = (e, index) => {
     const updated = [...items];
-    updated[index]["installment_payment_paid_amount"] = e.target.value;
-    updated[index]["installment_payment_received_id"] =
-      store.credentials?.data?.user_account_aid;
-    updated[index]["installment_payment_received_name"] =
-      store.credentials?.data?.name;
+    updated[index]["paid_amount"] = e.target.value;
     setItems(updated);
     return;
   };
 
-  let filterPaidAmount = items?.filter(
-    (item) => item.installment_payment_is_paid === 0,
-  );
-
-  let paidAmount = filterPaidAmount?.reduce(
-    (sum, item) =>
-      Number(sum) + Number(item.installment_payment_paid_amount || 0),
+  let paidAmount = items?.reduce(
+    (sum, item) => Number(sum) + Number(item.paid_amount || 0),
     0,
   );
 
-  const handleSave = (a, index) => {
-    const updated = [...items];
-    updated[index]["installment_payment_is_paid"] = 1;
-    setItems(updated);
-
+  const handleSave = (a) => {
     let data = {
       ...itemEdit,
       icon: "",
-      ...ActivityLogDetails("finance account receivable", "update", store, {
+      ...ActivityLogDetails("finance account payable", "update", store, {
         ...itemEdit,
         icon: "",
         ...a,
@@ -104,32 +84,50 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
         totalBalanceAmount: Number(totalBalanceAmount) - Number(paidAmount),
       }),
       ...a,
+      totalAmount: Number(totalAmount),
       totalPaidAmount: Number(totalPaidAmount) + Number(paidAmount),
       totalBalanceAmount: Number(totalBalanceAmount) - Number(paidAmount),
     };
 
+    // console.log("data", data);
     mutation.mutate(data);
   };
-
   return (
     <ModalWrapper
-      val={`Order Details - ${itemEdit?.sales_order_number}`}
+      label={`Order Details - ${itemEdit?.purchase_order_number}`}
       itemEdit={itemEdit}
       mutation={mutation}
       isOpen={true}
       handleClose={handleClose}
+      width="min-w-[550px]!"
     >
       <ul className="grid grid-cols-2 [&>li]:flex [&>li]:items-center [&>li]:gap-2 ">
         <li>
-          <p>Customer:</p>
+          <p>Supplier:</p>
           <p className="text-black dark:text-light">
-            {itemEdit?.sales_order_customer_name}
+            {itemEdit?.purchase_order_supplier_name}
           </p>
         </li>
         <li className="justify-end">
+          <p>Delivery Date:</p>
+          <p className="text-black dark:text-light">
+            {itemEdit?.purchase_order_expected_delivery}
+          </p>
+        </li>
+        <li className="">
           <p>Order Date:</p>
           <p className="text-black dark:text-light">
-            {itemEdit?.sales_order_date}
+            {itemEdit?.purchase_order_date}
+          </p>
+        </li>
+        <li className="justify-end">
+          <p>TAX:</p>
+          <p className="text-black dark:text-light">
+            {Number(itemEdit?.purchase_order_percent_tax) === 0.12
+              ? "Inclusive"
+              : Number(itemEdit?.purchase_order_percent_tax) === 1.12
+                ? "Exclusive"
+                : "--"}
           </p>
         </li>
       </ul>
@@ -140,45 +138,113 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
             <thead className={`relative z-50 table-header-group`}>
               <tr className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0! ">
                 <th className="w-px dark:bg-gray-900! bg-gray-100!">#</th>
-                <th className={`min-w-40  dark:bg-gray-900! bg-gray-100!`}>
+                <th className={`min-w-24  dark:bg-gray-900! bg-gray-100!`}>
                   Due Date
                 </th>
-                <th className={` dark:bg-gray-900! bg-gray-100! text-right`}>
-                  Amount
-                </th>
+                <th className={` dark:bg-gray-900! bg-gray-100!`}>Amount</th>
                 <th
-                  className={`min-w-30! dark:bg-gray-900! bg-gray-100! text-right`}
+                  className={`min-w-30! dark:bg-gray-900! bg-gray-100! text-center`}
                 >
                   Paid Amount
                 </th>
-                <th></th>
+                <th
+                  className={`min-w-35! dark:bg-gray-900! bg-gray-100! text-center`}
+                >
+                  Balance Amount
+                </th>
               </tr>
             </thead>
             <tbody className="">
-              {items?.map((a, index) => {
-                console.log("a", a);
+              {itemEdit?.items?.map((a, index) => {
                 return (
                   <tr key={index} className="border-0!">
                     <td className="text-center dark:bg-gray-900! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
                       {index + 1}.
                     </td>
                     <td className=" dark:bg-gray-900! ">
-                      {a?.installment_payment_due_date}
+                      {a?.purchase_order_date}
                     </td>
                     <td className=" dark:bg-gray-900! ">
                       <AmountWithPesoSign
                         classN="size-3"
-                        amount={a["installment_payment_amount"]}
+                        amount={Number(
+                          a.purchase_order_total_amount_per_product,
+                        )}
+                      />
+                    </td>
+
+                    <td className="">
+                      <AmountWithPesoSign
+                        classN="size-3"
+                        classAmnt="text-primary "
+                        amount={Number(a.purchase_order_total_paid_per_product)}
                       />
                     </td>
                     <td className="">
                       <AmountWithPesoSign
                         classN="size-3"
-                        classAmnt="text-primary "
-                        amount={Number(a.installment_payment_paid_amount)}
+                        classAmnt="text-primary text-warning "
+                        amount={Number(
+                          a.purchase_order_total_balance_per_product,
+                        )}
                       />
                     </td>
-                    <td></td>
+                  </tr>
+                );
+              })}
+              <tr className="border-0!">
+                <td
+                  className="dark:bg-gray-900! text-right font-bold "
+                  colSpan={2}
+                >
+                  TOTAL
+                </td>
+                <td className="dark:bg-gray-900! text-right font-bold ">
+                  <AmountWithPesoSign
+                    classN="size-3"
+                    classAmnt="text-primary text-black! "
+                    amount={itemEdit.amount}
+                  />
+                </td>
+                <td className="dark:bg-gray-900! text-right font-bold ">
+                  <AmountWithPesoSign
+                    classN="size-3"
+                    classAmnt="text-primary"
+                    amount={itemEdit.paid_amount}
+                  />
+                </td>
+
+                <td className=" dark:bg-gray-900! ">
+                  <AmountWithPesoSign
+                    classN="size-3"
+                    classAmnt="text-primary text-warning"
+                    amount={itemEdit.balance_amount}
+                  />
+                </td>
+              </tr>
+              {items?.map((i, aIndex) => {
+                return (
+                  <tr key={aIndex} className="border-0!">
+                    <td className="text-center dark:bg-gray-900! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10"></td>
+                    <td className=" dark:bg-gray-900! "></td>
+                    <td className=" dark:bg-gray-900! "></td>
+                    <td className="dark:bg-gray-900! text-right">
+                      <button
+                        className={`text-white bg-gray-500 hover:bg-green-800 rounded-sm p-1 text-[10px]`}
+                        type="button"
+                        onClick={() => handleSave(i)}
+                      >
+                        Save
+                      </button>
+                    </td>
+
+                    <td className=" dark:bg-gray-900! ">
+                      <input
+                        type="number"
+                        className="text-right! mt-0!"
+                        onChange={(e) => handleChangeSave(e, aIndex)}
+                      />
+                    </td>
                   </tr>
                 );
               })}
@@ -216,4 +282,4 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
   );
 };
 
-export default ViewAccountsReceivableDetails;
+export default UpdateAccountsPayableDetails;

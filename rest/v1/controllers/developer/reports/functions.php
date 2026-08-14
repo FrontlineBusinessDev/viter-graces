@@ -306,3 +306,11 @@ function updateConnectedMenu($object)
 
 
 }
+
+// Read all
+function checkReadReturn($object)
+{
+    $query = $object->readReturn();
+    checkQuery($query, "Empty records. (Read Return)");
+    return $query;
+}

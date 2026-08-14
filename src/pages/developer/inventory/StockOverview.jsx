@@ -35,7 +35,7 @@ const StockOverview = () => {
       status_option: ActiveInActiveStatus("stock-overview"),
     },
     {
-      accessorKey: "stock_movement_product_name",
+      accessorKey: "products_name",
       header: "Products",
       classTh: "",
       classTd: "",
@@ -84,7 +84,7 @@ const StockOverview = () => {
       ? []
       : [
           {
-            accessorKey: "stock_movement_product_owner_name",
+            accessorKey: "products_owner_name",
             header: "Product Owner",
             classTh: "min-w-[10rem]",
             classTd: "",

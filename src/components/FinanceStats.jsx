@@ -4,6 +4,7 @@ import TableLoading from "./spinners/TableLoading";
 const FinanceStats = ({
   title,
   value,
+  amount = false,
   valueColor,
   className,
   icon,
@@ -26,6 +27,8 @@ const FinanceStats = ({
             <span className="bg-white dark:bg-gray-900 w-full h-[15px]">
               <TableLoading count={1} cols={1} />
             </span>
+          ) : !amount ? (
+            value
           ) : (
             <AmountWithPesoSign classAmnt="" classN="size-4" amount={value} />
           )}

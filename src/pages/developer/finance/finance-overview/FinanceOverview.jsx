@@ -4,13 +4,18 @@ import TableLoading from "@/components/spinners/TableLoading";
 import { apiVersion } from "@/config/config";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import useQueryData from "@/services/useQueryData";
+import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import { Banknote, TrendingDown, TrendingUp } from "lucide-react";
 import { useMemo } from "react";
 import React from "react";
 
 const FinanceOverview = () => {
+  const { store, dispatch } = React.useContext(StoreContext);
   const [timeframe, setTimeframe] = React.useState("weekly");
+  const userId = ProductOwnerId(store);
+
   const {
     isLoading,
     isFetching,
@@ -18,9 +23,14 @@ const FinanceOverview = () => {
     data: result,
   } = useQueryData(
     `${apiVersion}/finance-sales-journal/read-overview`, // endpoint
-    "get", // method
+    "post", // method
     `read-profite-and-loss`, // key
-    {},
+    {
+      userId: userId,
+    },
+    {
+      userId: userId,
+    },
   );
 
   const itemData = useMemo(() => {

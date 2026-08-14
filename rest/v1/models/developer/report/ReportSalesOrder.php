@@ -29,6 +29,7 @@ class ReportSalesOrder
     public $sales_order_updated;
 
     public $due_date;
+    public $userId;
 
     public $stock_movement_before_qty;
     public $stock_movement_after_qty;
@@ -50,6 +51,7 @@ class ReportSalesOrder
     public $tblSupplier;
     public $tblSuppliersPurchaseOrder;
     public $tblinstallmentPayment;
+    public $tblReturnProducts;
 
     public $filters;
     public $column_start;
@@ -67,6 +69,7 @@ class ReportSalesOrder
         $this->tblSupplier = "graces_suppliers";
         $this->tblSuppliersPurchaseOrder = "graces_suppliers_purchase_order";
         $this->tblinstallmentPayment = "graces_installment_payment";
+        $this->tblReturnProducts = "graces_return_product";
     }
 
 
@@ -75,6 +78,7 @@ class ReportSalesOrder
     {
         $filterColumn = [];
         $params = [
+            ...$this->userId != 0 ? ["sales_order_product_owner_id" => $this->userId] : [],
             ...($this->column_search != "" ? [
                 "sales_order_number" => "%{$this->column_search}%",
                 "sales_order_customer_name" => "%{$this->column_search}%",
@@ -116,6 +120,7 @@ class ReportSalesOrder
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";
+            $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -143,6 +148,7 @@ class ReportSalesOrder
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
+            ...$this->userId != 0 ? ["sales_order_product_owner_id" => $this->userId] : [],
             ...($this->column_search != "" ? [
                 "sales_order_number" => "%{$this->column_search}%",
                 "sales_order_customer_name" => "%{$this->column_search}%",
@@ -184,6 +190,7 @@ class ReportSalesOrder
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";
+            $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -211,6 +218,7 @@ class ReportSalesOrder
     {
         $filterColumn = [];
         $params = [
+            ...$this->userId != 0 ? ["sales_order_product_owner_id" => $this->userId] : [],
             ...($this->column_search != "" ? [
                 "sales_order_number" => "%{$this->column_search}%",
                 "sales_order_customer_name" => "%{$this->column_search}%",
@@ -249,6 +257,7 @@ class ReportSalesOrder
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";
+            $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -276,16 +285,20 @@ class ReportSalesOrder
             $sql = "select *, ";
             $sql .= "SUM(purchase_order_total_paid_per_product) as total_paid ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
+            $sql .= " where true ";
+            $sql .= ($this->userId != 0 ? "and purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             $sql .= " group by purchase_order_number ";
             $sql .= " order by purchase_order_number ";
-            $query = $this->connection->query($sql);
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
+            ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
         return $query;
     }
-
 
     public function readAllSalesOrderPaidAmount()
     {
@@ -310,6 +323,7 @@ class ReportSalesOrder
         $inventoryStatusFilter = "";
 
         $params = [
+            ...$this->userId != 0 ? ["products_owner_id" => $this->userId] : [],
             ...(
                 $this->column_search != ""
                 ? [
@@ -358,6 +372,7 @@ class ReportSalesOrder
             $sql .= "MAX(p.products_price) as products_price, ";
             $sql .= "MAX(p.products_name) as products_name, ";
             $sql .= "MAX(p.products_owner_name) as products_owner_name, ";
+            $sql .= "MAX(p.products_owner_id) as products_owner_id, ";
             $sql .= "MAX(p.products_aid) as products_aid, ";
             $sql .= "MAX(ms.stock_movement_location) as stock_movement_location, ";
             $sql .= "MAX(ms.stock_movement_product_name) as name, ";
@@ -380,6 +395,7 @@ class ReportSalesOrder
             $sql .= "ON so.sales_order_product_id = p.products_aid ";
             $sql .= "group by p.products_aid ) AS inventory_data ";
             $sql .= " where true ";
+            $sql .= ($this->userId != 0 ? "and inventory_data.products_owner_id = :products_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } elseif ($this->column_search !== "") {
@@ -420,6 +436,7 @@ class ReportSalesOrder
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
+            ...$this->userId != 0 ? ["products_owner_id" => $this->userId] : [],
             ...(
                 $this->column_search != ""
                 ? [
@@ -469,6 +486,7 @@ class ReportSalesOrder
             $sql .= "MAX(p.products_status) as products_status, ";
             $sql .= "MAX(p.products_price) as products_price, ";
             $sql .= "MAX(p.products_name) as products_name, ";
+            $sql .= "MAX(p.products_owner_id) as products_owner_id, ";
             $sql .= "MAX(p.products_owner_name) as products_owner_name, ";
             $sql .= "MAX(p.products_aid) as products_aid, ";
             $sql .= "MAX(ms.stock_movement_location) as stock_movement_location, ";
@@ -492,6 +510,7 @@ class ReportSalesOrder
             $sql .= "ON so.sales_order_product_id = p.products_aid ";
             $sql .= "group by p.products_aid ) AS inventory_data ";
             $sql .= "WHERE true ";
+            $sql .= ($this->userId != 0 ? "and inventory_data.products_owner_id = :products_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } elseif ($this->column_search !== "") {
@@ -845,6 +864,7 @@ class ReportSalesOrder
     {
         $filterColumn = [];
         $params = [
+            ...$this->userId != 0 ? ["stock_movement_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "stock_movement_product_name" => "%{$this->column_search}%",
                 "stock_movement_product_owner_name" => "%{$this->column_search}%",
@@ -883,6 +903,7 @@ class ReportSalesOrder
             $sql .= "from {$this->tblMovementStock} as sm, ";
             $sql .= "{$this->tblProducts} as p ";
             $sql .= " where p.products_aid = sm.stock_movement_product_id ";
+            $sql .= ($this->userId != 0 ? "and sm.stock_movement_product_owner_id = :stock_movement_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -907,6 +928,7 @@ class ReportSalesOrder
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
+            ...$this->userId != 0 ? ["stock_movement_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "stock_movement_product_name" => "%{$this->column_search}%",
                 "stock_movement_product_owner_name" => "%{$this->column_search}%",
@@ -945,6 +967,7 @@ class ReportSalesOrder
             $sql .= "from {$this->tblMovementStock} as sm, ";
             $sql .= "{$this->tblProducts} as p ";
             $sql .= " where p.products_aid = sm.stock_movement_product_id ";
+            $sql .= ($this->userId != 0 ? "and sm.stock_movement_product_owner_id = :stock_movement_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -968,6 +991,7 @@ class ReportSalesOrder
     {
         $filterColumn = [];
         $params = [
+            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "purchase_order_number" => "%{$this->column_search}%",
                 "purchase_order_supplier_name" => "%{$this->column_search}%",
@@ -1004,6 +1028,7 @@ class ReportSalesOrder
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
             $sql .= " where true ";
+            $sql .= ($this->userId != 0 ? "and purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -1030,6 +1055,7 @@ class ReportSalesOrder
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
+            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "purchase_order_number" => "%{$this->column_search}%",
                 "purchase_order_supplier_name" => "%{$this->column_search}%",
@@ -1066,6 +1092,7 @@ class ReportSalesOrder
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
             $sql .= " where true ";
+            $sql .= ($this->userId != 0 ? "and purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -1236,6 +1263,7 @@ class ReportSalesOrder
     {
         $filterColumn = [];
         $params = [
+            ...$this->userId != 0 ? ["sales_order_product_owner_id" => $this->userId] : [],
             ...($this->column_search != "" ? [
                 "sales_order_number" => "%{$this->column_search}%",
                 "sales_order_customer_name" => "%{$this->column_search}%",
@@ -1278,6 +1306,7 @@ class ReportSalesOrder
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where CAST(sales_order_balance_per_product AS DECIMAL(10, 2)) != 0 ";
+            $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -1305,6 +1334,7 @@ class ReportSalesOrder
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
+            ...$this->userId != 0 ? ["sales_order_product_owner_id" => $this->userId] : [],
             ...($this->column_search != "" ? [
                 "sales_order_number" => "%{$this->column_search}%",
                 "sales_order_customer_name" => "%{$this->column_search}%",
@@ -1347,6 +1377,7 @@ class ReportSalesOrder
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where CAST(sales_order_balance_per_product AS DECIMAL(10, 2)) != 0 ";
+            $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -1376,6 +1407,7 @@ class ReportSalesOrder
     {
         $filterColumn = [];
         $params = [
+            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "purchase_order_number" => "%{$this->column_search}%",
                 "purchase_order_supplier_name" => "%{$this->column_search}%",
@@ -1412,6 +1444,7 @@ class ReportSalesOrder
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
             $sql .= " where CAST(purchase_order_total_balance_per_product AS DECIMAL(10, 2)) != 0 ";
+            $sql .= ($this->userId != 0 ? "and purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -1438,6 +1471,7 @@ class ReportSalesOrder
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
+            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "purchase_order_number" => "%{$this->column_search}%",
                 "purchase_order_supplier_name" => "%{$this->column_search}%",
@@ -1474,6 +1508,7 @@ class ReportSalesOrder
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
             $sql .= " where CAST(purchase_order_total_balance_per_product AS DECIMAL(10, 2)) != 0 ";
+            $sql .= ($this->userId != 0 ? "and purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -1820,6 +1855,30 @@ class ReportSalesOrder
             $query = false;
         }
 
+        return $query;
+    }
+    // read by id
+    public function readReturn()
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "SUM(return_product_amount) as amount, ";
+            $sql .= "return_product_aid as id, ";
+            $sql .= "return_product_status as is_status, ";
+            $sql .= "return_product_number as name ";
+            $sql .= "from {$this->tblReturnProducts} ";
+            $sql .= "where return_product_status = 'processed' ";
+            $sql .= ($this->userId != 0 ? "and return_product_owner_id = :return_product_owner_id " : " ");
+            $sql .= "group by return_product_owner_id desc, ";
+            $sql .= "return_product_status asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                ...$this->userId != 0 ? ["return_product_owner_id" => $this->userId] : [],
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
         return $query;
     }
 }

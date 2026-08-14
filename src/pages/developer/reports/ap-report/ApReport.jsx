@@ -4,6 +4,7 @@ import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ReportsStats from "../ReportsStats";
 import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 
 const ApReport = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -43,21 +44,25 @@ const ApReport = () => {
       filterFn: "between",
       meta: "",
     },
-    {
-      accessorKey: "purchase_order_product_owner_name",
-      header: "Product Owner",
-      classTh: "min-w-[10rem]",
-      classTd: "",
-      meta: {
-        filterComponent: (column) => (
-          <SearchableSelectFilter
-            column={column}
-            path="product-owner/read-by-product-owner"
-            testFilterId={"filter-owner"}
-          />
-        ),
-      },
-    },
+    ...(Number(ProductOwnerId(store)) > 0
+      ? []
+      : [
+          {
+            accessorKey: "purchase_order_product_owner_name",
+            header: "Product Owner",
+            classTh: "min-w-[10rem]",
+            classTd: "",
+            meta: {
+              filterComponent: (column) => (
+                <SearchableSelectFilter
+                  column={column}
+                  path="product-owner/read-by-product-owner"
+                  testFilterId={"filter-owner"}
+                />
+              ),
+            },
+          },
+        ]),
     {
       accessorKey: "purchase_order_note",
       header: "Note",

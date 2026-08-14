@@ -8,6 +8,7 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ReportsStats from "../ReportsStats";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 
 const InventoryMovement = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -82,21 +83,25 @@ const InventoryMovement = () => {
       classTd: "",
       meta: "",
     },
-    {
-      accessorKey: "stock_movement_product_owner_name",
-      header: "Product Owner",
-      classTh: "min-w-[10rem]",
-      classTd: "",
-      meta: {
-        filterComponent: (column) => (
-          <SearchableSelectFilter
-            column={column}
-            path="product-owner/read-by-product-owner"
-            testFilterId={"filter-owner"}
-          />
-        ),
-      },
-    },
+    ...(Number(ProductOwnerId(store)) > 0
+      ? []
+      : [
+          {
+            accessorKey: "stock_movement_product_owner_name",
+            header: "Product Owner",
+            classTh: "min-w-[10rem]",
+            classTd: "",
+            meta: {
+              filterComponent: (column) => (
+                <SearchableSelectFilter
+                  column={column}
+                  path="product-owner/read-by-product-owner"
+                  testFilterId={"filter-owner"}
+                />
+              ),
+            },
+          },
+        ]),
   ];
 
   return (

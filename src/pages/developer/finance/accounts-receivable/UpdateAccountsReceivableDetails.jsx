@@ -6,7 +6,7 @@ import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
 import {
   setError,
-  setIsView,
+  setIsAdd,
   setMessage,
   setSuccess,
 } from "@/store/StoreAction";
@@ -16,7 +16,7 @@ import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
 
-const ViewAccountsReceivableDetails = ({ itemEdit }) => {
+const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [items, setItems] = React.useState(itemEdit?.installmentItems);
 
@@ -26,7 +26,7 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
     queryClient.invalidateQueries({
       queryKey: ["finance-account-receivable"],
     });
-    dispatch(setIsView(false));
+    dispatch(setIsAdd(false));
     dispatch(setError(false));
   };
 
@@ -113,7 +113,7 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
 
   return (
     <ModalWrapper
-      val={`Order Details - ${itemEdit?.sales_order_number}`}
+      label={`Order Details - ${itemEdit?.sales_order_number}`}
       itemEdit={itemEdit}
       mutation={mutation}
       isOpen={true}
@@ -143,11 +143,9 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
                 <th className={`min-w-40  dark:bg-gray-900! bg-gray-100!`}>
                   Due Date
                 </th>
-                <th className={` dark:bg-gray-900! bg-gray-100! text-right`}>
-                  Amount
-                </th>
+                <th className={` dark:bg-gray-900! bg-gray-100!`}>Amount</th>
                 <th
-                  className={`min-w-30! dark:bg-gray-900! bg-gray-100! text-right`}
+                  className={`min-w-30! dark:bg-gray-900! bg-gray-100! text-center`}
                 >
                   Paid Amount
                 </th>
@@ -171,14 +169,37 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
                         amount={a["installment_payment_amount"]}
                       />
                     </td>
-                    <td className="">
-                      <AmountWithPesoSign
-                        classN="size-3"
-                        classAmnt="text-primary "
-                        amount={Number(a.installment_payment_paid_amount)}
-                      />
-                    </td>
-                    <td></td>
+                    {Number(a?.installment_payment_is_paid) === 0 ? (
+                      <>
+                        <td className=" dark:bg-gray-900! ">
+                          <input
+                            type="number"
+                            className="text-right!"
+                            onChange={(e) => handleChangeSave(e, index)}
+                          />
+                        </td>
+                        <td>
+                          <button
+                            className={`text-white bg-gray-500 hover:bg-green-800 rounded-sm p-1 text-[10px]`}
+                            type="button"
+                            onClick={() => handleSave(a, index)}
+                          >
+                            Save
+                          </button>
+                        </td>
+                      </>
+                    ) : (
+                      <>
+                        <td className="">
+                          <AmountWithPesoSign
+                            classN="size-3"
+                            classAmnt="text-primary "
+                            amount={Number(a.installment_payment_paid_amount)}
+                          />
+                        </td>
+                        <td></td>
+                      </>
+                    )}
                   </tr>
                 );
               })}
@@ -216,4 +237,4 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
   );
 };
 
-export default ViewAccountsReceivableDetails;
+export default UpdateAccountsReceivableDetails;

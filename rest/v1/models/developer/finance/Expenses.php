@@ -48,6 +48,7 @@ class Expenses
     public $purchase_order_total_amount_per_product;
     public $purchase_order_percent_tax;
 
+    public $userId;
     public $date_yesterday;
     public $date_today;
 
@@ -74,6 +75,7 @@ class Expenses
     {
         $filterColumn = [];
         $params = [
+            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "purchase_order_number" => "%{$this->column_search}%",
                 "purchase_order_supplier_name" => "%{$this->column_search}%",
@@ -116,6 +118,7 @@ class Expenses
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
             $sql .= " and CAST(spo.purchase_order_total_paid_per_product AS DECIMAL(10, 2)) != 0 ";
+            $sql .= ($this->userId != 0 ? "and spo.purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -142,6 +145,7 @@ class Expenses
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
+            ...$this->userId != 0 ? ["sales_order_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "purchase_order_number" => "%{$this->column_search}%",
                 "purchase_order_supplier_name" => "%{$this->column_search}%",
@@ -184,6 +188,7 @@ class Expenses
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
             $sql .= " and CAST(spo.purchase_order_total_paid_per_product AS DECIMAL(10, 2)) != 0 ";
+            $sql .= ($this->userId != 0 ? "and spo.purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {

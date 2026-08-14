@@ -5,6 +5,8 @@ import { Eye } from "lucide-react";
 import React from "react";
 import ViewAccountsPayableDetails from "./ViewAccountsPayableDetails";
 import { ActionTableList } from "@/layout/ArrayValue";
+import UpdateAccountsPayableDetails from "./UpdateAccountsPayableDetails";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 
 const AccountsPayable = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -68,13 +70,28 @@ const AccountsPayable = () => {
       filterFn: "between",
       meta: "",
     },
-    {
-      accessorKey: "action",
-      action_array: ActionTableList("finance", "finance-ap"),
-      header: "Action",
-      classTh: "text-center w-[7rem]",
-      classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
-    },
+    ...(Number(ProductOwnerId(store)) > 0
+      ? [
+          {
+            accessorKey: "action",
+            action_array: ActionTableList(
+              "finance",
+              "finance_ap_product_owner",
+            ),
+            header: "Action",
+            classTh: " text-center ",
+            classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
+          },
+        ]
+      : [
+          {
+            accessorKey: "action",
+            action_array: ActionTableList("finance", "finance-ap"),
+            header: "Action",
+            classTh: "text-center w-[7rem]",
+            classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
+          },
+        ]),
   ];
 
   return (
@@ -89,7 +106,8 @@ const AccountsPayable = () => {
           setItemEdit={setItemEdit}
         />
       </HeaderNav>
-      {store.isAdd && <ViewAccountsPayableDetails itemEdit={itemEdit} />}
+      {store.isAdd && <UpdateAccountsPayableDetails itemEdit={itemEdit} />}
+      {store.isView && <ViewAccountsPayableDetails itemEdit={itemEdit} />}
     </>
   );
 };

@@ -124,7 +124,6 @@ foreach ($ordersItems as $item) {
     }
 
     $val->stock_movement_qty = $val->sales_order_qty;
-
     checkCreateMovementStock($val);
 }
 

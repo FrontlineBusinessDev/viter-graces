@@ -2,17 +2,15 @@ import FinanceStats from "@/components/FinanceStats";
 import ServerError from "@/components/ServerError";
 import { apiVersion } from "@/config/config";
 import useQueryData from "@/services/useQueryData";
+import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
-import { numberWithCommasToFixed } from "@/utilities/numberWithCommas";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import { ChartNoAxesColumn, PhilippinePeso, TrendingUp } from "lucide-react";
-import { useMemo } from "react";
+import React, { useMemo } from "react";
 
-const ReportTotalSalesOrders = ({
-  path = "",
-  id = 0,
-  searchValue = "",
-  filterColumns = [],
-}) => {
+const ReportTotalSalesOrders = ({ path = "", filterColumns = [] }) => {
+  const { store, dispatch } = React.useContext(StoreContext);
+  const userId = ProductOwnerId(store);
   const {
     isLoading,
     isFetching,
@@ -22,8 +20,8 @@ const ReportTotalSalesOrders = ({
     path !== "" ? `${apiVersion}/${path}` : null, // endpoint
     "post", // method
     `${path}`, // key
-    { id: id, searchValue: "", columnFilters: filterColumns },
-    { id: id, searchValue: "", columnFilters: filterColumns },
+    { userId: userId, searchValue: "", columnFilters: filterColumns },
+    { userId: userId, searchValue: "", columnFilters: filterColumns },
   );
 
   const valDataQty = useMemo(() => {
@@ -53,7 +51,7 @@ const ReportTotalSalesOrders = ({
       ) : (
         <>
           <FinanceStats
-            title="Total Orders"
+            title="Total Orders qty"
             value={valDataQty}
             icon={<ChartNoAxesColumn className="text-blue-600" size={20} />}
             iconBg="bg-blue-100 dark:bg-[#082125]"
@@ -64,6 +62,7 @@ const ReportTotalSalesOrders = ({
           <FinanceStats
             title="Total Sales"
             value={valDataTotalSales}
+            amount={true}
             icon={<TrendingUp className="text-blue-600" size={20} />}
             iconBg="bg-blue-100 dark:bg-[#082125]"
             valueColor="text-blue-600"
@@ -73,6 +72,7 @@ const ReportTotalSalesOrders = ({
           <FinanceStats
             title="Net Revenue"
             value={valDataNetRevenue}
+            amount={true}
             icon={<PhilippinePeso className="text-green-600" size={20} />}
             iconBg="bg-green-100 dark:bg-[#082125]"
             valueColor="text-green-600"

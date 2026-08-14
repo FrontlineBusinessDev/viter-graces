@@ -22,6 +22,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkPayload($data);
 
     if (array_key_exists("start", $_GET)) {
+        $val->userId = 0;    // get data 
+        // $val->userId = (float)$data["userId"];    // if client wants it to be updated by product owner but order is mix product owner so we need to identify the products of that order
         $val->sales_order_customer_id = $data["id"];    // get data 
         $val->column_search = $data["searchValue"];    // get data 
         $val->column_start = $_GET['start'];

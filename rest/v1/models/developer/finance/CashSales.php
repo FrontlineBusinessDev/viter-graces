@@ -60,6 +60,7 @@ class CashSales
     public $lastInsertedId;
     public $tblSalesOrder;
 
+    public $userId;
     public $filters;
     public $column_start;
     public $column_total;
@@ -79,6 +80,7 @@ class CashSales
     {
         $filterColumn = [];
         $params = [
+            ...$this->userId != 0 ? ["sales_order_product_owner_id" => $this->userId] : [],
             ...($this->column_search != "" ? [
                 "sales_order_number" => "%{$this->column_search}%",
                 "sales_order_customer_name" => "%{$this->column_search}%",
@@ -122,6 +124,7 @@ class CashSales
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where sales_order_payment_method = 'cash' ";
             $sql .= " and CAST(sales_order_paid_per_product AS DECIMAL(10, 2)) != 0 ";
+            $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -147,6 +150,7 @@ class CashSales
     {
         $filterColumn = [];
         $params = [
+            ...$this->userId != 0 ? ["sales_order_product_owner_id" => $this->userId] : [],
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
             ...($this->column_search != "" ? [
@@ -192,6 +196,7 @@ class CashSales
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where sales_order_payment_method = 'cash' ";
             $sql .= " and CAST(sales_order_paid_per_product AS DECIMAL(10, 2)) != 0 ";
+            $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {

@@ -153,7 +153,7 @@ export const titleHeaderTab = (description) => {
           title_tab: "profit-&-loss",
           description_tab: "Review income, costs, and net profit.",
           on_click: onClickTab,
-          ongoingDevelopment: true,
+          ongoingDevelopment: false,
         },
         {
           icon: "",

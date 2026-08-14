@@ -25,6 +25,7 @@ class StockMovement
     public $tblSalesOrder;
 
     public $filters;
+    public $userId;
     public $column_start;
     public $column_total;
     public $column_search;
@@ -104,6 +105,7 @@ class StockMovement
     {
         $filterColumn = [];
         $params = [
+            ...$this->userId != 0 ? ["stock_movement_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "stock_movement_product_name" => "%{$this->column_search}%",
                 "stock_movement_product_owner_name" => "%{$this->column_search}%",
@@ -136,6 +138,7 @@ class StockMovement
             $sql .= "stock_movement_product_name as name ";
             $sql .= "from {$this->tblMovementStock} ";
             $sql .= " where true ";
+            $sql .= ($this->userId != 0 ? "and stock_movement_product_owner_id = :stock_movement_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -160,6 +163,7 @@ class StockMovement
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
+            ...$this->userId != 0 ? ["stock_movement_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "stock_movement_product_name" => "%{$this->column_search}%",
                 "stock_movement_product_owner_name" => "%{$this->column_search}%",
@@ -192,6 +196,7 @@ class StockMovement
             $sql .= "stock_movement_product_name as name ";
             $sql .= "from {$this->tblMovementStock} ";
             $sql .= " where true ";
+            $sql .= ($this->userId != 0 ? "and stock_movement_product_owner_id = :stock_movement_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {

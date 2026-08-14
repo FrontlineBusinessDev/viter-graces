@@ -2,16 +2,16 @@ import FinanceStats from "@/components/FinanceStats";
 import ServerError from "@/components/ServerError";
 import { apiVersion } from "@/config/config";
 import useQueryData from "@/services/useQueryData";
+import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import { TriangleAlert } from "lucide-react";
 import { useMemo } from "react";
+import React from "react";
 
-const ReportLowStockItems = ({
-  path = "",
-  id = 0,
-  searchValue = "",
-  filterColumns = [],
-}) => {
+const ReportLowStockItems = ({ path = "", filterColumns = [] }) => {
+  const { store, dispatch } = React.useContext(StoreContext);
+  const userId = ProductOwnerId(store);
   const {
     isLoading,
     isFetching,
@@ -21,7 +21,8 @@ const ReportLowStockItems = ({
     path !== "" ? `${apiVersion}/${path}` : null, // endpoint
     "post", // method
     `${path}`, // key
-    { id: id, searchValue: "", columnFilters: filterColumns },
+    { userId: userId, searchValue: "", columnFilters: filterColumns },
+    { userId: userId, searchValue: "", columnFilters: filterColumns },
   );
 
   const lowStockCount = useMemo(() => {

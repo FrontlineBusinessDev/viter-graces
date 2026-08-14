@@ -268,7 +268,13 @@ export const variantsStatus = (val = "active") => {
 export const ActionTableList = (path, val = "default-status") => {
   const result = [
     {
-      filter_status: ["status-with-view", "product_owner_sales_order"],
+      filter_status: [
+        "status-with-view",
+        "product_owner_sales_order",
+        "po_product_owner",
+        "finance_ar_product_owner",
+        "finance_ap_product_owner",
+      ],
       name: "view",
       path: path,
       icon: <LucideTableOfContents className="size-5 lg:size-4" />,

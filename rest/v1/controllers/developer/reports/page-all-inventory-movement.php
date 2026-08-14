@@ -22,6 +22,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkPayload($data);
 
     if (array_key_exists("start", $_GET)) {
+        $val->userId = (float)$data["userId"];    // get data 
         $val->column_search = $data["searchValue"];    // get data 
         $val->column_start = $_GET['start'];
         $val->column_total = 15;
@@ -29,7 +30,6 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $total_result_final = [];
         // FOR MULTIPLE FILTER 
         $val->filters = $data['columnFilters'];
-
 
         checkLimitId($val->column_start, $val->column_total);
 

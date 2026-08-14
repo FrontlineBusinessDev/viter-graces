@@ -8,6 +8,7 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ReportsStats from "../ReportsStats";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 
 const SalesReports = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -78,21 +79,25 @@ const SalesReports = () => {
       classTd: "",
       meta: "",
     },
-    {
-      accessorKey: "sales_order_product_owner_name",
-      header: "Product Owner",
-      classTh: "min-w-[10rem]",
-      classTd: "",
-      meta: {
-        filterComponent: (column) => (
-          <SearchableSelectFilter
-            column={column}
-            path="product-owner/read-by-product-owner"
-            testFilterId={"filter-owner"}
-          />
-        ),
-      },
-    },
+    ...(Number(ProductOwnerId(store)) > 0
+      ? []
+      : [
+          {
+            accessorKey: "sales_order_product_owner_name",
+            header: "Product Owner",
+            classTh: "min-w-[10rem]",
+            classTd: "",
+            meta: {
+              filterComponent: (column) => (
+                <SearchableSelectFilter
+                  column={column}
+                  path="product-owner/read-by-product-owner"
+                  testFilterId={"filter-owner"}
+                />
+              ),
+            },
+          },
+        ]),
     {
       accessorKey: "sales_order_received_by_name",
       header: "Received by",

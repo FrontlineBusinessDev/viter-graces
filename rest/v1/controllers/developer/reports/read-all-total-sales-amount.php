@@ -21,6 +21,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     // check data
     checkPayload($data);
 
+    $val->userId = (float)$data["userId"];    // get data 
     $val->column_search = $data["searchValue"];    // get data 
     $val->filters = $data['columnFilters'];
     $total_result_final = [];
@@ -30,13 +31,11 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $dataSet = getResultData($query);
     $querySetExpenses = getResultData($queryExpenses);
 
-
     if (count($dataSet) > 0) {
         $totalExpenses = array_sum(array_column($querySetExpenses, 'total_paid'));
         $totalReceivable = array_sum(array_column($dataSet, 'sales_order_discounted_with_vat_amount'));
 
         $totalQty = array_sum(array_column($dataSet, 'qty'));
-
 
         $totalAllSalesAmount = (float)$totalReceivable - (float)$totalExpenses;
         $totalAmount = (float)$totalReceivable;

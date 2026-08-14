@@ -9,6 +9,7 @@ import React from "react";
 
 const ViewAccountsPayableDetails = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
+  const [items, setItems] = React.useState([{ paid_amount: 0 }]);
 
   const handleClose = () => {
     dispatch(setIsView(false));
@@ -17,16 +18,21 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
 
   handleEscape(() => handleClose());
 
-  let totalPaidAmount = isEmptyItem(itemEdit?.paid_amount, 0);
-  let totalAmount = isEmptyItem(itemEdit?.amount, 0);
-  let totalBalanceAmount = isEmptyItem(itemEdit?.balance_amount, 0);
+  console.log("itemEdit", itemEdit);
 
+  // let totalPaidAmount = isEmptyItem(itemEdit?.paid_amount, 0);
+  // let totalAmount = isEmptyItem(itemEdit?.amount, 0);
+  // let totalBalanceAmount = isEmptyItem(itemEdit?.balance_amount, 0);
+
+  let totalPaidAmount = 0;
+  let totalAmount = 0;
+  let totalBalanceAmount = 0;
   return (
     <ModalWrapper
       val={`Order Details - ${itemEdit?.purchase_order_number}`}
       itemEdit={itemEdit}
-      mutation={{ isPending: false }}
       isOpen={true}
+      mutation={{ isPending: false }}
       handleClose={handleClose}
       width="min-w-[550px]!"
     >
@@ -38,15 +44,15 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
           </p>
         </li>
         <li className="justify-end">
-          <p>Delivery Date:</p>
+          <p>Deliver Date:</p>
           <p className="text-black dark:text-light">
-            {itemEdit?.purchase_order_expected_delivery}
+            {itemEdit?.formated_delivery_date}
           </p>
         </li>
         <li className="">
           <p>Order Date:</p>
           <p className="text-black dark:text-light">
-            {itemEdit?.purchase_order_date}
+            {itemEdit?.formated_date}
           </p>
         </li>
         <li className="justify-end">
@@ -85,6 +91,24 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
             </thead>
             <tbody className="">
               {itemEdit?.items?.map((a, index) => {
+                totalPaidAmount += Number(
+                  isEmptyItem(
+                    itemEdit?.purchase_order_total_amount_per_product,
+                    0,
+                  ),
+                );
+                totalAmount += Number(
+                  isEmptyItem(
+                    itemEdit?.purchase_order_total_paid_per_product,
+                    0,
+                  ),
+                );
+                totalBalanceAmount += Number(
+                  isEmptyItem(
+                    itemEdit?.purchase_order_total_balance_per_product,
+                    0,
+                  ),
+                );
                 return (
                   <tr key={index} className="border-0!">
                     <td className="text-center dark:bg-gray-900! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
@@ -132,14 +156,14 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
                   <AmountWithPesoSign
                     classN="size-3"
                     classAmnt="text-primary text-black! "
-                    amount={itemEdit.amount}
+                    amount={totalAmount}
                   />
                 </td>
                 <td className="dark:bg-gray-900! text-right font-bold ">
                   <AmountWithPesoSign
                     classN="size-3"
                     classAmnt="text-primary"
-                    amount={itemEdit.paid_amount}
+                    amount={totalPaidAmount}
                   />
                 </td>
 
@@ -147,7 +171,7 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
                   <AmountWithPesoSign
                     classN="size-3"
                     classAmnt="text-primary text-warning"
-                    amount={itemEdit.balance_amount}
+                    amount={totalBalanceAmount}
                   />
                 </td>
               </tr>

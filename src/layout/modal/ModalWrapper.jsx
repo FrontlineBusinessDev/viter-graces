@@ -30,7 +30,10 @@ const ModalWrapper = ({
                 disabled={mutation.isPending}
               />
               <h3 className="text-dark dark:text-light text-sm">
-                {label === "" ? (itemEdit ? "Update" : "Add New") : label} {val}
+                {label !== ""
+                  ? `${itemEdit ? "Update " : "Add New "} ${label} `
+                  : " "}{" "}
+                {val}
               </h3>
             </div>
 

@@ -72,6 +72,7 @@ class AccountReceivable
     public $sales_journal_create;
     public $sales_journal_update;
 
+    public $userId;
     public $date_today;
     public $date_yesterday;
 
@@ -102,6 +103,7 @@ class AccountReceivable
     {
         $filterColumn = [];
         $params = [
+            ...$this->userId != 0 ? ["sales_order_product_owner_id" => $this->userId] : [],
             ...($this->column_search != "" ? [
                 "sales_order_number" => "%{$this->column_search}%",
                 "sales_order_customer_name" => "%{$this->column_search}%",
@@ -139,6 +141,7 @@ class AccountReceivable
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where CAST(sales_order_total_balance_amount AS DECIMAL(10, 2)) != 0 ";
+            $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -167,6 +170,7 @@ class AccountReceivable
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
+            ...$this->userId != 0 ? ["sales_order_product_owner_id" => $this->userId] : [],
             ...($this->column_search != "" ? [
                 "sales_order_number" => "%{$this->column_search}%",
                 "sales_order_customer_name" => "%{$this->column_search}%",
@@ -204,6 +208,7 @@ class AccountReceivable
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where CAST(sales_order_total_balance_amount AS DECIMAL(10, 2)) != 0 ";
+            $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {

@@ -28,7 +28,7 @@ function checkReadSalesPerYear($object)
 function checkReadExpensesPerWeek($object)
 {
     $query = $object->readExpensesPerWeek();
-    checkQuery($query, "Empty records. (read sales per week)");
+    checkQuery($query, "Empty records. (read expenses per week)");
     return $query;
 }
 
@@ -37,7 +37,7 @@ function checkReadExpensesPerWeek($object)
 function checkReadExpensesPerMonth($object)
 {
     $query = $object->readExpensesPerMonth();
-    checkQuery($query, "Empty records. (read sales per month)");
+    checkQuery($query, "Empty records. (read expenses per month)");
     return $query;
 }
 
@@ -45,6 +45,6 @@ function checkReadExpensesPerMonth($object)
 function checkReadExpensesPerYear($object)
 {
     $query = $object->readExpensesPerYear();
-    checkQuery($query, "Empty records. (read sales per year)");
+    checkQuery($query, "Empty records. (read expenses per year)");
     return $query;
 }

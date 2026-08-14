@@ -5,6 +5,8 @@ import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalExpenses from "./ModalExpenses";
 import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
+import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 
 const Expenses = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -58,29 +60,38 @@ const Expenses = () => {
       filterFn: "date",
       meta: "",
     },
-    {
-      accessorKey: "purchase_order_product_owner_name",
-      header: "Product Owner",
-      classTh: "min-w-[10rem]",
-      classTd: "",
-      meta: {
-        filterComponent: (column) => (
-          <SearchableSelectFilter
-            column={column}
-            path="product-owner/read-by-product-owner"
-            testFilterId={"filter-owner"}
-          />
-        ),
-      },
-    },
-    {
-      accessorKey: "action",
-      haveAction: "action",
-      action_array: ActionTableList("expenses", "finance-expenses"),
-      header: "Action",
-      classTh: " text-center ",
-      classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
-    },
+    ...(Number(ProductOwnerId(store)) > 0
+      ? []
+      : [
+          {
+            accessorKey: "purchase_order_product_owner_name",
+            header: "Product Owner",
+            classTh: "min-w-[10rem]",
+            classTd: "",
+            meta: {
+              filterComponent: (column) => (
+                <SearchableSelectFilter
+                  column={column}
+                  path="product-owner/read-by-product-owner"
+                  testFilterId={"filter-owner"}
+                />
+              ),
+            },
+          },
+        ]),
+
+    ...(Number(ProductOwnerId(store)) > 0
+      ? []
+      : [
+          {
+            accessorKey: "action",
+            haveAction: "action",
+            action_array: ActionTableList("expenses", "finance-expenses"),
+            header: "Action",
+            classTh: " text-center ",
+            classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
+          },
+        ]),
   ];
 
   return (
@@ -91,6 +102,7 @@ const Expenses = () => {
           className={`sm:overflow-auto sm:h-[calc(100dvh-203px)] h-[calc(97dvh-250px)]`}
           path="finance-expenses"
           setItemEdit={setItemEdit}
+          ishaveAdd={getAdminDeveloperRole(store)}
           haveFilterTable={true}
         />
       </HeaderNav>

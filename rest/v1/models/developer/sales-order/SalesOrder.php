@@ -811,7 +811,7 @@ class SalesOrder
             $sql .= ":stock_movement_updated ) ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "stock_movement_product_id" => $this->lastInsertedId,
+                "stock_movement_product_id" => $this->sales_order_product_id,
                 "stock_movement_product_name" => $this->sales_order_product_name,
                 "stock_movement_date" => $this->sales_order_date,
                 "stock_movement_type" => $this->stock_movement_type,

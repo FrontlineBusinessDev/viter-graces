@@ -2,16 +2,16 @@ import FinanceStats from "@/components/FinanceStats";
 import ServerError from "@/components/ServerError";
 import { apiVersion } from "@/config/config";
 import useQueryData from "@/services/useQueryData";
+import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import { RotateCcw } from "lucide-react";
 import { useMemo } from "react";
+import React from "react";
 
-const ReportTotalReturns = ({
-  path = "",
-  id = 0,
-  searchValue = "",
-  filterColumns = [],
-}) => {
+const ReportTotalReturns = ({ path = "", filterColumns = [] }) => {
+  const { store, dispatch } = React.useContext(StoreContext);
+  const userId = ProductOwnerId(store);
   const {
     isLoading,
     isFetching,
@@ -21,13 +21,14 @@ const ReportTotalReturns = ({
     path !== "" ? `${apiVersion}/${path}` : null, // endpoint
     "post", // method
     `${path}`, // key
-    { id: id, searchValue: "", columnFilters: filterColumns },
+    { userId: userId, searchValue: "", columnFilters: filterColumns },
+    { userId: userId, searchValue: "", columnFilters: filterColumns },
   );
 
   const lowStockCount = useMemo(() => {
     if (!result?.count) return "0";
 
-    return isEmptyItem(result?.data?.[0]?.data_count, "0");
+    return isEmptyItem(result?.data?.[0]?.amount, "0");
   }, [result]);
 
   return (
@@ -38,6 +39,7 @@ const ReportTotalReturns = ({
         <FinanceStats
           title="Total Returns"
           value={lowStockCount}
+          amount={true}
           icon={<RotateCcw className="text-purple-600" size={20} />}
           iconBg="bg-purple-100 dark:bg-[#082125]"
           valueColor="text-purple-600"
