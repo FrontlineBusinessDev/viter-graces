@@ -339,6 +339,12 @@ function installmentDetails($val, $installmentItems)
                 $val->installment_payment_customer_name = $val->sales_order_customer_name;
                 $val->installment_payment_method = $val->sales_order_payment_method;
                 $val->installment_payment_amount = $installmentItems[$a]["installment_payment_amount"];
+                $val->installment_payment_paid_amount = $installmentItems[$a]["installment_payment_paid_amount"];
+
+                if ((float)$val->installment_payment_amount <= (float)$val->installment_payment_paid_amount) {
+
+                    $val->installment_payment_is_paid = 1;
+                }
                 if ((float)$val->installment_payment_aid == 0) {
                     checkCreateInstallment($val);
                 } else {

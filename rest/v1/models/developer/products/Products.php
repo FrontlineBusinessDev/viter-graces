@@ -255,15 +255,31 @@ class Products
     public function readAll($allowedColumns)
     {
         $filterColumn = [];
-        $params = [];
+        $params = [
+            ...$this->column_search != "" ? [
+                "products_name" => "%{$this->column_search}%",
+                "products_sku" => "%{$this->column_search}%",
+                "products_owner_name" => "%{$this->column_search}%",
+                "products_suppliers_name" => "%{$this->column_search}%",
+            ] : [],
+        ];
 
         foreach ($this->filters as $i => $item) {
             if (!in_array($item['id'], $allowedColumns, true)) {
                 continue;
             }
             $col = $item['id'];
-            $filterColumn[] = "$col LIKE :search$i";
-            $params["search$i"] = "%" . trim($item['value']) . "%";
+            if (is_array($item['value'])) {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = " CAST($col AS UNSIGNED) BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
+            }
         }
         try {
             $sql = "select *, ";
@@ -288,6 +304,7 @@ class Products
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
+
         return $query;
     }
 
@@ -838,6 +855,22 @@ class Products
         return $query;
     }
 
+    // read by id
+    public function readAllCategory()
+    {
+        try {
+            $sql = "select products_category as name ";
+            $sql .= "from {$this->tblProducts} ";
+            $sql .= "where products_category != '' ";
+            $sql .= "group by products_category ";
+            $sql .= "order by products_category asc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
 
     // updateProductOwnerStockMovement
 }

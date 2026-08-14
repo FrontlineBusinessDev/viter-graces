@@ -87,6 +87,7 @@ RewriteRule ^products/page/([0-9]+)$ controllers/developer/products/page.php?sta
 RewriteRule ^products/search$ controllers/developer/products/search.php [L]
 RewriteRule ^products/read-all-active-by-product$ controllers/developer/products/read-all-active-by-product.php [L]
 RewriteRule ^products/read-all-product-that-have-stock$ controllers/developer/products/read-all-product-that-have-stock.php [L]
+RewriteRule ^products/read-all-category$ controllers/developer/products/read-all-category.php [L]
 
 ### ACTIVITY LOG ### 
 RewriteRule ^activity/read-with-limit$ controllers/developer/activity-log/read-with-limit.php [L] 
@@ -138,7 +139,7 @@ RewriteRule ^report-sales-order/page-all-account-payable/page/([0-9]+)$ controll
 RewriteRule ^report-sales-order/read-profite-and-loss$ controllers/developer/reports/read-profite-and-loss.php [L]
 RewriteRule ^report-sales-order/read-return-amount$ controllers/developer/reports/read-return-amount.php [L]
 
-### DASHBOARD ###  
+### DASHBOARD ### 
 RewriteRule ^dashboard/read-cashflow$ controllers/developer/reports/read-cashflow.php [L]
 RewriteRule ^dashboard/read-profit-loss-dashboard$ controllers/developer/reports/read-profit-loss-dashboard.php [L]
 

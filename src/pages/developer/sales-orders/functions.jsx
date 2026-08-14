@@ -53,11 +53,23 @@ export const PropsValues = (props, items, installmentItems) => {
   if (Number(values.sales_order_tax) === 0) {
     values.sales_order_tax_amount = 0;
   }
-  values.sales_order_total_balance_amount = Math.max(
-    0,
+  console.log("installmentItems", installmentItems);
+  if (values.sales_order_payment_terms?.toLocaleLowerCase() === "installment") {
+    values.sales_order_paid_amount = installmentItems.reduce(
+      (sum, a) => sum + Number(a.installment_payment_paid_amount),
+      0,
+    );
+  }
+
+  values.sales_order_total_balance_amount =
     Number(values.sales_order_total_receivable_amount) -
-      Number(values.sales_order_paid_amount),
-  );
+    Number(values.sales_order_paid_amount);
+
+  // values.sales_order_total_balance_amount = Math.max(
+  //   0,
+  //   Number(values.sales_order_total_receivable_amount) -
+  //     Number(values.sales_order_paid_amount),
+  // );
 
   values.total =
     installmentItems?.reduce(
@@ -72,13 +84,15 @@ export const PropsValues = (props, items, installmentItems) => {
 // Copyright year
 export const Validations = (values, items, dispatch) => {
   const invalidItem = items.find(
-    (item) => Number(item.current_qty) < Number(item.sales_order_qty),
+    (item) =>
+      isEmptyItem(item?.is_new, false) &&
+      Number(item.old_qty) < Number(item.sales_order_qty),
   );
 
   if (invalidItem) {
     dispatch(
       setMessage(
-        `Insufficient stock for ${invalidItem.sales_order_product_name}. Available: ${invalidItem.current_qty}, Requested: ${invalidItem.sales_order_qty}`,
+        `Insufficient stock for ${invalidItem.sales_order_product_name}. Available: ${invalidItem.old_qty}, Requested: ${invalidItem.sales_order_qty}`,
       ),
     );
     return true;

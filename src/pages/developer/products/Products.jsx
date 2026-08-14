@@ -49,13 +49,28 @@ const Products = () => {
       isTag: true,
       meta: "",
     },
+    // {
+    //   accessorKey: "products_category",
+    //   header: "Category",
+    //   classTh: "min-w-[10rem]",
+    //   classTd: "",
+    //   isSubTitle: true,
+    //   meta: "",
+    // },
     {
       accessorKey: "products_category",
       header: "Category",
       classTh: "min-w-[10rem]",
       classTd: "",
-      isSubTitle: true,
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="products/read-all-category"
+            testFilterId={"filter-owner"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "products_price",

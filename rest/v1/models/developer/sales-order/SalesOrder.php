@@ -284,6 +284,7 @@ class SalesOrder
                 "sales_order_product_name" => "%{$this->column_search}%",
                 "sales_order_received_by_name" => "%{$this->column_search}%",
                 "sales_order_product_owner_name" => "%{$this->column_search}%",
+                "sales_order_status" => "%{$this->column_search}%",
             ] : []),
         ];
 
@@ -326,6 +327,7 @@ class SalesOrder
             or sales_order_customer_name like :sales_order_customer_name 
             or sales_order_received_by_name like :sales_order_received_by_name 
             or sales_order_product_owner_name like :sales_order_product_owner_name 
+            or sales_order_status like :sales_order_status 
             or sales_order_product_name like :sales_order_product_name ) " : " ");
             }
             $sql .= " group by sales_order_number ";
@@ -353,6 +355,7 @@ class SalesOrder
                 "sales_order_product_name" => "%{$this->column_search}%",
                 "sales_order_received_by_name" => "%{$this->column_search}%",
                 "sales_order_product_owner_name" => "%{$this->column_search}%",
+                "sales_order_status" => "%{$this->column_search}%",
             ] : []),
         ];
 
@@ -395,6 +398,7 @@ class SalesOrder
             or sales_order_customer_name like :sales_order_customer_name 
             or sales_order_received_by_name like :sales_order_received_by_name 
             or sales_order_product_owner_name like :sales_order_product_owner_name 
+            or sales_order_status like :sales_order_status 
             or sales_order_product_name like :sales_order_product_name ) " : " ");
             }
             $sql .= " group by sales_order_number ";
@@ -410,7 +414,6 @@ class SalesOrder
         }
         return $query;
     }
-
 
     // read all
     public function readByCustomerId($allowedColumns)

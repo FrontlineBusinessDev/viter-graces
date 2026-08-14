@@ -228,6 +228,7 @@ const InfiniteTable = ({
     }
   }, [columnFilters, isFetching]);
 
+  console.log("columnFilters", columnFilters);
   return (
     <>
       <div className="md:flex md:justify-between flex-row-reverse my-2 gap-4 items-center">
@@ -259,28 +260,30 @@ const InfiniteTable = ({
           <div
             className={`${haveFilterTable ? " lg:hidden " : " "} ${path === "sales-order" ? " sm:grid grid-cols-[10rem_1fr] gap-2 " : " "} w-full `}
           >
-            {path === "sales-order" && (
-              <div className="mt-1 md:mt-3">
-                <input
-                  type={"date"}
-                  value={
-                    isEmptyItem(columnFilters[0]?.value?.min, "") === "" &&
-                    isEmptyItem(columnFilters[0]?.value?.max, "") === ""
-                      ? isEmptyItem(columnFilters[0]?.value, "")
-                      : ""
-                  }
-                  onChange={(e) => {
-                    setColumnFilters([
-                      {
-                        id: "sales_order_date",
-                        value: e.target.value,
-                      },
-                    ]);
-                  }}
-                  className="text-xs h-[30px]"
-                  data-testid={"sales_order_date"}
-                />
-              </div>
+            {path === "sales-order" && columnFilters?.length > 0 && (
+              <>
+                <div className="mt-1 md:mt-3">
+                  <input
+                    type={"date"}
+                    defaultValue={
+                      isEmptyItem(columnFilters[0]["value"]?.min, "") === "" &&
+                      isEmptyItem(columnFilters[0]["value"]?.max, "") === ""
+                        ? isEmptyItem(columnFilters[0]["value"], "")
+                        : ""
+                    }
+                    onChange={(e) => {
+                      setColumnFilters([
+                        {
+                          id: "sales_order_date",
+                          value: e.target.value,
+                        },
+                      ]);
+                    }}
+                    className="text-xs h-[30px]"
+                    data-testid={"sales_order_date"}
+                  />
+                </div>
+              </>
             )}
             <SearchBar
               search={search}
@@ -297,16 +300,19 @@ const InfiniteTable = ({
         <>
           <ul className="lg:hidden mb-2 flex items-center flex-wrap gap-2">
             <li>Filtered by:</li>
-            {columnFilters?.map((a) => (
-              <li key={a?.id} className="bg-gray-100 px-2 py-1 rounded-sm">
-                {console.log("123", isEmptyItem(a.value?.min, ""))}
-                {isEmptyItem(a.value?.min, "") === "" &&
-                isEmptyItem(a.value?.max, "") === ""
-                  ? a.value
-                  : Number(isEmptyItem(a.value?.min, "")) -
-                    isEmptyItem(a.value?.max, "max amount")}
-              </li>
-            ))}
+            {columnFilters?.map((a, key) => {
+              return typeof a.value !== "object" ? (
+                <li key={key} className="bg-gray-100 px-2 py-1 rounded-sm">
+                  {a.value}
+                </li>
+              ) : (
+                <li key={key} className="bg-gray-100 px-2 py-1 rounded-sm">
+                  {isEmptyItem(a.value?.min, "0 ")} -
+                  {isEmptyItem(a.value?.max, " max amount")}
+                </li>
+              );
+            })}
+
             <li className="bg-gray-400 cursor-pointer hover:bg-primary text-white px-2 py-1 rounded-sm">
               <button
                 onClick={() => {

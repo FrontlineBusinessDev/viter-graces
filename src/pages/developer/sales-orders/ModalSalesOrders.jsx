@@ -54,6 +54,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
             installment_payment_code_number: "",
             installment_payment_code_id: "",
             installment_payment_amount: "",
+            installment_payment_paid_amount: "",
             id: 0,
           },
         ],
@@ -74,6 +75,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
             sales_order_qty_old: "1",
             sales_order_price: "",
             sales_order_total: 0,
+            is_new: true,
           },
         ],
   );
@@ -83,16 +85,22 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     const updated = [...items];
     if (selectedItem === null || selectedItem === "") {
       updated[index]["sales_order_product_owner_id"] = "";
-      updated[index]["current_qty"] = "";
+      updated[index]["current_qty"] = 0;
+      updated[index]["old_qty"] = 0;
       updated[index]["sales_order_product_owner_name"] = "";
       updated[index]["sales_order_price"] = "";
       updated[index]["sales_order_total"] = 0;
       updated[index][field] = "";
       updated[index][fieldId] = "";
+      updated[index]["is_new"] = true;
     } else {
+      updated[index]["is_new"] = true;
       updated[index]["sales_order_product_owner_id"] =
         selectedItem["products_owner_id"];
       updated[index]["current_qty"] = selectedItem["current_qty"];
+      updated[index]["old_qty"] =
+        Number(isEmptyItem(selectedItem["current_qty"], 0)) +
+        Number(isEmptyItem(selectedItem["sales_order_qty"], 0));
       updated[index]["sales_order_product_owner_name"] =
         selectedItem["products_owner_name"];
       updated[index]["sales_order_price"] = selectedItem["products_price"];
@@ -108,6 +116,11 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
 
   const handleChangeAmount = (index, id = 0, field, value) => {
     const updated = [...items];
+    updated[index]["is_new"] = true;
+    updated[index]["old_qty"] = itemEdit
+      ? Number(isEmptyItem(updated[index]["current_qty"], 0)) +
+        Number(isEmptyItem(updated[index]["sales_order_qty_old"], 0))
+      : Number(isEmptyItem(updated[index]["current_qty"], 0));
 
     updated[index][field] = value;
 
@@ -133,6 +146,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
         sales_order_qty_old: "1",
         sales_order_price: "",
         sales_order_total: 0,
+        is_new: true,
         id: counter,
       },
     ]);
@@ -161,6 +175,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
         installment_payment_code_number: "",
         installment_payment_code_id: "",
         installment_payment_amount: "",
+        installment_payment_paid_amount: "",
         installment_payment_is_paid: 0,
         id: installmentCounter,
       },
@@ -364,6 +379,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                 items,
                 itemsDelete,
               };
+
               Validations(values, items, dispatch);
 
               if (!Validations(values, items, dispatch)) {
@@ -375,6 +391,8 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
           >
             {(props) => {
               PropsValues(props, items, installmentItems);
+
+              console.log("props", props?.values);
 
               return (
                 <Form>
@@ -611,15 +629,219 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         required={false}
                       />
                     </div>
-                    <div className="relative ">
-                      <InputNumber
-                        label="Amount Paid"
-                        name="sales_order_paid_amount"
-                        placeholder={`${itemEdit ? "0" : "0"}`}
-                        disabled={mutation.isPending}
-                        required={false}
-                      />
-                    </div>
+                    {props.values.sales_order_payment_terms?.toLocaleLowerCase() !==
+                    "installment" ? (
+                      <div className="relative ">
+                        <InputNumber
+                          label="Amount Paid"
+                          name="sales_order_paid_amount"
+                          placeholder={`${itemEdit ? "0" : "0"}`}
+                          disabled={mutation.isPending}
+                          required={false}
+                        />
+                      </div>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+
+                  {props.values.sales_order_payment_terms?.toLocaleLowerCase() ===
+                  "installment" ? (
+                    <>
+                      <div className="flex my-5 justify-between items-center">
+                        <label htmlFor="">
+                          Installment{" "}
+                          {installmentItems?.length > 0
+                            ? `(${installmentItems?.length})`
+                            : ""}
+                        </label>
+                        <button
+                          type="button"
+                          className=" cursor-pointer flex items-center justify-center text-dark gap-2 px-3 py-1.5 bg-transparent rounded-md border-gray-300 border min-w-20 hover:bg-primary transition-all duration-300 ease-in-out hover:text-light dark:text-light"
+                          onClick={handleAddInstallmentItems}
+                        >
+                          <Plus size={15} />
+                          <span className="capitalize leading-0">
+                            Installment
+                          </span>
+                        </button>
+                      </div>
+
+                      {installmentItems.length === 0 ? (
+                        <hr className="border-gray-200" />
+                      ) : (
+                        <div className="border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out py-3 ">
+                          <div className="flex flex-col pb-2 h-57 overflow-auto">
+                            <ul className=" grid grid-cols-[2rem_10rem_1fr_1fr_1rem] sm:grid-cols-[2rem_1fr_1fr_1fr_1rem] gap-3 px-3 text-dark sticky top-0 bg-gray-100 py-2">
+                              <li>#</li>
+                              <li>Due Date</li>
+                              <li>Amount Pay</li>
+                              <li>Amount Paid</li>
+                            </ul>
+                            {installmentItems.map((a, index) => {
+                              console.log("a", a);
+                              return (
+                                <div
+                                  key={a.id}
+                                  className="grid grid-cols-[2rem_10rem_1fr_1fr_1rem] sm:grid-cols-[2rem_1fr_1fr_1fr_1rem] gap-3 items-center px-3 py-2"
+                                >
+                                  <p className="mb-0">{index + 1}.</p>
+                                  {Number(a?.installment_payment_is_paid) ==
+                                  0 ? (
+                                    <>
+                                      <input
+                                        onChange={(e) => {
+                                          handleChangeInstallment(
+                                            index,
+                                            "installment_payment_due_date",
+                                            e.target.value,
+                                          );
+                                        }}
+                                        defaultValue={isEmptyItem(
+                                          a["installment_payment_due_date"],
+                                          1,
+                                        )}
+                                        type="date"
+                                      />
+                                      <input
+                                        onChange={(e) => {
+                                          handleChangeInstallment(
+                                            index,
+                                            "installment_payment_amount",
+                                            e.target.value,
+                                            0,
+                                          );
+                                        }}
+                                        defaultValue={isEmptyItem(
+                                          a["installment_payment_amount"],
+                                          "",
+                                        )}
+                                        placeholder="0"
+                                        type="number"
+                                      />
+                                      <input
+                                        onChange={(e) => {
+                                          handleChangeInstallment(
+                                            index,
+                                            "installment_payment_paid_amount",
+                                            e.target.value,
+                                            0,
+                                          );
+                                        }}
+                                        defaultValue={isEmptyItem(
+                                          a["installment_payment_paid_amount"],
+                                          "",
+                                        )}
+                                        placeholder="0"
+                                        type="number"
+                                      />
+
+                                      <button
+                                        type="button"
+                                        onClick={() =>
+                                          handleRemoveInstallmentItems(a)
+                                        }
+                                        className="text-red-500 text-xl"
+                                      >
+                                        ✕
+                                      </button>
+                                    </>
+                                  ) : (
+                                    <>
+                                      <input
+                                        defaultValue={isEmptyItem(
+                                          a["installment_payment_due_date"],
+                                          1,
+                                        )}
+                                        type="date"
+                                        readOnly
+                                        className="border-t-0! border-x-0! text-primary"
+                                      />
+                                      <input
+                                        defaultValue={isEmptyItem(
+                                          a["installment_payment_amount"],
+                                          "",
+                                        )}
+                                        type="number"
+                                        readOnly
+                                        className="border-t-0! border-x-0! text-primary"
+                                      />
+                                    </>
+                                  )}
+                                </div>
+                              );
+                            })}
+                            {/* <div className="px-3 mt-2 text-dark ">
+                              <ul className="sm:grid grid-cols-2 ">
+                                <li className="sm:text-right mx-2 uppercase">
+                                  Total installment amount
+                                </li>
+                                <li className="text-left! mx-2 ">
+                                  <AmountWithPesoSign
+                                    classN="size-3 "
+                                    classAmnt="justify-start! "
+                                    amount={
+                                      Number(props.values.total) -
+                                      Number(
+                                        props.values.sales_order_paid_amount,
+                                      )
+                                    }
+                                  />
+                                </li>
+                                <li className="sm:text-right mx-2 uppercase">
+                                  Total Paid
+                                </li>
+                                <li className="text-left! mx-2 ">
+                                  <AmountWithPesoSign
+                                    classN="size-3 "
+                                    classAmnt="justify-start! "
+                                    amount={Number(
+                                      props.values.sales_order_paid_amount,
+                                    )}
+                                  />
+                                </li>
+                                <li
+                                  className={`${props.values.validationAmount ? "" : " text-red-800 "} sm:text-right mx-2 uppercase `}
+                                >
+                                  Total
+                                </li>
+                                <li
+                                  className={`text-left! mx-2 sm:flex justify-between `}
+                                >
+                                  <div
+                                    className={`${props.values.validationAmount ? "" : " text-red-800 "} `}
+                                  >
+                                    <AmountWithPesoSign
+                                      classN="size-3 "
+                                      classAmnt="justify-start! "
+                                      amount={props.values.total}
+                                    />
+                                  </div>
+                                  <div className="sm:flex ">
+                                    <span className=" mr-4 uppercase ">
+                                      Total Amount
+                                    </span>
+                                    <AmountWithPesoSign
+                                      classN="size-3 "
+                                      classAmnt="justify-start! "
+                                      amount={
+                                        props?.values
+                                          ?.sales_order_total_receivable_amount
+                                      }
+                                    />
+                                  </div>
+                                </li>
+                              </ul>
+                            </div> */}
+                          </div>
+                        </div>
+                      )}
+                    </>
+                  ) : (
+                    ""
+                  )}
+
+                  <div className="grid grid-cols-3 mt-3 gap-3 items-center">
                     <ul className="grid grid-cols-[5rem_1fr] ">
                       <li>Sub Amount:</li>
                       <li>
@@ -688,184 +910,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                       </p>
                     </div>
                   </div>
-
-                  {props.values.sales_order_payment_terms?.toLocaleLowerCase() ===
-                  "installment" ? (
-                    <>
-                      <div className="flex my-5 justify-between items-center">
-                        <label htmlFor="">
-                          Installment{" "}
-                          {installmentItems?.length > 0
-                            ? `(${installmentItems?.length})`
-                            : ""}
-                        </label>
-                        <button
-                          type="button"
-                          className=" cursor-pointer flex items-center justify-center text-dark gap-2 px-3 py-1.5 bg-transparent rounded-md border-gray-300 border min-w-20 hover:bg-primary transition-all duration-300 ease-in-out hover:text-light dark:text-light"
-                          onClick={handleAddInstallmentItems}
-                        >
-                          <Plus size={15} />
-                          <span className="capitalize leading-0">
-                            Installment
-                          </span>
-                        </button>
-                      </div>
-
-                      {installmentItems.length === 0 ? (
-                        <hr className="border-gray-200" />
-                      ) : (
-                        <div className="border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out py-3 ">
-                          <div className="flex flex-col pb-2 h-57 overflow-auto">
-                            <ul className=" grid grid-cols-[10rem_1fr_1rem] sm:grid-cols-[1fr_1fr_1rem] gap-3 px-3 text-dark sticky top-0 bg-gray-100 py-2">
-                              <li>Due Date</li>
-                              <li>Amount</li>
-                            </ul>
-                            {installmentItems.map((a, index) => {
-                              console.log("a", a);
-                              return (
-                                <div
-                                  key={a.id}
-                                  className="grid grid-cols-[10rem_1fr_1rem] sm:grid-cols-[1fr_1fr_1rem] gap-3 items-center px-3 py-2"
-                                >
-                                  {Number(a?.installment_payment_is_paid) ==
-                                  0 ? (
-                                    <>
-                                      <input
-                                        onChange={(e) => {
-                                          handleChangeInstallment(
-                                            index,
-                                            "installment_payment_due_date",
-                                            e.target.value,
-                                          );
-                                        }}
-                                        defaultValue={isEmptyItem(
-                                          a["installment_payment_due_date"],
-                                          1,
-                                        )}
-                                        type="date"
-                                      />
-                                      <input
-                                        onChange={(e) => {
-                                          handleChangeInstallment(
-                                            index,
-                                            "installment_payment_amount",
-                                            e.target.value,
-                                            0,
-                                          );
-                                        }}
-                                        defaultValue={isEmptyItem(
-                                          a["installment_payment_amount"],
-                                          "",
-                                        )}
-                                        placeholder="0"
-                                        type="number"
-                                      />
-
-                                      <button
-                                        type="button"
-                                        onClick={() =>
-                                          handleRemoveInstallmentItems(a)
-                                        }
-                                        className="text-red-500 text-xl"
-                                      >
-                                        ✕
-                                      </button>
-                                    </>
-                                  ) : (
-                                    <>
-                                      <input
-                                        defaultValue={isEmptyItem(
-                                          a["installment_payment_due_date"],
-                                          1,
-                                        )}
-                                        type="date"
-                                        readOnly
-                                        className="border-t-0! border-x-0! text-primary"
-                                      />
-                                      <input
-                                        defaultValue={isEmptyItem(
-                                          a["installment_payment_amount"],
-                                          "",
-                                        )}
-                                        type="number"
-                                        readOnly
-                                        className="border-t-0! border-x-0! text-primary"
-                                      />
-                                    </>
-                                  )}
-                                </div>
-                              );
-                            })}
-                            <div className="px-3 mt-2 text-dark ">
-                              <ul className="sm:grid grid-cols-2 ">
-                                <li className="sm:text-right mx-2 uppercase">
-                                  Total installment amount
-                                </li>
-                                <li className="text-left! mx-2 ">
-                                  <AmountWithPesoSign
-                                    classN="size-3 "
-                                    classAmnt="justify-start! "
-                                    amount={
-                                      Number(props.values.total) -
-                                      Number(
-                                        props.values.sales_order_paid_amount,
-                                      )
-                                    }
-                                  />
-                                </li>
-                                <li className="sm:text-right mx-2 uppercase">
-                                  Total Paid
-                                </li>
-                                <li className="text-left! mx-2 ">
-                                  <AmountWithPesoSign
-                                    classN="size-3 "
-                                    classAmnt="justify-start! "
-                                    amount={Number(
-                                      props.values.sales_order_paid_amount,
-                                    )}
-                                  />
-                                </li>
-                                <li
-                                  className={`${props.values.validationAmount ? "" : " text-red-800 "} sm:text-right mx-2 uppercase `}
-                                >
-                                  Total
-                                </li>
-                                <li
-                                  className={`text-left! mx-2 sm:flex justify-between `}
-                                >
-                                  <div
-                                    className={`${props.values.validationAmount ? "" : " text-red-800 "} `}
-                                  >
-                                    <AmountWithPesoSign
-                                      classN="size-3 "
-                                      classAmnt="justify-start! "
-                                      amount={props.values.total}
-                                    />
-                                  </div>
-                                  <div className="sm:flex ">
-                                    <span className=" mr-4 uppercase ">
-                                      Total Amount
-                                    </span>
-                                    <AmountWithPesoSign
-                                      classN="size-3 "
-                                      classAmnt="justify-start! "
-                                      amount={
-                                        props?.values
-                                          ?.sales_order_total_receivable_amount
-                                      }
-                                    />
-                                  </div>
-                                </li>
-                              </ul>
-                            </div>
-                          </div>
-                        </div>
-                      )}
-                    </>
-                  ) : (
-                    ""
-                  )}
-
                   <div className="relative mt-3">
                     <InputTextArea
                       label="Note"

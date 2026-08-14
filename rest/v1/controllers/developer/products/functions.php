@@ -29,6 +29,13 @@ function checkReadAllThatHaveStock($object)
     checkQuery($query, "Empty records. (read all that have stock)");
     return $query;
 }
+// Read all
+function checkReadAllCategory($object)
+{
+    $query = $object->readAllCategory();
+    checkQuery($query, "Empty records. (read All Category)");
+    return $query;
+}
 
 // Update 
 function updateConnectedMenu($object)
