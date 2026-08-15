@@ -66,7 +66,8 @@ class SalesJournal
             $sql = "select *, ";
             $sql .= "DATE_FORMAT(sales_journal_date, '%b %d, %Y') as sales_journal_date ";
             $sql .= "from {$this->tblSalesJournal} ";
-            $sql .= " where true ";
+            $sql .= " where (CAST(sales_journal_debit AS DECIMAL(10, 2)) != 0 ";
+            $sql .= " or CAST(sales_journal_credit AS DECIMAL(10, 2)) != 0) ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -117,7 +118,8 @@ class SalesJournal
             $sql = "select *, ";
             $sql .= "DATE_FORMAT(sales_journal_date, '%b %d, %Y') as sales_journal_date ";
             $sql .= "from {$this->tblSalesJournal} ";
-            $sql .= " where true ";
+            $sql .= " where (CAST(sales_journal_debit AS DECIMAL(10, 2)) != 0 ";
+            $sql .= " or CAST(sales_journal_credit AS DECIMAL(10, 2)) != 0) ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {

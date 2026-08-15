@@ -342,9 +342,9 @@ function installmentDetails($val, $installmentItems)
                 $val->installment_payment_paid_amount = $installmentItems[$a]["installment_payment_paid_amount"];
 
                 if ((float)$val->installment_payment_amount <= (float)$val->installment_payment_paid_amount) {
-
                     $val->installment_payment_is_paid = 1;
                 }
+
                 if ((float)$val->installment_payment_aid == 0) {
                     checkCreateInstallment($val);
                 } else {
@@ -530,12 +530,12 @@ function checkCreateSalesJornal($object)
     if (!empty($jornalCreditQuery)) {
         $lastBalance = (float)($jornalCreditQuery['sales_journal_balance'] ?? 0);
 
-        if ($paidAmount > 0) {
-            $object->sales_journal_debit = 0;
-            $object->sales_journal_credit = $paidAmount;
-            $object->sales_journal_balance = $lastBalance - $paidAmount;
-            $query = $object->createSalesJornal();
-        }
+        // if ($paidAmount > 0) {
+        $object->sales_journal_debit = 0;
+        $object->sales_journal_credit = max(0, $paidAmount);
+        $object->sales_journal_balance = $lastBalance - $paidAmount;
+        $query = $object->createSalesJornal();
+        // }
     }
 
     checkQuery($query, "There's a problem processing your request. (create Sales Jornal)");
