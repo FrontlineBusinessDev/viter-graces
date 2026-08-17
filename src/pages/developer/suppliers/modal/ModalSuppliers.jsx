@@ -142,7 +142,7 @@ const ModalSuppliers = ({ itemEdit }) => {
   let optionWeek = [
     { id: "monday", name: "Monday" },
     { id: "tuesday", name: "Tuesday" },
-    { id: "wenesday", name: "Wenesday" },
+    { id: "wednesday", name: "Wednesday" },
     { id: "thursday", name: "Thursday" },
     { id: "friday", name: "Friday" },
     { id: "saturday", name: "Saturday" },

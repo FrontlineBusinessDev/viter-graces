@@ -64,24 +64,44 @@ export const renderCellContent = (item, rowData, path = "") => {
   }
 
   if (column.link) {
+    const isSocial = ["messenger", "whatsapp", "other"].includes(
+      column.accessorKey,
+    );
+
+    const value = rowData?.[column.accessorKey];
+
+    const link =
+      typeof column.link === "function" ? column.link(value) : column.link;
+
+    // Add https:// for external/social links that don't have a protocol
+    const externalLink =
+      isSocial && link && !/^https?:\/\//i.test(link)
+        ? `https://${link}`
+        : link;
+
     return (
       <Link
-        to={`${column.link}`}
-        className="tooltip-action-table bg-transparent! underline text-primary capitalize p-0! "
-        target={column.header === "name" ? "" : "_black"}
-        data-tooltip={"View"}
+        to={externalLink}
+        className={`tooltip-action-table bg-transparent! underline text-primary p-0! ${
+          isSocial ? "lowercase" : "capitalize"
+        }`}
+        target={column.header === "name" ? "" : "_blank"}
+        data-tooltip="View"
         onClick={() =>
           column.header === "name"
             ? sessionStorage.setItem(
                 "filter",
                 JSON.stringify([
-                  { id: "sales_order_customer_name", value: rowData?.name },
+                  {
+                    id: "sales_order_customer_name",
+                    value: rowData?.name,
+                  },
                 ]),
               )
             : ""
         }
       >
-        {flexRender(column.cell, item.getContext())}
+        {isSocial ? value : flexRender(column.cell, item.getContext())}
       </Link>
     );
   }

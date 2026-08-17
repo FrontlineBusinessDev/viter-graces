@@ -67,7 +67,7 @@ const Customers = () => {
     {
       accessorKey: "messenger",
       header: "messenger",
-      link: "https://www.facebook.com/",
+      link: (value) => value,
       classTh: "",
       classTd: "",
       meta: "",
@@ -75,7 +75,7 @@ const Customers = () => {
     {
       accessorKey: "whatsapp",
       header: "whatsapp",
-      link: "https://www.whatsapp.com/",
+      // link: (value) => value,
       classTh: "",
       classTd: "",
       meta: "",
@@ -83,6 +83,7 @@ const Customers = () => {
     {
       accessorKey: "other",
       header: "other social",
+      link: (value) => value,
       classTh: "",
       classTd: "",
       meta: "",

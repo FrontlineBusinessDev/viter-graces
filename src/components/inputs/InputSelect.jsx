@@ -813,6 +813,161 @@ export const DefaultInputSelectTagArray = ({
   );
 };
 
+export const ProductOwnerInputSelectTagArray = ({
+  label = "",
+  onChange = null,
+  dataVal = null,
+  item = null,
+  path = null,
+  required = true,
+  testFilterId = "",
+  store,
+  defaultValue = null,
+  filterField = null,
+}) => {
+  const userId = ProductOwnerId(store);
+
+  const { data: result } = useQueryData(
+    `${apiVersion}/${path}`,
+    "post",
+    `${path}`,
+    {
+      searchValue: "",
+      isDeveloper:
+        isEmptyItem(store?.credentials?.data?.role, "admin") === "developer"
+          ? "1"
+          : "0",
+      id: "",
+      columnFilters: [],
+      userId: userId,
+    },
+  );
+
+  const [selected, setSelected] = React.useState(defaultValue || null);
+
+  React.useEffect(() => {
+    setSelected(defaultValue || null);
+  }, [defaultValue]);
+
+  const newDataList =
+    result?.data?.filter((optionItem) => {
+      // No duplicate filtering requested
+      if (!filterField || !Array.isArray(dataVal)) {
+        return true;
+      }
+
+      return !dataVal.some((listItem) => {
+        /*
+         * Don't filter the value belonging to the current row.
+         */
+        if (
+          item?.id != null &&
+          listItem?.id != null &&
+          Number(listItem.id) === Number(item.id)
+        ) {
+          return false;
+        }
+
+        const selectedId = listItem?.[filterField];
+
+        /*
+         * Ignore empty values.
+         */
+        if (
+          selectedId === null ||
+          selectedId === undefined ||
+          selectedId === ""
+        ) {
+          return false;
+        }
+
+        return Number(optionItem.id) === Number(selectedId);
+      });
+    }) || [];
+
+  const options = newDataList.map((optionItem) => ({
+    ...optionItem,
+    id: optionItem.id,
+    value: optionItem.name,
+    label: optionItem.name,
+  }));
+
+  return (
+    <>
+      {label ? (
+        <label htmlFor={label}>
+          {required && <span className="text-red-500">*</span>}
+          {label}
+        </label>
+      ) : null}
+
+      <div data-testid={testFilterId}>
+        <Select
+          placeholder="--"
+          options={options}
+          value={selected || null}
+          onChange={(e) => {
+            if (!e) {
+              setSelected(null);
+
+              if (onChange) {
+                onChange(null, null);
+              }
+
+              return;
+            }
+            const selectedItem = result?.data?.find(
+              (resultItem) => Number(resultItem.id) === Number(e.id),
+            );
+
+            setSelected(e);
+
+            if (onChange) {
+              onChange(e, selectedItem);
+            }
+          }}
+          isClearable
+          classNames={{
+            control: ({ isFocused }) =>
+              `w-full! min-h-full! text-sm border rounded-lg! px-1 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
+              ${isFocused ? "border-primary!" : "border-gray-300"}
+              hover:border-primary!`,
+
+            valueContainer: () => "px-1 py-0",
+
+            input: () => "text-sm h-[27px]! text-gray-500!",
+
+            placeholder: () => "text-gray-400! text-sm dark:text-white!",
+
+            singleValue: () =>
+              "normal-case! text-sm text-gray-500! dark:text-white!",
+
+            indicatorsContainer: () => "",
+
+            indicatorSeparator: () => "w-0!",
+
+            dropdownIndicator: () =>
+              "p-0! text-gray-500 hover:text-primary! cursor-pointer!",
+
+            clearIndicator: () =>
+              "p-0! text-gray-500 hover:text-primary! cursor-pointer!",
+
+            menu: () =>
+              "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white dark:bg-[#0b111e]! z-50",
+
+            menuList: () => "py-1 max-h-60 overflow-auto",
+
+            option: ({ isFocused, isSelected }) =>
+              `normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!
+              ${isSelected ? "bg-primary! text-secondary!" : ""}
+              ${!isSelected && isFocused ? "bg-primary! text-secondary!" : ""}`,
+          }}
+        />
+      </div>
+    </>
+  );
+};
+
 export const InputSelectFilterTagArray = ({
   label = "",
   defaultValue = "",

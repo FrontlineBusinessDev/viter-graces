@@ -35,6 +35,23 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
         $data = getResultData($query);
 
+        // for ($i = 0; $i < count($data); $i++) {
+
+        //     $val->purchase_order_number = $data[$i]["purchase_order_number"];
+
+        //     $queryLogin = $val->readByPoNumber();
+
+        //     $queryLogin = $queryLogin
+        //         ? getResultData($queryLogin)
+        //         : [];
+
+        //     $total_result_final[] = [
+        //         ...$data[$i],
+        //         "items" => $queryLogin
+        //     ];
+        // }
+
+
         for ($i = 0; $i < count($data); $i++) {
 
             $val->purchase_order_number = $data[$i]["purchase_order_number"];
@@ -45,10 +62,9 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
                 ? getResultData($queryLogin)
                 : [];
 
-            $total_result_final[] = [
-                ...$data[$i],
-                "items" => $queryLogin
-            ];
+            $data[$i]["items"] = $queryLogin;
+
+            $total_result_final[] = $data[$i];
         }
 
 

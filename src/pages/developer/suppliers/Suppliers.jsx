@@ -53,9 +53,9 @@ const Suppliers = () => {
       classTd: "",
     },
     {
-      accessorKey: "messenger ",
+      accessorKey: "messenger",
       header: "messenger",
-      link: "",
+      link: (value) => value,
       isHaveLink: true,
       icon: <FaFacebookMessenger className="text-blue-500 size-3" />,
       classTh: "",
@@ -64,8 +64,8 @@ const Suppliers = () => {
     {
       accessorKey: "whatsapp",
       header: "whatsapp",
-      link: "https://wa.me/63",
-      isHaveLink: true,
+      // link: (value) => `wa.me/${value}`,
+      // isHaveLink: true,
       icon: <IoLogoWhatsapp className="text-green-500 size-3" />,
       classTh: "",
       classTd: "",
@@ -73,7 +73,7 @@ const Suppliers = () => {
     {
       accessorKey: "other",
       header: "other social",
-      link: "",
+      link: (value) => value,
       isHaveLink: true,
       icon: <AiFillMessage className="text-green-500 size-3 " />,
       classTh: "",

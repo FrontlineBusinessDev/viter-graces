@@ -371,75 +371,116 @@ const InfinitePerTabs = ({
                   <div className="border-t border-gray-200 px-4 lg:px-5 pb-4 ">
                     <div className="grid xs:grid-cols-[1fr_12rem] xs:gap-3 mt-2 mb-1">
                       {item.getVisibleCells().map((ditem, dkey) => {
-                        const valItem = isEmptyItem(ditem.getValue(), "none");
+                        const column = ditem?.column?.columnDef;
+                        const value = ditem.getValue();
+                        const valItem = isEmptyItem(value, "none");
+
+                        const link =
+                          typeof column?.link === "function"
+                            ? column.link(value)
+                            : column?.link
+                              ? `${column.link}${value}`
+                              : "";
+
+                        const externalLink =
+                          link &&
+                          !/^https?:\/\//i.test(link) &&
+                          !/^mailto:/i.test(link) &&
+                          !/^tel:/i.test(link)
+                            ? `https://${link}`
+                            : link;
+
+                        const isContact =
+                          column?.header === "email" ||
+                          column?.header === "messenger" ||
+                          column?.header === "whatsapp" ||
+                          column?.header === "other social";
+
                         return (
                           <React.Fragment key={dkey}>
-                            {ditem?.column?.columnDef?.header === "email" ||
-                            ditem?.column?.columnDef?.header === "messenger" ||
-                            ditem?.column?.columnDef?.header === "whatsapp" ||
-                            ditem?.column?.columnDef?.header ===
-                              "other social" ? (
+                            {isContact ? (
                               <div className="text-xs text-gray-500 lg:block hidden dark:text-light mb-0 wrap-break-word">
                                 <small className="font-bold text-xs uppercase text-[9px]">
-                                  {ditem?.column?.columnDef?.header}
+                                  {column?.header}
                                 </small>
+
                                 <br />
-                                <div className="flex gap-1 items-center ">
-                                  {ditem?.column?.columnDef?.icon}
-                                  {!ditem?.column?.columnDef?.isHaveLink ||
-                                  isEmptyItem(ditem.getValue(), "") === "" ? (
+
+                                <div className="flex gap-1 items-center">
+                                  {column?.icon}
+
+                                  {!column?.isHaveLink ||
+                                  isEmptyItem(value, "") === "" ? (
                                     <span>{valItem}</span>
                                   ) : (
                                     <a
-                                      href={`${ditem?.column?.columnDef?.link}${valItem}`}
-                                      target="_black"
-                                      className=" cursor-pointer hover:text-blue-600 hover:underline"
+                                      href={externalLink}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="cursor-pointer hover:text-blue-600 hover:underline"
                                     >
                                       {valItem}
                                     </a>
                                   )}
                                 </div>
                               </div>
-                            ) : (
-                              ""
-                            )}
+                            ) : null}
                           </React.Fragment>
                         );
                       })}
+
                       {item.getVisibleCells().map((ditem, dkey) => {
-                        const valItem = isEmptyItem(ditem.getValue(), "none");
+                        const column = ditem?.column?.columnDef;
+                        const value = ditem.getValue();
+                        const valItem = isEmptyItem(value, "none");
+
+                        const link =
+                          typeof column?.link === "function"
+                            ? column.link(value)
+                            : column?.link
+                              ? `${column.link}${value}`
+                              : "";
+
+                        const externalLink =
+                          link &&
+                          !/^https?:\/\//i.test(link) &&
+                          !/^mailto:/i.test(link) &&
+                          !/^tel:/i.test(link)
+                            ? `https://${link}`
+                            : link;
+
                         return (
                           <React.Fragment key={dkey}>
-                            {ditem?.column?.columnDef?.header !== "name" &&
-                            ditem?.column?.columnDef?.header !== "action" &&
-                            ditem?.column?.columnDef?.header !==
-                              "suppliers_delivery" &&
-                            ditem?.column?.columnDef?.header !==
-                              "stringArray" ? (
+                            {column?.header !== "name" &&
+                            column?.header !== "action" &&
+                            column?.header !== "suppliers_delivery" &&
+                            column?.header !== "stringArray" ? (
                               <div className="text-xs text-gray-500 lg:hidden dark:text-light mb-0 wrap-break-word">
                                 <small className="font-bold text-xs uppercase text-[9px]">
-                                  {ditem?.column?.columnDef?.header}
+                                  {column?.header}
                                 </small>
+
                                 <br />
-                                <div className="flex gap-1 items-center ">
-                                  {ditem?.column?.columnDef?.icon}
-                                  {!ditem?.column?.columnDef?.isHaveLink ||
-                                  isEmptyItem(ditem.getValue(), "") === "" ? (
+
+                                <div className="flex gap-1 items-center">
+                                  {column?.icon}
+
+                                  {!column?.isHaveLink ||
+                                  isEmptyItem(value, "") === "" ? (
                                     <span>{valItem}</span>
                                   ) : (
                                     <a
-                                      href={`${ditem?.column?.columnDef?.link}${valItem}`}
-                                      target="_black"
-                                      className=" cursor-pointer hover:text-blue-600 hover:underline"
+                                      href={externalLink}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="cursor-pointer hover:text-blue-600 hover:underline"
                                     >
                                       {valItem}
                                     </a>
                                   )}
                                 </div>
                               </div>
-                            ) : (
-                              ""
-                            )}
+                            ) : null}
                           </React.Fragment>
                         );
                       })}

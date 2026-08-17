@@ -3,6 +3,7 @@ import {
   DefaultInputSelectTagArray,
   InputSelectArrayWithOptions,
   InputSelectFilterTagArray,
+  ProductOwnerInputSelectTagArray,
 } from "@/components/inputs/InputSelect";
 import { InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
@@ -290,44 +291,79 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
             onSubmit={async (values, { setSubmitting, resetForm }) => {
               dispatch(setError(false));
 
-              const isHaveEmptyProduct = items.filter(
-                (a) => Number(a?.purchase_order_product_id) === 0,
-              )?.length;
+              const isHaveEmptyProduct = items.some(
+                (item) => !Number(item?.purchase_order_product_id),
+              );
 
-              if (isHaveEmptyProduct > 0) {
+              if (isHaveEmptyProduct) {
                 dispatch(setError(true));
                 dispatch(setMessage("You have empty product field."));
                 return;
-              } else {
-                // mutate data
-
-                let data = {
-                  ...ActivityLogDetails(
-                    "purchase order",
-                    itemEdit ? "update" : "create",
-                    store,
-                    { ...values, purchase_order: items },
-                  ),
-                  ...values,
-                  purchase_order: items,
-                  itemsDelete: itemsDelete,
-                  purchase_order_payment: Number(
-                    values?.purchase_order_payment,
-                  ),
-                  isHaveNotDelivered: items.filter(
-                    (a) => !a.purchase_order_delivery_is_status,
-                  )?.length,
-                  order_total_amount: items.reduce(
-                    (sum, item) =>
-                      sum +
-                      Number(item.purchase_order_qty || 0) *
-                        Number(item.purchase_order_price || 0),
-                    0,
-                  ),
-                };
-
-                mutation.mutate(data);
               }
+              const isHaveEmptyProductOwner = items.some(
+                (item) => !Number(item?.purchase_order_product_owner_id),
+              );
+
+              if (isHaveEmptyProductOwner) {
+                dispatch(setError(true));
+                dispatch(setMessage("You have empty product owner field."));
+                return;
+              }
+
+              const combinations = new Set();
+
+              const hasDuplicateCombination = items.some((item) => {
+                const productId = Number(item?.purchase_order_product_id);
+
+                const ownerId = Number(item?.purchase_order_product_owner_id);
+
+                const combinationKey = `${productId}-${ownerId}`;
+
+                if (combinations.has(combinationKey)) {
+                  return true;
+                }
+
+                combinations.add(combinationKey);
+
+                return false;
+              });
+
+              if (hasDuplicateCombination) {
+                dispatch(setError(true));
+                dispatch(
+                  setMessage(
+                    "The same product and product owner cannot be selected more than once.",
+                  ),
+                );
+                return;
+              }
+              let data = {
+                ...ActivityLogDetails(
+                  "purchase order",
+                  itemEdit ? "update" : "create",
+                  store,
+                  {
+                    ...values,
+                    purchase_order: items,
+                  },
+                ),
+                ...values,
+                purchase_order: items,
+                itemsDelete: itemsDelete,
+                purchase_order_payment: Number(values?.purchase_order_payment),
+                isHaveNotDelivered: items.filter(
+                  (a) => !a.purchase_order_delivery_is_status,
+                )?.length,
+                order_total_amount: items.reduce(
+                  (sum, item) =>
+                    sum +
+                    Number(item.purchase_order_qty || 0) *
+                      Number(item.purchase_order_price || 0),
+                  0,
+                ),
+              };
+
+              mutation.mutate(data);
             }}
           >
             {(props) => {
@@ -440,7 +476,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                     </td>
                                   ) : (
                                     <td className=" bg-gray-100! dark:bg-gray-900! ">
-                                      <DefaultInputSelectTagArray
+                                      <ProductOwnerInputSelectTagArray
                                         onChange={(e, selectedItem) => {
                                           handleChangeProduct(
                                             index,
@@ -458,7 +494,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                     </td>
                                   )}
                                   <td className=" bg-gray-100! min-w-25 dark:bg-gray-900!">
-                                    <DefaultInputSelectTagArray
+                                    <ProductOwnerInputSelectTagArray
                                       onChange={(e) => {
                                         handleChange(
                                           index,
