@@ -251,9 +251,9 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
 
   let purchaseOrderStatusOption = [
     { id: "draft", name: "Draft" },
-    { id: "open", name: "Open" },
-    { id: "partial", name: "Partial" },
-    { id: "completed", name: "Completed" },
+    { id: "sent", name: "Sent" },
+    { id: "confirmed", name: "Confirmed" },
+    { id: "received", name: "Received" },
     { id: "cancelled", name: "Cancelled" },
   ];
 
@@ -328,6 +328,16 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                 return false;
               });
 
+              const isAllReceived = items.some(
+                (item) => !Number(item?.purchase_order_delivery_is_status),
+              );
+
+              let order_status = isAllReceived;
+              values.purchase_order_status = isAllReceived
+                ? values.purchase_order_status
+                : "received";
+
+              console.log("123", order_status);
               if (hasDuplicateCombination) {
                 dispatch(setError(true));
                 dispatch(
@@ -348,6 +358,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                   },
                 ),
                 ...values,
+                purchase_order_status: values.purchase_order_status,
                 purchase_order: items,
                 itemsDelete: itemsDelete,
                 purchase_order_payment: Number(values?.purchase_order_payment),
@@ -576,9 +587,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                           className={`text-white ${!a.purchase_order_delivery_is_status ? " bg-gray-500 " : "bg-green-800 "} rounded-sm p-1 text-[10px] mr-3`}
                                           type="button"
                                         >
-                                          {!a.purchase_order_delivery_is_status
-                                            ? "Not Delivered"
-                                            : "Delivered"}
+                                          Received
                                         </button>
                                         {Number(
                                           isEmptyItem(a?.purchase_order_aid, 0),

@@ -41,28 +41,45 @@ export const ActiveInActiveStatus = (val = "default-status") => {
     },
     {
       name: ["purchase-order-status"],
-      label: "open",
-      value: "open",
+      label: "sent",
+      value: "sent",
     },
+    {
+      name: ["purchase-order-status"],
+      label: "confirmed",
+      value: "confirmed",
+    },
+    {
+      name: ["purchase-order-status"],
+      label: "received",
+      value: "received",
+    },
+    // {
+    //   name: ["purchase-order-status"],
+    //   label: "open",
+    //   value: "open",
+    // },
+    //
+    // Draft, Sent, Confirmed, Received, Cancelled
     {
       name: [
         "payment-status",
-        "purchase-order-status",
+        // "purchase-order-status",
         "purchase-order-payment-status",
       ],
       label: "paid",
       value: "paid",
     },
-    {
-      name: ["purchase-order-status"],
-      label: "partial",
-      value: "partial",
-    },
-    {
-      name: ["purchase-order-status"],
-      label: "completed",
-      value: "completed",
-    },
+    // {
+    //   name: ["purchase-order-status"],
+    //   label: "partial",
+    //   value: "partial",
+    // },
+    // {
+    //   name: ["purchase-order-status"],
+    //   label: "completed",
+    //   value: "completed",
+    // },
     {
       name: ["purchase-order-status"],
       label: "cancelled",
@@ -105,7 +122,8 @@ export const ActiveInActiveStatus = (val = "default-status") => {
       value: "partial",
     },
     {
-      name: ["payment-status", "purchase-order-status"],
+      // name: ["payment-status", "purchase-order-status"],
+      name: ["payment-status"],
       label: "inactive",
       value: "inactive",
     },
@@ -250,6 +268,9 @@ export const variantsStatus = (val = "active") => {
     cancelled: "bg-orange-100 text-orange-500",
     open: "bg-purple-100 text-purple-500",
     completed: "bg-teal-100 text-teal-500",
+    sent: "bg-blue-300 text-blue-700",
+    confirmed: "bg-violet-300 text-violet-700 ",
+    received: "bg-success/20 text-success",
     // return-status
     pending: "bg-warning/10 text-warning",
     processed: "bg-primary/10 text-primary",

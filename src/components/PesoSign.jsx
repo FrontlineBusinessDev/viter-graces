@@ -6,7 +6,7 @@ export const AmountsWithPesoSign = ({
   classN,
   classAmnt = "text-right text-black dark:text-light",
   amount = 0,
-  decimalNumber = 4,
+  decimalNumber = 2,
 }) => {
   return (
     <span className={`flex items-center justify-end ${classAmnt}`}>
@@ -20,7 +20,7 @@ export const Amount = ({
   classN,
   classAmnt = " ",
   amount = 0,
-  decimalNumber = 4,
+  decimalNumber = 2,
 }) => {
   return (
     <span
@@ -36,7 +36,7 @@ export const AmountWithPesoSign = ({
   classN,
   classAmnt = "text-right text-black dark:text-light",
   amount,
-  decimalNumber = 4,
+  decimalNumber = 2,
 }) => {
   return (
     <span className={`flex items-center justify-end ${classAmnt}`}>
