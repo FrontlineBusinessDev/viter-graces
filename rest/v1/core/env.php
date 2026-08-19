@@ -25,9 +25,9 @@ define("UPLOAD_MULTIPLE_PATH", $_ENV["UPLOAD_MULTIPLE_PATH"]);
 
 // Also add putenv just to be completely safe:
 
-define("GOOGLE_CLIENT_ID", $_ENV["GOOGLE_CLIENT_ID"]);
-define("GOOGLE_CLIENT_SECRET", $_ENV["GOOGLE_CLIENT_SECRET"]);
-define("GOOGLE_REFRESH_TOKEN", $_ENV["GOOGLE_REFRESH_TOKEN"]);
+// define("GOOGLE_CLIENT_ID", $_ENV["GOOGLE_CLIENT_ID"]);
+// define("GOOGLE_CLIENT_SECRET", $_ENV["GOOGLE_CLIENT_SECRET"]);
+// define("GOOGLE_REFRESH_TOKEN", $_ENV["GOOGLE_REFRESH_TOKEN"]);
 
 // define("USERNAME", "noreply@hris.frontlinebusiness.com.ph");
 // define("PASSWORD", "b@11551gfN4b");
@@ -42,22 +42,22 @@ define("GOOGLE_REFRESH_TOKEN", $_ENV["GOOGLE_REFRESH_TOKEN"]);
 // define("PORT", 465);
 // define("SMTPSECURE", "ssl");
 
-/*SITEGROUND config*/
+// /SITEGROUND config/
 // define("HOST", "gvam1193.siteground.biz");
 // define("PORT", 465);
 // define("SMTPSECURE", "ssl");
 
-// /*GMAIL config*/
+// /GMAIL config/
 // define("HOST", "smtp.gmail.com");
 // define("PORT", 587);
 // define("SMTPSECURE", "tls");
 
-/*OFFICE 365 config*/
+// /OFFICE 365 config/
 // define("HOST", "smtp.office365.com");
 // define("PORT", 587);
 // define("SMTPSECURE", "tls")
 
-/*OUTLOOK config*/
+// /OUTLOOK config/
 // define("HOST", "smtp-mail.outlook.com");
 // define("PORT", 587);
 // define("SMTPSECURE", "tls")

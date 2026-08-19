@@ -78,11 +78,7 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
     return;
   };
 
-  let filterPaidAmount = items?.filter(
-    (item) => item.installment_payment_is_paid === 0,
-  );
-
-  let paidAmount = filterPaidAmount?.reduce(
+  let paidAmount = items?.reduce(
     (sum, item) =>
       Number(sum) + Number(item.installment_payment_paid_amount || 0),
     0,

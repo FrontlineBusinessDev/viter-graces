@@ -73,12 +73,6 @@ const Toast = ({ variant = "info", ...props }) => {
         >
           {variants[variant]?.title}
         </h5>
-        <p
-          className="opacity-70 mb-0 text-xs whitespace-nowrap"
-          data-testid="toast-message"
-        >
-          {variants[variant]?.message}
-        </p>
       </div>
       <button
         {...props}
