@@ -19,6 +19,12 @@ import React from "react";
 const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [items, setItems] = React.useState(itemEdit?.installmentItems);
+  const [totalPaidAmount, setTotalPaidAmount] = React.useState(
+    isEmptyItem(itemEdit?.sales_order_paid_amount, 0),
+  );
+  const [totalBalanceAmount, setTotalBalanceAmount] = React.useState(
+    isEmptyItem(itemEdit?.sales_order_total_balance_amount, 0),
+  );
 
   const queryClient = useQueryClient();
 
@@ -57,13 +63,8 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
     },
   });
 
-  let totalPaidAmount = isEmptyItem(itemEdit?.sales_order_paid_amount, 0);
   let totalAmount = isEmptyItem(
     itemEdit?.sales_order_total_receivable_amount,
-    0,
-  );
-  let totalBalanceAmount = isEmptyItem(
-    itemEdit?.sales_order_total_balance_amount,
     0,
   );
 
@@ -78,7 +79,11 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
     return;
   };
 
-  let paidAmount = items?.reduce(
+  let filterUnpaidAmount = items?.filter(
+    (item) => Number(item.installment_payment_is_paid) === 0,
+  );
+
+  let paidAmount = filterUnpaidAmount?.reduce(
     (sum, item) =>
       Number(sum) + Number(item.installment_payment_paid_amount || 0),
     0,
@@ -89,6 +94,10 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
     updated[index]["installment_payment_is_paid"] = 1;
     setItems(updated);
 
+    const newTotalPaidAmount = Number(totalPaidAmount) + Number(paidAmount);
+    const newTotalBalanceAmount =
+      Number(totalBalanceAmount) - Number(paidAmount);
+
     let data = {
       ...itemEdit,
       icon: "",
@@ -96,15 +105,22 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
         ...itemEdit,
         icon: "",
         ...a,
-        totalPaidAmount: Number(totalPaidAmount) + Number(paidAmount),
-        totalBalanceAmount: Number(totalBalanceAmount) - Number(paidAmount),
+        totalPaidAmount: newTotalPaidAmount,
+        totalBalanceAmount: newTotalBalanceAmount,
       }),
       ...a,
-      totalPaidAmount: Number(totalPaidAmount) + Number(paidAmount),
-      totalBalanceAmount: Number(totalBalanceAmount) - Number(paidAmount),
+      totalPaidAmount: newTotalPaidAmount,
+      totalBalanceAmount: newTotalBalanceAmount,
     };
 
-    mutation.mutate(data);
+    mutation.mutate(data, {
+      onSuccess: (res) => {
+        if (res?.success) {
+          setTotalPaidAmount(newTotalPaidAmount);
+          setTotalBalanceAmount(newTotalBalanceAmount);
+        }
+      },
+    });
   };
 
   return (
