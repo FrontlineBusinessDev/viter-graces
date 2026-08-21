@@ -63,7 +63,7 @@ const DashboardOverduePayments = () => {
                   <div>
                     <span className="text-red-600 font-semibold">
                       <AmountWithPesoSign
-                        classN={"size-3"}
+                        classN={"size-3 dark:text-light"}
                         amount={item.installment_payment_amount}
                       />
                     </span>

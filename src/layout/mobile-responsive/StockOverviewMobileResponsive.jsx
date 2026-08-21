@@ -27,7 +27,7 @@ const StockOverviewMobileResponsive = ({
                 className="lg:hidden border rounded-xl p-4 mb-4 shadow-sm"
               >
                 {/* HEADER */}
-                <div className="xs:flex flex-wrap gap-2 justify-between items-center border-b border-gray-200 pb-2 ">
+                <div className="flex flex-wrap gap-2 justify-between border-b border-gray-200 pb-2 ">
                   <div className="flex flex-col">
                     <div className="flex sm:gap-2 flex-wrap items-center">
                       <span
@@ -41,7 +41,7 @@ const StockOverviewMobileResponsive = ({
                       </span>
                     </div>
                     <span className={`font-semibold text-left text-xs `}>
-                      {rowData?.stock_movement_product_owner_name}
+                      {rowData?.products_owner_name}
                     </span>
                   </div>
 
@@ -81,17 +81,6 @@ const StockOverviewMobileResponsive = ({
                       </span>
                     </li>
                   </ul>
-                  {isDefaultMobile === "stock-overview" && (
-                    <div className=" ">
-                      <ActionButtonMobile
-                        dataArray={rowData}
-                        setData={setData}
-                        setItemEdit={setItemEdit}
-                        ishaveSubAdd={ishaveSubAdd}
-                        path={path}
-                      />
-                    </div>
-                  )}
                 </div>
               </div>
             );

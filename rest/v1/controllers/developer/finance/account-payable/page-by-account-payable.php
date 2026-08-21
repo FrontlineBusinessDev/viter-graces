@@ -42,14 +42,13 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
             $queryItems = $val->readByPurchaseNumber(allowedColumns());
 
-            $queryDataItems = $queryItems
+            $queryItems = $queryItems
                 ? getResultData($queryItems)
                 : [];
 
-            $total_result_final[] = [
-                ...$data[$i],
-                "items" => $queryDataItems
-            ];
+            $data[$i]["items"] = $queryItems;
+
+            $total_result_final[] = $data[$i];
         }
 
         http_response_code(200);

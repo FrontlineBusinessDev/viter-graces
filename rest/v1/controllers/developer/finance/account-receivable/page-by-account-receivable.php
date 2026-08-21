@@ -45,14 +45,13 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
             $queryInstallment = $val->readByInstallment();
 
-            $queryDataInstallment = $queryInstallment
+            $queryInstallment = $queryInstallment
                 ? getResultData($queryInstallment)
                 : [];
 
-            $total_result_final[] = [
-                ...$data[$i],
-                "installmentItems" => $queryDataInstallment
-            ];
+            $data[$i]["installmentItems"] = $queryInstallment;
+
+            $total_result_final[] = $data[$i];
         }
 
         http_response_code(200);

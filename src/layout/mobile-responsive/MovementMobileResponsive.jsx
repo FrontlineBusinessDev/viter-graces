@@ -26,7 +26,7 @@ const MovementMobileResponsive = ({
                 className="lg:hidden border rounded-xl p-4 mb-4 shadow-sm"
               >
                 {/* HEADER */}
-                <div className="xs:flex flex-wrap gap-2 justify-between items-center border-b border-gray-200 pb-3 ">
+                <div className="flex flex-wrap gap-2 justify-between items-center border-b border-gray-200 pb-3 ">
                   <ul className="flex flex-col">
                     <li className="flex sm:gap-2 flex-wrap items-center">
                       <span
@@ -46,7 +46,9 @@ const MovementMobileResponsive = ({
                   {/* STATUS */}
                   <ul className="text-left ">
                     <li className="mb-0 capitalize">
-                      {rowData?.stock_movement_type}
+                      <Pills variant={rowData?.stock_movement_type}>
+                        {rowData?.stock_movement_type}
+                      </Pills>
                     </li>
                     <li className="mb-0">{rowData?.stock_movement_date}</li>
                   </ul>
@@ -79,7 +81,7 @@ const MovementMobileResponsive = ({
                       </span>
                     </li>
                   </ul>
-                  {isDefaultMobile !==
+                  {/* {isDefaultMobile !==
                     "report-sales-order/page-all-inventory-movement" && (
                     <div className=" ">
                       <ActionButtonMobile
@@ -90,7 +92,7 @@ const MovementMobileResponsive = ({
                         path={path}
                       />
                     </div>
-                  )}
+                  )} */}
                 </div>
               </div>
             );

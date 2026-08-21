@@ -60,7 +60,7 @@ const Products = () => {
     {
       accessorKey: "products_category",
       header: "Category",
-      classTh: "min-w-[10rem]",
+      classTh: " min-w-[10rem]",
       classTd: "",
       meta: {
         filterComponent: (column) => (

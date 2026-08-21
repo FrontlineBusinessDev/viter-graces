@@ -39,7 +39,7 @@ export const AmountWithPesoSign = ({
   decimalNumber = 2,
 }) => {
   return (
-    <span className={`flex items-center justify-end ${classAmnt}`}>
+    <span className={`flex items-center justify-end  ${classAmnt}`}>
       <PhilippinePeso className={`${classN} mr-1`} />
       {numberWithCommasToFixed(isEmptyItem(amount, 0), Number(decimalNumber))}
     </span>
@@ -47,9 +47,5 @@ export const AmountWithPesoSign = ({
 };
 
 export const PesoSign = () => {
-  return (
-    <PhilippinePeso
-      className={`text-right size-3 text-black dark:text-light mr-1`}
-    />
-  );
+  return <PhilippinePeso className={`text-right size-3 text-blue-600  mr-1`} />;
 };

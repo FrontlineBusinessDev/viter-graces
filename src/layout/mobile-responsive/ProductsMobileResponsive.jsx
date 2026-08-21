@@ -24,11 +24,8 @@ const ProductsMobileResponsive = ({
                 className="lg:hidden border rounded-xl p-4 mb-4 shadow-sm"
               >
                 {/* HEADER */}
-                <div className="xs:flex flex-wrap gap-2 justify-between items-start border-b border-gray-200 pb-3 ">
+                <div className="flex gap-2 justify-between items-start border-b border-gray-200 pb-3 ">
                   <div className="flex flex-wrap gap-2 items-center">
-                    <div className="w-12 h-12 bg-gray-300 rounded-sm">
-                      <Image className="mx-auto p-1" size={45} />
-                    </div>
                     <div className="text-left! ">
                       <div className="flex sm:gap-2 flex-wrap items-center">
                         <span

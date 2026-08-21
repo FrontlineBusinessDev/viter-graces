@@ -67,9 +67,9 @@ const DashboardProfitAndLoss = () => {
                   key={frame}
                   onClick={() => setTimeframePL(frame)}
                   data-testid={`timeframe-${frame.toLowerCase()}`}
-                  className={`px-3 py-1 rounded-lg ${
+                  className={`capitalize px-3 py-1 rounded-lg ${
                     timeframePL === frame
-                      ? "bg-primary text-white"
+                      ? "bg-green-600 text-white"
                       : "bg-gray-200 text-gray-700"
                   }`}
                 >
@@ -82,9 +82,9 @@ const DashboardProfitAndLoss = () => {
           <div className="grid grid-cols-3 gap-3 mb-4">
             {profitAndLossDataAmount?.map((itemData) => (
               <>
-                <div className="bg-blue-100 p-3 rounded">
-                  <p className="xs:flex items-center gap-2 text-sm text-gray-600">
-                    <span className="text-blue-600">
+                <div className="bg-blue-100 dark:bg-blue-700 p-3 rounded">
+                  <p className="xs:flex items-center gap-2 text-sm text-gray-600 dark:text-light">
+                    <span className="text-blue-600 dark:text-blue-200">
                       <DollarSign size={14} />
                     </span>
                     Net
@@ -96,9 +96,9 @@ const DashboardProfitAndLoss = () => {
                     />
                   </p>
                 </div>
-                <div className="bg-green-100 p-3 rounded">
-                  <p className="xs:flex items-center gap-2 text-sm text-gray-600">
-                    <span className="text-green-600">
+                <div className="bg-green-100 dark:bg-green-700 p-3 rounded">
+                  <p className="xs:flex items-center gap-2 text-sm text-gray-600 dark:text-light">
+                    <span className="text-green-600 dark:text-green-200">
                       <TrendingUp size={14} />
                     </span>
                     Income
@@ -110,9 +110,9 @@ const DashboardProfitAndLoss = () => {
                     />
                   </p>
                 </div>
-                <div className="bg-red-100 p-3 rounded">
-                  <p className="xs:flex items-center gap-2 text-sm text-gray-600">
-                    <span className="text-red-600">
+                <div className="bg-red-100 dark:bg-red-700 p-3 rounded">
+                  <p className="xs:flex items-center gap-2 text-sm text-gray-600 dark:text-light">
+                    <span className="text-red-600 dark:text-red-200">
                       <TrendingDown size={14} />
                     </span>
                     Expenses

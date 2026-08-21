@@ -4,7 +4,12 @@ import { apiVersion } from "@/config/config";
 import useDarkMode from "@/custom-hooks/useDarkMode";
 import useQueryData from "@/services/useQueryData";
 import { StoreContext } from "@/store/StoreContext";
-import { DollarSign, TrendingDown, TrendingUp } from "lucide-react";
+import {
+  DollarSign,
+  TrendingDown,
+  TrendingUp,
+  PhilippinePeso,
+} from "lucide-react";
 import React, { useMemo } from "react";
 import {
   Bar,
@@ -70,7 +75,7 @@ const DashboardCashflowChart = () => {
                   data-testid={`timeframeCF-${frame.toLowerCase()}`}
                   className={`px-3 py-1 rounded-lg capitalize ${
                     timeframeCF === frame
-                      ? "bg-primary text-white"
+                      ? "bg-green-600 text-white"
                       : "bg-gray-200 text-gray-700"
                   }`}
                 >
@@ -83,9 +88,9 @@ const DashboardCashflowChart = () => {
           <div className="grid grid-cols-3 gap-3 mb-4">
             {cashflowDataAmount?.map((itemData) => (
               <>
-                <div className="bg-green-100 p-3 rounded-lg">
-                  <p className="xs:flex items-center gap-2 text-sm text-gray-600">
-                    <span className="text-green-600">
+                <div className="bg-green-100 dark:bg-green-700 p-3 rounded-lg">
+                  <p className="xs:flex items-center gap-2 text-sm text-gray-600 dark:text-light">
+                    <span className="text-green-600 dark:text-green-200">
                       <TrendingUp size={14} />
                     </span>
                     Money In
@@ -97,9 +102,9 @@ const DashboardCashflowChart = () => {
                     />
                   </p>
                 </div>
-                <div className="bg-red-100 p-3 rounded-lg">
-                  <p className="xs:flex items-center gap-2 text-sm text-gray-600">
-                    <span className="text-red-600">
+                <div className="bg-red-100 dark:bg-red-700 p-3 rounded-lg">
+                  <p className="xs:flex items-center gap-2 text-sm text-gray-600 dark:text-light">
+                    <span className="text-red-600 dark:text-red-200">
                       <TrendingDown size={14} />
                     </span>
                     Money Out
@@ -111,10 +116,10 @@ const DashboardCashflowChart = () => {
                     />
                   </p>
                 </div>
-                <div className="bg-blue-100 p-3 rounded-lg">
-                  <p className="xs:flex items-center gap-2 text-sm text-gray-600">
-                    <span className="text-blue-600">
-                      <PesoSign size={14} />
+                <div className="bg-blue-100 dark:bg-blue-700 p-3 rounded-lg">
+                  <p className="xs:flex items-center gap-2 text-sm text-gray-600 dark:text-light">
+                    <span className="text-blue-600 dark:text-blue-200">
+                      <PhilippinePeso size={14} />
                     </span>
                     Balance
                   </p>

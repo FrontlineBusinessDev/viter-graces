@@ -39,24 +39,24 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
         for ($i = 0; $i < count($data); $i++) {
 
-            $val->sales_order_number = $data[$i]["sales_order_number"];
+        $val->sales_order_number = $data[$i]["sales_order_number"];
 
-            $queryLogin = $val->readBySoNumber();
-            $queryInstallment = $val->readByInstallment();
+        $queryLogin = $val->readBySoNumber();
+        $queryInstallment = $val->readByInstallment();
 
-            $queryDataLogin = $queryLogin
-                ? getResultData($queryLogin)
-                : [];
-            $queryDataInstallment = $queryInstallment
-                ? getResultData($queryInstallment)
-                : [];
+        $queryLogin = $queryLogin
+            ? getResultData($queryLogin)
+            : [];
 
-            $total_result_final[] = [
-                ...$data[$i],
-                "items" => $queryDataLogin,
-                "installmentItems" => $queryDataInstallment
-            ];
-        }
+        $queryInstallment = $queryInstallment
+            ? getResultData($queryInstallment)
+            : [];
+
+        $data[$i]["items"] = $queryLogin;
+        $data[$i]["installmentItems"] = $queryInstallment;
+
+        $total_result_final[] = $data[$i];
+    }
 
         http_response_code(200);
 
