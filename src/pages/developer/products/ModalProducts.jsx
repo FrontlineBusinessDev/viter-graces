@@ -42,13 +42,6 @@ const ModalProducts = ({ itemEdit }) => {
 
   handleEscape(() => handleClose());
 
-  const {
-    uploadMultipleFiles,
-    handleChangeMultipleFiles,
-    setFilesArrayList,
-    filesArrayList,
-  } = useUploadMultipleFiles(`${apiVersion}/upload-multiple-files`, dispatch);
-
   const queryClient = useQueryClient();
 
   const mutation = useMutation({
@@ -85,8 +78,6 @@ const ModalProducts = ({ itemEdit }) => {
 
   const initVal = {
     products_name: isEmptyItem(itemEdit?.products_name, ""),
-    // products_image: isEmptyItem(itemEdit?.products_image, ""),
-    products_image: isEmptyItem(itemEdit?.products_image, []),
     products_sku: isEmptyItem(itemEdit?.products_sku, ""),
     products_category: isEmptyItem(itemEdit?.products_category, ""),
     products_price: isEmptyItem(itemEdit?.products_price, ""),
@@ -117,7 +108,6 @@ const ModalProducts = ({ itemEdit }) => {
         : isEmptyItem(itemEdit?.products_owner_id, ""),
     val_name_old: isEmptyItem(itemEdit?.products_name, ""),
     products_name_old: isEmptyItem(itemEdit?.products_name, ""),
-    products_image_old: isEmptyItem(itemEdit?.products_image, ""),
 
     pendingDeleteFile: [],
   };
@@ -162,9 +152,7 @@ const ModalProducts = ({ itemEdit }) => {
               setLoading(true);
               // console.log(data);
 
-              const filesUpload = await uploadMultipleFiles();
-              if (filesUpload?.success) setLoading(false);
-              if (!loading) mutation.mutate(data); // mutate data
+              mutation.mutate(data); // mutate data
             }}
           >
             {(props) => {

@@ -9,5 +9,10 @@
         "google/apiclient-services": [
             "Drive"
         ]
+    },
+    "config": {
+        "platform": {
+            "php": "8.0.30"
+        }
     }
 }

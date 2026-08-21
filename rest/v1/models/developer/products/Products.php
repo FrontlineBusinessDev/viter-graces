@@ -4,7 +4,6 @@ class Products
     public $products_aid;
     public $products_status;
     public $products_is_active;
-    public $products_image;
     public $products_name;
     public $products_sku;
     public $products_category;
@@ -63,7 +62,6 @@ class Products
             $sql .= "( products_status, ";
             $sql .= "products_is_active, ";
             $sql .= "products_name, ";
-            $sql .= "products_image, ";
             $sql .= "products_sku, ";
             $sql .= "products_category, ";
             $sql .= "products_price, ";
@@ -83,7 +81,6 @@ class Products
             $sql .= ":products_status, ";
             $sql .= ":products_is_active, ";
             $sql .= ":products_name, ";
-            $sql .= ":products_image, ";
             $sql .= ":products_sku, ";
             $sql .= ":products_category, ";
             $sql .= ":products_price, ";
@@ -105,7 +102,6 @@ class Products
                 "products_status" => $this->products_status,
                 "products_is_active" => $this->products_is_active,
                 "products_name" => $this->products_name,
-                "products_image" => $this->products_image,
                 "products_sku" => $this->products_sku,
                 "products_category" => $this->products_category,
                 "products_price" => $this->products_price,
@@ -543,7 +539,6 @@ class Products
         try {
             $sql = "update {$this->tblProducts} set ";
             $sql .= "products_name = :products_name, ";
-            $sql .= "products_image = :products_image, ";
             $sql .= "products_sku = :products_sku, ";
             $sql .= "products_category = :products_category, ";
             $sql .= "products_price = :products_price, ";
@@ -563,7 +558,6 @@ class Products
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "products_name" => $this->products_name,
-                "products_image" => $this->products_image,
                 "products_sku" => $this->products_sku,
                 "products_category" => $this->products_category,
                 "products_price" => $this->products_price,

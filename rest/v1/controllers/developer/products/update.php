@@ -17,7 +17,6 @@ if (array_key_exists("id", $_GET)) {
     // get data
     $val->products_aid  = $_GET['id'];
     $val->products_name = $data["products_name"];
-    $val->products_image = $data["products_image"];
     $val->products_sku = $data["products_sku"];
     $val->products_category = $data["products_category"];
     $val->products_price = $data["products_price"];
@@ -39,19 +38,6 @@ if (array_key_exists("id", $_GET)) {
 
     $val_name_old = $data["val_name_old"];
 
-    $val->products_image = "";
-
-    // $products_image_old = $data["products_image_old"];
-    // $jsonStringToArray = (array)json_decode($products_image_old);
-    // $pendingDeleteFile = array_map(fn($item) => json_encode($item, true), $jsonStringToArray);
-
-    // $val->products_image = checkToUploadGoogleDrive(
-    //     $val->products_image,
-    //     $products_image_old,
-    //     'Products'
-    // );
-
-    // $val->products_image = checkDeleteGoogleDriveApiFiles($val->products_image, $pendingDeleteFile);
 
     compareName($val, $val_name_old, $val->products_name);
     // update

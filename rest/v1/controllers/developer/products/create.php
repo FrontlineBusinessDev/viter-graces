@@ -19,7 +19,6 @@ checkPayload($data);
 $val->products_is_active = 1;
 $val->products_status = 'active';
 $val->products_name = $data["products_name"];
-$val->products_image = "";
 $val->products_sku = "";
 $val->products_category = strtolower($data["products_category"]);
 $val->products_price = $data["products_price"];
@@ -37,8 +36,6 @@ $val->products_description = $data["products_description"];
 $val->products_created = date("Y-m-d H:i:s");
 $val->products_updated = date("Y-m-d H:i:s");
 
-$val->products_image = "";
-// $val->products_image = checkToUploadGoogleDrive($data['products_image'], '');
 
 $val->products_sku = setIdNumber($val, "SKU");
 // check name

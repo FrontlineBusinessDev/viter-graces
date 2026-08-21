@@ -32,9 +32,9 @@ export const PropsValues = (props, items, installmentItems) => {
       Number(values.sales_order_total_receivable_amount) -
       Number(values.sales_order_total_receivable_amount) / 1.12;
 
-    values.subtotal =
-      Number(values.sales_order_total_amount) -
-      Number(values.sales_order_tax_amount);
+    // values.subtotal =
+    //   Number(values.sales_order_total_amount) -
+    //   Number(values.sales_order_tax_amount);
   }
 
   // COMPUTATION OF EXCLUSIVE TAX
@@ -45,9 +45,9 @@ export const PropsValues = (props, items, installmentItems) => {
     values.sales_order_total_receivable_amount =
       Number(values.sales_order_total_receivable_amount) +
       Number(values.sales_order_tax_amount);
-    values.subtotal =
-      Number(values.sales_order_total_amount) +
-      Number(values.sales_order_tax_amount);
+    // values.subtotal =
+    //   Number(values.sales_order_total_amount) +
+    //   Number(values.sales_order_tax_amount);
   }
 
   if (Number(values.sales_order_tax) === 0) {

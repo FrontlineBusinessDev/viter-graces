@@ -24,6 +24,7 @@ use Google\Service\Drive\GeneratedIds;
 use Google\Service\Drive\LabelList;
 use Google\Service\Drive\ModifyLabelsRequest;
 use Google\Service\Drive\ModifyLabelsResponse;
+use Google\Service\Drive\Operation;
 
 /**
  * The "files" collection of methods.
@@ -79,18 +80,18 @@ class Files extends \Google\Service\Resource
    * *Accepted Media MIME types:*`*` Note: Specify a valid MIME type, rather than
    * the literal `*` value. The literal `*` is only used to indicate that any
    * valid MIME type can be uploaded. For more information on uploading files, see
-   * [Upload file data](/drive/api/guides/manage-uploads). Apps creating shortcuts
-   * with `files.create` must specify the MIME type `application/vnd.google-
-   * apps.shortcut`. Apps should specify a file extension in the `name` property
-   * when inserting files with the API. For example, an operation to insert a JPEG
-   * file should specify something like `"name": "cat.jpg"` in the metadata.
-   * Subsequent `GET` requests include the read-only `fileExtension` property
-   * populated with the extension originally specified in the `title` property.
-   * When a Google Drive user requests to download a file, or when the file is
-   * downloaded through the sync client, Drive builds a full filename (with
-   * extension) based on the title. In cases where the extension is missing, Drive
-   * attempts to determine the extension based on the file's MIME type.
-   * (files.create)
+   * [Upload file data](/workspace/drive/api/guides/manage-uploads). Apps creating
+   * shortcuts with `files.create` must specify the MIME type
+   * `application/vnd.google-apps.shortcut`. Apps should specify a file extension
+   * in the `name` property when inserting files with the API. For example, an
+   * operation to insert a JPEG file should specify something like `"name":
+   * "cat.jpg"` in the metadata. Subsequent `GET` requests include the read-only
+   * `fileExtension` property populated with the extension originally specified in
+   * the `title` property. When a Google Drive user requests to download a file,
+   * or when the file is downloaded through the sync client, Drive builds a full
+   * filename (with extension) based on the title. In cases where the extension is
+   * missing, Drive attempts to determine the extension based on the file's MIME
+   * type. (files.create)
    *
    * @param DriveFile $postBody
    * @param array $optParams Optional parameters.
@@ -150,6 +151,32 @@ class Files extends \Google\Service\Resource
     $params = ['fileId' => $fileId];
     $params = array_merge($params, $optParams);
     return $this->call('delete', [$params]);
+  }
+  /**
+   * Downloads content of a file. Operations are valid for 24 hours from the time
+   * of creation. (files.download)
+   *
+   * @param string $fileId Required. The ID of the file to download.
+   * @param array $optParams Optional parameters.
+   *
+   * @opt_param string mimeType Optional. The MIME type the file should be
+   * downloaded as. This field can only be set when downloading Google Workspace
+   * documents. See [Export MIME types for Google Workspace
+   * documents](/drive/api/guides/ref-export-formats) for the list of supported
+   * MIME types. If not set, a Google Workspace document is downloaded with a
+   * default MIME type. The default MIME type might change in the future.
+   * @opt_param string revisionId Optional. The revision ID of the file to
+   * download. This field can only be set when downloading blob files, Google
+   * Docs, and Google Sheets. Returns `INVALID_ARGUMENT` if downloading a specific
+   * revision on the file is unsupported.
+   * @return Operation
+   * @throws \Google\Service\Exception
+   */
+  public function download($fileId, $optParams = [])
+  {
+    $params = ['fileId' => $fileId];
+    $params = array_merge($params, $optParams);
+    return $this->call('download', [$params], Operation::class);
   }
   /**
    * Permanently deletes all of the user's trashed files. (files.emptyTrash)
@@ -212,16 +239,17 @@ class Files extends \Google\Service\Resource
    * `alt=media`, then the response includes the file contents in the response
    * body. Downloading content with `alt=media` only works if the file is stored
    * in Drive. To download Google Docs, Sheets, and Slides use
-   * [`files.export`](/drive/api/reference/rest/v3/files/export) instead. For more
-   * information, see [Download & export files](/drive/api/guides/manage-
-   * downloads). (files.get)
+   * [`files.export`](/workspace/drive/api/reference/rest/v3/files/export)
+   * instead. For more information, see [Download & export
+   * files](/workspace/drive/api/guides/manage-downloads). (files.get)
    *
    * @param string $fileId The ID of the file.
    * @param array $optParams Optional parameters.
    *
    * @opt_param bool acknowledgeAbuse Whether the user is acknowledging the risk
    * of downloading known malware or other abusive files. This is only applicable
-   * when alt=media.
+   * when the `alt` parameter is set to `media` and the user is the owner of the
+   * file or an organizer of the shared drive in which the file resides.
    * @opt_param string includeLabels A comma-separated list of IDs of labels to
    * include in the `labelInfo` part of the response.
    * @opt_param string includePermissionsForView Specifies which additional view's
@@ -242,9 +270,9 @@ class Files extends \Google\Service\Resource
   /**
    * Lists the user's files. This method accepts the `q` parameter, which is a
    * search query combining one or more search terms. For more information, see
-   * the [Search for files & folders](/drive/api/guides/search-files) guide.
-   * *Note:* This method returns *all* files by default, including trashed files.
-   * If you don't want trashed files to appear in the list, use the
+   * the [Search for files & folders](/workspace/drive/api/guides/search-files)
+   * guide. *Note:* This method returns *all* files by default, including trashed
+   * files. If you don't want trashed files to appear in the list, use the
    * `trashed=false` query parameter to remove trashed files from the results.
    * (files.listFiles)
    *
@@ -266,12 +294,20 @@ class Files extends \Google\Service\Resource
    * permissions to include in the response. Only 'published' is supported.
    * @opt_param bool includeTeamDriveItems Deprecated: Use
    * `includeItemsFromAllDrives` instead.
-   * @opt_param string orderBy A comma-separated list of sort keys. Valid keys are
-   * 'createdTime', 'folder', 'modifiedByMeTime', 'modifiedTime', 'name',
-   * 'name_natural', 'quotaBytesUsed', 'recency', 'sharedWithMeTime', 'starred',
-   * and 'viewedByMeTime'. Each key sorts ascending by default, but can be
-   * reversed with the 'desc' modifier. Example usage:
-   * ?orderBy=folder,modifiedTime desc,name.
+   * @opt_param string orderBy A comma-separated list of sort keys. Valid keys
+   * are: * `createdTime`: When the file was created. * `folder`: The folder ID.
+   * This field is sorted using alphabetical ordering. * `modifiedByMeTime`: The
+   * last time the file was modified by the user. * `modifiedTime`: The last time
+   * the file was modified by anyone. * `name`: The name of the file. This field
+   * is sorted using alphabetical ordering, so 1, 12, 2, 22. * `name_natural`: The
+   * name of the file. This field is sorted using natural sort ordering, so 1, 2,
+   * 12, 22. * `quotaBytesUsed`: The number of storage quota bytes used by the
+   * file. * `recency`: The most recent timestamp from the file's date-time
+   * fields. * `sharedWithMeTime`: When the file was shared with the user, if
+   * applicable. * `starred`: Whether the user has starred the file. *
+   * `viewedByMeTime`: The last time the file was viewed by the user. Each key
+   * sorts ascending by default, but can be reversed with the 'desc' modifier.
+   * Example usage: `?orderBy=folder,modifiedTime desc,name`.
    * @opt_param int pageSize The maximum number of files to return per page.
    * Partial or empty result pages are possible even before the end of the files
    * list has been reached.
@@ -341,8 +377,8 @@ class Files extends \Google\Service\Resource
    * size:* 5,120 GB - *Accepted Media MIME types:*`*` Note: Specify a valid MIME
    * type, rather than the literal `*` value. The literal `*` is only used to
    * indicate that any valid MIME type can be uploaded. For more information on
-   * uploading files, see [Upload file data](/drive/api/guides/manage-uploads).
-   * (files.update)
+   * uploading files, see [Upload file data](/workspace/drive/api/guides/manage-
+   * uploads). (files.update)
    *
    * @param string $fileId The ID of the file.
    * @param DriveFile $postBody
@@ -387,7 +423,8 @@ class Files extends \Google\Service\Resource
    *
    * @opt_param bool acknowledgeAbuse Whether the user is acknowledging the risk
    * of downloading known malware or other abusive files. This is only applicable
-   * when alt=media.
+   * when the `alt` parameter is set to `media` and the user is the owner of the
+   * file or an organizer of the shared drive in which the file resides.
    * @opt_param string includeLabels A comma-separated list of IDs of labels to
    * include in the `labelInfo` part of the response.
    * @opt_param string includePermissionsForView Specifies which additional view's
