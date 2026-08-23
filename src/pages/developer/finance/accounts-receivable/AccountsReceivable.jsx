@@ -3,9 +3,10 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ViewAccountsReceivableDetails from "./ViewAccountsReceivableDetails";
-import { ActionTableList } from "@/layout/ArrayValue";
+import { ActionTableList, ActiveInActiveStatus } from "@/layout/ArrayValue";
 import UpdateAccountsReceivableDetails from "./UpdateAccountsReceivableDetails";
 import { ProductOwnerId } from "@/utilities/productOwnerToken";
+import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
 
 const AccountsReceivable = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -17,13 +18,37 @@ const AccountsReceivable = () => {
     setItemEdit(item);
   };
 
-  // Columns
+  // Columns Pending, Due Soon, Due tomorrow, Due today, Overdue, Partial
   const columns = [
+    {
+      accessorKey: "ar_status",
+      header: "status",
+      classTh: "",
+      classTd: "",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={ActiveInActiveStatus("ar-finance")}
+          />
+        ),
+      },
+      status_option: ActiveInActiveStatus("ar-finance"),
+    },
     {
       accessorKey: "sales_order_number",
       header: "Order #",
       classTh: "",
       classTd: "",
+      meta: "",
+    },
+    {
+      accessorKey: "sales_order_due_date",
+      header: "Due date",
+      classTh: "",
+      classTd: "",
+      filterFn: "date",
       meta: "",
     },
     {

@@ -38,7 +38,21 @@ const FinanceARMobileResponsive = ({
                       </span>
                     </li>
                     <li className="text-left mb-0">
-                      {rowData?.sales_order_date}
+                      order date:{rowData?.sales_order_date}
+                    </li>
+                  </ul>
+                  <ul className="flex flex-col">
+                    <li className="flex gap-2 flex-wrap items-center">
+                      <span
+                        className={`font-semibold text-black dark:text-light text-lg capitalize`}
+                      >
+                        <Pills variant={rowData?.ar_status}>
+                          {rowData?.ar_status}
+                        </Pills>
+                      </span>
+                    </li>
+                    <li className="text-left mb-0">
+                      Due date: {rowData?.sales_order_due_date}
                     </li>
                   </ul>
                 </div>

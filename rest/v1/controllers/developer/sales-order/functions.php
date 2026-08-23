@@ -326,7 +326,7 @@ function installmentDetails($val, $installmentItems)
         if (count($installmentItems) > 0) {
             // CREATE INSTALLMENT PAYMENT
             for ($a = 0; $a < count($installmentItems); $a++) {
-                if ($a == 0) {
+                if ((float)$installmentItems[$a]["installment_payment_paid_amount"] != 0) {
                     $val->sales_order_due_date = $installmentItems[$a]["installment_payment_due_date"];
                 }
                 $val->installment_payment_code_id = 0;

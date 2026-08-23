@@ -98,138 +98,308 @@ class AccountReceivable
         $this->tblSalesJournal = "graces_sales_journal";
     }
 
-    // read all
-    public function readAll($allowedColumns)
-    {
-        $filterColumn = [];
-        $params = [
-            ...$this->userId != 0 ? ["sales_order_product_owner_id" => $this->userId] : [],
-            ...($this->column_search != "" ? [
-                "sales_order_number" => "%{$this->column_search}%",
-                "sales_order_customer_name" => "%{$this->column_search}%",
-                "sales_order_product_name" => "%{$this->column_search}%",
-                "sales_order_received_by_name" => "%{$this->column_search}%",
-                "sales_order_product_owner_name" => "%{$this->column_search}%",
-            ] : []),
-        ];
+    // // read all
+    // public function readAll($allowedColumns)
+    // {
+    //     $filterColumn = [];
+    //     $params = [
+    //         ...$this->userId != 0 ? ["sales_order_product_owner_id" => $this->userId] : [],
+    //         ...($this->column_search != "" ? [
+    //             "sales_order_number" => "%{$this->column_search}%",
+    //             "sales_order_customer_name" => "%{$this->column_search}%",
+    //             "sales_order_product_name" => "%{$this->column_search}%",
+    //             "sales_order_received_by_name" => "%{$this->column_search}%",
+    //             "sales_order_product_owner_name" => "%{$this->column_search}%",
+    //         ] : []),
+    //     ];
 
-        foreach ($this->filters as $i => $item) {
-            if (!in_array($item['id'], $allowedColumns, true)) {
+    //     foreach ($this->filters as $i => $item) {
+    //         if (!in_array($item['id'], $allowedColumns, true)) {
+    //             continue;
+    //         }
+    //         $col = $item['id'];
+    //         if (is_array($item['value'])) {
+    //             $params["min$i"] = (float) $item['value']['min'];
+    //             $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+    //             $params["max$i"] = $item['value']['max'] === ""
+    //                 ? (float) $this->max
+    //                 : (float) $item['value']['max'];
+    //         } else {
+    //             $filterColumn[] = "$col LIKE :search$i";
+    //             $params["search$i"] = "%" . trim($item['value']) . "%";
+    //         }
+    //     }
+    //     try {
+    //         $sql = "select *, ";
+    //         $sql .= "sales_order_status as is_status, ";
+    //         $sql .= "sales_order_aid as id, ";
+    //         $sql .= "sales_order_is_active as is_active, ";
+    //         $sql .= "sales_order_date as order_date, ";
+    //         $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+    //         $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
+    //         $sql .= "sales_order_customer_name as name ";
+    //         $sql .= "from {$this->tblSalesOrder} ";
+    //         $sql .= " where CAST(sales_order_total_balance_amount AS DECIMAL(10, 2)) != 0 ";
+    //         $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
+    //         if (!empty($filterColumn)) {
+    //             $sql .= " and " . implode(" and ", $filterColumn);
+    //         } else {
+    //             $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number 
+    //         or sales_order_customer_name like :sales_order_customer_name 
+    //         or sales_order_received_by_name like :sales_order_received_by_name 
+    //         or sales_order_product_owner_name like :sales_order_product_owner_name 
+    //         or sales_order_product_name like :sales_order_product_name ) " : " ");
+    //         }
+    //         $sql .= " group by sales_order_number ";
+    //         $sql .= " order by DATE(sales_order_date) desc, ";
+    //         $sql .= "sales_order_number desc ";
+    //         $query = $this->connection->prepare($sql);
+    //         $query->execute($params);
+    //     } catch (PDOException $ex) {
+    //         logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+    //         $query = false;
+    //     }
+    //     return $query;
+    // }
+    // // read all
+    // public function readLimit($allowedColumns)
+    // {
+    //     $filterColumn = [];
+    //     $params = [
+    //         "start" => $this->column_start - 1,
+    //         "total" => $this->column_total,
+    //         ...$this->userId != 0 ? ["sales_order_product_owner_id" => $this->userId] : [],
+    //         ...($this->column_search != "" ? [
+    //             "sales_order_number" => "%{$this->column_search}%",
+    //             "sales_order_customer_name" => "%{$this->column_search}%",
+    //             "sales_order_product_name" => "%{$this->column_search}%",
+    //             "sales_order_received_by_name" => "%{$this->column_search}%",
+    //             "sales_order_product_owner_name" => "%{$this->column_search}%",
+    //         ] : []),
+    //     ];
+
+    //     foreach ($this->filters as $i => $item) {
+    //         if (!in_array($item['id'], $allowedColumns, true)) {
+    //             continue;
+    //         }
+    //         $col = $item['id'];
+    //         if (is_array($item['value'])) {
+    //             $params["min$i"] = (float) $item['value']['min'];
+    //             $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+    //             $params["max$i"] = $item['value']['max'] === ""
+    //                 ? (float) $this->max
+    //                 : (float) $item['value']['max'];
+    //         } else {
+    //             $filterColumn[] = "$col LIKE :search$i";
+    //             $params["search$i"] = "%" . trim($item['value']) . "%";
+    //         }
+    //     }
+    //     try {
+    //         $sql = "select *, ";
+    //         $sql .= "sales_order_status as is_status, ";
+    //         $sql .= "sales_order_aid as id, ";
+    //         $sql .= "sales_order_is_active as is_active, ";
+    //         $sql .= "sales_order_date as order_date, ";
+    //         $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+    //         $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
+    //         $sql .= "sales_order_customer_name as name ";
+    //         $sql .= "from {$this->tblSalesOrder} ";
+    //         $sql .= " where CAST(sales_order_total_balance_amount AS DECIMAL(10, 2)) != 0 ";
+    //         $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
+    //         if (!empty($filterColumn)) {
+    //             $sql .= " and " . implode(" and ", $filterColumn);
+    //         } else {
+    //             $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number 
+    //         or sales_order_customer_name like :sales_order_customer_name 
+    //         or sales_order_received_by_name like :sales_order_received_by_name 
+    //         or sales_order_product_owner_name like :sales_order_product_owner_name 
+    //         or sales_order_product_name like :sales_order_product_name ) " : " ");
+    //         }
+    //         $sql .= " group by sales_order_number ";
+    //         $sql .= " order by sales_order_is_active desc, ";
+    //         $sql .= "sales_order_number desc ";
+    //         $sql .= "limit :start, ";
+    //         $sql .= ":total ";
+    //         $query = $this->connection->prepare($sql);
+    //         $query->execute($params);
+    //     } catch (PDOException $ex) {
+    //         logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+    //         $query = false;
+    //     }
+    //     return $query;
+    // }
+    public function readAll(array $allowedColumns)
+    {
+        $where = ["CAST(sales_order_total_balance_amount AS DECIMAL(10,2)) != 0"];
+        $having = [];
+        $params = [];
+
+        if ($this->userId) {
+            $where[] = "sales_order_product_owner_id = :user_id";
+            $params['user_id'] = $this->userId;
+        }
+
+        foreach ($this->filters as $i => $f) {
+            // 1. Check allowed columns FIRST (Ensure 'ar_status' is in $allowedColumns)
+            if (!in_array($f['id'], $allowedColumns, true)) continue;
+
+            // 2. Handle ar_status filtering
+            if ($f['id'] === 'ar_status') {
+                if (is_array($f['value'])) {
+                    $statusParams = [];
+                    foreach ((array)$f['value'] as $k => $val) {
+                        $paramKey = "status_$k";
+                        $statusParams[] = ":$paramKey";
+                        $params[$paramKey] = $val;
+                    }
+                    if (!empty($statusParams)) {
+                        $having[] = "ar_status IN (" . implode(",", $statusParams) . ")";
+                    }
+                } else {
+                    $params["ar_status_search"] = "%" . trim($f['value']) . "%";
+                    $having[] = "ar_status LIKE :ar_status_search";
+                }
                 continue;
             }
-            $col = $item['id'];
-            if (is_array($item['value'])) {
-                $params["min$i"] = (float) $item['value']['min'];
-                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
 
-                $params["max$i"] = $item['value']['max'] === ""
-                    ? (float) $this->max
-                    : (float) $item['value']['max'];
+            // 3. Standard WHERE filters
+            if (is_array($f['value'])) {
+                $params["min$i"] = (float)$f['value']['min'];
+                $params["max$i"] = $f['value']['max'] === "" ? (float)$this->max : (float)$f['value']['max'];
+                $where[] = "{$f['id']} BETWEEN :min$i AND :max$i";
             } else {
-                $filterColumn[] = "$col LIKE :search$i";
-                $params["search$i"] = "%" . trim($item['value']) . "%";
+                $params["search$i"] = "%" . trim($f['value']) . "%";
+                $where[] = "{$f['id']} LIKE :search$i";
             }
         }
+
+        if (empty($this->filters) && $this->column_search !== "") {
+            $cols = ['sales_order_number', 'sales_order_customer_name', 'sales_order_received_by_name', 'sales_order_product_owner_name', 'sales_order_product_name'];
+            $where[] = "(" . implode(" OR ", array_map(fn($c) => "$c LIKE :q", $cols)) . ")";
+            $params['q'] = "%{$this->column_search}%";
+        }
+
+        $havingClause = !empty($having) ? " HAVING " . implode(" AND ", $having) : "";
+
+        $sql = "SELECT *, sales_order_status AS is_status, sales_order_aid AS id, 
+            sales_order_is_active AS is_active, sales_order_date AS order_date, 
+            sales_order_customer_name AS name,
+            DATE_FORMAT(sales_order_date, '%b %d, %Y') AS sales_order_date, 
+            DATE_FORMAT(sales_order_due_date, '%b %d, %Y') AS sales_order_due_date,
+            CASE 
+                WHEN sales_order_paid_amount > 0 AND CAST(sales_order_total_balance_amount AS DECIMAL(10,2)) > 0 THEN 'Partial'
+                WHEN sales_order_due_date < CURDATE() THEN 'Overdue'
+                WHEN sales_order_due_date = CURDATE() THEN 'Due Today'
+                WHEN sales_order_due_date = CURDATE() + INTERVAL 1 DAY THEN 'Due Tomorrow'
+                WHEN sales_order_due_date BETWEEN CURDATE() + INTERVAL 2 DAY AND CURDATE() + INTERVAL 7 DAY THEN 'Due Soon'
+                ELSE 'Pending'
+            END AS ar_status
+            FROM {$this->tblSalesOrder} 
+            WHERE " . implode(" AND ", $where) . "
+            {$havingClause}
+            ORDER BY ar_status ASC";
+
         try {
-            $sql = "select *, ";
-            $sql .= "sales_order_status as is_status, ";
-            $sql .= "sales_order_aid as id, ";
-            $sql .= "sales_order_is_active as is_active, ";
-            $sql .= "sales_order_date as order_date, ";
-            $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
-            $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
-            $sql .= "sales_order_customer_name as name ";
-            $sql .= "from {$this->tblSalesOrder} ";
-            $sql .= " where CAST(sales_order_total_balance_amount AS DECIMAL(10, 2)) != 0 ";
-            $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
-            if (!empty($filterColumn)) {
-                $sql .= " and " . implode(" and ", $filterColumn);
-            } else {
-                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number 
-            or sales_order_customer_name like :sales_order_customer_name 
-            or sales_order_received_by_name like :sales_order_received_by_name 
-            or sales_order_product_owner_name like :sales_order_product_owner_name 
-            or sales_order_product_name like :sales_order_product_name ) " : " ");
-            }
-            $sql .= " group by sales_order_number ";
-            $sql .= " order by DATE(sales_order_date) desc, ";
-            $sql .= "sales_order_number desc ";
-            $query = $this->connection->prepare($sql);
-            $query->execute($params);
+            $stmt = $this->connection->prepare($sql);
+            $stmt->execute($params);
+            return $stmt;
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
-            $query = false;
+            return false;
         }
-        return $query;
     }
-
-    // read all
-    public function readLimit($allowedColumns)
+    public function readLimit(array $allowedColumns)
     {
-        $filterColumn = [];
-        $params = [
-            "start" => $this->column_start - 1,
-            "total" => $this->column_total,
-            ...$this->userId != 0 ? ["sales_order_product_owner_id" => $this->userId] : [],
-            ...($this->column_search != "" ? [
-                "sales_order_number" => "%{$this->column_search}%",
-                "sales_order_customer_name" => "%{$this->column_search}%",
-                "sales_order_product_name" => "%{$this->column_search}%",
-                "sales_order_received_by_name" => "%{$this->column_search}%",
-                "sales_order_product_owner_name" => "%{$this->column_search}%",
-            ] : []),
-        ];
+        $where = ["CAST(sales_order_total_balance_amount AS DECIMAL(10,2)) != 0"];
+        $having = [];
+        $params = [];
 
-        foreach ($this->filters as $i => $item) {
-            if (!in_array($item['id'], $allowedColumns, true)) {
+        if ($this->userId) {
+            $where[] = "sales_order_product_owner_id = :user_id";
+            $params['user_id'] = $this->userId;
+        }
+
+        foreach ($this->filters as $i => $f) {
+            // Ensure column is permitted before processing
+            if (!in_array($f['id'], $allowedColumns, true)) continue;
+
+            // Direct alias check in HAVING clause
+            if ($f['id'] === 'ar_status') {
+                if (is_array($f['value'])) {
+                    $statusParams = [];
+                    foreach ((array)$f['value'] as $k => $val) {
+                        $paramKey = "status_$k";
+                        $statusParams[] = ":$paramKey";
+                        $params[$paramKey] = $val;
+                    }
+                    if (!empty($statusParams)) {
+                        $having[] = "ar_status IN (" . implode(",", $statusParams) . ")";
+                    }
+                } else {
+                    $params["ar_status_search"] = "%" . trim($f['value']) . "%";
+                    $having[] = "ar_status LIKE :ar_status_search";
+                }
                 continue;
             }
-            $col = $item['id'];
-            if (is_array($item['value'])) {
-                $params["min$i"] = (float) $item['value']['min'];
-                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
 
-                $params["max$i"] = $item['value']['max'] === ""
-                    ? (float) $this->max
-                    : (float) $item['value']['max'];
+            // Standard column filters for WHERE clause
+            if (is_array($f['value'])) {
+                $params["min$i"] = (float)$f['value']['min'];
+                $params["max$i"] = $f['value']['max'] === "" ? (float)$this->max : (float)$f['value']['max'];
+                $where[] = "{$f['id']} BETWEEN :min$i AND :max$i";
             } else {
-                $filterColumn[] = "$col LIKE :search$i";
-                $params["search$i"] = "%" . trim($item['value']) . "%";
+                $params["search$i"] = "%" . trim($f['value']) . "%";
+                $where[] = "{$f['id']} LIKE :search$i";
             }
         }
+
+        if (empty($this->filters) && $this->column_search !== "") {
+            $cols = ['sales_order_number', 'sales_order_customer_name', 'sales_order_received_by_name', 'sales_order_product_owner_name', 'sales_order_product_name'];
+            $where[] = "(" . implode(" OR ", array_map(fn($c) => "$c LIKE :q", $cols)) . ")";
+            $params['q'] = "%{$this->column_search}%";
+        }
+
+        $havingClause = !empty($having) ? " HAVING " . implode(" AND ", $having) : "";
+
+        $sql = "SELECT *, sales_order_status AS is_status, sales_order_aid AS id, 
+            sales_order_is_active AS is_active, sales_order_date AS order_date, 
+            sales_order_customer_name AS name,
+            DATE_FORMAT(sales_order_date, '%b %d, %Y') AS sales_order_date, 
+            DATE_FORMAT(sales_order_due_date, '%b %d, %Y') AS sales_order_due_date,
+            CASE 
+                WHEN sales_order_paid_amount > 0 AND CAST(sales_order_total_balance_amount AS DECIMAL(10,2)) > 0 THEN 'Partial'
+                WHEN sales_order_due_date < CURDATE() THEN 'Overdue'
+                WHEN sales_order_due_date = CURDATE() THEN 'Due Today'
+                WHEN sales_order_due_date = CURDATE() + INTERVAL 1 DAY THEN 'Due Tomorrow'
+                WHEN sales_order_due_date BETWEEN CURDATE() + INTERVAL 2 DAY AND CURDATE() + INTERVAL 7 DAY THEN 'Due Soon'
+                ELSE 'Pending'
+            END AS ar_status
+            FROM {$this->tblSalesOrder} 
+            WHERE " . implode(" AND ", $where) . "
+            {$havingClause}
+            ORDER BY ar_status ASC
+            LIMIT :start, :total";
+
         try {
-            $sql = "select *, ";
-            $sql .= "sales_order_status as is_status, ";
-            $sql .= "sales_order_aid as id, ";
-            $sql .= "sales_order_is_active as is_active, ";
-            $sql .= "sales_order_date as order_date, ";
-            $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
-            $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
-            $sql .= "sales_order_customer_name as name ";
-            $sql .= "from {$this->tblSalesOrder} ";
-            $sql .= " where CAST(sales_order_total_balance_amount AS DECIMAL(10, 2)) != 0 ";
-            $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
-            if (!empty($filterColumn)) {
-                $sql .= " and " . implode(" and ", $filterColumn);
-            } else {
-                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number 
-            or sales_order_customer_name like :sales_order_customer_name 
-            or sales_order_received_by_name like :sales_order_received_by_name 
-            or sales_order_product_owner_name like :sales_order_product_owner_name 
-            or sales_order_product_name like :sales_order_product_name ) " : " ");
+            $stmt = $this->connection->prepare($sql);
+
+            // Bind filter values as strings/floats
+            foreach ($params as $key => $val) {
+                $stmt->bindValue(":$key", $val);
             }
-            $sql .= " group by sales_order_number ";
-            $sql .= " order by sales_order_is_active desc, ";
-            $sql .= "sales_order_number desc ";
-            $sql .= "limit :start, ";
-            $sql .= ":total ";
-            $query = $this->connection->prepare($sql);
-            $query->execute($params);
+
+            // Bind pagination params strictly as integers
+            $stmt->bindValue(':start', max(0, (int)$this->column_start - 1), PDO::PARAM_INT);
+            $stmt->bindValue(':total', (int)$this->column_total, PDO::PARAM_INT);
+
+            $stmt->execute();
+            return $stmt;
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
-            $query = false;
+            return false;
         }
-        return $query;
     }
 
     // read all
@@ -310,6 +480,7 @@ class AccountReceivable
             $sql .= "sales_order_total_balance_amount = :sales_order_total_balance_amount, ";
             $sql .= "sales_order_paid_amount = :sales_order_paid_amount, ";
             $sql .= "sales_order_status = :sales_order_status, ";
+            $sql .= "sales_order_due_date = :sales_order_due_date, ";
             $sql .= "sales_order_updated = :sales_order_updated ";
             $sql .= "where sales_order_aid = :sales_order_aid ";
             $query = $this->connection->prepare($sql);
@@ -319,6 +490,7 @@ class AccountReceivable
                 "sales_order_total_balance_amount" => $this->sales_order_total_balance_amount,
                 "sales_order_paid_amount" => $this->sales_order_paid_amount,
                 "sales_order_status" => $this->sales_order_status,
+                "sales_order_due_date" => $this->sales_order_due_date,
                 "sales_order_updated" => $this->sales_order_updated,
                 "sales_order_aid" => $this->sales_order_aid,
             ]);

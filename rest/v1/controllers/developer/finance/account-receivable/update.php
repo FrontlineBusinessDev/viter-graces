@@ -59,6 +59,24 @@ if (array_key_exists("id", $_GET)) {
     $hasBalance = (float)($totalBalanceAmount ?? 0) != 0;
     $taxRate = (float)($val->sales_order_tax ?? 0);
 
+    $installmentItems = $data["installmentItems"];
+    usort($installmentItems, fn($a, $b) => strtotime($a['installment_payment_due_date']) <=> strtotime($b['installment_payment_due_date']));
+    $val->sales_order_due_date = "";
+
+    foreach ($installmentItems as $item) {
+        if ((float)$item['installment_payment_paid_amount'] == 0) {
+            $val->sales_order_due_date = date('Y-m-d', strtotime($item['installment_payment_due_date']));
+            break; // Stops checking further items once set
+        }
+    }
+
+    if (
+        $val->sales_order_due_date == ""
+    ) {
+
+        $val->sales_order_due_date = date("Y-m-d");
+    }
+
     foreach ($ordersItems as $item) {
 
         // Map item properties directly
@@ -99,6 +117,8 @@ if (array_key_exists("id", $_GET)) {
 
         if ($totalBalanceAmount <= 0) {
             $val->sales_order_status = "paid";
+
+            $val->sales_order_paid_amount = (float)$item['sales_order_total_receivable_amount'];
         }
 
         if ($totalPaidAmount <= 0) {

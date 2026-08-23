@@ -30,6 +30,36 @@ export const ActiveInActiveStatus = (val = "default-status") => {
       value: 0,
     },
     {
+      name: ["ar-finance"],
+      label: "due soon",
+      value: "due soon",
+    },
+    {
+      name: ["ar-finance"],
+      label: "due tomorrow",
+      value: "due tomorrow",
+    },
+    {
+      name: ["ar-finance"],
+      label: "due today",
+      value: "due today",
+    },
+    {
+      name: ["ar-finance"],
+      label: "pending",
+      value: "pending",
+    },
+    {
+      name: ["ar-finance"],
+      label: "overdue",
+      value: "overdue",
+    },
+    {
+      name: ["ar-finance"],
+      label: "partial",
+      value: "partial",
+    },
+    {
       name: ["stock-overview"],
       label: "out of stock",
       value: "out of stock",
