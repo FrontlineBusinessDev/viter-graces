@@ -41,15 +41,15 @@ const StockOverviewMobileResponsive = ({
                       </span>
                     </div>
                     <span className={`font-semibold text-left text-xs `}>
-                      {rowData?.products_owner_name}
+                      {rowData?.stock_movement_product_owner_name}
                     </span>
                   </div>
 
                   {/* STATUS */}
                   <ul className="text-left">
                     <li>
-                      <Pills variant={rowData?.inventory_status}>
-                        {rowData?.inventory_status}
+                      <Pills variant={rowData?.products_status}>
+                        {rowData?.products_status}
                       </Pills>
                     </li>
                     <li>

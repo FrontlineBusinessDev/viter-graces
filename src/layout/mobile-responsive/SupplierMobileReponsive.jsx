@@ -3,7 +3,7 @@ import { AmountWithPesoSign } from "@/components/PesoSign";
 import Pills from "@/components/Pills";
 import { setIsSubAction, setIsSubAdd, setIsView } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
-import { Edit, Trash } from "lucide-react";
+import { Edit, Trash, Archive } from "lucide-react";
 import React from "react";
 
 const SupplierMobileReponsive = ({
@@ -60,6 +60,14 @@ const SupplierMobileReponsive = ({
                     <p className="text-left! mb-0! font-medium text-gray-900 dark:text-light">
                       {rowData?.suppliers_product_name}
                     </p>
+
+                    <Pills variant={is_status}>{is_status}</Pills>
+                  </div>
+                  <div className="flex flex-wrap items-start justify-between mb-1! ">
+                    <p className="text-left! text-xs text-gray-500 dark:text-gray-400">
+                      {rowData?.suppliers_product_unit}
+                    </p>
+
                     <p className="font-semibold text-gray-900 dark:text-light">
                       <AmountWithPesoSign
                         classN={"size-3 "}
@@ -68,57 +76,74 @@ const SupplierMobileReponsive = ({
                       />
                     </p>
                   </div>
-                  <div className="flex flex-wrap items-start justify-between mb-1! ">
-                    <p className="text-left! text-xs text-gray-500 dark:text-gray-400">
-                      {rowData?.suppliers_product_unit}
-                    </p>
-
-                    <Pills variant={is_status}>{is_status}</Pills>
-                  </div>
 
                   <div className="flex flex-wrap justify-end pt-3 border-t border-gray-200 dark:border-gray-700  text-left!">
                     <div className="flex items-center justify-end gap-3 ">
-                      <ActionButton
-                        item={{
-                          ...rowData,
-                          name: "edit",
-                          path: "suppliers-product",
-                          isActive: 1,
-                          testId: "action-edit",
-                          icon: <Edit className="size-5 lg:size-4" />,
-                        }}
-                        onClick={() =>
-                          handleUpdate({
+                      {rowData?.suppliers_product_is_active === 1 ? (
+                        <>
+                          <ActionButton
+                            item={{
+                              ...rowData,
+                              name: "edit",
+                              path: "suppliers-product",
+                              isActive: 1,
+                              testId: "action-edit",
+                              icon: <Edit className="size-5 lg:size-4" />,
+                            }}
+                            onClick={() =>
+                              handleUpdate({
+                                ...rowData,
+                                name: "edit",
+                                path: "suppliers-product",
+                                isActive: 1,
+                              })
+                            }
+                            data-testid={"action-edit"}
+                          />
+                          <ActionButton
+                            item={{
+                              ...rowData,
+                              name: "archive",
+                              path: "suppliers-product",
+                              isActive: 1,
+                              testId: "action-archive",
+                              icon: <Archive className="size-5 lg:size-4" />,
+                            }}
+                            onClick={() =>
+                              handleAction({
+                                ...rowData,
+                                name: "archive",
+                                path: "suppliers-product",
+                                isActive: 1,
+                              })
+                            }
+                            data-testid={"action-archive"}
+                          />
+                        </>
+                      ) : (
+                        <ActionButton
+                          item={{
                             ...rowData,
-                            name: "edit",
+                            name: "delete",
                             path: "suppliers-product",
                             isActive: 1,
-                          })
-                        }
-                        data-testid={"action-edit"}
-                      />
-                      <ActionButton
-                        item={{
-                          ...rowData,
-                          name: "delete",
-                          path: "suppliers-product",
-                          isActive: 1,
-                          testId: "action-delete",
-                          icon: <Trash className="size-5 lg:size-4" />,
-                        }}
-                        onClick={() =>
-                          handleAction(
-                            {
-                              ...rowData,
-                              name: "delete",
-                              path: "suppliers-product",
-                              isActive: 0,
-                            },
-                            rowData,
-                          )
-                        }
-                        data-testid={"action-delete"}
-                      />
+                            testId: "action-delete",
+                            icon: <Trash className="size-5 lg:size-4" />,
+                          }}
+                          onClick={() =>
+                            handleAction(
+                              {
+                                ...rowData,
+                                name: "delete",
+                                path: "suppliers-product",
+                                isActive: 0,
+                              },
+                              rowData,
+                            )
+                          }
+                          data-testid={"action-delete"}
+                        />
+                      )}
                     </div>
                   </div>
                 </li>

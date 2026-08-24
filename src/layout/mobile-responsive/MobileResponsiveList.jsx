@@ -5,6 +5,7 @@ import FinanceAPMobileResponsive from "./FinanceAPMobileResponsive";
 import FinanceARMobileResponsive from "./FinanceARMobileResponsive";
 import FinanceCashSalesMobileResponsive from "./FinanceCashSalesMobileResponsive";
 import FinanceExpensestMobileResponsive from "./FinanceExpensestMobileResponsive";
+import FinanceSalesJournalMobileResponsive from "./FinanceSalesJournalMobileResponsive";
 import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
 import MovementMobileResponsive from "./MovementMobileResponsive";
 import ProductOwnerMobileReponsive from "./ProductOwnerMobileReponsive";
@@ -149,6 +150,14 @@ const MobileResponsiveList = ({
       />
       {/* REPORT OVERDUE RESPONSIVE */}
       <ReportAccountReceivableMobileResponsive
+        rows={rows}
+        setData={setData}
+        setItemEdit={setItemEdit}
+        isDefaultMobile={isDefaultMobile}
+        ishaveSubAdd={ishaveSubAdd}
+      />
+      {/* FINANCE SALES JOURNAL RESPONSIVE */}
+      <FinanceSalesJournalMobileResponsive
         rows={rows}
         setData={setData}
         setItemEdit={setItemEdit}

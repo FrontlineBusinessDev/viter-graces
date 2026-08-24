@@ -41,6 +41,16 @@ const MovementMobileResponsive = ({
                     <li className={`font-semibold text-left text-xs `}>
                       {rowData?.stock_movement_location}
                     </li>
+                    {isDefaultMobile ===
+                      "report-sales-order/page-all-inventory-movement" && (
+                      <li className={`font-semibold text-left text-xs `}>
+                        <AmountWithPesoSign
+                          classN={"size-3 "}
+                          classAmnt={"text-green-700 justify-start "}
+                          amount={rowData?.products_price}
+                        />
+                      </li>
+                    )}
                   </ul>
 
                   {/* STATUS */}
@@ -80,6 +90,17 @@ const MovementMobileResponsive = ({
                         {rowData?.stock_movement_after_qty}
                       </span>
                     </li>
+                    {isDefaultMobile ===
+                      "report-sales-order/page-all-inventory-movement" && (
+                      <li className="flex text-left! text-xs">
+                        <span className={`text-gray-500 mr-2 min-w-12`}>
+                          Threshold:
+                        </span>
+                        <span className="wrap-break-word font-semibold">
+                          {rowData?.products_low_stock_threshold}
+                        </span>
+                      </li>
+                    )}
                   </ul>
                   {/* {isDefaultMobile !==
                     "report-sales-order/page-all-inventory-movement" && (

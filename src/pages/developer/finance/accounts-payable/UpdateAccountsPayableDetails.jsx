@@ -99,7 +99,7 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
       mutation={mutation}
       isOpen={true}
       handleClose={handleClose}
-      width="min-w-[550px]!"
+      // width="min-w-[550px]!"
     >
       <ul className="grid grid-cols-2 [&>li]:flex [&>li]:items-center [&>li]:gap-2 ">
         <li>

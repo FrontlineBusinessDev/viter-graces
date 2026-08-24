@@ -96,19 +96,6 @@ const ReportAccountReceivableMobileResponsive = ({
                       </span>
                     </li>
                   </ul>
-                  <div className=" ">
-                    <ActionButtonMobile
-                      dataArray={rowData}
-                      setData={setData}
-                      setItemEdit={setItemEdit}
-                      ishaveSubAdd={ishaveSubAdd}
-                      path={path}
-                      itemVal={ActionTableList(
-                        "sales-order",
-                        "status-with-view",
-                      )}
-                    />
-                  </div>
                 </div>
               </div>
             );
