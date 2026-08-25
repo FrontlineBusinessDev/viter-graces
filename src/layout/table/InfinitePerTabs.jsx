@@ -369,7 +369,7 @@ const InfinitePerTabs = ({
 
                 {isOpen && (
                   <div className="border-t border-gray-200 px-4 lg:px-5 pb-4 ">
-                    <div className="grid xs:grid-cols-[1fr_12rem] xs:gap-3 mt-2 mb-1">
+                    <div className="grid xs:grid-cols-[1fr_12rem] gap-3 mt-2 mb-1">
                       {item.getVisibleCells().map((ditem, dkey) => {
                         const column = ditem?.column?.columnDef;
                         const value = ditem.getValue();

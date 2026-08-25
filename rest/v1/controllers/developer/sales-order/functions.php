@@ -46,6 +46,14 @@ function checkReadTopSellingProduct($object)
     checkQuery($query, "Empty records. (read top selling product)");
     return $query;
 }
+ 
+// read top 5 selling products
+function checkReadTop5SellingProduct($object)
+{
+    $query = $object->readTop5SellingProduct();
+    checkQuery($query, "Empty records. (read top 5 selling product)");
+    return $query;
+}
 
 // Delete 
 function checkDeleteById($object)

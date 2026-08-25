@@ -73,11 +73,11 @@ const PurchaseOrderMobileReponsive = ({
                     </li>
                     <li className="flex text-left! text-xs">
                       <span className={`text-gray-500 mr-2  w-22`}>
-                        Payment:
+                        Paid Amount:
                       </span>
                       <span className="wrap-break-word font-semibold">
                         <AmountWithPesoSign
-                          classN="size-3"
+                          classN="size-3 "
                           amount={rowData?.purchase_order_payment}
                         />
                       </span>
@@ -91,7 +91,8 @@ const PurchaseOrderMobileReponsive = ({
                       </span>
                     </li>
                   </ul>
-                  <div className=" ">
+                </div>
+                  <div className="pt-3 border-t border-gray-200 dark:border-gray-700 ">
                     <ActionButtonMobile
                       dataArray={rowData}
                       setData={setData}
@@ -100,7 +101,6 @@ const PurchaseOrderMobileReponsive = ({
                       path={path}
                     />
                   </div>
-                </div>
               </div>
             );
           })}

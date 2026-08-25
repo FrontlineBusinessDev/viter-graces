@@ -67,64 +67,66 @@ const CustomerMobileReponsive = ({
                 </div>
 
                 {/* OTHER FIELDS */}
-                <div className="flex flex-wrap justify-between items-end">
-                  <ul className="py-2 gap-2 sm:gap-5 ">
-                    <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 min-w-15 capitalize`}>
-                        address:
-                      </span>
-                      <span className="wrap-break-word font-semibold">
-                        {isEmptyItem(rowData?.customer_address, "none")}
-                      </span>
-                    </li>
-                    <li className="flex flex-col text-left text-xs">
-                      <span className={`text-gray-500 min-w-15`}>
-                        messenger:
-                        <a
-                          href={rowData?.messenger}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`wrap-break-word font-semibold ml-1 ${rowData?.messenger ? "hover:underline text-primary" : "pointer-events-none"}`}
-                        >
-                          {isEmptyItem(rowData?.messenger, "none")}
-                        </a>
-                      </span>
 
-                      <span className={`text-gray-500 min-w-15 capitalize `}>
-                        whatsapp:
-                        <span className="wrap-break-word font-semibold ml-1">
-                          {isEmptyItem(rowData?.whatsapp, "none")}
-                        </span>
-                      </span>
+                <ul className="py-2 ">
+                  <li className="flex gap-2">
+                    <span className={`text-gray-500 min-w-15 capitalize`}>
+                      address:
+                    </span>
+                    <span className="wrap-break-word font-semibold">
+                      {isEmptyItem(rowData?.customer_address, "none")}
+                    </span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className={`text-gray-500 capitalize`}>
+                      messenger:
+                    </span>
+                    <a
+                      href={rowData?.messenger}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`wrap-break-word font-semibold ml-1 ${rowData?.messenger ? "hover:underline text-primary" : "pointer-events-none"}`}
+                    >
+                      {isEmptyItem(rowData?.messenger, "none")}
+                    </a>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className={`text-gray-500  capitalize `}>
+                      whatsapp:
+                    </span>
+                    <span className="wrap-break-word font-semibold ml-1">
+                      {isEmptyItem(rowData?.whatsapp, "none")}
+                    </span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className={`text-gray-500  capitalize `}>
+                      Other Social:
+                    </span>
+                    <a
+                      href={rowData?.other}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`wrap-break-word font-semibold ml-1 ${rowData?.other ? "hover:underline text-primary" : "pointer-events-none"}`}
+                    >
+                      {isEmptyItem(rowData?.other, "none")}
+                    </a>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className={`text-gray-500  capitalize`}>note:</span>
+                    <span className="wrap-break-word font-semibold">
+                      {isEmptyItem(rowData?.customer_notes, "none")}
+                    </span>
+                  </li>
+                </ul>
 
-                      <span className={`text-gray-500 min-w-15 `}>
-                        other social:
-                        <a
-                          href={rowData?.other}
-                          target="_blank"
-                          rel="noopener noreferrer"
-                          className={`wrap-break-word font-semibold ml-1 ${rowData?.other ? "hover:underline text-primary" : "pointer-events-none"}`}
-                        >
-                          {isEmptyItem(rowData?.other, "none")}
-                        </a>
-                      </span>
-                    </li>
-                    <li className="flex gap-2 text-left! text-xs">
-                      <span className={`text-gray-500  capitalize`}>note:</span>
-                      <span className="wrap-break-word font-semibold">
-                        {isEmptyItem(rowData?.customer_notes, "none")}
-                      </span>
-                    </li>
-                  </ul>
-                  <div className=" ">
-                    <ActionButtonMobile
-                      dataArray={rowData}
-                      setData={setData}
-                      setItemEdit={setItemEdit}
-                      ishaveSubAdd={ishaveSubAdd}
-                      path={path}
-                    />
-                  </div>
+                <div className="pt-3 border-t border-gray-200 dark:border-gray-700 ">
+                  <ActionButtonMobile
+                    dataArray={rowData}
+                    setData={setData}
+                    setItemEdit={setItemEdit}
+                    ishaveSubAdd={ishaveSubAdd}
+                    path={path}
+                  />
                 </div>
               </div>
             );

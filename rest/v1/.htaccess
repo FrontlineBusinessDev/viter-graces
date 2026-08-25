@@ -121,6 +121,7 @@ RewriteRule ^sales-order/search$ controllers/developer/sales-order/search.php [L
 RewriteRule ^sales-order/read-all-active-by-product$ controllers/developer/sales-order/read-all-active-by-product.php [L]
 RewriteRule ^sales-order/read-sales-today$ controllers/developer/sales-order/read-sales-today.php [L]
 RewriteRule ^sales-order/read-top-selling-product$ controllers/developer/sales-order/read-top-selling-product.php [L]
+RewriteRule ^sales-order/read-top-5-selling-products$ controllers/developer/sales-order/read-top-5-selling-products.php [L]
 RewriteRule ^sales-order/page-by-id/([0-9]+)$ controllers/developer/sales-order/page-by-cutomer-id.php?start=$1 [L]
 RewriteRule ^sales-order/read-all-sales-order$ controllers/developer/sales-order/read-all-sales-order.php [L]
 RewriteRule ^sales-order/sales-overview-graph-value$ controllers/developer/sales-order/sales-overview-graph-value.php [L]

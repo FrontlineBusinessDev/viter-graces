@@ -7,6 +7,7 @@ import DashboardRecentActivities from "@/layout/dashboard/DashboardRecentActivit
 import DashboardSalesOverview from "@/layout/dashboard/DashboardSalesOverview";
 import DashboardSalesToday from "@/layout/dashboard/DashboardSalesToday";
 import DashboardTopSellingProduct from "@/layout/dashboard/DashboardTopSellingProduct";
+import DashboardTopSellingProductList from "@/layout/dashboard/DashboardTopSellingProductList";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import { setTabValue } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
@@ -28,8 +29,9 @@ const Dashboard = () => {
             <DashboardTopSellingProduct path="sales-order/read-top-selling-product" />
             <DashboardExpensesToday path="purchase-order/read-expenses-today" />
           </div>
-          <div className="grid grid-cols-1 xl:grid-cols-[2fr_1fr_1fr] gap-6 py-6 ">
+          <div className="grid grid-cols-1 xl:grid-cols-[1.7fr_1fr_1.2fr_1fr] gap-6 py-6 ">
             <DashboardSalesOverview />
+            <DashboardTopSellingProductList path="sales-order/read-top-5-selling-products" />
             <DashboardOverduePayments />
             <DashboardRecentActivities />
           </div>

@@ -72,20 +72,20 @@ const FinanceAPMobileResponsive = ({
                       </span>
                     </li>
                   </ul>
-                  <div className=" ">
-                    <ActionButtonMobile
-                      dataArray={rowData}
-                      setData={setData}
-                      setItemEdit={setItemEdit}
-                      ishaveSubAdd={ishaveSubAdd}
-                      path={path}
-                      itemVal={ActionTableList(
-                        "finance-account-receivable",
-                        "finance-ar",
-                      )}
-                      updateOnly={true}
-                    />
-                  </div>
+                </div>
+                <div className=" pt-3 border-t border-gray-200 dark:border-gray-700 ">
+                  <ActionButtonMobile
+                    dataArray={rowData}
+                    setData={setData}
+                    setItemEdit={setItemEdit}
+                    ishaveSubAdd={ishaveSubAdd}
+                    path={path}
+                    itemVal={ActionTableList(
+                      "finance-account-receivable",
+                      "finance-ar",
+                    )}
+                    updateOnly={true}
+                  />
                 </div>
               </div>
             );

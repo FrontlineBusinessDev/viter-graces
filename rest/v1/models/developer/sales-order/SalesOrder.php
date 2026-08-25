@@ -1080,8 +1080,8 @@ class SalesOrder
             $sql .= "SUM(sales_order_qty) as qty, ";
             $sql .= "SUM(sales_order_total) as total_amount, ";
             $sql .= "ROW_NUMBER() OVER ( order by ";
-            $sql .= "SUM(sales_order_total) desc, ";
-            $sql .= "SUM(sales_order_qty) desc ";
+            $sql .= "SUM(sales_order_qty) desc, ";
+            $sql .= "SUM(sales_order_total) desc ";
             $sql .= ") AS rn ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= "where DATE(sales_order_date) = DATE(:date_today) ";
@@ -1095,6 +1095,45 @@ class SalesOrder
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
+
+    public function readTop5SellingProduct()
+    {
+        try {
+            $sql = "select * from ( ";
+            $sql .= "select sales_order_product_id, ";
+            $sql .= "sales_order_product_name as product_name, ";
+            $sql .= "SUM(sales_order_qty) as qty, ";
+            $sql .= "SUM(sales_order_total) as total_amount, ";
+            $sql .= "ROW_NUMBER() OVER ( order by ";
+            $sql .= "SUM(sales_order_qty) desc, ";
+            $sql .= "SUM(sales_order_total) desc ";
+            $sql .= ") AS rn ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= "where DATE(sales_order_date) = DATE(:date_today) ";
+            $sql .= "group by ";
+            $sql .= "sales_order_product_id, ";
+            $sql .= "sales_order_product_name ) ranked ";
+            $sql .= "where rn <= 5 ";
+            $sql .= "order by rn ";
+
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "date_today" => $this->date_today,
+            ]);
+        } catch (PDOException $ex) {
+            logError(
+                $ex->getMessage(),
+                $ex->getFile(),
+                [
+                    'line' => $ex->getLine(),
+                    'code' => $ex->getCode()
+                ]
+            );
             $query = false;
         }
 

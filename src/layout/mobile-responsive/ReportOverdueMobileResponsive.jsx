@@ -39,7 +39,7 @@ const ReportOverdueMobileResponsive = ({
                         ({rowData?.installment_payment_code_number})
                       </span>
                     </div>
-                    <span className={`font-semibold text-left! text-xs `}>
+                    <span className={`font-semibold text-left! text-xs text-red-500`}>
                       <AmountWithPesoSign
                         classN={"size-3"}
                         classAmnt={" justify-start "}
