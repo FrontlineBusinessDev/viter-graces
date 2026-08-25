@@ -2,9 +2,10 @@ import { setMessage } from "@/store/StoreAction";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 
 // Props Values
-export const PropsValues = (props, items, installmentItems) => {
+export const PropsValues = (props, items) => {
   const values = props.values;
 
+  console.log("valuesvalues", values);
   values.sales_order_total_amount = items?.reduce(
     (sum, item) =>
       sum +
@@ -31,10 +32,6 @@ export const PropsValues = (props, items, installmentItems) => {
     values.sales_order_tax_amount =
       Number(values.sales_order_total_receivable_amount) -
       Number(values.sales_order_total_receivable_amount) / 1.12;
-
-    // values.subtotal =
-    //   Number(values.sales_order_total_amount) -
-    //   Number(values.sales_order_tax_amount);
   }
 
   // COMPUTATION OF EXCLUSIVE TAX
@@ -45,19 +42,12 @@ export const PropsValues = (props, items, installmentItems) => {
     values.sales_order_total_receivable_amount =
       Number(values.sales_order_total_receivable_amount) +
       Number(values.sales_order_tax_amount);
-    // values.subtotal =
-    //   Number(values.sales_order_total_amount) +
-    //   Number(values.sales_order_tax_amount);
   }
 
-  if (Number(values.sales_order_tax) === 0) {
+  if (Number(values.sales_order_tax) === 0 || values.sales_order_tax === "--") {
     values.sales_order_tax_amount = 0;
-  }
-  console.log("installmentItems", installmentItems);
-  if (values.sales_order_payment_terms?.toLocaleLowerCase() === "installment") {
-    values.sales_order_paid_amount = installmentItems.reduce(
-      (sum, a) => sum + Number(a.installment_payment_paid_amount),
-      0,
+    values.sales_order_total_receivable_amount = Number(
+      values.sales_order_total_receivable_amount,
     );
   }
 
@@ -65,19 +55,24 @@ export const PropsValues = (props, items, installmentItems) => {
     Number(values.sales_order_total_receivable_amount) -
     Number(values.sales_order_paid_amount);
 
-  // values.sales_order_total_balance_amount = Math.max(
-  //   0,
-  //   Number(values.sales_order_total_receivable_amount) -
-  //     Number(values.sales_order_paid_amount),
-  // );
+  if (
+    Number(values.sales_order_total_balance_amount) !== 0 &&
+    Number(values.sales_order_installment_count) !== 0
+  ) {
+    values.sales_order_installment_amount = Number(
+      Number(values.sales_order_total_balance_amount) /
+        Number(values.sales_order_installment_count),
+    ).toFixed(4);
+  } else {
+    values.sales_order_installment_amount = 0;
+  }
 
-  values.total =
-    installmentItems?.reduce(
-      (isum, itemIns) => isum + Number(itemIns.installment_payment_amount),
-      0,
-    ) + Number(values.sales_order_paid_amount);
-  values.validationAmount =
-    Number(values.total) >= Number(values.sales_order_total_receivable_amount);
+  if (values.sales_order_payment_method === "mutiple payment") {
+    values.sales_order_paid_amount =
+      Number(values.sales_order_cash) +
+      Number(values.sales_order_check) +
+      Number(values.sales_order_online_transaction);
+  }
 
   return;
 };

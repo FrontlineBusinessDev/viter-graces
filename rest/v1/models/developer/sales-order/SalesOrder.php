@@ -34,6 +34,14 @@ class SalesOrder
     public $sales_order_balance_per_product;
     public $sales_order_paid_per_product;
     public $sales_order_is_return;
+    public $sales_order_cash;
+    public $sales_order_check;
+    public $sales_order_online_transaction;
+    public $sales_order_installment_type;
+    public $sales_order_installment_type_day;
+    public $sales_order_installment_count;
+    public $sales_order_installment_amount;
+
     public $sales_order_created;
     public $sales_order_updated;
 
@@ -139,6 +147,13 @@ class SalesOrder
             $sql .= "sales_order_discounted_with_vat_amount, ";
             $sql .= "sales_order_balance_per_product, ";
             $sql .= "sales_order_paid_per_product, ";
+            $sql .= "sales_order_cash, ";
+            $sql .= "sales_order_check, ";
+            $sql .= "sales_order_online_transaction, ";
+            $sql .= "sales_order_installment_type, ";
+            $sql .= "sales_order_installment_type_day, ";
+            $sql .= "sales_order_installment_count, ";
+            $sql .= "sales_order_installment_amount, ";
             $sql .= "sales_order_created, ";
             $sql .= "sales_order_updated ) values ( ";
             $sql .= ":sales_order_status, ";
@@ -172,6 +187,13 @@ class SalesOrder
             $sql .= ":sales_order_discounted_with_vat_amount, ";
             $sql .= ":sales_order_balance_per_product, ";
             $sql .= ":sales_order_paid_per_product, ";
+            $sql .= ":sales_order_cash, ";
+            $sql .= ":sales_order_check, ";
+            $sql .= ":sales_order_online_transaction, ";
+            $sql .= ":sales_order_installment_type, ";
+            $sql .= ":sales_order_installment_type_day, ";
+            $sql .= ":sales_order_installment_count, ";
+            $sql .= ":sales_order_installment_amount, ";
             $sql .= ":sales_order_created, ";
             $sql .= ":sales_order_updated ) ";
             $query = $this->connection->prepare($sql);
@@ -207,6 +229,13 @@ class SalesOrder
                 "sales_order_discounted_with_vat_amount" => $this->sales_order_discounted_with_vat_amount,
                 "sales_order_balance_per_product" => $this->sales_order_balance_per_product,
                 "sales_order_paid_per_product" => $this->sales_order_paid_per_product,
+                "sales_order_cash" => $this->sales_order_cash,
+                "sales_order_check" => $this->sales_order_check,
+                "sales_order_online_transaction" => $this->sales_order_online_transaction,
+                "sales_order_installment_type" => $this->sales_order_installment_type,
+                "sales_order_installment_type_day" => $this->sales_order_installment_type_day,
+                "sales_order_installment_count" => $this->sales_order_installment_count,
+                "sales_order_installment_amount" => $this->sales_order_installment_amount,
                 "sales_order_created" => $this->sales_order_created,
                 "sales_order_updated" => $this->sales_order_updated,
             ]);
@@ -1288,6 +1317,27 @@ class SalesOrder
                 "installment_payment_amount" => $this->installment_payment_amount,
                 "installment_payment_updated" => $this->sales_order_updated,
                 "installment_payment_aid" => $this->installment_payment_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
+    public function updateInstallmentByOrderNumber()
+    {
+        try {
+            $sql = "update {$this->tblinstallmentPayment} set ";
+            $sql .= "installment_payment_amount = :installment_payment_amount, ";
+            $sql .= "installment_payment_updated = :installment_payment_updated ";
+            $sql .= "where installment_payment_code_number = :installment_payment_code_number ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "installment_payment_amount" => $this->installment_payment_amount,
+                "installment_payment_updated" => $this->sales_order_updated,
+                "installment_payment_code_number" => $this->installment_payment_code_number,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

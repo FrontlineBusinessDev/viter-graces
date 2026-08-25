@@ -48,16 +48,10 @@ if (array_key_exists("id", $_GET)) {
 
     $installmentItems = $data["installmentItems"];
 
-    installmentDetails($val, $installmentItems);
-
-    $installmentItemsDelete = $data["installmentItemsDelete"];
+    installmentDetails($val, $installmentItems, $data);
 
     // INSTALLMENT DATA
     updateStatus($val, $data);
-    for ($i = 0; $i < count($installmentItemsDelete); $i++) {
-        $val->installment_payment_aid = $installmentItemsDelete[$i]['installment_payment_aid'];
-        $query = checkDeleteinstallmentById($val);
-    }
 
     $ordersItems = $data["items"];
     $itemsDelete = $data["itemsDelete"];
@@ -137,6 +131,7 @@ if (array_key_exists("id", $_GET)) {
             $query = checkCreateMovementStock($val);
         }
     }
+
     for ($i = 0; $i < count($itemsDelete); $i++) {
         $val->sales_order_aid = $itemsDelete[$i]['sales_order_aid'];
         $query = checkDeleteById($val);

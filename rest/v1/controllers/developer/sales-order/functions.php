@@ -153,6 +153,14 @@ function checkUpdateInstallment($object)
 }
 
 // Update 
+function checkUpdateInstallmentByOrderNumber($object)
+{
+    $query = $object->updateInstallmentByOrderNumber();
+    checkQuery($query, "There's a problem processing your request. (update Installment By Order Number)");
+    return $query;
+}
+
+// Update 
 function checkUpdateSalesJournal($object)
 {
     $now = date("Y-m-d H:i:s");
@@ -317,43 +325,60 @@ function checkReadSalesOrder($object, $allowedColumns = [])
 }
 
 // Update 
-function installmentDetails($val, $installmentItems)
+// Update 
+function installmentDetails($val, $installmentItems, $data)
 {
+    $inst_payment_day = $data['sales_order_installment_type_day'];
+
+    $dateNow = date("Y-m-" . "$inst_payment_day");
+
     $val->installment_payment_received_id = "";
     $val->installment_payment_received_name = "";
     $val->installment_payment_paid_amount = 0;
     if (strtolower($val->sales_order_payment_terms) == "installment") {
-        if (count($installmentItems) > 0) {
+        if ((float)$data['sales_order_installment_count'] > 0) {
             // CREATE INSTALLMENT PAYMENT
-            for ($a = 0; $a < count($installmentItems); $a++) {
-                if ((float)$installmentItems[$a]["installment_payment_paid_amount"] != 0) {
-                    $val->sales_order_due_date = $installmentItems[$a]["installment_payment_due_date"];
+            for ($a = 0; $a < (float)$data['sales_order_installment_count']; $a++) {
+                // 
+                if ($data['sales_order_installment_type'] == "monthly") {
+                    $additionalMont = $a + 1;
+                    $nextMonth = date('Y-m-d', strtotime($dateNow . ' +' . (float)$additionalMont . ' month'));
+                    $val->installment_payment_due_date = $nextMonth;
+
+                    if ((float)$a == 0) {
+                        $val->sales_order_due_date = $nextMonth;
+                    }
                 }
+
+                if ($data['sales_order_installment_type'] == "weekly") {
+                    $additionalWeek = $a + 1;
+                    $nextWeek = date('Y-m-d', strtotime($dateNow . ' +' . (float)$additionalWeek . ' week'));
+                    $val->installment_payment_due_date = $nextWeek;
+                    if ((float)$a == 0) {
+                        $val->sales_order_due_date = $nextWeek;
+                    }
+                }
+
                 $val->installment_payment_code_id = 0;
                 $val->installment_payment_is_paid = 0;
-                $val->installment_payment_aid = $installmentItems[$a]["installment_payment_aid"];
-                $val->installment_payment_code = $installmentItems[$a]["installment_payment_code"];
-                $val->installment_payment_due_date = $installmentItems[$a]["installment_payment_due_date"];
+                $val->installment_payment_aid = 0;
+                $val->installment_payment_code = 'sales-order';
                 $val->installment_payment_code_number = $val->sales_order_number;
                 $val->installment_payment_customer_id = $val->sales_order_customer_id;
                 $val->installment_payment_customer_name = $val->sales_order_customer_name;
                 $val->installment_payment_method = $val->sales_order_payment_method;
-                $val->installment_payment_amount = $installmentItems[$a]["installment_payment_amount"];
-                $val->installment_payment_paid_amount = $installmentItems[$a]["installment_payment_paid_amount"];
+                $val->installment_payment_amount = $data["sales_order_installment_amount"];
 
-                if ((float)$val->installment_payment_amount <= (float)$val->installment_payment_paid_amount) {
-                    $val->installment_payment_is_paid = 1;
-                }
-
-                if ((float)$val->installment_payment_aid == 0) {
+                if (count($installmentItems) == 0) {
                     checkCreateInstallment($val);
                 } else {
-                    checkId($val->installment_payment_aid);
-                    checkUpdateInstallment($val);
+                    checkUpdateInstallmentByOrderNumber($val);
                 }
             }
         }
     }
+
+
     if (strtolower($val->sales_order_payment_terms) != "installment" && strtolower($val->sales_order_payment_terms) != "due on receipt - due on the same day the sales order") {
         $termsDays = strtolower($val->sales_order_payment_terms);
         $termsDaysCount = 0;

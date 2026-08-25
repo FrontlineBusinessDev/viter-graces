@@ -267,6 +267,37 @@ export const PaymentMethodList = () => {
   return result;
 };
 
+export const InstallmentType = () => {
+  const result = [
+    { label: "monthly", value: "monthly" },
+    { label: "weekly", value: "weekly" },
+  ];
+
+  return result;
+};
+
+export const InstallmentByType = (val = "monthly") => {
+  if (val === "monthly") {
+    let result = [];
+    for (let i = 1; i <= 31; i++) {
+      result.push({ value: i, label: i });
+    }
+
+    return result;
+  }
+  if (val === "weekly") {
+    const result = [
+      { label: "monday", value: "monday" },
+      { label: "tuesday", value: "tuesday" },
+      { label: "wednesday", value: "wednesday" },
+      { label: "thursday", value: "thursday" },
+      { label: "friday", value: "friday" },
+    ];
+
+    return result;
+  }
+};
+
 export const variantsStatus = (val = "active") => {
   const variants = {
     // default-status || default-status-words
