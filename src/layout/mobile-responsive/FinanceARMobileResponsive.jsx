@@ -46,8 +46,8 @@ const FinanceARMobileResponsive = ({
                       <span
                         className={`font-semibold text-black dark:text-light text-lg capitalize`}
                       >
-                        <Pills variant={rowData?.ar_status}>
-                          {rowData?.ar_status}
+                        <Pills variant={rowData?.status_text}>
+                          {rowData?.status_text}
                         </Pills>
                       </span>
                     </li>
