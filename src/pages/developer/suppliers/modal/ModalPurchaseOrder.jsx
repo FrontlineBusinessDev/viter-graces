@@ -393,7 +393,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                 ),
               };
 
-              // mutation.mutate(data);
+              mutation.mutate(data);
             }}
           >
             {(props) => {
