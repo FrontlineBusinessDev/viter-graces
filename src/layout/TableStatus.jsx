@@ -19,7 +19,6 @@ const TableStatus = ({ item, dataArray }) => {
     item?.status_option?.find((o) => o.label === dataArray?.inventory_status)
       ?.label ??
     dataArray?.status_text;
-
   return (
     <>
       <div className="">

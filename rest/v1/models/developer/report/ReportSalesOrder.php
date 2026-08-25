@@ -87,7 +87,6 @@ class ReportSalesOrder
                 "sales_order_product_owner_name" => "%{$this->column_search}%",
             ] : []),
         ];
-
         foreach ($this->filters as $i => $item) {
             if (!in_array($item['id'], $allowedColumns, true)) {
                 continue;
@@ -130,7 +129,7 @@ class ReportSalesOrder
             or sales_order_product_owner_name like :sales_order_product_owner_name 
             or sales_order_product_name like :sales_order_product_name ) " : " ");
             }
-            $sql .= " order by MAX(sales_order_is_active) desc, ";
+            $sql .= " order by sales_order_is_active desc, ";
             $sql .= "sales_order_number desc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
@@ -1869,8 +1868,8 @@ class ReportSalesOrder
             $sql .= "from {$this->tblReturnProducts} ";
             $sql .= "where return_product_status = 'processed' ";
             $sql .= ($this->userId != 0 ? "and return_product_owner_id = :return_product_owner_id " : " ");
-            $sql .= "group by return_product_owner_id desc, ";
-            $sql .= "return_product_status asc ";
+            $sql .= "group by return_product_owner_id, ";
+            $sql .= "return_product_status ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 ...$this->userId != 0 ? ["return_product_owner_id" => $this->userId] : [],

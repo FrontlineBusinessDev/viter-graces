@@ -21,9 +21,9 @@ const AccountsReceivable = () => {
   // Columns Pending, Due Soon, Due tomorrow, Due today, Overdue, Partial
   const columns = [
     {
-      accessorKey: "ar_status",
+      accessorKey: "status_text",
       header: "status",
-      classTh: "",
+      classTh: "min-w-40!",
       classTd: "",
       filterFn: "equals",
       meta: {
@@ -39,7 +39,7 @@ const AccountsReceivable = () => {
     {
       accessorKey: "sales_order_number",
       header: "Order #",
-      classTh: "",
+      classTh: "min-w-20!",
       classTd: "",
       meta: "",
     },
@@ -50,6 +50,15 @@ const AccountsReceivable = () => {
       classTd: "",
       filterFn: "date",
       meta: "",
+    },
+    {
+      accessorKey: "days_overdue",
+      header: "Days Overdue",
+      classTh: "",
+      classTd: "",
+      filterFn: "between",
+      meta: "",
+      cell: (info) => (Number(info.getValue()) > 0 ? info.getValue() : "-"),
     },
     {
       accessorKey: "sales_order_date",

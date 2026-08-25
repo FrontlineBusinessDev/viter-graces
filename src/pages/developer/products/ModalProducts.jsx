@@ -286,74 +286,18 @@ const ModalProducts = ({ itemEdit }) => {
                     />
                   </div>
 
-                  {/* <div className="relative mt-5 mb-6">
-                    <div className="relative w-fit m-auto mb-6 mt-1 group cursor-pointer">
-                      {filesArrayList?.length === 0 ? (
-                        <>
-                          <FileText className="group-hover:opacity-30 duration-200 relative size-[200px] object-cover object-[50%_50%] m-auto fill-gray-400 border p-14" />
-                        </>
-                      ) : (
-                        <div className="group-hover:opacity-30 duration-200 relative size-[150px] m-auto">
-                          <LoadImages
-                            url={filesArrayList[filesArrayList?.length - 1]}
-                            alt={
-                              filesArrayList[filesArrayList?.length - 1]?.name
-                            }
-                            className="absolute top-1/2 left-1/2 object-cover -translate-x-1/2 -translate-y-1/2 w-full h-full z-20 aspect-square"
-                            isTableSpinner={true}
-                          />
-                        </div>
-                      )}
-                      <Upload className="opacity-0 duration-200 group-hover:opacity-100 fill-dark/70 absolute top-0 right-0 bottom-0 left-0 min-h-8 max-h-8 m-auto cursor-pointer" />
-                      <InputPhotoUpload
-                        name="photo"
-                        type="file"
-                        id="myFile"
-                        accept="image/*"
-                        title="Upload photo"
-                        onChange={(e) =>
-                          handleChangeMultipleFiles(
-                            e, // event
-                            props, // props field
-                            setFilesArrayList, // onchange file state
-                            "products_image", // field value
-                            1, // file limit
-                            true,
-                            200000, // limit per file
-                            filesArrayList,
-                          )
-                        }
-                        className="opacity-0 absolute top-0 right-0 bottom-0 left-0 min-w-[155px] min-h-[250px] max-w-[155px] max-h-[250px] m-auto cursor-pointer"
-                        disabled={loading || mutation.isPending}
-                      />
-
-                      <div className="relative py-2 mb-6 leading-tight">
-                        <span className="block text-center italic ">
-                          Upload Photo
-                        </span>
-                        <span className="block text-center text-[10px]">
-                          Suggested size is 315x350 pixels
-                        </span>
-                        <span className="block text-center text-[10px]">
-                          Less than or equal to{" "}
-                          <span className="font-bold">200KB</span>
-                        </span>
-                      </div>
-                    </div>
-                  </div> */}
-
                   {store.error && <MessageError />}
                   <div className="modal-action">
                     <ModalButton
-                      disabled={mutation.isPending || loading}
-                      loading={mutation.isPending || loading}
+                      disabled={mutation.isPending}
+                      loading={mutation.isPending}
                       itemEdit={itemEdit}
                       type="button"
                       handleClose={handleClose}
                     />
                     <ModalButton
-                      disabled={mutation.isPending || loading}
-                      loading={mutation.isPending || loading}
+                      disabled={mutation.isPending}
+                      loading={mutation.isPending}
                       itemEdit={itemEdit}
                       type="submit"
                     />

@@ -19,6 +19,7 @@ import React from "react";
 const UpdateAccountsPayableDetails = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [items, setItems] = React.useState([{ paid_amount: 0 }]);
+  const [isFullyPaid, setIsFullyPaid] = React.useState(false);
 
   const queryClient = useQueryClient();
 
@@ -31,6 +32,10 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
   };
 
   handleEscape(() => handleClose());
+
+  let totalPaidAmount = isEmptyItem(itemEdit?.paid_amount, 0);
+  let totalAmount = isEmptyItem(itemEdit?.amount, 0);
+  let totalBalanceAmount = isEmptyItem(itemEdit?.balance_amount, 0);
 
   const mutation = useMutation({
     mutationFn: (values) =>
@@ -48,6 +53,10 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
       if (data.success) {
         dispatch(setSuccess(true));
         dispatch(setMessage("Updated successfully."));
+
+        if (Number(totalBalanceAmount) - Number(paidAmount) <= 0) {
+          setIsFullyPaid(true);
+        }
       }
       if (!data.success) {
         dispatch(setError(true));
@@ -55,10 +64,6 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
       }
     },
   });
-
-  let totalPaidAmount = isEmptyItem(itemEdit?.paid_amount, 0);
-  let totalAmount = isEmptyItem(itemEdit?.amount, 0);
-  let totalBalanceAmount = isEmptyItem(itemEdit?.balance_amount, 0);
 
   const handleChangeSave = (e, index) => {
     const updated = [...items];
@@ -230,8 +235,9 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
                     <td className=" dark:bg-gray-900! "></td>
                     <td className="dark:bg-gray-900! text-right">
                       <button
-                        className={`text-white bg-gray-500 hover:bg-green-800 rounded-sm p-1 text-[10px]`}
+                        className={`text-white bg-gray-500 hover:bg-green-800 rounded-sm p-1 text-[10px] disabled:opacity-50 disabled:cursor-not-allowed`}
                         type="button"
+                        disabled={mutation.isPending || isFullyPaid}
                         onClick={() => handleSave(i)}
                       >
                         Save
@@ -241,7 +247,8 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
                     <td className=" dark:bg-gray-900! ">
                       <input
                         type="number"
-                        className="text-right! mt-0!"
+                        className="text-right! mt-0! disabled:opacity-50 disabled:cursor-not-allowed"
+                        disabled={mutation.isPending || isFullyPaid}
                         onChange={(e) => handleChangeSave(e, aIndex)}
                       />
                     </td>

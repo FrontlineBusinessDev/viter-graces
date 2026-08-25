@@ -22,6 +22,7 @@ import {
   useReactTable,
 } from "@tanstack/react-table";
 import React, { useCallback, useMemo, useRef, useState } from "react";
+import ExportModal from "@/components/modals/ExportModal";
 import ActionButtonTable from "../ActionButtonTable";
 import MobileResponsiveList from "../mobile-responsive/MobileResponsiveList";
 import ModalAction from "../modal/ModalAction";
@@ -48,6 +49,7 @@ const InfiniteTable = ({
   const { store, dispatch } = React.useContext(StoreContext);
   const [dataItem, setData] = React.useState(null);
   const [sorting, setSorting] = useState([]);
+  const [showExportModal, setShowExportModal] = useState(false);
 
   let filterName = isEmptyItem(
     JSON.parse(window.sessionStorage.getItem("filter")),
@@ -253,7 +255,7 @@ const InfiniteTable = ({
 
         {hasExport && (
           <div className="flex md:justify-end lg:mb-0! w-70 ">
-            <ExportCSVButton />
+            <ExportCSVButton onClick={() => setShowExportModal(true)} />
           </div>
         )}
         {isSearch && (
@@ -520,6 +522,18 @@ const InfiniteTable = ({
           successMsg={`${dataItem?.action} successfully.`}
           item={dataItem}
           queryKey={path}
+        />
+      )}
+      {showExportModal && (
+        <ExportModal
+          columns={columns}
+          path={path}
+          columnFilters={columnFilters}
+          searchValue={search.current?.value}
+          isDeveloper={searchPayload.isDeveloper}
+          userId={userId}
+          defaultFileName={path}
+          onClose={() => setShowExportModal(false)}
         />
       )}
     </>
