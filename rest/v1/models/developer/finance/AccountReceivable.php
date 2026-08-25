@@ -144,6 +144,7 @@ class AccountReceivable
             $sql .= "WHEN sales_order_due_date = CURDATE() + INTERVAL 1 DAY THEN 'Due Tomorrow' ";
             $sql .= "WHEN sales_order_due_date BETWEEN CURDATE() + INTERVAL 2 DAY AND CURDATE() + INTERVAL 7 DAY THEN 'Due Soon' ";
             $sql .= "ELSE 'Pending' END AS status_text, ";
+            $sql .= "CASE WHEN sales_order_due_date < CURDATE() THEN DATEDIFF(CURDATE(), sales_order_due_date) ELSE 0 END AS days_overdue, ";
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where CAST(sales_order_total_balance_amount AS DECIMAL(10, 2)) != 0 ";
@@ -158,7 +159,7 @@ class AccountReceivable
             or sales_order_product_name like :sales_order_product_name ) " : " ");
             }
             $sql .= " group by sales_order_number ";
-            $sql .= " order by status_text asc, ";
+            $sql .= " order by days_overdue desc, ";
             $sql .= "DATE(sales_order_due_date) desc, ";
             $sql .= "sales_order_number asc ";
             $query = $this->connection->prepare($sql);
@@ -217,6 +218,7 @@ class AccountReceivable
             $sql .= "WHEN sales_order_due_date = CURDATE() + INTERVAL 1 DAY THEN 'Due Tomorrow' ";
             $sql .= "WHEN sales_order_due_date BETWEEN CURDATE() + INTERVAL 2 DAY AND CURDATE() + INTERVAL 7 DAY THEN 'Due Soon' ";
             $sql .= "ELSE 'Pending' END AS status_text, ";
+            $sql .= "CASE WHEN sales_order_due_date < CURDATE() THEN DATEDIFF(CURDATE(), sales_order_due_date) ELSE 0 END AS days_overdue, ";
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where CAST(sales_order_total_balance_amount AS DECIMAL(10, 2)) != 0 ";
@@ -231,7 +233,7 @@ class AccountReceivable
             or sales_order_product_name like :sales_order_product_name ) " : " ");
             }
             $sql .= " group by sales_order_number ";
-            $sql .= " order by status_text asc, ";
+            $sql .= " order by days_overdue desc, ";
             $sql .= "DATE(sales_order_due_date) desc, ";
             $sql .= "sales_order_number asc ";
             $sql .= "limit :start, ";

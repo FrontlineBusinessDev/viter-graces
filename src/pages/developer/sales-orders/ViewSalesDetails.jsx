@@ -147,17 +147,6 @@ const ViewSalesDetails = ({ itemEdit }) => {
               </small>
             </li>
             <li className="">
-              <small>Tax</small>
-            </li>
-            <li className="text-right">
-              <small>
-                <AmountWithPesoSign
-                  classN="size-3"
-                  amount={`${itemEdit?.sales_order_tax_amount}`}
-                />
-              </small>
-            </li>
-            <li className="">
               <small>Discount</small>
             </li>
             <li className="text-right">
@@ -165,6 +154,17 @@ const ViewSalesDetails = ({ itemEdit }) => {
                 <AmountWithPesoSign
                   classN="size-3"
                   amount={`${itemEdit?.sales_order_discount}`}
+                />
+              </small>
+            </li>
+            <li className="">
+              <small>Tax</small>
+            </li>
+            <li className="text-right">
+              <small>
+                <AmountWithPesoSign
+                  classN="size-3"
+                  amount={`${itemEdit?.sales_order_tax_amount}`}
                 />
               </small>
             </li>

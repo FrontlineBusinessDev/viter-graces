@@ -52,6 +52,15 @@ const AccountsReceivable = () => {
       meta: "",
     },
     {
+      accessorKey: "days_overdue",
+      header: "Days Overdue",
+      classTh: "",
+      classTd: "",
+      filterFn: "between",
+      meta: "",
+      cell: (info) => (Number(info.getValue()) > 0 ? info.getValue() : "-"),
+    },
+    {
       accessorKey: "sales_order_date",
       header: "Date",
       classTh: "",
