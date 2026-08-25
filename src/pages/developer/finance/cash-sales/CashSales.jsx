@@ -40,7 +40,15 @@ const CashSales = () => {
     },
     {
       accessorKey: "sales_order_product_name",
-      header: "Items",
+      header: "Product",
+      classTh: "",
+      classTd: "",
+      isMobileTitle: true,
+      meta: "",
+    },
+    {
+      accessorKey: "sales_order_qty",
+      header: "Quantity",
       classTh: "",
       classTd: "",
       isMobileTitle: true,
@@ -48,7 +56,7 @@ const CashSales = () => {
     },
     {
       accessorKey: "total_amount_per_product",
-      header: "Amount",
+      header: "Amount To Pay",
       amount: true,
       classTh: "",
       classTd: "",

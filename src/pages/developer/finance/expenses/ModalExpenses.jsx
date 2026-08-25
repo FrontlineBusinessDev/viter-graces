@@ -151,7 +151,7 @@ const ModalExpenses = ({ itemEdit }) => {
               }
               return (
                 <Form>
-                  <p>
+                  <p className="font-bold mb-3">
                     Supplier :{" "}
                     <span className="uppercase font-bold">other</span>
                   </p>

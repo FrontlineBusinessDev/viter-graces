@@ -67,6 +67,14 @@ const FinanceCashSalesMobileResponsive = ({
                       </span>
                     </li>
                     <li className="flex text-left! text-xs">
+                      <span className={`text-gray-500 mr-3 capitalize`}>
+                        Quantity:{" "}
+                      </span>
+                      <span className="wrap-break-word font-semibold">
+                        {rowData?.sales_order_qty}
+                      </span>
+                    </li>
+                    <li className="flex text-left! text-xs">
                       <span className={`text-gray-500 mr-2`}>Amount: </span>
                       <span className="wrap-break-word font-semibold ml-2">
                         <AmountWithPesoSign

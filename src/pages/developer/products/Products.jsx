@@ -35,7 +35,7 @@ const Products = () => {
     },
     {
       accessorKey: "products_name",
-      header: "Products",
+      header: "Product",
       classTh: "min-w-[10rem] ",
       classTd: "",
       isMobileTitle: true,
