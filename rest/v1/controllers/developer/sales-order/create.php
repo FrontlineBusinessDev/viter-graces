@@ -43,13 +43,23 @@ $val->sales_order_due_date = date("Y-m-d");
 $val->sales_order_cash = $data['sales_order_cash'];
 $val->sales_order_check = $data['sales_order_check'];
 $val->sales_order_online_transaction = $data['sales_order_online_transaction'];
-$val->sales_order_installment_type  = $data['sales_order_installment_type'];
-$val->sales_order_installment_type_day  = $data['sales_order_installment_type_day'];
-$val->sales_order_installment_count  = $data['sales_order_installment_count'];
-$val->sales_order_installment_amount  = $data['sales_order_installment_amount'];
+$val->sales_order_installment_type = $data['sales_order_installment_type'];
+$val->sales_order_installment_type_day = $data['sales_order_installment_type_day'];
+$val->sales_order_installment_count = $data['sales_order_installment_count'];
+$val->sales_order_installment_amount = $data['sales_order_installment_amount'];
 
 if ((float)$data["sales_order_paid_amount"] >= (float)$data["sales_order_total_receivable_amount"]) {
     $val->sales_order_paid_amount = $data["sales_order_total_receivable_amount"];
+}
+
+if ($val->sales_order_payment_method == "cash") {
+    $val->sales_order_cash = $val->sales_order_paid_amount;
+}
+if ($val->sales_order_payment_method == "check") {
+    $val->sales_order_check = $val->sales_order_paid_amount;
+}
+if ($val->sales_order_payment_method == "online transaction") {
+    $val->sales_order_online_transaction = $val->sales_order_paid_amount;
 }
 
 $val->sales_order_number = setIdNumber($val, "ORD");

@@ -77,6 +77,20 @@ const AccountsReceivable = () => {
       meta: "",
     },
     {
+      accessorKey: "sales_order_product_name",
+      header: "Product",
+      classTh: "",
+      classTd: "",
+      meta: "",
+    },
+    {
+      accessorKey: "sales_order_qty",
+      header: "Quantity",
+      classTh: "",
+      classTd: "",
+      meta: "",
+    },
+    {
       accessorKey: "sales_order_total_receivable_amount",
       header: "Amount",
       amount: true,

@@ -38,6 +38,7 @@ class Products
     public $tblStockMovements;
     public $tblMovementStock;
     public $tblSalesOrder;
+    public $tblReturnProduct;
 
     public $filters;
     public $column_start;
@@ -52,6 +53,7 @@ class Products
         $this->tblStockMovements = "graces_stock_movement";
         $this->tblMovementStock = "graces_stock_movement";
         $this->tblSalesOrder = "graces_sales_order";
+        $this->tblReturnProduct = "graces_return_product";
     }
 
     // create
@@ -841,6 +843,29 @@ class Products
                 "stock_movement_product_owner_name" => $this->products_owner_name,
                 "stock_movement_updated" => $this->products_updated,
                 "stock_movement_product_id" => $this->products_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // update
+    public function updateProductOwnerRetun()
+    {
+        try {
+            $sql = "update {$this->tblReturnProduct} set ";
+            $sql .= "return_product_owner_id = :return_product_owner_id, ";
+            $sql .= "return_product_owner_name = :return_product_owner_name, ";
+            $sql .= "return_product_updated = :return_product_updated ";
+            $sql .= "where return_product_product_id = :return_product_product_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "return_product_owner_id" => $this->products_owner_id,
+                "return_product_owner_name" => $this->products_owner_name,
+                "return_product_updated" => $this->products_updated,
+                "return_product_product_id" => $this->products_aid,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

@@ -38,7 +38,7 @@ const FinanceARMobileResponsive = ({
                       </span>
                     </li>
                     <li className="text-left mb-0">
-                      order date:{rowData?.sales_order_date}
+                      Order Date:{rowData?.sales_order_date}
                     </li>
                   </ul>
                   <ul className="flex flex-col">
@@ -52,13 +52,25 @@ const FinanceARMobileResponsive = ({
                       </span>
                     </li>
                     <li className="text-left mb-0">
-                      Due date: {rowData?.sales_order_due_date}
+                      Due Date: {rowData?.sales_order_due_date}
                     </li>
                   </ul>
                 </div>
                 {/* OTHER FIELDS */}
                 <div className="flex flex-wrap justify-between items-end border-t border-gray-200">
                   <ul className=" py-2 gap-2 sm:gap-5  ">
+                    <li className="flex text-left! text-xs">
+                      <span className={`text-gray-500 mr-2`}>Product: </span>
+                      <span className="wrap-break-word font-semibold text-black dark:text-light">
+                        {rowData?.sales_order_product_name}
+                      </span>
+                    </li>
+                    <li className="flex text-left! text-xs">
+                      <span className={`text-gray-500 mr-2`}>Quantity: </span>
+                      <span className="wrap-break-word font-semibold text-black dark:text-light">
+                        {rowData?.sales_order_qty}
+                      </span>
+                    </li>
                     <li className="flex text-left! text-xs">
                       <span className={`text-gray-500 mr-2`}>Amount: </span>
                       <span className="wrap-break-word font-semibold ">
@@ -87,20 +99,20 @@ const FinanceARMobileResponsive = ({
                       </span>
                     </li>
                   </ul>
-                  <div className=" ">
-                    <ActionButtonMobile
-                      dataArray={rowData}
-                      setData={setData}
-                      setItemEdit={setItemEdit}
-                      ishaveSubAdd={ishaveSubAdd}
-                      path={path}
-                      itemVal={ActionTableList(
-                        "finance-account-receivable",
-                        "finance-ar",
-                      )}
-                      updateOnly={true}
-                    />
-                  </div>
+                </div>
+                <div className=" pt-3 border-t border-gray-200 dark:border-gray-700">
+                  <ActionButtonMobile
+                    dataArray={rowData}
+                    setData={setData}
+                    setItemEdit={setItemEdit}
+                    ishaveSubAdd={ishaveSubAdd}
+                    path={path}
+                    itemVal={ActionTableList(
+                      "finance-account-receivable",
+                      "finance-ar",
+                    )}
+                    updateOnly={true}
+                  />
                 </div>
               </div>
             );

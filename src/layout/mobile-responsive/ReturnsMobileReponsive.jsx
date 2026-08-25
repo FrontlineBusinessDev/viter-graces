@@ -91,7 +91,8 @@ const ReturnsMobileReponsive = ({
                       </span>
                     </li>
                   </ul>
-
+                </div>
+                <div className="pt-3 border-t border-gray-200 dark:border-gray-700 flex justify-end ">
                   <TableUpdateStatus
                     path={isDefaultMobile}
                     item={rowData}

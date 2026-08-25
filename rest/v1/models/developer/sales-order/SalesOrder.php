@@ -678,6 +678,10 @@ class SalesOrder
             $sql .= "sales_order_due_date = :sales_order_due_date, ";
             $sql .= "sales_order_balance_per_product = :sales_order_balance_per_product, ";
             $sql .= "sales_order_paid_per_product = :sales_order_paid_per_product, ";
+            $sql .= "sales_order_cash = :sales_order_cash, ";
+            $sql .= "sales_order_check = :sales_order_check, ";
+            $sql .= "sales_order_online_transaction = :sales_order_online_transaction, ";
+            $sql .= "sales_order_installment_amount = :sales_order_installment_amount, ";
             $sql .= "sales_order_updated = :sales_order_updated ";
             $sql .= "where sales_order_aid  = :sales_order_aid ";
             $query = $this->connection->prepare($sql);
@@ -709,6 +713,10 @@ class SalesOrder
                 "sales_order_due_date" => $this->sales_order_due_date,
                 "sales_order_balance_per_product" => $this->sales_order_balance_per_product,
                 "sales_order_paid_per_product" => $this->sales_order_paid_per_product,
+                "sales_order_cash" => $this->sales_order_cash,
+                "sales_order_check" => $this->sales_order_check,
+                "sales_order_online_transaction" => $this->sales_order_online_transaction,
+                "sales_order_installment_amount" => $this->sales_order_installment_amount,
                 "sales_order_aid" => $this->sales_order_aid,
             ]);
         } catch (PDOException $ex) {
@@ -1075,12 +1083,11 @@ class SalesOrder
         return $query;
     }
 
-
     public function readSalesToday()
     {
         try {
             $sql = "select DATE(sales_order_date) AS sales_date, ";
-            $sql .= "SUM(sales_order_total) AS total_sales, ";
+            $sql .= "SUM(sales_order_discounted_with_vat_amount) AS total_sales, ";
             $sql .= "SUM(sales_order_qty) AS total_qty ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= "where DATE(sales_order_date) in (DATE(:date_today), DATE(:date_yesterday)) ";
@@ -1099,7 +1106,6 @@ class SalesOrder
         return $query;
     }
 
-
     public function readTopSellingProduct()
     {
         try {
@@ -1109,8 +1115,8 @@ class SalesOrder
             $sql .= "SUM(sales_order_qty) as qty, ";
             $sql .= "SUM(sales_order_total) as total_amount, ";
             $sql .= "ROW_NUMBER() OVER ( order by ";
-            $sql .= "SUM(sales_order_total) desc, ";
-            $sql .= "SUM(sales_order_qty) desc ";
+            $sql .= "SUM(sales_order_qty) desc, ";
+            $sql .= "SUM(sales_order_total) desc ";
             $sql .= ") AS rn ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= "where DATE(sales_order_date) = DATE(:date_today) ";
@@ -1124,6 +1130,45 @@ class SalesOrder
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
+
+    public function readTop5SellingProduct()
+    {
+        try {
+            $sql = "select * from ( ";
+            $sql .= "select sales_order_product_id, ";
+            $sql .= "sales_order_product_name as product_name, ";
+            $sql .= "SUM(sales_order_qty) as qty, ";
+            $sql .= "SUM(sales_order_total) as total_amount, ";
+            $sql .= "ROW_NUMBER() OVER ( order by ";
+            $sql .= "SUM(sales_order_qty) desc, ";
+            $sql .= "SUM(sales_order_total) desc ";
+            $sql .= ") AS rn ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= "where DATE(sales_order_date) = DATE(:date_today) ";
+            $sql .= "group by ";
+            $sql .= "sales_order_product_id, ";
+            $sql .= "sales_order_product_name ) ranked ";
+            $sql .= "where rn <= 5 ";
+            $sql .= "order by rn ";
+
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "date_today" => $this->date_today,
+            ]);
+        } catch (PDOException $ex) {
+            logError(
+                $ex->getMessage(),
+                $ex->getFile(),
+                [
+                    'line' => $ex->getLine(),
+                    'code' => $ex->getCode()
+                ]
+            );
             $query = false;
         }
 

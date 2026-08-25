@@ -89,7 +89,8 @@ const ProductsMobileResponsive = ({
                       </span>
                     </li>
                   </ul>
-                  <div className=" ">
+                </div>
+                  <div className="pt-3 border-t border-gray-200 dark:border-gray-700 ">
                     <ActionButtonMobile
                       dataArray={rowData}
                       setData={setData}
@@ -98,7 +99,6 @@ const ProductsMobileResponsive = ({
                       path={path}
                     />
                   </div>
-                </div>
               </div>
             );
           })}

@@ -333,11 +333,12 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
               );
 
               let order_status = isAllReceived;
-              values.purchase_order_status = isAllReceived
+              values.purchase_order_status = !itemEdit
                 ? values.purchase_order_status
-                : "received";
+                : isAllReceived
+                  ? values.purchase_order_status
+                  : "received";
 
-              console.log("123", order_status);
               if (hasDuplicateCombination) {
                 dispatch(setError(true));
                 dispatch(
@@ -573,7 +574,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                       amount={a["purchase_order_total_amount"]}
                                     />
                                   </td>
-                                  <td className=" bg-gray-100! dark:bg-gray-900! ">
+                                  <td className="flex bg-gray-100! dark:bg-gray-900! ">
                                     {itemEdit ? (
                                       <>
                                         <button
@@ -584,7 +585,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                               !a.purchase_order_delivery_is_status,
                                             )
                                           }
-                                          className={`text-white ${!a.purchase_order_delivery_is_status ? " bg-gray-500 " : "bg-green-800 "} rounded-sm p-1 text-[10px] mr-3`}
+                                          className={`text-white ${!a.purchase_order_delivery_is_status ? " bg-gray-500 " : "bg-green-800 "} rounded-sm p-1 text-[10px] mr-2`}
                                           type="button"
                                         >
                                           Received

@@ -7,11 +7,7 @@ import {
 import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
-import {
-  AmountsWithPesoSign,
-  AmountWithPesoSign,
-  PesoSign,
-} from "@/components/PesoSign";
+import { AmountsWithPesoSign, AmountWithPesoSign } from "@/components/PesoSign";
 import { apiVersion } from "@/config/config";
 import {
   ActivityLogDetails,
@@ -32,14 +28,13 @@ import {
 import { StoreContext } from "@/store/StoreContext";
 import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import { PhilippinePeso, Plus } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
 import { PropsValues, Validations } from "./functions";
-import { ProductOwnerId } from "@/utilities/productOwnerToken";
-import { numberWithCommasToFixed } from "@/utilities/numberWithCommas";
 
 const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   const { store, dispatch } = React.useContext(StoreContext);

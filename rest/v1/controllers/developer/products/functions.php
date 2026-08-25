@@ -52,6 +52,8 @@ function updateProductOwner($object)
     checkQuery($queryPOSO, "There's a problem processing your request. (updateProductOwnerSalesOrder)");
     $queryPOSM = $object->updateProductOwnerStockMovement();
     checkQuery($queryPOSM, "There's a problem processing your request. (updateProductOwnerStockMovement)");
+    $queryPOSM = $object->updateProductOwnerRetun();
+    checkQuery($queryPOSM, "There's a problem processing your request. (updateProductOwnerRetun)");
 
     return;
 }

@@ -50,13 +50,13 @@ const DashboardOverduePayments = () => {
               return (
                 <li key={key} className="flex justify-between">
                   <div>
-                    <span className="font-medium text-xs text-black dark:text-light">
+                    <span className="font-medium text-sm text-black dark:text-light">
                       {item.installment_payment_customer_name} -{" "}
                       <span className="text-gray-500">
                         {item.installment_payment_code_number}
                       </span>
                     </span>
-                    <p className="text-gray-500 text-sm mb-1!">
+                    <p className="text-gray-500 text-xs mb-1!">
                       {item.installment_payment_due_date}
                     </p>
                   </div>
