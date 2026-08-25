@@ -671,7 +671,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         <hr className="border-gray-200" />
                       ) : (
                         <div className="border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out py-3 ">
-                          <div className="flex flex-col pb-2 h-57 overflow-auto">
+                          <div className="flex gap-3 mx-4 pb-2 h-57 overflow-auto">
                             <ul className=" grid grid-cols-[2rem_10rem_1fr_1fr_1rem] sm:grid-cols-[2rem_1fr_1fr_1fr_1rem] gap-3 px-3 text-dark sticky top-0 bg-gray-100 py-2">
                               <li>#</li>
                               <li>Due Date</li>
@@ -773,68 +773,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                 </div>
                               );
                             })}
-                            {/* <div className="px-3 mt-2 text-dark ">
-                              <ul className="sm:grid grid-cols-2 ">
-                                <li className="sm:text-right mx-2 uppercase">
-                                  Total installment amount
-                                </li>
-                                <li className="text-left! mx-2 ">
-                                  <AmountWithPesoSign
-                                    classN="size-3 "
-                                    classAmnt="justify-start! "
-                                    amount={
-                                      Number(props.values.total) -
-                                      Number(
-                                        props.values.sales_order_paid_amount,
-                                      )
-                                    }
-                                  />
-                                </li>
-                                <li className="sm:text-right mx-2 uppercase">
-                                  Total Paid
-                                </li>
-                                <li className="text-left! mx-2 ">
-                                  <AmountWithPesoSign
-                                    classN="size-3 "
-                                    classAmnt="justify-start! "
-                                    amount={Number(
-                                      props.values.sales_order_paid_amount,
-                                    )}
-                                  />
-                                </li>
-                                <li
-                                  className={`${props.values.validationAmount ? "" : " text-red-800 "} sm:text-right mx-2 uppercase `}
-                                >
-                                  Total
-                                </li>
-                                <li
-                                  className={`text-left! mx-2 sm:flex justify-between `}
-                                >
-                                  <div
-                                    className={`${props.values.validationAmount ? "" : " text-red-800 "} `}
-                                  >
-                                    <AmountWithPesoSign
-                                      classN="size-3 "
-                                      classAmnt="justify-start! "
-                                      amount={props.values.total}
-                                    />
-                                  </div>
-                                  <div className="sm:flex ">
-                                    <span className=" mr-4 uppercase ">
-                                      Total Amount
-                                    </span>
-                                    <AmountWithPesoSign
-                                      classN="size-3 "
-                                      classAmnt="justify-start! "
-                                      amount={
-                                        props?.values
-                                          ?.sales_order_total_receivable_amount
-                                      }
-                                    />
-                                  </div>
-                                </li>
-                              </ul>
-                            </div> */}
                           </div>
                         </div>
                       )}
