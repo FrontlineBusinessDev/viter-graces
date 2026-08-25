@@ -129,7 +129,7 @@ class ReportSalesOrder
             or sales_order_product_owner_name like :sales_order_product_owner_name 
             or sales_order_product_name like :sales_order_product_name ) " : " ");
             }
-            $sql .= " order by MAX(sales_order_is_active) desc, ";
+            $sql .= " order by sales_order_is_active desc, ";
             $sql .= "sales_order_number desc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
