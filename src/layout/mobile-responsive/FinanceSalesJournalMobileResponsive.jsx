@@ -3,7 +3,7 @@ import ActionButtonMobile from "../ActionButtonMobile";
 import { ActionTableList } from "../ArrayValue";
 import { AmountWithPesoSign } from "@/components/PesoSign";
 
-const FinanceCashSalesMobileResponsive = ({
+const FinanceSalesJournalMobileResponsive = ({
   rows,
   setData,
   setItemEdit,
@@ -14,7 +14,7 @@ const FinanceCashSalesMobileResponsive = ({
 }) => {
   return (
     <>
-      {isDefaultMobile === "finance-cash-sales" && (
+      {isDefaultMobile === "finance-sales-journal" && (
         <div>
           {rows?.map((row, index) => {
             const rowData = row.original;
@@ -31,17 +31,19 @@ const FinanceCashSalesMobileResponsive = ({
                       <span
                         className={`font-semibold text-black dark:text-light text-lg capitalize`}
                       >
-                        {rowData?.sales_order_product_name}
+                        {rowData?.sales_journal_customer}
                       </span>
                       <span className={`font-semibold text-xs `}>
-                        ({rowData?.sales_order_number})
+                        ({rowData?.sales_journal_order_number})
                       </span>
                     </li>
                     <li className={`font-semibold text-left text-xs `}>
-                      {rowData?.sales_order_product_owner_name}
+                      {rowData?.sales_journal_date}
                     </li>
-                    <li className={`font-semibold text-left text-xs `}>
-                      {rowData?.sales_order_date}
+                    <li
+                      className={`font-semibold text-left text-xs capitalize `}
+                    >
+                      {rowData?.sales_journal_method}
                     </li>
                   </ul>
 
@@ -56,33 +58,38 @@ const FinanceCashSalesMobileResponsive = ({
                   </ul> */}
                 </div>
                 {/* OTHER FIELDS */}
-                <div className="flex flex-wrap justify-between items-end border-t border-gray-200">
-                  <ul className=" py-2 gap-2 sm:gap-5  ">
+                <div className="items-end border-t border-gray-200">
+                  <ul className="grid py-2 gap-2 sm:gap-5  ">
                     <li className="flex text-left! text-xs">
                       <span className={`text-gray-500 mr-2 capitalize`}>
-                        customer:{" "}
+                        Debit:{" "}
                       </span>
                       <span className="wrap-break-word font-semibold">
-                        {rowData?.sales_order_customer_name}
-                      </span>
-                    </li>
-                    <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2`}>Amount: </span>
-                      <span className="wrap-break-word font-semibold ml-2">
                         <AmountWithPesoSign
                           classN="size-3"
                           classAmnt="flex justify-start text-black"
-                          amount={rowData?.total_amount_per_product}
+                          amount={rowData?.sales_journal_debit}
+                        />
+                      </span>
+                    </li>
+
+                    <li className="flex text-left! text-xs">
+                      <span className={`text-gray-500 mr-2`}>Credit: </span>
+                      <span className="wrap-break-word font-semibold">
+                        <AmountWithPesoSign
+                          classN="size-3"
+                          classAmnt="flex justify-start text-black"
+                          amount={rowData?.sales_journal_credit}
                         />
                       </span>
                     </li>
                     <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2`}>Paid: </span>
-                      <span className="wrap-break-word font-semibold ml-6.5">
+                      <span className={`text-gray-500 mr-2`}>Balance: </span>
+                      <span className="wrap-break-word font-semibold">
                         <AmountWithPesoSign
                           classN="size-3"
                           classAmnt="flex justify-start text-primary"
-                          amount={rowData?.sales_order_paid_per_product}
+                          amount={rowData?.sales_journal_balance}
                         />
                       </span>
                     </li>
@@ -97,4 +104,4 @@ const FinanceCashSalesMobileResponsive = ({
   );
 };
 
-export default FinanceCashSalesMobileResponsive;
+export default FinanceSalesJournalMobileResponsive;

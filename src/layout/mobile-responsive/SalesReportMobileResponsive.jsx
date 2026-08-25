@@ -43,7 +43,7 @@ const SalesReportMobileResponsive = ({
                       <AmountWithPesoSign
                         classN={"size-3 "}
                         classAmnt={"text-green-700 justify-start "}
-                        amount={rowData?.sales_order_total}
+                        amount={rowData?.sales_order_discounted_with_vat_amount}
                       />
                     </li>
                   </ul>

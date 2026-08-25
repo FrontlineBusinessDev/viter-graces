@@ -718,6 +718,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                         )}
                                         placeholder="0"
                                         type="number"
+                                        className="min-w-20"
                                       />
                                       <input
                                         onChange={(e) => {
@@ -734,6 +735,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                         )}
                                         placeholder="0"
                                         type="number"
+                                        className="min-w-20"
                                       />
 
                                       <button
@@ -755,7 +757,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                         )}
                                         type="date"
                                         readOnly
-                                        className="border-t-0! border-x-0! text-primary"
+                                        className="border-t-0! border-x-0! text-primary "
                                       />
                                       <input
                                         defaultValue={isEmptyItem(
@@ -764,7 +766,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                         )}
                                         type="number"
                                         readOnly
-                                        className="border-t-0! border-x-0! text-primary"
+                                        className="border-t-0! border-x-0! text-primary min-w-20"
                                       />
                                     </>
                                   )}
@@ -841,7 +843,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                     ""
                   )}
 
-                  <div className="grid grid-cols-3 mt-3 gap-3 items-center">
+                  <div className="grid xs:grid-cols-2 md:grid-cols-3 mt-3 gap-3 items-center">
                     <ul className="grid grid-cols-[5rem_1fr] ">
                       <li>Sub Amount:</li>
                       <li>
