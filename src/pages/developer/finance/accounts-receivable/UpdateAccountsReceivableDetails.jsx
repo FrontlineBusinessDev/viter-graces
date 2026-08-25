@@ -52,7 +52,6 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
       });
 
       if (data.success) {
-        console.log("data.success", data.success);
         dispatch(setSuccess(true));
         dispatch(setMessage("Updated successfully."));
       }
@@ -118,6 +117,13 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
         if (res?.success) {
           setTotalPaidAmount(newTotalPaidAmount);
           setTotalBalanceAmount(newTotalBalanceAmount);
+
+          if (Number(newTotalBalanceAmount) <= 0) {
+            queryClient.invalidateQueries({
+              queryKey: ["finance-account-receivable"],
+            });
+            dispatch(setIsAdd(false));
+          }
         }
       },
     });

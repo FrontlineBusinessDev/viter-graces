@@ -726,7 +726,9 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         </div>
                       </div>
                     </>
-                  ) : (
+                  ) : itemEdit &&
+                    props.values.sales_order_payment_terms?.toLocaleLowerCase() ===
+                      "installment" ? (
                     <div className="my-5 px-4 border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full transition-all duration-300 ease-in-out py-3 ">
                       <h2 className="text-sm mb-2">Installment Details</h2>
                       <div className="flex justify-between gap-3 pb-2 overflow-auto">
@@ -757,6 +759,8 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         </div>
                       </div>
                     </div>
+                  ) : (
+                    ""
                   )}
 
                   <div className="grid xs:grid-cols-2 md:grid-cols-3 mt-3 gap-3 items-center">
