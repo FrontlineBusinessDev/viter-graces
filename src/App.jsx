@@ -5,6 +5,8 @@ import { routesAccess } from "./routes/RoutesAccess";
 import { routesDeveloper } from "./routes/RoutesDeveloper";
 import { StoreProvider } from "./store/StoreContext";
 import { ThemeProvider } from "./store/ThemeContext.jsx";
+import { ExportProvider } from "./store/ExportContext.jsx";
+import ExportProgressWidget from "./components/widgets/ExportProgressWidget.jsx";
 import { routesAdmin } from "./routes/RoutesAdmin";
 import { routesCashier } from "./routes/ProductCashier";
 import { routesProductOwner } from "./routes/RoutesProductOwner";
@@ -34,7 +36,10 @@ function App() {
       <QueryClientProvider client={queryClient}>
         <ThemeProvider>
           <StoreProvider>
-            <RouterProvider router={router} />
+            <ExportProvider>
+              <RouterProvider router={router} />
+              <ExportProgressWidget />
+            </ExportProvider>
           </StoreProvider>
         </ThemeProvider>
       </QueryClientProvider>
