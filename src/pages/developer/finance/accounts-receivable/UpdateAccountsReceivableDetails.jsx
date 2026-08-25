@@ -150,6 +150,12 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
             {itemEdit?.sales_order_date}
           </p>
         </li>
+        <li>
+          <p>Payment terms:</p>
+          <p className="text-black dark:text-light">
+            {itemEdit?.sales_order_customer_name}
+          </p>
+        </li>
       </ul>
 
       <div className="border shadow border-gray-300 rounded-lg dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out ">
@@ -193,7 +199,9 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
                           <input
                             type="number"
                             className="text-right!"
+                            value={a["installment_payment_amount"]}
                             onChange={(e) => handleChangeSave(e, index)}
+                            readOnly
                           />
                         </td>
                         <td>
@@ -202,7 +210,7 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
                             type="button"
                             onClick={() => handleSave(a, index)}
                           >
-                            Save
+                            Paid
                           </button>
                         </td>
                       </>
