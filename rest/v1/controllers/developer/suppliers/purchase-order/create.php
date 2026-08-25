@@ -49,6 +49,10 @@ $val->purchase_order_movement_status = "stock in";
 $val->purchase_order_expected_delivery = $expectedDeliveryDate;
 $val->purchase_order_total_amount_per_product = 0;
 
+if ($val->purchase_order_status == 'received') {
+    $val->purchase_order_delivery_is_status = 1;
+}
+
 $val->purchase_order_number = setIdNumber($val, "PO-");
 
 if ((float)($payment) > 1) {

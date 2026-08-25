@@ -91,11 +91,16 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
   const handleSave = (a, index) => {
     const updated = [...items];
     updated[index]["installment_payment_is_paid"] = 1;
+    updated[index]["installment_payment_paid_amount"] =
+      a["installment_payment_amount"];
     setItems(updated);
 
-    const newTotalPaidAmount = Number(totalPaidAmount) + Number(paidAmount);
+    let amountPaid =
+      Number(paidAmount) + Number(a["installment_payment_amount"]);
+
+    const newTotalPaidAmount = Number(totalPaidAmount) + Number(amountPaid);
     const newTotalBalanceAmount =
-      Number(totalBalanceAmount) - Number(paidAmount);
+      Number(totalBalanceAmount) - Number(amountPaid);
 
     let data = {
       ...itemEdit,

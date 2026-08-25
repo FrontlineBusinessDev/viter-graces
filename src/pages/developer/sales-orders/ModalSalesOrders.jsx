@@ -63,7 +63,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   );
 
   const handleChange = (index, selectedItem = "", fieldId, field) => {
-    // console.log("selectedItem", selectedItem);
     const updated = [...items];
     if (selectedItem === null || selectedItem === "") {
       updated[index]["sales_order_product_owner_id"] = "";
@@ -893,7 +892,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                       handleClose={handleClose}
                     />
                     <ModalButton
-                      disabled={mutation.isPending}
+                      disabled={mutation.isPending || !props.dirty}
                       loading={mutation.isPending}
                       itemEdit={itemEdit}
                       type="submit"

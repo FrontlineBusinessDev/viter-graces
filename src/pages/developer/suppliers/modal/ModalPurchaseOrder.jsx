@@ -90,6 +90,16 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     setItems(updated);
   };
 
+  const handleUpdateDeliveryStatus = () => {
+    const updated = [...items];
+
+    for (let i = 0; i <= items?.length; i++) {
+      updated[i]["purchase_order_delivery_is_status"] = true;
+    }
+
+    setItems(updated);
+  };
+
   const handleDeliveryStatus = (index, field, value) => {
     const updated = [...items];
 
@@ -328,16 +338,24 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                 return false;
               });
 
-              const isAllReceived = items.some(
-                (item) => !Number(item?.purchase_order_delivery_is_status),
-              );
+              const getDeliveryStatus = (items = [], values) => {
+                if (!items.length) return values.purchase_order_status;
 
-              let order_status = isAllReceived;
+                const deliveredCount = items.filter((item) =>
+                  Boolean(Number(item?.purchase_order_delivery_is_status)),
+                ).length;
+
+                if (deliveredCount === items.length) return "delivered";
+                if (deliveredCount > 0) return "partially delivered";
+                return values.purchase_order_status;
+              };
+
+              // Usage
+              const status = getDeliveryStatus(items, values);
+
               values.purchase_order_status = !itemEdit
                 ? values.purchase_order_status
-                : isAllReceived
-                  ? values.purchase_order_status
-                  : "received";
+                : status;
 
               if (hasDuplicateCombination) {
                 dispatch(setError(true));
@@ -375,7 +393,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                 ),
               };
 
-              mutation.mutate(data);
+              // mutation.mutate(data);
             }}
           >
             {(props) => {
@@ -574,9 +592,9 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                       amount={a["purchase_order_total_amount"]}
                                     />
                                   </td>
-                                  <td className="flex bg-gray-100! dark:bg-gray-900! ">
+                                  <td className=" bg-gray-100! dark:bg-gray-900! h-full ">
                                     {itemEdit ? (
-                                      <>
+                                      <div className="flex">
                                         <button
                                           onClick={() =>
                                             handleDeliveryStatus(
@@ -603,7 +621,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                         ) : (
                                           ""
                                         )}
-                                      </>
+                                      </div>
                                     ) : (
                                       <button
                                         onClick={() => handleRemoveItem(a)}
@@ -633,6 +651,9 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         options={purchaseOrderStatusOption}
                         onChange={(e) => {
                           props.values.purchase_order_status = e.target.value;
+                          // if (e.target.value === "received") {
+                          //   handleUpdateDeliveryStatus();
+                          // }
                           return e;
                         }}
                       />
@@ -773,7 +794,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                       handleClose={handleClose}
                     />
                     <ModalButton
-                      disabled={mutation.isPending}
+                      disabled={mutation.isPending || !props.dirty}
                       loading={mutation.isPending}
                       itemEdit={itemEdit}
                       type="submit"

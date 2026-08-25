@@ -172,7 +172,7 @@ const ModalUser = ({ itemEdit }) => {
                       handleClose={handleClose}
                     />
                     <ModalButton
-                      disabled={mutation.isPending}
+                      disabled={mutation.isPending || !props.dirty}
                       loading={mutation.isPending}
                       itemEdit={itemEdit}
                       type="submit"
