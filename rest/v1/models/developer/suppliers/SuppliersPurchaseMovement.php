@@ -215,10 +215,77 @@ class SuppliersPurchaseMovement
             $sql .= "spo.purchase_order_price as amount, ";
             $sql .= "spo.purchase_order_total_amount as total_amount, ";
             $sql .= "spo.purchase_order_qty as current_qty, ";
-            $sql .= "spo.purchase_order_product_name as name ";
+            $sql .= "spo.purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} as spo, ";
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and (spo.purchase_order_number like :purchase_order_number
+                or spo.purchase_order_supplier_name like :purchase_order_supplier_name 
+                or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name 
+                or spo.purchase_order_product_name like :purchase_order_product_name) " : " ");
+            }
+            $sql .= " group by spo.purchase_order_number ";
+            $sql .= " order by spo.purchase_order_is_active desc, ";
+            $sql .= " spo.purchase_order_aid desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readAllActiveById($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            "purchase_order_number" => $this->purchase_order_number,
+            ...$this->column_search != "" ? [
+                "purchase_order_supplier_name" => "%{$this->column_search}%",
+                "purchase_order_product_owner_name" => "%{$this->column_search}%",
+                "purchase_order_product_name" => "%{$this->column_search}%",
+            ] : [],
+        ];
+
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
+            if (is_array($item['value'])) {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . $item['value'] . "%";
+            }
+        }
+        try {
+            $sql = "select spo.*, ";
+            $sql .= "s.suppliers_delivery, ";
+            $sql .= "DATE_FORMAT(spo.purchase_order_date, '%b %d, %Y') as formated_date, ";
+            $sql .= "DATE_FORMAT(spo.purchase_order_expected_delivery, '%b %d, %Y') as formated_delivery_date, ";
+            $sql .= "spo.purchase_order_aid as id, ";
+            $sql .= "spo.purchase_order_movement_status as is_status, ";
+            $sql .= "spo.purchase_order_payment_status as payment_status, ";
+            $sql .= "spo.purchase_order_is_active as is_active, ";
+            $sql .= "spo.purchase_order_price as amount, ";
+            $sql .= "spo.purchase_order_total_amount as total_amount, ";
+            $sql .= "spo.purchase_order_qty as current_qty, ";
+            $sql .= "CONCAT(spo.purchase_order_product_name, ' - ', spo.purchase_order_product_owner_name) as name ";
+            $sql .= "from {$this->tblSuppliersPurchaseOrder} as spo, ";
+            $sql .= "{$this->tblSuppliers} as s ";
+            $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
+            $sql .= " and spo.purchase_order_number = :purchase_order_number ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {

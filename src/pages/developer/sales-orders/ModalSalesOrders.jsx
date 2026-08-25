@@ -177,7 +177,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
       }
       if (!data.success) {
         dispatch(setError(true));
-        dispatch(setMessage(data.error));
+        dispatch(setMessage(data.error || "An unexpected error occurred."));
       }
     },
   });
@@ -790,11 +790,11 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                       </li>
                     </ul>
                     <ul className="grid grid-cols-[5rem_1fr] ">
-                      <li>Total Amount:</li>
+                      <li className="font-bold">Total Amount:</li>
                       <li>
                         <AmountsWithPesoSign
                           classN={"size-3"}
-                          classAmnt="justify-start!"
+                          classAmnt="justify-start! font-bold"
                           amount={
                             props.values.sales_order_total_receivable_amount
                           }
@@ -820,12 +820,12 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                     <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end my-3 p-2">
                       <p className="flex flex-col place-self-end text-primary text-lg text-right">
                         <span className="text-black dark:text-light text-sm">
-                          Total Amount
+                          Remaining Balance
                         </span>
                         <AmountWithPesoSign
                           classN=""
                           amount={Number(
-                            props?.values?.sales_order_total_receivable_amount,
+                            props?.values?.sales_order_total_balance_amount,
                           )}
                         />
                       </p>

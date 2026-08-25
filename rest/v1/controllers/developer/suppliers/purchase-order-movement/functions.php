@@ -31,3 +31,10 @@ function checkReadAllActive($object, $allowedColumns = [])
     checkQuery($query, "Empty records. (read All)");
     return $query;
 }
+// Read all
+function checkReadAllActiveById($object, $allowedColumns = [])
+{
+    $query = $object->readAllActiveById($allowedColumns);
+    checkQuery($query, "Empty records. (read by po id)");
+    return $query;
+}

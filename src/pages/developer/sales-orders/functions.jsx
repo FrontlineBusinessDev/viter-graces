@@ -5,7 +5,6 @@ import { isEmptyItem } from "@/utilities/isEmptyItem";
 export const PropsValues = (props, items) => {
   const values = props.values;
 
-  console.log("valuesvalues", values);
   values.sales_order_total_amount = items?.reduce(
     (sum, item) =>
       sum +

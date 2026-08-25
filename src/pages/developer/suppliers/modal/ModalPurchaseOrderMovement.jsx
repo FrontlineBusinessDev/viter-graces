@@ -28,8 +28,7 @@ import { ValidationsStockMovement } from "./functions";
 
 const ModalPurchaseOrderMovement = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const [selectedItems, setSelectedItems] = React.useState([]);
-  const [isSelected, setIsSelected] = React.useState(false);
+  const [selectedPo, setSelectedPo] = React.useState("PO-000");
   const [itemsDelete, setItemsDelete] = React.useState([]);
   const [counter, setCounter] = React.useState(1);
 
@@ -116,6 +115,9 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
     setItems((prev) => prev.filter((item) => item.id !== a.id));
   };
 
+  const handleChangePO = (selectedItem = "") => {
+    setSelectedPo(selectedItem?.purchase_order_number);
+  };
   const handleChange = (index, selectedItem = "", fieldId, field) => {
     const updated = [...items];
     if (selectedItem === null || selectedItem === "") {
@@ -252,6 +254,11 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
                                 <th
                                   className={`min-w-40  dark:bg-gray-900! bg-gray-100!`}
                                 >
+                                  PO number
+                                </th>
+                                <th
+                                  className={`min-w-40  dark:bg-gray-900! bg-gray-100!`}
+                                >
                                   Items
                                 </th>
                                 <th
@@ -279,30 +286,51 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
                                     {Number(
                                       isEmptyItem(a?.purchase_order_ai, 0),
                                     ) !== 0 ? (
-                                      <td className=" dark:bg-gray-900! ">
-                                        {a?.purchase_order_product_name} (
-                                        {a?.purchase_order_qty} qty)
-                                      </td>
+                                      <>
+                                        <td className=" dark:bg-gray-900! ">
+                                          {a?.purchase_order_number}
+                                        </td>
+                                        <td className=" dark:bg-gray-900! ">
+                                          {a?.purchase_order_product_name} (
+                                          {a?.purchase_order_qty} qty)
+                                        </td>
+                                      </>
                                     ) : (
-                                      <td className=" dark:bg-gray-900! ">
-                                        <InputSalesOrderSelectTagArray
-                                          onChange={(e, selectedItem) => {
-                                            handleChange(
-                                              index,
-                                              selectedItem,
-                                              "purchase_order_product_id",
-                                              "purchase_order_product_name",
-                                            );
-                                          }}
-                                          dataVal={items}
-                                          item={a}
-                                          path={`purchase-order-movement/read-search-data`}
-                                          testFilterId="purchase_order_product_name"
-                                          store={store}
-                                          className={" "}
-                                        />
-                                      </td>
-                                    )}
+                                      <>
+                                        <td className=" dark:bg-gray-900! ">
+                                          <DefaultInputSelectTagArray
+                                            onChange={(e, selectedItem) => {
+                                              handleChangePO(selectedItem);
+                                            }}
+                                            dataVal={items}
+                                            item={a}
+                                            path={`purchase-order-movement/read-search-data`}
+                                            testFilterId="purchase_order_product_name"
+                                            store={store}
+                                            className={" "}
+                                          />
+                                        </td>
+                                        <td className=" dark:bg-gray-900! ">
+                                          <InputSalesOrderSelectTagArray
+                                            onChange={(e, selectedItem) => {
+                                              handleChange(
+                                                index,
+                                                selectedItem,
+                                                "purchase_order_product_id",
+                                                "purchase_order_product_name",
+                                              );
+                                            }}
+                                            dataVal={items}
+                                            item={a}
+                                            path={`purchase-order-movement/read-search-data-by-po`}
+                                            testFilterId="purchase_order_number"
+                                            store={store}
+                                            id={selectedPo}
+                                            className={" "}
+                                          />
+                                        </td>
+                                      </>
+                                    )}{" "}
                                     <td className=" dark:bg-gray-900! ">
                                       <DefaultInputSelectTagArray
                                         onChange={(e) => {

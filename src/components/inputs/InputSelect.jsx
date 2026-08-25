@@ -589,6 +589,7 @@ export const InputSalesOrderSelectTagArray = ({
   path = null,
   required = true,
   testFilterId = "",
+  id = "",
   className = "",
   store,
 }) => {
@@ -603,7 +604,17 @@ export const InputSalesOrderSelectTagArray = ({
         isEmptyItem(store?.credentials?.data?.role, "admin") === "developer"
           ? "1"
           : "0",
-      id: "",
+      id: id,
+      columnFilters: [],
+      userId: userId,
+    },
+    {
+      searchValue: "",
+      isDeveloper:
+        isEmptyItem(store?.credentials?.data?.role, "admin") === "developer"
+          ? "1"
+          : "0",
+      id: id,
       columnFilters: [],
       userId: userId,
     },

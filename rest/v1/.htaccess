@@ -156,7 +156,8 @@ RewriteRule ^returns-products/read-all-product-that-have-stock$ controllers/deve
 ### RETURN PRODUCTS ###  
 RewriteRule ^purchase-order-movement$ controllers/developer/suppliers/purchase-order-movement/purchase-order-movement.php [L] 
 RewriteRule ^purchase-order-movement/read-search-data$ controllers/developer/suppliers/purchase-order-movement/read-search-data.php [L] 
-RewriteRule ^purchase-order-movement/([0-9]+)$$ controllers/developer/suppliers/purchase-order-movement/purchase-order-movement.php?id=$1 [L] 
+RewriteRule ^purchase-order-movement/read-search-data-by-po$ controllers/developer/suppliers/purchase-order-movement/read-search-data-by-po.php [L] 
+RewriteRule ^purchase-order-movement/([0-9]+)$ controllers/developer/suppliers/purchase-order-movement/purchase-order-movement.php?id=$1 [L] 
 RewriteRule ^purchase-order-movement/page/([0-9]+)$ controllers/developer/suppliers/purchase-order-movement/page.php?start=$1 [L] 
 
 ### FINANCE CASH SALES ### 
@@ -172,6 +173,5 @@ RewriteRule ^finance-account-payable/account-payable/([0-9]+)$ controllers/devel
 RewriteRule ^finance-sales-journal/page/([0-9]+)$ controllers/developer/finance/sales-journal/page-by-sales-journal.php?start=$1 [L] 
 RewriteRule ^finance-sales-journal/read-overview$ controllers/developer/finance/overview/read-overview.php [L] 
   
-
 
  
