@@ -42,7 +42,7 @@ const demoAccounts = [
     role: "product_owner",
     label: "Product Owner",
     icon: Briefcase,
-    email: "thealyzetteconsignado@gmail.com",
+    email: "april9rhina@gmail.com",
     password: "A!a123123123",
   },
   {
