@@ -93,14 +93,19 @@ const StatCard = ({
                 {extra && (
                   <p className="text-sm text-green-600 mt-1">{extra}</p>
                 )}
-
-                {button && (
-                  <Link
-                    to={`${devNavUrl}/${userRole}/${link}`}
-                    className="text-sm text-orange-600 mt-1"
-                  >
-                    {button}
-                  </Link>
+                {store.credentials?.data?.role === "developer" ? (
+                  <>
+                    {button && (
+                      <Link
+                        to={`${devNavUrl}/${userRole}/${link}`}
+                        className="text-sm text-orange-600 mt-1"
+                      >
+                        {button}
+                      </Link>
+                    )}
+                  </>
+                ) : (
+                  ""
                 )}
               </>
             )}
@@ -155,13 +160,19 @@ const StatCard = ({
                     <p className="text-sm text-green-600 mt-1">{flipExtra}</p>
                   )}
 
-                  {button && (
-                    <Link
-                      to={`${devNavUrl}/${userRole}/${link}`}
-                      className="text-sm text-orange-600 mt-1"
-                    >
-                      {button}
-                    </Link>
+                  {store.credentials?.data?.role === "developer" ? (
+                    <>
+                      {button && (
+                        <Link
+                          to={`${devNavUrl}/${userRole}/${link}`}
+                          className="text-sm text-orange-600 mt-1"
+                        >
+                          {button}
+                        </Link>
+                      )}
+                    </>
+                  ) : (
+                    ""
                   )}
                 </>
               )}

@@ -82,14 +82,21 @@ const DashboardOverduePayments = () => {
             </li>
           )}
         </ul>
-        {valData?.length > 0 ? (
-          <a
-            data-testid="overdue-payment-btn-to-view"
-            href={`${devNavUrl}/${userRole}/overdue-payments`}
-            className="absolute bottom-3 text-orange-500 pt-3 inline-block"
-          >
-            Click to view →
-          </a>
+
+        {store.credentials?.data?.role === "developer" ? (
+          <>
+            {valData?.length > 0 ? (
+              <a
+                data-testid="overdue-payment-btn-to-view"
+                href={`${devNavUrl}/${userRole}/overdue-payments`}
+                className="absolute bottom-3 text-orange-500 pt-3 inline-block"
+              >
+                Click to view →
+              </a>
+            ) : (
+              ""
+            )}
+          </>
         ) : (
           ""
         )}
