@@ -100,7 +100,7 @@ const SalesReports = () => {
         ]),
     {
       accessorKey: "sales_order_received_by_name",
-      header: "Received by",
+      header: "Created by",
       classTh: "min-w-[10rem]",
       classTd: "",
       meta: {

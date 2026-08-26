@@ -790,11 +790,11 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                       </li>
                     </ul>
                     <ul className="grid grid-cols-[5rem_1fr] ">
-                      <li className="font-bold">Total Amount:</li>
+                      <li className="font-bold text-primary!">Total Amount:</li>
                       <li>
                         <AmountsWithPesoSign
                           classN={"size-3"}
-                          classAmnt="justify-start! font-bold"
+                          classAmnt="justify-start! font-bold text-primary!"
                           amount={
                             props.values.sales_order_total_receivable_amount
                           }
@@ -847,7 +847,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                   ) : (
                     <div className="relative my-3 ">
                       <InputSelectFilterTagArray
-                        label="Received by:"
+                        label="Created by:"
                         defaultValue={{
                           id: isEmptyItem(
                             itemEdit?.sales_order_received_by_id,

@@ -12,6 +12,7 @@ const HeaderNav = ({
   submenu,
   description = "",
   activeTab = "",
+  warningNotes = "",
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [mobileNavOpen, setMobileNavOpen] = React.useState(false);
@@ -52,6 +53,14 @@ const HeaderNav = ({
         } `}
       >
         {activeTab !== "" ? <TitleHeader description={description} /> : ""}
+        {warningNotes !== "" ? (
+          <p className="bg-warning/20 rounded-md p-1">
+            <span className="font-bold">Note: </span>
+            {warningNotes}
+          </p>
+        ) : (
+          ""
+        )}
         {children}
       </div>
       {store.success && <Toast variant="success" />}
