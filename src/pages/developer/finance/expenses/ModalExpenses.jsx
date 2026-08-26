@@ -247,7 +247,8 @@ const ModalExpenses = ({ itemEdit }) => {
                       store={store}
                     />
                   </div>
-                  {props?.values?.purchase_order_product_name === "other" ? (
+                  {props?.values?.purchase_order_product_name?.toLowerCase() ===
+                  "other" ? (
                     <div className="relative mb-3">
                       <InputText
                         label="Other Item"

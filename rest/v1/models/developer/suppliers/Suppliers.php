@@ -425,6 +425,23 @@ class Suppliers
         return $query;
     }
 
+    // delete
+    public function deleteSupplierProduct()
+    {
+        try {
+            $sql = "delete from {$this->tblSuppliersProduct} ";
+            $sql .= "where suppliers_product_supplier_id = :suppliers_product_supplier_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "suppliers_product_supplier_id" => $this->suppliers_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
     // name
     public function checkName()
     {
@@ -451,6 +468,23 @@ class Suppliers
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "suppliers_product_supplier_id" => "{$this->suppliers_aid}",
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function associatedInPurchaseOrderById()
+    {
+        try {
+            $sql = "select purchase_order_supplier_id from {$this->tblSuppliersPurchaseOrder} ";
+            $sql .= "where purchase_order_supplier_id = :purchase_order_supplier_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "purchase_order_supplier_id" => "{$this->suppliers_aid}",
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

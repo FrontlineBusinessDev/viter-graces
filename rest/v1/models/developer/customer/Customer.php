@@ -611,4 +611,33 @@ class Customer
         }
         return $query;
     }
+
+    // read by id
+    public function readSalesOrderByCustomerId()
+    {
+        try {
+            $sql = "SELECT ";
+            $sql .= "SUM(outstanding_balance) as outstanding_balance, ";
+            $sql .= "COUNT(sales_order_number) as number_of_orders, ";
+            $sql .= "SUM(total_amount_spent) as total_amount_spent ";
+            $sql .= "FROM ( ";
+            $sql .= "    SELECT ";
+            $sql .= "        sales_order_number, ";
+            $sql .= "        MAX(sales_order_total_balance_amount) as outstanding_balance, ";
+            $sql .= "        MAX(sales_order_paid_amount) as total_amount_spent ";
+            $sql .= "    FROM {$this->tblSalesOrder} ";
+            $sql .= "    WHERE sales_order_customer_id = :sales_order_customer_id ";
+            $sql .= "    GROUP BY sales_order_number ";
+            $sql .= ") as unique_orders";
+
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_order_customer_id" => $this->customer_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
 }

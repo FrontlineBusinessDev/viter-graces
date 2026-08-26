@@ -15,6 +15,7 @@ class SuppliersProduct
     public $lastInsertedId;
     public $tblSuppliers;
     public $tblSuppliersProduct;
+    public $tblSuppliersPurchaseOrder;
 
     public $filters;
     public $column_start;
@@ -27,6 +28,7 @@ class SuppliersProduct
         $this->connection = $db;
         $this->tblSuppliers = "graces_suppliers";
         $this->tblSuppliersProduct = "graces_suppliers_product";
+        $this->tblSuppliersPurchaseOrder = "graces_suppliers_purchase_order";
     }
 
     // create
@@ -106,12 +108,14 @@ class SuppliersProduct
             $sql .= "suppliers_product_name as name ";
             $sql .= "from {$this->tblSuppliersProduct} ";
             $sql .= " where suppliers_product_supplier_id = :suppliers_product_supplier_id ";
+            $sql .= " and suppliers_product_name != 'other' ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != "" ? "and suppliers_product_name like :suppliers_product_name " : " ");
             }
-            $sql .= " order by suppliers_product_name asc ";
+            $sql .= " order by suppliers_product_is_active desc, ";
+            $sql .= " suppliers_product_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
@@ -161,12 +165,14 @@ class SuppliersProduct
             $sql .= "suppliers_product_name as name ";
             $sql .= "from {$this->tblSuppliersProduct} ";
             $sql .= " where suppliers_product_supplier_id = :suppliers_product_supplier_id ";
+            $sql .= " and suppliers_product_name != 'other' ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != "" ? "and suppliers_product_name like :suppliers_product_name " : " ");
             }
-            $sql .= " order by suppliers_product_name asc ";
+            $sql .= " order by suppliers_product_is_active desc, ";
+            $sql .= " suppliers_product_name asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -249,7 +255,8 @@ class SuppliersProduct
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= "where sp.suppliers_product_supplier_id = s.suppliers_aid ";
             $sql .= "and s.suppliers_is_default = 1 ";
-            $sql .= "order by sp.suppliers_product_name asc ";
+            $sql .= "order by CASE WHEN LOWER(sp.suppliers_product_name) = 'other' THEN 1 ELSE 0 END asc, ";
+            $sql .= "sp.suppliers_product_name asc ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
@@ -330,6 +337,23 @@ class SuppliersProduct
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "suppliers_product_name" => "{$this->suppliers_product_name}",
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function associatedById()
+    {
+        try {
+            $sql = "select purchase_order_product_id from {$this->tblSuppliersPurchaseOrder} ";
+            $sql .= "where purchase_order_product_id = :purchase_order_product_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "purchase_order_product_id" => "{$this->suppliers_product_aid}",
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

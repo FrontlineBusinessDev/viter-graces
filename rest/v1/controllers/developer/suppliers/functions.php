@@ -23,6 +23,14 @@ function checkUpdateProductSupplier($object)
     return $query;
 }
 
+// check is associated by id
+function checkAssociatedInPurchaseOrderById($object)
+{
+    $query = $object->associatedInPurchaseOrderById();
+    $count = $query->rowCount();
+    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
+}
+
 // Update 
 function updateConnectedMenu($object)
 {
@@ -41,5 +49,13 @@ function allowedColumns()
         "suppliers_contact_person",
         "suppliers_delivery",
     ];
+    return $query;
+}
+
+// Delete 
+function checkDeleteSupplierProduct($object)
+{
+    $query = $object->deleteSupplierProduct();
+    checkQuery($query, "There's a problem processing your request. (deleteSupplierProduct)");
     return $query;
 }

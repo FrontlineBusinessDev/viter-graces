@@ -32,15 +32,15 @@ function updateConnectedMenu($object)
 function checkAssociatedByActivityLog($object)
 {
     $query = $object->associatedByActivityLog();
-    checkQuery($query, "There's a problem processing your request. (associatedByActivityLog)");
-    return $query;
+    $count = $query->rowCount();
+    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
 }
 
 function checkAssociatedByProducts($object)
 {
     $query = $object->associatedByProducts();
-    checkQuery($query, "There's a problem processing your request. (associatedByProducts)");
-    return $query;
+    $count = $query->rowCount();
+    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
 }
 // Reset password
 function checkAssociatedByMenu($object)

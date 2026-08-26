@@ -73,24 +73,38 @@ function checkCreateWalkInCustomer($object)
 // Create Product
 function checkCreateOtherSupplier($object)
 {
-    $object->suppliers_name = "Other";
+    $object->suppliers_name = "Other operating expenses";
     $object->suppliers_is_active = 1;
     $object->suppliers_is_default = 1;
     $object->suppliers_created = date("Y-m-d H:i:s");
     $object->suppliers_updated = date("Y-m-d H:i:s");
 
     $query = $object->createOtherSupplier();
+    $expenses = [
+        "Utilities Expense",
+        "Transportation Expense",
+        "Repairs and maintenance",
+        "Salaries and Wages",
+        "Taxes and Licenses",
+        "Insurance",
+        "Office Supplies",
+        "Miscellaneous Expense",
+        "Other"
+    ];
 
-    $object->suppliers_product_name = "other";
-    $object->suppliers_product_price = "0";
-    $object->suppliers_product_unit = "--";
-    $object->suppliers_product_is_active = 1;
-    $object->suppliers_product_supplier_id = $object->lastInsertedId;
-    $object->suppliers_product_supplier_name = "Other";
-    $object->suppliers_product_created = date("Y-m-d H:i:s");
-    $object->suppliers_product_updated = date("Y-m-d H:i:s");
+    foreach ($expenses as $itemExpenses) {
+        $object->suppliers_product_name = $itemExpenses;
+        $object->suppliers_product_price = "0";
+        $object->suppliers_product_unit = "--";
+        $object->suppliers_product_is_active = 1;
+        $object->suppliers_product_supplier_id = $object->lastInsertedId;
+        $object->suppliers_product_supplier_name = "Other";
+        $object->suppliers_product_created = date("Y-m-d H:i:s");
+        $object->suppliers_product_updated = date("Y-m-d H:i:s");
 
-    $query = $object->createProduct();
+        $query = $object->createProduct();
+    }
+
     checkQuery($query, "There's a problem processing your request. (create other supplier)");
     return $query;
 }

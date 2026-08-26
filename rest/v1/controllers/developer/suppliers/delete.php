@@ -18,7 +18,8 @@ if (array_key_exists("id", $_GET)) {
     $val->suppliers_aid = $_GET['id'];
     checkId($val->suppliers_aid);
     checkAssociatedById($val);
-
+    checkAssociatedInPurchaseOrderById($val);
+    checkDeleteSupplierProduct($val);
     $query = checkDelete($val);
     // create activity log
     createActivityLog($valActivity, $data);

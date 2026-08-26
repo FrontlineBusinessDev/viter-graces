@@ -436,16 +436,16 @@ function checkDecline($object)
 function checkAssociatedById($object)
 {
     $query = $object->associatedById();
-    checkQuery($query, "There's a problem processing your request. (check is associated by id)");
-    return $query;
+    $count = $query->rowCount();
+    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
 }
 
 // check is associated by name
 function checkAssociatedByName($object)
 {
     $query = $object->associatedByName();
-    checkQuery($query, "There's a problem processing your request. (check is associated by name)");
-    return $query;
+    $count = $query->rowCount();
+    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
 }
 
 // Result data
