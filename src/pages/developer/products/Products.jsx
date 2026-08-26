@@ -84,7 +84,7 @@ const Products = () => {
     },
     {
       accessorKey: "products_cost",
-      header: "Estimated Cost",
+      header: "Estimated Cost Price",
       classTh: "min-w-[10rem]",
       classTd: "",
       filterFn: "between",

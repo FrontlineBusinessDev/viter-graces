@@ -56,7 +56,7 @@ const ProductOwner = () => {
       <HeaderNav menu={"settings"} activeTab="product-owner" warningNotes="">
         <WarningBanner
           path=""
-          text="After creating an account or resetting your password, kindly check your spam folder for the confirmation email"
+          text="After creating an account or resetting your password, if you cannot find the confirmation message in your inbox, please check your spam folder."
           description=""
         />
         <InfiniteTable
