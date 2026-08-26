@@ -152,7 +152,7 @@ export const InputSelectArray = ({
           );
 
           onChange !== null && onChange(e, selectedItem);
-          field.onChange(e, selectedItem);
+          field.onChange(e);
         }}
         autoComplete="off"
         data-testid={dataTestIdSelect}
@@ -258,7 +258,7 @@ export const InputSelectCustomerArray = ({
           );
 
           onChange !== null && onChange(e, selectedItem);
-          field.onChange(e, selectedItem);
+          field.onChange(e);
         }}
         autoComplete="off"
         data-testid={dataTestIdSelect}

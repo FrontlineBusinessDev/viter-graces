@@ -33,6 +33,19 @@ const ModalReturns = ({ itemEdit }) => {
   const [selectedItems, setSelectedItems] = React.useState([]);
   const [isSelected, setIsSelected] = React.useState(false);
 
+  const initialReturnStateRef = React.useRef(null);
+  if (initialReturnStateRef.current === null) {
+    initialReturnStateRef.current = {
+      selectedItems: JSON.parse(JSON.stringify(selectedItems)),
+      isSelected,
+    };
+  }
+
+  const itemsDirty =
+    JSON.stringify(selectedItems) !==
+      JSON.stringify(initialReturnStateRef.current.selectedItems) ||
+    isSelected !== initialReturnStateRef.current.isSelected;
+
   const handleClose = () => {
     sessionStorage.removeItem("quickAdd");
     dispatch(setIsAdd(false));
@@ -329,7 +342,9 @@ const ModalReturns = ({ itemEdit }) => {
                       handleClose={handleClose}
                     />
                     <ModalButton
-                      disabled={mutation.isPending || !props.dirty}
+                      disabled={
+                        mutation.isPending || (!props.dirty && !itemsDirty)
+                      }
                       loading={mutation.isPending}
                       itemEdit={itemEdit}
                       type="submit"

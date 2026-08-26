@@ -127,9 +127,10 @@ const ModalUser = ({ itemEdit }) => {
                       dataTestIdSelect="select-role"
                       path="roles/read-in-modal"
                       onChange={(e) => {
-                        props.values.user_account_role_id = e.target.value;
-                        props.values.user_account_role =
-                          e.target.options[e.target.selectedIndex].text;
+                        props.setFieldValue(
+                          "user_account_role",
+                          e.target.options[e.target.selectedIndex].text,
+                        );
                         return e;
                       }}
                     />

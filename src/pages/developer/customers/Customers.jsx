@@ -57,6 +57,34 @@ const Customers = () => {
       classTd: "",
       meta: "",
     },
+    {
+      accessorKey: "customer_phone",
+      header: "Number of Orders",
+      classTh: "",
+      classTd: "",
+      meta: "",
+    },
+    {
+      accessorKey: "customer_phone",
+      header: "Total Amount Spent",
+      classTh: "",
+      classTd: "",
+      meta: "",
+    },
+    {
+      accessorKey: "customer_phone",
+      header: "Outstanding Balance",
+      classTh: "",
+      classTd: "",
+      meta: "",
+    },
+    {
+      accessorKey: "customer_phone",
+      header: "Open Credit Memo",
+      classTh: "",
+      classTd: "",
+      meta: "",
+    },
     ...(Number(ProductOwnerId(store)) > 0
       ? []
       : [

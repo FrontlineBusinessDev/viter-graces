@@ -69,6 +69,21 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
         ],
   );
 
+  const initialItemsRef = React.useRef(null);
+  if (initialItemsRef.current === null) {
+    initialItemsRef.current = {
+      items: JSON.parse(JSON.stringify(items)),
+      installmentItems: JSON.parse(JSON.stringify(installmentItems)),
+    };
+  }
+
+  const itemsDirty =
+    itemsDelete.length > 0 ||
+    installmentItemsDelete.length > 0 ||
+    JSON.stringify(items) !== JSON.stringify(initialItemsRef.current.items) ||
+    JSON.stringify(installmentItems) !==
+      JSON.stringify(initialItemsRef.current.installmentItems);
+
   const handleChange = (index, selectedItem = "", fieldId, field) => {
     // console.log("selectedItem", selectedItem);
     const updated = [...items];
@@ -411,8 +426,10 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         defaultValue="cash"
                         options={paymentOption}
                         onChange={(e) => {
-                          props.values.sales_order_payment_method =
-                            e.target.options[e.target.selectedIndex].text;
+                          props.setFieldValue(
+                            "sales_order_payment_method",
+                            e.target.options[e.target.selectedIndex].text,
+                          );
                           return e;
                         }}
                       />
@@ -425,8 +442,10 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         defaultValue=""
                         options={termsOption}
                         onChange={(e) => {
-                          props.values.sales_order_payment_terms =
-                            e.target.options[e.target.selectedIndex].text;
+                          props.setFieldValue(
+                            "sales_order_payment_terms",
+                            e.target.options[e.target.selectedIndex].text,
+                          );
                           return e;
                         }}
                       />
@@ -588,7 +607,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         defaultValue="--"
                         options={taxOption}
                         onChange={(e) => {
-                          props.values.sales_order_tax = e.target.id;
+                          props.setFieldValue("sales_order_tax", e.target.id);
                           return e;
                         }}
                         required={false}
@@ -853,13 +872,13 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         ),
                       }}
                       onChange={(e) => {
-                        props.values.sales_order_received_by_id = isEmptyItem(
-                          e?.id,
-                          "",
+                        props.setFieldValue(
+                          "sales_order_received_by_id",
+                          isEmptyItem(e?.id, ""),
                         );
-                        props.values.sales_order_received_by_name = isEmptyItem(
-                          e?.value,
-                          "",
+                        props.setFieldValue(
+                          "sales_order_received_by_name",
+                          isEmptyItem(e?.value, ""),
                         );
                         return e;
                       }}
@@ -880,7 +899,9 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                       handleClose={handleClose}
                     />
                     <ModalButton
-                      disabled={mutation.isPending || !props.dirty}
+                      disabled={
+                        mutation.isPending || (!props.dirty && !itemsDirty)
+                      }
                       loading={mutation.isPending}
                       itemEdit={itemEdit}
                       type="submit"

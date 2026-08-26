@@ -186,9 +186,10 @@ const ModalProducts = ({ itemEdit }) => {
                         name="products_suppliers_id"
                         dataTestIdSelect="select-supplier"
                         onChange={(e) => {
-                          props.values.products_suppliers_id = e.target.value;
-                          props.values.products_suppliers_name =
-                            e.target.options[e.target.selectedIndex].text;
+                          props.setFieldValue(
+                            "products_suppliers_name",
+                            e.target.options[e.target.selectedIndex].text,
+                          );
                           return e;
                         }}
                         required={false}
@@ -252,9 +253,10 @@ const ModalProducts = ({ itemEdit }) => {
                           name="products_owner_id"
                           dataTestIdSelect="select-product-owner"
                           onChange={(e) => {
-                            props.values.products_owner_id = e.target.value;
-                            props.values.products_owner_name =
-                              e.target.options[e.target.selectedIndex].text;
+                            props.setFieldValue(
+                              "products_owner_name",
+                              e.target.options[e.target.selectedIndex].text,
+                            );
                             return e;
                           }}
                         />

@@ -55,6 +55,15 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
 
   const [counter, setCounter] = React.useState(1);
 
+  const initialItemsRef = React.useRef(null);
+  if (initialItemsRef.current === null) {
+    initialItemsRef.current = JSON.parse(JSON.stringify(items));
+  }
+
+  const itemsDirty =
+    itemsDelete.length > 0 ||
+    JSON.stringify(items) !== JSON.stringify(initialItemsRef.current);
+
   const handleChangeProduct = (index, itemVal, selectedItem, props) => {
     const updated = [...items];
 
@@ -650,7 +659,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         defaultValue="draft"
                         options={purchaseOrderStatusOption}
                         onChange={(e) => {
-                          props.values.purchase_order_status = e.target.value;
+                          props.setFieldValue("purchase_order_status", e.target.value);
                           // if (e.target.value === "received") {
                           //   handleUpdateDeliveryStatus();
                           // }
@@ -667,12 +676,14 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         options={paymentOption}
                         onChange={(e) => {
                           if (e.target.value === "unpaid") {
-                            props.values.purchase_order_payment = "0";
+                            props.setFieldValue("purchase_order_payment", "0");
                           } else {
-                            props.values.purchase_order_payment = "";
+                            props.setFieldValue("purchase_order_payment", "");
                           }
-                          props.values.purchase_order_payment_status =
-                            e.target.value;
+                          props.setFieldValue(
+                            "purchase_order_payment_status",
+                            e.target.value,
+                          );
                           return e;
                         }}
                       />
@@ -687,7 +698,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         defaultValue="--"
                         options={taxOption()}
                         onChange={(e) => {
-                          props.values.purchase_order_percent_tax = e.target.id;
+                          props.setFieldValue("purchase_order_percent_tax", e.target.id);
                           return e;
                         }}
                         required={false}
@@ -794,7 +805,9 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                       handleClose={handleClose}
                     />
                     <ModalButton
-                      disabled={mutation.isPending || !props.dirty}
+                      disabled={
+                        mutation.isPending || (!props.dirty && !itemsDirty)
+                      }
                       loading={mutation.isPending}
                       itemEdit={itemEdit}
                       type="submit"

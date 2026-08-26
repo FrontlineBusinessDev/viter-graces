@@ -47,6 +47,15 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
         ],
   );
 
+  const initialItemsRef = React.useRef(null);
+  if (initialItemsRef.current === null) {
+    initialItemsRef.current = JSON.parse(JSON.stringify(items));
+  }
+
+  const itemsDirty =
+    itemsDelete.length > 0 ||
+    JSON.stringify(items) !== JSON.stringify(initialItemsRef.current);
+
   const handleClose = () => {
     sessionStorage.removeItem("quickAdd");
     dispatch(setIsAdd(false));
@@ -404,7 +413,9 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
                       handleClose={handleClose}
                     />
                     <ModalButton
-                      disabled={mutation.isPending || !props.dirty}
+                      disabled={
+                        mutation.isPending || (!props.dirty && !itemsDirty)
+                      }
                       loading={mutation.isPending}
                       itemEdit={itemEdit}
                       type="submit"

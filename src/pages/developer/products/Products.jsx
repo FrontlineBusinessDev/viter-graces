@@ -10,6 +10,7 @@ import React from "react";
 import ModalProducts from "./ModalProducts";
 import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import { setIsAdd } from "@/store/StoreAction";
+import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 const Products = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -144,6 +145,7 @@ const Products = () => {
           setItemEdit={setItemEdit}
           productMobile={true}
           haveFilterTable={true}
+          ishaveAdd={getAdminDeveloperRole(store)}
           dataTestidAddButton="add-product-btn"
         />
       </HeaderNav>

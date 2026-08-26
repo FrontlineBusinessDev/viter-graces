@@ -151,13 +151,18 @@ const ModalStockOverview = ({ itemEdit }) => {
                       type="text"
                       name="stock_movement_product_id"
                       onChange={(e, selectedItem) => {
-                        props.values.stock_movement_product_owner_id =
-                          selectedItem["products_owner_id"];
-                        props.values.stock_movement_product_owner_name =
-                          selectedItem["products_owner_name"];
-                        props.values.stock_movement_product_id = e.target.value;
-                        props.values.stock_movement_product_name =
-                          e.target.options[e.target.selectedIndex].text;
+                        props.setFieldValue(
+                          "stock_movement_product_owner_id",
+                          selectedItem["products_owner_id"],
+                        );
+                        props.setFieldValue(
+                          "stock_movement_product_owner_name",
+                          selectedItem["products_owner_name"],
+                        );
+                        props.setFieldValue(
+                          "stock_movement_product_name",
+                          e.target.options[e.target.selectedIndex].text,
+                        );
                         return e;
                       }}
                       haveOtherInfo={true}
@@ -173,7 +178,7 @@ const ModalStockOverview = ({ itemEdit }) => {
                       defaultValue="in stock"
                       options={typeOption}
                       onChange={(e) => {
-                        props.values.stock_movement_type = e.target.value;
+                        props.setFieldValue("stock_movement_type", e.target.value);
                         return e;
                       }}
                       dataTestIdSelect="select-movement-type"

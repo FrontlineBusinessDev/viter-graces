@@ -28,6 +28,28 @@ import { Plus } from "lucide-react";
 import React from "react";
 import * as Yup from "yup";
 
+const SyncDerivedFields = ({ values, setFieldValue }) => {
+  React.useEffect(() => {
+    if (
+      values.purchase_order_payment_status === "paid" &&
+      values.purchase_order_price !== values.purchase_order_payment
+    ) {
+      setFieldValue("purchase_order_price", values.purchase_order_payment);
+    }
+  }, [values.purchase_order_payment_status, values.purchase_order_payment]);
+
+  React.useEffect(() => {
+    if (
+      values.purchase_order_product_name !== "other" &&
+      values.purchase_order_product_name_other !== ""
+    ) {
+      setFieldValue("purchase_order_product_name_other", "");
+    }
+  }, [values.purchase_order_product_name]);
+
+  return null;
+};
+
 const ModalExpenses = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [items, setItems] = React.useState([]);
@@ -142,15 +164,12 @@ const ModalExpenses = ({ itemEdit }) => {
             }}
           >
             {(props) => {
-              if (props.values.purchase_order_payment_status === "paid") {
-                props.values.purchase_order_price =
-                  props.values.purchase_order_payment;
-              }
-              if (props.values.purchase_order_product_name !== "other") {
-                props.values.purchase_order_product_name_other = "";
-              }
               return (
                 <Form>
+                  <SyncDerivedFields
+                    values={props.values}
+                    setFieldValue={props.setFieldValue}
+                  />
                   <p className="font-bold mb-3">
                     Supplier :{" "}
                     <span className="uppercase font-bold">other</span>

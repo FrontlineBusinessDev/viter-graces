@@ -34,6 +34,19 @@ const ModalSuppliers = ({ itemEdit }) => {
   );
   const [items, setItems] = React.useState([]);
 
+  const initialItemsRef = React.useRef(null);
+  if (initialItemsRef.current === null) {
+    initialItemsRef.current = {
+      itemsContact: JSON.parse(JSON.stringify(itemsContact)),
+      items: JSON.parse(JSON.stringify(items)),
+    };
+  }
+
+  const itemsDirty =
+    JSON.stringify(itemsContact) !==
+      JSON.stringify(initialItemsRef.current.itemsContact) ||
+    JSON.stringify(items) !== JSON.stringify(initialItemsRef.current.items);
+
   const handleContactChange = (index, field, value) => {
     const updatedContact = [...itemsContact];
 
@@ -384,7 +397,7 @@ const ModalSuppliers = ({ itemEdit }) => {
                       disabled={mutation.isPending}
                       options={optionWeek}
                       onChange={(e) => {
-                        props.values.suppliers_delivery = e.target.value;
+                        props.setFieldValue("suppliers_delivery", e.target.value);
                         return e;
                       }}
                     />
@@ -409,7 +422,9 @@ const ModalSuppliers = ({ itemEdit }) => {
                       handleClose={handleClose}
                     />
                     <ModalButton
-                      disabled={mutation.isPending || !props.dirty}
+                      disabled={
+                        mutation.isPending || (!props.dirty && !itemsDirty)
+                      }
                       loading={mutation.isPending}
                       itemEdit={itemEdit}
                       type="submit"
