@@ -74,7 +74,7 @@ const MovementHistory = () => {
       accessorKey: "stock_movement_location",
       header: "Location",
       classTh: "",
-      classTd: "",
+      classTd: " line-clamp-2 max-w-40",
       meta: "",
     },
     {

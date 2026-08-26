@@ -72,6 +72,14 @@ const StockLevels = () => {
       classTh: "",
       classTd: "",
     },
+    {
+      accessorKey: "products_price",
+      header: "Price",
+      filterFn: "",
+      meta: "",
+      classTh: "",
+      classTd: "",
+    },
     ...(Number(ProductOwnerId(store)) > 0
       ? []
       : [
