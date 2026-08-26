@@ -3,19 +3,25 @@ import { InputText } from "@/components/inputs/InputText";
 import ButtonSpinner from "@/components/spinners/ButtonSpinner";
 import FetchingSpinner from "@/components/spinners/FetchingSpinner";
 import { apiVersion, devNavUrl } from "@/config/config";
+import { checkRoleToRedirect } from "@/custom-hooks/login-functions";
 import { ActivityLogResetPassDetails } from "@/layout/ArrayValue";
 import PageNotFound from "@/layout/PageNotFound";
 import { queryData } from "@/services/queryData";
 import useQueryData from "@/services/useQueryData";
-import { setError, setMessage, setSuccess } from "@/store/StoreAction";
+import {
+  setCredentials,
+  setError,
+  setIsLogin,
+  setMessage,
+  setSuccess,
+} from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { getUrlParam } from "@/utilities/getUrlParam";
-import { clearSession } from "@/utilities/logout";
+import { setStorageRoute } from "@/utilities/setStorageRoute";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
-import { CircleCheck, Eye, EyeOff } from "lucide-react";
+import { Check, CircleCheck, Eye, EyeOff } from "lucide-react";
 import React from "react";
-import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 const CreatePassword = () => {
@@ -27,8 +33,8 @@ const CreatePassword = () => {
   const [numberValidated, setNumberValidated] = React.useState(false);
   const [specialValidated, setSpecialValidated] = React.useState(false);
   const [lengthValidated, setLengthValidated] = React.useState(false);
+  const [isSuccess, setIsSuccess] = React.useState(false);
   const paramKey = getUrlParam().get("key");
-  const navigate = useNavigate();
 
   const { isLoading, data: key } = useQueryData(
     `${apiVersion}/users/key/${paramKey}`, // endpoint
@@ -56,8 +62,13 @@ const CreatePassword = () => {
       if (!data.success) {
         // success
       } else {
-        clearSession(dispatch);
-        navigate(`${devNavUrl}/thank-you`);
+        setIsSuccess(true);
+        if (store.isLogin) {
+          dispatch(setCredentials(data.data[0]));
+          setStorageRoute(data.data[1]);
+          dispatch(setIsLogin(false));
+          checkRoleToRedirect(navigate, data.data[0]);
+        }
       }
     },
   });
@@ -125,237 +136,265 @@ const CreatePassword = () => {
 
   return (
     <>
-      {key?.count == 0 || paramKey === null || paramKey === "" ? (
-        <PageNotFound />
-      ) : isLoading ? (
-        <FetchingSpinner />
-      ) : (
-        <div className="bg-dark-bg h-dvh ">
-          {/* <FetchingSpinner /> */}
+      <div className="bg-dark-bg h-dvh ">
+        {isSuccess ? (
           <div
-            className="flex justify-center items-center bg-dark-bg "
-            style={{ transform: "translateY(clamp(2rem,12vw,0rem))" }}
+            className="relative flex justify-center items-center "
+            style={{ transform: "translateY(clamp(5rem,12vw,8rem))" }}
           >
-            <div className="w-88 p-6">
+            <div className="w-96 p-6">
               <div className="flex justify-center items-center flex-col">
                 <LogoFull />
               </div>
-
-              <p className="mt-8 mb-0 text-lg font-bold uppercase text-white font-inter-bold ">
-                create password
+              <Check className="h-16 w-16 mx-auto mt-8" color="rgb(0 145 38)" />
+              <h2 className="mb-4 mt-2 text-lg text-white text-center">
+                Success!
+              </h2>
+              <p className="text-sm text-justify mb-6 text-white">
+                Your password is set and ready to use. Click the button below to
+                continue login
               </p>
-              <small className="uppercase text-gray-300">
-                Create a new password to regain access to your account. Make
-                sure it's strong and secure.
-              </small>
-              <Formik
-                initialValues={initVal}
-                validationSchema={yupSchema}
-                onSubmit={async (values, { setSubmitting, resetForm }) => {
-                  // mutate data
-                  let data = {
-                    ...ActivityLogResetPassDetails(
-                      "user",
-                      "forget password",
-                      key?.data[0],
-                    ),
-                    ...values,
-                  };
-                  mutation.mutate(data);
-                  dispatch(setError(false));
-                }}
-              >
-                {(props) => {
-                  return (
-                    <Form className="text-sm mt-8">
-                      <div className="relative mb-5">
-                        <InputText
-                          placeholder="CREATE PASSWORD"
-                          name="new_password"
-                          type={newPasswordShown ? "text" : "password"}
-                          className="text-white disabled:text-gray-400!"
-                          disabled={mutation.isPending}
-                          onChange={(e) => handleChange(e.target.value)}
-                        />
-                        {props.values.new_password && (
-                          <span
-                            className="text-base absolute bottom-1/2 right-2 translate-y-1/2 cursor-pointer"
-                            onClick={() => togglePassword("new")}
-                          >
-                            {newPasswordShown ? (
-                              <Eye className="text-gray-400! " />
-                            ) : (
-                              <EyeOff className="text-gray-400! " />
-                            )}
-                          </span>
-                        )}
-                      </div>
-                      <div className="relative mb-6">
-                        <InputText
-                          placeholder="RE-ENTER PASSWORD"
-                          type={passwordShown ? "text" : "password"}
-                          name="confirm_password"
-                          className="text-white disabled:text-gray-400!"
-                          disabled={mutation.isPending}
-                          onChange={(e) => handleChange(e.target.value)}
-                        />
-                        {props.values.confirm_password && (
-                          <span
-                            className="text-base absolute bottom-1/2 right-2 translate-y-1/2 cursor-pointer"
-                            onClick={() => togglePassword("")}
-                          >
-                            {passwordShown ? (
-                              <Eye className="text-gray-400! " />
-                            ) : (
-                              <EyeOff className="text-gray-400! " />
-                            )}
-                          </span>
-                        )}
-                      </div>
 
-                      <div className="py-3 rounded-sm mt-3 mb-6 text-sm">
-                        <span className="block mb-1 italic">
-                          Password Strength
-                        </span>
-
-                        <div className="w-full flex items-center gap-x-1">
-                          {lengthValidated ? (
-                            <>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/60 text-white text-center whitespace-nowrap transition duration-500"></div>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/60 text-white text-center whitespace-nowrap transition duration-500"></div>
-                            </>
-                          ) : (
-                            <>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
-                            </>
-                          )}
-
-                          {upperValidated && lowerValidated ? (
-                            <>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/75 text-white text-center whitespace-nowrap transition duration-500"></div>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/75 text-white text-center whitespace-nowrap transition duration-500"></div>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/75 text-white text-center whitespace-nowrap transition duration-500"></div>
-                            </>
-                          ) : (
-                            <>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
-                            </>
-                          )}
-
-                          {numberValidated && specialValidated ? (
-                            <>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/90 text-white text-center whitespace-nowrap transition duration-500"></div>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/90 text-white text-center whitespace-nowrap transition duration-500"></div>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/90 text-white text-center whitespace-nowrap transition duration-500"></div>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/90 text-white text-center whitespace-nowrap transition duration-500"></div>
-                            </>
-                          ) : (
-                            <>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
-                              <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
-                            </>
-                          )}
-                        </div>
-                        <ul className="text-sm mt-5">
-                          <li
-                            className={`${
-                              lengthValidated ? "text-light" : ""
-                            } text-body italic flex gap-2 items-center mb-2 `}
-                          >
-                            <CircleCheck
-                              className={`duration-200 ${
-                                lengthValidated
-                                  ? "fill-green-700 text-white"
-                                  : "opacity-50"
-                              }`}
-                            />
-                            Must have 8 characters
-                          </li>
-                          <li
-                            className={`${
-                              upperValidated ? "text-light" : ""
-                            } text-body italic flex gap-2 items-center mb-2 `}
-                          >
-                            <CircleCheck
-                              className={`duration-200 ${
-                                upperValidated
-                                  ? "fill-green-700 text-white"
-                                  : "opacity-50"
-                              }`}
-                            />
-                            At least 1 uppercase
-                          </li>
-                          <li
-                            className={`${
-                              lowerValidated ? "text-light" : ""
-                            } text-body italic flex gap-2 items-center mb-2 `}
-                          >
-                            <CircleCheck
-                              className={`duration-200 ${
-                                lowerValidated
-                                  ? "fill-green-700 text-white"
-                                  : "opacity-50"
-                              }`}
-                            />
-                            At least 1 lowercase
-                          </li>
-                          <li
-                            className={`${
-                              numberValidated ? "text-light" : ""
-                            } text-body italic flex gap-2 items-center mb-2 `}
-                          >
-                            <CircleCheck
-                              className={`duration-200 ${
-                                numberValidated
-                                  ? "fill-green-700 text-white"
-                                  : "opacity-50"
-                              }`}
-                            />
-                            At least 1 number
-                          </li>
-                          <li
-                            className={`${
-                              specialValidated ? "text-light" : ""
-                            } text-body italic flex gap-2 items-center mb-2 `}
-                          >
-                            <CircleCheck
-                              className={`duration-200 ${
-                                specialValidated
-                                  ? "fill-green-700 text-white"
-                                  : "opacity-50"
-                              }`}
-                            />
-                            At least 1 symbol
-                          </li>
-                        </ul>
-                      </div>
-
-                      <div className="flex items-center gap-1 pt-3">
-                        <button
-                          type="submit"
-                          disabled={mutation.isPending || !props.dirty}
-                          className="btn-modal-submit-login p-3 uppercase "
-                        >
-                          {mutation.isPending ? (
-                            <ButtonSpinner />
-                          ) : (
-                            "confirm password"
-                          )}
-                        </button>
-                      </div>
-                    </Form>
-                  );
-                }}
-              </Formik>
+              <p className="mt-2 text-sm text-white">
+                Go back to{" "}
+                <a href={`${devNavUrl}/login`} className="w-full text-primary">
+                  <u> login</u>
+                </a>
+              </p>
             </div>
           </div>
-        </div>
-      )}
+        ) : key?.count == 0 || paramKey === null || paramKey === "" ? (
+          <PageNotFound />
+        ) : isLoading ? (
+          <FetchingSpinner />
+        ) : (
+          <div>
+            {/* <FetchingSpinner /> */}
+            <div
+              className="flex justify-center items-center bg-dark-bg "
+              style={{ transform: "translateY(clamp(2rem,12vw,0rem))" }}
+            >
+              <div className="w-88 p-6">
+                <div className="flex justify-center items-center flex-col">
+                  <LogoFull />
+                </div>
+
+                <p className="mt-8 mb-0 text-lg font-bold uppercase text-white font-inter-bold ">
+                  create password
+                </p>
+                <small className="uppercase text-gray-300">
+                  Create a new password to regain access to your account. Make
+                  sure it's strong and secure.
+                </small>
+                <Formik
+                  initialValues={initVal}
+                  validationSchema={yupSchema}
+                  onSubmit={async (values, { setSubmitting, resetForm }) => {
+                    // mutate data
+                    let data = {
+                      ...ActivityLogResetPassDetails(
+                        "user",
+                        "forget password",
+                        key?.data[0],
+                      ),
+                      ...values,
+                    };
+                    mutation.mutate(data);
+                    dispatch(setError(false));
+                  }}
+                >
+                  {(props) => {
+                    return (
+                      <Form className="text-sm mt-8">
+                        <div className="relative mb-5">
+                          <InputText
+                            placeholder="CREATE PASSWORD"
+                            name="new_password"
+                            type={newPasswordShown ? "text" : "password"}
+                            className="text-white disabled:text-gray-400!"
+                            disabled={mutation.isPending}
+                            onChange={(e) => handleChange(e.target.value)}
+                          />
+                          {props.values.new_password && (
+                            <span
+                              className="text-base absolute bottom-1/2 right-2 translate-y-1/2 cursor-pointer"
+                              onClick={() => togglePassword("new")}
+                            >
+                              {newPasswordShown ? (
+                                <Eye className="text-gray-400! " />
+                              ) : (
+                                <EyeOff className="text-gray-400! " />
+                              )}
+                            </span>
+                          )}
+                        </div>
+                        <div className="relative mb-6">
+                          <InputText
+                            placeholder="RE-ENTER PASSWORD"
+                            type={passwordShown ? "text" : "password"}
+                            name="confirm_password"
+                            className="text-white disabled:text-gray-400!"
+                            disabled={mutation.isPending}
+                            onChange={(e) => handleChange(e.target.value)}
+                          />
+                          {props.values.confirm_password && (
+                            <span
+                              className="text-base absolute bottom-1/2 right-2 translate-y-1/2 cursor-pointer"
+                              onClick={() => togglePassword("")}
+                            >
+                              {passwordShown ? (
+                                <Eye className="text-gray-400! " />
+                              ) : (
+                                <EyeOff className="text-gray-400! " />
+                              )}
+                            </span>
+                          )}
+                        </div>
+
+                        <div className="py-3 rounded-sm mt-3 mb-6 text-sm">
+                          <span className="block mb-1 italic">
+                            Password Strength
+                          </span>
+
+                          <div className="w-full flex items-center gap-x-1">
+                            {lengthValidated ? (
+                              <>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/60 text-white text-center whitespace-nowrap transition duration-500"></div>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/60 text-white text-center whitespace-nowrap transition duration-500"></div>
+                              </>
+                            ) : (
+                              <>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
+                              </>
+                            )}
+
+                            {upperValidated && lowerValidated ? (
+                              <>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/75 text-white text-center whitespace-nowrap transition duration-500"></div>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/75 text-white text-center whitespace-nowrap transition duration-500"></div>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/75 text-white text-center whitespace-nowrap transition duration-500"></div>
+                              </>
+                            ) : (
+                              <>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
+                              </>
+                            )}
+
+                            {numberValidated && specialValidated ? (
+                              <>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/90 text-white text-center whitespace-nowrap transition duration-500"></div>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/90 text-white text-center whitespace-nowrap transition duration-500"></div>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/90 text-white text-center whitespace-nowrap transition duration-500"></div>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/90 text-white text-center whitespace-nowrap transition duration-500"></div>
+                              </>
+                            ) : (
+                              <>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
+                                <div className="w-full h-1 flex flex-col justify-center overflow-hidden bg-success/10 text-white text-center whitespace-nowrap transition duration-500"></div>
+                              </>
+                            )}
+                          </div>
+                          <ul className="text-sm mt-5">
+                            <li
+                              className={`${
+                                lengthValidated ? "text-light" : ""
+                              } text-body italic flex gap-2 items-center mb-2 `}
+                            >
+                              <CircleCheck
+                                className={`duration-200 ${
+                                  lengthValidated
+                                    ? "fill-green-700 text-white"
+                                    : "opacity-50"
+                                }`}
+                              />
+                              Must have 8 characters
+                            </li>
+                            <li
+                              className={`${
+                                upperValidated ? "text-light" : ""
+                              } text-body italic flex gap-2 items-center mb-2 `}
+                            >
+                              <CircleCheck
+                                className={`duration-200 ${
+                                  upperValidated
+                                    ? "fill-green-700 text-white"
+                                    : "opacity-50"
+                                }`}
+                              />
+                              At least 1 uppercase
+                            </li>
+                            <li
+                              className={`${
+                                lowerValidated ? "text-light" : ""
+                              } text-body italic flex gap-2 items-center mb-2 `}
+                            >
+                              <CircleCheck
+                                className={`duration-200 ${
+                                  lowerValidated
+                                    ? "fill-green-700 text-white"
+                                    : "opacity-50"
+                                }`}
+                              />
+                              At least 1 lowercase
+                            </li>
+                            <li
+                              className={`${
+                                numberValidated ? "text-light" : ""
+                              } text-body italic flex gap-2 items-center mb-2 `}
+                            >
+                              <CircleCheck
+                                className={`duration-200 ${
+                                  numberValidated
+                                    ? "fill-green-700 text-white"
+                                    : "opacity-50"
+                                }`}
+                              />
+                              At least 1 number
+                            </li>
+                            <li
+                              className={`${
+                                specialValidated ? "text-light" : ""
+                              } text-body italic flex gap-2 items-center mb-2 `}
+                            >
+                              <CircleCheck
+                                className={`duration-200 ${
+                                  specialValidated
+                                    ? "fill-green-700 text-white"
+                                    : "opacity-50"
+                                }`}
+                              />
+                              At least 1 symbol
+                            </li>
+                          </ul>
+                        </div>
+
+                        <div className="flex items-center gap-1 pt-3">
+                          <button
+                            type="submit"
+                            disabled={mutation.isPending || !props.dirty}
+                            className="btn-modal-submit-login p-3 uppercase "
+                          >
+                            {mutation.isPending ? (
+                              <ButtonSpinner />
+                            ) : (
+                              "confirm password"
+                            )}
+                          </button>
+                        </div>
+                      </Form>
+                    );
+                  }}
+                </Formik>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
     </>
   );
 };

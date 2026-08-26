@@ -3,7 +3,6 @@ import CreatePassword from "@/pages/login/CreatePassword";
 import ForgotPassword from "@/pages/login/ForgotPassword";
 import Login from "@/pages/login/Login";
 import ResetPassword from "@/pages/login/ResetPassword";
-import ThankYou from "@/pages/login/ThankYou";
 
 export const routesAccess = [
   {
@@ -25,9 +24,5 @@ export const routesAccess = [
   {
     path: `${devNavUrl}/reset-password`,
     element: <ResetPassword />,
-  },
-  {
-    path: `${devNavUrl}/thank-you`,
-    element: <ThankYou />,
   },
 ];
