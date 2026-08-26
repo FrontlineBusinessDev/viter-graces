@@ -102,12 +102,6 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                     ? "rounded-lg bg-primary text-secondary"
                     : "text-white rounded-lg"
                 }`;
-                console.log(
-                  "ongoing",
-                  item?.ongoing,
-                  item?.ongoing?.filter((item) => item?.includes(userRole))
-                    ?.length,
-                );
                 return (
                   <div key={index} className="mb-2">
                     <Link

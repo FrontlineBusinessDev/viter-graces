@@ -136,7 +136,7 @@ const CreatePassword = () => {
 
   return (
     <>
-      <div className="bg-dark-bg h-dvh ">
+      <div className="">
         {isSuccess ? (
           <div
             className="relative flex justify-center items-center "
@@ -168,7 +168,7 @@ const CreatePassword = () => {
         ) : isLoading ? (
           <FetchingSpinner />
         ) : (
-          <div>
+          <div className="bg-dark-bg h-dvh ">
             {/* <FetchingSpinner /> */}
             <div
               className="flex justify-center items-center bg-dark-bg "
