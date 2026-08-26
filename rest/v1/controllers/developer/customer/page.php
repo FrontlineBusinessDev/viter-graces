@@ -38,44 +38,55 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $query = checkReadLimit($val, allowedColumns());
         $total_result = checkReadAll($val, allowedColumns());
 
-        $data = getResultData($query);
-
-        for ($i = 0; $i < count($data); $i++) {
-
-            $val->sales_order_number = $data[$i]["sales_order_number"];
-
-            $queryLogin = $val->readBySoNumber();
-            $queryInstallment = $val->readByInstallment();
-
-            $queryLogin = $queryLogin
-                ? getResultData($queryLogin)
-                : [];
-
-            $queryInstallment = $queryInstallment
-                ? getResultData($queryInstallment)
-                : [];
-
-            $data[$i]["items"] = $queryLogin;
-            $data[$i]["installmentItems"] = $queryInstallment;
-
-            $total_result_final[] = $data[$i];
-        }
-
         http_response_code(200);
 
-        $response = new Response();
-        $returnData = [];
+        checkReadQuery(
+            $query,
+            $total_result,
+            $val->column_total,
+            $val->column_start
+        );
 
-        $returnData["data"] = $total_result_final;
-        $returnData["count"] = count($total_result_final);
-        $returnData["total"] = $total_result->rowCount();
-        $returnData["per_page"] = $val->column_total;
-        $returnData["page"] = (int)$val->column_start;
-        $returnData["total_pages"] = ceil($total_result->rowCount() / $val->column_total);
-        $returnData["success"] = true;
-        $response->setData($returnData);
-        $response->send();
-        exit;
+        // return 404 error if endpoint not available
+        checkEndpoint();
+        // $data = getResultData($query);
+
+        // for ($i = 0; $i < count($data); $i++) {
+
+        //     $val->sales_order_number = $data[$i]["sales_order_number"];
+
+        //     $queryLogin = $val->readBySoNumber();
+        //     $queryInstallment = $val->readByInstallment();
+
+        //     $queryLogin = $queryLogin
+        //         ? getResultData($queryLogin)
+        //         : [];
+
+        //     $queryInstallment = $queryInstallment
+        //         ? getResultData($queryInstallment)
+        //         : [];
+
+        //     $data[$i]["items"] = $queryLogin;
+        //     $data[$i]["installmentItems"] = $queryInstallment;
+
+        //     $total_result_final[] = $data[$i];
+        // }
+
+        // http_response_code(200);
+
+        // $response = new Response();
+        // $returnData = [];
+
+        // $returnData["data"] = $total_result_final;
+        // $returnData["count"] = count($total_result_final);
+        // $returnData["total"] = $total_result->rowCount();
+        // $returnData["per_page"] = $val->column_total;
+        // $returnData["page"] = (int)$val->column_start;
+        // $returnData["total_pages"] = ceil($total_result->rowCount() / $val->column_total);
+        // $returnData["success"] = true;
+        // $response->setData($returnData);
+        // $response->send();
+        // exit;
     }
 }
 
