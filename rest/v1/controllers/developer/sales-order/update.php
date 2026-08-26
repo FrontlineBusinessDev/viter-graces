@@ -49,6 +49,9 @@ if (array_key_exists("id", $_GET)) {
     $val->sales_order_installment_count = $data['sales_order_installment_count'];
     $val->sales_order_installment_amount = $data['sales_order_installment_amount'];
 
+    $val->sales_order_discount_percentage = $data['sales_order_discount_percentage'];
+    $val->sales_order_discount_type = $data['sales_order_discount_type'];
+
     if ($val->sales_order_payment_method == "cash") {
         $val->sales_order_cash = $val->sales_order_paid_amount;
     }

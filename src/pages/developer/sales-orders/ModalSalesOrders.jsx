@@ -11,6 +11,7 @@ import { AmountsWithPesoSign, AmountWithPesoSign } from "@/components/PesoSign";
 import { apiVersion } from "@/config/config";
 import {
   ActivityLogDetails,
+  discountTypeOption,
   InstallmentByType,
   InstallmentType,
   PaymentMethodList,
@@ -292,6 +293,15 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     sales_order_online_transaction: isEmptyItem(
       itemEdit?.sales_order_online_transaction,
       "0",
+    ),
+
+    sales_order_discount_percentage: isEmptyItem(
+      itemEdit?.sales_order_discount_percentage,
+      "0",
+    ),
+    sales_order_discount_type: isEmptyItem(
+      itemEdit?.sales_order_discount_type,
+      "amount",
     ),
   };
 
@@ -578,16 +588,44 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-3 mt-3 gap-3 items-center">
+                  <div className="grid grid-cols-4 mt-3 gap-3 items-center">
                     <div className="relative ">
-                      <InputNumber
-                        label="Discount"
-                        name="sales_order_discount"
-                        placeholder={`${itemEdit ? "0" : "0"}`}
-                        disabled={mutation.isPending}
+                      <InputSelectArrayWithOptions
+                        label="Type of discount"
+                        type="sales_order_discount_type"
+                        name="sales_order_discount_type"
+                        defaultValue=""
+                        options={discountTypeOption()}
+                        onChange={(e) => {
+                          props.values.sales_order_discount_percentage = "";
+                          props.values.sales_order_discount = "";
+                          props.values.sales_order_discount_type = e.target.id;
+                          return e;
+                        }}
                         required={false}
                       />
                     </div>
+                    {props.values.sales_order_discount_type === "percentage" ? (
+                      <div className="relative ">
+                        <InputNumber
+                          label="Discount %"
+                          name="sales_order_discount_percentage"
+                          placeholder={`${itemEdit ? "0" : "0"}`}
+                          disabled={mutation.isPending}
+                          required={false}
+                        />
+                      </div>
+                    ) : (
+                      <div className="relative ">
+                        <InputNumber
+                          label="Discount"
+                          name="sales_order_discount"
+                          placeholder={`${itemEdit ? "0" : "0"}`}
+                          disabled={mutation.isPending}
+                          required={false}
+                        />
+                      </div>
+                    )}
                     <div className="relative ">
                       <InputSelectArrayWithOptions
                         label="VAT"

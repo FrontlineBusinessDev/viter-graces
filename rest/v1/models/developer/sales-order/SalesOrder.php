@@ -42,6 +42,9 @@ class SalesOrder
     public $sales_order_installment_count;
     public $sales_order_installment_amount;
 
+    public $sales_order_discount_percentage;
+    public $sales_order_discount_type;
+
     public $sales_order_created;
     public $sales_order_updated;
 
@@ -154,6 +157,8 @@ class SalesOrder
             $sql .= "sales_order_installment_type_day, ";
             $sql .= "sales_order_installment_count, ";
             $sql .= "sales_order_installment_amount, ";
+            $sql .= "sales_order_discount_percentage, ";
+            $sql .= "sales_order_discount_type, ";
             $sql .= "sales_order_created, ";
             $sql .= "sales_order_updated ) values ( ";
             $sql .= ":sales_order_status, ";
@@ -194,6 +199,8 @@ class SalesOrder
             $sql .= ":sales_order_installment_type_day, ";
             $sql .= ":sales_order_installment_count, ";
             $sql .= ":sales_order_installment_amount, ";
+            $sql .= ":sales_order_discount_percentage, ";
+            $sql .= ":sales_order_discount_type, ";
             $sql .= ":sales_order_created, ";
             $sql .= ":sales_order_updated ) ";
             $query = $this->connection->prepare($sql);
@@ -236,6 +243,8 @@ class SalesOrder
                 "sales_order_installment_type_day" => $this->sales_order_installment_type_day,
                 "sales_order_installment_count" => $this->sales_order_installment_count,
                 "sales_order_installment_amount" => $this->sales_order_installment_amount,
+                "sales_order_discount_percentage" => $this->sales_order_discount_percentage,
+                "sales_order_discount_type" => $this->sales_order_discount_type,
                 "sales_order_created" => $this->sales_order_created,
                 "sales_order_updated" => $this->sales_order_updated,
             ]);
@@ -682,6 +691,8 @@ class SalesOrder
             $sql .= "sales_order_check = :sales_order_check, ";
             $sql .= "sales_order_online_transaction = :sales_order_online_transaction, ";
             $sql .= "sales_order_installment_amount = :sales_order_installment_amount, ";
+            $sql .= "sales_order_discount_percentage = :sales_order_discount_percentage, ";
+            $sql .= "sales_order_discount_type = :sales_order_discount_type, ";
             $sql .= "sales_order_updated = :sales_order_updated ";
             $sql .= "where sales_order_aid  = :sales_order_aid ";
             $query = $this->connection->prepare($sql);
@@ -717,6 +728,8 @@ class SalesOrder
                 "sales_order_check" => $this->sales_order_check,
                 "sales_order_online_transaction" => $this->sales_order_online_transaction,
                 "sales_order_installment_amount" => $this->sales_order_installment_amount,
+                "sales_order_discount_percentage" => $this->sales_order_discount_percentage,
+                "sales_order_discount_type" => $this->sales_order_discount_type,
                 "sales_order_aid" => $this->sales_order_aid,
             ]);
         } catch (PDOException $ex) {

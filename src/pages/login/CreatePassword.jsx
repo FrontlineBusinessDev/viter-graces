@@ -3,25 +3,19 @@ import { InputText } from "@/components/inputs/InputText";
 import ButtonSpinner from "@/components/spinners/ButtonSpinner";
 import FetchingSpinner from "@/components/spinners/FetchingSpinner";
 import { apiVersion, devNavUrl } from "@/config/config";
-import { checkRoleToRedirect } from "@/custom-hooks/login-functions";
 import { ActivityLogResetPassDetails } from "@/layout/ArrayValue";
 import PageNotFound from "@/layout/PageNotFound";
 import { queryData } from "@/services/queryData";
 import useQueryData from "@/services/useQueryData";
-import {
-  setCredentials,
-  setError,
-  setIsLogin,
-  setMessage,
-  setSuccess,
-} from "@/store/StoreAction";
+import { setError, setMessage, setSuccess } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { getUrlParam } from "@/utilities/getUrlParam";
-import { setStorageRoute } from "@/utilities/setStorageRoute";
+import { clearSession } from "@/utilities/logout";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
-import { Check, CircleCheck, Eye, EyeOff } from "lucide-react";
+import { CircleCheck, Eye, EyeOff } from "lucide-react";
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import * as Yup from "yup";
 
 const CreatePassword = () => {
@@ -33,8 +27,8 @@ const CreatePassword = () => {
   const [numberValidated, setNumberValidated] = React.useState(false);
   const [specialValidated, setSpecialValidated] = React.useState(false);
   const [lengthValidated, setLengthValidated] = React.useState(false);
-  const [isSuccess, setIsSuccess] = React.useState(false);
   const paramKey = getUrlParam().get("key");
+  const navigate = useNavigate();
 
   const { isLoading, data: key } = useQueryData(
     `${apiVersion}/users/key/${paramKey}`, // endpoint
@@ -62,13 +56,8 @@ const CreatePassword = () => {
       if (!data.success) {
         // success
       } else {
-        setIsSuccess(true);
-        if (store.isLogin) {
-          dispatch(setCredentials(data.data[0]));
-          setStorageRoute(data.data[1]);
-          dispatch(setIsLogin(false));
-          checkRoleToRedirect(navigate, data.data[0]);
-        }
+        clearSession(dispatch);
+        navigate(`${devNavUrl}/thank-you`);
       }
     },
   });
@@ -136,31 +125,7 @@ const CreatePassword = () => {
 
   return (
     <>
-      {isSuccess ? (
-        <div
-          className="relative flex justify-center items-center "
-          style={{ transform: "translateY(clamp(5rem,12vw,8rem))" }}
-        >
-          <div className="w-96 p-6">
-            <div className="flex justify-center items-center flex-col">
-              <LogoFull />
-            </div>
-            <Check className="h-16 w-16 mx-auto mt-8" color="rgb(0 145 38)" />
-            <h2 className="mb-4 mt-2 text-lg text-center">Success!</h2>
-            <p className="text-sm text-justify mb-6">
-              Your password is set and ready to use. Click the button below to
-              continue login
-            </p>
-
-            <p className="mt-2 text-sm">
-              Go back to{" "}
-              <a href={`${devNavUrl}/login`} className="w-full text-primary">
-                <u> login</u>
-              </a>
-            </p>
-          </div>
-        </div>
-      ) : key?.count == 0 || paramKey === null || paramKey === "" ? (
+      {key?.count == 0 || paramKey === null || paramKey === "" ? (
         <PageNotFound />
       ) : isLoading ? (
         <FetchingSpinner />

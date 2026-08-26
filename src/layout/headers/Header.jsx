@@ -1,8 +1,8 @@
 import ScreenSpinner from "@/components/spinners/ScreenSpinner";
-import { devNavUrl } from "@/config/config";
 import useDarkMode from "@/custom-hooks/useDarkMode";
 import { StoreContext } from "@/store/StoreContext";
 import { checkLocalStorage } from "@/utilities/CheckLocalStorage";
+import { performLogout } from "@/utilities/logout";
 import { LucideLogOut, Menu, Moon, Plus, Sun, X } from "lucide-react";
 import React from "react";
 import { Link } from "react-router-dom";
@@ -41,8 +41,7 @@ const Header = ({ menu, toggleMobileNav }) => {
     setLoading(true);
     setTimeout(() => {
       if (checkLocalStorage() !== null) {
-        localStorage.removeItem("gracestoken");
-        window.location.replace(`${devNavUrl}/login`);
+        performLogout(dispatch);
         return;
       }
       setLoading(false);

@@ -6,6 +6,7 @@ import React from "react";
 import ModalProductOwner from "./modal/ModalProductOwner";
 import ViewProducts from "./modal/ViewProducts";
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import WarningBanner from "@/layout/WarningBanner";
 const ProductOwner = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -52,11 +53,12 @@ const ProductOwner = () => {
   ];
   return (
     <>
-      <HeaderNav
-        menu={"settings"}
-        activeTab="product-owner"
-        warningNotes="test"
-      >
+      <HeaderNav menu={"settings"} activeTab="product-owner" warningNotes="">
+        <WarningBanner
+          path=""
+          text="After creating an account or resetting your password, kindly check your spam folder for the confirmation email"
+          description=""
+        />
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
