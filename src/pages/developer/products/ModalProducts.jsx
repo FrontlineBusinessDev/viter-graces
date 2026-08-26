@@ -196,7 +196,7 @@ const ModalProducts = ({ itemEdit }) => {
                     </div>
                     <div className="relative mt-3">
                       <InputNumber
-                        label="Cost Price"
+                        label="Estimated Cost Price"
                         name="products_cost"
                         placeholder={`${itemEdit ? "0.00" : "0.00"}`}
                         disabled={mutation.isPending || loading}

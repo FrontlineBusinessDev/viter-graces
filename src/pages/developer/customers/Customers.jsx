@@ -57,43 +57,6 @@ const Customers = () => {
       classTd: "",
       meta: "",
     },
-    {
-      accessorKey: "customer_address",
-      header: "address",
-      classTh: "",
-      classTd: "",
-      meta: "",
-    },
-    {
-      accessorKey: "messenger",
-      header: "messenger",
-      link: (value) => value,
-      classTh: "",
-      classTd: "",
-      meta: "",
-    },
-    {
-      accessorKey: "whatsapp",
-      header: "whatsapp",
-      // link: (value) => value,
-      classTh: "",
-      classTd: "",
-      meta: "",
-    },
-    {
-      accessorKey: "other",
-      header: "other social",
-      link: (value) => value,
-      classTh: "",
-      classTd: "",
-      meta: "",
-    },
-    {
-      accessorKey: "customer_notes",
-      header: "note",
-      classTh: "",
-      classTd: "",
-    },
     ...(Number(ProductOwnerId(store)) > 0
       ? []
       : [

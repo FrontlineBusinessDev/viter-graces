@@ -38,7 +38,7 @@ const CustomerMobileReponsive = ({
                   <div className="text-left!">
                     <Link
                       to={`${devNavUrl}/${userRole}/sales-orders`}
-                      className="tooltip-action-table text-lg bg-transparent! underline text-primary capitalize p-0! "
+                      className="tooltip-action-table text-lg bg-transparent! underline text-primary dark:text-green-400 capitalize p-0! "
                       data-tooltip={"View"}
                       onClick={() =>
                         sessionStorage.setItem(
