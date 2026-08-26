@@ -5,16 +5,10 @@ import useQueryData from "@/services/useQueryData";
 import { StoreContext } from "@/store/StoreContext";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { ProductOwnerId } from "@/utilities/productOwnerToken";
-import { TriangleAlert } from "lucide-react";
+import { Info, TriangleAlert } from "lucide-react";
 import React, { useMemo } from "react";
 
-const WarningBanner = ({
-  path = "",
-  text = "",
-  id = 0,
-  description = "",
-  isLowStock = false,
-}) => {
+const WarningBanner = ({ path = "", text = "", id = 0, description = "" }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const {
     isLoading,
@@ -71,6 +65,28 @@ const WarningBanner = ({
                   ) : (
                     ""
                   )} */}
+                </>
+              )}
+            </div>
+          </div>
+        </div>
+      ) : (
+        ""
+      )}
+
+      {path === "" && description === "" && text !== "" ? (
+        <div className="bg-orange-100 text-orange-600 dark:bg-orange-200 dark:text-orange-300 border border-orange-200 rounded-xl px-3 py-2 my-2  ">
+          <div className="flex items-center gap-2">
+            <Info
+              size={14}
+              className="dark:text-orange-600! place-self-start mt-0.5"
+            />
+            <div className="dark:text-orange-600! mb-0 font-bold sm:truncate ">
+              {isLoading ? (
+                <TableLoading count={1} cols={1} />
+              ) : (
+                <>
+                  <span className="dark:text-orange-600 mr-1">{text}</span>
                 </>
               )}
             </div>

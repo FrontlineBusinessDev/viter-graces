@@ -477,3 +477,13 @@ export const taxOption = () => {
 
   return data;
 };
+
+export const discountTypeOption = () => {
+  let data = [
+    { id: "--", name: "--" },
+    { id: "percentage", name: "percentage" },
+    { id: "amount", name: "amount" },
+  ];
+
+  return data;
+};

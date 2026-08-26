@@ -5,6 +5,8 @@ import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalProductOwner from "./modal/ModalProductOwner";
 import ViewProducts from "./modal/ViewProducts";
+import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import WarningBanner from "@/layout/WarningBanner";
 const ProductOwner = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -13,8 +15,18 @@ const ProductOwner = () => {
     {
       accessorKey: "user_account_is_active",
       header: "status",
-      classTh: "w-[5rem]",
+      classTh: "min-w-[5rem]!",
       classTd: "",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={ActiveInActiveStatus()}
+            testFilterStatusId={"filter-status"}
+          />
+        ),
+      },
       status_option: ActiveInActiveStatus(),
     },
     {
@@ -22,12 +34,14 @@ const ProductOwner = () => {
       header: "name",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "user_account_email",
       header: "email",
       classTh: "",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "action",
@@ -39,11 +53,17 @@ const ProductOwner = () => {
   ];
   return (
     <>
-      <HeaderNav menu={"settings"} activeTab="product-owner">
+      <HeaderNav menu={"settings"} activeTab="product-owner" warningNotes="">
+        <WarningBanner
+          path=""
+          text="After creating an account or resetting your password, kindly check your spam folder for the confirmation email"
+          description=""
+        />
         <InfiniteTable
           columns={columns}
           className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
           path="product-owner"
+          haveFilterTable={true}
           setItemEdit={setItemEdit}
           dataTestidAddButton="add-product-owner-btn"
         />

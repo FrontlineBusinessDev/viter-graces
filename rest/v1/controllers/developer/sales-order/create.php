@@ -47,6 +47,8 @@ $val->sales_order_installment_type = $data['sales_order_installment_type'];
 $val->sales_order_installment_type_day = $data['sales_order_installment_type_day'];
 $val->sales_order_installment_count = $data['sales_order_installment_count'];
 $val->sales_order_installment_amount = $data['sales_order_installment_amount'];
+$val->sales_order_discount_percentage = $data['sales_order_discount_percentage'];
+$val->sales_order_discount_type = $data['sales_order_discount_type'];
 
 if ((float)$data["sales_order_paid_amount"] >= (float)$data["sales_order_total_receivable_amount"]) {
     $val->sales_order_paid_amount = $data["sales_order_total_receivable_amount"];

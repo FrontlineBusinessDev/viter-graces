@@ -73,6 +73,17 @@ export const PropsValues = (props, items) => {
       Number(values.sales_order_online_transaction);
   }
 
+  if (
+    values.sales_order_discount_type === "percentage" &&
+    Number(values.sales_order_discount_percentage) !== 0 &&
+    Number(values.subtotal) !== 0
+  ) {
+    let percentageDiscount =
+      Number(values.sales_order_discount_percentage) / 100;
+    values.sales_order_discount =
+      Number(values.subtotal) * Number(percentageDiscount);
+  }
+
   return;
 };
 // Copyright year

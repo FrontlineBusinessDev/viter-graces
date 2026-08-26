@@ -102,13 +102,18 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                     ? "rounded-lg bg-primary text-secondary"
                     : "text-white rounded-lg"
                 }`;
-
+                console.log(
+                  "ongoing",
+                  item?.ongoing,
+                  item?.ongoing?.filter((item) => item?.includes(userRole))
+                    ?.length,
+                );
                 return (
                   <div key={index} className="mb-2">
                     <Link
                       to={
                         item?.ongoing?.filter((item) =>
-                          item?.role?.includes(userRole),
+                          item?.includes(userRole),
                         )?.length > 0
                           ? "#"
                           : `${isEmptyItem(item?.path, `${devNavUrl}`)}`
@@ -119,7 +124,7 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                       onClick={() => handleOnClickNav()}
                       className={
                         item?.ongoing?.filter((item) =>
-                          item?.role?.includes(userRole),
+                          item?.includes(userRole),
                         )?.length > 0
                           ? sharedClassOG
                           : sharedClass
@@ -136,9 +141,8 @@ const Navigation = ({ menu, submenu, mobileNavOpen }) => {
                         {item.label}
                       </span>
 
-                      {item?.ongoing?.filter((item) =>
-                        item?.role?.includes(userRole),
-                      )?.length > 0 ? (
+                      {item?.ongoing?.filter((item) => item?.includes(userRole))
+                        ?.length > 0 ? (
                         <span className="w-full flex justify-end ">
                           <small
                             className={`bg-amber-300 text-black px-1 text-[9px] rounded-sm 

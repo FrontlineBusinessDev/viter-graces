@@ -834,7 +834,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
 
                   <div className="relative my-3 ">
                     <InputSelectFilterTagArray
-                      label="Received by:"
+                      label="Created by:"
                       defaultValue={{
                         id: isEmptyItem(
                           itemEdit?.sales_order_received_by_id,
