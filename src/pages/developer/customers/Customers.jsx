@@ -77,7 +77,7 @@ const Customers = () => {
     {
       accessorKey: "outstanding_balance",
       header: "Outstanding Balance",
-      // link: `${devNavUrl}/${userRole}/overdue-payments`,
+      link: `${devNavUrl}/${userRole}/overdue-payments`,
       amount: true,
       classTh: "min-w-45",
       classTd: " ",

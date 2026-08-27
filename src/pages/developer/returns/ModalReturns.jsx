@@ -96,6 +96,19 @@ const ModalReturns = ({ itemEdit }) => {
       itemEdit?.return_product_is_restocked,
       "",
     ),
+    // Issue 1: a new return (no itemEdit) always starts as "pending"; editing an
+    // existing return carries its current status forward unchanged, since this
+    // modal has no control that lets the user change status - only the table
+    // dropdown (TableUpdateStatus) does that.
+    return_product_status: isEmptyItem(
+      itemEdit?.return_product_status,
+      "pending",
+    ),
+    // Issue 2: Resolution Types - UI-only field, bound to Formik state.
+    return_product_resolution_type: isEmptyItem(
+      itemEdit?.return_product_resolution_type,
+      "",
+    ),
   };
 
   const yupSchema = Yup.object({
@@ -174,6 +187,26 @@ const ModalReturns = ({ itemEdit }) => {
                         <option value="">Select Return Reason</option>
                         <option value="damage">Damage</option>
                         <option value="expired">Expired</option>
+                        <option value="other">Other</option>
+                      </InputSelect>
+                    </div>
+
+                    {/* Issue 2: Resolution Types dropdown, reusable <InputSelect>.
+                        This modal is shared by both the Add and Edit flows (differentiated
+                        only by the `itemEdit` prop), so adding it here covers both. UI-only:
+                        bound to Formik state via `name`, no API wiring yet. */}
+                    <div className="relative">
+                      <InputSelect
+                        label="Resolution Types"
+                        type="text"
+                        name="return_product_resolution_type"
+                        disabled={mutation.isPending}
+                        required={false}
+                      >
+                        <option value="">Select Resolution Type</option>
+                        <option value="refund">Refund</option>
+                        <option value="credit memo">Credit Memo</option>
+                        <option value="replacement">Replacement</option>
                       </InputSelect>
                     </div>
                   </div>
@@ -287,7 +320,10 @@ const ModalReturns = ({ itemEdit }) => {
                     <div className="bg-[#F5F5EC] dark:bg-gray-600 w-full place-self-end my-5 p-2">
                       <p className="flex flex-col place-self-end text-primary text-lg text-right">
                         <span className="text-black dark:text-light text-sm">
-                          Return Amount
+                          <span className="capitalize">
+                            {props.values.return_product_resolution_type}
+                          </span>{" "}
+                          Amount
                         </span>
                         <AmountWithPesoSign
                           classN="size-5"
@@ -312,25 +348,28 @@ const ModalReturns = ({ itemEdit }) => {
                       disabled={mutation.isPending}
                     />
                   </div>
-
-                  <div className="flex items-center gap-2 mt-3">
-                    <button
-                      type="button"
-                      onClick={() => setIsSelected((prev) => !prev)}
-                      className={`w-11 h-6 flex items-center rounded-full p-1 transition-colors duration-300 ${
-                        isSelected ? "bg-green-600" : "bg-gray-300"
-                      }`}
-                    >
-                      <div
-                        className={`w-4 h-4 bg-white rounded-full shadow transform transition-transform duration-300 ${
-                          isSelected ? "translate-x-5" : "translate-x-0"
+                  {props.values.return_product_reason === "other" ? (
+                    <div className="flex items-center gap-2 mt-3">
+                      <button
+                        type="button"
+                        onClick={() => setIsSelected((prev) => !prev)}
+                        className={`w-11 h-6 flex items-center rounded-full p-1 transition-colors duration-300 ${
+                          isSelected ? "bg-green-600" : "bg-gray-300"
                         }`}
-                      />
-                    </button>
-                    <span className="text-black text-sm dark:text-light">
-                      Restock returned items
-                    </span>
-                  </div>
+                      >
+                        <div
+                          className={`w-4 h-4 bg-white rounded-full shadow transform transition-transform duration-300 ${
+                            isSelected ? "translate-x-5" : "translate-x-0"
+                          }`}
+                        />
+                      </button>
+                      <span className="text-black text-sm dark:text-light">
+                        Restock returned items
+                      </span>
+                    </div>
+                  ) : (
+                    ""
+                  )}
 
                   {store.error && <MessageError />}
                   <div className="modal-action">
