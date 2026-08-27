@@ -90,6 +90,12 @@ const PurchaseMovementMobileReponsive = ({
                         {rowData?.purchase_order_after_qty}
                       </span>
                     </li>
+                    <li className="flex text-left! text-xs">
+                      <span className={`text-gray-500 mr-2 w-22`}>Note:</span>
+                      <span className="wrap-break-word  ">
+                        {rowData?.purchase_order_transfer_note}
+                      </span>
+                    </li>
                   </ul>
                 </div>
               </div>

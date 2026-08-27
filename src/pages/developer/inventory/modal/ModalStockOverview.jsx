@@ -145,7 +145,7 @@ const ModalStockOverview = ({ itemEdit }) => {
                 <Form>
                   <div className="relative mt-3">
                     <InputSelectArray
-                      label="Stock movement"
+                      label="Product Name"
                       path="products/read-all-active-by-product"
                       placeholder={`${itemEdit ? "Update product" : "Enter product"}`}
                       type="text"
@@ -178,7 +178,10 @@ const ModalStockOverview = ({ itemEdit }) => {
                       defaultValue="in stock"
                       options={typeOption}
                       onChange={(e) => {
-                        props.setFieldValue("stock_movement_type", e.target.value);
+                        props.setFieldValue(
+                          "stock_movement_type",
+                          e.target.value,
+                        );
                         return e;
                       }}
                       dataTestIdSelect="select-movement-type"

@@ -1,6 +1,7 @@
 import { AmountWithPesoSign } from "@/components/PesoSign";
 import ActionButtonMobile from "../ActionButtonMobile";
 import { ActionTableList } from "../ArrayValue";
+import Pills from "@/components/Pills";
 
 const ReportAccountReceivableMobileResponsive = ({
   rows,
@@ -24,7 +25,7 @@ const ReportAccountReceivableMobileResponsive = ({
                 className="lg:hidden border rounded-xl p-4 mb-4 shadow-sm"
               >
                 {/* HEADER */}
-                <div className="mb-2">
+                <div className="flex flex-wrap justify-between mb-2">
                   <ul className="flex flex-col">
                     <li className="flex gap-2 flex-wrap items-center">
                       <span
@@ -39,20 +40,17 @@ const ReportAccountReceivableMobileResponsive = ({
                     <li className={`font-semibold text-left text-xs `}>
                       {rowData?.sales_order_product_owner_name}
                     </li>
-                    <li className={`font-semibold text-left text-xs `}>
-                      {rowData?.sales_order_date}
-                    </li>
                   </ul>
 
                   {/* STATUS */}
-                  {/* <ul>
+                  <ul>
                     <li className="mb-2 capitalize">
                       <Pills variant={rowData?.is_status}>
                         {rowData?.is_status}
                       </Pills>
                     </li>
                     <li className="mb-0">{rowData?.sales_order_date}</li>
-                  </ul> */}
+                  </ul>
                 </div>
                 {/* OTHER FIELDS */}
                 <div className="flex flex-wrap justify-between items-end border-t border-gray-200">

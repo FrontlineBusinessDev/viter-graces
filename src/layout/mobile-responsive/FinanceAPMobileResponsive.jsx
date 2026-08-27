@@ -1,6 +1,7 @@
 import { AmountWithPesoSign } from "@/components/PesoSign";
 import ActionButtonMobile from "../ActionButtonMobile";
 import { ActionTableList } from "../ArrayValue";
+import Pills from "@/components/Pills";
 
 const FinanceAPMobileResponsive = ({
   rows,
@@ -40,10 +41,31 @@ const FinanceAPMobileResponsive = ({
                       {rowData?.purchase_order_date}
                     </li>
                   </ul>
+                  <li className="flex gap-2 flex-wrap items-center">
+                    <span
+                      className={`font-semibold text-black dark:text-light text-lg capitalize`}
+                    >
+                      <Pills variant={rowData?.payment_status}>
+                        {rowData?.payment_status}
+                      </Pills>
+                    </span>
+                  </li>
                 </div>
                 {/* OTHER FIELDS */}
                 <div className="flex flex-wrap justify-between items-end border-t border-gray-200">
                   <ul className=" py-2 gap-2 sm:gap-5  ">
+                    <li className="flex text-left! text-xs">
+                      <span className={`text-gray-500 mr-2`}>Product: </span>
+                      <span className="wrap-break-word font-semibold ">
+                        {rowData?.purchase_order_product_name}
+                      </span>
+                    </li>
+                    <li className="flex text-left! text-xs">
+                      <span className={`text-gray-500 mr-2`}>Quantity: </span>
+                      <span className="wrap-break-word font-semibold ">
+                        {rowData?.purchase_order_after_qty}
+                      </span>
+                    </li>
                     <li className="flex text-left! text-xs">
                       <span className={`text-gray-500 mr-2`}>Amount: </span>
                       <span className="wrap-break-word font-semibold ">
@@ -62,7 +84,7 @@ const FinanceAPMobileResponsive = ({
                         />
                       </span>
                     </li>
-                    <li className="flex text-left! text-xs">
+                    <div className="flex text-left! text-xs">
                       <span className={`text-gray-500 mr-1`}>Balance: </span>
                       <span className="wrap-break-word font-semibold">
                         <AmountWithPesoSign
@@ -70,7 +92,7 @@ const FinanceAPMobileResponsive = ({
                           amount={`${Number(rowData?.balance_amount)}`}
                         />
                       </span>
-                    </li>
+                    </div>
                   </ul>
                 </div>
                 <div className=" pt-3 border-t border-gray-200 dark:border-gray-700 ">

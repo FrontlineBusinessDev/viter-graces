@@ -41,7 +41,7 @@ const ExpensesReport = () => {
     },
     {
       accessorKey: "purchase_order_date",
-      header: "Order Date",
+      header: "Transaction Date",
       filterFn: "date",
       classTh: "w-[8rem]",
       classTd: "",
@@ -49,7 +49,7 @@ const ExpensesReport = () => {
     },
     {
       accessorKey: "purchase_order_product_name",
-      header: "Product",
+      header: "Products",
       classTh: "min-w-[20rem]",
       classTd: "",
       meta: "",

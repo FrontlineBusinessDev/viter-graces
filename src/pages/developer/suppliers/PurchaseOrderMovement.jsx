@@ -111,6 +111,14 @@ const PurchaseOrderMovement = () => {
       filterFn: "date",
       meta: "",
     },
+    {
+      accessorKey: "purchase_order_transfer_note",
+      header: "Note",
+      orderNumber: "1",
+      classTh: "min-w-[7rem] ",
+      classTd: "",
+      meta: "",
+    },
   ];
   return (
     <>

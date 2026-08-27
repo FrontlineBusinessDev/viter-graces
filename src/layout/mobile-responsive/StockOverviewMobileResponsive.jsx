@@ -48,8 +48,8 @@ const StockOverviewMobileResponsive = ({
                   {/* STATUS */}
                   <ul className="text-left">
                     <li>
-                      <Pills variant={rowData?.products_status}>
-                        {rowData?.products_status}
+                      <Pills variant={rowData?.inventory_status}>
+                        {rowData?.inventory_status}
                       </Pills>
                     </li>
                     <li>

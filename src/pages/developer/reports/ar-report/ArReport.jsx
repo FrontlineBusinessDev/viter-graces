@@ -3,14 +3,34 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ReportsStats from "../ReportsStats";
-import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
+import {
+  SearchableSelectFilter,
+  SearchableSelectFilterStatus,
+} from "@/components/inputs/InputSelect";
 import { ProductOwnerId } from "@/utilities/productOwnerToken";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 
 const ArReport = () => {
   const { store, dispatch } = React.useContext(StoreContext);
 
   // Columns
   const columns = [
+    {
+      accessorKey: "sales_order_status",
+      header: "status",
+      classTh: "min-w-40!",
+      classTd: "",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={ActiveInActiveStatus("payment-status")}
+          />
+        ),
+      },
+      status_option: ActiveInActiveStatus("payment-status"),
+    },
     {
       accessorKey: "sales_order_number",
       header: "Order #",
@@ -36,7 +56,7 @@ const ArReport = () => {
     },
     {
       accessorKey: "sales_order_product_name",
-      header: "Items",
+      header: "Products",
       classTh: "",
       classTd: "",
       isMobileTitle: true,
@@ -58,6 +78,13 @@ const ArReport = () => {
       classTh: "",
       classTd: "",
       filterFn: "between",
+      meta: "",
+    },
+    {
+      accessorKey: "sales_order_payment_method",
+      header: "Payment Method",
+      classTh: "",
+      classTd: "",
       meta: "",
     },
     {

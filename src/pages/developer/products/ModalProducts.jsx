@@ -262,20 +262,20 @@ const ModalProducts = ({ itemEdit }) => {
                         />
                       </div>
                     )}
-                    {itemEdit ? (
-                      ""
-                    ) : (
-                      <div className="relative mt-3">
-                        <InputText
-                          label="Location"
-                          type="text"
-                          name="stock_movement_location"
-                          disabled={mutation.isPending || loading}
-                          required={false}
-                        />
-                      </div>
-                    )}
                   </div>
+                  {itemEdit ? (
+                    ""
+                  ) : (
+                    <div className="relative mt-3">
+                      <InputText
+                        label="Location"
+                        type="text"
+                        name="stock_movement_location"
+                        disabled={mutation.isPending || loading}
+                        required={false}
+                      />
+                    </div>
+                  )}
 
                   <div className="relative mt-3">
                     <InputTextArea

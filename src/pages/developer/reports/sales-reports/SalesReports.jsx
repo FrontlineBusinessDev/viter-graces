@@ -42,13 +42,6 @@ const SalesReports = () => {
       meta: "",
     },
     {
-      accessorKey: "sales_order_product_name",
-      header: "item",
-      classTh: "min-w-40 ",
-      classTd: "",
-      meta: "",
-    },
-    {
       accessorKey: "sales_order_date",
       header: "date",
       classTh: "min-w-[7rem]",
@@ -57,11 +50,33 @@ const SalesReports = () => {
       meta: "",
     },
     {
+      accessorKey: "sales_order_product_name",
+      header: "Products",
+      classTh: "min-w-40 ",
+      classTd: "",
+      meta: "",
+    },
+    {
       accessorKey: "sales_order_customer_name",
       header: "customer",
       classTh: "min-w-40 ",
       classTd: "",
       meta: "",
+    },
+    {
+      accessorKey: "sales_order_qty",
+      header: "Quantity",
+      classTh: "min-w-40 ",
+      classTd: "",
+      meta: "",
+    },
+    {
+      accessorKey: "sales_order_price",
+      header: "Unit Price",
+      classTh: "min-w-40 ",
+      classTd: "",
+      meta: "",
+      amount: true,
     },
     {
       accessorKey: "sales_order_discounted_with_vat_amount",

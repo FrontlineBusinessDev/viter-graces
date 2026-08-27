@@ -38,7 +38,7 @@ const Expenses = () => {
     },
     {
       accessorKey: "purchase_order_product_name",
-      header: "Items",
+      header: "Products",
       classTh: "min-w-[10rem]",
       classTd: "",
       meta: "",

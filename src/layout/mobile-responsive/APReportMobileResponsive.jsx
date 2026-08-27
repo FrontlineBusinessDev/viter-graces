@@ -42,6 +42,13 @@ const APReportMobileResponsive = ({
 
                   {/* STATUS */}
                   <ul className="text-left ">
+                    <span
+                      className={`font-semibold text-black dark:text-light text-lg capitalize`}
+                    >
+                      <Pills variant={rowData?.payment_status}>
+                        {rowData?.payment_status}
+                      </Pills>
+                    </span>
                     <li className="mb-0 capitalize">
                       {rowData?.purchase_order_date}
                     </li>
@@ -49,6 +56,14 @@ const APReportMobileResponsive = ({
                 </div>
                 <div className="flex flex-wrap justify-between items-end ">
                   <ul className=" py-2 gap-2 sm:gap-5  ">
+                    <li className="flex text-left! text-xs">
+                      <span className={`text-gray-500 mr-2 min-w-12`}>
+                        Supplier:
+                      </span>
+                      <span className="wrap-break-word font-semibold">
+                        {rowData?.purchase_order_supplier_name}
+                      </span>
+                    </li>
                     <li className="flex text-left! text-xs">
                       <span className={`text-gray-500 mr-2 min-w-12`}>
                         Balance:

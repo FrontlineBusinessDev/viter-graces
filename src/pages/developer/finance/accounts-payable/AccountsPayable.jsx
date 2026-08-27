@@ -4,9 +4,10 @@ import { StoreContext } from "@/store/StoreContext";
 import { Eye } from "lucide-react";
 import React from "react";
 import ViewAccountsPayableDetails from "./ViewAccountsPayableDetails";
-import { ActionTableList } from "@/layout/ArrayValue";
+import { ActionTableList, ActiveInActiveStatus } from "@/layout/ArrayValue";
 import UpdateAccountsPayableDetails from "./UpdateAccountsPayableDetails";
 import { ProductOwnerId } from "@/utilities/productOwnerToken";
+import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
 
 const AccountsPayable = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -21,6 +22,22 @@ const AccountsPayable = () => {
   // Columns
   const columns = [
     {
+      accessorKey: "payment_status",
+      header: "payment status",
+      classTh: "min-w-[9rem]",
+      classTd: "min-w-[9rem]",
+      status_option: ActiveInActiveStatus("purchase-order-payment-status"),
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={ActiveInActiveStatus("purchase-order-payment-status")}
+          />
+        ),
+      },
+    },
+    {
       accessorKey: "purchase_order_number",
       header: "PO Number",
       classTh: "min-w-[10rem]",
@@ -29,10 +46,17 @@ const AccountsPayable = () => {
     },
     {
       accessorKey: "purchase_order_date",
-      header: "Date",
+      header: "Purchase Date",
       classTh: "",
       classTd: "",
       filterFn: "date",
+      meta: "",
+    },
+    {
+      accessorKey: "purchase_order_product_name",
+      header: "Products",
+      classTh: "min-w-[10rem]",
+      classTd: "",
       meta: "",
     },
     {
@@ -41,6 +65,13 @@ const AccountsPayable = () => {
       classTh: "min-w-[10rem]",
       classTd: "",
       isMobileTitle: true,
+      meta: "",
+    },
+    {
+      accessorKey: "purchase_order_after_qty",
+      header: "Quantity",
+      classTh: "min-w-[10rem]",
+      classTd: "",
       meta: "",
     },
     {

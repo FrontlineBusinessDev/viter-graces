@@ -3,8 +3,12 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ReportsStats from "../ReportsStats";
-import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
+import {
+  SearchableSelectFilter,
+  SearchableSelectFilterStatus,
+} from "@/components/inputs/InputSelect";
 import { ProductOwnerId } from "@/utilities/productOwnerToken";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 
 const ApReport = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -12,6 +16,22 @@ const ApReport = () => {
   //
   // Columns
   const columns = [
+    {
+      accessorKey: "payment_status",
+      header: "payment status",
+      classTh: "min-w-[9rem]",
+      classTd: "min-w-[9rem]",
+      status_option: ActiveInActiveStatus("purchase-order-payment-status"),
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={ActiveInActiveStatus("purchase-order-payment-status")}
+          />
+        ),
+      },
+    },
     {
       accessorKey: "purchase_order_number",
       header: "PO Number",
@@ -22,7 +42,14 @@ const ApReport = () => {
     },
     {
       accessorKey: "purchase_order_product_name",
-      header: "Product",
+      header: "Products",
+      classTh: "min-w-[20rem]",
+      classTd: "",
+      meta: "",
+    },
+    {
+      accessorKey: "purchase_order_supplier_name",
+      header: "Supplier",
       classTh: "min-w-[20rem]",
       classTd: "",
       meta: "",
