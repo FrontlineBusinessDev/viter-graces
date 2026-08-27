@@ -448,7 +448,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                           label="Payment Terms"
                           type="text"
                           name="sales_order_payment_terms"
-                          defaultValue="due on receipt - due on the same day the sales order"
                           options={PaymentTermsList()}
                           onChange={(e) => {
                             props.setFieldValue(
