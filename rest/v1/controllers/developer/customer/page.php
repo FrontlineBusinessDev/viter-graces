@@ -46,21 +46,31 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
             $val->customer_aid = $data[$i]["customer_aid"];
 
-            $queryLogin = $val->readSalesOrderByCustomerId();
+            $queryCustomer = $val->readSalesOrderByCustomerId();
 
-            $queryLogin = $queryLogin
-                ? getResultData($queryLogin)
+            $queryCustomer = $queryCustomer
+                ? getResultData($queryCustomer)
                 : [];
 
-            if (count($queryLogin) > 0) {
-                $data[$i]["outstanding_balance"] = $queryLogin[0]['outstanding_balance'];
-                $data[$i]["number_of_orders"] = $queryLogin[0]['number_of_orders'];
-                $data[$i]["total_amount_spent"] = $queryLogin[0]['total_amount_spent'];
-                $data[$i]["open_credit_memo"] = 0;
+            $queryReturn = $val->readReturnByOpenCreditMemo();
+
+            $queryReturn = $queryReturn
+                ? getResultData($queryReturn)
+                : [];
+
+            if (count($queryCustomer) > 0) {
+                $data[$i]["outstanding_balance"] = $queryCustomer[0]['outstanding_balance'];
+                $data[$i]["number_of_orders"] = $queryCustomer[0]['number_of_orders'];
+                $data[$i]["total_amount_spent"] = $queryCustomer[0]['total_amount_spent'];
             } else {
                 $data[$i]["outstanding_balance"] = 0;
                 $data[$i]["number_of_orders"] = 0;
                 $data[$i]["total_amount_spent"] = 0;
+            }
+
+            if (count($queryReturn) > 0) {
+                $data[$i]["open_credit_memo"] = $queryReturn[0]['open_credit_memo'];
+            } else {
                 $data[$i]["open_credit_memo"] = 0;
             }
 

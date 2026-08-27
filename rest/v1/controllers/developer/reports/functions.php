@@ -222,6 +222,7 @@ function allowedColumns()
         "purchase_order_qty",
         "purchase_order_payment",
         "total_amount",
+        "installment_payment_customer_name",
     ];
     return $query;
 }

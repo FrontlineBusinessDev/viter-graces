@@ -22,10 +22,15 @@ $val->return_product_is_restocked = $data["return_product_is_restocked"] == "no"
 $val->return_product_reason = $data["return_product_reason"];
 $val->return_product_notes = $data["return_product_notes"];
 $val->return_product_date = $data["return_product_date"];
+$val->return_product_resolution_type = $data["return_product_resolution_type"];
 $val->return_product_created = date("Y-m-d H:i:s");
 $val->return_product_updated = date("Y-m-d H:i:s");
 
 $selectedItems = $data["selectedItems"];
+
+if ($val->return_product_reason === "other") {
+    $val->return_product_reason = $data["other_reason"];
+}
 
 if (count($selectedItems) > 0) {
     // CREATE INSTALLMENT PAYMENT

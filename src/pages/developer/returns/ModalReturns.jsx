@@ -90,7 +90,10 @@ const ModalReturns = ({ itemEdit }) => {
       itemEdit?.return_product_date,
       store?.credentials?.data?.server_date,
     ),
-    return_product_reason: isEmptyItem(itemEdit?.return_product_reason, ""),
+    return_product_reason: isEmptyItem(
+      itemEdit?.return_product_reason,
+      "other",
+    ),
     return_product_notes: isEmptyItem(itemEdit?.return_product_notes, ""),
     return_product_is_restocked: isEmptyItem(
       itemEdit?.return_product_is_restocked,
@@ -107,14 +110,17 @@ const ModalReturns = ({ itemEdit }) => {
     // Issue 2: Resolution Types - UI-only field, bound to Formik state.
     return_product_resolution_type: isEmptyItem(
       itemEdit?.return_product_resolution_type,
-      "",
+      "other",
     ),
+    other_reason: isEmptyItem(itemEdit?.return_product_reason, ""),
   };
 
   const yupSchema = Yup.object({
     return_product_date: Yup.string().trim().required("Required"),
     return_product_reason: Yup.string().trim().required("Required"),
+    return_product_resolution_type: Yup.string().trim().required("Required"),
     return_product_notes: Yup.string().trim().required("Required"),
+    other_reason: Yup.string().trim().required("Required"),
   });
 
   React.useEffect(() => {
@@ -179,36 +185,57 @@ const ModalReturns = ({ itemEdit }) => {
 
                     <div className="relative">
                       <InputSelect
-                        label="Return Reason"
-                        type="text"
-                        name="return_product_reason"
-                        disabled={mutation.isPending}
-                      >
-                        <option value="">Select Return Reason</option>
-                        <option value="damage">Damage</option>
-                        <option value="expired">Expired</option>
-                        <option value="other">Other</option>
-                      </InputSelect>
-                    </div>
-
-                    {/* Issue 2: Resolution Types dropdown, reusable <InputSelect>.
-                        This modal is shared by both the Add and Edit flows (differentiated
-                        only by the `itemEdit` prop), so adding it here covers both. UI-only:
-                        bound to Formik state via `name`, no API wiring yet. */}
-                    <div className="relative">
-                      <InputSelect
                         label="Resolution Types"
                         type="text"
                         name="return_product_resolution_type"
                         disabled={mutation.isPending}
-                        required={false}
                       >
-                        <option value="">Select Resolution Type</option>
-                        <option value="refund">Refund</option>
-                        <option value="credit memo">Credit Memo</option>
-                        <option value="replacement">Replacement</option>
+                        <optgroup label={`Select Resolution Types`}>
+                          <option value="" hidden>
+                            --
+                          </option>
+                          <option value="refund">Refund</option>
+                          <option value="credit memo">Credit Memo</option>
+                          <option value="replacement">Replacement</option>
+                        </optgroup>
                       </InputSelect>
                     </div>
+
+                    <div className="relative">
+                      <InputSelect
+                        label="Return Reason"
+                        type="text"
+                        name="return_product_reason"
+                        onChange={(e) => {
+                          props.values.other_reason = e.target.value;
+                          if (e.target.value === "other") {
+                            props.values.other_reason = "";
+                          }
+                        }}
+                        disabled={mutation.isPending}
+                      >
+                        <optgroup label={`Select Return Reason`}>
+                          <option value="" hidden>
+                            --
+                          </option>
+                          <option value="damage">Damage</option>
+                          <option value="expired">Expired</option>
+                          <option value="other">Other</option>
+                        </optgroup>
+                      </InputSelect>
+                    </div>
+                    {props.values.return_product_reason === "other" ? (
+                      <div className="relative ">
+                        <InputText
+                          label="Other Reason"
+                          type="text"
+                          name="other_reason"
+                          disabled={mutation.isPending}
+                        />
+                      </div>
+                    ) : (
+                      ""
+                    )}
                   </div>
 
                   <div className="relative mt-3">
@@ -228,8 +255,6 @@ const ModalReturns = ({ itemEdit }) => {
                       testFilterId="sales_order_product_name"
                       store={store}
                     />
-
-                    {/* {console.log("selectedItems", selectedItems)} */}
 
                     {selectedItems?.length > 0 && (
                       <div className="relative">

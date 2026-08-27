@@ -1,17 +1,21 @@
-import { useEffect, useState } from "react";
+import { useTheme } from "@/store/ThemeContext";
 
+// Thin adapter over the shared ThemeContext. Every call site used to hold its
+// own independent useState (Header, dashboard charts, etc.) - each with its own
+// mount-time localStorage read and its own effect toggling the "dark" class, with
+// no coordination between them. A click in one component never updated the
+// others until they happened to unmount/remount, and whichever instance's effect
+// ran last could silently overwrite localStorage with a stale value - the exact
+// "sometimes it works, sometimes it doesn't" bug. Routing everything through the
+// single ThemeProvider instance fixes that: one state, read/written in one place,
+// so every consumer re-renders in lockstep on every toggle.
 const useDarkMode = () => {
-  const [darkMode, setDarkMode] = useState(() => {
-    return localStorage.getItem("theme") === "dark";
-  });
+  const { theme, setTheme } = useTheme();
 
-  useEffect(() => {
-    document.documentElement.classList.toggle("dark", darkMode);
-    localStorage.setItem("theme", darkMode ? "dark" : "light");
-  }, [darkMode]);
+  const darkMode = theme === "dark";
 
   const toggleDarkMode = () => {
-    setDarkMode((prev) => !prev);
+    setTheme(darkMode ? "light" : "dark");
   };
 
   return { darkMode, toggleDarkMode };

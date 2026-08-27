@@ -88,11 +88,19 @@ const Returns = () => {
       },
     },
     {
+      accessorKey: "return_product_resolution_type",
+      header: "resolution type",
+      classTh: "",
+      classTd: "capitalize",
+      meta: "",
+    },
+    {
       accessorKey: "return_product_amount",
       header: "amount",
       amount: true,
       classTh: "",
       classTd: "",
+      filterFn: "between",
       meta: "",
     },
     {

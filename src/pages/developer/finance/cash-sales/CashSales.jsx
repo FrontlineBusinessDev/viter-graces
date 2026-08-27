@@ -72,6 +72,15 @@ const CashSales = () => {
       filterFn: "between",
       meta: "",
     },
+    {
+      accessorKey: "total_paid_in_cash",
+      header: "Paid in cash",
+      amount: true,
+      classTh: "",
+      classTd: "",
+      filterFn: "between",
+      meta: "",
+    },
     ...(Number(ProductOwnerId(store)) > 0
       ? []
       : [

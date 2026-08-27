@@ -155,14 +155,13 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
             {itemEdit?.sales_order_date}
           </p>
         </li>
-        <li>
-          <p>Payment terms:</p>
-          <p className="text-black dark:text-light">
-            {itemEdit?.sales_order_customer_name}
-          </p>
-        </li>
       </ul>
-
+      <div className="flex">
+        <p className="mr-1">Payment terms:</p>
+        <p className="text-black dark:text-light capitalize">
+          {itemEdit?.sales_order_payment_terms}
+        </p>
+      </div>
       <div className="border shadow border-gray-300 rounded-lg dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out ">
         <div className="relative overflow-auto w-full h-full min-h-80 dark:bg-gray-900! ">
           <table className="shadow-none! ">
@@ -238,7 +237,6 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
           </table>
         </div>
       </div>
-
       <ul className="grid grid-cols-2 my-3 [&>li]:border-b [&>li]:border-b-gray-200 gap-y-2 ">
         <li>Total Amount</li>
         <li className="text-right text-black font-bold">
@@ -262,7 +260,6 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
           />
         </span>
       </div>
-
       <ExportCSVButton />
     </ModalWrapper>
   );

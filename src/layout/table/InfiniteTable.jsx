@@ -174,7 +174,7 @@ const InfiniteTable = ({
 
     filterFns: {
       equals: (row, columnId, value) => {
-        if (filterName !== "" && columnId === "customer_name") {
+        if (filterName !== "") {
           return row.getValue(columnId) === filterName[0]?.value;
         }
 
@@ -230,7 +230,6 @@ const InfiniteTable = ({
     }
   }, [columnFilters, isFetching]);
 
-  console.log("columnFilters", columnFilters);
   return (
     <>
       <div className="md:flex md:justify-between flex-row-reverse my-2 gap-4 items-center">
@@ -304,7 +303,10 @@ const InfiniteTable = ({
             <li>Filtered by:</li>
             {columnFilters?.map((a, key) => {
               return typeof a.value !== "object" ? (
-                <li key={key} className="bg-gray-100 px-2 py-1 rounded-sm">
+                <li
+                  key={key}
+                  className="bg-gray-100 px-2 py-1 rounded-sm dark:text-gray-800"
+                >
                   {a.value}
                 </li>
               ) : (
