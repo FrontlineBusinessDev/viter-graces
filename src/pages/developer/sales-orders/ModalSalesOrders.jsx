@@ -436,7 +436,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                       <div className="relative ">
                         <InputText
                           label="Payment Terms"
-                          defaultValue="due on receipt - due on the same day the sales order"
                           name="sales_order_payment_terms"
                           disabled={mutation.isPending}
                           readOnly
@@ -610,9 +609,15 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         defaultValue=""
                         options={discountTypeOption()}
                         onChange={(e) => {
-                          props.setFieldValue("sales_order_discount_percentage", "");
+                          props.setFieldValue(
+                            "sales_order_discount_percentage",
+                            "",
+                          );
                           props.setFieldValue("sales_order_discount", "");
-                          props.setFieldValue("sales_order_discount_type", e.target.id);
+                          props.setFieldValue(
+                            "sales_order_discount_type",
+                            e.target.id,
+                          );
                           return e;
                         }}
                         required={false}

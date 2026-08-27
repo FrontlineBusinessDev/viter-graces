@@ -227,28 +227,28 @@ export const PaymentTermsList = () => {
   const result = [
     {
       label: "due on receipt - due on the same day the sales order",
-      value: "Due on Receipt - Due on the same day the Sales Order",
+      value: "due on receipt - due on the same day the sales order",
     },
     { label: "installment", value: "Installment" },
     {
       label: "net 10 - due within 10 days",
-      value: "Net 10 - Due within 10 days",
+      value: "net 10 - due within 10 days",
     },
     {
       label: "net 15 - due within 15 days",
-      value: "Net 15 - Due within 15 days",
+      value: "net 15 - due within 15 days",
     },
     {
       label: "net 20 - due within 20 days",
-      value: "Net 20 - Due within 20 days",
+      value: "net 20 - due within 20 days",
     },
     {
       label: "net 25 - due within 25 days",
-      value: "Net 25 - Due within 25 days",
+      value: "net 25 - due within 25 days",
     },
     {
       label: "net 30 - due within 30 days",
-      value: "Net 30 - Due within 30 days",
+      value: "net 30 - due within 30 days",
     },
   ];
 

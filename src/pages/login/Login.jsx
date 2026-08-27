@@ -36,21 +36,21 @@ const demoAccounts = [
     label: "Admin",
     icon: ShieldCheck,
     email: "cyrene.lumabas@frontlinebusiness.com.ph",
-    password: "A!a123123123",
+    passKeys: "A!a123123123",
   },
   {
     role: "product_owner",
     label: "Product Owner",
     icon: Briefcase,
     email: "april9rhina@gmail.com",
-    password: "A!a123123123",
+    passKeys: "A!a123123123",
   },
   {
     role: "cashier",
     label: "Cashier",
     icon: Banknote,
     email: "thea.consignado@frontlinebusiness.com.ph",
-    password: "A!a123123123",
+    passKeys: "A!a123123123",
   },
 ];
 
@@ -226,7 +226,7 @@ const Login = () => {
                                     );
                                     props.setFieldValue(
                                       "password",
-                                      account.password,
+                                      account.passKeys,
                                       true,
                                     );
                                     props.setFieldTouched(
