@@ -229,6 +229,8 @@ function allowedColumns()
         "return_product_product_name",
         "return_product_owner_name",
         "return_product_amount",
+        "return_product_resolution_type",
+        "return_product_is_restocked",
     ];
     return $query;
 }

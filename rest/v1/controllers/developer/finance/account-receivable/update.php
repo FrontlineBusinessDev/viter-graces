@@ -18,10 +18,15 @@ if (array_key_exists("id", $_GET)) {
 
     $val->installment_payment_aid = $_GET['id'];
     $val->installment_payment_is_paid = 0;
+    // Row's full due amount - was never being read from the payload, so the
+    // is_paid check below always compared against 0, marking every payment
+    // (partial or full) as fully paid.
+    $val->installment_payment_amount = $data["installment_payment_amount"];
     $val->installment_payment_paid_amount = $data["installment_payment_paid_amount"];
     $val->installment_payment_received_id = $data["installment_payment_received_id"];
     $val->installment_payment_received_name = $data["installment_payment_received_name"];
     $val->installment_payment_code_number = $data["installment_payment_code_number"];
+    $val->installment_payment_method = $data["installment_payment_method"];
     $val->installment_payment_updated = date("Y-m-d H:i:s");
     $val->sales_order_updated = date("Y-m-d H:i:s");
 
@@ -42,6 +47,37 @@ if (array_key_exists("id", $_GET)) {
     $val->sales_order_number = $data["sales_order_number"];
     $val->sales_order_payment_method = $data["sales_order_payment_method"];
     $val->sales_order_total_receivable_amount = 0;
+
+    // PAYMENT METHOD BREAKDOWN
+    // Increment sales_order_cash/check/online_transaction on top of whatever the
+    // order already has, based on which method was used for THIS payment (not
+    // necessarily the order's original payment method).
+    $existingCash = (float)($ordersItems[0]['sales_order_cash'] ?? 0);
+    $existingCheck = (float)($ordersItems[0]['sales_order_check'] ?? 0);
+    $existingOnline = (float)($ordersItems[0]['sales_order_online_transaction'] ?? 0);
+    // Use the delta (this transaction only), not installment_payment_paid_amount
+    // (the row's cumulative total) - otherwise a second partial payment on the
+    // same row would double-count the first one into these balances.
+    $paymentAmount = (float)($data['installment_payment_new_amount'] ?? 0);
+    $cashDelta = 0;
+    $checkDelta = 0;
+    $onlineDelta = 0;
+
+    if ($val->sales_order_payment_method === 'cash') {
+        $cashDelta = $paymentAmount;
+    } elseif ($val->sales_order_payment_method === 'check') {
+        $checkDelta = $paymentAmount;
+    } elseif ($val->sales_order_payment_method === 'online transaction') {
+        $onlineDelta = $paymentAmount;
+    } elseif ($val->sales_order_payment_method === 'mutiple payment') {
+        $cashDelta = (float)($data['payment_cash_amount'] ?? 0);
+        $checkDelta = (float)($data['payment_check_amount'] ?? 0);
+        $onlineDelta = (float)($data['payment_online_amount'] ?? 0);
+    }
+
+    $val->sales_order_cash = $existingCash + $cashDelta;
+    $val->sales_order_check = $existingCheck + $checkDelta;
+    $val->sales_order_online_transaction = $existingOnline + $onlineDelta;
 
     $val->sales_order_total_amount = $data["sales_order_total_amount"];
     $val->sales_order_discount = $data["sales_order_discount"];
@@ -131,7 +167,9 @@ if (array_key_exists("id", $_GET)) {
 
     $query = checkUpdate($val);
     $val->lastInsertedId = $data["installment_payment_aid"];
-    $val->sales_order_paid_amount = $data["installment_payment_paid_amount"];
+    // Journal entry reflects only THIS transaction's amount, not the row's
+    // cumulative paid total (see note above on installment_payment_new_amount).
+    $val->sales_order_paid_amount = (float)($data["installment_payment_new_amount"] ?? 0);
     checkCreateSalesJornal($val);
     createActivityLog($valActivity, $data);
     returnSuccess($val, "Account Receivable", $query);

@@ -88,6 +88,7 @@ RewriteRule ^products/search$ controllers/developer/products/search.php [L]
 RewriteRule ^products/read-all-active-by-product$ controllers/developer/products/read-all-active-by-product.php [L]
 RewriteRule ^products/read-all-product-that-have-stock$ controllers/developer/products/read-all-product-that-have-stock.php [L]
 RewriteRule ^products/read-all-category$ controllers/developer/products/read-all-category.php [L]
+RewriteRule ^products/read-all-by-active$ controllers/developer/products/read-all-by-active.php [L]
 
 ### ACTIVITY LOG ### 
 RewriteRule ^activity/read-with-limit$ controllers/developer/activity-log/read-with-limit.php [L] 

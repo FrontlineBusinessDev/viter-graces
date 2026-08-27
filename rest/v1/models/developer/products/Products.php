@@ -891,5 +891,48 @@ class Products
         return $query;
     }
 
-    // updateProductOwnerStockMovement
+    // read all
+    public function readAllActive($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [];
+
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
+            if (is_array($item['value'])) {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = " CAST($col AS UNSIGNED) BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
+            }
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "products_aid as id, ";
+            $sql .= "products_is_active as is_active, ";
+            $sql .= "products_name as name ";
+            $sql .= "from {$this->tblProducts} ";
+            $sql .= " where true ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            }
+            $sql .= " order by products_is_active desc, ";
+            $sql .= "products_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
 }

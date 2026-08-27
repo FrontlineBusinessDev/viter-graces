@@ -40,7 +40,15 @@ const StockOverview = () => {
       classTh: "",
       classTd: "",
       isMobileTitle: true,
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="products/read-all-by-active"
+            testFilterId={"filter-product_name"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "products_sku",

@@ -379,6 +379,8 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                   "due on receipt - due on the same day the sales order";
               }
 
+              console.log("props.values", props.values);
+
               return (
                 <Form>
                   <div className="grid grid-cols-2 gap-4">
@@ -741,13 +743,16 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                             <InputSelectArrayWithOptions
                               label={`Type of installment`}
                               type="text"
-                              name="installment_type"
+                              name="sales_order_installment_type"
                               defaultValue="monthly"
                               options={InstallmentType()}
                               onChange={(e) => {
-                                props.setFieldValue("installment_type_day", "");
                                 props.setFieldValue(
-                                  "installment_type",
+                                  "sales_order_installment_type_day",
+                                  "",
+                                );
+                                props.setFieldValue(
+                                  "sales_order_installment_type",
                                   e.target.options[e.target.selectedIndex].text,
                                 );
                                 return e;
@@ -758,13 +763,13 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                             <InputSelectArrayWithOptions
                               label={`Payment every`}
                               type="text"
-                              name="installment_type_day"
+                              name="sales_order_installment_type_day"
                               options={InstallmentByType(
                                 props.values.installment_type,
                               )}
                               onChange={(e) => {
                                 props.setFieldValue(
-                                  "installment_type_day",
+                                  "sales_order_installment_type_day",
                                   e.target.options[e.target.selectedIndex].text,
                                 );
                                 return e;
@@ -775,7 +780,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                             <InputText
                               label="Installment count"
                               type="number"
-                              name="installment_count"
+                              name="sales_order_installment_count"
                               disabled={mutation.isPending}
                             />
                           </div>
@@ -783,7 +788,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                             <InputText
                               label="Installment Amount"
                               type="number"
-                              name="installment_amount"
+                              name="sales_order_installment_amount"
                               readOnly
                               className="border-t-0! border-x-0! text-primary min-w-20 focus:border-secondary"
                               disabled={mutation.isPending}

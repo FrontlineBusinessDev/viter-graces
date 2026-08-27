@@ -62,14 +62,30 @@ const ReturnsReports = () => {
       header: "customer",
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="customer/read-all-by-active"
+            testFilterId={"filter-owner"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "return_product_product_name",
       header: "Products",
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="products/read-all-by-active"
+            testFilterId={"filter-owner"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "return_product_amount",
@@ -92,14 +108,31 @@ const ReturnsReports = () => {
       header: "resolution type",
       classTh: "min-w-40",
       classTd: "capitalize",
-      meta: "",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={ActiveInActiveStatus("resolution-type")}
+            uppercase="capitalize! "
+          />
+        ),
+      },
     },
     {
       accessorKey: "return_product_is_restocked",
       header: "restocked",
       classTh: "min-w-30",
       classTd: "uppercase",
-      meta: "",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={ActiveInActiveStatus("restocked-status")}
+          />
+        ),
+      },
     },
     ...(Number(ProductOwnerId(store)) > 0
       ? []

@@ -71,13 +71,14 @@ export const titleHeaderTab = (description) => {
     {
       title: "finance",
       description: "Manage your finance",
-      roles: ["admin", "developer", "product_owner"],
+      roles: ["admin", "developer", "product_owner", "cashier"],
       array_tab: [
         {
           icon: "",
           title_tab: "finance-overview",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: "",
@@ -85,6 +86,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Record and track cash transactions.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner", "cashier"],
         },
         {
           icon: "",
@@ -92,6 +94,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Monitor customer balances and payments.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner", "cashier"],
         },
         {
           icon: "",
@@ -99,6 +102,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Track business costs and expenditures.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: "",
@@ -106,6 +110,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Manage supplier balances and payments.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: "",
@@ -113,6 +118,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Review and record sales transactions.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
       ],
     },

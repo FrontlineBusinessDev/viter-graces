@@ -44,7 +44,15 @@ const MovementHistory = () => {
       header: "Products",
       classTh: "",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="products/read-all-by-active"
+            testFilterId={"filter-product_name"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "stock_movement_qty",

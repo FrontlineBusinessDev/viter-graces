@@ -130,13 +130,6 @@ const InfiniteTable = ({
       return;
     },
     refetchOnWindowFocus: refetchOnWindowFocus,
-    // staleTime: 1000 * 60 * 5, // 5 mins → no refetch when revisiting
-    // gcTime: 1000 * 60 * 30, // keep cache for 30 mins
-    // refetchOnMount: true,
-    // refetchOnWindowFocus: true,
-    // refetchOnReconnect: true,
-
-    // enabled: !isStatic,
   });
   const pages = result?.pages;
 
@@ -178,7 +171,10 @@ const InfiniteTable = ({
           return row.getValue(columnId) === filterName[0]?.value;
         }
 
-        return row.getValue(columnId) === value;
+        // String-coerced: some "equals" columns are numeric in the DB
+        // (e.g. return_product_is_restocked is 0/1) while filter option
+        // values are strings, so a strict === would never match.
+        return String(row.getValue(columnId)) === String(value);
       },
       date: (row, columnId, value) => {
         return row.getValue(columnId) === DateFormat(value);

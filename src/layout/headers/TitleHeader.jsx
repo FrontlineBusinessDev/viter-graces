@@ -45,17 +45,22 @@ const TitleHeader = ({ description }) => {
               <ul className="lg:flex flex-wrap gap-2 items-center hidden">
                 {currentHeader.array_tab.map((itemTab, key) => {
                   const isActive = store.tabValue === itemTab?.title_tab;
+                  console.log("itemTab?.roles", itemTab?.roles);
                   return (
-                    <Link
-                      to={
-                        userRole !== "developer"
-                          ? !itemTab?.ongoingDevelopment
-                            ? `${devNavUrl}/${userRole}/${itemTab.title_tab}`
-                            : "#"
-                          : `${devNavUrl}/${userRole}/${itemTab.title_tab}`
-                      }
-                      key={key}
-                      className={` py-1 px-3 flex rounded-lg font-medium transition-colors duration-300 capitalize
+                    <>
+                      {itemTab?.roles?.filter((itemr) =>
+                        itemr?.includes(userRole),
+                      )?.length > 0 ? (
+                        <Link
+                          to={
+                            userRole !== "developer"
+                              ? !itemTab?.ongoingDevelopment
+                                ? `${devNavUrl}/${userRole}/${itemTab.title_tab}`
+                                : "#"
+                              : `${devNavUrl}/${userRole}/${itemTab.title_tab}`
+                          }
+                          key={key}
+                          className={` py-1 px-3 flex rounded-lg font-medium transition-colors duration-300 capitalize
                           ${
                             userRole !== "developer"
                               ? !itemTab?.ongoingDevelopment
@@ -72,11 +77,15 @@ const TitleHeader = ({ description }) => {
                                 } `
                           } 
                 `}
-                      data-tooltip={"Coming soon"}
-                    >
-                      {itemTab?.icon}
-                      {formatText(itemTab?.title_tab)}
-                    </Link>
+                          data-tooltip={"Coming soon"}
+                        >
+                          {itemTab?.icon}
+                          {formatText(itemTab?.title_tab)}
+                        </Link>
+                      ) : (
+                        <div key={key}></div>
+                      )}
+                    </>
                   );
                 })}
               </ul>

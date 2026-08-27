@@ -16,6 +16,14 @@ function checkCreateMovementStock($object)
 }
 
 // Read all
+function checkReadAllActive($object, $allowedColumns = [])
+{
+    $query = $object->readAllActive($allowedColumns);
+    checkQuery($query, "Empty records. (read all active )");
+    return $query;
+}
+
+// Read all
 function checkReadAllActiveByName($object)
 {
     $query = $object->readAllActiveByName();

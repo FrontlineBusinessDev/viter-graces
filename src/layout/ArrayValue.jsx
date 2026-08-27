@@ -209,6 +209,34 @@ export const ActiveInActiveStatus = (val = "default-status") => {
       value: "processed",
     },
     {
+      name: ["resolution-type"],
+      label: "Refund",
+      value: "refund",
+    },
+    {
+      name: ["resolution-type"],
+      label: "Credit Memo",
+      value: "credit memo",
+    },
+    {
+      name: ["resolution-type"],
+      label: "Replacement",
+      value: "replacement",
+    },
+    {
+      // return_product_is_restocked is stored as 0/1 in the DB (see isYesOrNo
+      // utility), not "yes"/"no" strings - values must match the raw column
+      // for the server-side LIKE filter to find anything.
+      name: ["restocked-status"],
+      label: "YES",
+      value: "1",
+    },
+    {
+      name: ["restocked-status"],
+      label: "NO",
+      value: "0",
+    },
+    {
       name: ["purchase-movement-status"],
       label: "STOCK IN",
       value: "stock in",
@@ -261,7 +289,7 @@ export const PaymentMethodList = () => {
     { label: "cash", value: "cash" },
     { label: "check", value: "check" },
     { label: "online transaction", value: "online transaction" },
-    { label: "mutiple payment", value: "mutiple payment" },
+    // { label: "mutiple payment", value: "mutiple payment" },
   ];
 
   return result;

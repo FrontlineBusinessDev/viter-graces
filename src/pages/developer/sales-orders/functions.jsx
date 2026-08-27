@@ -61,7 +61,7 @@ export const PropsValues = (props, items) => {
     values.sales_order_installment_amount = Number(
       Number(values.sales_order_total_balance_amount) /
         Number(values.sales_order_installment_count),
-    ).toFixed(4);
+    ).toFixed(2);
   } else {
     values.sales_order_installment_amount = 0;
   }

@@ -1,7 +1,7 @@
 import ExportCSVButton from "@/components/buttons/ExportCSVButton";
 import { AmountWithPesoSign } from "@/components/PesoSign";
 import { apiVersion } from "@/config/config";
-import { ActivityLogDetails } from "@/layout/ArrayValue";
+import { ActivityLogDetails, PaymentMethodList } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
 import {
@@ -67,15 +67,68 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
     0,
   );
 
+  // Paid Amount is only freely editable for non-installment terms. For a true
+  // installment plan, each due-date row must be paid in full for its scheduled
+  // amount - no partial/custom amounts.
+  const isInstallment =
+    itemEdit?.sales_order_payment_terms?.toLowerCase() === "installment";
+
+  // "entered_amount" is what the user is typing THIS time - kept separate from
+  // installment_payment_paid_amount (the already-recorded, server-confirmed
+  // cumulative total for the row) so a partial payment can't clobber a prior one.
   const handleChangeSave = (e, index) => {
     const updated = [...items];
-    updated[index]["installment_payment_paid_amount"] = e.target.value;
-    updated[index]["installment_payment_received_id"] =
-      store.credentials?.data?.user_account_aid;
-    updated[index]["installment_payment_received_name"] =
-      store.credentials?.data?.name;
+    updated[index]["entered_amount"] = e.target.value;
     setItems(updated);
-    return;
+  };
+
+  const handleChangeMethod = (e, index) => {
+    const updated = [...items];
+    updated[index]["installment_payment_method"] = e.target.value;
+    setItems(updated);
+  };
+
+  const handleChangeSplit = (e, index, field) => {
+    const updated = [...items];
+    updated[index][field] = e.target.value;
+    setItems(updated);
+  };
+
+  // Multiple Payment: the total paid this submission is the sum of the 3
+  // breakdown inputs, not a separately-typed amount. Installment rows (single
+  // method) are locked to the row's own scheduled amount - not user-entered.
+  const getEnteredAmount = (a) => {
+    if (a?.installment_payment_method === "mutiple payment") {
+      return (
+        Number(a?.payment_cash_amount || 0) +
+        Number(a?.payment_check_amount || 0) +
+        Number(a?.payment_online_amount || 0)
+      );
+    }
+    if (isInstallment) {
+      return (
+        Number(a?.installment_payment_paid_amount || 0) +
+        Number(a?.entered_amount || 0)
+      );
+    }
+    return Number(a?.entered_amount || 0);
+  };
+
+  const getEnteredAmountForBalance = (a) => {
+    if (a?.installment_payment_method === "mutiple payment") {
+      return (
+        Number(a?.payment_cash_amount || 0) +
+        Number(a?.payment_check_amount || 0) +
+        Number(a?.payment_online_amount || 0)
+      );
+    }
+    if (isInstallment) {
+      return (
+        Number(a?.installment_payment_amount || 0) +
+        Number(a?.entered_amount || 0)
+      );
+    }
+    return Number(a?.entered_amount || 0);
   };
 
   let filterUnpaidAmount = items?.filter(
@@ -83,24 +136,47 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
   );
 
   let paidAmount = filterUnpaidAmount?.reduce(
-    (sum, item) =>
-      Number(sum) + Number(item.installment_payment_paid_amount || 0),
+    (sum, item) => Number(sum) + getEnteredAmount(item),
     0,
   );
 
   const handleSave = (a, index) => {
+    getEnteredAmount(a);
+    const enteredNow = getEnteredAmountForBalance(a);
+    if (enteredNow <= 0) return;
+
+    const previouslyPaid = Number(a["installment_payment_paid_amount"] || 0);
+    const finalPaidAmount = previouslyPaid + enteredNow;
+    const isFullyPaid =
+      finalPaidAmount >= Number(a["installment_payment_amount"]);
+    const paymentMethod = isEmptyItem(a?.installment_payment_method, "cash");
+
     const updated = [...items];
-    updated[index]["installment_payment_is_paid"] = 1;
-    updated[index]["installment_payment_paid_amount"] =
-      a["installment_payment_amount"];
+    updated[index]["installment_payment_is_paid"] = isFullyPaid ? 1 : 0;
+    updated[index]["installment_payment_paid_amount"] = finalPaidAmount;
+    updated[index]["installment_payment_method"] = paymentMethod;
+    updated[index]["entered_amount"] = "";
     setItems(updated);
 
-    let amountPaid =
-      Number(paidAmount) + Number(a["installment_payment_amount"]);
+    const newTotalPaidAmount = Number(totalPaidAmount) + enteredNow;
+    const newTotalBalanceAmount = Number(totalBalanceAmount) - enteredNow;
 
-    const newTotalPaidAmount = Number(totalPaidAmount) + Number(amountPaid);
-    const newTotalBalanceAmount =
-      Number(totalBalanceAmount) - Number(amountPaid);
+    const paymentFields = {
+      ...a,
+      installment_payment_paid_amount: finalPaidAmount,
+      // The amount being paid in THIS transaction, distinct from the row's
+      // cumulative total above - needed so the cash/check/online increments and
+      // the sales journal entry don't double-count a prior partial payment.
+      installment_payment_new_amount: enteredNow,
+      installment_payment_received_id:
+        store.credentials?.data?.user_account_aid,
+      installment_payment_received_name: store.credentials?.data?.name,
+      installment_payment_method: paymentMethod,
+      sales_order_payment_method: paymentMethod,
+      payment_cash_amount: a?.payment_cash_amount || 0,
+      payment_check_amount: a?.payment_check_amount || 0,
+      payment_online_amount: a?.payment_online_amount || 0,
+    };
 
     let data = {
       ...itemEdit,
@@ -108,11 +184,11 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
       ...ActivityLogDetails("finance account receivable", "update", store, {
         ...itemEdit,
         icon: "",
-        ...a,
+        ...paymentFields,
         totalPaidAmount: newTotalPaidAmount,
         totalBalanceAmount: newTotalBalanceAmount,
       }),
-      ...a,
+      ...paymentFields,
       totalPaidAmount: newTotalPaidAmount,
       totalBalanceAmount: newTotalBalanceAmount,
     };
@@ -141,6 +217,7 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
       mutation={mutation}
       isOpen={true}
       handleClose={handleClose}
+      width="max-w-[45rem]!"
     >
       <ul className="grid grid-cols-2 [&>li]:flex [&>li]:items-center [&>li]:gap-2 ">
         <li>
@@ -177,60 +254,194 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
                 >
                   Paid Amount
                 </th>
+                <th
+                  className={`min-w-32! dark:bg-gray-900! bg-gray-100! text-center`}
+                >
+                  Method
+                </th>
                 <th></th>
               </tr>
             </thead>
             <tbody className="">
               {items?.map((a, index) => {
-                console.log("a", a);
+                const isUnpaid = Number(a?.installment_payment_is_paid) === 0;
+                const isMultiple =
+                  a?.installment_payment_method === "mutiple payment";
+                const splitTotal =
+                  Number(a?.payment_cash_amount || 0) +
+                  Number(a?.payment_check_amount || 0) +
+                  Number(a?.payment_online_amount || 0);
+
                 return (
-                  <tr key={index} className="border-0!">
-                    <td className="text-center dark:bg-gray-900! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
-                      {index + 1}.
-                    </td>
-                    <td className=" dark:bg-gray-900! ">
-                      {a?.installment_payment_due_date}
-                    </td>
-                    <td className=" dark:bg-gray-900! ">
-                      <AmountWithPesoSign
-                        classN="size-3"
-                        amount={a["installment_payment_amount"]}
-                      />
-                    </td>
-                    {Number(a?.installment_payment_is_paid) === 0 ? (
-                      <>
-                        <td className=" dark:bg-gray-900! ">
-                          <input
-                            type="number"
-                            className="text-right!"
-                            value={a["installment_payment_amount"]}
-                            onChange={(e) => handleChangeSave(e, index)}
-                            readOnly
-                          />
+                  <React.Fragment key={index}>
+                    <tr className="border-0!">
+                      <td className="text-center dark:bg-gray-900! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
+                        {index + 1}.
+                      </td>
+                      <td className=" dark:bg-gray-900! ">
+                        {a?.installment_payment_due_date}
+                      </td>
+                      <td className=" dark:bg-gray-900! ">
+                        <AmountWithPesoSign
+                          classN="size-3"
+                          amount={a["installment_payment_amount"]}
+                        />
+                      </td>
+                      {isUnpaid ? (
+                        <>
+                          <td className=" dark:bg-gray-900! ">
+                            {isInstallment && !isMultiple ? (
+                              // Installment terms: Paid Amount is fixed to the
+                              // scheduled amount for this due date - no free input.
+                              <AmountWithPesoSign
+                                classN="size-3"
+                                amount={a["installment_payment_amount"]}
+                              />
+                            ) : (
+                              <input
+                                type="number"
+                                className="text-right!"
+                                placeholder="0"
+                                value={isEmptyItem(a["entered_amount"], "")}
+                                onChange={(e) => handleChangeSave(e, index)}
+                                disabled={isMultiple}
+                              />
+                            )}
+                          </td>
+                          <td className=" dark:bg-gray-900! ">
+                            <select
+                              value={isEmptyItem(
+                                a["installment_payment_method"],
+                                "cash",
+                              )}
+                              onChange={(e) => handleChangeMethod(e, index)}
+                              className="capitalize"
+                            >
+                              {PaymentMethodList().map((m) => (
+                                <option key={m.value} value={m.value}>
+                                  {m.label}
+                                </option>
+                              ))}
+                            </select>
+                          </td>
+                          <td>
+                            <button
+                              className={`text-white bg-gray-500 hover:bg-green-800 rounded-sm p-1 text-[10px]`}
+                              type="button"
+                              onClick={() => handleSave(a, index)}
+                            >
+                              Paid
+                            </button>
+                          </td>
+                        </>
+                      ) : (
+                        <>
+                          <td className="">
+                            <AmountWithPesoSign
+                              classN="size-3"
+                              classAmnt="text-primary "
+                              amount={Number(a.installment_payment_paid_amount)}
+                            />
+                          </td>
+                          <td className="capitalize">
+                            {a?.installment_payment_method || "-"}
+                          </td>
+                          <td></td>
+                        </>
+                      )}
+                    </tr>
+                    {/* Multiple Payment: nested breakdown row, per the multiple-payments design reference */}
+                    {isUnpaid && isMultiple && (
+                      <tr className="border-0!">
+                        <td colSpan={6} className="dark:bg-gray-900!">
+                          <div className="border shadow border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 p-3 my-1">
+                            <p className="text-xs font-semibold text-gray-500 dark:text-light mb-2">
+                              Multiple Payment Details
+                            </p>
+                            <div className="grid grid-cols-4 gap-3">
+                              <div className="relative">
+                                <label>
+                                  <span className="text-red-500">*</span>Cash
+                                  amount
+                                </label>
+                                <input
+                                  type="number"
+                                  className="text-right!"
+                                  value={isEmptyItem(
+                                    a["payment_cash_amount"],
+                                    "",
+                                  )}
+                                  onChange={(e) =>
+                                    handleChangeSplit(
+                                      e,
+                                      index,
+                                      "payment_cash_amount",
+                                    )
+                                  }
+                                  placeholder="0"
+                                />
+                              </div>
+                              <div className="relative">
+                                <label>
+                                  <span className="text-red-500">*</span>Check
+                                  amount
+                                </label>
+                                <input
+                                  type="number"
+                                  className="text-right!"
+                                  value={isEmptyItem(
+                                    a["payment_check_amount"],
+                                    "",
+                                  )}
+                                  onChange={(e) =>
+                                    handleChangeSplit(
+                                      e,
+                                      index,
+                                      "payment_check_amount",
+                                    )
+                                  }
+                                  placeholder="0"
+                                />
+                              </div>
+                              <div className="relative">
+                                <label>
+                                  <span className="text-red-500">*</span>
+                                  Online transaction amount
+                                </label>
+                                <input
+                                  type="number"
+                                  className="text-right!"
+                                  value={isEmptyItem(
+                                    a["payment_online_amount"],
+                                    "",
+                                  )}
+                                  onChange={(e) =>
+                                    handleChangeSplit(
+                                      e,
+                                      index,
+                                      "payment_online_amount",
+                                    )
+                                  }
+                                  placeholder="0"
+                                />
+                              </div>
+                              <div className="relative">
+                                <label>
+                                  <span className="text-red-500">*</span>Total
+                                  Paid
+                                </label>
+                                <AmountWithPesoSign
+                                  classN="size-3"
+                                  classAmnt="text-green-600 font-bold"
+                                  amount={splitTotal}
+                                />
+                              </div>
+                            </div>
+                          </div>
                         </td>
-                        <td>
-                          <button
-                            className={`text-white bg-gray-500 hover:bg-green-800 rounded-sm p-1 text-[10px]`}
-                            type="button"
-                            onClick={() => handleSave(a, index)}
-                          >
-                            Paid
-                          </button>
-                        </td>
-                      </>
-                    ) : (
-                      <>
-                        <td className="">
-                          <AmountWithPesoSign
-                            classN="size-3"
-                            classAmnt="text-primary "
-                            amount={Number(a.installment_payment_paid_amount)}
-                          />
-                        </td>
-                        <td></td>
-                      </>
+                      </tr>
                     )}
-                  </tr>
+                  </React.Fragment>
                 );
               })}
             </tbody>

@@ -31,6 +31,9 @@ class AccountReceivable
     public $sales_order_payment_terms;
     public $sales_order_discounted_with_vat_amount;
     public $sales_order_vat;
+    public $sales_order_cash;
+    public $sales_order_check;
+    public $sales_order_online_transaction;
     public $sales_order_balance_per_product;
     public $sales_order_paid_per_product;
     public $sales_order_created;
@@ -296,6 +299,7 @@ class AccountReceivable
             $sql .= "installment_payment_received_id = :installment_payment_received_id, ";
             $sql .= "installment_payment_received_name = :installment_payment_received_name, ";
             $sql .= "installment_payment_paid_amount = :installment_payment_paid_amount, ";
+            $sql .= "installment_payment_method = :installment_payment_method, ";
             $sql .= "installment_payment_updated = :installment_payment_updated ";
             $sql .= "where installment_payment_aid = :installment_payment_aid ";
             $query = $this->connection->prepare($sql);
@@ -304,6 +308,7 @@ class AccountReceivable
                 "installment_payment_received_id" => $this->installment_payment_received_id,
                 "installment_payment_received_name" => $this->installment_payment_received_name,
                 "installment_payment_paid_amount" => $this->installment_payment_paid_amount,
+                "installment_payment_method" => $this->installment_payment_method,
                 "installment_payment_updated" => $this->installment_payment_updated,
                 "installment_payment_aid" => $this->installment_payment_aid,
             ]);
@@ -326,6 +331,9 @@ class AccountReceivable
             $sql .= "sales_order_paid_amount = :sales_order_paid_amount, ";
             $sql .= "sales_order_status = :sales_order_status, ";
             $sql .= "sales_order_due_date = :sales_order_due_date, ";
+            $sql .= "sales_order_cash = :sales_order_cash, ";
+            $sql .= "sales_order_check = :sales_order_check, ";
+            $sql .= "sales_order_online_transaction = :sales_order_online_transaction, ";
             $sql .= "sales_order_updated = :sales_order_updated ";
             $sql .= "where sales_order_aid = :sales_order_aid ";
             $query = $this->connection->prepare($sql);
@@ -336,6 +344,9 @@ class AccountReceivable
                 "sales_order_paid_amount" => $this->sales_order_paid_amount,
                 "sales_order_status" => $this->sales_order_status,
                 "sales_order_due_date" => $this->sales_order_due_date,
+                "sales_order_cash" => $this->sales_order_cash,
+                "sales_order_check" => $this->sales_order_check,
+                "sales_order_online_transaction" => $this->sales_order_online_transaction,
                 "sales_order_updated" => $this->sales_order_updated,
                 "sales_order_aid" => $this->sales_order_aid,
             ]);

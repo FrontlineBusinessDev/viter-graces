@@ -46,7 +46,7 @@ function checkReadTopSellingProduct($object)
     checkQuery($query, "Empty records. (read top selling product)");
     return $query;
 }
- 
+
 // read top 5 selling products
 function checkReadTop5SellingProduct($object)
 {
@@ -343,6 +343,8 @@ function installmentDetails($val, $installmentItems, $data)
     $val->installment_payment_received_id = "";
     $val->installment_payment_received_name = "";
     $val->installment_payment_paid_amount = 0;
+    $val->installment_payment_method = "";
+
     if (strtolower($val->sales_order_payment_terms) == "installment") {
         if ((float)$data['sales_order_installment_count'] > 0) {
             // CREATE INSTALLMENT PAYMENT
@@ -375,7 +377,7 @@ function installmentDetails($val, $installmentItems, $data)
                 $val->installment_payment_customer_id = $val->sales_order_customer_id;
                 $val->installment_payment_customer_name = $val->sales_order_customer_name;
                 $val->installment_payment_method = $val->sales_order_payment_method;
-                $val->installment_payment_amount = $data["sales_order_installment_amount"];
+                $val->installment_payment_amount = $val->sales_order_installment_amount;
 
                 if (count($installmentItems) == 0) {
                     checkCreateInstallment($val);
