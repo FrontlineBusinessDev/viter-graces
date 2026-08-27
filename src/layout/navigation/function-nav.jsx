@@ -115,7 +115,7 @@ export const getNavList = () => {
       isOpenSubmenu: "",
       on_click: onClickNav,
       subList: [],
-      ongoing: [],
+      ongoing: ["cashier"],
       roles: ["cashier"],
       title_tab: "",
     },

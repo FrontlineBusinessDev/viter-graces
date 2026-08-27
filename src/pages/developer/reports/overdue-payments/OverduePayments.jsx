@@ -1,4 +1,4 @@
-import { ActiveInActiveStatus } from "@/layout/ArrayValue";
+import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -35,10 +35,18 @@ const OverduePayments = () => {
     },
     {
       accessorKey: "installment_payment_customer_name",
-      header: "Customer",
-      classTh: "",
+      header: "Customers",
+      classTh: "min-w-[10rem] ",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="customer/read-all-by-active"
+            testFilterId={"filter-customer"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "installment_payment_amount",

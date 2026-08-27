@@ -1886,6 +1886,7 @@ class ReportSalesOrder
     {
         $filterColumn = [];
         $params = [
+            ...$this->userId != 0 ? ["return_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "return_product_number" => "%{$this->column_search}%",
                 "return_product_order_number" => "%{$this->column_search}%",
@@ -1920,6 +1921,7 @@ class ReportSalesOrder
             $sql .= "return_product_number as name ";
             $sql .= "from {$this->tblReturnProducts} ";
             $sql .= " where true ";
+            $sql .= ($this->userId != 0 ? "and return_product_owner_id = :return_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn) . " ";
             } else {
@@ -1947,6 +1949,7 @@ class ReportSalesOrder
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
+            ...$this->userId != 0 ? ["return_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "return_product_number" => "%{$this->column_search}%",
                 "return_product_order_number" => "%{$this->column_search}%",
@@ -1981,6 +1984,7 @@ class ReportSalesOrder
             $sql .= "return_product_number as name ";
             $sql .= "from {$this->tblReturnProducts} ";
             $sql .= " where true ";
+            $sql .= ($this->userId != 0 ? "and return_product_owner_id = :return_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn) . " ";
             } else {

@@ -9,7 +9,11 @@ import { InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { apiVersion } from "@/config/config";
-import { ActivityLogDetails } from "@/layout/ArrayValue";
+import {
+  ActivityLogDetails,
+  PaymentMethodList,
+  taxOption,
+} from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
 import useQueryData from "@/services/useQueryData";
@@ -117,6 +121,9 @@ const ModalExpenses = ({ itemEdit }) => {
     purchase_order_price: 0,
     purchase_order_product_name_other: "",
     purchase_order_delivery_is_status: true,
+    purchase_order_payment_method: "cash",
+    purchase_order_vat: "",
+    purchase_order_vat_amount: "",
   };
 
   const yupSchema = Yup.object({
@@ -164,6 +171,29 @@ const ModalExpenses = ({ itemEdit }) => {
             }}
           >
             {(props) => {
+              // COMPUTATION OF INCLUSIVE TAX
+              if (Number(props.values.purchase_order_vat) === 1.12) {
+                props.values.purchase_order_vat_amount =
+                  Number(props.values.purchase_order_payment) -
+                  Number(props.values.purchase_order_payment) / 1.12;
+              }
+
+              // COMPUTATION OF EXCLUSIVE TAX
+              if (Number(props.values.purchase_order_vat) === 0.12) {
+                props.values.purchase_order_vat_amount =
+                  Number(props.values.purchase_order_payment) * 0.12;
+
+                props.values.purchase_order_payment =
+                  Number(props.values.purchase_order_payment) +
+                  Number(props.values.purchase_order_vat_amount);
+              }
+
+              if (
+                Number(props.values.purchase_order_vat) === 0 ||
+                props.values.purchase_order_vat === "--"
+              ) {
+                props.values.purchase_order_vat_amount = 0;
+              }
               return (
                 <Form>
                   <SyncDerivedFields
@@ -260,9 +290,53 @@ const ModalExpenses = ({ itemEdit }) => {
                   ) : (
                     ""
                   )}
+                  <div className="relative capitalize mb-3">
+                    <InputSelectArrayWithOptions
+                      label="Payment Method"
+                      type="text"
+                      name="purchase_order_payment_method"
+                      defaultValue="cash"
+                      options={PaymentMethodList()}
+                      onChange={(e) => {
+                        props.setFieldValue(
+                          "purchase_order_payment_method",
+                          e.target.value,
+                        );
+                        return e;
+                      }}
+                    />
+                  </div>
+                  <div className="grid-cols-2 grid gap-2 mb-3">
+                    <div className="relative capitalize">
+                      <InputSelectArrayWithOptions
+                        label="VAT"
+                        type="purchase_order_vat"
+                        name="purchase_order_vat"
+                        defaultValue=""
+                        options={taxOption()}
+                        onChange={(e) => {
+                          props.setFieldValue(
+                            "purchase_order_vat",
+                            e.target.id,
+                          );
+                          return e;
+                        }}
+                        required={false}
+                      />
+                    </div>
+                    <div className="relative capitalize ">
+                      <InputText
+                        label="VAT Amount"
+                        type="number"
+                        name="purchase_order_vat_amount"
+                        disabled={mutation.isPending}
+                        readOnly
+                      />
+                    </div>
+                  </div>
                   <div className="relative mb-3">
                     <InputText
-                      label="Amount Paid"
+                      label="Amount"
                       type="number"
                       number="number"
                       name="purchase_order_payment"
@@ -283,7 +357,6 @@ const ModalExpenses = ({ itemEdit }) => {
                   ) : (
                     ""
                   )}
-
                   <div className="relative">
                     <InputTextArea
                       label="Note"

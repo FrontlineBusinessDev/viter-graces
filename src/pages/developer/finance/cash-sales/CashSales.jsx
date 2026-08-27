@@ -1,8 +1,4 @@
-import {
-  SearchableSelectFilter,
-  SearchableSelectFilterStatus,
-} from "@/components/inputs/InputSelect";
-import { ActiveInActiveStatus } from "@/layout/ArrayValue";
+import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -33,18 +29,34 @@ const CashSales = () => {
     {
       accessorKey: "sales_order_customer_name",
       header: "Customers",
-      classTh: "",
+      classTh: "min-w-[10rem] ",
       classTd: "",
       isMobileTitle: true,
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="customer/read-all-by-active"
+            testFilterId={"filter-customer"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_order_product_name",
-      header: "Product",
-      classTh: "",
+      header: "Products",
+      classTh: "min-w-[10rem] ",
       classTd: "",
       isMobileTitle: true,
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="products/read-all-by-active"
+            testFilterId={"filter-product-name"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_order_qty",

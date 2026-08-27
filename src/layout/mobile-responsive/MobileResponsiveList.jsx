@@ -5,6 +5,7 @@ import FinanceAPMobileResponsive from "./FinanceAPMobileResponsive";
 import FinanceARMobileResponsive from "./FinanceARMobileResponsive";
 import FinanceCashSalesMobileResponsive from "./FinanceCashSalesMobileResponsive";
 import FinanceExpensestMobileResponsive from "./FinanceExpensestMobileResponsive";
+import FinanceReturnsMobileResponsive from "./FinanceReturnsMobileResponsive";
 import FinanceSalesJournalMobileResponsive from "./FinanceSalesJournalMobileResponsive";
 import InfiniteDefaultTableMobileCard from "./InfiniteDefaultTableMobileCard";
 import MovementMobileResponsive from "./MovementMobileResponsive";
@@ -158,6 +159,14 @@ const MobileResponsiveList = ({
       />
       {/* FINANCE SALES JOURNAL RESPONSIVE */}
       <FinanceSalesJournalMobileResponsive
+        rows={rows}
+        setData={setData}
+        setItemEdit={setItemEdit}
+        isDefaultMobile={isDefaultMobile}
+        ishaveSubAdd={ishaveSubAdd}
+      />
+      {/* FINANCE RETURNS RESPONSIVE */}
+      <FinanceReturnsMobileResponsive
         rows={rows}
         setData={setData}
         setItemEdit={setItemEdit}

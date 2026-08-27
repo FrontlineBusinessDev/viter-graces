@@ -1,8 +1,7 @@
-import { Amount } from "@/components/PesoSign";
+import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
-import { Eye } from "lucide-react";
 import React from "react";
 
 const SalesJournal = () => {
@@ -29,10 +28,18 @@ const SalesJournal = () => {
     },
     {
       accessorKey: "sales_journal_customer",
-      header: "Customer",
-      classTh: "",
+      header: "Customers",
+      classTh: "min-w-[10rem] ",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="customer/read-all-by-active"
+            testFilterId={"filter-customer"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_journal_method",

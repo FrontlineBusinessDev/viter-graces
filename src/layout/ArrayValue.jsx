@@ -366,6 +366,7 @@ export const variantsStatus = (val = "active") => {
     // return-status
     pending: "bg-warning/10 text-warning",
     processed: "bg-primary/10 text-primary",
+    approved: "bg-success/20 text-success",
     rejected: "bg-red-100 text-red-500",
   };
 

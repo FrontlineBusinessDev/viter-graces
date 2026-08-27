@@ -1,12 +1,15 @@
+import {
+  SearchableSelectFilter,
+  SearchableSelectFilterStatus,
+} from "@/components/inputs/InputSelect";
+import { ActionTableList, ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
+import { ProductOwnerIdOnly } from "@/utilities/productOwnerToken";
 import React from "react";
-import ViewAccountsReceivableDetails from "./ViewAccountsReceivableDetails";
-import { ActionTableList, ActiveInActiveStatus } from "@/layout/ArrayValue";
 import UpdateAccountsReceivableDetails from "./UpdateAccountsReceivableDetails";
-import { ProductOwnerId } from "@/utilities/productOwnerToken";
-import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import ViewAccountsReceivableDetails from "./ViewAccountsReceivableDetails";
 
 const AccountsReceivable = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -71,17 +74,33 @@ const AccountsReceivable = () => {
     {
       accessorKey: "sales_order_customer_name",
       header: "Customers",
-      classTh: "",
+      classTh: "min-w-[10rem] ",
       classTd: "",
       isMobileTitle: true,
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="customer/read-all-by-active"
+            testFilterId={"filter-customer"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_order_product_name",
-      header: "Product",
-      classTh: "",
+      header: "Products",
+      classTh: "min-w-[10rem] ",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="products/read-all-by-active"
+            testFilterId={"filter-product-name"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_order_qty",
@@ -117,7 +136,7 @@ const AccountsReceivable = () => {
       filterFn: "between",
       meta: "",
     },
-    ...(Number(ProductOwnerId(store)) > 0
+    ...(Number(ProductOwnerIdOnly(store)) > 0
       ? [
           {
             accessorKey: "action",

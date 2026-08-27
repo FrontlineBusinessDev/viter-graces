@@ -1,14 +1,14 @@
-import HeaderNav from "@/layout/headers/HeaderNav";
-import InfiniteTable from "@/layout/table/InfiniteTable";
-import { StoreContext } from "@/store/StoreContext";
-import React from "react";
-import ReportsStats from "../ReportsStats";
 import {
   SearchableSelectFilter,
   SearchableSelectFilterStatus,
 } from "@/components/inputs/InputSelect";
-import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import { ActiveInActiveStatus } from "@/layout/ArrayValue";
+import HeaderNav from "@/layout/headers/HeaderNav";
+import InfiniteTable from "@/layout/table/InfiniteTable";
+import { StoreContext } from "@/store/StoreContext";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
+import React from "react";
+import ReportsStats from "../ReportsStats";
 
 const ArReport = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -49,10 +49,18 @@ const ArReport = () => {
     {
       accessorKey: "sales_order_customer_name",
       header: "Customers",
-      classTh: "",
+      classTh: "min-w-[10rem] ",
       classTd: "",
       isMobileTitle: true,
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="customer/read-all-by-active"
+            testFilterId={"filter-customer"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_order_product_name",
@@ -60,7 +68,15 @@ const ArReport = () => {
       classTh: "",
       classTd: "",
       isMobileTitle: true,
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="products/read-all-by-active"
+            testFilterId={"filter-product-name"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "total_amount_per_product",

@@ -1,13 +1,15 @@
+import {
+  SearchableSelectFilter,
+  SearchableSelectFilterStatus,
+} from "@/components/inputs/InputSelect";
+import { ActionTableList, ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
-import { Eye } from "lucide-react";
-import React from "react";
-import ViewAccountsPayableDetails from "./ViewAccountsPayableDetails";
-import { ActionTableList, ActiveInActiveStatus } from "@/layout/ArrayValue";
-import UpdateAccountsPayableDetails from "./UpdateAccountsPayableDetails";
 import { ProductOwnerId } from "@/utilities/productOwnerToken";
-import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
+import React from "react";
+import UpdateAccountsPayableDetails from "./UpdateAccountsPayableDetails";
+import ViewAccountsPayableDetails from "./ViewAccountsPayableDetails";
 
 const AccountsPayable = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -57,7 +59,15 @@ const AccountsPayable = () => {
       header: "Products",
       classTh: "min-w-[10rem]",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="products/read-all-by-active"
+            testFilterId={"filter-product-name"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "purchase_order_supplier_name",

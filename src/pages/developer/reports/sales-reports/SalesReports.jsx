@@ -6,9 +6,9 @@ import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import React from "react";
 import ReportsStats from "../ReportsStats";
-import { ProductOwnerId } from "@/utilities/productOwnerToken";
 
 const SalesReports = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -54,14 +54,30 @@ const SalesReports = () => {
       header: "Products",
       classTh: "min-w-40 ",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="products/read-all-by-active"
+            testFilterId={"filter-product-name"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_order_customer_name",
-      header: "customer",
+      header: "Customers",
       classTh: "min-w-40 ",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="customer/read-all-by-active"
+            testFilterId={"filter-customer"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_order_qty",

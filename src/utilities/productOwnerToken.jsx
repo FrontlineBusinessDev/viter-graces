@@ -10,6 +10,14 @@ export const ProductOwnerId = (store) => {
   return userId;
 };
 
+export const ProductOwnerIdOnly = (store) => {
+  const userId =
+    isEmptyItem(store?.credentials?.data?.role, "admin") === "product owner"
+      ? store.credentials?.data?.id
+      : 0;
+  return userId;
+};
+
 // format the numbers separated by comma
 export const ProductOwnerName = (store) => {
   const userName =

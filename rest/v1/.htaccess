@@ -172,8 +172,9 @@ RewriteRule ^finance-expenses/active/([0-9]+)$ controllers/developer/finance/exp
 RewriteRule ^finance-account-receivable/account-receivable/([0-9]+)$ controllers/developer/finance/account-receivable/account-receivable.php?id=$1 [L] 
 RewriteRule ^finance-account-payable/page/([0-9]+)$ controllers/developer/finance/account-payable/page-by-account-payable.php?start=$1 [L] 
 RewriteRule ^finance-account-payable/account-payable/([0-9]+)$ controllers/developer/finance/account-payable/account-payable.php?id=$1 [L] 
-RewriteRule ^finance-sales-journal/page/([0-9]+)$ controllers/developer/finance/sales-journal/page-by-sales-journal.php?start=$1 [L] 
-RewriteRule ^finance-sales-journal/read-overview$ controllers/developer/finance/overview/read-overview.php [L] 
+RewriteRule ^finance-sales-journal/page/([0-9]+)$ controllers/developer/finance/sales-journal/page-by-sales-journal.php?start=$1 [L]
+RewriteRule ^finance-sales-journal/read-overview$ controllers/developer/finance/overview/read-overview.php [L]
+RewriteRule ^finance-returns/page/([0-9]+)$ controllers/developer/finance/returns/page-by-finance-returns.php?start=$1 [L]
   
 
  

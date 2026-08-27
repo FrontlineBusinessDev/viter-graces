@@ -52,7 +52,15 @@ const ExpensesReport = () => {
       header: "Products",
       classTh: "min-w-[20rem]",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="products/read-all-by-active"
+            testFilterId={"filter-product-name"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "purchase_order_note",

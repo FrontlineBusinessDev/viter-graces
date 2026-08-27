@@ -59,7 +59,7 @@ const ReturnsReports = () => {
     },
     {
       accessorKey: "return_product_customer_name",
-      header: "customer",
+      header: "Customers",
       classTh: "min-w-40",
       classTd: "",
       meta: {
@@ -67,7 +67,7 @@ const ReturnsReports = () => {
           <SearchableSelectFilter
             column={column}
             path="customer/read-all-by-active"
-            testFilterId={"filter-owner"}
+            testFilterId={"filter-customer"}
           />
         ),
       },
@@ -82,7 +82,7 @@ const ReturnsReports = () => {
           <SearchableSelectFilter
             column={column}
             path="products/read-all-by-active"
-            testFilterId={"filter-owner"}
+            testFilterId={"filter-product-name"}
           />
         ),
       },

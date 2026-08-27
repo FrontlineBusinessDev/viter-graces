@@ -40,6 +40,7 @@ export const titleHeaderTab = (description) => {
           title_tab: "stock-overview",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: <ArrowRightLeft className="size-4 mr-1" />,
@@ -47,6 +48,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Track item movements and status changes.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
       ],
     },
@@ -120,6 +122,16 @@ export const titleHeaderTab = (description) => {
           ongoingDevelopment: false,
           roles: ["admin", "developer", "product_owner"],
         },
+        {
+          // "finance-returns", not "returns" - the bare "returns" URL segment
+          // is already the top-level Returns management page's own route.
+          icon: "",
+          title_tab: "finance-returns",
+          description_tab: "Review refunds and return resolutions.",
+          on_click: onClickTab,
+          ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner", "cashier"],
+        },
       ],
     },
     {
@@ -132,6 +144,7 @@ export const titleHeaderTab = (description) => {
           title_tab: "sales-reports",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: "",
@@ -139,6 +152,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Monitor current inventory quantities.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: "",
@@ -146,6 +160,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Track items that need restocking.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: "",
@@ -153,6 +168,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Track stock movements and adjustments.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: "",
@@ -160,6 +176,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Review income, costs, and net profit.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: "",
@@ -167,6 +184,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Monitor outstanding customer balances.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: "",
@@ -174,6 +192,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Review supplier balances and payables.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: "",
@@ -181,6 +200,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Track business expenses and spending trends.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: "",
@@ -188,6 +208,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Monitor unpaid balances past due date.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: "",
@@ -195,6 +216,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Review product returns and refund activity.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
       ],
     },
@@ -209,6 +231,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Manage user accounts and access.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: <UserCog className="size-4 mr-1" />,
@@ -216,6 +239,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Define roles and permissions.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: <Building2 className="size-4 mr-1" />,
@@ -223,6 +247,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Manage product owner profiles.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
       ],
     },
@@ -237,6 +262,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Manage user accounts and access.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: <Building2 className="size-4 mr-1" />,
@@ -244,6 +270,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Manage product owner profiles.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
       ],
     },
@@ -257,6 +284,7 @@ export const titleHeaderTab = (description) => {
           title_tab: "suppliers",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: <FileText className="size-4 mr-1" />,
@@ -264,6 +292,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Manage purchase requests and orders.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
         {
           icon: <FileText className="size-4 mr-1" />,
@@ -271,6 +300,7 @@ export const titleHeaderTab = (description) => {
           description_tab: "Manage purchase requests and orders.",
           on_click: onClickTab,
           ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
         },
       ],
     },

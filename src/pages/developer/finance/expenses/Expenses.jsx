@@ -1,12 +1,12 @@
+import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
 import { ActionTableList } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
-import React from "react";
-import ModalExpenses from "./ModalExpenses";
-import { SearchableSelectFilter } from "@/components/inputs/InputSelect";
 import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import { getAdminDeveloperRole } from "@/utilities/roleValidation";
+import React from "react";
+import ModalExpenses from "./ModalExpenses";
 
 const Expenses = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -41,7 +41,15 @@ const Expenses = () => {
       header: "Products",
       classTh: "min-w-[10rem]",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="products/read-all-by-active"
+            testFilterId={"filter-product-name"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "purchase_order_total_paid_per_product",

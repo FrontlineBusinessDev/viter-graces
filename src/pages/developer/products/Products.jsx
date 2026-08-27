@@ -36,7 +36,7 @@ const Products = () => {
     },
     {
       accessorKey: "products_name",
-      header: "Product",
+      header: "Products",
       classTh: "min-w-[10rem] ",
       classTd: "",
       isMobileTitle: true,
@@ -45,7 +45,7 @@ const Products = () => {
           <SearchableSelectFilter
             column={column}
             path="products/read-all-by-active"
-            testFilterId={"filter-product_name"}
+            testFilterId={"filter-product-name"}
           />
         ),
       },
@@ -119,14 +119,17 @@ const Products = () => {
             },
           },
         ]),
-
-    {
-      accessorKey: "action",
-      action_array: ActionTableList("products"),
-      header: "Action",
-      classTh: "text-center w-[7rem]",
-      classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
-    },
+    ...(Number(ProductOwnerId(store)) > 0
+      ? []
+      : [
+          {
+            accessorKey: "action",
+            action_array: ActionTableList("products"),
+            header: "Action",
+            classTh: "text-center w-[7rem]",
+            classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
+          },
+        ]),
   ];
 
   React.useEffect(() => {

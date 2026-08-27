@@ -1,15 +1,15 @@
-import HeaderNav from "@/layout/headers/HeaderNav";
-import InfiniteTable from "@/layout/table/InfiniteTable";
-import { StoreContext } from "@/store/StoreContext";
-import React from "react";
-import ModalReturns from "./ModalReturns";
-import { ActiveInActiveStatus } from "@/layout/ArrayValue";
-import { setIsAdd } from "@/store/StoreAction";
 import {
   SearchableSelectFilter,
   SearchableSelectFilterStatus,
 } from "@/components/inputs/InputSelect";
+import { ActiveInActiveStatus } from "@/layout/ArrayValue";
+import HeaderNav from "@/layout/headers/HeaderNav";
+import InfiniteTable from "@/layout/table/InfiniteTable";
+import { setIsAdd } from "@/store/StoreAction";
+import { StoreContext } from "@/store/StoreContext";
 import { getAdminDeveloperRole } from "@/utilities/roleValidation";
+import React from "react";
+import ModalReturns from "./ModalReturns";
 
 const Returns = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -60,17 +60,33 @@ const Returns = () => {
     },
     {
       accessorKey: "return_product_customer_name",
-      header: "customer",
-      classTh: "",
+      header: "Customers",
+      classTh: "min-w-[10rem] ",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="customer/read-all-by-active"
+            testFilterId={"filter-customer"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "return_product_product_name",
-      header: "Product",
-      classTh: "",
+      header: "Products",
+      classTh: "min-w-[10rem] ",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="products/read-all-by-active"
+            testFilterId={"filter-product-name"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "return_product_owner_name",

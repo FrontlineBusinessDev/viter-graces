@@ -49,7 +49,7 @@ const MovementHistory = () => {
           <SearchableSelectFilter
             column={column}
             path="products/read-all-by-active"
-            testFilterId={"filter-product_name"}
+            testFilterId={"filter-product-name"}
           />
         ),
       },

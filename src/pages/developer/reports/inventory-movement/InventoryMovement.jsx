@@ -6,9 +6,9 @@ import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import React from "react";
 import ReportsStats from "../ReportsStats";
-import { ProductOwnerId } from "@/utilities/productOwnerToken";
 
 const InventoryMovement = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -35,7 +35,15 @@ const InventoryMovement = () => {
       header: "Products",
       classTh: "",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilter
+            column={column}
+            path="products/read-all-by-active"
+            testFilterId={"filter-product-name"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "products_sku",

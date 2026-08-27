@@ -6,6 +6,7 @@ import AccountsReceivable from "@/pages/developer/finance/accounts-receivable/Ac
 import CashSales from "@/pages/developer/finance/cash-sales/CashSales";
 import Expenses from "@/pages/developer/finance/expenses/Expenses";
 import FinanceOverview from "@/pages/developer/finance/finance-overview/FinanceOverview";
+import FinanceReturns from "@/pages/developer/finance/returns/FinanceReturns";
 import SalesJournal from "@/pages/developer/finance/sales-journal/SalesJournal";
 import MovementHistory from "@/pages/developer/inventory/MovementHistory";
 import StockOverview from "@/pages/developer/inventory/StockOverview";
@@ -108,6 +109,14 @@ export const routesDeveloper = [
     element: (
       <ProtectedRouteUser>
         <AccountsReceivable />
+      </ProtectedRouteUser>
+    ),
+  },
+  {
+    path: `${devNavUrl}/developer/finance-returns`,
+    element: (
+      <ProtectedRouteUser>
+        <FinanceReturns />
       </ProtectedRouteUser>
     ),
   },

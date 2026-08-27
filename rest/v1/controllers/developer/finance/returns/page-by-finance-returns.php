@@ -1,17 +1,17 @@
 <?php
 
 // set http header
-require '../../../core/header.php';
+require '../../../../core/header.php';
 // use needed functions
-require '../../../core/functions.php';
+require '../../../../core/functions.php';
 require 'functions.php';
 // use needed classes
-require '../../../models/developer/report/ReportSalesOrder.php';
+require '../../../../models/developer/finance/FinanceReturns.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new ReportSalesOrder($conn);
+$val = new FinanceReturns($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -22,18 +22,19 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkPayload($data);
 
     if (array_key_exists("start", $_GET)) {
-        $val->userId = (float)$data["userId"];    // get data 
         $val->column_search = $data["searchValue"];    // get data
         $val->column_start = $_GET['start'];
         $val->column_total = 15;
         $val->max = PHP_INT_MAX;
+        $total_result_final = [];
+
         // FOR MULTIPLE FILTER
         $val->filters = $data['columnFilters'];
-
         checkLimitId($val->column_start, $val->column_total);
 
-        $query = checkReadAllReturnsLimit($val, allowedColumns());
-        $total_result = checkReadAllReturns($val, allowedColumns());
+        $query = checkReadLimit($val, allowedColumns());
+        $total_result = checkReadAll($val, allowedColumns());
+
         http_response_code(200);
 
         checkReadQuery(

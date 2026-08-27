@@ -14,10 +14,10 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import useQueryData from "@/services/useQueryData";
 import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import React from "react";
 import ModalSalesOrders from "./ModalSalesOrders";
 import ViewSalesDetails from "./ViewSalesDetails";
-import { ProductOwnerId } from "@/utilities/productOwnerToken";
 
 const SalesOrders = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -68,7 +68,7 @@ const SalesOrders = () => {
     },
     {
       accessorKey: "sales_order_customer_name",
-      header: "customer",
+      header: "Customers",
       classTh: "min-w-[10rem]",
       classTd: "",
       meta: {
@@ -76,7 +76,7 @@ const SalesOrders = () => {
           <SearchableSelectFilter
             column={column}
             path="customer/read-all-by-active"
-            testFilterId={"filter-owner"}
+            testFilterId={"filter-customer"}
           />
         ),
       },
