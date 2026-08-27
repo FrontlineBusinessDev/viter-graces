@@ -101,7 +101,15 @@ export const renderCellContent = (item, rowData, path = "") => {
             : ""
         }
       >
-        {isSocial ? value : flexRender(column.cell, item.getContext())}
+        {isEmptyItem(column.amount || column.paid_amount, false) ? (
+          <AmountWithPesoSign
+            classN="size-3 text-primary"
+            classAmnt="text-primary"
+            amount={rowData[column.accessorKey]}
+          />
+        ) : (
+          <>{isSocial ? value : flexRender(column.cell, item.getContext())}</>
+        )}
       </Link>
     );
   }

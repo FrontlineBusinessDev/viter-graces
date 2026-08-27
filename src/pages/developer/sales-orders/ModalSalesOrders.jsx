@@ -371,6 +371,14 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
             {(props) => {
               PropsValues(props, items);
 
+              if (
+                Number(props.values.sales_order_customer_id) ===
+                Number(isEmptyItem(cutomer?.customer_aid, 0))
+              ) {
+                props.values.sales_order_payment_terms =
+                  "due on receipt - due on the same day the sales order";
+              }
+
               return (
                 <Form>
                   <div className="grid grid-cols-2 gap-4">

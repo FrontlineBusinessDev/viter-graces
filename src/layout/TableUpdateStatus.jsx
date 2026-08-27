@@ -40,11 +40,17 @@ const TableUpdateStatus = ({ path, item, dataArray }) => {
   return (
     <>
       <form className="relative">
+        {/* Issue 1 fix: controlled `value` (not `defaultValue`) so the select always
+            reflects the current row's status on every render. With `defaultValue`,
+            React only applies it once at mount - when the list re-renders after adding
+            a new return (rows shift position, DOM nodes get reused for a different
+            record), the old selection stayed on screen even though it belonged to a
+            different row, making an untouched return look like its status changed. */}
         <select
           onChange={(e) => {
             handleYes(e);
           }}
-          defaultValue={dataArray?.return_product_status}
+          value={dataArray?.return_product_status || "pending"}
           className="border-0 shadow shadow-primary h-8 capitalize"
         >
           <optgroup label={`Select status`}>
