@@ -4,6 +4,7 @@
 require '../../../core/header.php';
 // use needed functions
 require '../../../core/functions.php';
+require 'functions.php';
 // use needed classes
 require '../../../models/developer/suppliers/Suppliers.php';
 // check database connection
@@ -31,7 +32,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
     if (empty($_GET)) {
         $val->filters = [];
-        $query = checkReadAll($val);
+        $query = checkReadSupplierInModal($val);
         http_response_code(200);
         getQueriedData($query);
     }

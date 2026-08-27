@@ -24,6 +24,7 @@ class Customer
     public $tblCustomer;
     public $tblinstallmentPayment;
     public $tblSalesOrder;
+    public $tblReturnProduct;
 
     public $filters;
     public $column_start;
@@ -37,6 +38,7 @@ class Customer
         $this->tblCustomer = "graces_customer";
         $this->tblinstallmentPayment = "graces_installment_payment";
         $this->tblSalesOrder = "graces_sales_order";
+        $this->tblReturnProduct = "graces_return_product";
     }
 
     // create
@@ -629,10 +631,30 @@ class Customer
             $sql .= "    WHERE sales_order_customer_id = :sales_order_customer_id ";
             $sql .= "    GROUP BY sales_order_number ";
             $sql .= ") as unique_orders";
-
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "sales_order_customer_id" => $this->customer_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read by id
+    public function readReturnByOpenCreditMemo()
+    {
+        try {
+            $sql = "select SUM(return_product_amount) as open_credit_memo ";
+            $sql .= "from {$this->tblReturnProduct} ";
+            $sql .= " where return_product_customer_id =:return_product_customer_id ";
+            $sql .= " and return_product_resolution_type = 'credit memo' ";
+            $sql .= " and return_product_status = 'processed' ";
+            $sql .= "order by return_product_customer_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "return_product_customer_id" => $this->customer_aid,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

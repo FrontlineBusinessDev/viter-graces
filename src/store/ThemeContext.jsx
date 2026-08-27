@@ -3,8 +3,6 @@ import { createContext, useContext, useEffect, useState } from "react";
 const ThemeContext = createContext();
 
 export function ThemeProvider({ children }) {
-  const body = document.querySelector("body");
-
   const getSystemTheme = () =>
     window.matchMedia("(prefers-color-scheme: dark)").matches
       ? "dark"
@@ -18,10 +16,15 @@ export function ThemeProvider({ children }) {
     const finalTheme =
       selectedTheme === "system" ? getSystemTheme() : selectedTheme;
 
-    body.classList.remove("light", "dark");
-    body.classList.add(finalTheme);
+    // Toggle on <html>, not <body>: every `dark:` utility already keys off it
+    // (@custom-variant dark (&:where(.dark, .dark *)) in index.css), and <html>
+    // is never torn down/replaced the way page content is on route changes.
+    document.documentElement.classList.remove("light", "dark");
+    document.documentElement.classList.add(finalTheme);
   };
 
+  // This is the ONLY place that writes "theme" to localStorage now - see
+  // useDarkMode.jsx, which used to keep its own separate copy of this state.
   useEffect(() => {
     applyTheme(theme);
     localStorage.setItem("theme", theme);

@@ -59,3 +59,11 @@ function checkDeleteSupplierProduct($object)
     checkQuery($query, "There's a problem processing your request. (deleteSupplierProduct)");
     return $query;
 }
+
+// Read all
+function checkReadSupplierInModal($object, $allowedColumns = [])
+{
+    $query = $object->readSupplierInModal($allowedColumns);
+    checkQuery($query, "Empty records. (readSupplierInModal)");
+    return $query;
+}

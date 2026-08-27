@@ -839,20 +839,20 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                           amount={props.values.subtotal}
                         />
                       </li>
-                      <li>VAT Amount:</li>
-                      <li>
-                        <AmountsWithPesoSign
-                          classN={"size-3"}
-                          classAmnt="justify-start!"
-                          amount={props.values.sales_order_tax_amount}
-                        />
-                      </li>
                       <li>Discount:</li>
                       <li>
                         <AmountsWithPesoSign
                           classN={"size-3"}
                           classAmnt="justify-start!"
                           amount={props.values.sales_order_discount}
+                        />
+                      </li>
+                      <li>VAT Amount:</li>
+                      <li>
+                        <AmountsWithPesoSign
+                          classN={"size-3"}
+                          classAmnt="justify-start!"
+                          amount={props.values.sales_order_tax_amount}
                         />
                       </li>
                     </ul>

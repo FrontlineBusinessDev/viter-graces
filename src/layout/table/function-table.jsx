@@ -85,15 +85,15 @@ export const renderCellContent = (item, rowData, path = "") => {
         className={`tooltip-action-table bg-transparent! underline text-primary p-0! ${
           isSocial ? "lowercase" : "capitalize"
         }`}
-        target={column.header === "name" ? "" : "_blank"}
-        data-tooltip="View"
+        target={column.filterOnClickId ? "" : "_blank"}
+        data-tooltip="View details"
         onClick={() =>
-          column.header === "name"
+          column.filterOnClickId
             ? sessionStorage.setItem(
                 "filter",
                 JSON.stringify([
                   {
-                    id: "sales_order_customer_name",
+                    id: column.filterOnClickId,
                     value: rowData?.name,
                   },
                 ]),
@@ -103,8 +103,8 @@ export const renderCellContent = (item, rowData, path = "") => {
       >
         {isEmptyItem(column.amount || column.paid_amount, false) ? (
           <AmountWithPesoSign
-            classN="size-3 text-primary"
-            classAmnt="text-primary"
+            classN="size-3 text-primary text-left! "
+            classAmnt="text-primary justify-start! "
             amount={rowData[column.accessorKey]}
           />
         ) : (

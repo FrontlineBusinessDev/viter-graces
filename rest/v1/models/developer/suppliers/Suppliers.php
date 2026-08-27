@@ -183,6 +183,8 @@ class Suppliers
             ...$this->column_search != "" ? [
                 "suppliers_name" => "%{$this->column_search}%",
                 "suppliers_email" => "%{$this->column_search}%",
+                "suppliers_address" => "%{$this->column_search}%",
+                "suppliers_contact_person" => "%{$this->column_search}%",
             ] : [],
         ];
 
@@ -218,6 +220,8 @@ class Suppliers
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != "" ? "and ( suppliers_name like :suppliers_name 
+            or suppliers_address like :suppliers_address
+            or suppliers_contact_person like :suppliers_contact_person
             or suppliers_email like :suppliers_email ) " : " ");
             }
             $sql .= " order by suppliers_is_active desc, ";
@@ -242,6 +246,8 @@ class Suppliers
             ...$this->column_search != "" ? [
                 "suppliers_name" => "%{$this->column_search}%",
                 "suppliers_email" => "%{$this->column_search}%",
+                "suppliers_address" => "%{$this->column_search}%",
+                "suppliers_contact_person" => "%{$this->column_search}%",
             ] : [],
         ];
 
@@ -277,6 +283,8 @@ class Suppliers
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != "" ? "and ( suppliers_name like :suppliers_name 
+            or suppliers_address like :suppliers_address
+            or suppliers_contact_person like :suppliers_contact_person
             or suppliers_email like :suppliers_email ) " : " ");
             }
             $sql .= " order by suppliers_is_active desc, ";
@@ -561,6 +569,63 @@ class Suppliers
                 "purchase_order_updated" => $this->suppliers_updated,
                 "purchase_order_supplier_id" => $this->suppliers_aid,
             ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+
+    // read all
+    public function readSupplierInModal($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            ...$this->column_search != "" ? [
+                "suppliers_name" => "%{$this->column_search}%",
+                "suppliers_email" => "%{$this->column_search}%",
+            ] : [],
+        ];
+
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
+            if (is_array($item['value'])) {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
+            }
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "suppliers_aid as id, ";
+            $sql .= "suppliers_notes as notes, ";
+            $sql .= "suppliers_is_active as is_active, ";
+            $sql .= "suppliers_messenger as messenger, ";
+            $sql .= "suppliers_whatsapp as whatsapp, ";
+            $sql .= "suppliers_other as other, ";
+            $sql .= "suppliers_name as name ";
+            $sql .= "from {$this->tblSuppliers} ";
+            $sql .= " where suppliers_is_default = 0 ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( suppliers_name like :suppliers_name 
+            or suppliers_email like :suppliers_email ) " : " ");
+            }
+            $sql .= " order by suppliers_is_active desc, ";
+            $sql .= "suppliers_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
