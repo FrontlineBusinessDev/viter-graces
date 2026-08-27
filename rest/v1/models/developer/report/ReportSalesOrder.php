@@ -1880,4 +1880,125 @@ class ReportSalesOrder
         }
         return $query;
     }
+
+    // read all
+    public function readAllReturns($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            ...$this->column_search != "" ? [
+                "return_product_number" => "%{$this->column_search}%",
+                "return_product_order_number" => "%{$this->column_search}%",
+                "return_product_customer_name" => "%{$this->column_search}%",
+                "return_product_product_name" => "%{$this->column_search}%",
+                "return_product_owner_name" => "%{$this->column_search}%",
+            ] : [],
+        ];
+
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
+            if (is_array($item['value'])) {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
+            }
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "return_product_aid as id, ";
+            $sql .= "return_product_status as is_status, ";
+            $sql .= "DATE_FORMAT(return_product_date, '%b %d, %Y') as return_product_date, ";
+            $sql .= "return_product_number as name ";
+            $sql .= "from {$this->tblReturnProducts} ";
+            $sql .= " where true ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( return_product_number like :return_product_number
+            or return_product_order_number like :return_product_order_number
+            or return_product_customer_name like :return_product_customer_name
+            or return_product_product_name like :return_product_product_name
+            or return_product_owner_name like :return_product_owner_name ) " : " ");
+            }
+            $sql .= " order by return_product_date desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read limit
+    public function readAllReturnsLimit($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            "start" => $this->column_start - 1,
+            "total" => $this->column_total,
+            ...$this->column_search != "" ? [
+                "return_product_number" => "%{$this->column_search}%",
+                "return_product_order_number" => "%{$this->column_search}%",
+                "return_product_customer_name" => "%{$this->column_search}%",
+                "return_product_product_name" => "%{$this->column_search}%",
+                "return_product_owner_name" => "%{$this->column_search}%",
+            ] : [],
+        ];
+
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $item['id'];
+            if (is_array($item['value'])) {
+                $params["min$i"] = (float) $item['value']['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $item['value']['max'] === ""
+                    ? (float) $this->max
+                    : (float) $item['value']['max'];
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($item['value']) . "%";
+            }
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "return_product_aid as id, ";
+            $sql .= "return_product_status as is_status, ";
+            $sql .= "DATE_FORMAT(return_product_date, '%b %d, %Y') as return_product_date, ";
+            $sql .= "return_product_number as name ";
+            $sql .= "from {$this->tblReturnProducts} ";
+            $sql .= " where true ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( return_product_number like :return_product_number
+            or return_product_order_number like :return_product_order_number
+            or return_product_customer_name like :return_product_customer_name
+            or return_product_product_name like :return_product_product_name
+            or return_product_owner_name like :return_product_owner_name ) " : " ");
+            }
+            $sql .= " order by return_product_date desc ";
+            $sql .= "limit :start, ";
+            $sql .= ":total ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
 }

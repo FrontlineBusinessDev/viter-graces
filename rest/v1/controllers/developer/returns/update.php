@@ -44,6 +44,8 @@ if (array_key_exists("id", $_GET)) {
     $query = checkUpdate($val);
     updateConnectedMenu($val);
 
+
+    returnError((float)$val->return_product_is_restocked == 1 && $val->return_product_status == "processed");
     if ((float)$val->return_product_is_restocked == 1 && $val->return_product_status == "processed") {
         $val->stock_movement_type = "stock in - return";
         $val->stock_movement_status = "active";

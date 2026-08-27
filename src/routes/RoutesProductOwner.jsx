@@ -17,6 +17,7 @@ import InventoryMovement from "@/pages/developer/reports/inventory-movement/Inve
 import LowStock from "@/pages/developer/reports/low-stock/LowStock";
 import OverduePayments from "@/pages/developer/reports/overdue-payments/OverduePayments";
 import ProfitAddLoss from "@/pages/developer/reports/profit-loss/ProfitAddLoss";
+import ReturnsReports from "@/pages/developer/reports/returns-reports/ReturnsReports";
 import SalesReports from "@/pages/developer/reports/sales-reports/SalesReports";
 import StockLevels from "@/pages/developer/reports/stock-leves/StockLevels";
 import Returns from "@/pages/developer/returns/Returns";
@@ -224,6 +225,14 @@ export const routesProductOwner = [
     element: (
       <ProtectedRouteUser>
         <OverduePayments />
+      </ProtectedRouteUser>
+    ),
+  },
+  {
+    path: `${devNavUrl}/product_owner/returns-reports`,
+    element: (
+      <ProtectedRouteUser>
+        <ReturnsReports />
       </ProtectedRouteUser>
     ),
   },

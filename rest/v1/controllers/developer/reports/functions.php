@@ -223,6 +223,12 @@ function allowedColumns()
         "purchase_order_payment",
         "total_amount",
         "installment_payment_customer_name",
+        "return_product_status",
+        "return_product_date",
+        "return_product_customer_name",
+        "return_product_product_name",
+        "return_product_owner_name",
+        "return_product_amount",
     ];
     return $query;
 }
@@ -313,5 +319,21 @@ function checkReadReturn($object)
 {
     $query = $object->readReturn();
     checkQuery($query, "Empty records. (Read Return)");
+    return $query;
+}
+
+// Read all
+function checkReadAllReturns($object, $allowedColumns = [])
+{
+    $query = $object->readAllReturns($allowedColumns);
+    checkQuery($query, "Empty records. (checkReadAllReturns)");
+    return $query;
+}
+
+// Read limit
+function checkReadAllReturnsLimit($object, $allowedColumns = [])
+{
+    $query = $object->readAllReturnsLimit($allowedColumns);
+    checkQuery($query, "Empty records. (checkReadAllReturnsLimit)");
     return $query;
 }

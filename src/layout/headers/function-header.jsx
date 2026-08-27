@@ -183,6 +183,13 @@ export const titleHeaderTab = (description) => {
           on_click: onClickTab,
           ongoingDevelopment: false,
         },
+        {
+          icon: "",
+          title_tab: "returns-reports",
+          description_tab: "Review product returns and refund activity.",
+          on_click: onClickTab,
+          ongoingDevelopment: false,
+        },
       ],
     },
     {
