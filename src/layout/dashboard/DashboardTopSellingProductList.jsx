@@ -53,7 +53,7 @@ const DashboardTopSellingProductList = ({ path = "", id = 0 }) => {
         <h2 className="flex gap-2 items-center font-semibold text-sm text-yellow-600 mb-4">
           <Trophy size={16} /> Top Selling Products
         </h2>
-        <ul className="space-y-3 min-h-[300px]">
+        <ul className="space-y-3 md:min-h-[300px]">
           {isLoading ? (
             <li>
               <TableLoading count={15} cols={1} />
