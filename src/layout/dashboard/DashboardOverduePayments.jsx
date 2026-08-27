@@ -36,7 +36,7 @@ const DashboardOverduePayments = () => {
         <h2 className="flex gap-2 items-center font-semibold text-sm text-red-600 mb-4">
           <TrendingDown size={16} /> Overdue Payments
         </h2>
-        <ul className="space-y-3 min-h-[300px]">
+        <ul className="space-y-3 md:min-h-[300px] mb-6">
           {isLoading ? (
             <li>
               <TableLoading count={15} cols={1} />
