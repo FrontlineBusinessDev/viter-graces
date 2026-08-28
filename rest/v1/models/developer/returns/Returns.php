@@ -178,9 +178,9 @@ class Returns
             or return_product_owner_name like :return_product_owner_name 
             or return_product_reason like :return_product_reason ) " : " ");
             }
-            $sql .= "order by CASE WHEN LOWER(return_product_status) = 'processed' THEN 1 ELSE 0 END asc, ";
-            $sql .= "return_product_status asc, ";
-            $sql .= "return_product_number desc ";
+            $sql .= " order by CASE WHEN LOWER(return_product_status) = 'processed' THEN 1 ELSE 0 END asc, ";
+            $sql .= " return_product_status asc, ";
+            $sql .= " return_product_number desc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
@@ -239,9 +239,9 @@ class Returns
             or return_product_product_name like :return_product_product_name 
             or return_product_reason like :return_product_reason ) " : " ");
             }
-            $sql .= "order by CASE WHEN LOWER(return_product_status) = 'processed' THEN 1 ELSE 0 END asc, ";
-            $sql .= "return_product_status asc, ";
-            $sql .= "return_product_number desc ";
+            $sql .= " order by CASE WHEN LOWER(return_product_status) = 'processed' THEN 1 ELSE 0 END asc, ";
+            $sql .= " return_product_status asc, ";
+            $sql .= " return_product_number desc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);

@@ -23,6 +23,7 @@ $val->user_account_email = trim(checkIndex($data, "user_account_email"));
 $val->user_account_role_id = checkIndex($data, "user_account_role_id");
 $val->user_account_role = checkIndex($data, "user_account_role");
 $val->user_account_is_active = 1;
+$val->user_account_note = $data['user_account_note'];
 $val->user_account_created = date("Y-m-d H:i:s");
 $val->user_account_updated = date("Y-m-d H:i:s");
 $val->column_fullname = $val->user_account_first_name . " " . $val->user_account_last_name;

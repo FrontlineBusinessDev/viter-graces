@@ -1,6 +1,7 @@
 import ModalButton from "@/components/buttons/ModalButton";
 import { InputSelectArray } from "@/components/inputs/InputSelect";
 import { InputText } from "@/components/inputs/InputText";
+import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { apiVersion, devNavUrl } from "@/config/config";
 import { ActivityLogDetails } from "@/layout/ArrayValue";
@@ -66,6 +67,7 @@ const ModalProductOwner = ({ itemEdit }) => {
     user_account_last_name: isEmptyItem(itemEdit?.user_account_last_name, ""),
     user_account_email: isEmptyItem(itemEdit?.user_account_email, ""),
     email_old: isEmptyItem(itemEdit?.user_account_email, ""),
+    user_account_note: isEmptyItem(itemEdit?.user_account_note, ""),
 
     name: isEmptyItem(itemEdit?.name, ""),
     password_link: `/create-password`,
@@ -140,6 +142,14 @@ const ModalProductOwner = ({ itemEdit }) => {
                       type="text"
                       name="user_account_email"
                       placeholder={`${itemEdit ? "Update user email" : "Enter new user email"}`}
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div className="relative mt-3">
+                    <InputTextArea
+                      label="Notes"
+                      type="text"
+                      name="user_account_note"
                       disabled={mutation.isPending}
                     />
                   </div>
