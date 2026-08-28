@@ -20,6 +20,7 @@ describe("Products Module - CRUD Flow", () => {
     cy.get('input[name="products_low_stock_threshold"]').type("5");
     cy.get('input[name="products_category"]').type("Test food");
     cy.get('input[name="products_stocks"]').type("30");
+    cy.get('input[name="products_unit"]').type("pcs");
     cy.get('textarea[name="products_description"]').type(
       "This is test product",
     );
@@ -37,6 +38,48 @@ describe("Products Module - CRUD Flow", () => {
     cy.wait("@createProduct");
 
     cy.contains("Cypress Product", { timeout: 15000 }).should("exist");
+
+    cy.get('[data-testid="toast"]')
+      .should("be.visible")
+      .and("contain.text", "successfully");
+  });
+
+  // VALIDATION
+  it("Shows validation errors when required fields are empty", () => {
+    cy.get('[data-testid="add-product-btn"]').click();
+
+    cy.get('input[name="products_name"]', { timeout: 10000 }).should(
+      "be.visible",
+    );
+
+    // touch and clear required fields to trigger Formik validation
+    cy.get('input[name="products_name"]').type("a").clear().blur();
+    cy.get('input[name="products_price"]').type("1").clear().blur();
+    cy.get('input[name="products_unit"]').type("a").clear().blur();
+    cy.get('input[name="products_low_stock_threshold"]')
+      .type("1")
+      .clear()
+      .blur();
+
+    cy.get(".error-show").should("have.length.greaterThan", 0);
+    cy.contains(".error-show", "Required").should("exist");
+
+    // save button should still be present - i.e. nothing was submitted
+    cy.get('input[name="products_name"]').should("exist");
+  });
+
+  // CANCEL
+  it("Cancel button closes Add modal without saving", () => {
+    cy.get('[data-testid="add-product-btn"]').click();
+
+    cy.get('input[name="products_name"]', { timeout: 10000 })
+      .should("be.visible")
+      .type("Cypress Cancel Test");
+
+    cy.get('[data-testid="false"]').click();
+
+    cy.get('input[name="products_name"]').should("not.exist");
+    cy.contains("Cypress Cancel Test").should("not.exist");
   });
 
   // UPDATE
@@ -81,6 +124,94 @@ describe("Products Module - CRUD Flow", () => {
     cy.wait("@updateProduct");
 
     cy.contains("Cypress Product Updated", { timeout: 15000 }).should("exist");
+
+    cy.get('[data-testid="toast"]')
+      .should("be.visible")
+      .and("contain.text", "successfully");
+  });
+
+  // CLOSE
+  it("Close (X) button closes Edit modal without saving", () => {
+    cy.intercept("POST", "**/products/page/*").as("getProducts");
+
+    cy.wait("@getProducts");
+
+    cy.get('[data-testid="table-row"]', { timeout: 20000 }).should(
+      "have.length.greaterThan",
+      0,
+    );
+
+    cy.get('[data-testid="table-row"]')
+      .contains("Cypress Product Updated")
+      .parents('[data-testid="table-row"]')
+      .within(() => {
+        cy.get('[data-testid="action-edit"]').click();
+      });
+
+    cy.get('input[name="products_name"]')
+      .should("be.visible")
+      .clear()
+      .type("Should Not Be Saved");
+
+    cy.get('[data-testid="close-btn"]').click();
+
+    cy.get('input[name="products_name"]').should("not.exist");
+    cy.contains("Cypress Product Updated").should("exist");
+    cy.contains("Should Not Be Saved").should("not.exist");
+  });
+
+  // CREATE-ONLY FIELDS
+  it("Create-only fields are hidden when editing", () => {
+    cy.intercept("POST", "**/products/page/*").as("getProducts");
+
+    cy.wait("@getProducts");
+
+    cy.get('[data-testid="table-row"]', { timeout: 20000 }).should(
+      "have.length.greaterThan",
+      0,
+    );
+
+    cy.get('[data-testid="table-row"]')
+      .contains("Cypress Product Updated")
+      .parents('[data-testid="table-row"]')
+      .within(() => {
+        cy.get('[data-testid="action-edit"]').click();
+      });
+
+    cy.get('input[name="products_name"]', { timeout: 10000 }).should(
+      "be.visible",
+    );
+
+    cy.get('input[name="products_stocks"]').should("not.exist");
+    cy.get('input[name="stock_movement_location"]').should("not.exist");
+
+    cy.get('[data-testid="close-btn"]').click();
+  });
+
+  // ARCHIVE - CANCEL
+  it("Archive product - cancel keeps it active", () => {
+    cy.intercept("POST", "**/products/page/*").as("getProducts");
+    cy.intercept("PUT", "**/products/**").as("archiveProduct");
+
+    cy.wait("@getProducts");
+
+    cy.contains('[data-testid="table-row"]', "Cypress Product Updated", {
+      timeout: 20000,
+    })
+      .should("be.visible")
+      .within(() => {
+        cy.get('[data-testid="action-archive"]').click();
+      });
+
+    cy.contains("button", "Cancel").click();
+
+    cy.get("@archiveProduct.all").should("have.length", 0);
+
+    cy.contains('[data-testid="table-row"]', "Cypress Product Updated")
+      .should("be.visible")
+      .within(() => {
+        cy.get('[data-testid="action-archive"]').should("exist");
+      });
   });
 
   // ARCHIVE
@@ -102,9 +233,37 @@ describe("Products Module - CRUD Flow", () => {
 
     cy.wait("@archiveProduct").its("response.statusCode").should("eq", 200);
 
-    cy.get('[data-testid="toast-message"]')
+    cy.get('[data-testid="toast"]')
       .should("be.visible")
       .and("contain.text", "successfully");
+  });
+
+  // RESTORE - CANCEL
+  it("Restore product - cancel keeps it archived", () => {
+    cy.viewport(1280, 720);
+
+    cy.intercept("POST", "**/products/page/*").as("getProducts");
+    cy.intercept("PUT", "**/products/**").as("restoreProduct");
+
+    cy.wait("@getProducts");
+
+    cy.contains('[data-testid="table-row"]', "Cypress Product Updated", {
+      timeout: 20000,
+    })
+      .should("be.visible")
+      .within(() => {
+        cy.get('[data-testid="action-restore"]').click();
+      });
+
+    cy.contains("button", "Cancel").click();
+
+    cy.get("@restoreProduct.all").should("have.length", 0);
+
+    cy.contains('[data-testid="table-row"]', "Cypress Product Updated")
+      .should("be.visible")
+      .within(() => {
+        cy.get('[data-testid="action-restore"]').should("exist");
+      });
   });
 
   // RESTORE
@@ -128,7 +287,7 @@ describe("Products Module - CRUD Flow", () => {
 
     cy.wait("@restoreProduct").its("response.statusCode").should("eq", 200);
 
-    cy.get('[data-testid="toast-message"]')
+    cy.get('[data-testid="toast"]')
       .should("be.visible")
       .and("contain.text", "successfully");
   });
