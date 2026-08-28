@@ -289,6 +289,17 @@ export const PaymentMethodList = () => {
     { label: "cash", value: "cash" },
     { label: "check", value: "check" },
     { label: "online transaction", value: "online transaction" },
+    { label: "mutiple payment", value: "mutiple payment" },
+  ];
+
+  return result;
+};
+
+export const PaymentMethodInArList = () => {
+  const result = [
+    { label: "cash", value: "cash" },
+    { label: "check", value: "check" },
+    { label: "online transaction", value: "online transaction" },
     // { label: "mutiple payment", value: "mutiple payment" },
   ];
 

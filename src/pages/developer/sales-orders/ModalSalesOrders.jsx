@@ -379,8 +379,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                   "due on receipt - due on the same day the sales order";
               }
 
-              console.log("props.values", props.values);
-
               return (
                 <Form>
                   <div className="grid grid-cols-2 gap-4">

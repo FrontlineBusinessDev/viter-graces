@@ -1,7 +1,7 @@
 import ExportCSVButton from "@/components/buttons/ExportCSVButton";
 import { AmountWithPesoSign } from "@/components/PesoSign";
 import { apiVersion } from "@/config/config";
-import { ActivityLogDetails, PaymentMethodList } from "@/layout/ArrayValue";
+import { ActivityLogDetails, PaymentMethodInArList } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
 import {
@@ -317,7 +317,7 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
                               onChange={(e) => handleChangeMethod(e, index)}
                               className="capitalize"
                             >
-                              {PaymentMethodList().map((m) => (
+                              {PaymentMethodInArList().map((m) => (
                                 <option key={m.value} value={m.value}>
                                   {m.label}
                                 </option>
