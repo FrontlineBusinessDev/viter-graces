@@ -362,9 +362,9 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
               // Usage
               const status = getDeliveryStatus(items, values);
 
-              values.purchase_order_status = !itemEdit
-                ? values.purchase_order_status
-                : status;
+              // values.purchase_order_status = !itemEdit
+              //   ? values.purchase_order_status
+              //   : status;
 
               if (hasDuplicateCombination) {
                 dispatch(setError(true));
@@ -386,7 +386,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                   },
                 ),
                 ...values,
-                purchase_order_status: values.purchase_order_status,
+                // purchase_order_status: values.purchase_order_status,
                 purchase_order: items,
                 itemsDelete: itemsDelete,
                 purchase_order_payment: Number(values?.purchase_order_payment),
@@ -659,7 +659,10 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         defaultValue="draft"
                         options={purchaseOrderStatusOption}
                         onChange={(e) => {
-                          props.setFieldValue("purchase_order_status", e.target.value);
+                          props.setFieldValue(
+                            "purchase_order_status",
+                            e.target.value,
+                          );
                           // if (e.target.value === "received") {
                           //   handleUpdateDeliveryStatus();
                           // }
@@ -698,7 +701,10 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         defaultValue="--"
                         options={taxOption()}
                         onChange={(e) => {
-                          props.setFieldValue("purchase_order_percent_tax", e.target.id);
+                          props.setFieldValue(
+                            "purchase_order_percent_tax",
+                            e.target.id,
+                          );
                           return e;
                         }}
                         required={false}
@@ -753,21 +759,21 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         />
                       </li>
                       <li className="text-right text-black dark:text-light ">
-                        Discount Amount:
-                      </li>
-                      <li className="place-self-end text-right">
-                        <Amount
-                          classAmnt="text-xs! "
-                          amount={Number(props.values.purchase_order_discount)}
-                        />
-                      </li>
-                      <li className="text-right text-black dark:text-light ">
                         VAT Amount:
                       </li>
                       <li className="place-self-end text-right">
                         <Amount
                           classAmnt="text-xs! "
                           amount={Number(props.values.purchase_order_tax)}
+                        />
+                      </li>
+                      <li className="text-right text-black dark:text-light ">
+                        Discount Amount:
+                      </li>
+                      <li className="place-self-end text-right">
+                        <Amount
+                          classAmnt="text-xs! "
+                          amount={Number(props.values.purchase_order_discount)}
                         />
                       </li>
                     </ul>
