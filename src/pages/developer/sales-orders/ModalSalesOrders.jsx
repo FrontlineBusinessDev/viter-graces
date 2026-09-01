@@ -763,7 +763,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                               type="text"
                               name="sales_order_installment_type_day"
                               options={InstallmentByType(
-                                props.values.installment_type,
+                                props.values.sales_order_installment_type,
                               )}
                               onChange={(e) => {
                                 props.setFieldValue(

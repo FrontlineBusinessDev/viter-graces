@@ -290,6 +290,7 @@ export const PaymentMethodList = () => {
     { label: "check", value: "check" },
     { label: "online transaction", value: "online transaction" },
     { label: "mutiple payment", value: "mutiple payment" },
+    { label: "credit memo", value: "credit memo" },
   ];
 
   return result;

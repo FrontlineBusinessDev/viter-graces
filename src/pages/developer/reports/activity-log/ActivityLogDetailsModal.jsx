@@ -86,7 +86,8 @@ const DetailValue = ({ value }) => {
   }
 
   if (Array.isArray(value)) {
-    if (value.length === 0) return <span className="text-gray-400">&mdash;</span>;
+    if (value.length === 0)
+      return <span className="text-gray-400">&mdash;</span>;
 
     const allObjects = value.every((item) => isPlainObject(item));
 
@@ -158,39 +159,43 @@ const ActivityLogDetailsModal = ({ itemEdit, handleClose = () => {} }) => {
           <div className="p-4 overflow-y-auto flex-1">
             <ul className="grid grid-cols-2 [&>li]:flex [&>li]:flex-col [&>li]:gap-1 gap-y-3 mb-4">
               <li>
-                <p className="text-gray-500 text-xs">Menu</p>
-                <span
-                  className={`px-2 py-0.5 rounded-full text-xs font-bold capitalize inline-block w-fit bg-primary/10 text-primary dark:bg-primary/20 dark:text-light`}
-                >
-                  {itemEdit?.activity_log_menu}
-                </span>
-              </li>
-              <li>
-                <p className="text-gray-500 text-xs">Action</p>
-                <span
-                  className={`px-2 py-0.5 rounded-full text-xs font-bold capitalize inline-block w-fit ${activityActionPillClass(
-                    itemEdit?.activity_log_action,
-                  )}`}
-                >
-                  {itemEdit?.activity_log_action}
-                </span>
-              </li>
-              <li>
-                <p className="text-gray-500 text-xs">User</p>
-                <p className="text-black dark:text-light capitalize">
-                  {itemEdit?.activity_log_user_name}
+                <p className="text-gray-500 text-xs">
+                  Menu :
+                  <span className="ml-1 text-black dark:text-light capitalize">
+                    {itemEdit?.activity_log_menu}
+                  </span>
                 </p>
               </li>
               <li>
-                <p className="text-gray-500 text-xs">Role</p>
-                <p className="text-black dark:text-light capitalize">
-                  {itemEdit?.activity_log_user_role}
+                <p className="text-gray-500 text-xs">
+                  Action :
+                  <span className="ml-1 text-black dark:text-light capitalize">
+                    {itemEdit?.activity_log_action}
+                  </span>
+                </p>
+              </li>
+              <li>
+                <p className="text-gray-500 text-xs">
+                  User :
+                  <span className="ml-1 text-black dark:text-light capitalize">
+                    {itemEdit?.activity_log_user_name}
+                  </span>
+                </p>
+              </li>
+              <li>
+                <p className="text-gray-500 text-xs">
+                  Role
+                  <span className="ml-1 text-black dark:text-light capitalize">
+                    {itemEdit?.activity_log_user_role}
+                  </span>
                 </p>
               </li>
               <li className="col-span-2">
-                <p className="text-gray-500 text-xs">Date &amp; Time</p>
-                <p className="text-black dark:text-light">
-                  {itemEdit?.activity_log_created}
+                <p className="text-gray-500 text-xs">
+                  Date &amp; Time
+                  <span className="ml-1 text-black dark:text-light capitalize">
+                    {itemEdit?.activity_log_created}
+                  </span>
                 </p>
               </li>
             </ul>

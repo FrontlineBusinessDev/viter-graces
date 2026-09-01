@@ -39,13 +39,13 @@ const ActivityLog = () => {
       classTh: "min-w-[8rem]",
       classTd: "",
       isMobileTitle: true,
-      cell: (info) => (
-        <span
-          className={`px-2 py-0.5 rounded-full text-xs font-bold capitalize inline-block bg-primary/10 text-primary dark:bg-primary/20 dark:text-light`}
-        >
-          {info.getValue()}
-        </span>
-      ),
+      // cell: (info) => (
+      //   <span
+      //     className={`px-2 py-0.5 rounded-full text-xs font-bold capitalize inline-block bg-primary/10 text-primary dark:bg-primary/20 dark:text-light`}
+      //   >
+      //     {info.getValue()}
+      //   </span>
+      // ),
     },
     {
       accessorKey: "activity_log_action",
@@ -54,15 +54,15 @@ const ActivityLog = () => {
       meta: "",
       classTh: "min-w-[8rem]",
       classTd: "",
-      cell: (info) => (
-        <span
-          className={`px-2 py-0.5 rounded-full text-xs font-bold capitalize inline-block ${activityActionPillClass(
-            info.getValue(),
-          )}`}
-        >
-          {info.getValue()}
-        </span>
-      ),
+      // cell: (info) => (
+      //   <span
+      //     className={`px-2 py-0.5 rounded-full text-xs font-bold capitalize inline-block ${activityActionPillClass(
+      //       info.getValue(),
+      //     )}`}
+      //   >
+      //     {info.getValue()}
+      //   </span>
+      // ),
     },
     {
       accessorKey: "activity_log_user_name",
@@ -79,11 +79,11 @@ const ActivityLog = () => {
       meta: "",
       classTh: "min-w-[8rem]",
       classTd: "",
-      cell: (info) => (
-        <span className="px-2 py-0.5 rounded-full text-xs font-bold capitalize inline-block bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-light">
-          {info.getValue()}
-        </span>
-      ),
+      // cell: (info) => (
+      //   <span className="px-2 py-0.5 rounded-full text-xs font-bold capitalize inline-block bg-gray-100 text-gray-600 dark:bg-gray-700 dark:text-light">
+      //     {info.getValue()}
+      //   </span>
+      // ),
     },
     {
       accessorKey: "activity_log_created",

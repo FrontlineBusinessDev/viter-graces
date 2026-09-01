@@ -1,0 +1,1 @@
+{"nodes": [{"id": "$graphify-root$_rest_v1_controllers_developer_products_read_all_active_by_product_php", "label": "read-all-active-by-product.php", "file_type": "code", "source_file": "rest/v1/controllers/developer/products/read-all-active-by-product.php", "source_location": "L1"}], "edges": [], "raw_calls": []}
