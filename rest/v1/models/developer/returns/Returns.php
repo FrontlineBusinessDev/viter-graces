@@ -170,7 +170,7 @@ class Returns
             $sql .= "from {$this->tblReturnProducts} ";
             $sql .= " where true ";
             if (!empty($filterColumn)) {
-                $sql .= " and " . implode(" and ", $filterColumn);
+                $sql .= " and " . implode(" and ", $filterColumn) . " ";
             } else {
                 $sql .= ($this->column_search != "" ? "and ( return_product_order_number like :return_product_order_number 
             or return_product_customer_name like :return_product_customer_name 
@@ -232,11 +232,12 @@ class Returns
             $sql .= "from {$this->tblReturnProducts} ";
             $sql .= " where true ";
             if (!empty($filterColumn)) {
-                $sql .= " and " . implode(" and ", $filterColumn);
+                $sql .= " and " . implode(" and ", $filterColumn) . " ";
             } else {
-                $sql .= ($this->column_search != "" ? "and ( return_product_order_number like :return_product_order_number 
-            or return_product_customer_name like :return_product_customer_name 
-            or return_product_product_name like :return_product_product_name 
+                $sql .= ($this->column_search != "" ? "and ( return_product_order_number like :return_product_order_number
+            or return_product_customer_name like :return_product_customer_name
+            or return_product_product_name like :return_product_product_name
+            or return_product_owner_name like :return_product_owner_name
             or return_product_reason like :return_product_reason ) " : " ");
             }
             $sql .= "order by CASE WHEN LOWER(return_product_status) = 'processed' THEN 1 ELSE 0 END asc, ";

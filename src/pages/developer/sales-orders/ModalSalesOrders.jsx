@@ -411,10 +411,13 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                           ),
                         }}
                         onChange={(e) => {
-                          props.setFieldValue("sales_order_customer_id", e.id);
+                          props.setFieldValue(
+                            "sales_order_customer_id",
+                            e?.id ?? "",
+                          );
                           props.setFieldValue(
                             "sales_order_customer_name",
-                            e.value,
+                            e?.value ?? "",
                           );
                           return e;
                         }}

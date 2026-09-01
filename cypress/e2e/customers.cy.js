@@ -1,4 +1,10 @@
 describe("Customers Module - CRUD Flow ", () => {
+  // unique per run so re-running the suite never creates a duplicate
+  // customer name and breaks row lookups further down
+  const runId = Date.now();
+  const customerName = `Customer${runId}`;
+  const updatedCustomerName = `Customer${runId} Updated`;
+
   beforeEach(() => {
     cy.session("admin", () => {
       cy.login();
@@ -8,9 +14,9 @@ describe("Customers Module - CRUD Flow ", () => {
 
   //   CREATE
   it("Create customers", () => {
-    cy.get('[data-testid="add-customer-btn"]').click();
+    cy.get('[data-testid="add-product-btn"]').click();
 
-    cy.get('input[name="customer_name"]').type("Customer Name");
+    cy.get('input[name="customer_name"]').type(customerName);
     cy.get('input[name="customer_email"]').type("customer@gmail.com");
     cy.get('input[name="customer_phone"]').type("0909090090");
     cy.get('input[name="customer_address"]').type("Customer Address");
@@ -27,29 +33,83 @@ describe("Customers Module - CRUD Flow ", () => {
 
     cy.wait("@createCustomer");
 
-    cy.contains("Customer Name", { timeout: 15000 }).should("exist");
+    cy.contains(customerName, { timeout: 15000 }).should("exist");
+  });
+
+  // VALIDATION
+  it("Shows validation errors when required fields are empty", () => {
+    cy.get('[data-testid="add-product-btn"]').click();
+
+    cy.get('input[name="customer_name"]', { timeout: 10000 }).should(
+      "be.visible",
+    );
+
+    // touch and clear the required field to trigger Formik validation
+    cy.get('input[name="customer_name"]').type("a").clear().blur();
+
+    cy.get(".error-show").should("have.length.greaterThan", 0);
+    cy.contains(".error-show", "Required").should("exist");
+
+    // save button should still be present - i.e. nothing was submitted
+    cy.get('input[name="customer_name"]').should("exist");
+  });
+
+  // CANCEL
+  it("Cancel button closes Add modal without saving", () => {
+    cy.get('[data-testid="add-product-btn"]').click();
+
+    cy.get('input[name="customer_name"]', { timeout: 10000 })
+      .should("be.visible")
+      .type("Cypress Cancel Test");
+
+    cy.get('[data-testid="false"]').click();
+
+    cy.get('input[name="customer_name"]').should("not.exist");
+    cy.contains("Cypress Cancel Test").should("not.exist");
+  });
+
+  // CLOSE
+  it("Close (X) button closes Add modal without saving", () => {
+    cy.get('[data-testid="add-product-btn"]').click();
+
+    cy.get('input[name="customer_name"]', { timeout: 10000 })
+      .should("be.visible")
+      .type("Cypress Close Test");
+
+    cy.get('[data-testid="close-btn"]').click();
+
+    cy.get('input[name="customer_name"]').should("not.exist");
+    cy.contains("Cypress Close Test").should("not.exist");
   });
 
   //   CLICK THE CUSTOMER NAME
-  it("Click the Customer name to open the table below", () => {
-    cy.contains('[data-testid="table-row"]', "Customer Name")
-      .find('[data-testid="button-open-customer-tab"]:visible')
+  it("Click the customer name navigates to Sales Orders", () => {
+    cy.contains('[data-testid="table-row"]', customerName)
+      .contains("a", customerName)
       .click();
+
+    cy.url().should("include", "/sales-orders");
   });
 
   //SEARCH
-  it("Search a product", () => {
+  it("Search a customer", () => {
+    // the top search bar is only rendered for small screens on filter-enabled
+    // tables (haveFilterTable) - desktop uses per-column filters instead
+    cy.viewport(390, 844);
+
     cy.intercept("POST", "**/customer/page/*").as("getCustomer");
 
-    cy.get('[data-testid="search-input"]').type("Customer Name{enter}");
+    cy.get('[data-testid="search-input"]').type(`${customerName}{enter}`);
 
     cy.wait("@getCustomer");
 
-    cy.contains("Customer Name", { timeout: 1000 }).should("exist");
+    cy.contains(customerName, { timeout: 1000 }).should("exist");
   });
 
   //   UPDATE
   it("Update customer", () => {
+    cy.viewport(1280, 720);
+
     cy.intercept("POST", "**/customer/page/*").as("getCustomer");
     cy.intercept("PUT", "**/customer/**").as("updateCustomer");
 
@@ -58,14 +118,14 @@ describe("Customers Module - CRUD Flow ", () => {
       0,
     );
 
-    cy.contains('[data-testid="table-row"]', "Customer Name")
-      .find('[data-testid="action-edit"]:visible')
-      .click();
+    cy.contains('[data-testid="table-row"]', customerName).within(() => {
+      cy.get('[data-testid="action-edit"]').click();
+    });
 
     cy.get('input[name="customer_name"]')
       .should("be.visible")
       .clear()
-      .type("Customer Name Updated");
+      .type(updatedCustomerName);
     cy.get('input[name="customer_email"]')
       .clear()
       .type("customerupdated@gmail.com");
@@ -88,7 +148,7 @@ describe("Customers Module - CRUD Flow ", () => {
 
     cy.wait("@updateCustomer");
 
-    cy.contains("Customer Name Updated").should("exist");
+    cy.contains(updatedCustomerName).should("exist");
   });
 
   // ARCHIVE
@@ -96,15 +156,17 @@ describe("Customers Module - CRUD Flow ", () => {
     cy.intercept("POST", "**/customer/page/*").as("getCustomer");
     cy.intercept("PUT", "**/customer/**").as("archiveCustomer");
 
-    cy.contains('[data-testid="table-row"]', "Customer Name Updated")
-      .find('[data-testid="action-archive"]:visible')
-      .click();
+    cy.contains('[data-testid="table-row"]', updatedCustomerName).within(
+      () => {
+        cy.get('[data-testid="action-archive"]').click();
+      },
+    );
 
     cy.contains("button", "Confirm").click();
 
     cy.wait("@archiveCustomer").its("response.statusCode").should("eq", 200);
 
-    cy.get('[data-testid="toast-message"]')
+    cy.get('[data-testid="toast"]')
       .should("be.visible")
       .and("contain.text", "successfully");
   });
@@ -114,15 +176,17 @@ describe("Customers Module - CRUD Flow ", () => {
     cy.intercept("POST", "**/customer/page/*").as("getCustomer");
     cy.intercept("PUT", "**/customer/**").as("restoreCustomer");
 
-    cy.contains('[data-testid="table-row"]', "Customer Name Updated")
-      .find('[data-testid="action-restore"]:visible')
-      .click();
+    cy.contains('[data-testid="table-row"]', updatedCustomerName).within(
+      () => {
+        cy.get('[data-testid="action-restore"]').click();
+      },
+    );
 
     cy.contains("button", "Confirm").click();
 
     cy.wait("@restoreCustomer").its("response.statusCode").should("eq", 200);
 
-    cy.get('[data-testid="toast-message"]')
+    cy.get('[data-testid="toast"]')
       .should("be.visible")
       .and("contain.text", "successfully");
   });
@@ -135,23 +199,31 @@ describe("Customers Module - CRUD Flow ", () => {
 
     cy.wait("@getCustomer");
 
-    cy.contains('[data-testid="table-row"]', "Customer Name Updated")
-      .find('[data-testid="action-archive"]:visible')
-      .click();
+    cy.contains('[data-testid="table-row"]', updatedCustomerName).within(
+      () => {
+        cy.get('[data-testid="action-archive"]').click();
+      },
+    );
 
     cy.contains("button", "Confirm").click();
 
     cy.wait("@archiveCustomer");
+    // the table refetches (query invalidation) after the archive succeeds -
+    // wait for it so the row reflects the archived state before looking
+    // for the delete action, which only renders for archived rows
+    cy.wait("@getCustomer");
 
-    cy.contains('[data-testid="table-row"]', "Customer Name Updated")
-      .find('[data-testid="action-delete"]:visible')
-      .click();
+    cy.contains('[data-testid="table-row"]', updatedCustomerName).within(
+      () => {
+        cy.get('[data-testid="action-delete"]').click();
+      },
+    );
 
     cy.contains("button", "Confirm").click();
 
     cy.wait("@deleteCustomer").its("response.statusCode").should("eq", 200);
 
-    cy.get('[data-testid="toast-message"]')
+    cy.get('[data-testid="toast"]')
       .should("be.visible")
       .and("contain.text", "successfully");
   });

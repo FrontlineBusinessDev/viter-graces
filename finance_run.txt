@@ -1,0 +1,577 @@
+
+Warning: The allowCypressEnv configuration option is enabled. This allows any browser code to read values from Cypress.env(). This is insecure and will be removed in a future major version.
+
+1. Replace Cypress.env() calls with cy.env() (for sensitive values) or Cypress.expose() (for public configuration)
+2. Set allowCypressEnv: false in your Cypress configuration to disable Cypress.env()
+
+Learn more: https://on.cypress.io/cypress-env-migration
+
+Warning: We failed to trash the existing run results.
+
+This error will not affect or change the exit code.
+
+Error: Command failed: C:\Users\PersonalPC\AppData\Local\Cypress\Cache\15.16.0\Cypress\resources\app\node_modules\trash\lib\windows-trash.exe C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\filters-testing
+
+    at genericNodeError (node:internal/errors:983:15)
+    at wrappedFn (node:internal/errors:537:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:519:28)
+    at maybeClose (node:internal/child_process:1101:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:304:5)
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        15.16.0                                                                        │
+  │ Browser:        Electron 138 (headless)                                                        │
+  │ Node Version:   v22.15.0 (C:\Program Files\nodejs\node.exe)                                    │
+  │ Specs:          13 found (finance-overview.cy.js, cash-sales.cy.js, accounts-receivable.cy.js, │
+  │                  expenses.cy.js, accounts-payable.cy.js, sales-journal.cy.js, finance-returns. │
+  │                 cy.js, filters-testing/cash-sales-filters.cy.js, filters-testing/accounts-rece │
+  │                 ivable-filters.cy.js, f...)                                                    │
+  │ Searched:       C:\xampp\htdocs\react-vite\viter-graces\cypress\e2e\finance-overview.cy.js, C: │
+  │                 \xampp\htdocs\react-vite\viter-graces\cypress\e2e\cash-sales.cy.js, C:\xampp\h │
+  │                 tdocs\react-vite\viter-graces\cypress\e2e\accounts-receivable.cy.js, C:\xampp\ │
+  │                 htdocs\react-vite\viter-graces\cypress\e2e\expenses.cy.js, C:\xampp\htdocs\rea │
+  │                 ct-vite\viter-graces\cypress\e2e\accounts-payable.cy.js, C:\xampp\htdocs\react │
+  │                 -vite\viter-graces\cypress\e2e\sales-journal.cy.js, C:\xampp\htdocs\react-vite │
+  │                 \viter-graces\cypress\e2e\finance-returns.cy.js, C:\xampp\htdocs\react-vite\vi │
+  │                 ter-graces\cypress\e2e\filters-testing\cash-sales-filters.cy.js, C:\xampp\htdo │
+  │                 cs\react-vite\viter-graces\cypress\e2e\filters-testing\accounts-receivable-fil │
+  │                 ters.cy.js, C:\xampp\htdocs\react-vite\viter-graces\cypress\e2e\filters-testin │
+  │                 g\expenses-filters.cy.js, C:\xampp\htdocs\react-vite\viter-graces\cypress\e2e\ │
+  │                 filters-testing\accounts-payable-filters.cy.js, C:\xampp\htdocs\react-vite\vit │
+  │                 er-graces\cypress\e2e\filters-testing\sales-journal-filters.cy.js, C:\xampp\ht │
+  │                 docs\react-vite\viter-graces\cypress\e2e\filters-testing\finance-returns-filte │
+  │                 rs.cy.js                                                                       │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  finance-overview.cy.js                                                         (1 of 13)
+
+
+  Finance Overview Module
+    √ Loads the finance stats (5029ms)
+    √ Renders the revenue vs expenses vs profit chart with a timeframe toggle (1864ms)
+    √ Navigates to each finance sub-page (11712ms)
+
+
+  3 passing (19s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        3                                                                                │
+  │ Passing:      3                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     18 seconds                                                                       │
+  │ Spec Ran:     finance-overview.cy.js                                                           │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  cash-sales.cy.js                                                               (2 of 13)
+
+
+  Cash Sales Module
+    √ Loads the cash sales report (4004ms)
+    √ Does not render an add button (551ms)
+
+
+  2 passing (5s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     4 seconds                                                                        │
+  │ Spec Ran:     cash-sales.cy.js                                                                 │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  accounts-receivable.cy.js                                                      (3 of 13)
+
+
+  Accounts Receivable Module
+    √ Loads the accounts receivable report (3818ms)
+    √ Opens the order details modal from the edit action (1675ms)
+
+
+  2 passing (6s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     5 seconds                                                                        │
+  │ Spec Ran:     accounts-receivable.cy.js                                                        │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  expenses.cy.js                                                                 (4 of 13)
+
+
+  Expenses Module - CRUD Flow
+    √ Create an expense (5289ms)
+    √ Blocks submission when required fields are empty (1788ms)
+    √ Cancel button closes the modal without saving (2083ms)
+    √ Close (X) button closes the modal without saving (2063ms)
+    1) Archive an expense
+    2) Restore an expense
+
+
+  4 passing (22s)
+  2 failing
+
+  1) Expenses Module - CRUD Flow
+       Archive an expense:
+     CypressError: Timed out retrying after 4050ms: `cy.click()` failed because this element:
+
+`<button type="button" class="tooltip-action-table capitalize " data-tooltip="archive" data-testid="action-archive">...</button>`
+
+is being covered by another element:
+
+`<th class="  text-center ">Action</th>`
+
+Fix this problem, or use {force: true} to disable error checking.
+
+https://on.cypress.io/element-cannot-be-interacted-with
+      at ensureIsDescendent (http://localhost:5173/__cypress/runner/cypress_runner.js:115290:68)
+      at ensureDescendents (http://localhost:5173/__cypress/runner/cypress_runner.js:115341:5)
+      at ensureDescendentsAndScroll (http://localhost:5173/__cypress/runner/cypress_runner.js:115347:14)
+      at ensureElIsNotCovered (http://localhost:5173/__cypress/runner/cypress_runner.js:115478:5)
+      at runAllChecks (http://localhost:5173/__cypress/runner/cypress_runner.js:115677:52)
+      at retryActionability (http://localhost:5173/__cypress/runner/cypress_runner.js:115714:16)
+      at tryCatcher (http://localhost:5173/__cypress/runner/cypress_runner.js:1777:23)
+      at Promise.attempt.Promise.try (http://localhost:5173/__cypress/runner/cypress_runner.js:4285:29)
+      at whenStable (http://localhost:5173/__cypress/runner/cypress_runner.js:152244:70)
+      at <unknown> (http://localhost:5173/__cypress/runner/cypress_runner.js:152159:14)
+      at tryCatcher (http://localhost:5173/__cypress/runner/cypress_runner.js:1777:23)
+      at Promise._settlePromiseFromHandler (http://localhost:5173/__cypress/runner/cypress_runner.js:1489:31)
+      at Promise._settlePromise (http://localhost:5173/__cypress/runner/cypress_runner.js:1546:18)
+      at Promise._settlePromise0 (http://localhost:5173/__cypress/runner/cypress_runner.js:1591:10)
+      at Promise._settlePromises (http://localhost:5173/__cypress/runner/cypress_runner.js:1671:18)
+      at Promise._fulfill (http://localhost:5173/__cypress/runner/cypress_runner.js:1615:18)
+      at <unknown> (http://localhost:5173/__cypress/runner/cypress_runner.js:5420:46)
+  From Your Spec Code:
+      at Object.proxyGetter [as get] (http://localhost:5173/__cypress/runner/cypress_runner.js:81302:22)
+      at exists (http://localhost:5173/__cypress/runner/cypress_runner.js:151373:26)
+      at elExists (http://localhost:5173/__cypress/runner/cypress_runner.js:151388:10)
+      at ensureExistence (http://localhost:5173/__cypress/runner/cypress_runner.js:151569:22)
+      at onFailFn (http://localhost:5173/__cypress/runner/cypress_runner.js:151598:53)
+
+  2) Expenses Module - CRUD Flow
+       Restore an expense:
+     AssertionError: Timed out retrying after 4000ms: Expected to find element: `[data-testid="action-restore"]`, but never found it.
+      at Context.eval (webpack://viter-graces/./cypress/e2e/expenses.cy.js:127:9)
+      at withinFn (http://localhost:5173/__cypress/runner/cypress_runner.js:136142:8)
+      at <unknown> (http://localhost:5173/__cypress/runner/cypress_runner.js:136223:16)
+      at __WEBPACK_DEFAULT_EXPORT__ (http://localhost:5173/__cypress/runner/cypress_runner.js:134070:10)
+      at Context.within (http://localhost:5173/__cypress/runner/cypress_runner.js:136209:67)
+      at wrapped (http://localhost:5173/__cypress/runner/cypress_runner.js:146489:19)
+
+
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        6                                                                                │
+  │ Passing:      4                                                                                │
+  │ Failing:      2                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  2                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     22 seconds                                                                       │
+  │ Spec Ran:     expenses.cy.js                                                                   │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\expenses.cy.js\Expen     (1280x720)
+     ses Module - CRUD Flow -- Archive an expense (failed).png                                      
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\expenses.cy.js\Expen     (1280x720)
+     ses Module - CRUD Flow -- Restore an expense (failed).png                                      
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  accounts-payable.cy.js                                                         (5 of 13)
+
+
+  Accounts Payable Module
+    √ Loads the accounts payable report (3910ms)
+    √ Opens the order details modal from the edit action (1467ms)
+
+
+  2 passing (6s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     5 seconds                                                                        │
+  │ Spec Ran:     accounts-payable.cy.js                                                           │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  sales-journal.cy.js                                                            (6 of 13)
+
+
+  Sales Journal Module
+    √ Loads the sales journal (4254ms)
+    √ Does not render an add button (735ms)
+
+
+  2 passing (5s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     5 seconds                                                                        │
+  │ Spec Ran:     sales-journal.cy.js                                                              │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  finance-returns.cy.js                                                          (7 of 13)
+
+
+  Finance Returns Module
+    √ Loads the finance returns report (4624ms)
+    √ Does not render an add button (681ms)
+
+
+  2 passing (6s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        2                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     5 seconds                                                                        │
+  │ Spec Ran:     finance-returns.cy.js                                                            │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  filters-testing/cash-sales-filters.cy.js                                       (8 of 13)
+
+
+  Cash Sales Module - Filters
+    √ Should filter the order number as the user types (4788ms)
+    √ Should filter by date (1891ms)
+    √ Should filter by customer (1860ms)
+    √ Should filter by product (1836ms)
+    √ Should filter by min paid per product (1754ms)
+    √ Should filter by max paid per product (1816ms)
+    √ Should filter by product owner (2055ms)
+
+
+  7 passing (16s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        7                                                                                │
+  │ Passing:      7                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     16 seconds                                                                       │
+  │ Spec Ran:     filters-testing/cash-sales-filters.cy.js                                         │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  filters-testing/accounts-receivable-filters.cy.js                              (9 of 13)
+
+
+  Accounts Receivable Module - Filters
+    √ Should filter the order number as the user types (4833ms)
+    √ Should filter by due date (1925ms)
+    √ Should filter by order date (1875ms)
+    √ Should filter by customer (2135ms)
+    √ Should filter by product (2150ms)
+    √ Should filter by min amount (1717ms)
+    √ Should filter by min paid (1770ms)
+    √ Should filter by min balance (1751ms)
+
+
+  8 passing (18s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        8                                                                                │
+  │ Passing:      8                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     18 seconds                                                                       │
+  │ Spec Ran:     filters-testing/accounts-receivable-filters.cy.js                                │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  filters-testing/expenses-filters.cy.js                                        (10 of 13)
+
+
+  Expenses Module - Filters
+    √ Should filter the supplier as the user types (4624ms)
+    √ Should filter the PO number as the user types (1669ms)
+    1) Should filter by product
+    √ Should filter by min paid amount (1404ms)
+    √ Should filter by max paid amount (1757ms)
+    √ Should filter by product owner (1738ms)
+
+
+  5 passing (17s)
+  1 failing
+
+  1) Expenses Module - Filters
+       Should filter by product:
+     AssertionError: Timed out retrying after 4000ms: Expected to find content: 'saging' within the element: <div> and with the selector: '.react-select__option' but never did.
+      at Context.eval (webpack://viter-graces/./cypress/e2e/filters-testing/expenses-filters.cy.js:41:7)
+
+
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        6                                                                                │
+  │ Passing:      5                                                                                │
+  │ Failing:      1                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  1                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     17 seconds                                                                       │
+  │ Spec Ran:     filters-testing/expenses-filters.cy.js                                           │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\filters-testing\expe     (1280x720)
+     nses-filters.cy.js\Expenses Module - Filters -- Should filter by product (failed               
+     ) (1).png                                                                                      
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  filters-testing/accounts-payable-filters.cy.js                                (11 of 13)
+
+
+  Accounts Payable Module - Filters
+    √ Should filter the PO number as the user types (4628ms)
+    √ Should filter by purchase date (1764ms)
+    1) Should filter by product
+    √ Should filter the supplier as the user types (2395ms)
+
+
+  3 passing (16s)
+  1 failing
+
+  1) Accounts Payable Module - Filters
+       Should filter by product:
+     AssertionError: Timed out retrying after 4000ms: Expected to find content: 'saging' within the element: <div> and with the selector: '.react-select__option' but never did.
+      at Context.eval (webpack://viter-graces/./cypress/e2e/filters-testing/accounts-payable-filters.cy.js:46:7)
+
+
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        4                                                                                │
+  │ Passing:      3                                                                                │
+  │ Failing:      1                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  1                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     15 seconds                                                                       │
+  │ Spec Ran:     filters-testing/accounts-payable-filters.cy.js                                   │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\filters-testing\acco     (1280x720)
+     unts-payable-filters.cy.js\Accounts Payable Module - Filters -- Should filter by               
+      product (failed) (1).png                                                                      
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  filters-testing/sales-journal-filters.cy.js                                   (12 of 13)
+
+
+  Sales Journal Module - Filters
+    √ Should filter the order number as the user types (4914ms)
+    √ Should filter by date (1930ms)
+    √ Should filter by customer (2114ms)
+    √ Should filter the method as the user types (1896ms)
+    √ Should filter by min debit (1869ms)
+    √ Should filter by min credit (1836ms)
+    √ Should filter by min balance (1808ms)
+
+
+  7 passing (17s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        7                                                                                │
+  │ Passing:      7                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     16 seconds                                                                       │
+  │ Spec Ran:     filters-testing/sales-journal-filters.cy.js                                      │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  filters-testing/finance-returns-filters.cy.js                                 (13 of 13)
+
+
+  Finance Returns Module - Filters
+    √ Should filter by return status (5342ms)
+    √ Should filter the item as the user types (1867ms)
+    √ Should filter the order number as the user types (1769ms)
+    √ Should filter by date (1825ms)
+    √ Should filter by customer (1986ms)
+    √ Should filter by min amount (1772ms)
+    √ Should filter by resolution type (1922ms)
+    √ Should filter by product owner (1841ms)
+
+
+  8 passing (19s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        8                                                                                │
+  │ Passing:      8                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     18 seconds                                                                       │
+  │ Spec Ran:     filters-testing/finance-returns-filters.cy.js                                    │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✔  finance-overview.cy.js                   00:18        3        3        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  cash-sales.cy.js                         00:04        2        2        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  accounts-receivable.cy.js                00:05        2        2        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✖  expenses.cy.js                           00:22        6        4        2        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  accounts-payable.cy.js                   00:05        2        2        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  sales-journal.cy.js                      00:05        2        2        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  finance-returns.cy.js                    00:05        2        2        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  filters-testing/cash-sales-filters.      00:16        7        7        -        -        - │
+  │    cy.js                                                                                       │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  filters-testing/accounts-receivable      00:18        8        8        -        -        - │
+  │    -filters.cy.js                                                                              │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✖  filters-testing/expenses-filters.cy      00:17        6        5        1        -        - │
+  │    .js                                                                                         │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✖  filters-testing/accounts-payable-fi      00:15        4        3        1        -        - │
+  │    lters.cy.js                                                                                 │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  filters-testing/sales-journal-filte      00:16        7        7        -        -        - │
+  │    rs.cy.js                                                                                    │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  filters-testing/finance-returns-fil      00:18        8        8        -        -        - │
+  │    ters.cy.js                                                                                  │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✖  3 of 13 failed (23%)                     02:50       59       55        4        -        -  
+
