@@ -5,10 +5,43 @@ import React from "react";
 import { activityActionPillClass } from "./ActivityLog";
 
 const formatLabel = (key = "") =>
-  key.replaceAll("_", " ").replaceAll("-", " ");
+  key
+    .replaceAll("_", " ")
+    .replaceAll("-", " ")
+    .toLowerCase()
+    .replace(/\b\w/g, (char) => char.toUpperCase());
 
 const isPlainObject = (value) =>
   value !== null && typeof value === "object" && !Array.isArray(value);
+
+// Stacked card + key/value grid for an array of objects (e.g. SelectedItems, items)
+// instead of a wide, overflowing table.
+const ArrayOfObjectsCards = ({ items }) => (
+  <div className="space-y-3">
+    {items.map((item, index) => (
+      <div
+        key={index}
+        className="p-4 rounded-lg border border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50"
+      >
+        <div className="text-xs font-bold text-primary dark:text-light uppercase tracking-wider mb-3 pb-1 border-b border-gray-200 dark:border-gray-700">
+          Item #{index + 1}
+        </div>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3">
+          {Object.entries(item || {}).map(([itemKey, itemVal]) => (
+            <div key={itemKey} className="flex flex-col min-w-0">
+              <span className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
+                {formatLabel(itemKey)}
+              </span>
+              <span className="text-sm font-medium text-black dark:text-light break-words">
+                <DetailValue value={itemVal} />
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+    ))}
+  </div>
+);
 
 // activity_log_description is usually JSON.stringify([{ values: {...} }]),
 // but fall back gracefully for a plain object, a bare object array, or free text.
@@ -38,10 +71,17 @@ const parseActivityLogDescription = (description) => {
   return { type: "entries", entries: Object.entries(parsed) };
 };
 
-// Renders any value cell: primitives, arrays of objects (as a nested table),
+const NULL_LIKE = new Set(["null", "undefined", "n/a", "na"]);
+
+// Renders any value cell: primitives, arrays of objects (as stacked cards),
 // arrays of primitives (as badges), and plain objects (as a mini key/value table).
 const DetailValue = ({ value }) => {
-  if (value === null || value === undefined || value === "") {
+  if (
+    value === null ||
+    value === undefined ||
+    value === "" ||
+    (typeof value === "string" && NULL_LIKE.has(value.trim().toLowerCase()))
+  ) {
     return <span className="text-gray-400">&mdash;</span>;
   }
 
@@ -51,48 +91,7 @@ const DetailValue = ({ value }) => {
     const allObjects = value.every((item) => isPlainObject(item));
 
     if (allObjects) {
-      const columns = Array.from(
-        value.reduce((set, item) => {
-          Object.keys(item || {}).forEach((key) => set.add(key));
-          return set;
-        }, new Set()),
-      );
-
-      return (
-        <div className="overflow-x-auto rounded-md border border-gray-200 dark:border-gray-700">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-gray-100 dark:bg-[#0b111e] uppercase text-gray-500 dark:text-gray-400">
-              <tr>
-                {columns.map((col) => (
-                  <th
-                    key={col}
-                    className="px-2 py-1.5 border-b border-gray-200 dark:border-gray-700 whitespace-nowrap"
-                  >
-                    {formatLabel(col)}
-                  </th>
-                ))}
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-gray-200 dark:divide-gray-700">
-              {value.map((item, index) => (
-                <tr
-                  key={index}
-                  className="odd:bg-transparent even:bg-gray-50 dark:even:bg-gray-800/40"
-                >
-                  {columns.map((col) => (
-                    <td
-                      key={col}
-                      className="px-2 py-1.5 align-top break-all text-gray-600 dark:text-gray-300"
-                    >
-                      <DetailValue value={item?.[col]} />
-                    </td>
-                  ))}
-                </tr>
-              ))}
-            </tbody>
-          </table>
-        </div>
-      );
+      return <ArrayOfObjectsCards items={value} />;
     }
 
     return (
