@@ -20,6 +20,7 @@ import {
 } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
+import useQueryData from "@/services/useQueryData";
 import {
   setError,
   setIsAdd,
@@ -67,6 +68,33 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   if (initialItemsRef.current === null) {
     initialItemsRef.current = JSON.parse(JSON.stringify(items));
   }
+
+  const [selectedCustomerId, setSelectedCustomerId] = React.useState(
+    isEmptyItem(
+      itemEdit?.sales_order_customer_id,
+      isEmptyItem(cutomer?.customer_aid, ""),
+    ),
+  );
+
+  // Credit memo balance for the selected customer (processed returns only)
+  const { data: creditMemoResult } = useQueryData(
+    `${apiVersion}/customer/read-open-credit-memo`, // endpoint
+    "post", // method
+    `customer/read-open-credit-memo`, // key
+    { id: selectedCustomerId },
+    { id: selectedCustomerId },
+  );
+
+  const creditMemoBalance = Number(
+    isEmptyItem(creditMemoResult?.data?.[0]?.open_credit_memo, 0),
+  );
+
+  const paymentMethodOptions = PaymentMethodList().filter(
+    (option) =>
+      option.value !== "credit memo" ||
+      (Number(selectedCustomerId) > 0 && creditMemoBalance > 0) ||
+      itemEdit?.sales_order_payment_method === "credit memo",
+  );
 
   const itemsDirty =
     itemsDelete.length > 0 ||
@@ -414,6 +442,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                             "sales_order_customer_name",
                             e.value,
                           );
+                          setSelectedCustomerId(e.id);
                           return e;
                         }}
                         itemEdit={itemEdit}
@@ -428,12 +457,32 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         type="text"
                         name="sales_order_payment_method"
                         defaultValue="cash"
-                        options={PaymentMethodList()}
+                        options={paymentMethodOptions}
                         onChange={(e) => {
+                          const previousMethod =
+                            props.values.sales_order_payment_method;
+                          const selectedMethod =
+                            e.target.options[e.target.selectedIndex].text;
+
                           props.setFieldValue(
                             "sales_order_payment_method",
-                            e.target.options[e.target.selectedIndex].text,
+                            selectedMethod,
                           );
+
+                          if (selectedMethod === "credit memo") {
+                            const orderTotal = Number(
+                              props.values.sales_order_total_receivable_amount,
+                            );
+                            props.setFieldValue(
+                              "sales_order_paid_amount",
+                              orderTotal > 0
+                                ? Math.min(creditMemoBalance, orderTotal)
+                                : creditMemoBalance,
+                            );
+                          } else if (previousMethod === "credit memo") {
+                            props.setFieldValue("sales_order_paid_amount", "");
+                          }
+
                           return e;
                         }}
                       />
