@@ -11,6 +11,7 @@ import SalesJournal from "@/pages/developer/finance/sales-journal/SalesJournal";
 import MovementHistory from "@/pages/developer/inventory/MovementHistory";
 import StockOverview from "@/pages/developer/inventory/StockOverview";
 import Products from "@/pages/developer/products/Products";
+import ActivityLog from "@/pages/developer/reports/activity-log/ActivityLog";
 import ApReport from "@/pages/developer/reports/ap-report/ApReport";
 import ArReport from "@/pages/developer/reports/ar-report/ArReport";
 import ExpensesReport from "@/pages/developer/reports/expense-report/ExpensesReport";
@@ -242,6 +243,14 @@ export const routesProductOwner = [
     element: (
       <ProtectedRouteUser>
         <ReturnsReports />
+      </ProtectedRouteUser>
+    ),
+  },
+  {
+    path: `${devNavUrl}/product_owner/activity-log`,
+    element: (
+      <ProtectedRouteUser>
+        <ActivityLog />
       </ProtectedRouteUser>
     ),
   },

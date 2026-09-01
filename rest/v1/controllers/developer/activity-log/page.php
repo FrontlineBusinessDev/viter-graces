@@ -4,6 +4,7 @@
 require '../../../core/header.php';
 // use needed functions
 require '../../../core/functions.php';
+require 'functions.php';
 // use needed classes
 require '../../../models/developer/activity-log/ActivityLog.php';
 // check database connection

@@ -1,3 +1,4 @@
+import ActivityLogMobileResponsive from "./ActivityLogMobileResponsive";
 import APReportMobileResponsive from "./APReportMobileResponsive";
 import CustomerMobileReponsive from "./CustomerMobileReponsive";
 import ExpensesReportMobileResponsive from "./ExpensesReportMobileResponsive";
@@ -220,6 +221,12 @@ const MobileResponsiveList = ({
         setItemEdit={setItemEdit}
         isDefaultMobile={isDefaultMobile}
         ishaveSubAdd={ishaveSubAdd}
+      />
+      {/* ACTIVITY LOG RESPONSIVE */}
+      <ActivityLogMobileResponsive
+        rows={rows}
+        setItemEdit={setItemEdit}
+        isDefaultMobile={isDefaultMobile}
       />
       {/* DEFAULT RESPONSIVE */}
       <InfiniteDefaultTableMobileCard

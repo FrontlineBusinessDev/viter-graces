@@ -218,6 +218,14 @@ export const titleHeaderTab = (description) => {
           ongoingDevelopment: false,
           roles: ["admin", "developer", "product_owner"],
         },
+        {
+          icon: "",
+          title_tab: "activity-log",
+          description_tab: "Track recent user activity across the system.",
+          on_click: onClickTab,
+          ongoingDevelopment: false,
+          roles: ["admin", "developer", "product_owner"],
+        },
       ],
     },
     {
