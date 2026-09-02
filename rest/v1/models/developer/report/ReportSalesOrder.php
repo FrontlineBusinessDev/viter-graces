@@ -532,7 +532,6 @@ class ReportSalesOrder
             $query->execute($params);
         } catch (PDOException $ex) {
 
-            returnError($ex);
             logError(
                 $ex->getMessage(),
                 $ex->getFile(),
@@ -1742,7 +1741,7 @@ class ReportSalesOrder
         }
 
         if ($this->sales_order_product_owner_id != 0) {
-            $filterColumn[] = "sales_order_product_owner_id = :sales_order_product_owner_id ";
+            $filterColumn[] = " sales_order_product_owner_id = :sales_order_product_owner_id ";
         }
 
         try {
@@ -1761,6 +1760,8 @@ class ReportSalesOrder
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
+
+            returnError($ex);
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
@@ -1788,7 +1789,7 @@ class ReportSalesOrder
         }
 
         if ($this->sales_order_product_owner_id != 0) {
-            $filterColumn[] = "sp.purchase_order_product_owner_id = :sales_order_product_owner_id ";
+            $filterColumn[] = " sp.purchase_order_product_owner_id = :sales_order_product_owner_id ";
         }
 
         try {
@@ -1831,7 +1832,7 @@ class ReportSalesOrder
         }
 
         if ($this->sales_order_product_owner_id != 0) {
-            $filterColumn[] = "sp.purchase_order_product_owner_id = :sales_order_product_owner_id ";
+            $filterColumn[] = " sp.purchase_order_product_owner_id = :sales_order_product_owner_id ";
         }
 
         try {
@@ -1864,7 +1865,7 @@ class ReportSalesOrder
             "from" => $this->from,
             "to" => $this->to,
             ...($this->sales_order_product_owner_id != 0 ? [
-                "sales_order_product_owner_id" => $this->sales_order_product_owner_id,
+                "return_product_owner_id" => $this->sales_order_product_owner_id,
             ] : []),
         ];
 
@@ -1876,7 +1877,7 @@ class ReportSalesOrder
         }
 
         if ($this->sales_order_product_owner_id != 0) {
-            $filterColumn[] = "return_product_owner_id = :sales_order_product_owner_id ";
+            $filterColumn[] = " return_product_owner_id = :return_product_owner_id ";
         }
 
         try {
