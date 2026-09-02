@@ -10,6 +10,7 @@ class Returns
     public $return_product_customer_name;
     public $return_product_date;
     public $return_product_amount;
+    public $return_product_paid_amount;
     public $return_product_product_id;
     public $return_product_product_name;
     public $return_product_qty;

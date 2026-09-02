@@ -421,7 +421,7 @@ export const variantsStatus = (val = "active") => {
     pending: "bg-warning/10 text-warning",
     processed: "bg-primary/10 text-primary",
     approved: "bg-success/20 text-success",
-    rejected: "bg-red-100 text-red-500",
+    rejected: "bg-blue-100 text-blue-500",
     // return-display-status (open/completed already covered by purchase-order-status above)
     refunded: "bg-primary/10 text-primary",
   };

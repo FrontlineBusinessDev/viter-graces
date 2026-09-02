@@ -25,6 +25,7 @@ class FinanceReturns
 
     public $date_today;
     public $date_yesterday;
+    public $userId;
 
     public $connection;
     public $lastInsertedId;
@@ -49,6 +50,7 @@ class FinanceReturns
     {
         $filterColumn = [];
         $params = [
+            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
             ...($this->column_search != "" ? [
                 "return_product_number" => "%{$this->column_search}%",
                 "return_product_order_number" => "%{$this->column_search}%",
@@ -59,13 +61,6 @@ class FinanceReturns
         ];
 
         foreach ($this->filters as $i => $item) {
-            // "is_status" here is filtered as a composite of return_product_status
-            // and return_product_resolution_type (Pending/Refunded/Open/Completed/Rejected)
-            // - not a real column, so it needs its own WHERE clause instead of a LIKE.
-            if ($item['id'] === 'is_status') {
-                $filterColumn[] = displayStatusCondition($item['value']);
-                continue;
-            }
             if (!in_array($item['id'], $allowedColumns, true)) {
                 continue;
             }
@@ -85,22 +80,14 @@ class FinanceReturns
         try {
             $sql = "select *, ";
             $sql .= "return_product_aid as id, ";
-            // is_status carries the human status Finance shows (Pending/Rejected
-            // apply regardless of resolution; once processed, the label depends on
-            // how the return was resolved - Refunded, Open for an available credit
-            // memo, or Completed for a replacement).
-            $sql .= "case ";
-            $sql .= "when return_product_status = 'pending' then 'pending' ";
-            $sql .= "when return_product_status = 'rejected' then 'rejected' ";
-            $sql .= "when return_product_status = 'processed' and return_product_resolution_type = 'refund' then 'refunded' ";
-            $sql .= "when return_product_status = 'processed' and return_product_resolution_type = 'credit memo' then 'open' ";
-            $sql .= "when return_product_status = 'processed' and return_product_resolution_type = 'replacement' then 'completed' ";
-            $sql .= "else return_product_status ";
-            $sql .= "end as is_status, ";
+            $sql .= "return_product_status as is_status, ";
+            $sql .= "SUM(return_product_paid_amount) as return_product_paid_amount, ";
+            $sql .= "SUM(return_product_amount) as return_product_amount, ";
             $sql .= "DATE_FORMAT(return_product_date, '%b %d, %Y') as return_product_date, ";
             $sql .= "return_product_number as name ";
             $sql .= "from {$this->tblReturnProducts} ";
             $sql .= " where true ";
+            $sql .= ($this->userId != 0 ? "and return_product_owner_id = :return_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn) . " ";
             } else {
@@ -110,7 +97,13 @@ class FinanceReturns
             or return_product_product_name like :return_product_product_name
             or return_product_owner_name like :return_product_owner_name ) " : " ");
             }
-            $sql .= " order by return_product_aid desc ";
+            $sql .= " group by return_product_customer_id, ";
+            $sql .= " return_product_status, ";
+            $sql .= " return_product_resolution_type, ";
+            $sql .= " return_product_refund_method, ";
+            $sql .= " return_product_owner_id ";
+            $sql .= " order by CASE WHEN LOWER(return_product_status) = 'processed' THEN 1 ELSE 0 END asc, ";
+            $sql .= "return_product_status asc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
@@ -127,6 +120,7 @@ class FinanceReturns
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
+            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
             ...($this->column_search != "" ? [
                 "return_product_number" => "%{$this->column_search}%",
                 "return_product_order_number" => "%{$this->column_search}%",
@@ -137,13 +131,6 @@ class FinanceReturns
         ];
 
         foreach ($this->filters as $i => $item) {
-            // "is_status" here is filtered as a composite of return_product_status
-            // and return_product_resolution_type (Pending/Refunded/Open/Completed/Rejected)
-            // - not a real column, so it needs its own WHERE clause instead of a LIKE.
-            if ($item['id'] === 'is_status') {
-                $filterColumn[] = displayStatusCondition($item['value']);
-                continue;
-            }
             if (!in_array($item['id'], $allowedColumns, true)) {
                 continue;
             }
@@ -163,22 +150,14 @@ class FinanceReturns
         try {
             $sql = "select *, ";
             $sql .= "return_product_aid as id, ";
-            // is_status carries the human status Finance shows (Pending/Rejected
-            // apply regardless of resolution; once processed, the label depends on
-            // how the return was resolved - Refunded, Open for an available credit
-            // memo, or Completed for a replacement).
-            $sql .= "case ";
-            $sql .= "when return_product_status = 'pending' then 'pending' ";
-            $sql .= "when return_product_status = 'rejected' then 'rejected' ";
-            $sql .= "when return_product_status = 'processed' and return_product_resolution_type = 'refund' then 'refunded' ";
-            $sql .= "when return_product_status = 'processed' and return_product_resolution_type = 'credit memo' then 'open' ";
-            $sql .= "when return_product_status = 'processed' and return_product_resolution_type = 'replacement' then 'completed' ";
-            $sql .= "else return_product_status ";
-            $sql .= "end as is_status, ";
+            $sql .= "return_product_status as is_status, ";
+            $sql .= "SUM(return_product_paid_amount) as return_product_paid_amount, ";
+            $sql .= "SUM(return_product_amount) as return_product_amount, ";
             $sql .= "DATE_FORMAT(return_product_date, '%b %d, %Y') as return_product_date, ";
             $sql .= "return_product_number as name ";
             $sql .= "from {$this->tblReturnProducts} ";
             $sql .= " where true ";
+            $sql .= ($this->userId != 0 ? "and return_product_owner_id = :return_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn) . " ";
             } else {
@@ -188,7 +167,13 @@ class FinanceReturns
             or return_product_product_name like :return_product_product_name
             or return_product_owner_name like :return_product_owner_name ) " : " ");
             }
-            $sql .= " order by return_product_aid desc ";
+            $sql .= " group by return_product_customer_id, ";
+            $sql .= " return_product_status, ";
+            $sql .= " return_product_resolution_type, ";
+            $sql .= " return_product_refund_method, ";
+            $sql .= " return_product_owner_id ";
+            $sql .= " order by CASE WHEN LOWER(return_product_status) = 'processed' THEN 1 ELSE 0 END asc, ";
+            $sql .= "return_product_status asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);

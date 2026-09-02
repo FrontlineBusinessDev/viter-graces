@@ -98,7 +98,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
       (Number(selectedCustomerId) > 0 && creditMemoBalance > 0) ||
       itemEdit?.sales_order_payment_method === "credit memo",
   );
-
+  console.log("creditMemoBalance", creditMemoBalance);
   const itemsDirty =
     itemsDelete.length > 0 ||
     JSON.stringify(items) !== JSON.stringify(initialItemsRef.current);
@@ -354,16 +354,16 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     sales_order_customer_id: Yup.string().trim().required("Required"),
     sales_order_credit_memo: Yup.number().test(
       "max-credit-memo",
-      "Exceeds the available credit memo balance or the order total",
+      "Exceeds the available credit memo balance",
       function (value) {
         if (this.parent.sales_order_payment_method !== "credit memo") {
           return true;
         }
-        const maxAllowed = Math.min(
-          creditMemoBalance,
-          Number(this.parent.sales_order_total_receivable_amount),
-        );
-        return Number(value || 0) <= maxAllowed;
+        // const maxAllowed = Math.min(
+        //   creditMemoBalance,
+        //   Number(this.parent.sales_order_total_receivable_amount),
+        // );
+        return Number(value || 0) <= creditMemoBalance;
       },
     ),
   });
@@ -768,11 +768,14 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         </div>
                       )}
                     </div>
-
                     {props.values.sales_order_payment_method ===
-                    "mutiple payment" ? (
+                      "mutiple payment" ||
+                    props.values.sales_order_payment_method ===
+                      "credit memo" ? (
                       <>
-                        <div className="grid-cols-4 grid gap-3 pb-2 overflow-auto">
+                        <div
+                          className={`${creditMemoBalance > 0 ? "grid-cols-4 " : "grid-cols-3 "} grid gap-3 pb-2 overflow-auto `}
+                        >
                           <div className="relative ">
                             <InputText
                               label="Cash amount"
@@ -797,28 +800,20 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                               disabled={mutation.isPending}
                             />
                           </div>
-                          <div className="relative ">
-                            <InputText
-                              label="Credit memo"
-                              type="number"
-                              name="sales_order_credit_memo"
-                              disabled={mutation.isPending}
-                            />
-                          </div>
+                          {creditMemoBalance > 0 ? (
+                            <div className="relative ">
+                              <InputText
+                                label="Credit memo"
+                                type="number"
+                                name="sales_order_credit_memo"
+                                disabled={mutation.isPending}
+                              />
+                            </div>
+                          ) : (
+                            ""
+                          )}
                         </div>
                       </>
-                    ) : props.values.sales_order_payment_method ===
-                      "credit memo" ? (
-                      <div className="grid-cols-4 grid gap-3 pb-2 overflow-auto">
-                        <div className="relative ">
-                          <InputText
-                            label="Credit memo amount"
-                            type="number"
-                            name="sales_order_credit_memo"
-                            disabled={mutation.isPending}
-                          />
-                        </div>
-                      </div>
                     ) : (
                       ""
                     )}

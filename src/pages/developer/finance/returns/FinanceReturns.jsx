@@ -10,15 +10,11 @@ import React from "react";
 
 const FinanceReturns = () => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const [itemEdit, setItemEdit] = React.useState(null);
 
   // Columns
   const columns = [
     {
-      // is_status is a composite the backend derives from return_product_status +
-      // return_product_resolution_type (Pending/Refunded/Open/Completed/Rejected) -
-      // rendered by the shared TableStatus component like every other status column.
-      accessorKey: "is_status",
+      accessorKey: "return_product_status",
       header: "status",
       classTh: "min-w-40",
       classTd: "",
@@ -27,34 +23,11 @@ const FinanceReturns = () => {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus
             column={column}
-            options={ActiveInActiveStatus("return-display-status")}
+            options={ActiveInActiveStatus("return-status")}
           />
         ),
       },
-      status_option: ActiveInActiveStatus("return-display-status"),
-    },
-    {
-      accessorKey: "return_product_product_name",
-      header: "Item",
-      classTh: "min-w-[10rem] ",
-      classTd: "",
-      isMobileTitle: true,
-      meta: "",
-    },
-    {
-      accessorKey: "return_product_order_number",
-      header: "Order #",
-      classTh: "",
-      classTd: "",
-      meta: "",
-    },
-    {
-      accessorKey: "return_product_date",
-      header: "Date",
-      classTh: "",
-      classTd: "",
-      filterFn: "date",
-      meta: "",
+      status_option: ActiveInActiveStatus("return-status"),
     },
     {
       accessorKey: "return_product_customer_name",
@@ -70,22 +43,6 @@ const FinanceReturns = () => {
           />
         ),
       },
-    },
-    {
-      accessorKey: "return_product_qty",
-      header: "Quantity",
-      classTh: "",
-      classTd: "",
-      meta: "",
-    },
-    {
-      accessorKey: "return_product_amount",
-      header: "Return Amount",
-      amount: true,
-      classTh: "",
-      classTd: "",
-      filterFn: "between",
-      meta: "",
     },
     {
       accessorKey: "return_product_resolution_type",
@@ -110,6 +67,24 @@ const FinanceReturns = () => {
       classTd: "capitalize",
       meta: "",
       cell: (info) => info.getValue() || "—",
+    },
+    {
+      accessorKey: "return_product_amount",
+      header: "Total Amount",
+      amount: true,
+      classTh: "",
+      classTd: "",
+      filterFn: "between",
+      meta: "",
+    },
+    {
+      accessorKey: "return_product_paid_amount",
+      header: "Returned Amount",
+      amount: true,
+      classTh: "",
+      classTd: "",
+      filterFn: "between",
+      meta: "",
     },
     {
       accessorKey: "return_product_owner_name",
@@ -137,7 +112,6 @@ const FinanceReturns = () => {
           path="finance-returns"
           haveFilterTable={true}
           ishaveAdd={false}
-          setItemEdit={setItemEdit}
         />
       </HeaderNav>
     </>
