@@ -1509,6 +1509,27 @@ class SalesOrder
     //     return $query;
     // }
 
+    // read the credit memo amount already saved for this order (used to work
+    // out the delta to apply/release against the customer's return records
+    // when editing an order - see applyCreditMemoToReturns())
+    public function readCreditMemoByOrderNumber()
+    {
+        try {
+            $sql = "select sales_order_credit_memo ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= "where sales_order_number = :sales_order_number ";
+            $sql .= "limit 1 ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_order_number" => $this->sales_order_number,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
     public function readBySoNumber()
     {
 

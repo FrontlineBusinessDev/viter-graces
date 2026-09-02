@@ -5,6 +5,7 @@ $conn = checkDbConnection();
 // make instance of classes
 $val = new SalesOrder($conn);
 $valActivity = new ActivityLog($conn);
+$valReturns = new Returns($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -67,6 +68,9 @@ if ($val->sales_order_payment_method == "online transaction") {
 if ($val->sales_order_payment_method == "credit memo") {
     $val->sales_order_credit_memo = $val->sales_order_paid_amount;
 }
+
+// new order - nothing previously saved, so the full applied amount is the delta
+applyCreditMemoToReturns($valReturns, $val->sales_order_customer_id, (float)$val->sales_order_credit_memo);
 
 $val->sales_order_number = setIdNumber($val, "ORD");
 

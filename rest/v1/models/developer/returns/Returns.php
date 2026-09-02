@@ -313,17 +313,43 @@ class Returns
         return $query;
     }
 
+    // read all - a customer's processed credit memo returns, oldest first
+    // (used to allocate/release a sales order's applied credit memo amount
+    // against return_product_paid_amount - see applyCreditMemoToReturns())
+    public function readCreditMemoReturnsByCustomerId()
+    {
+        try {
+            $sql = "select return_product_aid, return_product_amount, ";
+            $sql .= "return_product_paid_amount, return_product_status ";
+            $sql .= "from {$this->tblReturnProducts} ";
+            $sql .= "where return_product_customer_id = :return_product_customer_id ";
+            $sql .= "and return_product_resolution_type = 'credit memo' ";
+            $sql .= "and return_product_status = 'processed' ";
+            $sql .= "order by return_product_aid asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "return_product_customer_id" => $this->return_product_customer_id,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
     // update
     public function update()
     {
         try {
             $sql = "update {$this->tblReturnProducts} set ";
             $sql .= "return_product_status = :return_product_status, ";
+            $sql .= "return_product_paid_amount = :return_product_paid_amount, ";
             $sql .= "return_product_updated = :return_product_updated ";
             $sql .= "where return_product_aid = :return_product_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "return_product_status" => $this->return_product_status,
+                "return_product_paid_amount" => $this->return_product_paid_amount,
                 "return_product_updated" => $this->return_product_updated,
                 "return_product_aid" => $this->return_product_aid,
             ]);
