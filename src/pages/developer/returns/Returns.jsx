@@ -106,9 +106,18 @@ const Returns = () => {
     {
       accessorKey: "return_product_resolution_type",
       header: "resolution type",
-      classTh: "",
+      classTh: "min-w-40 ",
       classTd: "capitalize",
-      meta: "",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={ActiveInActiveStatus("resolution-type")}
+            uppercase="capitalize! "
+          />
+        ),
+      },
     },
     {
       accessorKey: "return_product_amount",

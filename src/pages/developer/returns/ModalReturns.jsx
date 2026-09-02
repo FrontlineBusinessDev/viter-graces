@@ -99,21 +99,20 @@ const ModalReturns = ({ itemEdit }) => {
       itemEdit?.return_product_is_restocked,
       "",
     ),
-    // Issue 1: a new return (no itemEdit) always starts as "pending"; editing an
-    // existing return carries its current status forward unchanged, since this
-    // modal has no control that lets the user change status - only the table
-    // dropdown (TableUpdateStatus) does that.
     return_product_status: isEmptyItem(
       itemEdit?.return_product_status,
       "pending",
     ),
-    // Issue 2: Resolution Types - UI-only field, bound to Formik state.
     return_product_resolution_type: isEmptyItem(
       itemEdit?.return_product_resolution_type,
       "other",
     ),
     return_product_refund_method: isEmptyItem(
       itemEdit?.return_product_refund_method,
+      "",
+    ),
+    return_product_paid_amount: isEmptyItem(
+      itemEdit?.return_product_paid_amount,
       "",
     ),
     other_reason: isEmptyItem(itemEdit?.return_product_reason, ""),

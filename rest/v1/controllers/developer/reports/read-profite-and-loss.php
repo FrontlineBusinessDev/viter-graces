@@ -47,9 +47,6 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $netSales = array_sum(array_column($incomeQuery, 'discounted_with_vat_amount'));
     }
 
-    // LESS: RETURNS - discounted_with_vat_amount above is already
-    // (gross sales + tax) - discounts, so subtracting returns here
-    // completes Net Sales = (Gross Sales + Tax) - Discounts - Returns.
     $queryReturns = checkReadPalReturns($val);
     $returnsQuery = getResultData($queryReturns) ?? [];
 

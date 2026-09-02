@@ -5,12 +5,13 @@ import {
   InputSelectArrayWithOptions,
   InputSelectFilterTagArray,
 } from "@/components/inputs/InputSelect";
-import { InputText } from "@/components/inputs/InputText";
+import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { apiVersion } from "@/config/config";
 import {
   ActivityLogDetails,
+  discountTypeOption,
   PaymentMethodList,
   taxOption,
 } from "@/layout/ArrayValue";
@@ -104,6 +105,9 @@ const ModalExpenses = ({ itemEdit }) => {
     purchase_order_tax: 0,
     purchase_order_balance: 0,
     purchase_order_discount: 0,
+    purchase_order_discount_type: "amount",
+    purchase_order_discount_percentage: 0,
+    purchase_order_paid_amount: 0,
     purchase_order_payment: 0,
     total_amount: 0,
     total_sub_amount: 0,
@@ -171,20 +175,37 @@ const ModalExpenses = ({ itemEdit }) => {
             }}
           >
             {(props) => {
+              // COMPUTATION OF DISCOUNT (percentage of Amount, or a fixed amount)
+              if (
+                props.values.purchase_order_discount_type === "percentage" &&
+                Number(props.values.purchase_order_discount_percentage) !== 0
+              ) {
+                props.values.purchase_order_discount =
+                  Number(props.values.purchase_order_payment) *
+                  (Number(props.values.purchase_order_discount_percentage) /
+                    100);
+              }
+
+              // discount is deducted from the Amount before VAT and the
+              // remaining balance are computed
+              const discountedAmount =
+                Number(props.values.purchase_order_payment) -
+                Number(props.values.purchase_order_discount || 0);
+
               // COMPUTATION OF INCLUSIVE TAX
               if (Number(props.values.purchase_order_vat) === 1.12) {
                 props.values.purchase_order_vat_amount =
-                  Number(props.values.purchase_order_payment) -
-                  Number(props.values.purchase_order_payment) / 1.12;
+                  discountedAmount - discountedAmount / 1.12;
+                props.values.purchase_order_total_amount_after_discount_vat =
+                  discountedAmount;
               }
 
               // COMPUTATION OF EXCLUSIVE TAX
               if (Number(props.values.purchase_order_vat) === 0.12) {
                 props.values.purchase_order_vat_amount =
-                  Number(props.values.purchase_order_payment) * 0.12;
-
-                props.values.purchase_order_payment =
-                  Number(props.values.purchase_order_payment) +
+                  discountedAmount * 0.12;
+                props.values.purchase_order_total_amount_after_discount_vat =
+                  discountedAmount +
                   Number(props.values.purchase_order_vat_amount);
               }
 
@@ -193,7 +214,16 @@ const ModalExpenses = ({ itemEdit }) => {
                 props.values.purchase_order_vat === "--"
               ) {
                 props.values.purchase_order_vat_amount = 0;
+                props.values.purchase_order_total_amount_after_discount_vat =
+                  discountedAmount;
               }
+
+              props.values.purchase_order_balance = Math.max(
+                0,
+                Number(
+                  props.values.purchase_order_total_amount_after_discount_vat,
+                ) - Number(props.values.purchase_order_paid_amount),
+              );
               return (
                 <Form>
                   <SyncDerivedFields
@@ -306,7 +336,60 @@ const ModalExpenses = ({ itemEdit }) => {
                       }}
                     />
                   </div>
-                  <div className="grid-cols-2 grid gap-2 mb-3">
+                  <div className="relative mb-3">
+                    <InputText
+                      label="Amount"
+                      type="number"
+                      number="number"
+                      name="purchase_order_total_amount"
+                      disabled={mutation.isPending}
+                    />
+                  </div>
+                  <div
+                    className={` grid-cols-2 grid mt-3 gap-3 items-center mb-3`}
+                  >
+                    <div className="relative ">
+                      <InputSelectArrayWithOptions
+                        label="Type of discount"
+                        type="purchase_order_discount_type"
+                        name="purchase_order_discount_type"
+                        defaultValue="amount"
+                        options={discountTypeOption()}
+                        onChange={(e) => {
+                          props.setFieldValue(
+                            "purchase_order_discount_percentage",
+                            "",
+                          );
+                          props.setFieldValue("purchase_order_discount", "");
+                          props.setFieldValue(
+                            "purchase_order_discount_type",
+                            e.target.id,
+                          );
+                          return e;
+                        }}
+                        required={false}
+                      />
+                    </div>
+                    {props.values.purchase_order_discount_type ===
+                    "percentage" ? (
+                      <div className="relative ">
+                        <InputNumber
+                          label="Discount %"
+                          name="purchase_order_discount_percentage"
+                          disabled={mutation.isPending}
+                          required={false}
+                        />
+                      </div>
+                    ) : (
+                      <div className="relative ">
+                        <InputNumber
+                          label="Discount"
+                          name="purchase_order_discount"
+                          disabled={mutation.isPending}
+                          required={false}
+                        />
+                      </div>
+                    )}
                     <div className="relative capitalize">
                       <InputSelectArrayWithOptions
                         label="VAT"
@@ -329,19 +412,28 @@ const ModalExpenses = ({ itemEdit }) => {
                         label="VAT Amount"
                         type="number"
                         name="purchase_order_vat_amount"
+                        className="border-t-0! border-x-0! text-primary min-w-20 focus:border-secondary"
                         disabled={mutation.isPending}
                         readOnly
                       />
                     </div>
-                  </div>
-                  <div className="relative mb-3">
-                    <InputText
-                      label="Amount"
-                      type="number"
-                      number="number"
-                      name="purchase_order_payment"
-                      disabled={mutation.isPending}
-                    />
+                    <div className="relative ">
+                      <InputNumber
+                        label="Paid Amount"
+                        name="purchase_order_payment"
+                        disabled={mutation.isPending}
+                        required={false}
+                      />
+                    </div>
+                    <div className="relative capitalize ">
+                      <InputText
+                        label="Balance"
+                        type="number"
+                        name="purchase_order_balance"
+                        disabled={mutation.isPending}
+                        readOnly
+                      />
+                    </div>
                   </div>
                   {props?.values?.purchase_order_payment_status ===
                   "partially paid" ? (
