@@ -186,11 +186,21 @@ class SuppliersPurchaseMovement
             ] : [],
         ];
 
+        // the frontend sends filter ids matching the SELECT alias for
+        // these columns (is_status/formated_date/formated_delivery_date),
+        // not the real underlying column name - aliases aren't visible
+        // to a WHERE clause, so map them back
+        $columnAliasMap = [
+            "is_status" => "purchase_order_movement_status",
+            "formated_date" => "purchase_order_date",
+            "formated_delivery_date" => "purchase_order_expected_delivery",
+        ];
+
         foreach ($this->filters as $i => $item) {
             if (!in_array($item['id'], $allowedColumns, true)) {
                 continue;
             }
-            $col = $item['id'];
+            $col = $columnAliasMap[$item['id']] ?? $item['id'];
             if (is_array($item['value'])) {
                 $params["min$i"] = (float) $item['value']['min'];
                 $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
@@ -252,11 +262,21 @@ class SuppliersPurchaseMovement
             ] : [],
         ];
 
+        // the frontend sends filter ids matching the SELECT alias for
+        // these columns (is_status/formated_date/formated_delivery_date),
+        // not the real underlying column name - aliases aren't visible
+        // to a WHERE clause, so map them back
+        $columnAliasMap = [
+            "is_status" => "purchase_order_movement_status",
+            "formated_date" => "purchase_order_date",
+            "formated_delivery_date" => "purchase_order_expected_delivery",
+        ];
+
         foreach ($this->filters as $i => $item) {
             if (!in_array($item['id'], $allowedColumns, true)) {
                 continue;
             }
-            $col = $item['id'];
+            $col = $columnAliasMap[$item['id']] ?? $item['id'];
             if (is_array($item['value'])) {
                 $params["min$i"] = (float) $item['value']['min'];
                 $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
@@ -318,11 +338,21 @@ class SuppliersPurchaseMovement
             ] : [],
         ];
 
+        // the frontend sends filter ids matching the SELECT alias for
+        // these columns (is_status/formated_date/formated_delivery_date),
+        // not the real underlying column name - aliases aren't visible
+        // to a WHERE clause, so map them back
+        $columnAliasMap = [
+            "is_status" => "purchase_order_movement_status",
+            "formated_date" => "purchase_order_date",
+            "formated_delivery_date" => "purchase_order_expected_delivery",
+        ];
+
         foreach ($this->filters as $i => $item) {
             if (!in_array($item['id'], $allowedColumns, true)) {
                 continue;
             }
-            $col = $item['id'];
+            $col = $columnAliasMap[$item['id']] ?? $item['id'];
             if (is_array($item['value'])) {
                 $params["min$i"] = (float) $item['value']['min'];
                 $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
@@ -384,11 +414,21 @@ class SuppliersPurchaseMovement
             ] : [],
         ];
 
+        // the frontend sends filter ids matching the SELECT alias for
+        // these columns (is_status/formated_date/formated_delivery_date),
+        // not the real underlying column name - aliases aren't visible
+        // to a WHERE clause, so map them back
+        $columnAliasMap = [
+            "is_status" => "purchase_order_movement_status",
+            "formated_date" => "purchase_order_date",
+            "formated_delivery_date" => "purchase_order_expected_delivery",
+        ];
+
         foreach ($this->filters as $i => $item) {
             if (!in_array($item['id'], $allowedColumns, true)) {
                 continue;
             }
-            $col = $item['id'];
+            $col = $columnAliasMap[$item['id']] ?? $item['id'];
             if (is_array($item['value'])) {
                 $params["min$i"] = (float) $item['value']['min'];
                 $filterColumn[] = "$col BETWEEN :min$i AND :max$i";

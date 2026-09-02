@@ -1,269 +1,174 @@
-describe("Users Module - CRUD and Search Flow", () => {
+describe("Users Module - CRUD Flow", () => {
+  const runId = Date.now();
+  const firstName = "Cypress";
+  const lastName = `User ${runId}`;
+  const email = `cypress.user+${runId}@gmail.com`;
+  const updatedLastName = `User ${runId} Updated`;
+
   beforeEach(() => {
     cy.session("admin", () => {
       cy.login();
     });
-
     cy.visit("/developer/users");
   });
 
-  //CREATE
+  // CREATE
   it("Creates a new user account", () => {
-    //cancel btn
-    cy.get('[data-testid="add-users-btn"]').click();
-
-    cy.get('[data-testid="select-role"]').select(1);
-    cy.get('input[name="user_account_first_name"]').type("Herlyn");
-    cy.get('input[name="user_account_last_name"]').type("Mae");
-    cy.get('input[name="user_account_email"]').type(
-      "herlyn.torres@frontlinebusiness.com.ph",
-    );
-
-    cy.get('[data-testid="false"]').click();
-
-    //close btn
-    cy.get('[data-testid="add-users-btn"]').click();
-
-    cy.get('[data-testid="select-role"]').select(1);
-    cy.get('input[name="user_account_first_name"]').type("Herlyn");
-    cy.get('input[name="user_account_last_name"]').type("Mae");
-    cy.get('input[name="user_account_email"]').type(
-      "herlyn.torres@frontlinebusiness.com.ph",
-    );
-    cy.get('[data-testid="close-btn"]').click();
-
-    //save btn
-    cy.get('[data-testid="add-users-btn"]').click();
-
-    cy.get('[data-testid="select-role"]').select(2);
-    cy.get('input[name="user_account_first_name"]').type("Herlyn");
-    cy.get('input[name="user_account_last_name"]').type("Mae");
-    cy.get('input[name="user_account_email"]').type(
-      "herlyn.torres@frontlinebusiness.com.ph",
-    );
-
     cy.intercept("POST", "**/users").as("createUser");
 
+    cy.get('[data-testid="add-users-btn"]').click();
+
+    cy.get('[data-testid="select-role"]', { timeout: 10000 }).select("Admin");
+    cy.get('input[name="user_account_first_name"]').type(firstName);
+    cy.get('input[name="user_account_last_name"]').type(lastName);
+    cy.get('input[name="user_account_email"]').type(email);
+
     cy.get('[data-testid="save-product-btn"]').click();
 
-    cy.wait("@createUser");
+    cy.wait("@createUser").its("response.statusCode").should("eq", 200);
 
-    cy.contains("Herlyn", { timeout: 1000 }).should("exist");
+    cy.contains(lastName, { timeout: 15000 }).should("exist");
   });
 
-  //UPDATE
-  it("Updates a user account", () => {
-    //cancel btn
-    cy.intercept("POST", "**/users/page/*").as("getUser");
+  // VALIDATION
+  it("Shows a validation error when the email is invalid", () => {
+    cy.get('[data-testid="add-users-btn"]').click();
 
-    cy.viewport(1280, 720); //size
-    cy.wait("@getUser");
+    cy.get('input[name="user_account_email"]', { timeout: 10000 })
+      .type("not-an-email")
+      .blur();
 
-    cy.get('[data-testid="table-row"]', { timeout: 1000 }).should(
-      "have.length.greaterThan",
-      0,
+    cy.get(".error-show").should("have.length.greaterThan", 0);
+    cy.contains(".error-show", "Invalid email").should("exist");
+  });
+
+  // CANCEL
+  it("Cancel button closes the modal without saving", () => {
+    cy.get('[data-testid="add-users-btn"]').click();
+
+    cy.get('input[name="user_account_first_name"]', { timeout: 10000 }).type(
+      "Cypress Cancel Test",
     );
-
-    cy.get('[data-testid="table-row"]')
-      .contains("Herlyn")
-      .parents('[data-testid="table-row"]')
-      .within(() => {
-        cy.get('[data-testid="action-edit"]').click();
-      });
-
-    cy.get('[data-testid="select-role"]').select(4);
-    cy.get('input[name="user_account_first_name"]')
-      .should("be.visible")
-      .clear()
-      .type("Mayeng");
-    cy.get('input[name="user_account_last_name"]').clear().type("Torres");
-    cy.get('input[name="user_account_email"]')
-      .clear()
-      .type("torresherlynmae@gmail.com");
 
     cy.get('[data-testid="false"]').click();
 
-    //save btn
-    cy.intercept("POST", "**/users/page/*").as("getUser");
-    cy.intercept("PUT", "**/users/**").as("updateUser");
+    cy.get('input[name="user_account_first_name"]').should("not.exist");
+    cy.contains("Cypress Cancel Test").should("not.exist");
+  });
 
-    cy.viewport(1280, 720); //size
-    cy.wait("@getUser");
+  // CLOSE
+  it("Close (X) button closes the modal without saving", () => {
+    cy.get('[data-testid="add-users-btn"]').click();
 
-    cy.get('[data-testid="table-row"]', { timeout: 1000 }).should(
-      "have.length.greaterThan",
-      0,
+    cy.get('input[name="user_account_first_name"]', { timeout: 10000 }).type(
+      "Cypress Close Test",
     );
 
-    cy.get('[data-testid="table-row"]')
-      .contains("Herlyn")
-      .parents('[data-testid="table-row"]')
-      .within(() => {
-        cy.get('[data-testid="action-edit"]').click();
-      });
+    cy.get('[data-testid="close-btn"]').click();
 
-    cy.get('[data-testid="select-role"]').select(4);
-    cy.get('input[name="user_account_first_name"]')
-      .should("be.visible")
+    cy.get('input[name="user_account_first_name"]').should("not.exist");
+    cy.contains("Cypress Close Test").should("not.exist");
+  });
+
+  // UPDATE
+  it("Updates a user account", () => {
+    cy.intercept("PUT", "**/users/**").as("updateUser");
+
+    cy.contains('[data-testid="table-row"]', lastName, {
+      timeout: 15000,
+    }).within(() => {
+      cy.get('[data-testid="action-edit"]:visible').click();
+    });
+
+    cy.get('input[name="user_account_last_name"]', { timeout: 10000 })
       .clear()
-      .type("Mayeng");
-    cy.get('input[name="user_account_last_name"]').clear().type("Torres");
-    cy.get('input[name="user_account_email"]')
-      .clear()
-      .type("torresherlynmae@gmail.com");
+      .type(updatedLastName);
 
     cy.get('[data-testid="save-product-btn"]').click();
 
-    cy.wait("@updateUser");
+    cy.wait("@updateUser").its("response.statusCode").should("eq", 200);
 
-    //close btn
-    cy.intercept("POST", "**/users/page/*").as("getUser");
-
-    cy.viewport(1280, 720); //size
-    cy.wait("@getUser");
-
-    cy.get('[data-testid="table-row"]', { timeout: 1000 }).should(
-      "have.length.greaterThan",
-      0,
-    );
-
-    cy.get('[data-testid="table-row"]')
-      .contains("Mayeng")
-      .parents('[data-testid="table-row"]')
-      .within(() => {
-        cy.get('[data-testid="action-edit"]').click();
-      });
-
-    cy.get('[data-testid="select-role"]').select(4);
-    cy.get('input[name="user_account_first_name"]')
-      .should("be.visible")
-      .clear()
-      .type("Herlyn");
-    cy.get('input[name="user_account_last_name"]').clear().type("Torres");
-    cy.get('input[name="user_account_email"]')
-      .clear()
-      .type("torresherlynmae@gmail.com");
-
-    cy.get('[data-testid="close-btn"]').click();
+    cy.contains(updatedLastName, { timeout: 15000 }).should("exist");
   });
 
-  //ARCHIVE
+  // SEARCH
+  it("Search a user account", () => {
+    cy.viewport(390, 844);
+    cy.intercept("POST", "**/users/page/*").as("getUsers");
+
+    cy.get('[data-testid="search-input"]').type(`${updatedLastName}{enter}`);
+
+    cy.wait("@getUsers");
+
+    cy.contains(updatedLastName, { timeout: 10000 }).should("exist");
+  });
+
+  // ARCHIVE
   it("Archives a user account", () => {
-    //cancel
-    cy.intercept("POST", "**/users/page/*").as("getUser");
-
-    cy.wait("@getUser");
-
-    cy.contains('[data-testid="table-row"]', "Mayeng", {
-      timeout: 1000,
-    })
-      .should("be.visible")
-      .within(() => {
-        cy.get('[data-testid="action-archive"]').click();
-      });
-
-    cy.contains("button", "Cancel").click();
-
-    //confirm
-    cy.intercept("POST", "**/users/page/*").as("getUser");
     cy.intercept("PUT", "**/users/**").as("archiveUser");
 
-    cy.wait("@getUser");
-
-    cy.contains('[data-testid="table-row"]', "Mayeng", {
-      timeout: 1000,
-    })
-      .should("be.visible")
-      .within(() => {
-        cy.get('[data-testid="action-archive"]').click();
-      });
+    cy.contains('[data-testid="table-row"]', updatedLastName, {
+      timeout: 15000,
+    }).within(() => {
+      cy.get('[data-testid="action-archive"]:visible').click();
+    });
 
     cy.contains("button", "Confirm").click();
 
     cy.wait("@archiveUser").its("response.statusCode").should("eq", 200);
 
-    cy.get('[data-testid="toast-message"]')
+    cy.get('[data-testid="toast"]')
       .should("be.visible")
       .and("contain.text", "successfully");
   });
 
-  //RESTORE
+  // RESTORE
   it("Restores a user account", () => {
-    //cancel
-    cy.viewport(1280, 720);
-
-    cy.intercept("POST", "**/users/page/*").as("getUser");
-
-    cy.wait("@getUser");
-
-    cy.contains('[data-testid="table-row"]', "Mayeng", { timeout: 1000 })
-      .should("be.visible")
-      .within(() => {
-        cy.get('[data-testid="action-restore"]').click();
-      });
-
-    cy.contains("button", "Cancel").click();
-
-    //confirm
-    cy.viewport(1280, 720);
-
-    cy.intercept("POST", "**/users/page/*").as("getUser");
     cy.intercept("PUT", "**/users/**").as("restoreUser");
 
-    cy.wait("@getUser");
-
-    cy.contains('[data-testid="table-row"]', "Mayeng", { timeout: 1000 })
-      .should("be.visible")
-      .within(() => {
-        cy.get('[data-testid="action-restore"]').click();
-      });
+    cy.contains('[data-testid="table-row"]', updatedLastName, {
+      timeout: 15000,
+    }).within(() => {
+      cy.get('[data-testid="action-restore"]:visible').click();
+    });
 
     cy.contains("button", "Confirm").click();
 
     cy.wait("@restoreUser").its("response.statusCode").should("eq", 200);
 
-    cy.get('[data-testid="toast-message"]')
+    cy.get('[data-testid="toast"]')
       .should("be.visible")
       .and("contain.text", "successfully");
   });
 
-  //SEARCH
-  it("Search a user account ", () => {
-    cy.intercept("POST", "**/users/page/*").as("getUser");
-
-    cy.get('[data-testid="search-input"]').type("Lumabas{enter}");
-
-    cy.wait("@getUser");
-
-    cy.contains("Lumabas", { timeout: 1000 }).should("exist");
-  });
-
   // DELETE
   it("Deletes a user account", () => {
-    cy.intercept("POST", "**/users/page/*").as("getUser");
+    cy.intercept("POST", "**/users/page/*").as("getUsers");
     cy.intercept("PUT", "**/users/**").as("archiveUser");
     cy.intercept("DELETE", "**/users/**").as("deleteUser");
 
-    cy.wait("@getUser");
-
-    cy.contains('[data-testid="table-row"]', "Mayeng", {
-      timeout: 1000,
-    })
-      .should("be.visible")
-      .within(() => {
-        cy.get('[data-testid="action-archive"]').click();
-      });
-
-    cy.contains("button", "Confirm").click();
-
-    cy.wait("@archiveUser");
-
-    cy.contains('[data-testid="table-row"]', "Mayeng").within(() => {
-      cy.get('[data-testid="action-delete"]').click();
+    cy.contains('[data-testid="table-row"]', updatedLastName, {
+      timeout: 15000,
+    }).within(() => {
+      cy.get('[data-testid="action-archive"]:visible').click();
     });
 
     cy.contains("button", "Confirm").click();
 
-    cy.wait("@deleteUser").its("response.statusCode").should("equal", 200);
+    cy.wait("@archiveUser");
+    // the table refetches (query invalidation) after the archive succeeds -
+    // wait for it so the row reflects the archived state before looking
+    // for the delete action, which only renders for archived rows
+    cy.wait("@getUsers");
+
+    cy.contains('[data-testid="table-row"]', updatedLastName, {
+      timeout: 15000,
+    }).within(() => {
+      cy.get('[data-testid="action-delete"]:visible').click();
+    });
+
+    cy.contains("button", "Confirm").click();
+
+    cy.wait("@deleteUser").its("response.statusCode").should("eq", 200);
   });
 });

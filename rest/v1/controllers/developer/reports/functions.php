@@ -231,6 +231,24 @@ function allowedColumns()
         "return_product_amount",
         "return_product_resolution_type",
         "return_product_is_restocked",
+        // Sales Reports - Amount between-filter
+        "sales_order_discounted_with_vat_amount",
+        // Inventory Movement - status/qty filters
+        "stock_movement_type",
+        "stock_movement_after_qty",
+        // AR/AP/Expenses Reports - paid/balance filters (real columns)
+        "sales_order_balance_per_product",
+        "purchase_order_total_balance_per_product",
+        "purchase_order_total_paid_per_product",
+        // NOTE: "payment_status" (aliased from purchase_order_payment_status)
+        // and "amount"/"total_amount_per_product" (aliased from
+        // purchase_order_total_amount_per_product / a computed sum) are
+        // SELECT-only aliases in ReportSalesOrder.php's AR/AP/Expenses
+        // methods - referencing them in a WHERE clause errors or is a
+        // no-op, so they're deliberately left out of this list
+        // Overdue Payments - date/amount filters
+        "installment_payment_due_date",
+        "installment_payment_amount",
     ];
     return $query;
 }

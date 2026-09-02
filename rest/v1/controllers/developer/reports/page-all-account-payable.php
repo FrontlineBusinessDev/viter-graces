@@ -34,8 +34,8 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->filters = $data['columnFilters'];
         checkLimitId($val->column_start, $val->column_total);
 
-        $query = checkReadAPLimit($val);
-        $total_result = checkReadAllAP($val);
+        $query = checkReadAPLimit($val, allowedColumns());
+        $total_result = checkReadAllAP($val, allowedColumns());
         http_response_code(200);
 
         checkReadQuery(

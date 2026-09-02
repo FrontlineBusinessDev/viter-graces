@@ -32,7 +32,20 @@ function allowedColumns()
         "purchase_order_product_owner_name",
         "purchase_order_qty",
         "purchase_order_payment",
-        "total_amount",
+        "purchase_order_balance",
+        // the frontend's status/payment-status/date filters send the
+        // SELECT alias ids actually used by the column, not the raw
+        // column name above
+        "is_status",
+        "payment_status",
+        "formated_date",
+        "formated_delivery_date",
+        // NOTE: "total_amount" is deliberately left out - it's an
+        // aggregate alias (SUM(...) as total_amount) inside a query with
+        // GROUP BY purchase_order_number, so referencing it in a WHERE
+        // clause is invalid SQL (aggregates need HAVING). The "Total
+        // Amount" between-filter on this page can't work without a
+        // larger query restructuring.
     ];
     return $query;
 }
