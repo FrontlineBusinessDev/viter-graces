@@ -22,6 +22,9 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkPayload($data);
 
     $val->customer_aid = $data["id"];
+    // excludes the order currently being edited so it doesn't count
+    // its own previously-applied credit memo against itself
+    $val->sales_order_number = $data["excludeSalesOrderNumber"] ?? "";
 
     $queryReturn = $val->readReturnByOpenCreditMemo();
     $queryReturn = $queryReturn
@@ -32,9 +35,18 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         ? $queryReturn[0]['open_credit_memo']
         : 0;
 
+    $queryApplied = $val->readAppliedCreditMemoByCustomerId();
+    $queryApplied = $queryApplied
+        ? getResultData($queryApplied)
+        : [];
+
+    $appliedCreditMemo = count($queryApplied) > 0
+        ? $queryApplied[0]['applied_credit_memo']
+        : 0;
+
     $total_result_final = [
         [
-            'open_credit_memo' => $openCreditMemo,
+            'open_credit_memo' => max(0, (float)$openCreditMemo - (float)$appliedCreditMemo),
         ],
     ];
 

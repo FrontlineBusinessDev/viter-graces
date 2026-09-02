@@ -43,6 +43,7 @@ $val->sales_order_due_date = date("Y-m-d");
 $val->sales_order_cash = $data['sales_order_cash'];
 $val->sales_order_check = $data['sales_order_check'];
 $val->sales_order_online_transaction = $data['sales_order_online_transaction'];
+$val->sales_order_credit_memo = $data['sales_order_credit_memo'];
 $val->sales_order_installment_type = $data['sales_order_installment_type'];
 $val->sales_order_installment_type_day = $data['sales_order_installment_type_day'];
 $val->sales_order_installment_count = $data['sales_order_installment_count'];
@@ -62,6 +63,9 @@ if ($val->sales_order_payment_method == "check") {
 }
 if ($val->sales_order_payment_method == "online transaction") {
     $val->sales_order_online_transaction = $val->sales_order_paid_amount;
+}
+if ($val->sales_order_payment_method == "credit memo") {
+    $val->sales_order_credit_memo = $val->sales_order_paid_amount;
 }
 
 $val->sales_order_number = setIdNumber($val, "ORD");

@@ -42,6 +42,7 @@ if (array_key_exists("id", $_GET)) {
     $val->sales_order_cash = $data['sales_order_cash'];
     $val->sales_order_check = $data['sales_order_check'];
     $val->sales_order_online_transaction = $data['sales_order_online_transaction'];
+    $val->sales_order_credit_memo = $data['sales_order_credit_memo'];
     $val->sales_order_installment_amount = $data['sales_order_installment_amount'];
 
     $val->sales_order_installment_type = $data['sales_order_installment_type'];
@@ -60,6 +61,9 @@ if (array_key_exists("id", $_GET)) {
     }
     if ($val->sales_order_payment_method == "online transaction") {
         $val->sales_order_online_transaction = $val->sales_order_paid_amount;
+    }
+    if ($val->sales_order_payment_method == "credit memo") {
+        $val->sales_order_credit_memo = $val->sales_order_paid_amount;
     }
 
 
