@@ -8,7 +8,7 @@ import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { AmountWithPesoSign, PesoSign } from "@/components/PesoSign";
 import { apiVersion } from "@/config/config";
-import { ActivityLogDetails } from "@/layout/ArrayValue";
+import { ActivityLogDetails, RefundMethodList } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
 import {
@@ -112,6 +112,10 @@ const ModalReturns = ({ itemEdit }) => {
       itemEdit?.return_product_resolution_type,
       "other",
     ),
+    return_product_refund_method: isEmptyItem(
+      itemEdit?.return_product_refund_method,
+      "",
+    ),
     other_reason: isEmptyItem(itemEdit?.return_product_reason, ""),
   };
 
@@ -121,6 +125,14 @@ const ModalReturns = ({ itemEdit }) => {
     return_product_resolution_type: Yup.string().trim().required("Required"),
     return_product_notes: Yup.string().trim().required("Required"),
     other_reason: Yup.string().trim().required("Required"),
+    return_product_refund_method: Yup.string().when(
+      "return_product_resolution_type",
+      {
+        is: "refund",
+        then: (schema) => schema.trim().required("Required"),
+        otherwise: (schema) => schema.notRequired(),
+      },
+    ),
   });
 
   React.useEffect(() => {
@@ -200,6 +212,31 @@ const ModalReturns = ({ itemEdit }) => {
                         </optgroup>
                       </InputSelect>
                     </div>
+
+                    {props.values.return_product_resolution_type ===
+                    "refund" ? (
+                      <div className="relative">
+                        <InputSelect
+                          label="Refund Method"
+                          type="text"
+                          name="return_product_refund_method"
+                          disabled={mutation.isPending}
+                        >
+                          <optgroup label={`Select Refund Method`}>
+                            <option value="" hidden>
+                              --
+                            </option>
+                            {RefundMethodList().map((item, key) => (
+                              <option key={key} value={item.value}>
+                                {item.label}
+                              </option>
+                            ))}
+                          </optgroup>
+                        </InputSelect>
+                      </div>
+                    ) : (
+                      ""
+                    )}
 
                     <div className="relative">
                       <InputSelect

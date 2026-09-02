@@ -15,7 +15,10 @@ const FinanceReturns = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "return_product_status",
+      // is_status is a composite the backend derives from return_product_status +
+      // return_product_resolution_type (Pending/Refunded/Open/Completed/Rejected) -
+      // rendered by the shared TableStatus component like every other status column.
+      accessorKey: "is_status",
       header: "status",
       classTh: "min-w-40",
       classTd: "",
@@ -24,11 +27,11 @@ const FinanceReturns = () => {
         filterComponent: (column) => (
           <SearchableSelectFilterStatus
             column={column}
-            options={ActiveInActiveStatus("return-status")}
+            options={ActiveInActiveStatus("return-display-status")}
           />
         ),
       },
-      status_option: ActiveInActiveStatus("return-status"),
+      status_option: ActiveInActiveStatus("return-display-status"),
     },
     {
       accessorKey: "return_product_product_name",
@@ -77,7 +80,7 @@ const FinanceReturns = () => {
     },
     {
       accessorKey: "return_product_amount",
-      header: "Total Amount",
+      header: "Return Amount",
       amount: true,
       classTh: "",
       classTd: "",
@@ -86,7 +89,7 @@ const FinanceReturns = () => {
     },
     {
       accessorKey: "return_product_resolution_type",
-      header: "Resolution Type",
+      header: "Resolution",
       classTh: "min-w-40",
       classTd: "capitalize",
       filterFn: "equals",
@@ -99,6 +102,14 @@ const FinanceReturns = () => {
           />
         ),
       },
+    },
+    {
+      accessorKey: "return_product_refund_method",
+      header: "Refund Method",
+      classTh: "min-w-40",
+      classTd: "capitalize",
+      meta: "",
+      cell: (info) => info.getValue() || "—",
     },
     {
       accessorKey: "return_product_owner_name",

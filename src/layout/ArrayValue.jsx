@@ -224,6 +224,38 @@ export const ActiveInActiveStatus = (val = "default-status") => {
       value: "replacement",
     },
     {
+      name: ["return-display-status"],
+      label: "Pending",
+      value: "pending",
+    },
+    {
+      name: ["return-display-status"],
+      label: "Refunded",
+      value: "refunded",
+    },
+    {
+      name: ["return-display-status"],
+      label: "Open",
+      value: "open",
+    },
+    {
+      name: ["return-display-status"],
+      label: "Completed",
+      value: "completed",
+    },
+    {
+      name: ["return-display-status"],
+      label: "Rejected",
+      value: "rejected",
+    },
+    {
+      // Fallback for legacy rows processed before resolution type existed on
+      // this table - the backend CASE falls through to the raw status.
+      name: ["return-display-status"],
+      label: "Processed",
+      value: "processed",
+    },
+    {
       // return_product_is_restocked is stored as 0/1 in the DB (see isYesOrNo
       // utility), not "yes"/"no" strings - values must match the raw column
       // for the server-side LIKE filter to find anything.
@@ -291,6 +323,16 @@ export const PaymentMethodList = () => {
     { label: "online transaction", value: "online transaction" },
     { label: "mutiple payment", value: "mutiple payment" },
     { label: "credit memo", value: "credit memo" },
+  ];
+
+  return result;
+};
+
+export const RefundMethodList = () => {
+  const result = [
+    { label: "cash", value: "cash" },
+    { label: "check", value: "check" },
+    { label: "online transaction", value: "online transaction" },
   ];
 
   return result;
@@ -380,6 +422,8 @@ export const variantsStatus = (val = "active") => {
     processed: "bg-primary/10 text-primary",
     approved: "bg-success/20 text-success",
     rejected: "bg-red-100 text-red-500",
+    // return-display-status (open/completed already covered by purchase-order-status above)
+    refunded: "bg-primary/10 text-primary",
   };
 
   return variants[

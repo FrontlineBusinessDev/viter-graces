@@ -59,6 +59,13 @@ class FinanceReturns
         ];
 
         foreach ($this->filters as $i => $item) {
+            // "is_status" here is filtered as a composite of return_product_status
+            // and return_product_resolution_type (Pending/Refunded/Open/Completed/Rejected)
+            // - not a real column, so it needs its own WHERE clause instead of a LIKE.
+            if ($item['id'] === 'is_status') {
+                $filterColumn[] = displayStatusCondition($item['value']);
+                continue;
+            }
             if (!in_array($item['id'], $allowedColumns, true)) {
                 continue;
             }
@@ -78,7 +85,18 @@ class FinanceReturns
         try {
             $sql = "select *, ";
             $sql .= "return_product_aid as id, ";
-            $sql .= "return_product_status as is_status, ";
+            // is_status carries the human status Finance shows (Pending/Rejected
+            // apply regardless of resolution; once processed, the label depends on
+            // how the return was resolved - Refunded, Open for an available credit
+            // memo, or Completed for a replacement).
+            $sql .= "case ";
+            $sql .= "when return_product_status = 'pending' then 'pending' ";
+            $sql .= "when return_product_status = 'rejected' then 'rejected' ";
+            $sql .= "when return_product_status = 'processed' and return_product_resolution_type = 'refund' then 'refunded' ";
+            $sql .= "when return_product_status = 'processed' and return_product_resolution_type = 'credit memo' then 'open' ";
+            $sql .= "when return_product_status = 'processed' and return_product_resolution_type = 'replacement' then 'completed' ";
+            $sql .= "else return_product_status ";
+            $sql .= "end as is_status, ";
             $sql .= "DATE_FORMAT(return_product_date, '%b %d, %Y') as return_product_date, ";
             $sql .= "return_product_number as name ";
             $sql .= "from {$this->tblReturnProducts} ";
@@ -119,6 +137,13 @@ class FinanceReturns
         ];
 
         foreach ($this->filters as $i => $item) {
+            // "is_status" here is filtered as a composite of return_product_status
+            // and return_product_resolution_type (Pending/Refunded/Open/Completed/Rejected)
+            // - not a real column, so it needs its own WHERE clause instead of a LIKE.
+            if ($item['id'] === 'is_status') {
+                $filterColumn[] = displayStatusCondition($item['value']);
+                continue;
+            }
             if (!in_array($item['id'], $allowedColumns, true)) {
                 continue;
             }
@@ -138,7 +163,18 @@ class FinanceReturns
         try {
             $sql = "select *, ";
             $sql .= "return_product_aid as id, ";
-            $sql .= "return_product_status as is_status, ";
+            // is_status carries the human status Finance shows (Pending/Rejected
+            // apply regardless of resolution; once processed, the label depends on
+            // how the return was resolved - Refunded, Open for an available credit
+            // memo, or Completed for a replacement).
+            $sql .= "case ";
+            $sql .= "when return_product_status = 'pending' then 'pending' ";
+            $sql .= "when return_product_status = 'rejected' then 'rejected' ";
+            $sql .= "when return_product_status = 'processed' and return_product_resolution_type = 'refund' then 'refunded' ";
+            $sql .= "when return_product_status = 'processed' and return_product_resolution_type = 'credit memo' then 'open' ";
+            $sql .= "when return_product_status = 'processed' and return_product_resolution_type = 'replacement' then 'completed' ";
+            $sql .= "else return_product_status ";
+            $sql .= "end as is_status, ";
             $sql .= "DATE_FORMAT(return_product_date, '%b %d, %Y') as return_product_date, ";
             $sql .= "return_product_number as name ";
             $sql .= "from {$this->tblReturnProducts} ";

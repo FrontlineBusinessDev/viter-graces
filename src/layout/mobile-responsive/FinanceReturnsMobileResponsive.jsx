@@ -16,6 +16,13 @@ const FinanceReturnsMobileResponsive = ({
         <div>
           {rows?.map((row, index) => {
             const rowData = row.original;
+            // is_status is derived server-side from status + resolution type
+            // (pending/refunded/open/completed/rejected).
+            const displayStatus = rowData?.is_status;
+            const isRefund =
+              rowData?.return_product_resolution_type === "refund";
+            const isCreditMemo =
+              rowData?.return_product_resolution_type === "credit memo";
 
             return (
               <div
@@ -43,9 +50,7 @@ const FinanceReturnsMobileResponsive = ({
                   {/* STATUS */}
                   <ul>
                     <li className="mb-0 capitalize">
-                      <Pills variant={rowData?.return_product_status}>
-                        {rowData?.return_product_status}
-                      </Pills>
+                      <Pills variant={displayStatus}>{displayStatus}</Pills>
                     </li>
                   </ul>
                 </div>
@@ -69,7 +74,9 @@ const FinanceReturnsMobileResponsive = ({
                       </span>
                     </li>
                     <li className="flex text-left! text-xs">
-                      <span className={`text-gray-500 mr-2`}>Amount: </span>
+                      <span className={`text-gray-500 mr-2`}>
+                        Return Amount:{" "}
+                      </span>
                       <span className="wrap-break-word font-semibold">
                         <AmountWithPesoSign
                           classN="size-3"
@@ -86,6 +93,30 @@ const FinanceReturnsMobileResponsive = ({
                         {rowData?.return_product_resolution_type || "-"}
                       </span>
                     </li>
+                    {isRefund && (
+                      <li className="flex text-left! text-xs">
+                        <span className={`text-gray-500 mr-2 capitalize`}>
+                          Refund Method:{" "}
+                        </span>
+                        <span className="wrap-break-word font-semibold capitalize">
+                          {rowData?.return_product_refund_method || "-"}
+                        </span>
+                      </li>
+                    )}
+                    {isCreditMemo && (
+                      <li className="flex text-left! text-xs">
+                        <span className={`text-gray-500 mr-2 capitalize`}>
+                          Credit Memo Amount:{" "}
+                        </span>
+                        <span className="wrap-break-word font-semibold">
+                          <AmountWithPesoSign
+                            classN="size-3"
+                            classAmnt="flex justify-start text-black"
+                            amount={rowData?.return_product_amount}
+                          />
+                        </span>
+                      </li>
+                    )}
                     <li className="flex text-left! text-xs">
                       <span className={`text-gray-500 mr-2`}>
                         Product Owner:{" "}

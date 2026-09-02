@@ -20,6 +20,7 @@ class Returns
     public $return_product_owner_id;
     public $return_product_owner_name;
     public $return_product_resolution_type;
+    public $return_product_refund_method;
     public $return_product_created;
     public $return_product_updated;
 
@@ -77,6 +78,7 @@ class Returns
             $sql .= "return_product_owner_id, ";
             $sql .= "return_product_owner_name, ";
             $sql .= "return_product_resolution_type, ";
+            $sql .= "return_product_refund_method, ";
             $sql .= "return_product_created, ";
             $sql .= "return_product_updated ) values ( ";
             $sql .= ":return_product_status, ";
@@ -97,6 +99,7 @@ class Returns
             $sql .= ":return_product_owner_id, ";
             $sql .= ":return_product_owner_name, ";
             $sql .= ":return_product_resolution_type, ";
+            $sql .= ":return_product_refund_method, ";
             $sql .= ":return_product_created, ";
             $sql .= ":return_product_updated ) ";
             $query = $this->connection->prepare($sql);
@@ -119,6 +122,7 @@ class Returns
                 "return_product_owner_id" => $this->return_product_owner_id,
                 "return_product_owner_name" => $this->return_product_owner_name,
                 "return_product_resolution_type" => $this->return_product_resolution_type,
+                "return_product_refund_method" => $this->return_product_refund_method,
                 "return_product_created" => $this->return_product_created,
                 "return_product_updated" => $this->return_product_updated,
             ]);
