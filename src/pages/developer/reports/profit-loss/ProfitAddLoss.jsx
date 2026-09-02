@@ -190,6 +190,17 @@ const ProfitAddLoss = () => {
                   />
                 )}
               </li>
+              <li className="text-red-500">Less: Returns</li>
+              <li className="text-red-500 text-right">
+                {isLoading || isFetching ? (
+                  <TableLoading count={1} cols={1} />
+                ) : (
+                  <AmountWithPesoSign
+                    classN="size-3"
+                    amount={item?.less_return}
+                  />
+                )}
+              </li>
             </ul>
             <ul className="grid grid-cols-2 mt-3 text-black dark:text-white font-semibold">
               <li>Net Sales</li>
