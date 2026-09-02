@@ -17,6 +17,7 @@ import PurchaseOrderMobileReponsive from "./PurchaseOrderMobileReponsive";
 import ReportAccountReceivableMobileResponsive from "./ReportAccountReceivableMobileResponsive";
 import ReportOverdueMobileResponsive from "./ReportOverdueMobileResponsive";
 import ReturnsMobileReponsive from "./ReturnsMobileReponsive";
+import ReturnsReportsMobileResponsive from "./ReturnsReportsMobileResponsive";
 import RoleMobileReponsive from "./RoleMobileReponsive";
 import SalesOrderMobileResponsive from "./SalesOrderMobileResponsive";
 import SalesReportMobileResponsive from "./SalesReportMobileResponsive";
@@ -226,6 +227,11 @@ const MobileResponsiveList = ({
       <ActivityLogMobileResponsive
         rows={rows}
         setItemEdit={setItemEdit}
+        isDefaultMobile={isDefaultMobile}
+      />
+      {/* RETURNS REPORTS RESPONSIVE */}
+      <ReturnsReportsMobileResponsive
+        rows={rows}
         isDefaultMobile={isDefaultMobile}
       />
       {/* DEFAULT RESPONSIVE */}
