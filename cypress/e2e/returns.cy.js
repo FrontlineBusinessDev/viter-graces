@@ -25,6 +25,12 @@ describe("Returns Module - CRUD Flow", () => {
     cy.get('.modal-body [data-testid="return_product_resolution_type"]')
       .select("refund");
 
+    // "Refund Method" only appears - and is only required - once
+    // resolution type is "refund"
+    cy.get('.modal-body [data-testid="return_product_refund_method"]').select(
+      "cash",
+    );
+
     cy.get('.modal-body [data-testid="other_reason"]').type(returnReason);
 
     // link an existing sales order and pick its first line item

@@ -466,7 +466,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                             "sales_order_customer_name",
                             e?.value ?? "",
                           );
-                          setSelectedCustomerId(e.id);
+                          setSelectedCustomerId(e?.id ?? "");
                           return e;
                         }}
                         itemEdit={itemEdit}

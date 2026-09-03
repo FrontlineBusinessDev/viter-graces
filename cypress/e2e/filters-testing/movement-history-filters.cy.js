@@ -18,10 +18,10 @@ describe("Movement History Module - Filters", () => {
 
     cy.wait("@getStockMovement");
 
-    // purchases
+    // stock out - sales
     cy.get('[data-testid="filter-status-btn"]').click();
     cy.get('[data-testid="filter-status-btn"]')
-      .contains(".react-select__option", "PURCHASES")
+      .contains(".react-select__option", "STOCK OUT - SALES")
       .click();
 
     cy.wait("@getStockMovement");

@@ -66,7 +66,7 @@ const DashboardProfitAndLoss = () => {
                 <button
                   key={frame}
                   onClick={() => setTimeframePL(frame)}
-                  data-testid={`timeframe-${frame.toLowerCase()}`}
+                  data-testid={`timeframePL-${frame.toLowerCase()}`}
                   className={`capitalize px-3 py-1 rounded-lg ${
                     timeframePL === frame
                       ? "bg-green-600 text-white"
