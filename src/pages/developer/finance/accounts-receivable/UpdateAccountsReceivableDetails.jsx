@@ -11,6 +11,7 @@ import {
   setSuccess,
 } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
+import useQueryData from "@/services/useQueryData";
 import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -25,6 +26,29 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
   const [totalBalanceAmount, setTotalBalanceAmount] = React.useState(
     isEmptyItem(itemEdit?.sales_order_total_balance_amount, 0),
   );
+
+  // Credit memo balance for this order's customer (processed returns only,
+  // excluding whatever this same order has already applied for itself)
+  const { data: creditMemoResult } = useQueryData(
+    `${apiVersion}/customer/read-open-credit-memo`, // endpoint
+    "post", // method
+    `customer/read-open-credit-memo`, // key
+    {
+      id: itemEdit?.sales_order_customer_id,
+      excludeSalesOrderNumber: isEmptyItem(itemEdit?.sales_order_number, ""),
+    },
+    { id: itemEdit?.sales_order_customer_id },
+  );
+
+  const creditMemoBalance = Number(
+    isEmptyItem(creditMemoResult?.data?.[0]?.open_credit_memo, 0),
+  );
+
+  // decremented locally as rows get paid via "credit memo" within this same
+  // modal session, so a second row can't draw on the same balance twice
+  // before the customer's balance is refetched from the server
+  const [creditMemoUsed, setCreditMemoUsed] = React.useState(0);
+  const availableCreditMemo = Math.max(0, creditMemoBalance - creditMemoUsed);
 
   const queryClient = useQueryClient();
 
@@ -73,38 +97,70 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
   const isInstallment =
     itemEdit?.sales_order_payment_terms?.toLowerCase() === "installment";
 
+  // "mutiple payment" is no longer selectable (its split-breakdown UI was
+  // removed as redundant) - normalize any pre-existing row still carrying
+  // that value down to plain "cash", same as an empty method would default.
+  const normalizePaymentMethod = (method) => {
+    const value = isEmptyItem(method, "cash");
+    return value === "mutiple payment" ? "cash" : value;
+  };
+
+  // Credit memo is only offered when the customer actually has a balance to
+  // spend, matching the same conditional visibility used in the Sales Order
+  // modal's payment method dropdown.
+  const paymentMethodOptions = PaymentMethodInArList().filter(
+    (option) => option.value !== "credit memo" || availableCreditMemo > 0,
+  );
+
+  // how much of this row's scheduled amount is still owed
+  const getRowRemainingBalance = (a) =>
+    Math.max(
+      0,
+      Number(a?.installment_payment_amount || 0) -
+        Number(a?.installment_payment_paid_amount || 0),
+    );
+
   // "entered_amount" is what the user is typing THIS time - kept separate from
   // installment_payment_paid_amount (the already-recorded, server-confirmed
   // cumulative total for the row) so a partial payment can't clobber a prior one.
   const handleChangeSave = (e, index) => {
     const updated = [...items];
-    updated[index]["entered_amount"] = e.target.value;
+    const a = updated[index];
+    let value = e.target.value;
+
+    // Credit memo can never pay out more than the customer's available
+    // balance, nor more than this row still owes.
+    if (a?.installment_payment_method === "credit memo") {
+      const maxAllowed = Math.min(availableCreditMemo, getRowRemainingBalance(a));
+      if (value !== "" && Number(value) > maxAllowed) {
+        value = maxAllowed;
+      }
+    }
+
+    updated[index]["entered_amount"] = value;
     setItems(updated);
   };
 
   const handleChangeMethod = (e, index) => {
     const updated = [...items];
-    updated[index]["installment_payment_method"] = e.target.value;
-    setItems(updated);
-  };
+    const method = e.target.value;
+    updated[index]["installment_payment_method"] = method;
 
-  const handleChangeSplit = (e, index, field) => {
-    const updated = [...items];
-    updated[index][field] = e.target.value;
-    setItems(updated);
-  };
-
-  // Multiple Payment: the total paid this submission is the sum of the 3
-  // breakdown inputs, not a separately-typed amount. Installment rows (single
-  // method) are locked to the row's own scheduled amount - not user-entered.
-  const getEnteredAmount = (a) => {
-    if (a?.installment_payment_method === "mutiple payment") {
-      return (
-        Number(a?.payment_cash_amount || 0) +
-        Number(a?.payment_check_amount || 0) +
-        Number(a?.payment_online_amount || 0)
+    // pre-fill the paid amount with the smaller of the available credit
+    // memo balance and what this row still owes
+    if (method === "credit memo") {
+      updated[index]["entered_amount"] = Math.min(
+        availableCreditMemo,
+        getRowRemainingBalance(updated[index]),
       );
     }
+
+    setItems(updated);
+  };
+
+  // Installment rows (single method) are locked to the row's own scheduled
+  // amount - not user-entered.
+  const getEnteredAmount = (a) => {
     if (isInstallment) {
       return (
         Number(a?.installment_payment_paid_amount || 0) +
@@ -115,13 +171,6 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
   };
 
   const getEnteredAmountForBalance = (a) => {
-    if (a?.installment_payment_method === "mutiple payment") {
-      return (
-        Number(a?.payment_cash_amount || 0) +
-        Number(a?.payment_check_amount || 0) +
-        Number(a?.payment_online_amount || 0)
-      );
-    }
     if (isInstallment) {
       return (
         Number(a?.installment_payment_amount || 0) +
@@ -149,7 +198,14 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
     const finalPaidAmount = previouslyPaid + enteredNow;
     const isFullyPaid =
       finalPaidAmount >= Number(a["installment_payment_amount"]);
-    const paymentMethod = isEmptyItem(a?.installment_payment_method, "cash");
+    const paymentMethod = normalizePaymentMethod(a?.installment_payment_method);
+
+    // belt-and-suspenders: the input is already clamped as the user types,
+    // but never let a credit-memo payment reach the server over the
+    // customer's available balance
+    if (paymentMethod === "credit memo" && enteredNow > availableCreditMemo) {
+      return;
+    }
 
     const updated = [...items];
     updated[index]["installment_payment_is_paid"] = isFullyPaid ? 1 : 0;
@@ -198,6 +254,10 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
         if (res?.success) {
           setTotalPaidAmount(newTotalPaidAmount);
           setTotalBalanceAmount(newTotalBalanceAmount);
+
+          if (paymentMethod === "credit memo") {
+            setCreditMemoUsed((prev) => prev + enteredNow);
+          }
 
           if (Number(newTotalBalanceAmount) <= 0) {
             queryClient.invalidateQueries({
@@ -265,12 +325,6 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
             <tbody className="">
               {items?.map((a, index) => {
                 const isUnpaid = Number(a?.installment_payment_is_paid) === 0;
-                const isMultiple =
-                  a?.installment_payment_method === "mutiple payment";
-                const splitTotal =
-                  Number(a?.payment_cash_amount || 0) +
-                  Number(a?.payment_check_amount || 0) +
-                  Number(a?.payment_online_amount || 0);
 
                 return (
                   <React.Fragment key={index}>
@@ -290,7 +344,7 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
                       {isUnpaid ? (
                         <>
                           <td className=" dark:bg-gray-900! ">
-                            {isInstallment && !isMultiple ? (
+                            {isInstallment ? (
                               // Installment terms: Paid Amount is fixed to the
                               // scheduled amount for this due date - no free input.
                               <AmountWithPesoSign
@@ -304,20 +358,18 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
                                 placeholder="0"
                                 value={isEmptyItem(a["entered_amount"], "")}
                                 onChange={(e) => handleChangeSave(e, index)}
-                                disabled={isMultiple}
                               />
                             )}
                           </td>
                           <td className=" dark:bg-gray-900! ">
                             <select
-                              value={isEmptyItem(
+                              value={normalizePaymentMethod(
                                 a["installment_payment_method"],
-                                "cash",
                               )}
                               onChange={(e) => handleChangeMethod(e, index)}
                               className="capitalize"
                             >
-                              {PaymentMethodInArList().map((m) => (
+                              {paymentMethodOptions.map((m) => (
                                 <option key={m.value} value={m.value}>
                                   {m.label}
                                 </option>
@@ -350,97 +402,6 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
                         </>
                       )}
                     </tr>
-                    {/* Multiple Payment: nested breakdown row, per the multiple-payments design reference */}
-                    {isUnpaid && isMultiple && (
-                      <tr className="border-0!">
-                        <td colSpan={6} className="dark:bg-gray-900!">
-                          <div className="border shadow border-gray-300 rounded-lg bg-gray-50 dark:bg-gray-700 p-3 my-1">
-                            <p className="text-xs font-semibold text-gray-500 dark:text-light mb-2">
-                              Multiple Payment Details
-                            </p>
-                            <div className="grid grid-cols-4 gap-3">
-                              <div className="relative">
-                                <label>
-                                  <span className="text-red-500">*</span>Cash
-                                  amount
-                                </label>
-                                <input
-                                  type="number"
-                                  className="text-right!"
-                                  value={isEmptyItem(
-                                    a["payment_cash_amount"],
-                                    "",
-                                  )}
-                                  onChange={(e) =>
-                                    handleChangeSplit(
-                                      e,
-                                      index,
-                                      "payment_cash_amount",
-                                    )
-                                  }
-                                  placeholder="0"
-                                />
-                              </div>
-                              <div className="relative">
-                                <label>
-                                  <span className="text-red-500">*</span>Check
-                                  amount
-                                </label>
-                                <input
-                                  type="number"
-                                  className="text-right!"
-                                  value={isEmptyItem(
-                                    a["payment_check_amount"],
-                                    "",
-                                  )}
-                                  onChange={(e) =>
-                                    handleChangeSplit(
-                                      e,
-                                      index,
-                                      "payment_check_amount",
-                                    )
-                                  }
-                                  placeholder="0"
-                                />
-                              </div>
-                              <div className="relative">
-                                <label>
-                                  <span className="text-red-500">*</span>
-                                  Online transaction amount
-                                </label>
-                                <input
-                                  type="number"
-                                  className="text-right!"
-                                  value={isEmptyItem(
-                                    a["payment_online_amount"],
-                                    "",
-                                  )}
-                                  onChange={(e) =>
-                                    handleChangeSplit(
-                                      e,
-                                      index,
-                                      "payment_online_amount",
-                                    )
-                                  }
-                                  placeholder="0"
-                                />
-                              </div>
-                              <div className="relative">
-                                <label>
-                                  <span className="text-red-500">*</span>Total
-                                  Paid
-                                </label>
-                                <AmountWithPesoSign
-                                  classN="size-3"
-                                  classAmnt="text-green-600 font-bold"
-                                  amount={splitTotal}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                    )}
                   </React.Fragment>
                 );
               })}

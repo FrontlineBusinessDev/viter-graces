@@ -348,6 +348,7 @@ export const PaymentMethodInArList = () => {
     { label: "cash", value: "cash" },
     { label: "check", value: "check" },
     { label: "online transaction", value: "online transaction" },
+    { label: "credit memo", value: "credit memo" },
     // { label: "mutiple payment", value: "mutiple payment" },
   ];
 

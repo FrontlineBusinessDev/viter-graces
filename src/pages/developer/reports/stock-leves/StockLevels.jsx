@@ -44,7 +44,7 @@ const StockLevels = () => {
           />
         ),
       },
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "capitalize ",
       isMobileTitle: true,
     },
@@ -53,7 +53,7 @@ const StockLevels = () => {
       header: "sku",
       filterFn: "",
       meta: "",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
     },
     {
@@ -61,7 +61,7 @@ const StockLevels = () => {
       header: "current stock",
       filterFn: "between",
       meta: "",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "uppercase ",
     },
     {
@@ -69,7 +69,7 @@ const StockLevels = () => {
       header: "unit",
       filterFn: "",
       meta: "",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
     },
     {
@@ -77,7 +77,7 @@ const StockLevels = () => {
       header: "threshold",
       filterFn: "between",
       meta: "",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
     },
     {
@@ -85,7 +85,7 @@ const StockLevels = () => {
       header: "Price",
       filterFn: "",
       meta: "",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
     },
     ...(Number(ProductOwnerId(store)) > 0

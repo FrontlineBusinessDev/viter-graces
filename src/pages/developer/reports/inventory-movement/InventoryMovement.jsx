@@ -33,7 +33,7 @@ const InventoryMovement = () => {
     {
       accessorKey: "stock_movement_product_name",
       header: "Products",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       meta: {
         filterComponent: (column) => (
@@ -48,21 +48,21 @@ const InventoryMovement = () => {
     {
       accessorKey: "products_sku",
       header: "SKU",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       meta: "",
     },
     {
       accessorKey: "products_category",
       header: "Category",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       meta: "",
     },
     {
       accessorKey: "stock_movement_after_qty",
       header: "Stock Quantity",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       filterFn: "between",
       meta: "",
@@ -70,7 +70,7 @@ const InventoryMovement = () => {
     {
       accessorKey: "products_low_stock_threshold",
       header: "Threshold",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       filterFn: "between",
       meta: "",
@@ -79,7 +79,7 @@ const InventoryMovement = () => {
       accessorKey: "products_price",
       header: "Price",
       amount: true,
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       filterFn: "between",
       meta: "",
@@ -87,7 +87,7 @@ const InventoryMovement = () => {
     {
       accessorKey: "stock_movement_location",
       header: "Location",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       meta: "",
     },

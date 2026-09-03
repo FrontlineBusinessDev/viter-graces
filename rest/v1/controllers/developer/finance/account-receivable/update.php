@@ -5,6 +5,7 @@ $conn = checkDbConnection();
 // make instance of classes
 $val = new AccountReceivable($conn);
 $valActivity = new ActivityLog($conn);
+$valReturns = new Returns($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -78,6 +79,13 @@ if (array_key_exists("id", $_GET)) {
     $val->sales_order_cash = $existingCash + $cashDelta;
     $val->sales_order_check = $existingCheck + $checkDelta;
     $val->sales_order_online_transaction = $existingOnline + $onlineDelta;
+
+    // Credit memo: consume this payment's amount from the customer's
+    // available credit memo balance (oldest processed return first) so it
+    // can't be spent again elsewhere.
+    if ($val->sales_order_payment_method === 'credit memo') {
+        applyCreditMemoForCollection($valReturns, $val->sales_order_customer_id, $paymentAmount);
+    }
 
     $val->sales_order_total_amount = $data["sales_order_total_amount"];
     $val->sales_order_discount = $data["sales_order_discount"];

@@ -32,14 +32,14 @@ const ProductOwner = () => {
     {
       accessorKey: "name",
       header: "name",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       meta: "",
     },
     {
       accessorKey: "user_account_email",
       header: "email",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       meta: "",
     },

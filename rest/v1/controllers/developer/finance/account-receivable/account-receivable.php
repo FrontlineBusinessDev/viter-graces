@@ -7,6 +7,7 @@ require '../../../../core/functions.php';
 require 'functions.php';
 // use needed classes
 require '../../../../models/developer/finance/AccountReceivable.php';
+require '../../../../models/developer/returns/Returns.php';
 
 // ACTIVITY LOG DETAILS
 require '../../../../controllers/developer/activity-log/functions.php';

@@ -48,7 +48,7 @@ const Returns = () => {
     {
       accessorKey: "return_product_date",
       header: "date",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       filterFn: "date",
       meta: "",
@@ -144,7 +144,7 @@ const Returns = () => {
     {
       accessorKey: "return_product_reason",
       header: "reason",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "capitalize",
       meta: "",
     },

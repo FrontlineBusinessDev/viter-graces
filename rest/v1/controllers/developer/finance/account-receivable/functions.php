@@ -43,7 +43,50 @@ function allowedColumns()
     return $query;
 }
 
-// Update Sales 
+// Consumes $amount from the customer's available credit memo balance,
+// oldest processed credit-memo return first. Mirrors the FIFO consumption in
+// sales-order/functions.php's applyCreditMemoToReturns(), but kept as its
+// own one-directional copy here (a payment collection only ever consumes,
+// never releases, so it doesn't need that function's release-on-edit branch)
+// to avoid requiring sales-order/functions.php, which would redeclare this
+// file's own allowedColumns().
+function applyCreditMemoForCollection($returnsObject, $customerId, $amount)
+{
+    if ($amount <= 0) {
+        return;
+    }
+
+    $returnsObject->return_product_customer_id = $customerId;
+    $query = $returnsObject->readCreditMemoReturnsByCustomerId();
+    $returns = $query ? getResultData($query) : [];
+
+    $remaining = $amount;
+
+    foreach ($returns as $row) {
+        if ($remaining <= 0) {
+            break;
+        }
+
+        $rowAmount = (float)$row['return_product_amount'];
+        $rowPaid = (float)$row['return_product_paid_amount'];
+        $available = $rowAmount - $rowPaid;
+
+        if ($available <= 0) {
+            continue;
+        }
+
+        $applied = min($available, $remaining);
+        $remaining -= $applied;
+
+        $returnsObject->return_product_aid = $row['return_product_aid'];
+        $returnsObject->return_product_status = $row['return_product_status'];
+        $returnsObject->return_product_paid_amount = $rowPaid + $applied;
+        $returnsObject->return_product_updated = date("Y-m-d H:i:s");
+        checkUpdate($returnsObject);
+    }
+}
+
+// Update Sales
 function checkUpdateSales($object)
 {
     $query = $object->updateSales();

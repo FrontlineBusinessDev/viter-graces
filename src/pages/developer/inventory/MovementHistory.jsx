@@ -34,7 +34,7 @@ const MovementHistory = () => {
     {
       accessorKey: "stock_movement_date",
       header: "Date",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       filterFn: "date",
       meta: "",
@@ -42,7 +42,7 @@ const MovementHistory = () => {
     {
       accessorKey: "stock_movement_product_name",
       header: "Products",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       meta: {
         filterComponent: (column) => (
@@ -57,7 +57,7 @@ const MovementHistory = () => {
     {
       accessorKey: "stock_movement_qty",
       header: "QTY",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       filterFn: "between",
       meta: "",
@@ -65,7 +65,7 @@ const MovementHistory = () => {
     {
       accessorKey: "stock_movement_before_qty",
       header: "Before",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       filterFn: "between",
       meta: "",
@@ -73,7 +73,7 @@ const MovementHistory = () => {
     {
       accessorKey: "stock_movement_after_qty",
       header: "After",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       filterFn: "between",
       meta: "",
@@ -81,7 +81,7 @@ const MovementHistory = () => {
     {
       accessorKey: "stock_movement_location",
       header: "Location",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: " line-clamp-2 max-w-40",
       meta: "",
     },
@@ -103,7 +103,7 @@ const MovementHistory = () => {
     {
       accessorKey: "stock_movement_notes",
       header: "Notes",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
     },
   ];

@@ -49,7 +49,7 @@ const AccountsPayable = () => {
     {
       accessorKey: "purchase_order_date",
       header: "Purchase Date",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       filterFn: "date",
       meta: "",
@@ -106,7 +106,7 @@ const AccountsPayable = () => {
       accessorKey: "balance_amount",
       header: "Balance",
       amount: true,
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       filterFn: "between",
       meta: "",

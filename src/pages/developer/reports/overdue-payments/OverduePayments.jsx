@@ -20,7 +20,7 @@ const OverduePayments = () => {
     {
       accessorKey: "installment_payment_code_number",
       header: "Order #",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       isMobileTitle: true,
       meta: "",
@@ -28,7 +28,7 @@ const OverduePayments = () => {
     {
       accessorKey: "installment_payment_due_date",
       header: "Date",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       filterFn: "date",
       meta: "",

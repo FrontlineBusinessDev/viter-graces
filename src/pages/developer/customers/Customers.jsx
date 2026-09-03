@@ -21,7 +21,7 @@ const Customers = () => {
     {
       accessorKey: "is_active",
       header: "status",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       filterFn: "equals",
       meta: {
@@ -47,14 +47,14 @@ const Customers = () => {
     {
       accessorKey: "customer_email",
       header: "email",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       meta: "",
     },
     {
       accessorKey: "customer_phone",
       header: "contact",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       meta: "",
     },

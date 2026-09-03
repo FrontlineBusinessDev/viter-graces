@@ -37,7 +37,7 @@ const StockOverview = () => {
     {
       accessorKey: "products_name",
       header: "Products",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       isMobileTitle: true,
       meta: {
@@ -53,7 +53,7 @@ const StockOverview = () => {
     {
       accessorKey: "products_sku",
       header: "SKU",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       meta: "",
       isTag: true,
@@ -61,7 +61,7 @@ const StockOverview = () => {
     {
       accessorKey: "stock_movement_location",
       header: "Location",
-      classTh: "",
+      classTh: "min-w-40",
       classTd: "",
       meta: "",
     },
