@@ -168,16 +168,16 @@ export const ActiveInActiveStatus = (val = "default-status") => {
       label: "IN STOCK",
       value: "in stock",
     },
-    {
-      name: ["stock-type-status"],
-      label: "PURCHASES",
-      value: "purchases",
-    },
-    {
-      name: ["stock-type-status"],
-      label: "STOCK IN ADJUSTMENTS",
-      value: "stock in adjustments",
-    },
+    // {
+    //   name: ["stock-type-status"],
+    //   label: "PURCHASES",
+    //   value: "purchases",
+    // },
+    // {
+    //   name: ["stock-type-status"],
+    //   label: "STOCK IN ADJUSTMENTS",
+    //   value: "stock in adjustments",
+    // },
     {
       name: ["stock-type-status"],
       label: "STOCK OUT - SALES",
@@ -222,6 +222,38 @@ export const ActiveInActiveStatus = (val = "default-status") => {
       name: ["resolution-type"],
       label: "Replacement",
       value: "replacement",
+    },
+    {
+      name: ["return-display-status"],
+      label: "Pending",
+      value: "pending",
+    },
+    {
+      name: ["return-display-status"],
+      label: "Refunded",
+      value: "refunded",
+    },
+    {
+      name: ["return-display-status"],
+      label: "Open",
+      value: "open",
+    },
+    {
+      name: ["return-display-status"],
+      label: "Completed",
+      value: "completed",
+    },
+    {
+      name: ["return-display-status"],
+      label: "Rejected",
+      value: "rejected",
+    },
+    {
+      // Fallback for legacy rows processed before resolution type existed on
+      // this table - the backend CASE falls through to the raw status.
+      name: ["return-display-status"],
+      label: "Processed",
+      value: "processed",
     },
     {
       // return_product_is_restocked is stored as 0/1 in the DB (see isYesOrNo
@@ -285,6 +317,28 @@ export const PaymentTermsList = () => {
 };
 
 export const PaymentMethodList = () => {
+  const result = [
+    { label: "cash", value: "cash" },
+    { label: "check", value: "check" },
+    { label: "online transaction", value: "online transaction" },
+    { label: "mutiple payment", value: "mutiple payment" },
+    { label: "credit memo", value: "credit memo" },
+  ];
+
+  return result;
+};
+
+export const RefundMethodList = () => {
+  const result = [
+    { label: "cash", value: "cash" },
+    { label: "check", value: "check" },
+    { label: "online transaction", value: "online transaction" },
+  ];
+
+  return result;
+};
+
+export const PaymentMethodInArList = () => {
   const result = [
     { label: "cash", value: "cash" },
     { label: "check", value: "check" },
@@ -367,7 +421,9 @@ export const variantsStatus = (val = "active") => {
     pending: "bg-warning/10 text-warning",
     processed: "bg-primary/10 text-primary",
     approved: "bg-success/20 text-success",
-    rejected: "bg-red-100 text-red-500",
+    rejected: "bg-blue-100 text-blue-500",
+    // return-display-status (open/completed already covered by purchase-order-status above)
+    refunded: "bg-primary/10 text-primary",
   };
 
   return variants[

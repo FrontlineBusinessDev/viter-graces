@@ -316,12 +316,76 @@ function updateStatus($val, $data)
     return;
 }
 
-// Update 
+// Update
 function updateConnectedMenu($object)
 {
-    // 
+    //
 
 
+}
+
+// Update - keeps return_product_paid_amount in sync with how much of a
+// customer's credit memo balance this sales order has applied. $deltaAmount
+// is (new sales_order_credit_memo - previously saved sales_order_credit_memo)
+// so a plain create (nothing saved yet) just applies the full amount, editing
+// an order applies/releases only the difference, and switching away from
+// credit memo releases everything that order had applied.
+function applyCreditMemoToReturns($returnsObject, $customerId, $deltaAmount)
+{
+    if ((float)$deltaAmount == 0) {
+        return;
+    }
+
+    $returnsObject->return_product_customer_id = $customerId;
+    $query = $returnsObject->readCreditMemoReturnsByCustomerId();
+    $returns = $query ? getResultData($query) : [];
+
+    if (count($returns) == 0) {
+        return;
+    }
+
+    $remainingDelta = (float)$deltaAmount;
+
+    // Applying consumes oldest returns first (FIFO); releasing gives back to
+    // the most recently consumed ones first.
+    if ($remainingDelta < 0) {
+        $returns = array_reverse($returns);
+    }
+
+    foreach ($returns as $row) {
+        if ($remainingDelta == 0) {
+            break;
+        }
+
+        $amount = (float)$row['return_product_amount'];
+        $paid = (float)$row['return_product_paid_amount'];
+
+        if ($remainingDelta > 0) {
+            $available = $amount - $paid;
+            if ($available <= 0) {
+                continue;
+            }
+            $applied = min($available, $remainingDelta);
+            $newPaid = $paid + $applied;
+            $remainingDelta -= $applied;
+        } else {
+            $releasable = $paid;
+            if ($releasable <= 0) {
+                continue;
+            }
+            $applied = min($releasable, abs($remainingDelta));
+            $newPaid = $paid - $applied;
+            $remainingDelta += $applied;
+        }
+
+        $returnsObject->return_product_aid = $row['return_product_aid'];
+        $returnsObject->return_product_status = $row['return_product_status'];
+        $returnsObject->return_product_paid_amount = $newPaid;
+        $returnsObject->return_product_updated = date("Y-m-d H:i:s");
+        checkUpdate($returnsObject);
+    }
+
+    return;
 }
 
 // Read all

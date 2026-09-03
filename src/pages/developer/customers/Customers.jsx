@@ -39,7 +39,6 @@ const Customers = () => {
       accessorKey: "customer_name",
       header: "name",
       link: `${devNavUrl}/${userRole}/sales-orders`,
-      // clicking navigates to Sales Orders pre-filtered by this customer
       filterOnClickId: "sales_order_customer_name",
       classTh: "min-w-40",
       classTd: "",
@@ -79,7 +78,10 @@ const Customers = () => {
     {
       accessorKey: "outstanding_balance",
       header: "Outstanding Balance",
-      link: `${devNavUrl}/${userRole}/accounts-receivable`,
+      link:
+        Number(ProductOwnerId(store)) > 0
+          ? ""
+          : `${devNavUrl}/${userRole}/accounts-receivable`,
       // clicking navigates to Overdue Payments pre-filtered by this customer
       filterOnClickId: "sales_order_customer_name",
       amount: true,
@@ -91,7 +93,10 @@ const Customers = () => {
     {
       accessorKey: "open_credit_memo",
       header: "Open Credit Memo",
-      link: `${devNavUrl}/${userRole}/returns`,
+      link:
+        Number(ProductOwnerId(store)) > 0
+          ? ""
+          : `${devNavUrl}/${userRole}/returns`,
       // clicking navigates to returns pre-filtered by this customer
       filterOnClickId: "return_product_customer_name",
       amount: true,

@@ -6,6 +6,7 @@ require '../../../core/functions.php';
 require 'functions.php';
 // require '../../../core/google-api.php';
 require '../../../models/developer/sales-order/SalesOrder.php';
+require '../../../models/developer/returns/Returns.php';
 
 // ACTIVITY LOG DETAILS
 require '../../../controllers/developer/activity-log/functions.php';

@@ -59,6 +59,7 @@ RewriteRule ^customer/search$ controllers/developer/customer/search.php [L]
 RewriteRule ^customer/read-all-by-active$ controllers/developer/customer/read-all-by-active.php [L]
 RewriteRule ^customer/read-walk-in-cutomer$ controllers/developer/customer/read-walk-in-cutomer.php [L]
 RewriteRule ^customer/read-cutomer-sales-summary$ controllers/developer/customer/read-cutomer-sales-summary.php [L]
+RewriteRule ^customer/read-open-credit-memo$ controllers/developer/customer/read-open-credit-memo.php [L]
 
 ### SUPPLIERS ### 
 RewriteRule ^suppliers$ controllers/developer/suppliers/suppliers.php [L]
@@ -90,8 +91,9 @@ RewriteRule ^products/read-all-product-that-have-stock$ controllers/developer/pr
 RewriteRule ^products/read-all-category$ controllers/developer/products/read-all-category.php [L]
 RewriteRule ^products/read-all-by-active$ controllers/developer/products/read-all-by-active.php [L]
 
-### ACTIVITY LOG ### 
-RewriteRule ^activity/read-with-limit$ controllers/developer/activity-log/read-with-limit.php [L] 
+### ACTIVITY LOG ###
+RewriteRule ^activity/read-with-limit$ controllers/developer/activity-log/read-with-limit.php [L]
+RewriteRule ^activity-log/page-all-activity-log/page/([0-9]+)$ controllers/developer/activity-log/page.php?start=$1 [L]
 
 ### PURCHASE ORDER ### 
 RewriteRule ^purchase-order$ controllers/developer/suppliers/purchase-order/purchase-order.php [L]

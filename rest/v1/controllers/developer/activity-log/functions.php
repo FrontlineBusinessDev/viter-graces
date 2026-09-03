@@ -44,6 +44,7 @@ function allowedColumnsActivityLog()
         "activity_log_user_name",
         "activity_log_user_role",
         "activity_log_description",
+        "activity_log_created",
     ];
     return $query;
 }

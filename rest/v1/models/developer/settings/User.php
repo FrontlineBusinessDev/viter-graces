@@ -10,6 +10,7 @@ class User
     public $user_account_role;
     public $user_account_key;
     public $user_account_password;
+    public $user_account_note;
     public $user_account_created;
     public $user_account_updated;
 
@@ -48,6 +49,7 @@ class User
             $sql .= "user_account_role, ";
             $sql .= "user_account_is_active, ";
             $sql .= "user_account_key, ";
+            $sql .= "user_account_note, ";
             $sql .= "user_account_created, ";
             $sql .= "user_account_updated ) values ( ";
             $sql .= ":user_account_first_name, ";
@@ -57,6 +59,7 @@ class User
             $sql .= ":user_account_role, ";
             $sql .= ":user_account_is_active, ";
             $sql .= ":user_account_key, ";
+            $sql .= ":user_account_note, ";
             $sql .= ":user_account_created, ";
             $sql .= ":user_account_updated ) ";
             $query = $this->connection->prepare($sql);
@@ -68,6 +71,7 @@ class User
                 "user_account_role" => $this->user_account_role,
                 "user_account_is_active" => $this->user_account_is_active,
                 "user_account_key" => $this->user_account_key,
+                "user_account_note" => $this->user_account_note,
                 "user_account_created" => $this->user_account_created,
                 "user_account_updated" => $this->user_account_updated,
             ]);
@@ -393,6 +397,7 @@ class User
             $sql .= "user_account_email = :user_account_email, ";
             $sql .= "user_account_role_id = :user_account_role_id, ";
             $sql .= "user_account_role = :user_account_role, ";
+            $sql .= "user_account_note = :user_account_note, ";
             $sql .= "user_account_updated = :user_account_updated ";
             $sql .= "where user_account_aid  = :user_account_aid ";
             $query = $this->connection->prepare($sql);
@@ -402,6 +407,7 @@ class User
                 "user_account_email" => $this->user_account_email,
                 "user_account_role_id" => $this->user_account_role_id,
                 "user_account_role" => $this->user_account_role,
+                "user_account_note" => $this->user_account_note,
                 "user_account_updated" => $this->user_account_updated,
                 "user_account_aid" => $this->user_account_aid,
             ]);

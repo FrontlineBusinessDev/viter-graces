@@ -5,10 +5,13 @@ export function clearSession(dispatch) {
   localStorage.removeItem("gracestoken");
   dispatch(setCredentials({}));
   dispatch(setIsLogin(false));
-  // NOTE: this only clears the current browser's session. Invalidating the
-  // user's other open sessions/devices requires backend support (e.g. token
-  // revocation or a session-version bump on /users/password) that does not
-  // exist in this repo.
+  // NOTE: this only clears the current tab's in-memory/local state. Other
+  // open tabs of the same browser are notified separately — see
+  // authChannel.jsx's broadcastLogout(), fired on password change and on the
+  // server-side password-changed rejection from /users/token — and react via
+  // performLogout() below. A different browser/device's session is unaffected
+  // since the server rejects its stale token independently once its own
+  // /users/token check runs (see tokenOther() in core/functions.php).
 }
 
 export function performLogout(dispatch, redirectTo = `${devNavUrl}/login`) {

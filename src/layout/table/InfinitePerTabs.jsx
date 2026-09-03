@@ -54,8 +54,8 @@ const InfinitePerTabs = ({
   };
 
   const queryKey = useMemo(
-    () => [path, store.isSearch],
-    [path, store.isSearch],
+    () => [path, store.isSearch, search.current?.value],
+    [path, store.isSearch, search.current?.value],
   );
 
   // React Query infinite fetch

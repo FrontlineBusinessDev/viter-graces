@@ -1,0 +1,1 @@
+{"nodes": [{"id": "$graphify-root$_rest_v1_controllers_developer_products_read_all_product_that_have_stock_php", "label": "read-all-product-that-have-stock.php", "file_type": "code", "source_file": "rest/v1/controllers/developer/products/read-all-product-that-have-stock.php", "source_location": "L1"}], "edges": [], "raw_calls": []}

@@ -16,6 +16,7 @@ import {
   setSuccess,
 } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
+import { broadcastLogout } from "@/utilities/authChannel";
 import { getUrlParam } from "@/utilities/getUrlParam";
 import { setStorageRoute } from "@/utilities/setStorageRoute";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
@@ -63,6 +64,9 @@ const CreatePassword = () => {
         // success
       } else {
         setIsSuccess(true);
+        // password changed successfully — force every other open tab
+        // (holding a now-invalid token) to drop its session
+        broadcastLogout("password_changed");
         if (store.isLogin) {
           dispatch(setCredentials(data.data[0]));
           setStorageRoute(data.data[1]);
@@ -147,15 +151,13 @@ const CreatePassword = () => {
                 <LogoFull />
               </div>
               <Check className="h-16 w-16 mx-auto mt-8" color="rgb(0 145 38)" />
-              <h2 className="mb-4 mt-2 text-lg text-white text-center">
-                Success!
-              </h2>
-              <p className="text-sm text-justify mb-6 text-white">
+              <h2 className="mb-4 mt-2 text-lg text-center">Success!</h2>
+              <p className="text-sm text-justify mb-6">
                 Your password is set and ready to use. Click the button below to
                 continue login
               </p>
 
-              <p className="mt-2 text-sm text-white">
+              <p className="mt-2 text-sm">
                 Go back to{" "}
                 <a href={`${devNavUrl}/login`} className="w-full text-primary">
                   <u> login</u>

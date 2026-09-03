@@ -28,6 +28,9 @@ class SuppliersPurchaseOrder
     public $purchase_order_total_paid_per_product;
     public $purchase_order_created;
     public $purchase_order_updated;
+    public $purchase_order_vat_amount;
+    public $purchase_order_vat;
+    public $purchase_order_discount_percentage;
 
     public $purchase_order_movement_status;
     public $purchase_order_before_qty;
@@ -92,6 +95,9 @@ class SuppliersPurchaseOrder
             $sql .= "purchase_order_transact_name, ";
             $sql .= "purchase_order_total_amount_per_product, ";
             $sql .= "purchase_order_percent_tax, ";
+            $sql .= "purchase_order_vat_amount, ";
+            $sql .= "purchase_order_vat, ";
+            $sql .= "purchase_order_discount_percentage, ";
             $sql .= "purchase_order_total_balance_per_product, ";
             $sql .= "purchase_order_total_paid_per_product, ";
             $sql .= "purchase_order_created, ";
@@ -125,6 +131,9 @@ class SuppliersPurchaseOrder
             $sql .= ":purchase_order_transact_name, ";
             $sql .= ":purchase_order_total_amount_per_product, ";
             $sql .= ":purchase_order_percent_tax, ";
+            $sql .= ":purchase_order_vat_amount, ";
+            $sql .= ":purchase_order_vat, ";
+            $sql .= ":purchase_order_discount_percentage, ";
             $sql .= ":purchase_order_total_balance_per_product, ";
             $sql .= ":purchase_order_total_paid_per_product, ";
             $sql .= ":purchase_order_created, ";
@@ -162,6 +171,9 @@ class SuppliersPurchaseOrder
                 "purchase_order_percent_tax" => $this->purchase_order_percent_tax,
                 "purchase_order_total_balance_per_product" => $this->purchase_order_total_balance_per_product,
                 "purchase_order_total_paid_per_product" => $this->purchase_order_total_paid_per_product,
+                "purchase_order_vat_amount" => $this->purchase_order_vat_amount,
+                "purchase_order_vat" => $this->purchase_order_vat,
+                "purchase_order_discount_percentage" => $this->purchase_order_discount_percentage,
                 "purchase_order_created" => $this->purchase_order_created,
                 "purchase_order_updated" => $this->purchase_order_updated,
             ]);

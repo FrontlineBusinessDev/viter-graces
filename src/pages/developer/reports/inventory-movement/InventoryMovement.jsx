@@ -86,7 +86,7 @@ const InventoryMovement = () => {
     },
     {
       accessorKey: "stock_movement_location",
-      header: "Locations",
+      header: "Location",
       classTh: "",
       classTd: "",
       meta: "",

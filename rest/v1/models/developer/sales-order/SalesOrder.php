@@ -37,6 +37,7 @@ class SalesOrder
     public $sales_order_cash;
     public $sales_order_check;
     public $sales_order_online_transaction;
+    public $sales_order_credit_memo;
     public $sales_order_installment_type;
     public $sales_order_installment_type_day;
     public $sales_order_installment_count;
@@ -153,6 +154,7 @@ class SalesOrder
             $sql .= "sales_order_cash, ";
             $sql .= "sales_order_check, ";
             $sql .= "sales_order_online_transaction, ";
+            $sql .= "sales_order_credit_memo, ";
             $sql .= "sales_order_installment_type, ";
             $sql .= "sales_order_installment_type_day, ";
             $sql .= "sales_order_installment_count, ";
@@ -195,6 +197,7 @@ class SalesOrder
             $sql .= ":sales_order_cash, ";
             $sql .= ":sales_order_check, ";
             $sql .= ":sales_order_online_transaction, ";
+            $sql .= ":sales_order_credit_memo, ";
             $sql .= ":sales_order_installment_type, ";
             $sql .= ":sales_order_installment_type_day, ";
             $sql .= ":sales_order_installment_count, ";
@@ -239,6 +242,7 @@ class SalesOrder
                 "sales_order_cash" => $this->sales_order_cash,
                 "sales_order_check" => $this->sales_order_check,
                 "sales_order_online_transaction" => $this->sales_order_online_transaction,
+                "sales_order_credit_memo" => $this->sales_order_credit_memo,
                 "sales_order_installment_type" => $this->sales_order_installment_type,
                 "sales_order_installment_type_day" => $this->sales_order_installment_type_day,
                 "sales_order_installment_count" => $this->sales_order_installment_count,
@@ -690,6 +694,7 @@ class SalesOrder
             $sql .= "sales_order_cash = :sales_order_cash, ";
             $sql .= "sales_order_check = :sales_order_check, ";
             $sql .= "sales_order_online_transaction = :sales_order_online_transaction, ";
+            $sql .= "sales_order_credit_memo = :sales_order_credit_memo, ";
             $sql .= "sales_order_installment_amount = :sales_order_installment_amount, ";
             $sql .= "sales_order_discount_percentage = :sales_order_discount_percentage, ";
             $sql .= "sales_order_discount_type = :sales_order_discount_type, ";
@@ -727,6 +732,7 @@ class SalesOrder
                 "sales_order_cash" => $this->sales_order_cash,
                 "sales_order_check" => $this->sales_order_check,
                 "sales_order_online_transaction" => $this->sales_order_online_transaction,
+                "sales_order_credit_memo" => $this->sales_order_credit_memo,
                 "sales_order_installment_amount" => $this->sales_order_installment_amount,
                 "sales_order_discount_percentage" => $this->sales_order_discount_percentage,
                 "sales_order_discount_type" => $this->sales_order_discount_type,
@@ -1502,6 +1508,27 @@ class SalesOrder
     //     }
     //     return $query;
     // }
+
+    // read the credit memo amount already saved for this order (used to work
+    // out the delta to apply/release against the customer's return records
+    // when editing an order - see applyCreditMemoToReturns())
+    public function readCreditMemoByOrderNumber()
+    {
+        try {
+            $sql = "select sales_order_credit_memo ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= "where sales_order_number = :sales_order_number ";
+            $sql .= "limit 1 ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_order_number" => $this->sales_order_number,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
 
     public function readBySoNumber()
     {

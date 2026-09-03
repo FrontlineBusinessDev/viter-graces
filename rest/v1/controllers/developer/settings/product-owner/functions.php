@@ -53,10 +53,31 @@ function checkUpdateSuppliersProduct($object)
     return $query;
 }
 // Update 
+function checkUpdateSuppliersProductOwnerName($object)
+{
+    $query = $object->updateSuppliersProductOwnerName();
+    checkQuery($query, "There's a problem processing your request. (Update Suppliers Product owner name)");
+    return $query;
+}
+// Update
 function checkUpdateSalesOrder($object)
 {
     $query = $object->updateSalesOrder();
     checkQuery($query, "There's a problem processing your request. (Update Sales Order)");
+    return $query;
+}
+// Update
+function checkUpdateStockMovement($object)
+{
+    $query = $object->updateStockMovement();
+    checkQuery($query, "There's a problem processing your request. (Update Stock Movement)");
+    return $query;
+}
+// Update
+function checkUpdateReturnProduct($object)
+{
+    $query = $object->updateReturnProduct();
+    checkQuery($query, "There's a problem processing your request. (Update Return Product)");
     return $query;
 }
 
@@ -64,11 +85,13 @@ function checkUpdateSalesOrder($object)
 // Reset password
 function updateConnectedMenu($object)
 {
-    checkUpdateActivityLog($object);
+    // checkUpdateActivityLog($object);
     checkUpdateProducts($object);
     checkUpdatePurchaseOrder($object);
-    // checkUpdateSuppliersProduct($object);
+    checkUpdateSuppliersProductOwnerName($object);
     checkUpdateSalesOrder($object);
+    checkUpdateStockMovement($object);
+    checkUpdateReturnProduct($object);
 }
 
 // check association

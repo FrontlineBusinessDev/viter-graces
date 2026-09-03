@@ -23,6 +23,7 @@ $val->return_product_reason = $data["return_product_reason"];
 $val->return_product_notes = $data["return_product_notes"];
 $val->return_product_date = $data["return_product_date"];
 $val->return_product_resolution_type = $data["return_product_resolution_type"];
+$val->return_product_refund_method = $data["return_product_refund_method"] ?? null;
 $val->return_product_created = date("Y-m-d H:i:s");
 $val->return_product_updated = date("Y-m-d H:i:s");
 

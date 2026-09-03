@@ -20,6 +20,7 @@ import {
 } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
+import useQueryData from "@/services/useQueryData";
 import {
   setError,
   setIsAdd,
@@ -68,6 +69,36 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
     initialItemsRef.current = JSON.parse(JSON.stringify(items));
   }
 
+  const [selectedCustomerId, setSelectedCustomerId] = React.useState(
+    isEmptyItem(
+      itemEdit?.sales_order_customer_id,
+      isEmptyItem(cutomer?.customer_aid, ""),
+    ),
+  );
+
+  // Credit memo balance for the selected customer (processed returns only)
+  const { data: creditMemoResult } = useQueryData(
+    `${apiVersion}/customer/read-open-credit-memo`, // endpoint
+    "post", // method
+    `customer/read-open-credit-memo`, // key
+    {
+      id: selectedCustomerId,
+      excludeSalesOrderNumber: isEmptyItem(itemEdit?.sales_order_number, ""),
+    },
+    { id: selectedCustomerId },
+  );
+
+  const creditMemoBalance = Number(
+    isEmptyItem(creditMemoResult?.data?.[0]?.open_credit_memo, 0),
+  );
+
+  const paymentMethodOptions = PaymentMethodList().filter(
+    (option) =>
+      option.value !== "credit memo" ||
+      (Number(selectedCustomerId) > 0 && creditMemoBalance > 0) ||
+      itemEdit?.sales_order_payment_method === "credit memo",
+  );
+  console.log("creditMemoBalance", creditMemoBalance);
   const itemsDirty =
     itemsDelete.length > 0 ||
     JSON.stringify(items) !== JSON.stringify(initialItemsRef.current);
@@ -303,6 +334,10 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
       itemEdit?.sales_order_online_transaction,
       "0",
     ),
+    sales_order_credit_memo: isEmptyItem(
+      itemEdit?.sales_order_credit_memo,
+      "0",
+    ),
 
     sales_order_discount_percentage: isEmptyItem(
       itemEdit?.sales_order_discount_percentage,
@@ -317,6 +352,20 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   const yupSchema = Yup.object({
     sales_order_date: Yup.string().trim().required("Required"),
     sales_order_customer_id: Yup.string().trim().required("Required"),
+    sales_order_credit_memo: Yup.number().test(
+      "max-credit-memo",
+      "Exceeds the available credit memo balance",
+      function (value) {
+        if (this.parent.sales_order_payment_method !== "credit memo") {
+          return true;
+        }
+        // const maxAllowed = Math.min(
+        //   creditMemoBalance,
+        //   Number(this.parent.sales_order_total_receivable_amount),
+        // );
+        return Number(value || 0) <= creditMemoBalance;
+      },
+    ),
   });
 
   React.useEffect(() => {
@@ -359,9 +408,9 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                 installmentItems: isEmptyItem(itemEdit?.installmentItems, []),
               };
 
-              Validations(values, items, dispatch);
+              Validations(values, items, dispatch, creditMemoBalance);
 
-              if (!Validations(values, items, dispatch)) {
+              if (!Validations(values, items, dispatch, creditMemoBalance)) {
                 mutation.mutate(data);
               } else {
                 dispatch(setError(true));
@@ -378,8 +427,6 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                 props.values.sales_order_payment_terms =
                   "due on receipt - due on the same day the sales order";
               }
-
-              console.log("props.values", props.values);
 
               return (
                 <Form>
@@ -419,6 +466,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                             "sales_order_customer_name",
                             e?.value ?? "",
                           );
+                          setSelectedCustomerId(e.id);
                           return e;
                         }}
                         itemEdit={itemEdit}
@@ -433,12 +481,33 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         type="text"
                         name="sales_order_payment_method"
                         defaultValue="cash"
-                        options={PaymentMethodList()}
+                        options={paymentMethodOptions}
                         onChange={(e) => {
+                          const previousMethod =
+                            props.values.sales_order_payment_method;
+                          const selectedMethod =
+                            e.target.options[e.target.selectedIndex].text;
+
                           props.setFieldValue(
                             "sales_order_payment_method",
-                            e.target.options[e.target.selectedIndex].text,
+                            selectedMethod,
                           );
+                          let orderTotal = Number(
+                            props.values.sales_order_total_receivable_amount,
+                          );
+
+                          if (selectedMethod === "credit memo") {
+                            props.setFieldValue(
+                              "sales_order_credit_memo",
+                              orderTotal > 0
+                                ? Math.min(creditMemoBalance, orderTotal)
+                                : creditMemoBalance,
+                            );
+                          } else if (previousMethod === "credit memo") {
+                            props.setFieldValue("sales_order_credit_memo", 0);
+                            props.setFieldValue("sales_order_paid_amount", 0);
+                          }
+
                           return e;
                         }}
                       />
@@ -612,89 +681,104 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-4 mt-3 gap-3 items-center">
-                    <div className="relative ">
-                      <InputSelectArrayWithOptions
-                        label="Type of discount"
-                        type="sales_order_discount_type"
-                        name="sales_order_discount_type"
-                        defaultValue=""
-                        options={discountTypeOption()}
-                        onChange={(e) => {
-                          props.setFieldValue(
-                            "sales_order_discount_percentage",
-                            "",
-                          );
-                          props.setFieldValue("sales_order_discount", "");
-                          props.setFieldValue(
-                            "sales_order_discount_type",
-                            e.target.id,
-                          );
-                          return e;
-                        }}
-                        required={false}
-                      />
-                    </div>
-                    {props.values.sales_order_discount_type === "percentage" ? (
+                  <div className="my-5 px-4 border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full transition-all duration-300 ease-in-out py-3 ">
+                    <h2 className="text-sm mb-2">Payment Details</h2>
+                    <div
+                      className={` grid-cols-4 grid mt-3 gap-3 items-center mb-3`}
+                    >
                       <div className="relative ">
-                        <InputNumber
-                          label="Discount %"
-                          name="sales_order_discount_percentage"
-                          placeholder={`${itemEdit ? "0" : "0"}`}
-                          disabled={mutation.isPending}
+                        <InputSelectArrayWithOptions
+                          label="Type of discount"
+                          type="sales_order_discount_type"
+                          name="sales_order_discount_type"
+                          defaultValue=""
+                          options={discountTypeOption()}
+                          onChange={(e) => {
+                            props.setFieldValue(
+                              "sales_order_discount_percentage",
+                              "",
+                            );
+                            props.setFieldValue("sales_order_discount", "");
+                            props.setFieldValue(
+                              "sales_order_discount_type",
+                              e.target.id,
+                            );
+                            return e;
+                          }}
                           required={false}
                         />
                       </div>
-                    ) : (
+                      {props.values.sales_order_discount_type ===
+                      "percentage" ? (
+                        <div className="relative ">
+                          <InputNumber
+                            label="Discount %"
+                            name="sales_order_discount_percentage"
+                            placeholder={`${itemEdit ? "0" : "0"}`}
+                            disabled={mutation.isPending}
+                            required={false}
+                          />
+                        </div>
+                      ) : (
+                        <div className="relative ">
+                          <InputNumber
+                            label="Discount"
+                            name="sales_order_discount"
+                            placeholder={`${itemEdit ? "0" : "0"}`}
+                            disabled={mutation.isPending}
+                            required={false}
+                          />
+                        </div>
+                      )}
                       <div className="relative ">
-                        <InputNumber
-                          label="Discount"
-                          name="sales_order_discount"
-                          placeholder={`${itemEdit ? "0" : "0"}`}
-                          disabled={mutation.isPending}
+                        <InputSelectArrayWithOptions
+                          label="VAT"
+                          type="sales_order_tax"
+                          name="sales_order_tax"
+                          defaultValue=""
+                          options={taxOption()}
+                          onChange={(e) => {
+                            props.setFieldValue("sales_order_tax", e.target.id);
+                            return e;
+                          }}
                           required={false}
                         />
                       </div>
-                    )}
-                    <div className="relative ">
-                      <InputSelectArrayWithOptions
-                        label="VAT"
-                        type="sales_order_tax"
-                        name="sales_order_tax"
-                        defaultValue=""
-                        options={taxOption()}
-                        onChange={(e) => {
-                          props.setFieldValue("sales_order_tax", e.target.id);
-                          return e;
-                        }}
-                        required={false}
-                      />
-                    </div>
 
-                    {props.values.sales_order_payment_method !==
-                    "mutiple payment" ? (
-                      <div className="relative ">
-                        <InputNumber
-                          label="Amount Paid"
-                          name="sales_order_paid_amount"
-                          placeholder={`${itemEdit ? "0" : "0"}`}
-                          disabled={mutation.isPending}
-                          required={false}
-                        />
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                  </div>
-
-                  {props.values.sales_order_payment_method ===
-                  "mutiple payment" ? (
-                    <>
-                      <div className="my-5 px-4 border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full transition-all duration-300 ease-in-out py-3 ">
-                        <h2 className="text-sm mb-2">
-                          Mutiple Payment Details
-                        </h2>
-                        <div className="flex gap-3  pb-2 overflow-auto">
+                      {props.values.sales_order_payment_method !==
+                        "mutiple payment" &&
+                      props.values.sales_order_payment_method !==
+                        "credit memo" ? (
+                        <div className="relative ">
+                          <InputNumber
+                            label="Amount Paid"
+                            name="sales_order_paid_amount"
+                            placeholder={`${itemEdit ? "0" : "0"}`}
+                            disabled={mutation.isPending}
+                            required={false}
+                          />
+                        </div>
+                      ) : (
+                        <div className="relative ">
+                          <InputText
+                            label="Total Paid"
+                            type="number"
+                            name="sales_order_paid_amount"
+                            readOnly
+                            className="border-t-0! border-x-0! text-primary min-w-20 focus:border-secondary"
+                            disabled={mutation.isPending}
+                          />
+                        </div>
+                      )}
+                    </div>
+                    {props.values.sales_order_payment_method ===
+                      "mutiple payment" ||
+                    props.values.sales_order_payment_method ===
+                      "credit memo" ? (
+                      <>
+                        <div
+                          className={`${creditMemoBalance > 0 ? "grid-cols-4 " : "grid-cols-3 "} grid gap-3 pb-2 overflow-auto `}
+                        >
                           <div className="relative ">
                             <InputText
                               label="Cash amount"
@@ -719,22 +803,25 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                               disabled={mutation.isPending}
                             />
                           </div>
-                          <div className="relative ">
-                            <InputText
-                              label="Total Paid"
-                              type="number"
-                              name="sales_order_paid_amount"
-                              readOnly
-                              className="border-t-0! border-x-0! text-primary min-w-20 focus:border-secondary"
-                              disabled={mutation.isPending}
-                            />
-                          </div>
+                          {creditMemoBalance > 0 ? (
+                            <div className="relative ">
+                              <InputText
+                                label="Credit memo"
+                                type="number"
+                                name="sales_order_credit_memo"
+                                disabled={mutation.isPending}
+                              />
+                            </div>
+                          ) : (
+                            ""
+                          )}
                         </div>
-                      </div>
-                    </>
-                  ) : (
-                    ""
-                  )}
+                      </>
+                    ) : (
+                      ""
+                    )}
+                  </div>
+
                   {!itemEdit &&
                   props.values.sales_order_payment_terms?.toLocaleLowerCase() ===
                     "installment" ? (
@@ -768,7 +855,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                               type="text"
                               name="sales_order_installment_type_day"
                               options={InstallmentByType(
-                                props.values.installment_type,
+                                props.values.sales_order_installment_type,
                               )}
                               onChange={(e) => {
                                 props.setFieldValue(
@@ -864,7 +951,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                         />
                       </li>
                     </ul>
-                    <ul className="grid grid-cols-[5rem_1fr] ">
+                    <ul className="grid grid-cols-[6rem_1fr] ">
                       <li className="font-bold text-primary!">Total Amount:</li>
                       <li>
                         <AmountsWithPesoSign

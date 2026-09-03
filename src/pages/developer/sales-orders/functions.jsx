@@ -70,7 +70,12 @@ export const PropsValues = (props, items) => {
     values.sales_order_paid_amount =
       Number(values.sales_order_cash) +
       Number(values.sales_order_check) +
+      Number(values.sales_order_credit_memo) +
       Number(values.sales_order_online_transaction);
+  }
+
+  if (values.sales_order_payment_method === "credit memo") {
+    values.sales_order_paid_amount = Number(values.sales_order_credit_memo);
   }
 
   if (
@@ -87,7 +92,7 @@ export const PropsValues = (props, items) => {
   return;
 };
 // Copyright year
-export const Validations = (values, items, dispatch) => {
+export const Validations = (values, items, dispatch, creditMemoBalance = Infinity) => {
   const invalidItem = items.find(
     (item) =>
       isEmptyItem(item?.is_new, false) &&
@@ -107,5 +112,22 @@ export const Validations = (values, items, dispatch) => {
     dispatch(setMessage("Invalid received by"));
     return true;
   }
+
+  if (values.sales_order_payment_method === "credit memo") {
+    const maxCreditMemo = Math.min(
+      creditMemoBalance,
+      Number(values.sales_order_total_receivable_amount),
+    );
+
+    if (Number(values.sales_order_credit_memo) > maxCreditMemo) {
+      dispatch(
+        setMessage(
+          "Credit memo amount cannot exceed the available credit memo balance or the order total.",
+        ),
+      );
+      return true;
+    }
+  }
+
   return false;
 };

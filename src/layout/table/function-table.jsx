@@ -94,7 +94,7 @@ export const renderCellContent = (item, rowData, path = "") => {
                 JSON.stringify([
                   {
                     id: column.filterOnClickId,
-                    value: rowData?.name,
+                    value: rowData?.customer_name,
                   },
                 ]),
               )

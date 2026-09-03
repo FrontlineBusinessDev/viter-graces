@@ -44,26 +44,31 @@ $valSPO->purchase_order_product_owner_name = $data["purchase_order_product_owner
 $valSPO->purchase_order_price = $data["purchase_order_price"];
 $valSPO->purchase_order_transact_id = $data["purchase_order_transact_id"];
 $valSPO->purchase_order_transact_name = $data["purchase_order_transact_name"];
+$valSPO->purchase_order_vat_amount = $data["purchase_order_vat_amount"];
+$valSPO->purchase_order_vat = $data["purchase_order_vat"];
+$valSPO->purchase_order_discount_percentage = $data["purchase_order_discount_percentage"];
 
 $valSPO->purchase_order_expected_delivery = $valSPO->purchase_order_date;
 $valSPO->purchase_order_total_amount = $valSPO->purchase_order_price;
 $valSPO->purchase_order_total_amount_per_product = $valSPO->purchase_order_price;
-$valSPO->purchase_order_total_paid_per_product = $valSPO->purchase_order_payment;
+$valSPO->purchase_order_total_paid_per_product = $data["purchase_order_paid_amount"] ?? $valSPO->purchase_order_payment;
 $valSPO->purchase_order_delivery_status = "";
 $valSPO->purchase_order_is_active = 1;
 $valSPO->purchase_order_status = "completed";
 $valSPO->purchase_order_movement_status = "stock in";
 $valSPO->purchase_order_created = $now;
 $valSPO->purchase_order_updated = $now;
-$totalBalance = (float)$valSPO->purchase_order_price - (float)$valSPO->purchase_order_payment;
-$valSPO->purchase_order_balance = max(0, (float)($totalBalance ?? 0));;
-$valSPO->purchase_order_discount = 0;
+$valSPO->purchase_order_discount = $data["purchase_order_discount"] ?? 0;
 $valSPO->purchase_order_qty = 1;
 $valSPO->purchase_order_before_qty = 0;
 $valSPO->purchase_order_after_qty = 1;
-$valSPO->purchase_order_tax = 0;
-$valSPO->purchase_order_percent_tax = "";
+$valSPO->purchase_order_tax = $data["purchase_order_vat"] ?? 0;
+$valSPO->purchase_order_percent_tax = $data["purchase_order_vat_amount"] ?? "";
 $valSPO->purchase_order_total_balance_per_product = 0;
+
+$discountedAmount = (float)$valSPO->purchase_order_payment - (float)$valSPO->purchase_order_discount;
+$totalBalance = $discountedAmount + (float)($valSPO->purchase_order_percent_tax ?: 0) - (float)$valSPO->purchase_order_total_paid_per_product;
+$valSPO->purchase_order_balance = max(0, (float)($totalBalance ?? 0));
 
 deliveryStatus($val, $data);
 $valSPO->purchase_order_delivery_is_status = ($data["purchase_order_payment_status"] === "paid") ? 1 : 0;

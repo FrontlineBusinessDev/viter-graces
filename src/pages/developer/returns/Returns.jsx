@@ -10,11 +10,13 @@ import { StoreContext } from "@/store/StoreContext";
 import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 import React from "react";
 import ModalReturns from "./ModalReturns";
+import { devNavUrl } from "@/config/config";
 
 const Returns = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
   const [dataCount, setDataCount] = React.useState("...Loading");
+  const userRole = store.credentials?.data?.role;
 
   // Columns
   const columns = [
@@ -61,6 +63,8 @@ const Returns = () => {
     {
       accessorKey: "return_product_customer_name",
       header: "Customers",
+      link: `${devNavUrl}/${userRole}/sales-orders`,
+      filterOnClickId: "sales_order_customer_name",
       classTh: "min-w-[10rem] ",
       classTd: "",
       meta: {
@@ -106,9 +110,18 @@ const Returns = () => {
     {
       accessorKey: "return_product_resolution_type",
       header: "resolution type",
-      classTh: "",
+      classTh: "min-w-40 ",
       classTd: "capitalize",
-      meta: "",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={ActiveInActiveStatus("resolution-type")}
+            uppercase="capitalize! "
+          />
+        ),
+      },
     },
     {
       accessorKey: "return_product_amount",
@@ -129,9 +142,17 @@ const Returns = () => {
     {
       accessorKey: "return_product_is_restocked",
       header: "restocked",
-      classTh: "",
-      classTd: "uppercase ",
-      meta: "",
+      classTh: "min-w-30",
+      classTd: "uppercase",
+      filterFn: "equals",
+      meta: {
+        filterComponent: (column) => (
+          <SearchableSelectFilterStatus
+            column={column}
+            options={ActiveInActiveStatus("restocked-status")}
+          />
+        ),
+      },
     },
   ];
 

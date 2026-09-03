@@ -17,7 +17,7 @@ if (array_key_exists("id", $_GET)) {
     // get data
     $val->return_product_aid = $_GET['id'];
 
-    $val->return_product_is_restocked = $data["return_product_is_restocked"] == "no" ? 0 : 1;
+    $val->return_product_is_restocked = $data["return_product_is_restocked"];
     $val->return_product_reason = $data["return_product_reason"];
     $val->return_product_notes = $data["return_product_notes"];
     $val->return_product_created = date("Y-m-d H:i:s");
@@ -32,6 +32,7 @@ if (array_key_exists("id", $_GET)) {
     $val->return_product_customer_id = $data["return_product_customer_id"];
     $val->return_product_customer_name = $data["return_product_customer_name"];
     $val->return_product_amount = $data["return_product_amount"];
+    $val->return_product_paid_amount = $data["return_product_paid_amount"];
     $val->return_product_product_id = $data["return_product_product_id"];
     $val->return_product_product_name = $data["return_product_product_name"];
     $val->return_product_qty = $data["return_product_qty"];
@@ -39,13 +40,19 @@ if (array_key_exists("id", $_GET)) {
     $val->return_product_owner_id = $data["return_product_owner_id"];
     $val->return_product_owner_name = $data["return_product_owner_name"];
     $val->return_product_number = $data["return_product_number"];
+
+    if ($val->return_product_status === "processed" && (float)$val->return_product_is_restocked == 0 && (float)$val->return_product_resolution_type != "credit memo") {
+        $val->return_product_paid_amount = $data["return_product_amount"];
+    }
+    if ($val->return_product_status !== "processed" && (float)$val->return_product_is_restocked == 0 && (float)$val->return_product_resolution_type != "credit memo") {
+        $val->return_product_paid_amount = 0;
+    }
     // check name
     checkId($val->return_product_aid);
     $query = checkUpdate($val);
     updateConnectedMenu($val);
 
 
-    returnError((float)$val->return_product_is_restocked == 1 && $val->return_product_status == "processed");
     if ((float)$val->return_product_is_restocked == 1 && $val->return_product_status == "processed") {
         $val->stock_movement_type = "stock in - return";
         $val->stock_movement_status = "active";

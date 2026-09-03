@@ -29,6 +29,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $operating_expenses = [];
     $grossSales = 0;
     $lessDiscount = 0;
+    $lessReturn = 0;
     $taxAmount = 0;
     $netSales = 0;
     $supplierAmount = 0;
@@ -45,6 +46,15 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $taxAmount = array_sum(array_column($incomeQuery, 'tax_amount'));
         $netSales = array_sum(array_column($incomeQuery, 'discounted_with_vat_amount'));
     }
+
+    $queryReturns = checkReadPalReturns($val);
+    $returnsQuery = getResultData($queryReturns) ?? [];
+
+    if (count($returnsQuery) > 0) {
+        $lessReturn = array_sum(array_column($returnsQuery, 'amount'));
+    }
+
+    $netSales = (float)$netSales - (float)$lessReturn;
 
     // SUPPLIER EXPENSES
     $querySe = checkReadPalSupplierExpenses($val);
@@ -74,6 +84,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     $total_result_final[] = [
         "gross_sales" => $grossSales,
         "less_discount" => $lessDiscount,
+        "less_return" => $lessReturn,
         "tax_amount" => $taxAmount,
         "net_sales" => $netSales,
         "supplier_amount" => $supplierAmount,

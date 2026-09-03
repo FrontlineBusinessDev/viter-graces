@@ -326,6 +326,13 @@ function checkReadPalOperatingExpenses($object)
     return $query;
 }
 
+function checkReadPalReturns($object)
+{
+    $query = $object->readPalReturns();
+    checkQuery($query, "Empty records. (read profit and loss Returns)");
+    return $query;
+}
+
 // Update 
 function updateConnectedMenu($object)
 {

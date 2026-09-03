@@ -10,6 +10,7 @@ class Returns
     public $return_product_customer_name;
     public $return_product_date;
     public $return_product_amount;
+    public $return_product_paid_amount;
     public $return_product_product_id;
     public $return_product_product_name;
     public $return_product_qty;
@@ -20,6 +21,7 @@ class Returns
     public $return_product_owner_id;
     public $return_product_owner_name;
     public $return_product_resolution_type;
+    public $return_product_refund_method;
     public $return_product_created;
     public $return_product_updated;
 
@@ -77,6 +79,7 @@ class Returns
             $sql .= "return_product_owner_id, ";
             $sql .= "return_product_owner_name, ";
             $sql .= "return_product_resolution_type, ";
+            $sql .= "return_product_refund_method, ";
             $sql .= "return_product_created, ";
             $sql .= "return_product_updated ) values ( ";
             $sql .= ":return_product_status, ";
@@ -97,6 +100,7 @@ class Returns
             $sql .= ":return_product_owner_id, ";
             $sql .= ":return_product_owner_name, ";
             $sql .= ":return_product_resolution_type, ";
+            $sql .= ":return_product_refund_method, ";
             $sql .= ":return_product_created, ";
             $sql .= ":return_product_updated ) ";
             $query = $this->connection->prepare($sql);
@@ -119,6 +123,7 @@ class Returns
                 "return_product_owner_id" => $this->return_product_owner_id,
                 "return_product_owner_name" => $this->return_product_owner_name,
                 "return_product_resolution_type" => $this->return_product_resolution_type,
+                "return_product_refund_method" => $this->return_product_refund_method,
                 "return_product_created" => $this->return_product_created,
                 "return_product_updated" => $this->return_product_updated,
             ]);
@@ -166,6 +171,8 @@ class Returns
             $sql .= "return_product_aid as id, ";
             $sql .= "return_product_status as is_status, ";
             $sql .= "DATE_FORMAT(return_product_date, '%b %d, %Y') as return_product_date, ";
+            $sql .= "return_product_customer_name as customer_name, ";
+            $sql .= "return_product_customer_name as customer_name, ";
             $sql .= "return_product_number as name ";
             $sql .= "from {$this->tblReturnProducts} ";
             $sql .= " where true ";
@@ -178,9 +185,9 @@ class Returns
             or return_product_owner_name like :return_product_owner_name 
             or return_product_reason like :return_product_reason ) " : " ");
             }
-            $sql .= "order by CASE WHEN LOWER(return_product_status) = 'processed' THEN 1 ELSE 0 END asc, ";
-            $sql .= "return_product_status asc, ";
-            $sql .= "return_product_number desc ";
+            $sql .= " order by CASE WHEN LOWER(return_product_status) = 'processed' THEN 1 ELSE 0 END asc, ";
+            $sql .= " return_product_status asc, ";
+            $sql .= " return_product_number desc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
@@ -228,6 +235,7 @@ class Returns
             $sql .= "return_product_aid as id, ";
             $sql .= "return_product_status as is_status, ";
             $sql .= "DATE_FORMAT(return_product_date, '%b %d, %Y') as return_product_date, ";
+            $sql .= "return_product_customer_name as customer_name, ";
             $sql .= "return_product_number as name ";
             $sql .= "from {$this->tblReturnProducts} ";
             $sql .= " where true ";
@@ -240,9 +248,9 @@ class Returns
             or return_product_owner_name like :return_product_owner_name
             or return_product_reason like :return_product_reason ) " : " ");
             }
-            $sql .= "order by CASE WHEN LOWER(return_product_status) = 'processed' THEN 1 ELSE 0 END asc, ";
-            $sql .= "return_product_status asc, ";
-            $sql .= "return_product_number desc ";
+            $sql .= " order by CASE WHEN LOWER(return_product_status) = 'processed' THEN 1 ELSE 0 END asc, ";
+            $sql .= " return_product_status asc, ";
+            $sql .= " return_product_number desc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -261,6 +269,7 @@ class Returns
             $sql = "select *, ";
             $sql .= "return_product_aid as id, ";
             $sql .= "return_product_status as is_status, ";
+            $sql .= "return_product_customer_name as customer_name, ";
             $sql .= "return_product_number as name ";
             $sql .= "from ";
             $sql .= " {$this->tblReturnProducts} ";
@@ -293,6 +302,7 @@ class Returns
             $sql = "select *, ";
             $sql .= "return_product_aid as id, ";
             $sql .= "return_product_status as is_status, ";
+            $sql .= "return_product_customer_name as customer_name, ";
             $sql .= "return_product_number as name ";
             $sql .= "from {$this->tblReturnProducts} ";
             $sql .= "where return_product_aid = :return_product_aid ";
@@ -309,17 +319,43 @@ class Returns
         return $query;
     }
 
+    // read all - a customer's processed credit memo returns, oldest first
+    // (used to allocate/release a sales order's applied credit memo amount
+    // against return_product_paid_amount - see applyCreditMemoToReturns())
+    public function readCreditMemoReturnsByCustomerId()
+    {
+        try {
+            $sql = "select return_product_aid, return_product_amount, ";
+            $sql .= "return_product_paid_amount, return_product_status ";
+            $sql .= "from {$this->tblReturnProducts} ";
+            $sql .= "where return_product_customer_id = :return_product_customer_id ";
+            $sql .= "and return_product_resolution_type = 'credit memo' ";
+            $sql .= "and return_product_status = 'processed' ";
+            $sql .= "order by return_product_aid asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "return_product_customer_id" => $this->return_product_customer_id,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
     // update
     public function update()
     {
         try {
             $sql = "update {$this->tblReturnProducts} set ";
             $sql .= "return_product_status = :return_product_status, ";
+            $sql .= "return_product_paid_amount = :return_product_paid_amount, ";
             $sql .= "return_product_updated = :return_product_updated ";
             $sql .= "where return_product_aid = :return_product_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "return_product_status" => $this->return_product_status,
+                "return_product_paid_amount" => $this->return_product_paid_amount,
                 "return_product_updated" => $this->return_product_updated,
                 "return_product_aid" => $this->return_product_aid,
             ]);

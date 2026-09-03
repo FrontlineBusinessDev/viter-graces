@@ -16,6 +16,7 @@ class Customer
 
     public $customer_is_walk_in_customer;
     public $installment_payment_customer_id;
+    public $sales_order_number;
 
     public $due_date;
 
@@ -129,6 +130,8 @@ class Customer
             $sql .= "customer_whatsapp as whatsapp, ";
             $sql .= "customer_other as other, ";
             $sql .= "customer_is_active as is_active, ";
+            $sql .= "customer_name as customer_name, ";
+            $sql .= "customer_name as customer_name, ";
             $sql .= "customer_name as name ";
             $sql .= "from {$this->tblCustomer} ";
             $sql .= " where customer_is_active = '1' ";
@@ -187,6 +190,8 @@ class Customer
             $sql .= "customer_whatsapp as whatsapp, ";
             $sql .= "customer_other as other, ";
             $sql .= "customer_is_active as is_active, ";
+            $sql .= "customer_name as customer_name, ";
+            $sql .= "customer_name as customer_name, ";
             $sql .= "customer_name as name ";
             $sql .= "from {$this->tblCustomer} ";
             $sql .= " where true ";
@@ -247,6 +252,7 @@ class Customer
             $sql .= "customer_whatsapp as whatsapp, ";
             $sql .= "customer_other as other, ";
             $sql .= "customer_is_active as is_active, ";
+            $sql .= "customer_name as customer_name, ";
             $sql .= "customer_name as name ";
             $sql .= "from {$this->tblCustomer} ";
             $sql .= " where true ";
@@ -280,6 +286,7 @@ class Customer
             $sql .= "customer_whatsapp as whatsapp, ";
             $sql .= "customer_other as other, ";
             $sql .= "customer_is_active as is_active, ";
+            $sql .= "customer_name as customer_name, ";
             $sql .= "customer_name as name ";
             $sql .= "from ";
             $sql .= " {$this->tblCustomer} ";
@@ -313,6 +320,7 @@ class Customer
             $sql .= "customer_whatsapp as whatsapp, ";
             $sql .= "customer_other as other, ";
             $sql .= "customer_is_active as is_active, ";
+            $sql .= "customer_name as customer_name, ";
             $sql .= "customer_name as name ";
             $sql .= "from {$this->tblCustomer} ";
             $sql .= "where customer_aid = :customer_aid ";
@@ -655,6 +663,32 @@ class Customer
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "return_product_customer_id" => $this->customer_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read by id
+    public function readAppliedCreditMemoByCustomerId()
+    {
+        try {
+            $sql = "select SUM(applied_credit_memo) as applied_credit_memo ";
+            $sql .= "from ( ";
+            $sql .= "    select sales_order_number, ";
+            $sql .= "        MAX(sales_order_credit_memo) as applied_credit_memo ";
+            $sql .= "    from {$this->tblSalesOrder} ";
+            $sql .= "    where sales_order_customer_id = :sales_order_customer_id ";
+            $sql .= "    and sales_order_payment_method = 'credit memo' ";
+            $sql .= "    and sales_order_number != :sales_order_number ";
+            $sql .= "    group by sales_order_number ";
+            $sql .= ") as unique_orders";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_order_customer_id" => $this->customer_aid,
+                "sales_order_number" => $this->sales_order_number,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

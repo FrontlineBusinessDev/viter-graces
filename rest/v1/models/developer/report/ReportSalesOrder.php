@@ -532,7 +532,6 @@ class ReportSalesOrder
             $query->execute($params);
         } catch (PDOException $ex) {
 
-            returnError($ex);
             logError(
                 $ex->getMessage(),
                 $ex->getFile(),
@@ -1742,7 +1741,7 @@ class ReportSalesOrder
         }
 
         if ($this->sales_order_product_owner_id != 0) {
-            $filterColumn[] = "sales_order_product_owner_id = :sales_order_product_owner_id ";
+            $filterColumn[] = " sales_order_product_owner_id = :sales_order_product_owner_id ";
         }
 
         try {
@@ -1761,6 +1760,8 @@ class ReportSalesOrder
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
+
+            returnError($ex);
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }
@@ -1788,7 +1789,7 @@ class ReportSalesOrder
         }
 
         if ($this->sales_order_product_owner_id != 0) {
-            $filterColumn[] = "sp.purchase_order_product_owner_id = :sales_order_product_owner_id ";
+            $filterColumn[] = " sp.purchase_order_product_owner_id = :sales_order_product_owner_id ";
         }
 
         try {
@@ -1831,13 +1832,13 @@ class ReportSalesOrder
         }
 
         if ($this->sales_order_product_owner_id != 0) {
-            $filterColumn[] = "sp.purchase_order_product_owner_id = :sales_order_product_owner_id ";
+            $filterColumn[] = " sp.purchase_order_product_owner_id = :sales_order_product_owner_id ";
         }
 
         try {
             $sql = "select ";
-            $sql .= "s.suppliers_name as name, ";
-            $sql .= "SUM(sp.purchase_order_total_amount_per_product) as amount ";
+            $sql .= "sp.purchase_order_product_name as name, ";
+            $sql .= "SUM(sp.purchase_order_payment) as amount ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} as sp, ";
             $sql .= "{$this->tblSupplier} as s ";
             $sql .= " where sp.purchase_order_supplier_id = s.suppliers_aid ";
@@ -1845,8 +1846,8 @@ class ReportSalesOrder
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             }
-            $sql .= " group by s.suppliers_name ";
-            $sql .= " order by s.suppliers_name asc ";
+            $sql .= " group by sp.purchase_order_product_id ";
+            $sql .= " order by sp.purchase_order_product_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
@@ -1856,6 +1857,49 @@ class ReportSalesOrder
 
         return $query;
     }
+    // read all
+    public function readPalReturns()
+    {
+        $filterColumn = [];
+        $params = [
+            "from" => $this->from,
+            "to" => $this->to,
+            ...($this->sales_order_product_owner_id != 0 ? [
+                "return_product_owner_id" => $this->sales_order_product_owner_id,
+            ] : []),
+        ];
+
+        if ($this->from != "" && $this->to != "") {
+
+            $filterColumn[] = " DATE(return_product_date) BETWEEN DATE(:from) and DATE(:to) ";
+        } else {
+            $filterColumn[] = " ( DATE(return_product_date) = DATE(:from) or DATE(return_product_date) = DATE(:to) ) ";
+        }
+
+        if ($this->sales_order_product_owner_id != 0) {
+            $filterColumn[] = " return_product_owner_id = :return_product_owner_id ";
+        }
+
+        try {
+            $sql = "select ";
+            $sql .= "SUM(return_product_amount) as amount ";
+            $sql .= "from {$this->tblReturnProducts} ";
+            $sql .= " where return_product_status = 'processed' ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            }
+            $sql .= " group by return_product_owner_id ";
+            $sql .= " order by return_product_owner_id asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
+
     // read by id
     public function readReturn()
     {

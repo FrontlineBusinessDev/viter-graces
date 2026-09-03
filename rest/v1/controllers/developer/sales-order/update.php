@@ -5,6 +5,7 @@ $conn = checkDbConnection();
 // make instance of classes
 $val = new SalesOrder($conn);
 $valActivity = new ActivityLog($conn);
+$valReturns = new Returns($conn);
 // get payload
 $body = file_get_contents("php://input");
 $data = json_decode($body, true);
@@ -35,6 +36,14 @@ if (array_key_exists("id", $_GET)) {
     $val->sales_order_total_amount = $data["sales_order_total_amount"];
     $val->sales_order_tax_amount = $data["sales_order_tax_amount"];
     $val->sales_order_number = $data["sales_order_number"];
+
+    // fetch the credit memo amount this order previously applied, before it
+    // gets overwritten below, so only the difference is applied/released
+    // against the customer's return records
+    $queryOldCreditMemo = $val->readCreditMemoByOrderNumber();
+    $oldCreditMemoQuery = $queryOldCreditMemo ? getResultData($queryOldCreditMemo) : [];
+    $oldCreditMemo = count($oldCreditMemoQuery) > 0 ? (float)$oldCreditMemoQuery[0]['sales_order_credit_memo'] : 0;
+
     $val->sales_order_total_balance_amount = max(0, $data["sales_order_total_balance_amount"]);
     $val->sales_order_created = date("Y-m-d H:i:s");
     $val->sales_order_updated = date("Y-m-d H:i:s");
@@ -42,6 +51,7 @@ if (array_key_exists("id", $_GET)) {
     $val->sales_order_cash = $data['sales_order_cash'];
     $val->sales_order_check = $data['sales_order_check'];
     $val->sales_order_online_transaction = $data['sales_order_online_transaction'];
+    $val->sales_order_credit_memo = $data['sales_order_credit_memo'];
     $val->sales_order_installment_amount = $data['sales_order_installment_amount'];
 
     $val->sales_order_installment_type = $data['sales_order_installment_type'];
@@ -61,7 +71,14 @@ if (array_key_exists("id", $_GET)) {
     if ($val->sales_order_payment_method == "online transaction") {
         $val->sales_order_online_transaction = $val->sales_order_paid_amount;
     }
+    if ($val->sales_order_payment_method == "credit memo") {
+        $val->sales_order_credit_memo = $val->sales_order_paid_amount;
+    }
 
+    // only the difference from what this order previously applied needs to
+    // move - covers editing the amount, switching payment methods away from
+    // credit memo (releases everything), or switching into it (applies fresh)
+    applyCreditMemoToReturns($valReturns, $val->sales_order_customer_id, (float)$val->sales_order_credit_memo - $oldCreditMemo);
 
     if ((float)$data["sales_order_paid_amount"] > (float)$data["sales_order_total_receivable_amount"]) {
         $val->sales_order_paid_amount = $data["sales_order_total_receivable_amount"];
