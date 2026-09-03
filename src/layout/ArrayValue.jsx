@@ -168,16 +168,16 @@ export const ActiveInActiveStatus = (val = "default-status") => {
       label: "IN STOCK",
       value: "in stock",
     },
-    {
-      name: ["stock-type-status"],
-      label: "PURCHASES",
-      value: "purchases",
-    },
-    {
-      name: ["stock-type-status"],
-      label: "STOCK IN ADJUSTMENTS",
-      value: "stock in adjustments",
-    },
+    // {
+    //   name: ["stock-type-status"],
+    //   label: "PURCHASES",
+    //   value: "purchases",
+    // },
+    // {
+    //   name: ["stock-type-status"],
+    //   label: "STOCK IN ADJUSTMENTS",
+    //   value: "stock in adjustments",
+    // },
     {
       name: ["stock-type-status"],
       label: "STOCK OUT - SALES",

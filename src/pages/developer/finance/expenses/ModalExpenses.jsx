@@ -99,7 +99,7 @@ const ModalExpenses = ({ itemEdit }) => {
     purchase_order_supplier_name: "",
     purchase_order_date: store?.credentials?.data?.server_date,
     purchase_order_expected_delivery: store?.credentials?.data?.server_date,
-    purchase_order_total_amount: "",
+    purchase_order_total_amount: 0,
     purchase_order_transact_id: store?.credentials?.data?.id,
     purchase_order_transact_name: store?.credentials?.data?.name,
     purchase_order_tax: 0,
@@ -107,7 +107,6 @@ const ModalExpenses = ({ itemEdit }) => {
     purchase_order_discount: 0,
     purchase_order_discount_type: "amount",
     purchase_order_discount_percentage: 0,
-    purchase_order_paid_amount: 0,
     purchase_order_payment: 0,
     total_amount: 0,
     total_sub_amount: 0,
@@ -133,6 +132,7 @@ const ModalExpenses = ({ itemEdit }) => {
   const yupSchema = Yup.object({
     purchase_order_date: Yup.string().trim().required("Required"),
     purchase_order_payment_status: Yup.string().trim().required("Required"),
+    purchase_order_total_amount: Yup.string().trim().required("Required"),
     purchase_order_payment: Yup.string().trim().required("Required"),
     purchase_order_price: Yup.string().trim().required("Required"),
   });
@@ -181,7 +181,7 @@ const ModalExpenses = ({ itemEdit }) => {
                 Number(props.values.purchase_order_discount_percentage) !== 0
               ) {
                 props.values.purchase_order_discount =
-                  Number(props.values.purchase_order_payment) *
+                  Number(props.values.purchase_order_total_amount) *
                   (Number(props.values.purchase_order_discount_percentage) /
                     100);
               }
@@ -189,7 +189,7 @@ const ModalExpenses = ({ itemEdit }) => {
               // discount is deducted from the Amount before VAT and the
               // remaining balance are computed
               const discountedAmount =
-                Number(props.values.purchase_order_payment) -
+                Number(props.values.purchase_order_total_amount) -
                 Number(props.values.purchase_order_discount || 0);
 
               // COMPUTATION OF INCLUSIVE TAX
@@ -222,7 +222,7 @@ const ModalExpenses = ({ itemEdit }) => {
                 0,
                 Number(
                   props.values.purchase_order_total_amount_after_discount_vat,
-                ) - Number(props.values.purchase_order_paid_amount),
+                ) - Number(props.values.purchase_order_payment),
               );
               return (
                 <Form>

@@ -237,6 +237,22 @@ function tokenOther(
             $result = checkLogin($object);
             $row = $result->fetch(PDO::FETCH_ASSOC);
 
+            // the password hash embedded in the token reflects the account's
+            // password at the time of login; if the current password differs,
+            // it was changed since, so this token (and any other still holding
+            // the old hash) is no longer valid.
+            if ($decoded->data->data->user_account_password !== $row['user_account_password']) {
+                http_response_code(401);
+                $response->setSuccess(false);
+                $error["count"] = 0;
+                $error["success"] = false;
+                $error["error"] = "Session expired. Password was changed.";
+                $error["error_type"] = "password_changed";
+                $response->setData($error);
+                $response->send();
+                exit;
+            }
+
             http_response_code(200);
             $fname = mb_substr($decoded->data->data->user_account_first_name, 0, 1);
             $lname = mb_substr($decoded->data->data->user_account_last_name, 0, 1);

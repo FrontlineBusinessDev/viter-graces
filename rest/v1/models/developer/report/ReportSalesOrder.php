@@ -1837,8 +1837,8 @@ class ReportSalesOrder
 
         try {
             $sql = "select ";
-            $sql .= "s.suppliers_name as name, ";
-            $sql .= "SUM(sp.purchase_order_total_amount_per_product) as amount ";
+            $sql .= "sp.purchase_order_product_name as name, ";
+            $sql .= "SUM(sp.purchase_order_payment) as amount ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} as sp, ";
             $sql .= "{$this->tblSupplier} as s ";
             $sql .= " where sp.purchase_order_supplier_id = s.suppliers_aid ";
@@ -1846,8 +1846,8 @@ class ReportSalesOrder
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             }
-            $sql .= " group by s.suppliers_name ";
-            $sql .= " order by s.suppliers_name asc ";
+            $sql .= " group by sp.purchase_order_product_id ";
+            $sql .= " order by sp.purchase_order_product_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {

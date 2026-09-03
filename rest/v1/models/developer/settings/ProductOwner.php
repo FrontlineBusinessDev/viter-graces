@@ -26,6 +26,7 @@ class ProductOwner
     public $tblSuppliersProduct;
     public $tblSalesOrder;
     public $tblMovementStock;
+    public $tblReturnProduct;
 
     public $filters;
     public $column_start;
@@ -45,6 +46,7 @@ class ProductOwner
         $this->tblSuppliersProduct = "graces_suppliers_product";
         $this->tblSalesOrder = "graces_sales_order";
         $this->tblMovementStock = "graces_stock_movement";
+        $this->tblReturnProduct = "graces_return_product";
     }
 
     // create
@@ -472,6 +474,25 @@ class ProductOwner
         }
         return $query;
     }
+    public function updateSuppliersProductOwnerName()
+    {
+        try {
+            $sql = "update {$this->tblSuppliersPurchaseOrder} set ";
+            $sql .= "purchase_order_product_owner_name = :purchase_order_product_owner_name, ";
+            $sql .= "purchase_order_updated = :purchase_order_updated ";
+            $sql .= "where purchase_order_product_owner_id = :purchase_order_product_owner_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "purchase_order_product_owner_name" => $this->column_fullname,
+                "purchase_order_updated" => $this->user_account_updated,
+                "purchase_order_product_owner_id" => $this->user_account_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
     public function updateSalesOrder()
     {
         try {
@@ -484,6 +505,45 @@ class ProductOwner
                 "sales_order_product_owner_name" => $this->column_fullname,
                 "sales_order_updated" => $this->user_account_updated,
                 "sales_order_product_owner_id" => $this->user_account_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    public function updateStockMovement()
+    {
+        try {
+            $sql = "update {$this->tblMovementStock} set ";
+            $sql .= "stock_movement_product_owner_name = :stock_movement_product_owner_name, ";
+            $sql .= "stock_movement_updated = :stock_movement_updated ";
+            $sql .= "where stock_movement_product_owner_id = :stock_movement_product_owner_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "stock_movement_product_owner_name" => $this->column_fullname,
+                "stock_movement_updated" => $this->user_account_updated,
+                "stock_movement_product_owner_id" => $this->user_account_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+    public function updateReturnProduct()
+    {
+        try {
+            $sql = "update {$this->tblReturnProduct} set ";
+            $sql .= "return_product_owner_name = :return_product_owner_name, ";
+            $sql .= "return_product_updated = :return_product_updated ";
+            $sql .= "where return_product_owner_id = :return_product_owner_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "return_product_owner_name" => $this->column_fullname,
+                "return_product_updated" => $this->user_account_updated,
+                "return_product_owner_id" => $this->user_account_aid,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

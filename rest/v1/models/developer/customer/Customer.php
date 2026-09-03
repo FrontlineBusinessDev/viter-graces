@@ -130,6 +130,8 @@ class Customer
             $sql .= "customer_whatsapp as whatsapp, ";
             $sql .= "customer_other as other, ";
             $sql .= "customer_is_active as is_active, ";
+            $sql .= "customer_name as customer_name, ";
+            $sql .= "customer_name as customer_name, ";
             $sql .= "customer_name as name ";
             $sql .= "from {$this->tblCustomer} ";
             $sql .= " where customer_is_active = '1' ";
@@ -188,6 +190,8 @@ class Customer
             $sql .= "customer_whatsapp as whatsapp, ";
             $sql .= "customer_other as other, ";
             $sql .= "customer_is_active as is_active, ";
+            $sql .= "customer_name as customer_name, ";
+            $sql .= "customer_name as customer_name, ";
             $sql .= "customer_name as name ";
             $sql .= "from {$this->tblCustomer} ";
             $sql .= " where true ";
@@ -248,6 +252,7 @@ class Customer
             $sql .= "customer_whatsapp as whatsapp, ";
             $sql .= "customer_other as other, ";
             $sql .= "customer_is_active as is_active, ";
+            $sql .= "customer_name as customer_name, ";
             $sql .= "customer_name as name ";
             $sql .= "from {$this->tblCustomer} ";
             $sql .= " where true ";
@@ -281,6 +286,7 @@ class Customer
             $sql .= "customer_whatsapp as whatsapp, ";
             $sql .= "customer_other as other, ";
             $sql .= "customer_is_active as is_active, ";
+            $sql .= "customer_name as customer_name, ";
             $sql .= "customer_name as name ";
             $sql .= "from ";
             $sql .= " {$this->tblCustomer} ";
@@ -314,6 +320,7 @@ class Customer
             $sql .= "customer_whatsapp as whatsapp, ";
             $sql .= "customer_other as other, ";
             $sql .= "customer_is_active as is_active, ";
+            $sql .= "customer_name as customer_name, ";
             $sql .= "customer_name as name ";
             $sql .= "from {$this->tblCustomer} ";
             $sql .= "where customer_aid = :customer_aid ";

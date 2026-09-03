@@ -4,6 +4,8 @@ import PageNotFound from "@/layout/PageNotFound";
 import { queryData } from "@/services/queryData";
 import { setCredentials } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
+import { broadcastLogout, subscribeToLogout } from "@/utilities/authChannel";
+import { performLogout } from "@/utilities/logout";
 import React from "react";
 import { Navigate } from "react-router-dom";
 
@@ -31,6 +33,9 @@ const ProtectedRouteUser = ({ children }) => {
         setLoading(false);
         setIsAuth("456");
         localStorage.removeItem("gracestoken");
+        // the password changed since this token was issued (server rejects it
+        // with 401) — make sure any other open tab drops its session too
+        broadcastLogout("password_changed");
         return;
       }
 
@@ -63,6 +68,15 @@ const ProtectedRouteUser = ({ children }) => {
       setLoading(false);
       localStorage.removeItem("gracestoken");
     }
+  }, [dispatch]);
+
+  // another tab changed the password (or otherwise invalidated the session) —
+  // drop this tab's session immediately instead of waiting for a remount
+  React.useEffect(() => {
+    const unsubscribe = subscribeToLogout(() => {
+      performLogout(dispatch);
+    });
+    return unsubscribe;
   }, [dispatch]);
 
   if (pageStatus) {
