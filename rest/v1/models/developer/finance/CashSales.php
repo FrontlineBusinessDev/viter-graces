@@ -123,9 +123,7 @@ class CashSales
             $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
-            $sql .= " WHERE (sales_order_payment_method = 'cash' ";
-            $sql .= " OR (sales_order_payment_method = 'multiple payment' ";
-            $sql .= " and sales_order_cash != 0 and sales_order_cash IS NOT NULL) ) ";
+            $sql .= " WHERE sales_order_cash != 0 and sales_order_cash IS NOT NULL";
             $sql .= " and CAST(sales_order_paid_per_product AS DECIMAL(10, 2)) != 0 ";
             $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
@@ -198,9 +196,7 @@ class CashSales
             $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
-            $sql .= " WHERE (sales_order_payment_method = 'cash' ";
-            $sql .= " OR (sales_order_payment_method = 'multiple payment' ";
-            $sql .= " and sales_order_cash != 0 and sales_order_cash IS NOT NULL) ) ";
+            $sql .= " WHERE sales_order_cash != 0 and sales_order_cash IS NOT NULL";
             $sql .= " and CAST(sales_order_paid_per_product AS DECIMAL(10, 2)) != 0 ";
             $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {

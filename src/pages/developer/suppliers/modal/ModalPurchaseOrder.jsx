@@ -5,7 +5,7 @@ import {
   InputSelectFilterTagArray,
   ProductOwnerInputSelectTagArray,
 } from "@/components/inputs/InputSelect";
-import { InputText } from "@/components/inputs/InputText";
+import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { Amount, AmountWithPesoSign } from "@/components/PesoSign";
@@ -697,24 +697,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                     </div>
                   </div>
                   <div className="grid grid-cols-4 items items-center gap-2">
-                    <div className="relative mt-3 ">
-                      <InputSelectArrayWithOptions
-                        label="VAT"
-                        type="purchase_order_percent_tax"
-                        name="purchase_order_percent_tax"
-                        defaultValue="--"
-                        options={taxOption()}
-                        onChange={(e) => {
-                          props.setFieldValue(
-                            "purchase_order_percent_tax",
-                            e.target.id,
-                          );
-                          return e;
-                        }}
-                        required={false}
-                      />
-                    </div>
-                    <div className="relative ">
+                    <div className="relative  mt-3">
                       <InputSelectArrayWithOptions
                         label="Type of discount"
                         type="purchase_order_discount_type"
@@ -736,8 +719,9 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         required={false}
                       />
                     </div>
-                    {props.values.sales_order_discount_type === "percentage" ? (
-                      <div className="relative ">
+                    {props.values.purchase_order_discount_type ===
+                    "percentage" ? (
+                      <div className="relative mt-3 ">
                         <InputNumber
                           label="Discount %"
                           name="purchase_order_discount_percentage"
@@ -782,6 +766,23 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         />
                       </div>
                     )}
+                    <div className="relative mt-3 ">
+                      <InputSelectArrayWithOptions
+                        label="VAT"
+                        type="purchase_order_percent_tax"
+                        name="purchase_order_percent_tax"
+                        defaultValue="--"
+                        options={taxOption()}
+                        onChange={(e) => {
+                          props.setFieldValue(
+                            "purchase_order_percent_tax",
+                            e.target.id,
+                          );
+                          return e;
+                        }}
+                        required={false}
+                      />
+                    </div>
                   </div>
 
                   <div className="grid grid-cols-2 items-end gap-2 mt-3">

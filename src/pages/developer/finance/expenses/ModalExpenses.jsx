@@ -154,6 +154,7 @@ const ModalExpenses = ({ itemEdit }) => {
         mutation={mutation}
         isOpen={true}
         handleClose={handleClose}
+        width="max-w-[40rem]!"
       >
         <div className="modal-body">
           <Formik
@@ -242,7 +243,7 @@ const ModalExpenses = ({ itemEdit }) => {
                       disabled={mutation.isPending}
                     />
                   </div>
-                  <div className="relative capitalize mt-3">
+                  {/* <div className="relative capitalize mt-3">
                     <InputSelectArrayWithOptions
                       label="Payment Status"
                       type="text"
@@ -260,7 +261,7 @@ const ModalExpenses = ({ itemEdit }) => {
                         return e;
                       }}
                     />
-                  </div>
+                  </div> */}
                   <div className="relative capitalize mt-3">
                     <DefaultInputSelectTagArray
                       label="Product Owner"
@@ -320,34 +321,35 @@ const ModalExpenses = ({ itemEdit }) => {
                   ) : (
                     ""
                   )}
-                  <div className="relative capitalize mb-3">
-                    <InputSelectArrayWithOptions
-                      label="Payment Method"
-                      type="text"
-                      name="purchase_order_payment_method"
-                      defaultValue="cash"
-                      options={PaymentMethodList()}
-                      onChange={(e) => {
-                        props.setFieldValue(
-                          "purchase_order_payment_method",
-                          e.target.value,
-                        );
-                        return e;
-                      }}
-                    />
-                  </div>
-                  <div className="relative mb-3">
-                    <InputText
-                      label="Amount"
-                      type="number"
-                      number="number"
-                      name="purchase_order_total_amount"
-                      disabled={mutation.isPending}
-                    />
-                  </div>
+
                   <div
                     className={` grid-cols-2 grid mt-3 gap-3 items-center mb-3`}
                   >
+                    <div className="relative capitalize ">
+                      <InputSelectArrayWithOptions
+                        label="Payment Method"
+                        type="text"
+                        name="purchase_order_payment_method"
+                        defaultValue="cash"
+                        options={PaymentMethodList()}
+                        onChange={(e) => {
+                          props.setFieldValue(
+                            "purchase_order_payment_method",
+                            e.target.value,
+                          );
+                          return e;
+                        }}
+                      />
+                    </div>
+                    <div className="relative ">
+                      <InputText
+                        label="Amount"
+                        type="number"
+                        number="number"
+                        name="purchase_order_total_amount"
+                        disabled={mutation.isPending}
+                      />
+                    </div>
                     <div className="relative ">
                       <InputSelectArrayWithOptions
                         label="Type of discount"

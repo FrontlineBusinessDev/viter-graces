@@ -667,6 +667,14 @@ export const InputSalesOrderSelectTagArray = ({
               onChange(e, selectedItem);
             }}
             isClearable
+            // render the menu through a portal on <body> so it is never
+            // clipped by an ancestor's overflow (e.g. the modal body/table's
+            // overflow-auto scroll containers) or stuck behind a sibling's
+            // stacking context
+            menuPortalTarget={
+              typeof document !== "undefined" ? document.body : null
+            }
+            menuPosition="fixed"
             classNames={{
               control: ({ isFocused }) =>
                 `z-[999]!  w-full! min-h-full! text-sm border rounded-lg! px-1 cursor-pointer! shadow-none! dark:bg-[#0b111e]!
@@ -693,13 +701,15 @@ export const InputSalesOrderSelectTagArray = ({
               clearIndicator: () =>
                 "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
 
+              menuPortal: () => "z-999!",
+
               menu: () =>
                 "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white dark:bg-[#0b111e]! z-[999]! ",
 
               menuList: () => "py-1 max-h-60 overflow-auto ",
 
               option: ({ isFocused, isSelected }) =>
-                ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  z-[999]! 
+                ` normal-case! px-3 py-2 text-sm cursor-pointer! hover:text-secondary!  z-[999]!
          ${isSelected ? "bg-primary! text-secondary!" : " "}
          ${!isSelected && isFocused ? "bg-primary! text-secondary! " : " "}`,
             }}
@@ -1049,6 +1059,14 @@ export const InputSelectFilterTagArray = ({
               onChange(e, selectedItem);
             }}
             isClearable
+            // render the menu through a portal on <body> so it is never
+            // clipped by an ancestor's overflow (e.g. the modal body's
+            // overflow-y-auto scroll container) or stuck behind a sibling's
+            // stacking context
+            menuPortalTarget={
+              typeof document !== "undefined" ? document.body : null
+            }
+            menuPosition="fixed"
             classNames={{
               control: ({ isFocused }) =>
                 ` w-full! min-h-full! text-sm border rounded-lg! px-1 mt-1! cursor-pointer! shadow-none! dark:bg-[#0b111e]!
@@ -1074,6 +1092,8 @@ export const InputSelectFilterTagArray = ({
 
               clearIndicator: () =>
                 "p-0! text-gray-500 hover:text-primary! cursor-pointer! ",
+
+              menuPortal: () => "z-999!",
 
               menu: () =>
                 "mt-1 border border-gray-100 rounded-lg! shadow-lg bg-white dark:bg-[#0b111e]! z-50",

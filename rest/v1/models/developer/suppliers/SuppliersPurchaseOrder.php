@@ -403,9 +403,13 @@ class SuppliersPurchaseOrder
             $sql .= "purchase_order_price = :purchase_order_price, ";
             $sql .= "purchase_order_tax = :purchase_order_tax, ";
             $sql .= "purchase_order_discount = :purchase_order_discount, ";
+            $sql .= "purchase_order_discount_type = :purchase_order_discount_type, ";
+            $sql .= "purchase_order_discount_percentage = :purchase_order_discount_percentage, ";
             $sql .= "purchase_order_balance = :purchase_order_balance, ";
             $sql .= "purchase_order_total_amount_per_product = :purchase_order_total_amount_per_product, ";
             $sql .= "purchase_order_percent_tax = :purchase_order_percent_tax, ";
+            $sql .= "purchase_order_vat = :purchase_order_vat, ";
+            $sql .= "purchase_order_vat_amount = :purchase_order_vat_amount, ";
             $sql .= "purchase_order_total_balance_per_product = :purchase_order_total_balance_per_product, ";
             $sql .= "purchase_order_total_paid_per_product = :purchase_order_total_paid_per_product, ";
             $sql .= "purchase_order_updated = :purchase_order_updated ";
@@ -432,10 +436,14 @@ class SuppliersPurchaseOrder
                 "purchase_order_qty" => $this->purchase_order_qty,
                 "purchase_order_tax" => $this->purchase_order_tax,
                 "purchase_order_discount" => $this->purchase_order_discount,
+                "purchase_order_discount_type" => $this->purchase_order_discount_type,
+                "purchase_order_discount_percentage" => $this->purchase_order_discount_percentage,
                 "purchase_order_price" => $this->purchase_order_price,
                 "purchase_order_balance" => $this->purchase_order_balance,
                 "purchase_order_total_amount_per_product" => $this->purchase_order_total_amount_per_product,
                 "purchase_order_percent_tax" => $this->purchase_order_percent_tax,
+                "purchase_order_vat" => $this->purchase_order_vat,
+                "purchase_order_vat_amount" => $this->purchase_order_vat_amount,
                 "purchase_order_total_balance_per_product" => $this->purchase_order_total_balance_per_product,
                 "purchase_order_total_paid_per_product" => $this->purchase_order_total_paid_per_product,
                 "purchase_order_updated" => $this->purchase_order_updated,

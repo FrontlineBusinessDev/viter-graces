@@ -3,6 +3,7 @@ import { AmountWithPesoSign } from "@/components/PesoSign";
 import Pills from "@/components/Pills";
 import { setIsView } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
+import { exportSalesOrderCsv } from "@/utilities/exportSalesOrderCsv";
 import { Download } from "lucide-react";
 import React from "react";
 
@@ -11,6 +12,9 @@ const ViewSalesDetails = ({ itemEdit }) => {
   let counter = 1;
   const handleClose = () => {
     dispatch(setIsView(false));
+  };
+  const handleExportCsv = () => {
+    exportSalesOrderCsv(itemEdit);
   };
 
   let total_balance =
@@ -195,7 +199,11 @@ const ViewSalesDetails = ({ itemEdit }) => {
           </ul>
 
           <div className="my-4 place-self-center">
-            <button className="btn--outline--gray flex items-center gap-2">
+            <button
+              type="button"
+              onClick={handleExportCsv}
+              className="btn--outline--gray flex items-center gap-2"
+            >
               <Download size={16} />
               Export CSV
             </button>

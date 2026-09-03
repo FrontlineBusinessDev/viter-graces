@@ -31,6 +31,24 @@ export const ValidationsStockMovement = (values, items, dispatch) => {
 export const PropsValues = (props, items) => {
   const values = props.values;
 
+  const currentSubtotal = items.reduce(
+    (sum, item) =>
+      sum +
+      Number(item.purchase_order_qty || 0) *
+        Number(item.purchase_order_price || 0),
+    0,
+  );
+
+  if (
+    values.purchase_order_discount_type === "percentage" &&
+    Number(values.purchase_order_discount_percentage) !== 0 &&
+    currentSubtotal !== 0
+  ) {
+    const percentageDiscount =
+      Number(values.purchase_order_discount_percentage) / 100;
+    values.purchase_order_discount = currentSubtotal * percentageDiscount;
+  }
+
   values.total_amount_without_discount_and_vat = items.reduce(
     (sum, item) =>
       sum +
