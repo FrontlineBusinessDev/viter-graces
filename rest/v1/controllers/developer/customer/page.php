@@ -69,7 +69,11 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
             }
 
             if (count($queryReturn) > 0) {
-                $data[$i]["open_credit_memo"] = $queryReturn[0]['open_credit_memo'];
+                // net unpaid balance: gross open credit memo minus what has
+                // already been paid/applied against it
+                $grossCreditMemo = (float)($queryReturn[0]['open_credit_memo'] ?? 0);
+                $paidCreditMemo = (float)($queryReturn[0]['return_product_paid_amount'] ?? 0);
+                $data[$i]["open_credit_memo"] = max(0, $grossCreditMemo - $paidCreditMemo);
             } else {
                 $data[$i]["open_credit_memo"] = 0;
             }

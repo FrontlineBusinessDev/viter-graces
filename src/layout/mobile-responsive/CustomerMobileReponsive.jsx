@@ -2,6 +2,7 @@ import { AmountWithPesoSign } from "@/components/PesoSign";
 import Pills from "@/components/Pills";
 import { Image } from "lucide-react";
 import ActionButtonMobile from "../ActionButtonMobile";
+import { ActionTableList } from "../ArrayValue";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { Link } from "react-router-dom";
 import { devNavUrl } from "@/config/config";
@@ -68,11 +69,9 @@ const CustomerMobileReponsive = ({
 
                 {/* OTHER FIELDS */}
 
-                <ul className="py-2 ">
+                <ul className="pt-2 ">
                   <li className="flex gap-2">
-                    <span className={`text-gray-500 min-w-15 capitalize`}>
-                      address:
-                    </span>
+                    <span className={`text-gray-500 capitalize`}>address:</span>
                     <span className="wrap-break-word font-semibold">
                       {isEmptyItem(rowData?.customer_address, "none")}
                     </span>
@@ -112,6 +111,47 @@ const CustomerMobileReponsive = ({
                     </a>
                   </li>
                   <li className="flex gap-2">
+                    <span className={`text-gray-500 capitalize`}>
+                      number of orders:
+                    </span>
+                    <span className="wrap-break-word font-semibold">
+                      {isEmptyItem(rowData?.number_of_orders, 0)}
+                    </span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className={`text-gray-500 capitalize`}>
+                      total amount spent:
+                    </span>
+                    <span className="wrap-break-word font-semibold">
+                      <AmountWithPesoSign
+                        classN="size-3"
+                        amount={`${isEmptyItem(rowData?.total_amount_spent, 0)}`}
+                      />
+                    </span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className={`text-gray-500 capitalize`}>
+                      outstanding balance:
+                    </span>
+                    <span className="wrap-break-word font-semibold">
+                      <AmountWithPesoSign
+                        classN="size-3"
+                        amount={`${isEmptyItem(rowData?.outstanding_balance, 0)}`}
+                      />
+                    </span>
+                  </li>
+                  <li className="flex gap-2">
+                    <span className={`text-gray-500 capitalize`}>
+                      open credit memo:
+                    </span>
+                    <span className="wrap-break-word font-semibold">
+                      <AmountWithPesoSign
+                        classN="size-3"
+                        amount={`${isEmptyItem(rowData?.open_credit_memo, 0)}`}
+                      />
+                    </span>
+                  </li>
+                  <li className="flex gap-2">
                     <span className={`text-gray-500  capitalize`}>note:</span>
                     <span className="wrap-break-word font-semibold">
                       {isEmptyItem(rowData?.customer_notes, "none")}
@@ -126,6 +166,7 @@ const CustomerMobileReponsive = ({
                     setItemEdit={setItemEdit}
                     ishaveSubAdd={ishaveSubAdd}
                     path={path}
+                    itemVal={ActionTableList("customer", "customer-status")}
                   />
                 </div>
               </div>

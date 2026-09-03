@@ -730,6 +730,7 @@ export const DefaultInputSelectTagArray = ({
   testFilterId = "",
   store,
   defaultValue = [],
+  excludeIds = [],
 }) => {
   const userId = ProductOwnerId(store);
   const { data: result } = useQueryData(
@@ -749,10 +750,17 @@ export const DefaultInputSelectTagArray = ({
   );
   const [selected, setSelected] = React.useState(defaultValue);
 
+  const excludeIdSet = new Set(
+    excludeIds
+      ?.filter((excludedId) => isEmptyItem(excludedId, "") !== "")
+      .map(Number),
+  );
+
   const newDataList = result?.data?.filter((item) => {
-    return !dataVal?.find((listItem) => {
+    const isAlreadySelected = !!dataVal?.find((listItem) => {
       return item.id === Number(listItem.purchase_order_product_id);
     });
+    return !isAlreadySelected && !excludeIdSet.has(Number(item.id));
   });
   const options =
     newDataList?.map((item) => ({

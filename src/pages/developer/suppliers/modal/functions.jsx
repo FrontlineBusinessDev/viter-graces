@@ -88,8 +88,12 @@ export const PropsValues = (props, items) => {
       Number(values.total_amount) + Number(values.purchase_order_tax);
   }
 
-  if (Number(values.purchase_order_percent_tax) === 0) {
+  if (
+    Number(values.purchase_order_percent_tax) === 0 ||
+    values.purchase_order_percent_tax === "--"
+  ) {
     values.purchase_order_tax = 0;
+    values.total_amount = Number(values.total_amount);
   }
 
   if (values.purchase_order_payment_status === "paid") {

@@ -30,6 +30,7 @@ import {
 import { StoreContext } from "@/store/StoreContext";
 import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { isRowsDirty } from "@/utilities/isRowsDirty";
 import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
@@ -99,9 +100,23 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
       itemEdit?.sales_order_payment_method === "credit memo",
   );
   console.log("creditMemoBalance", creditMemoBalance);
+  // matches the blank row handleAddItem appends - a plain "Add Item" click
+  // alone must not enable Save, only actually filling in a field should
+  const blankItemTemplate = {
+    sales_order_aid: 0,
+    sales_order_product_id: "",
+    sales_order_product_name: "",
+    sales_order_product_owner_id: "",
+    sales_order_product_owner_name: "",
+    sales_order_qty: "1",
+    sales_order_qty_old: "1",
+    sales_order_price: "",
+    sales_order_total: 0,
+    is_new: true,
+  };
   const itemsDirty =
     itemsDelete.length > 0 ||
-    JSON.stringify(items) !== JSON.stringify(initialItemsRef.current);
+    isRowsDirty(items, initialItemsRef.current, blankItemTemplate);
 
   const handleChange = (index, selectedItem = "", fieldId, field) => {
     const updated = [...items];
@@ -681,7 +696,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                   <div className="my-5 px-4 border shadow border-gray-300 rounded-lg bg-gray-100 dark:bg-gray-700 w-full transition-all duration-300 ease-in-out py-3 ">
                     <h2 className="text-sm mb-2">Payment Details</h2>
                     <div
-                      className={` grid-cols-4 grid mt-3 gap-3 items-center mb-3`}
+                      className={` grid-cols-4 grid mt-3 gap-3 items-end mb-3`}
                     >
                       <div className="relative ">
                         <InputSelectArrayWithOptions

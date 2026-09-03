@@ -123,8 +123,6 @@ export const titleHeaderTab = (description) => {
           roles: ["admin", "developer", "product_owner"],
         },
         {
-          // "finance-returns", not "returns" - the bare "returns" URL segment
-          // is already the top-level Returns management page's own route.
           icon: "",
           title_tab: "finance-returns",
           description_tab: "Review refunds and return resolutions.",
@@ -212,7 +210,7 @@ export const titleHeaderTab = (description) => {
         },
         {
           icon: "",
-          title_tab: "returns-reports",
+          title_tab: "returns-report",
           description_tab: "Review product returns and refund activity.",
           on_click: onClickTab,
           ongoingDevelopment: false,

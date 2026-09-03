@@ -157,7 +157,7 @@ const ReturnsReports = () => {
 
   return (
     <>
-      <HeaderNav menu={"reports"} activeTab="returns-reports">
+      <HeaderNav menu={"reports"} activeTab="returns-report">
         <ReportsStats searchValue={searchValue} filterColumns={filterColumns} />
         <InfiniteTable
           columns={columns}

@@ -96,6 +96,14 @@ export const renderCellContent = (item, rowData, path = "") => {
                     id: column.filterOnClickId,
                     value: rowData?.customer_name,
                   },
+                  ...(column.filterResolutionType === "resolution_type"
+                    ? [
+                        {
+                          id: column.filterResolutionType,
+                          value: "credit memo",
+                        },
+                      ]
+                    : []),
                 ]),
               )
             : ""

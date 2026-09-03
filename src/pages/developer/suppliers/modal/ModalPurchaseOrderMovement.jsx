@@ -134,6 +134,7 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
       updated[index]["purchase_order_qty"] = "";
       updated[index]["purchase_order_product_owner_id"] = "";
       updated[index]["purchase_order_product_owner_name"] = "";
+      updated[index]["purchase_order_source_owner_id"] = "";
       updated[index][field] = "";
       updated[index][fieldId] = "";
       updated[index]["allData"] = [];
@@ -145,7 +146,16 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
         selectedItem["purchase_order_product_owner_id"];
       updated[index]["purchase_order_product_owner_name"] =
         selectedItem["purchase_order_product_owner_name"];
-      updated[index][field] = selectedItem["name"];
+      // the PO item's current owner - kept separate from
+      // purchase_order_product_owner_id/name above (which the "Product
+      // owner" destination dropdown overwrites once the user picks a
+      // destination) so it can still be excluded from that same dropdown
+      updated[index]["purchase_order_source_owner_id"] =
+        selectedItem["purchase_order_product_owner_id"];
+      // selectedItem["name"] is the dropdown's display label ("<product> -
+      // <owner>"), not the product name itself - use the raw field so only
+      // the plain product name (e.g. "saging") gets saved
+      updated[index][field] = selectedItem["purchase_order_product_name"];
       updated[index][fieldId] = selectedItem["id"];
       updated[index]["allData"] = selectedItem;
     }
@@ -339,9 +349,10 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
                                           />
                                         </td>
                                       </>
-                                    )}{" "}
+                                    )}
                                     <td className=" dark:bg-gray-900! ">
                                       <DefaultInputSelectTagArray
+                                        key={a?.purchase_order_transfer_from_id}
                                         onChange={(e) => {
                                           handleChangeItem(
                                             index,
@@ -356,6 +367,9 @@ const ModalPurchaseOrderMovement = ({ itemEdit }) => {
                                         path={`product-owner/read-by-product-owner`}
                                         testFilterId="sales_order_product_name"
                                         store={store}
+                                        excludeIds={[
+                                          a?.purchase_order_source_owner_id,
+                                        ]}
                                       />
                                     </td>
                                     <td className=" dark:bg-gray-900! ">

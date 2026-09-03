@@ -218,7 +218,7 @@ export const routesDeveloper = [
     ),
   },
   {
-    path: `${devNavUrl}/developer/returns-reports`,
+    path: `${devNavUrl}/developer/returns-report`,
     element: (
       <ProtectedRouteUser>
         <ReturnsReports />

@@ -239,7 +239,7 @@ export const routesProductOwner = [
     ),
   },
   {
-    path: `${devNavUrl}/product_owner/returns-reports`,
+    path: `${devNavUrl}/product_owner/returns-report`,
     element: (
       <ProtectedRouteUser>
         <ReturnsReports />

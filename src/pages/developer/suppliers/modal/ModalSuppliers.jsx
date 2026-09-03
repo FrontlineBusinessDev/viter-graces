@@ -17,6 +17,7 @@ import { StoreContext } from "@/store/StoreContext";
 import { getConvertStringToJSONparseData } from "@/utilities/getConvertStringToJSONparseData";
 import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { isRowsDirty } from "@/utilities/isRowsDirty";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import { Plus } from "lucide-react";
@@ -42,10 +43,17 @@ const ModalSuppliers = ({ itemEdit }) => {
     };
   }
 
+  // blank rows appended via "Add Contact Person"/"Add Item" alone must not
+  // enable Save - only once a field on that row is actually filled in
+  const blankContactTemplate = { contact_name: "", contact_phone: "" };
+  const blankItemTemplate = { product_name: "", price: "", unit: "" };
+
   const itemsDirty =
-    JSON.stringify(itemsContact) !==
-      JSON.stringify(initialItemsRef.current.itemsContact) ||
-    JSON.stringify(items) !== JSON.stringify(initialItemsRef.current.items);
+    isRowsDirty(
+      itemsContact,
+      initialItemsRef.current.itemsContact,
+      blankContactTemplate,
+    ) || isRowsDirty(items, initialItemsRef.current.items, blankItemTemplate);
 
   const handleContactChange = (index, field, value) => {
     const updatedContact = [...itemsContact];

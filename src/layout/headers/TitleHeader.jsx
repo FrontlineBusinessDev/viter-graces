@@ -28,7 +28,8 @@ const TitleHeader = ({ description }) => {
     (tab) => tab.title_tab === currentTab,
   );
 
-  const formatText = (text) => text.replace(/-/g, " ");
+  const formatText = (text) =>
+    text.replace(/-/g, " ").replaceAll("finance", " ");
 
   return (
     <>

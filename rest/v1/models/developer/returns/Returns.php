@@ -172,7 +172,7 @@ class Returns
             $sql .= "return_product_status as is_status, ";
             $sql .= "DATE_FORMAT(return_product_date, '%b %d, %Y') as return_product_date, ";
             $sql .= "return_product_customer_name as customer_name, ";
-            $sql .= "return_product_customer_name as customer_name, ";
+            $sql .= "return_product_resolution_type as resolution_type, ";
             $sql .= "return_product_number as name ";
             $sql .= "from {$this->tblReturnProducts} ";
             $sql .= " where true ";
@@ -236,6 +236,7 @@ class Returns
             $sql .= "return_product_status as is_status, ";
             $sql .= "DATE_FORMAT(return_product_date, '%b %d, %Y') as return_product_date, ";
             $sql .= "return_product_customer_name as customer_name, ";
+            $sql .= "return_product_resolution_type as resolution_type, ";
             $sql .= "return_product_number as name ";
             $sql .= "from {$this->tblReturnProducts} ";
             $sql .= " where true ";

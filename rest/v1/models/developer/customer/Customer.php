@@ -651,10 +651,15 @@ class Customer
     }
 
     // read by id
+    // returns the gross open credit memo total plus the total already paid
+    // (applied) against it, separately - callers combine them as needed
+    // (e.g. customer/page.php nets them for the customer-wide balance, while
+    // read-open-credit-memo.php has its own order-aware net calculation)
     public function readReturnByOpenCreditMemo()
     {
         try {
-            $sql = "select SUM(return_product_amount) as open_credit_memo ";
+            $sql = "select SUM(return_product_amount) as open_credit_memo, ";
+            $sql .= "SUM(IFNULL(return_product_paid_amount, 0)) as return_product_paid_amount ";
             $sql .= "from {$this->tblReturnProduct} ";
             $sql .= " where return_product_customer_id =:return_product_customer_id ";
             $sql .= " and return_product_resolution_type = 'credit memo' ";

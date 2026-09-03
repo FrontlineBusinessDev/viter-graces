@@ -5,9 +5,9 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import React from "react";
-import ViewSalesDetails from "../sales-orders/ViewSalesDetails";
 import ModalCustomer from "./ModalCustomer";
 import ModalSalesOrders from "./ModalSalesOrders";
+import ViewCustomerDetails from "./ViewCustomerDetails";
 import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
 import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 import { ProductOwnerId } from "@/utilities/productOwnerToken";
@@ -82,7 +82,6 @@ const Customers = () => {
         Number(ProductOwnerId(store)) > 0
           ? ""
           : `${devNavUrl}/${userRole}/accounts-receivable`,
-      // clicking navigates to Overdue Payments pre-filtered by this customer
       filterOnClickId: "sales_order_customer_name",
       amount: true,
       classTh: "min-w-45 ",
@@ -97,8 +96,8 @@ const Customers = () => {
         Number(ProductOwnerId(store)) > 0
           ? ""
           : `${devNavUrl}/${userRole}/returns`,
-      // clicking navigates to returns pre-filtered by this customer
       filterOnClickId: "return_product_customer_name",
+      filterResolutionType: "resolution_type",
       amount: true,
       classTh: "min-w-40",
       classTd: "",
@@ -110,7 +109,7 @@ const Customers = () => {
       : [
           {
             accessorKey: "action",
-            action_array: ActionTableList("customer"),
+            action_array: ActionTableList("customer", "customer-status"),
             header: "action",
             classTh: "text-center w-[7rem]",
             classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
@@ -141,7 +140,7 @@ const Customers = () => {
       {store.isAdd && <ModalCustomer itemEdit={itemEdit} />}
       {store.isSubAdd && <ModalSalesOrders itemEdit={itemEdit} />}
 
-      {store.isView && <ViewSalesDetails itemEdit={itemEdit} />}
+      {store.isView && <ViewCustomerDetails itemEdit={itemEdit} />}
     </>
   );
 };

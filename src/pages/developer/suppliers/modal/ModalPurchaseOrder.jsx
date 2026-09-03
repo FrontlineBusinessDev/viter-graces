@@ -26,6 +26,7 @@ import {
 import { StoreContext } from "@/store/StoreContext";
 import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
+import { isRowsDirty } from "@/utilities/isRowsDirty";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import { Plus } from "lucide-react";
@@ -64,9 +65,23 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     initialItemsRef.current = JSON.parse(JSON.stringify(items));
   }
 
+  // matches the blank row handleAddItem appends - a plain "Add Item" click
+  // alone must not enable Save, only actually filling in a field should
+  const blankItemTemplate = {
+    purchase_order_aid: "0",
+    purchase_order_product_id: "",
+    purchase_order_product_name: "",
+    purchase_order_product_owner_id: "",
+    purchase_order_product_owner_name: "",
+    purchase_order_qty: "1",
+    purchase_order_price: "",
+    suppliers_delivery: "monday",
+    purchase_order_total_amount: "",
+    purchase_order_delivery_is_status: true,
+  };
   const itemsDirty =
     itemsDelete.length > 0 ||
-    JSON.stringify(items) !== JSON.stringify(initialItemsRef.current);
+    isRowsDirty(items, initialItemsRef.current, blankItemTemplate);
 
   const handleChangeProduct = (index, itemVal, selectedItem, props) => {
     const updated = [...items];
@@ -276,6 +291,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     { id: "draft", name: "Draft" },
     { id: "sent", name: "Sent" },
     { id: "confirmed", name: "Confirmed" },
+    { id: "partially received", name: "Partially Received" },
     { id: "received", name: "Received" },
     { id: "cancelled", name: "Cancelled" },
   ];
@@ -351,24 +367,41 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                 return false;
               });
 
-              const getDeliveryStatus = (items = [], values) => {
-                if (!items.length) return values.purchase_order_status;
+              // Derives the PO status from each item's receipt state:
+              // - every item received -> "received"
+              // - not fully received (zero or partial) while the PO is
+              //   still in a system-controlled status ("draft"/"received")
+              //   -> defaults to "draft" (zero received) or "partially
+              //   received" (some received)
+              // - any other status (sent, confirmed, cancelled, ...) was
+              //   explicitly chosen by the user and always takes priority -
+              //   it is never auto-overwritten, regardless of receipt count
+              const getAutoPurchaseOrderStatus = (items = [], currentStatus) => {
+                if (!items.length) return currentStatus;
 
-                const deliveredCount = items.filter((item) =>
+                const receivedCount = items.filter((item) =>
                   Boolean(Number(item?.purchase_order_delivery_is_status)),
                 ).length;
 
-                if (deliveredCount === items.length) return "delivered";
-                if (deliveredCount > 0) return "partially delivered";
-                return values.purchase_order_status;
+                if (receivedCount === items.length) {
+                  return "received";
+                }
+
+                if (currentStatus !== "draft" && currentStatus !== "received") {
+                  return currentStatus;
+                }
+
+                return receivedCount === 0 ? "draft" : "partially received";
               };
 
-              // Usage
-              const status = getDeliveryStatus(items, values);
+              const autoStatus = getAutoPurchaseOrderStatus(
+                items,
+                values.purchase_order_status,
+              );
 
-              // values.purchase_order_status = !itemEdit
-              //   ? values.purchase_order_status
-              //   : status;
+              values.purchase_order_status = !itemEdit
+                ? values.purchase_order_status
+                : autoStatus;
 
               if (hasDuplicateCombination) {
                 dispatch(setError(true));
@@ -621,19 +654,13 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                                         >
                                           Received
                                         </button>
-                                        {Number(
-                                          isEmptyItem(a?.purchase_order_aid, 0),
-                                        ) === 0 ? (
-                                          <button
-                                            onClick={() => handleRemoveItem(a)}
-                                            className="text-red-500 text-xl "
-                                            type="button"
-                                          >
-                                            ✕
-                                          </button>
-                                        ) : (
-                                          ""
-                                        )}
+                                        <button
+                                          onClick={() => handleRemoveItem(a)}
+                                          className="text-red-500 text-xl "
+                                          type="button"
+                                        >
+                                          ✕
+                                        </button>
                                       </div>
                                     ) : (
                                       <button

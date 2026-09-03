@@ -77,6 +77,14 @@ const InfiniteTable = ({
     search.current?.value ? [] : filterName !== "" ? filterName : defaultValue,
   );
 
+  // the incoming filter is only meant for this one mount (e.g. navigating
+  // here from an "Open Credit Memo" click) - consume it once so a later
+  // remount of this same page (browser back/forward, etc.) doesn't silently
+  // re-apply a stale filter from an unrelated page
+  React.useEffect(() => {
+    window.sessionStorage.removeItem("filter");
+  }, []);
+
   const searchPayload = useMemo(
     () => ({
       searchValue: search.current?.value || "",
@@ -171,9 +179,6 @@ const InfiniteTable = ({
           return row.getValue(columnId) === filterName[0]?.value;
         }
 
-        // String-coerced: some "equals" columns are numeric in the DB
-        // (e.g. return_product_is_restocked is 0/1) while filter option
-        // values are strings, so a strict === would never match.
         return String(row.getValue(columnId)) === String(value);
       },
       date: (row, columnId, value) => {
