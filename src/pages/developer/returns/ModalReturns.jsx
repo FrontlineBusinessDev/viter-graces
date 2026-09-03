@@ -222,58 +222,49 @@ const ModalReturns = ({ itemEdit }) => {
                       </InputSelect>
                     </div>
 
-                    {props.values.return_product_resolution_type ===
-                    "refund" ? (
-                      <div className="relative">
-                        <InputSelect
-                          label="Refund Method"
-                          type="text"
-                          name="return_product_refund_method"
-                          disabled={mutation.isPending}
-                        >
-                          <optgroup label={`Select Refund Method`}>
-                            <option value="" hidden>
-                              --
+                    <div className="relative">
+                      <InputSelect
+                        label="Refund Method"
+                        type="text"
+                        name="return_product_refund_method"
+                        disabled={mutation.isPending}
+                      >
+                        <optgroup label={`Select Refund Method`}>
+                          <option value="" hidden>
+                            --
+                          </option>
+                          {RefundMethodList().map((item, key) => (
+                            <option key={key} value={item.value}>
+                              {item.label}
                             </option>
-                            {RefundMethodList().map((item, key) => (
-                              <option key={key} value={item.value}>
-                                {item.label}
-                              </option>
-                            ))}
-                          </optgroup>
-                        </InputSelect>
-                      </div>
-                    ) : (
-                      ""
-                    )}
-                    {props.values.return_product_resolution_type !==
-                    "replacement" ? (
-                      <div className="relative">
-                        <InputSelect
-                          label="Return Reason"
-                          type="text"
-                          name="return_product_reason"
-                          onChange={(e) => {
-                            props.values.other_reason = e.target.value;
-                            if (e.target.value === "other") {
-                              props.values.other_reason = "";
-                            }
-                          }}
-                          disabled={mutation.isPending}
-                        >
-                          <optgroup label={`Select Return Reason`}>
-                            <option value="" hidden>
-                              --
-                            </option>
-                            <option value="damage">Damage</option>
-                            <option value="expired">Expired</option>
-                            <option value="other">Other</option>
-                          </optgroup>
-                        </InputSelect>
-                      </div>
-                    ) : (
-                      ""
-                    )}
+                          ))}
+                        </optgroup>
+                      </InputSelect>
+                    </div>
+
+                    <div className="relative">
+                      <InputSelect
+                        label="Return Reason"
+                        type="text"
+                        name="return_product_reason"
+                        onChange={(e) => {
+                          props.values.other_reason = e.target.value;
+                          if (e.target.value === "other") {
+                            props.values.other_reason = "";
+                          }
+                        }}
+                        disabled={mutation.isPending}
+                      >
+                        <optgroup label={`Select Return Reason`}>
+                          <option value="" hidden>
+                            --
+                          </option>
+                          <option value="damage">Damage</option>
+                          <option value="expired">Expired</option>
+                          <option value="other">Other</option>
+                        </optgroup>
+                      </InputSelect>
+                    </div>
                     {props.values.return_product_reason === "other" ? (
                       <div className="relative ">
                         <InputText
@@ -423,8 +414,7 @@ const ModalReturns = ({ itemEdit }) => {
                       disabled={mutation.isPending}
                     />
                   </div>
-                  {props.values.return_product_resolution_type ===
-                  "replacement" ? (
+                  {props.values.return_product_reason === "other" ? (
                     <div className="flex items-center gap-2 mt-3">
                       <button
                         type="button"

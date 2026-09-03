@@ -193,6 +193,7 @@ class SuppliersPurchaseOrder
     public function readAll($allowedColumns)
     {
         $filterColumn = [];
+        $hasActiveFilter = false;
         $params = [
             ...$this->column_search != "" ? [
                 "purchase_order_number" => "%{$this->column_search}%",
@@ -205,6 +206,9 @@ class SuppliersPurchaseOrder
         foreach ($this->filters as $i => $item) {
             if (!in_array($item['id'], $allowedColumns, true)) {
                 continue;
+            }
+            if ($item['id'] === 'purchase_order_is_active') {
+                $hasActiveFilter = true;
             }
             $col = $item['id'];
             if (is_array($item['value'])) {
@@ -238,8 +242,8 @@ class SuppliersPurchaseOrder
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != "" ? "and (spo.purchase_order_number like :purchase_order_number
-                or spo.purchase_order_supplier_name like :purchase_order_supplier_name 
-                or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name 
+                or spo.purchase_order_supplier_name like :purchase_order_supplier_name
+                or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name
                 or spo.purchase_order_product_name like :purchase_order_product_name) " : " ");
             }
             $sql .= " group by spo.purchase_order_number ";
@@ -258,6 +262,7 @@ class SuppliersPurchaseOrder
     public function readLimit($allowedColumns)
     {
         $filterColumn = [];
+        $hasActiveFilter = false;
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
@@ -272,6 +277,9 @@ class SuppliersPurchaseOrder
         foreach ($this->filters as $i => $item) {
             if (!in_array($item['id'], $allowedColumns, true)) {
                 continue;
+            }
+            if ($item['id'] === 'purchase_order_is_active') {
+                $hasActiveFilter = true;
             }
             $col = $item['id'];
             if (is_array($item['value'])) {
@@ -305,8 +313,8 @@ class SuppliersPurchaseOrder
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != "" ? "and (spo.purchase_order_number like :purchase_order_number
-                or spo.purchase_order_supplier_name like :purchase_order_supplier_name 
-                or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name 
+                or spo.purchase_order_supplier_name like :purchase_order_supplier_name
+                or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name
                 or spo.purchase_order_product_name like :purchase_order_product_name) " : " ");
             }
             $sql .= " group by spo.purchase_order_number ";
@@ -490,25 +498,23 @@ class SuppliersPurchaseOrder
         return $query;
     }
 
-    // active
+    // archive / restore - toggles purchase_order_is_active for every line item
+    // belonging to the order (grouped by purchase_order_number, since a PO is
+    // stored as one row per product). purchase_order_status, payment_status,
+    // and delivery_status are intentionally left untouched so archiving or
+    // restoring never mutates them.
     public function active()
     {
         try {
             $sql = "update {$this->tblSuppliersPurchaseOrder} set ";
             $sql .= "purchase_order_is_active = :purchase_order_is_active, ";
-            $sql .= "purchase_order_status = :purchase_order_status, ";
-            $sql .= "purchase_order_payment_status = :purchase_order_payment_status, ";
-            $sql .= "purchase_order_delivery_status = :purchase_order_delivery_status, ";
             $sql .= "purchase_order_updated = :purchase_order_updated ";
-            $sql .= "where purchase_order_aid = :purchase_order_aid  ";
+            $sql .= "where purchase_order_number = :purchase_order_number ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "purchase_order_is_active" => $this->purchase_order_is_active,
-                "purchase_order_status" => $this->purchase_order_status,
-                "purchase_order_payment_status" => $this->purchase_order_payment_status,
-                "purchase_order_delivery_status" => $this->purchase_order_delivery_status,
                 "purchase_order_updated" => $this->purchase_order_updated,
-                "purchase_order_aid" => $this->purchase_order_aid,
+                "purchase_order_number" => $this->purchase_order_number,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

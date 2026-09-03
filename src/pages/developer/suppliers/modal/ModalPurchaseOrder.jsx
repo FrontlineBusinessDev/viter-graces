@@ -741,8 +741,26 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         />
                       </div>
                     )}
+
+                    <div className="relative mt-3 ">
+                      <InputSelectArrayWithOptions
+                        label="VAT"
+                        type="purchase_order_percent_tax"
+                        name="purchase_order_percent_tax"
+                        defaultValue="--"
+                        options={taxOption()}
+                        onChange={(e) => {
+                          props.setFieldValue(
+                            "purchase_order_percent_tax",
+                            e.target.id,
+                          );
+                          return e;
+                        }}
+                        required={false}
+                      />
+                    </div>
                     {props.values.purchase_order_payment_status === "paid" ? (
-                      <div className="w-full place-self-end my-5 p-2">
+                      <div className="w-full place-self-end mt-5 p-2 pb-0!">
                         <p className="flex flex-col place-self-end text-primary mb-0 text-lg text-right">
                           <span className="text-black dark:text-light text-sm">
                             Amount Paid
@@ -766,27 +784,10 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         />
                       </div>
                     )}
-                    <div className="relative mt-3 ">
-                      <InputSelectArrayWithOptions
-                        label="VAT"
-                        type="purchase_order_percent_tax"
-                        name="purchase_order_percent_tax"
-                        defaultValue="--"
-                        options={taxOption()}
-                        onChange={(e) => {
-                          props.setFieldValue(
-                            "purchase_order_percent_tax",
-                            e.target.id,
-                          );
-                          return e;
-                        }}
-                        required={false}
-                      />
-                    </div>
                   </div>
 
-                  <div className="grid grid-cols-2 items-end gap-2 mt-3">
-                    <ul className="grid grid-cols-2  text-xs!">
+                  <div className="grid grid-cols-2 items-end gap-2 mt-5">
+                    <ul className="grid grid-cols-2 text-xs!">
                       <li className="text-right text-black dark:text-light">
                         Sub Amount:
                       </li>

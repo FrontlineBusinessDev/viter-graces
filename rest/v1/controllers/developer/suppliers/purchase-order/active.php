@@ -26,22 +26,13 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         // check data
         checkPayload($data);
         $val->purchase_order_aid = $_GET['id'];
+        $val->purchase_order_number = $data["purchase_order_number"] ?? "";
         $val->purchase_order_is_active = trim($data["isActive"]);
-
-        if ((float)$val->purchase_order_is_active == 0) {
-            $val->purchase_order_status = 'inactive';
-            $val->purchase_order_payment_status = $data['purchase_order_payment_status'];
-            $val->purchase_order_delivery_status = 'not delivered / unpaid';
-        } else {
-            deliveryStatus($val, $data);
-            $val->purchase_order_status = 'draft';
-            $val->purchase_order_payment_status = 'unpaid';
-            $val->purchase_order_delivery_status = '';
-        }
         $val->purchase_order_updated = date("Y-m-d H:i:s");
 
-
-        // INSTALLMENT DATA
+        // Archiving/restoring only ever toggles purchase_order_is_active for
+        // every line item of this order (see active() in the model) - the
+        // order's status and payment status are never touched here.
         checkId($val->purchase_order_aid);
         $query = checkActive($val);
         // create activity log
