@@ -20,6 +20,11 @@ function allowedColumns()
         "purchase_order_movement_status",
         "purchase_order_before_qty",
         "purchase_order_after_qty",
+        // the frontend's status/date filters send the SELECT alias ids
+        // actually used by the column, not the raw column names above
+        "is_status",
+        "formated_date",
+        "formated_delivery_date",
     ];
     return $query;
 }

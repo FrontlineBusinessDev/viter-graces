@@ -1,0 +1,462 @@
+
+Warning: The allowCypressEnv configuration option is enabled. This allows any browser code to read values from Cypress.env(). This is insecure and will be removed in a future major version.
+
+1. Replace Cypress.env() calls with cy.env() (for sensitive values) or Cypress.expose() (for public configuration)
+2. Set allowCypressEnv: false in your Cypress configuration to disable Cypress.env()
+
+Learn more: https://on.cypress.io/cypress-env-migration
+
+Warning: We failed to trash the existing run results.
+
+This error will not affect or change the exit code.
+
+Error: Command failed: C:\Users\PersonalPC\AppData\Local\Cypress\Cache\15.16.0\Cypress\resources\app\node_modules\trash\lib\windows-trash.exe C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\filters-testing
+
+    at genericNodeError (node:internal/errors:983:15)
+    at wrappedFn (node:internal/errors:537:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:519:28)
+    at maybeClose (node:internal/child_process:1101:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:304:5)
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        15.16.0                                                                        │
+  │ Browser:        Electron 138 (headless)                                                        │
+  │ Node Version:   v22.15.0 (C:\Program Files\nodejs\node.exe)                                    │
+  │ Specs:          10 found (ap-report.cy.js, ar-report.cy.js, expenses-report.cy.js, inventory-m │
+  │                 ovement.cy.js, low-stock.cy.js, overdue-payments.cy.js, profit-and-loss.cy.js, │
+  │                  returns-reports.cy.js, sales-reports.cy.js, stock-levels.cy.js)               │
+  │ Searched:       C:\xampp\htdocs\react-vite\viter-graces\cypress\e2e\reports\*.cy.js            │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  ap-report.cy.js                                                                (1 of 10)
+
+
+  Reports - Accounts Payable Report
+    √ Loads the AP report (4995ms)
+    √ Should filter the PO number as the user types (1719ms)
+    √ Should filter by product (1653ms)
+    √ Should filter the supplier as the user types (2414ms)
+    √ Should filter by purchase date (1766ms)
+    √ Should filter by min balance (1592ms)
+    √ Should filter the note as the user types (2649ms)
+    √ Should filter by product owner (1680ms)
+
+
+  8 passing (19s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        8                                                                                │
+  │ Passing:      8                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     18 seconds                                                                       │
+  │ Spec Ran:     ap-report.cy.js                                                                  │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  ar-report.cy.js                                                                (2 of 10)
+
+
+  Reports - Accounts Receivable Report
+    √ Loads the AR report (4402ms)
+    √ Should filter by status (1859ms)
+    √ Should filter the order number as the user types (1764ms)
+    √ Should filter by date (1916ms)
+    √ Should filter by customer (1920ms)
+    1) Should filter by product
+    √ Should filter by min paid (1624ms)
+    √ Should filter the payment method as the user types (2362ms)
+    √ Should filter by min balance (7344ms)
+    √ Should filter by product owner (17142ms)
+
+
+  9 passing (56s)
+  1 failing
+
+  1) Reports - Accounts Receivable Report
+       Should filter by product:
+     AssertionError: Timed out retrying after 4000ms: Expected to find content: 'asdasda' within the selector: '[data-testid="table-row"]' but never did.
+      at Context.eval (webpack://viter-graces/./cypress/e2e/reports/ar-report.cy.js:105:62)
+      at getRet (http://localhost:5173/__cypress/runner/cypress_runner.js:122946:20)
+      at tryCatcher (http://localhost:5173/__cypress/runner/cypress_runner.js:1777:23)
+      at Promise.attempt.Promise.try (http://localhost:5173/__cypress/runner/cypress_runner.js:4285:29)
+      at Context.thenFn (http://localhost:5173/__cypress/runner/cypress_runner.js:122957:66)
+      at Context.then (http://localhost:5173/__cypress/runner/cypress_runner.js:123208:21)
+      at wrapped (http://localhost:5173/__cypress/runner/cypress_runner.js:146489:19)
+
+
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        10                                                                               │
+  │ Passing:      9                                                                                │
+  │ Failing:      1                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  1                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     56 seconds                                                                       │
+  │ Spec Ran:     ar-report.cy.js                                                                  │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\ar-report.cy.js\Repo     (1280x720)
+     rts - Accounts Receivable Report -- Should filter by product (failed).png                      
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  expenses-report.cy.js                                                          (3 of 10)
+
+
+  Reports - Expenses Report
+    √ Loads the expenses report (4313ms)
+    √ Should filter the PO number as the user types (1820ms)
+    √ Should filter by transaction date (1791ms)
+    √ Should filter by product (1795ms)
+    √ Should filter the description as the user types (2637ms)
+    √ Should filter by min paid amount (1635ms)
+    √ Should filter by min balance (1759ms)
+    √ Should filter by product owner (1887ms)
+
+
+  8 passing (18s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        8                                                                                │
+  │ Passing:      8                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     18 seconds                                                                       │
+  │ Spec Ran:     expenses-report.cy.js                                                            │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  inventory-movement.cy.js                                                       (4 of 10)
+
+
+  Reports - Inventory Movement
+    √ Loads the inventory movement report (4104ms)
+    √ Should filter by status (1711ms)
+    √ Should filter by product (1907ms)
+    √ Should filter the SKU as the user types (1752ms)
+    √ Should filter by min stock quantity (1625ms)
+    √ Should filter by min threshold (1534ms)
+    √ Should filter by min price (1584ms)
+    √ Should filter the location as the user types (2749ms)
+    √ Should filter by product owner (1821ms)
+
+
+  9 passing (19s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        9                                                                                │
+  │ Passing:      9                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     19 seconds                                                                       │
+  │ Spec Ran:     inventory-movement.cy.js                                                         │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  low-stock.cy.js                                                                (5 of 10)
+
+
+  Reports - Low Stock
+    √ Loads the low stock report (4018ms)
+    √ Does not render a price column (677ms)
+    1) Should filter by product
+    √ Should filter by min current stock (1240ms)
+    √ Should filter by min threshold (1432ms)
+    √ Should filter by product owner (1639ms)
+
+
+  5 passing (15s)
+  1 failing
+
+  1) Reports - Low Stock
+       Should filter by product:
+     AssertionError: Timed out retrying after 4000ms: Expected to find content: 'asdasda' within the selector: '[data-testid="table-row"]' but never did.
+      at Context.eval (webpack://viter-graces/./cypress/e2e/reports/low-stock.cy.js:37:62)
+      at getRet (http://localhost:5173/__cypress/runner/cypress_runner.js:122946:20)
+      at tryCatcher (http://localhost:5173/__cypress/runner/cypress_runner.js:1777:23)
+      at Promise.attempt.Promise.try (http://localhost:5173/__cypress/runner/cypress_runner.js:4285:29)
+      at Context.thenFn (http://localhost:5173/__cypress/runner/cypress_runner.js:122957:66)
+      at Context.then (http://localhost:5173/__cypress/runner/cypress_runner.js:123208:21)
+      at wrapped (http://localhost:5173/__cypress/runner/cypress_runner.js:146489:19)
+
+
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        6                                                                                │
+  │ Passing:      5                                                                                │
+  │ Failing:      1                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  1                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     15 seconds                                                                       │
+  │ Spec Ran:     low-stock.cy.js                                                                  │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\low-stock.cy.js\Repo     (1280x720)
+     rts - Low Stock -- Should filter by product (failed).png                                       
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  overdue-payments.cy.js                                                         (6 of 10)
+
+
+  Reports - Overdue Payments
+    √ Loads the overdue payments report (3941ms)
+    √ Should filter by due date (1718ms)
+    √ Should filter by customer (1739ms)
+    √ Should filter by min amount (1542ms)
+
+
+  4 passing (9s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        4                                                                                │
+  │ Passing:      4                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     9 seconds                                                                        │
+  │ Spec Ran:     overdue-payments.cy.js                                                           │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  profit-and-loss.cy.js                                                          (7 of 10)
+
+
+  Reports - Profit & Loss
+    √ Loads the profit and loss statement (3802ms)
+    √ Refetches when the date range changes (1950ms)
+    √ Refetches when a product owner is selected (2027ms)
+
+
+  3 passing (8s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        3                                                                                │
+  │ Passing:      3                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     8 seconds                                                                        │
+  │ Spec Ran:     profit-and-loss.cy.js                                                            │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  returns-reports.cy.js                                                          (8 of 10)
+
+
+  Reports - Returns Report
+    √ Loads the returns report (4400ms)
+    √ Should filter by status (2054ms)
+    √ Should filter the return number as the user types (1965ms)
+    √ Should filter by date (2214ms)
+    √ Should filter the order number as the user types (1871ms)
+    √ Should filter by customer (2603ms)
+    1) Should filter by product
+    √ Should filter by min amount (1872ms)
+    √ Should filter the reason as the user types (11068ms)
+    √ Should filter by resolution type (13262ms)
+    √ Should filter by product owner (16246ms)
+
+
+  10 passing (1m)
+  1 failing
+
+  1) Reports - Returns Report
+       Should filter by product:
+     AssertionError: Timed out retrying after 4000ms: Expected to find content: 'asdasda' within the selector: '[data-testid="table-row"]' but never did.
+      at Context.eval (webpack://viter-graces/./cypress/e2e/reports/returns-reports.cy.js:115:62)
+      at getRet (http://localhost:5173/__cypress/runner/cypress_runner.js:122946:20)
+      at tryCatcher (http://localhost:5173/__cypress/runner/cypress_runner.js:1777:23)
+      at Promise.attempt.Promise.try (http://localhost:5173/__cypress/runner/cypress_runner.js:4285:29)
+      at Context.thenFn (http://localhost:5173/__cypress/runner/cypress_runner.js:122957:66)
+      at Context.then (http://localhost:5173/__cypress/runner/cypress_runner.js:123208:21)
+      at wrapped (http://localhost:5173/__cypress/runner/cypress_runner.js:146489:19)
+
+
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        11                                                                               │
+  │ Passing:      10                                                                               │
+  │ Failing:      1                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  1                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     1 minute, 15 seconds                                                             │
+  │ Spec Ran:     returns-reports.cy.js                                                            │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\returns-reports.cy.j     (1280x720)
+     s\Reports - Returns Report -- Should filter by product (failed).png                            
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  sales-reports.cy.js                                                            (9 of 10)
+
+
+  Reports - Sales Reports
+    √ Loads the sales report (5208ms)
+    √ Does not render an add button (780ms)
+    √ Should filter by status (1945ms)
+    √ Should filter the order number as the user types (2020ms)
+    √ Should filter by date (2161ms)
+    √ Should filter by product (2172ms)
+    √ Should filter by customer (2264ms)
+    √ Should filter by min amount (1911ms)
+    √ Should filter the payment method as the user types (1963ms)
+    √ Should filter by product owner (2838ms)
+    √ Should filter the notes as the user types (3077ms)
+
+
+  11 passing (27s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        11                                                                               │
+  │ Passing:      11                                                                               │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     27 seconds                                                                       │
+  │ Spec Ran:     sales-reports.cy.js                                                              │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  stock-levels.cy.js                                                            (10 of 10)
+
+
+  Reports - Stock Levels
+    √ Loads the stock levels report (4736ms)
+    √ Should filter by status (1860ms)
+    √ Should filter by product (1741ms)
+    √ Should filter the SKU as the user types (1776ms)
+    √ Should filter by min current stock (1598ms)
+    √ Should filter by min threshold (1698ms)
+    √ Should filter by product owner (1818ms)
+
+
+  7 passing (16s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        7                                                                                │
+  │ Passing:      7                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     15 seconds                                                                       │
+  │ Spec Ran:     stock-levels.cy.js                                                               │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✔  ap-report.cy.js                          00:18        8        8        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✖  ar-report.cy.js                          00:56       10        9        1        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  expenses-report.cy.js                    00:18        8        8        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  inventory-movement.cy.js                 00:19        9        9        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✖  low-stock.cy.js                          00:15        6        5        1        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  overdue-payments.cy.js                   00:09        4        4        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  profit-and-loss.cy.js                    00:08        3        3        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✖  returns-reports.cy.js                    01:15       11       10        1        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  sales-reports.cy.js                      00:27       11       11        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  stock-levels.cy.js                       00:15        7        7        -        -        - │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✖  3 of 10 failed (30%)                     04:23       77       74        3        -        -  
+

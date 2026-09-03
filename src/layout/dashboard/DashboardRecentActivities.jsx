@@ -88,7 +88,7 @@ const DashboardRecentActivities = () => {
           <>
             {valData?.length > 0 ? (
               <a
-                data-testid="overdue-payment-btn-to-view"
+                data-testid="recent-activities-btn-to-view"
                 href={`${devNavUrl}/${userRole}/activity-log`}
                 className="absolute bottom-3 text-orange-500 pt-3 inline-block"
               >

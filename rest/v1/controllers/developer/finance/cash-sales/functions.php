@@ -30,7 +30,9 @@ function allowedColumns()
         "sales_order_total_receivable_amount",
         "sales_order_payment_method",
         "sales_order_paid_per_product",
-        "total_amount_per_product",
+        // "total_amount_per_product" is a computed SQL alias
+        // ((sales_order_paid_per_product + sales_order_balance_per_product))
+        // and can't be referenced in a WHERE clause - leave it out here
         "name",
         "id",
         "order_date",

@@ -307,7 +307,7 @@ export const SearchableSelectFilterStatus = ({
   const selected = options.find((opt) => opt.value === value) || null;
 
   return (
-    <div data-testid="filter-status-btn ">
+    <div data-testid="filter-status-btn">
       <Select
         data-testid={testFilterStatusId}
         classNamePrefix="react-select"

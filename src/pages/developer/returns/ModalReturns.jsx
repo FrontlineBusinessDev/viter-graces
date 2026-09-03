@@ -200,7 +200,7 @@ const ModalReturns = ({ itemEdit }) => {
                         type="text"
                         name="return_product_resolution_type"
                         disabled={mutation.isPending}
-                        onClick={() => {
+                        onChange={(e) => {
                           props.values.return_product_resolution_type =
                             e.target.value;
                           if (e.target.value === "replacement") {

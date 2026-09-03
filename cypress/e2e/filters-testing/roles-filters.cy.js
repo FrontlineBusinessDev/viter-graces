@@ -12,11 +12,15 @@ describe("Role Module - Filter", () => {
 
     //active
     cy.get('[data-testid="filter-status-btn"]').click();
-    cy.get("#react-select-3-option-0").click();
+    cy.contains(".react-select__option", /^active$/i).click();
+
+    cy.wait("@getRole");
 
     //inactive
     cy.get('[data-testid="filter-status-btn"]').click();
-    cy.get("#react-select-3-option-1").click();
+    cy.contains(".react-select__option", /^inactive$/i).click();
+
+    cy.wait("@getRole");
 
     cy.get(".react-select__clear-indicator").click();
   });

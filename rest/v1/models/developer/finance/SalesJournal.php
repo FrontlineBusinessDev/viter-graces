@@ -71,8 +71,8 @@ class SalesJournal
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
-                $sql .= ($this->column_search != "" ? "and ( sales_journal_customer like :sales_journal_customer 
-            or sales_journal_order_number like :sales_journal_order_number " : " ");
+                $sql .= ($this->column_search != "" ? "and ( sales_journal_customer like :sales_journal_customer
+            or sales_journal_order_number like :sales_journal_order_number ) " : " ");
             }
             $sql .= " order by sales_journal_aid desc ";
             $query = $this->connection->prepare($sql);
@@ -123,8 +123,8 @@ class SalesJournal
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
-                $sql .= ($this->column_search != "" ? "and ( sales_journal_customer like :sales_journal_customer 
-            or sales_journal_order_number like :sales_journal_order_number " : " ");
+                $sql .= ($this->column_search != "" ? "and ( sales_journal_customer like :sales_journal_customer
+            or sales_journal_order_number like :sales_journal_order_number ) " : " ");
             }
             $sql .= " order by sales_journal_aid desc ";
             $sql .= "limit :start, ";

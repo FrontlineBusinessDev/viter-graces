@@ -1,0 +1,402 @@
+
+Warning: The allowCypressEnv configuration option is enabled. This allows any browser code to read values from Cypress.env(). This is insecure and will be removed in a future major version.
+
+1. Replace Cypress.env() calls with cy.env() (for sensitive values) or Cypress.expose() (for public configuration)
+2. Set allowCypressEnv: false in your Cypress configuration to disable Cypress.env()
+
+Learn more: https://on.cypress.io/cypress-env-migration
+
+Warning: We failed to trash the existing run results.
+
+This error will not affect or change the exit code.
+
+Error: Command failed: C:\Users\PersonalPC\AppData\Local\Cypress\Cache\15.16.0\Cypress\resources\app\node_modules\trash\lib\windows-trash.exe C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\filters-testing
+
+    at genericNodeError (node:internal/errors:983:15)
+    at wrappedFn (node:internal/errors:537:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:519:28)
+    at maybeClose (node:internal/child_process:1101:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:304:5)
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        15.16.0                                                                        │
+  │ Browser:        Electron 138 (headless)                                                        │
+  │ Node Version:   v22.15.0 (C:\Program Files\nodejs\node.exe)                                    │
+  │ Specs:          10 found (ap-report.cy.js, ar-report.cy.js, expenses-report.cy.js, inventory-m │
+  │                 ovement.cy.js, low-stock.cy.js, overdue-payments.cy.js, profit-and-loss.cy.js, │
+  │                  returns-reports.cy.js, sales-reports.cy.js, stock-levels.cy.js)               │
+  │ Searched:       C:\xampp\htdocs\react-vite\viter-graces\cypress\e2e\reports\*.cy.js            │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  ap-report.cy.js                                                                (1 of 10)
+
+
+  Reports - Accounts Payable Report
+    √ Loads the AP report (4788ms)
+    √ Should filter the PO number as the user types (1843ms)
+    √ Should filter by product (1792ms)
+    √ Should filter the supplier as the user types (2462ms)
+    √ Should filter by purchase date (1747ms)
+    √ Should filter by min balance (1679ms)
+    √ Should filter the note as the user types (2748ms)
+    √ Should filter by product owner (1795ms)
+
+
+  8 passing (19s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        8                                                                                │
+  │ Passing:      8                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     19 seconds                                                                       │
+  │ Spec Ran:     ap-report.cy.js                                                                  │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  ar-report.cy.js                                                                (2 of 10)
+
+
+  Reports - Accounts Receivable Report
+    √ Loads the AR report (4467ms)
+    √ Should filter by status (1947ms)
+    √ Should filter the order number as the user types (1776ms)
+    √ Should filter by date (1948ms)
+    √ Should filter by customer (1991ms)
+    √ Should filter by product (2062ms)
+    √ Should filter by min paid (1812ms)
+    √ Should filter the payment method as the user types (2885ms)
+    √ Should filter by min balance (1797ms)
+    √ Should filter by product owner (2260ms)
+
+
+  10 passing (24s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        10                                                                               │
+  │ Passing:      10                                                                               │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     23 seconds                                                                       │
+  │ Spec Ran:     ar-report.cy.js                                                                  │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  expenses-report.cy.js                                                          (3 of 10)
+
+
+  Reports - Expenses Report
+    √ Loads the expenses report (4985ms)
+    √ Should filter the PO number as the user types (1861ms)
+    √ Should filter by transaction date (2057ms)
+    √ Should filter by product (2039ms)
+    √ Should filter the description as the user types (2890ms)
+    √ Should filter by min paid amount (1699ms)
+    √ Should filter by min balance (1786ms)
+    √ Should filter by product owner (1957ms)
+
+
+  8 passing (20s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        8                                                                                │
+  │ Passing:      8                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     19 seconds                                                                       │
+  │ Spec Ran:     expenses-report.cy.js                                                            │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  inventory-movement.cy.js                                                       (4 of 10)
+
+
+  Reports - Inventory Movement
+    √ Loads the inventory movement report (4309ms)
+    √ Should filter by status (2035ms)
+    √ Should filter by product (1975ms)
+    √ Should filter the SKU as the user types (1891ms)
+    √ Should filter by min stock quantity (1663ms)
+    √ Should filter by min threshold (1681ms)
+    √ Should filter by min price (1580ms)
+    √ Should filter the location as the user types (2820ms)
+    √ Should filter by product owner (1917ms)
+
+
+  9 passing (20s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        9                                                                                │
+  │ Passing:      9                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     20 seconds                                                                       │
+  │ Spec Ran:     inventory-movement.cy.js                                                         │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  low-stock.cy.js                                                                (5 of 10)
+
+
+  Reports - Low Stock
+    √ Loads the low stock report (4134ms)
+    √ Does not render a price column (669ms)
+    √ Should filter by product (1643ms)
+    √ Should filter by min current stock (1368ms)
+    √ Should filter by min threshold (1519ms)
+    √ Should filter by product owner (1598ms)
+
+
+  6 passing (11s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        6                                                                                │
+  │ Passing:      6                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     11 seconds                                                                       │
+  │ Spec Ran:     low-stock.cy.js                                                                  │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  overdue-payments.cy.js                                                         (6 of 10)
+
+
+  Reports - Overdue Payments
+    √ Loads the overdue payments report (4336ms)
+    √ Should filter by due date (1795ms)
+    √ Should filter by customer (1838ms)
+    √ Should filter by min amount (1503ms)
+
+
+  4 passing (10s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        4                                                                                │
+  │ Passing:      4                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     9 seconds                                                                        │
+  │ Spec Ran:     overdue-payments.cy.js                                                           │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  profit-and-loss.cy.js                                                          (7 of 10)
+
+
+  Reports - Profit & Loss
+    √ Loads the profit and loss statement (4107ms)
+    √ Refetches when the date range changes (2084ms)
+    √ Refetches when a product owner is selected (2001ms)
+
+
+  3 passing (8s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        3                                                                                │
+  │ Passing:      3                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     8 seconds                                                                        │
+  │ Spec Ran:     profit-and-loss.cy.js                                                            │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  returns-reports.cy.js                                                          (8 of 10)
+
+
+  Reports - Returns Report
+    √ Loads the returns report (4390ms)
+    √ Should filter by status (2004ms)
+    √ Should filter the return number as the user types (1977ms)
+    √ Should filter by date (2260ms)
+    √ Should filter the order number as the user types (1830ms)
+    √ Should filter by customer (2355ms)
+    √ Should filter by product (2125ms)
+    √ Should filter by min amount (1859ms)
+    √ Should filter the reason as the user types (2081ms)
+    √ Should filter by resolution type (2286ms)
+    √ Should filter by product owner (2274ms)
+
+
+  11 passing (26s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        11                                                                               │
+  │ Passing:      11                                                                               │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     26 seconds                                                                       │
+  │ Spec Ran:     returns-reports.cy.js                                                            │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  sales-reports.cy.js                                                            (9 of 10)
+
+
+  Reports - Sales Reports
+    √ Loads the sales report (4625ms)
+    √ Does not render an add button (649ms)
+    √ Should filter by status (2087ms)
+    √ Should filter the order number as the user types (2018ms)
+    √ Should filter by date (2041ms)
+    √ Should filter by product (2075ms)
+    √ Should filter by customer (2707ms)
+    √ Should filter by min amount (1971ms)
+    √ Should filter the payment method as the user types (2020ms)
+    √ Should filter by product owner (2900ms)
+    √ Should filter the notes as the user types (3023ms)
+
+
+  11 passing (27s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        11                                                                               │
+  │ Passing:      11                                                                               │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     26 seconds                                                                       │
+  │ Spec Ran:     sales-reports.cy.js                                                              │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  stock-levels.cy.js                                                            (10 of 10)
+
+
+  Reports - Stock Levels
+    √ Loads the stock levels report (4336ms)
+    √ Should filter by status (1870ms)
+    √ Should filter by product (1901ms)
+    √ Should filter the SKU as the user types (1809ms)
+    √ Should filter by min current stock (1794ms)
+    √ Should filter by min threshold (1624ms)
+    √ Should filter by product owner (1834ms)
+
+
+  7 passing (15s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        7                                                                                │
+  │ Passing:      7                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     15 seconds                                                                       │
+  │ Spec Ran:     stock-levels.cy.js                                                               │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✔  ap-report.cy.js                          00:19        8        8        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  ar-report.cy.js                          00:23       10       10        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  expenses-report.cy.js                    00:19        8        8        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  inventory-movement.cy.js                 00:20        9        9        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  low-stock.cy.js                          00:11        6        6        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  overdue-payments.cy.js                   00:09        4        4        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  profit-and-loss.cy.js                    00:08        3        3        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  returns-reports.cy.js                    00:26       11       11        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  sales-reports.cy.js                      00:26       11       11        -        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  stock-levels.cy.js                       00:15        7        7        -        -        - │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✔  All specs passed!                        03:00       77       77        -        -        -  
+

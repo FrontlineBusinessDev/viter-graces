@@ -12,24 +12,49 @@ describe("Product Module - Filters", () => {
 
     // active
     cy.get('[data-testid="filter-status-btn"]').click();
-    cy.get("#react-select-3-option-0").click();
+    cy.get('[data-testid="filter-status-btn"]')
+      .contains(".react-select__option", "Active")
+      .click();
+
+    cy.wait("@getProducts");
+    cy.get('[data-testid="table-row"]').should("have.length.greaterThan", 0);
 
     // inactive
     cy.get('[data-testid="filter-status-btn"]').click();
-    cy.get("#react-select-3-option-1").click();
+    cy.get('[data-testid="filter-status-btn"]')
+      .contains(".react-select__option", "Inactive")
+      .click();
 
-    cy.get(".react-select__clear-indicator").click();
+    cy.wait("@getProducts");
+
+    cy.get('[data-testid="filter-status-btn"] .react-select__clear-indicator').click();
   });
 
   // PRODUCTS
-  it("Should filter the product when type", () => {
+  it("Should filter the product when selecting a name", () => {
     cy.intercept("POST", "**/products/page/*").as("getProducts");
-    cy.get('[data-testid="products_name"]').type("Cassava");
 
-    cy.wait("@getProducts");
-    cy.wait(1000);
+    cy.get('[data-testid="filter-product-name"]').click();
+    cy.get('[data-testid="filter-product-name"] .react-select__option')
+      .first()
+      .then(($option) => {
+        const productName = $option.text();
+        cy.wrap($option).click();
 
-    cy.get('[data-testid="products_name"]').clear();
+        cy.wait("@getProducts");
+
+        cy.get('[data-testid="table-row"]').should(
+          "have.length.greaterThan",
+          0,
+        );
+        cy.contains('[data-testid="table-row"]', productName).should(
+          "exist",
+        );
+      });
+
+    cy.get(
+      '[data-testid="filter-product-name"] .react-select__clear-indicator',
+    ).click();
   });
 
   // SKU
@@ -40,18 +65,37 @@ describe("Product Module - Filters", () => {
     cy.wait("@getProducts");
     cy.wait(1000);
 
+    cy.get('[data-testid="table-row"]').should("have.length.greaterThan", 0);
+    cy.contains('[data-testid="table-row"]', "SKU001").should("exist");
+
     cy.get('[data-testid="products_sku"]').clear();
   });
 
   // CATEGORY
-  it("Should filter the category when type", () => {
+  it("Should filter the category when selecting a category", () => {
     cy.intercept("POST", "**/products/page/*").as("getProducts");
-    cy.get('[data-testid="products_category"]').type("chips");
 
-    cy.wait("@getProducts");
-    cy.wait(1000);
+    cy.get('[data-testid="filter-category"]').click();
+    cy.get('[data-testid="filter-category"] .react-select__option')
+      .first()
+      .then(($option) => {
+        const categoryName = $option.text();
+        cy.wrap($option).click();
 
-    cy.get('[data-testid="products_category"]').clear();
+        cy.wait("@getProducts");
+
+        cy.get('[data-testid="table-row"]').should(
+          "have.length.greaterThan",
+          0,
+        );
+        cy.contains('[data-testid="table-row"]', categoryName).should(
+          "exist",
+        );
+      });
+
+    cy.get(
+      '[data-testid="filter-category"] .react-select__clear-indicator',
+    ).click();
   });
 
   // PRICE
@@ -155,9 +199,14 @@ describe("Product Module - Filters", () => {
     cy.intercept("POST", "**/products/page/*").as("getProducts");
 
     cy.get('[data-testid="filter-owner"]').click();
-    cy.get("#react-select-5-option-0").click();
+    cy.get('[data-testid="filter-owner"] .react-select__option')
+      .first()
+      .click();
 
-    cy.get(".react-select__clear-indicator").click();
+    cy.wait("@getProducts");
+    cy.get('[data-testid="table-row"]').should("have.length.greaterThan", 0);
+
+    cy.get('[data-testid="filter-owner"] .react-select__clear-indicator').click();
   });
 
   //SEARCH
@@ -173,4 +222,46 @@ describe("Product Module - Filters", () => {
     cy.contains("Cassava", { timeout: 1000 }).should("exist");
   });
 
+  // CLEAR ALL FILTERS
+  it("Clears all filters and returns to the unfiltered list", () => {
+    cy.intercept("POST", "**/products/page/*").as("getProducts");
+
+    cy.wait("@getProducts");
+    cy.get('[data-testid="table-row"]', { timeout: 20000 }).should(
+      "have.length.greaterThan",
+      0,
+    );
+
+    cy.get("@getProducts.all").then((interceptions) => {
+      const baselineCount = interceptions.length;
+
+      cy.get('[data-testid="products_sku"]').type("SKU001");
+      cy.wait("@getProducts");
+
+      cy.get('[data-testid="products_price_min"]').type("1");
+      cy.wait("@getProducts");
+
+      cy.get('[data-testid="products_price_max"]').type("100000");
+      cy.wait("@getProducts");
+
+      cy.get('[data-testid="table-row"]').should(
+        "have.length.greaterThan",
+        0,
+      );
+
+      cy.get('[data-testid="products_sku"]').clear();
+      cy.get('[data-testid="products_price_min"]').clear();
+      cy.get('[data-testid="products_price_max"]').clear();
+
+      cy.get("@getProducts.all").should(
+        "have.length.greaterThan",
+        baselineCount,
+      );
+
+      cy.get('[data-testid="table-row"]').should(
+        "have.length.greaterThan",
+        0,
+      );
+    });
+  });
 });

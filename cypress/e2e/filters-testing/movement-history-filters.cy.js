@@ -12,13 +12,23 @@ describe("Movement History Module - Filters", () => {
 
     // instock
     cy.get('[data-testid="filter-status-btn"]').click();
-    cy.get("#react-select-3-option-0").click();
+    cy.get('[data-testid="filter-status-btn"]')
+      .contains(".react-select__option", "IN STOCK")
+      .click();
 
-    // purchases
+    cy.wait("@getStockMovement");
+
+    // stock out - sales
     cy.get('[data-testid="filter-status-btn"]').click();
-    cy.get("#react-select-3-option-1").click();
+    cy.get('[data-testid="filter-status-btn"]')
+      .contains(".react-select__option", "STOCK OUT - SALES")
+      .click();
 
-    cy.get(".react-select__clear-indicator").click();
+    cy.wait("@getStockMovement");
+
+    cy.get(
+      '[data-testid="filter-status-btn"] .react-select__clear-indicator',
+    ).click();
   });
 
   // DATE
@@ -32,51 +42,91 @@ describe("Movement History Module - Filters", () => {
   });
 
   // PRODUCTS
-  it("Should filter the product when type", () => {
+  it("Should filter the product when selecting a name", () => {
     cy.intercept("POST", "**/stock-movement/page/*").as("getStockMovement");
-    cy.get('[data-testid="stock_movement_product_name"]').type("Banana");
 
-    cy.wait("@getStockMovement");
-    cy.wait(1000);
+    cy.get('[data-testid="filter-product-name"]').click();
+    cy.get('[data-testid="filter-product-name"] .react-select__option')
+      .first()
+      .then(($option) => {
+        const productName = $option.text();
+        cy.wrap($option).click();
 
-    cy.get('[data-testid="stock_movement_product_name"]').clear();
+        cy.wait("@getStockMovement");
+
+        cy.get('[data-testid="table-row"]').should(
+          "have.length.greaterThan",
+          0,
+        );
+        cy.contains('[data-testid="table-row"]', productName).should(
+          "exist",
+        );
+      });
+
+    cy.get(
+      '[data-testid="filter-product-name"] .react-select__clear-indicator',
+    ).click();
   });
 
   // QUANTITY
-  it("Should filter the quantity when type", () => {
+  it("Should filter by min quantity", () => {
     cy.intercept("POST", "**/stock-movement/page/*").as("getStockMovement");
-    cy.get('[data-testid="stock_movement_qty"]').type("30");
+    cy.get('[data-testid="stock_movement_qty_min"]').type("10");
 
     cy.wait("@getStockMovement");
-    cy.wait(1000);
 
-    cy.get('[data-testid="stock_movement_qty"]').clear();
+    cy.get('[data-testid="stock_movement_qty_min"]').clear();
+  });
+
+  it("Should filter by max quantity", () => {
+    cy.intercept("POST", "**/stock-movement/page/*").as("getStockMovement");
+    cy.get('[data-testid="stock_movement_qty_max"]').type("100");
+
+    cy.wait("@getStockMovement");
+
+    cy.get('[data-testid="stock_movement_qty_max"]').clear();
   });
 
   // BEFORE
-  it("Should filter the before when type", () => {
+  it("Should filter by min before qty", () => {
     cy.intercept("POST", "**/stock-movement/page/*").as("getStockMovement");
-    cy.get('[data-testid="stock_movement_before_qty"]').type("30");
+    cy.get('[data-testid="stock_movement_before_qty_min"]').type("10");
 
     cy.wait("@getStockMovement");
-    cy.wait(1000);
 
-    cy.get('[data-testid="stock_movement_before_qty"]').clear();
+    cy.get('[data-testid="stock_movement_before_qty_min"]').clear();
+  });
+
+  it("Should filter by max before qty", () => {
+    cy.intercept("POST", "**/stock-movement/page/*").as("getStockMovement");
+    cy.get('[data-testid="stock_movement_before_qty_max"]').type("100");
+
+    cy.wait("@getStockMovement");
+
+    cy.get('[data-testid="stock_movement_before_qty_max"]').clear();
   });
 
   // AFTER
-  it("Should filter the after when type", () => {
+  it("Should filter by min after qty", () => {
     cy.intercept("POST", "**/stock-movement/page/*").as("getStockMovement");
-    cy.get('[data-testid="stock_movement_after_qty"]').type("10");
+    cy.get('[data-testid="stock_movement_after_qty_min"]').type("10");
 
     cy.wait("@getStockMovement");
-    cy.wait(1000);
 
-    cy.get('[data-testid="stock_movement_after_qty"]').clear();
+    cy.get('[data-testid="stock_movement_after_qty_min"]').clear();
+  });
+
+  it("Should filter by max after qty", () => {
+    cy.intercept("POST", "**/stock-movement/page/*").as("getStockMovement");
+    cy.get('[data-testid="stock_movement_after_qty_max"]').type("100");
+
+    cy.wait("@getStockMovement");
+
+    cy.get('[data-testid="stock_movement_after_qty_max"]').clear();
   });
 
   // LOCATIONS
-  it("Should filter the after when type", () => {
+  it("Should filter by location when type", () => {
     cy.intercept("POST", "**/stock-movement/page/*").as("getStockMovement");
     cy.get('[data-testid="stock_movement_location"]').type("Dolores, Quezon");
 
@@ -91,12 +141,19 @@ describe("Movement History Module - Filters", () => {
     cy.intercept("POST", "**/stock-movement/page/*").as("getStockMovement");
 
     cy.get('[data-testid="filter-owner"]').click();
-    cy.get("#react-select-5-option-0").click();
+    cy.get('[data-testid="filter-owner"] .react-select__option')
+      .first()
+      .click();
 
-    cy.get(".react-select__clear-indicator").click();
+    cy.wait("@getStockMovement");
+    cy.get('[data-testid="table-row"]').should("have.length.greaterThan", 0);
+
+    cy.get(
+      '[data-testid="filter-owner"] .react-select__clear-indicator',
+    ).click();
   });
 
-   //SEARCH
+  //SEARCH
   it("Search a product", () => {
     cy.viewport(390, 844); // iphone 13 viewport
 

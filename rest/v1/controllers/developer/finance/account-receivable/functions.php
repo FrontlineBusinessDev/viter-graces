@@ -30,7 +30,9 @@ function allowedColumns()
         "sales_order_total_receivable_amount",
         "sales_order_payment_method",
         "sales_order_paid_per_product",
-        "total_amount_per_product",
+        "sales_order_total_balance_amount",
+        // "status_text" and "days_overdue" are computed CASE-expression
+        // aliases and can't be referenced in a WHERE clause
         "name",
         "id",
         "order_date",

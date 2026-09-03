@@ -1,0 +1,384 @@
+
+Warning: The allowCypressEnv configuration option is enabled. This allows any browser code to read values from Cypress.env(). This is insecure and will be removed in a future major version.
+
+1. Replace Cypress.env() calls with cy.env() (for sensitive values) or Cypress.expose() (for public configuration)
+2. Set allowCypressEnv: false in your Cypress configuration to disable Cypress.env()
+
+Learn more: https://on.cypress.io/cypress-env-migration
+
+Warning: We failed to trash the existing run results.
+
+This error will not affect or change the exit code.
+
+Error: Command failed: C:\Users\PersonalPC\AppData\Local\Cypress\Cache\15.16.0\Cypress\resources\app\node_modules\trash\lib\windows-trash.exe C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\filters-testing
+
+    at genericNodeError (node:internal/errors:983:15)
+    at wrappedFn (node:internal/errors:537:14)
+    at ChildProcess.exithandler (node:child_process:417:12)
+    at ChildProcess.emit (node:events:519:28)
+    at maybeClose (node:internal/child_process:1101:16)
+    at ChildProcess._handle.onexit (node:internal/child_process:304:5)
+
+====================================================================================================
+
+  (Run Starting)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Cypress:        15.16.0                                                                        │
+  │ Browser:        Electron 138 (headless)                                                        │
+  │ Node Version:   v22.15.0 (C:\Program Files\nodejs\node.exe)                                    │
+  │ Specs:          5 found (suppliers.cy.js, purchase-orders.cy.js, purchase-movement-history.cy. │
+  │                 js, filters-testing/purchase-orders-filters.cy.js, filters-testing/purchase-mo │
+  │                 vement-history-filters.cy.js)                                                  │
+  │ Searched:       C:\xampp\htdocs\react-vite\viter-graces\cypress\e2e\suppliers.cy.js, C:\xampp\ │
+  │                 htdocs\react-vite\viter-graces\cypress\e2e\purchase-orders.cy.js, C:\xampp\htd │
+  │                 ocs\react-vite\viter-graces\cypress\e2e\purchase-movement-history.cy.js, C:\xa │
+  │                 mpp\htdocs\react-vite\viter-graces\cypress\e2e\filters-testing\purchase-orders │
+  │                 -filters.cy.js, C:\xampp\htdocs\react-vite\viter-graces\cypress\e2e\filters-te │
+  │                 sting\purchase-movement-history-filters.cy.js                                  │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  suppliers.cy.js                                                                 (1 of 5)
+
+
+  Suppliers Module - CRUD Flow
+    √ Create a supplier (5782ms)
+    √ Shows a validation error when name is left empty (1977ms)
+    √ Cancel button closes the modal without saving (2169ms)
+    √ Close (X) button closes the modal without saving (2089ms)
+    1) Update a supplier
+    2) Archive a supplier
+    3) Restore a supplier
+    4) Delete a supplier
+
+
+  4 passing (1m)
+  4 failing
+
+  1) Suppliers Module - CRUD Flow
+       Update a supplier:
+     CypressError: `cy.click()` can only be called on a single element. Your subject contained 2 elements. Pass `{ multiple: true }` if you want to serially click each element.
+
+https://on.cypress.io/click
+      at mouseAction (http://localhost:5173/__cypress/runner/cypress_runner.js:114883:68)
+      at Context.click (http://localhost:5173/__cypress/runner/cypress_runner.js:115050:14)
+      at wrapped (http://localhost:5173/__cypress/runner/cypress_runner.js:146489:19)
+  From Your Spec Code:
+      at Object.proxyGetter [as get] (http://localhost:5173/__cypress/runner/cypress_runner.js:81302:22)
+      at exists (http://localhost:5173/__cypress/runner/cypress_runner.js:151373:26)
+      at elExists (http://localhost:5173/__cypress/runner/cypress_runner.js:151388:10)
+      at ensureExistence (http://localhost:5173/__cypress/runner/cypress_runner.js:151569:22)
+      at onFailFn (http://localhost:5173/__cypress/runner/cypress_runner.js:151598:53)
+
+  2) Suppliers Module - CRUD Flow
+       Archive a supplier:
+     AssertionError: Timed out retrying after 15000ms: Expected to find content: 'Cypress Supplier 1788314056738 Updated' within the selector: '[data-testid="table-row"]' but never did.
+      at Context.eval (webpack://viter-graces/./cypress/e2e/suppliers.cy.js:96:7)
+
+  3) Suppliers Module - CRUD Flow
+       Restore a supplier:
+     AssertionError: Timed out retrying after 15000ms: Expected to find content: 'Cypress Supplier 1788314056738 Updated' within the selector: '[data-testid="table-row"]' but never did.
+      at Context.eval (webpack://viter-graces/./cypress/e2e/suppliers.cy.js:115:7)
+
+  4) Suppliers Module - CRUD Flow
+       Delete a supplier:
+     AssertionError: Timed out retrying after 15000ms: Expected to find content: 'Cypress Supplier 1788314056738 Updated' within the selector: '[data-testid="table-row"]' but never did.
+      at Context.eval (webpack://viter-graces/./cypress/e2e/suppliers.cy.js:136:7)
+
+
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        8                                                                                │
+  │ Passing:      4                                                                                │
+  │ Failing:      4                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  4                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     1 minute, 1 second                                                               │
+  │ Spec Ran:     suppliers.cy.js                                                                  │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\suppliers.cy.js\Supp     (1280x720)
+     liers Module - CRUD Flow -- Update a supplier (failed).png                                     
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\suppliers.cy.js\Supp     (1280x720)
+     liers Module - CRUD Flow -- Archive a supplier (failed).png                                    
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\suppliers.cy.js\Supp     (1280x720)
+     liers Module - CRUD Flow -- Restore a supplier (failed).png                                    
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\suppliers.cy.js\Supp     (1280x720)
+     liers Module - CRUD Flow -- Delete a supplier (failed).png                                     
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  purchase-orders.cy.js                                                           (2 of 5)
+
+
+  Purchase Orders Module - CRUD Flow
+    1) Create a purchase order
+    2) Blocks submission when the required supplier is cleared
+    √ Cancel button closes the modal without saving (3599ms)
+    √ Close (X) button closes the modal without saving (14320ms)
+    3) Archive a purchase order
+    4) Restore a purchase order
+    5) Delete a purchase order
+
+
+  2 passing (2m)
+  5 failing
+
+  1) Purchase Orders Module - CRUD Flow
+       Create a purchase order:
+     AssertionError: Timed out retrying after 15000ms: Expected to find content: 'Cypress test PO 1788314120090' within the selector: '[data-testid="table-row"]' but never did.
+      at Context.eval (webpack://viter-graces/./cypress/e2e/purchase-orders.cy.js:46:7)
+
+  2) Purchase Orders Module - CRUD Flow
+       Blocks submission when the required supplier is cleared:
+     TypeError: The following error originated from your application code, not from Cypress.
+
+  > Cannot read properties of null (reading 'id')
+
+When Cypress detects uncaught errors originating from your application it will automatically fail the current test.
+
+This behavior is configurable, and you can choose to turn this off by listening to the `uncaught:exception` event.
+
+https://on.cypress.io/uncaught-exception-from-application
+      at onChange (http://localhost:5173/src/pages/developer/suppliers/modal/ModalPurchaseOrder.jsx:340:27)
+      at onChange (http://localhost:5173/src/components/inputs/InputSelect.jsx:1130:13)
+      at <unknown> (http://localhost:5173/node_modules/.vite/deps/react-select.js?v=6cff64d8:162:7)
+      at Select2._this.onChange (http://localhost:5173/node_modules/.vite/deps/react-select.js?v=6cff64d8:4828:7)
+      at Select2._this.clearValue (http://localhost:5173/node_modules/.vite/deps/react-select.js?v=6cff64d8:4894:13)
+      at Select2._this.onClearIndicatorMouseDown (http://localhost:5173/node_modules/.vite/deps/react-select.js?v=6cff64d8:5024:13)
+      at executeDispatch (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=6cff64d8:13622:11)
+      at runWithFiberInDEV (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=6cff64d8:997:72)
+      at processDispatchQueue (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=6cff64d8:13658:37)
+      at <unknown> (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=6cff64d8:14071:11)
+      at batchedUpdates$1 (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=6cff64d8:2626:42)
+      at dispatchEventForPluginEventSystem (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=6cff64d8:13763:9)
+      at dispatchEvent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=6cff64d8:16784:13)
+      at dispatchDiscreteEvent (http://localhost:5173/node_modules/.vite/deps/react-dom_client.js?v=6cff64d8:16765:62)
+      at sendEvent (http://localhost:5173/__cypress/runner/cypress_runner.js:151221:32)
+      at sendMouseEvent (http://localhost:5173/__cypress/runner/cypress_runner.js:150572:12)
+      at sendMousedown (http://localhost:5173/__cypress/runner/cypress_runner.js:150611:12)
+      at Object._downEvents (http://localhost:5173/__cypress/runner/cypress_runner.js:150937:23)
+      at Object.down (http://localhost:5173/__cypress/runner/cypress_runner.js:150948:36)
+      at Object.click (http://localhost:5173/__cypress/runner/cypress_runner.js:151026:36)
+
+  3) Purchase Orders Module - CRUD Flow
+       Archive a purchase order:
+     AssertionError: Timed out retrying after 15000ms: Expected to find content: 'Cypress test PO 1788314120090' within the selector: '[data-testid="table-row"]' but never did.
+      at Context.eval (webpack://viter-graces/./cypress/e2e/purchase-orders.cy.js:109:7)
+
+  4) Purchase Orders Module - CRUD Flow
+       Restore a purchase order:
+     AssertionError: Timed out retrying after 15000ms: Expected to find content: 'Cypress test PO 1788314120090' within the selector: '[data-testid="table-row"]' but never did.
+      at Context.eval (webpack://viter-graces/./cypress/e2e/purchase-orders.cy.js:128:7)
+
+  5) Purchase Orders Module - CRUD Flow
+       Delete a purchase order:
+     AssertionError: Timed out retrying after 15000ms: Expected to find content: 'Cypress test PO 1788314120090' within the selector: '[data-testid="table-row"]' but never did.
+      at Context.eval (webpack://viter-graces/./cypress/e2e/purchase-orders.cy.js:149:7)
+
+
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        7                                                                                │
+  │ Passing:      2                                                                                │
+  │ Failing:      5                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  5                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     1 minute, 51 seconds                                                             │
+  │ Spec Ran:     purchase-orders.cy.js                                                            │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\purchase-orders.cy.j     (1280x720)
+     s\Purchase Orders Module - CRUD Flow -- Create a purchase order (failed).png                   
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\purchase-orders.cy.j     (1280x720)
+     s\Purchase Orders Module - CRUD Flow -- Blocks submission when the required supp               
+     lier is cleared (failed).png                                                                   
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\purchase-orders.cy.j     (1280x720)
+     s\Purchase Orders Module - CRUD Flow -- Archive a purchase order (failed).png                  
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\purchase-orders.cy.j     (1280x720)
+     s\Purchase Orders Module - CRUD Flow -- Restore a purchase order (failed).png                  
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\purchase-orders.cy.j     (1280x720)
+     s\Purchase Orders Module - CRUD Flow -- Delete a purchase order (failed).png                   
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  purchase-movement-history.cy.js                                                 (3 of 5)
+
+
+  Purchase Movement History Module - Create
+    1) Create a stock transfer
+    √ Shows a validation error when the transfer note is left empty (4035ms)
+    √ Cancel button closes the modal without saving (2345ms)
+    √ Close (X) button closes the modal without saving (2650ms)
+    √ Does not render row action buttons (1620ms)
+
+
+  4 passing (16s)
+  1 failing
+
+  1) Purchase Movement History Module - Create
+       Create a stock transfer:
+     CypressError: `cy.click()` can only be called on a single element. Your subject contained 2 elements. Pass `{ multiple: true }` if you want to serially click each element.
+
+https://on.cypress.io/click
+      at mouseAction (http://localhost:5173/__cypress/runner/cypress_runner.js:114883:68)
+      at Context.click (http://localhost:5173/__cypress/runner/cypress_runner.js:115050:14)
+      at wrapped (http://localhost:5173/__cypress/runner/cypress_runner.js:146489:19)
+  From Your Spec Code:
+      at Object.proxyGetter [as get] (http://localhost:5173/__cypress/runner/cypress_runner.js:81302:22)
+      at exists (http://localhost:5173/__cypress/runner/cypress_runner.js:151373:26)
+      at elExists (http://localhost:5173/__cypress/runner/cypress_runner.js:151388:10)
+      at ensureExistence (http://localhost:5173/__cypress/runner/cypress_runner.js:151569:22)
+      at onFailFn (http://localhost:5173/__cypress/runner/cypress_runner.js:151598:53)
+
+
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        5                                                                                │
+  │ Passing:      4                                                                                │
+  │ Failing:      1                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  1                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     15 seconds                                                                       │
+  │ Spec Ran:     purchase-movement-history.cy.js                                                  │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\purchase-movement-hi     (1280x720)
+     story.cy.js\Purchase Movement History Module - Create -- Create a stock transfer               
+      (failed).png                                                                                  
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  filters-testing/purchase-orders-filters.cy.js                                   (4 of 5)
+
+
+  Purchase Orders Module - Filters
+    1) Should filter by status
+    √ Should filter by payment status (1972ms)
+    √ Should filter the PO number as the user types (1705ms)
+    √ Should filter by supplier (1782ms)
+    √ Should filter by order date (1735ms)
+    √ Should filter by expected delivery date (6721ms)
+    √ Should filter by min paid amount (7292ms)
+    √ Should filter by min balance (7233ms)
+
+
+  7 passing (43s)
+  1 failing
+
+  1) Purchase Orders Module - Filters
+       Should filter by status:
+     AssertionError: Timed out retrying after 4000ms: Expected to find content: 'SENT' within the element: <div> and with the selector: '.react-select__option' but never did.
+      at Context.eval (webpack://viter-graces/./cypress/e2e/filters-testing/purchase-orders-filters.cy.js:16:7)
+
+
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        8                                                                                │
+  │ Passing:      7                                                                                │
+  │ Failing:      1                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  1                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     43 seconds                                                                       │
+  │ Spec Ran:     filters-testing/purchase-orders-filters.cy.js                                    │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+  (Screenshots)
+
+  -  C:\xampp\htdocs\react-vite\viter-graces\cypress\screenshots\filters-testing\purc     (1280x720)
+     hase-orders-filters.cy.js\Purchase Orders Module - Filters -- Should filter by s               
+     tatus (failed).png                                                                             
+
+
+────────────────────────────────────────────────────────────────────────────────────────────────────
+                                                                                                    
+  Running:  filters-testing/purchase-movement-history-filters.cy.js                         (5 of 5)
+
+
+  Purchase Movement History Module - Filters
+    √ Should filter by status (4818ms)
+    √ Should filter the PO number as the user types (1765ms)
+    √ Should filter by supplier (1860ms)
+    √ Should filter by product owner (1939ms)
+    √ Should filter by min quantity (1707ms)
+    √ Should filter by min before qty (1830ms)
+    √ Should filter by min after qty (1709ms)
+    √ Should filter by order date (1942ms)
+    √ Should filter the note as the user types (2712ms)
+
+
+  9 passing (21s)
+
+
+  (Results)
+
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ Tests:        9                                                                                │
+  │ Passing:      9                                                                                │
+  │ Failing:      0                                                                                │
+  │ Pending:      0                                                                                │
+  │ Skipped:      0                                                                                │
+  │ Screenshots:  0                                                                                │
+  │ Video:        false                                                                            │
+  │ Duration:     20 seconds                                                                       │
+  │ Spec Ran:     filters-testing/purchase-movement-history-filters.cy.js                          │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+
+====================================================================================================
+
+  (Run Finished)
+
+
+       Spec                                              Tests  Passing  Failing  Pending  Skipped  
+  ┌────────────────────────────────────────────────────────────────────────────────────────────────┐
+  │ ✖  suppliers.cy.js                          01:01        8        4        4        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✖  purchase-orders.cy.js                    01:51        7        2        5        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✖  purchase-movement-history.cy.js          00:15        5        4        1        -        - │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✖  filters-testing/purchase-orders-fil      00:43        8        7        1        -        - │
+  │    ters.cy.js                                                                                  │
+  ├────────────────────────────────────────────────────────────────────────────────────────────────┤
+  │ ✔  filters-testing/purchase-movement-h      00:20        9        9        -        -        - │
+  │    istory-filters.cy.js                                                                        │
+  └────────────────────────────────────────────────────────────────────────────────────────────────┘
+    ✖  4 of 5 failed (80%)                      04:12       37       26       11        -        -  
+

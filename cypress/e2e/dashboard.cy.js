@@ -28,15 +28,41 @@ describe("Dashboard Page", () => {
       },
     }).as("activities");
 
+    cy.intercept("POST", "**/report-sales-order/read-overdue-payment", {
+      statusCode: 200,
+      body: {
+        data: [
+          {
+            installment_payment_customer_name: "Carol Williams",
+            installment_payment_code_number: "INV-0001",
+            installment_payment_due_date: "2026-08-01",
+            installment_payment_amount: 1500,
+            days_ago: 3,
+          },
+          {
+            installment_payment_customer_name: "Juan Dela Cruz",
+            installment_payment_code_number: "INV-0002",
+            installment_payment_due_date: "2026-08-05",
+            installment_payment_amount: 2500,
+            days_ago: 1,
+          },
+          {
+            installment_payment_customer_name: "Robert Samson",
+            installment_payment_code_number: "INV-0003",
+            installment_payment_due_date: "2026-08-10",
+            installment_payment_amount: 500,
+            days_ago: 0,
+          },
+        ],
+      },
+    }).as("overduePayments");
+
     cy.visit("/developer/dashboard");
 
     cy.url().should("include", "/dashboard");
 
     cy.wait("@activities");
-  });
-
-  it("should load dashboard successfully", () => {
-    cy.get('[data-testid="dashboard-page"]').should("exist");
+    cy.wait("@overduePayments");
   });
 
   it("should load dashboard successfully", () => {
@@ -68,13 +94,9 @@ describe("Dashboard Page", () => {
 
   it("should switch sales overview timeframe", () => {
     cy.get('[data-testid="sales-overview"]').within(() => {
-      cy.contains("button", "Monthly").click();
+      cy.get('[data-testid="timeframe-monthly"]').click();
 
-      cy.contains("Monthly");
-
-      cy.contains("button", "Yearly").click();
-
-      cy.contains("Yearly");
+      cy.get('[data-testid="timeframe-yearly"]').click();
     });
   });
 
@@ -84,9 +106,18 @@ describe("Dashboard Page", () => {
       "Overdue Payments",
     );
 
-    cy.contains("Carol Williams");
-    cy.contains("Juan Dela Cruz");
-    cy.contains("Robert Samson");
+    cy.get('[data-testid="overdue-payments"]').should(
+      "contain",
+      "Carol Williams",
+    );
+    cy.get('[data-testid="overdue-payments"]').should(
+      "contain",
+      "Juan Dela Cruz",
+    );
+    cy.get('[data-testid="overdue-payments"]').should(
+      "contain",
+      "Robert Samson",
+    );
 
     cy.get('[data-testid="overdue-payment-btn-to-view"]')
       .should("contain", "Click to view")
@@ -106,9 +137,9 @@ describe("Dashboard Page", () => {
 
   it("should switch cashflow timeframe", () => {
     cy.get('[data-testid="cashflow-chart"]').within(() => {
-      cy.contains("button", "Monthly").click();
+      cy.get('[data-testid="timeframeCF-monthly"]').click();
 
-      cy.contains("button", "Yearly").click();
+      cy.get('[data-testid="timeframeCF-yearly"]').click();
     });
   });
 
@@ -121,9 +152,9 @@ describe("Dashboard Page", () => {
 
   it("should switch profit and loss timeframe", () => {
     cy.get('[data-testid="profit-loss-chart"]').within(() => {
-      cy.contains("button", "Monthly").click();
+      cy.get('[data-testid="timeframePL-monthly"]').click();
 
-      cy.contains("button", "Yearly").click();
+      cy.get('[data-testid="timeframePL-yearly"]').click();
     });
   });
 });

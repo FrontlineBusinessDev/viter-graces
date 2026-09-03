@@ -298,7 +298,6 @@ const InfiniteSubTable = ({
                               value={header.column.getFilterValue() ?? ""}
                               filterFn={header.column.columnDef.filterFn}
                               onChange={(value) => {
-                                setData([]);
                                 header.column.setFilterValue(
                                   value || undefined,
                                 );

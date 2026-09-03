@@ -43,7 +43,7 @@ const DashboardTopSellingProduct = ({ path = "", id = 0 }) => {
           flipBg="bg-green-100 dark:bg-green-900"
           icon={<Trophy className="text-yellow-500" size={20} />}
           iconBg="bg-green-100 dark:bg-[#082125]"
-          dataTestId="sales-today-card"
+          dataTestId="top-selling-card"
           loading={isLoading}
         />
       )}

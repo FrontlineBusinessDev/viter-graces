@@ -457,11 +457,11 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                           onChange={(e, selectedItem) => {
                             props.setFieldValue(
                               "purchase_order_supplier_id",
-                              e.id,
+                              e?.id ?? "",
                             );
                             props.setFieldValue(
                               "purchase_order_supplier_name",
-                              e.value,
+                              e?.value ?? "",
                             );
                             props.setFieldValue(
                               "suppliers_delivery",
