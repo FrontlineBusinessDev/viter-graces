@@ -10,7 +10,11 @@ import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
 import { Amount, AmountWithPesoSign } from "@/components/PesoSign";
 import { apiVersion } from "@/config/config";
-import { ActivityLogDetails, taxOption } from "@/layout/ArrayValue";
+import {
+  ActivityLogDetails,
+  discountTypeOption,
+  taxOption,
+} from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
 import { queryData } from "@/services/queryData";
 import {
@@ -692,7 +696,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                       />
                     </div>
                   </div>
-                  <div className="grid grid-cols-3 items items-center gap-2">
+                  <div className="grid grid-cols-4 items items-center gap-2">
                     <div className="relative mt-3 ">
                       <InputSelectArrayWithOptions
                         label="VAT"
@@ -710,16 +714,49 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                         required={false}
                       />
                     </div>
-                    <div className="relative mt-3">
-                      <InputText
-                        label="Discount Amount"
-                        type="number"
-                        name="purchase_order_discount"
-                        // placeholder="0"
-                        disabled={mutation.isPending}
+                    <div className="relative ">
+                      <InputSelectArrayWithOptions
+                        label="Type of discount"
+                        type="purchase_order_discount_type"
+                        name="purchase_order_discount_type"
+                        defaultValue=""
+                        options={discountTypeOption()}
+                        onChange={(e) => {
+                          props.setFieldValue(
+                            "purchase_order_discount_percentage",
+                            "",
+                          );
+                          props.setFieldValue("purchase_order_discount", "");
+                          props.setFieldValue(
+                            "purchase_order_discount_type",
+                            e.target.id,
+                          );
+                          return e;
+                        }}
                         required={false}
                       />
                     </div>
+                    {props.values.sales_order_discount_type === "percentage" ? (
+                      <div className="relative ">
+                        <InputNumber
+                          label="Discount %"
+                          name="purchase_order_discount_percentage"
+                          placeholder={`${itemEdit ? "0" : "0"}`}
+                          disabled={mutation.isPending}
+                          required={false}
+                        />
+                      </div>
+                    ) : (
+                      <div className="relative mt-3">
+                        <InputText
+                          label="Discount Amount"
+                          type="number"
+                          name="purchase_order_discount"
+                          disabled={mutation.isPending}
+                          required={false}
+                        />
+                      </div>
+                    )}
                     {props.values.purchase_order_payment_status === "paid" ? (
                       <div className="w-full place-self-end my-5 p-2">
                         <p className="flex flex-col place-self-end text-primary mb-0 text-lg text-right">
