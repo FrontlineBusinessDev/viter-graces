@@ -65,6 +65,8 @@ $val->purchase_order_total_amount_per_product = 0;
 
 if ($val->purchase_order_status == 'received') {
     $val->purchase_order_delivery_is_status = 1;
+} else {
+    $val->purchase_order_delivery_is_status = 0;
 }
 
 $val->purchase_order_number = setIdNumber($val, "PO-");
@@ -82,7 +84,6 @@ if ($payment >= $orderGrandTotal && $orderGrandTotal > 0) {
 // Handle delivery status logic
 deliveryStatus($val, $data);
 $val->purchase_order_delivery_status = "";
-$val->purchase_order_delivery_is_status = ($data["purchase_order_payment_status"] === "paid") ? 1 : 0;
 
 // Process individual line items
 $purchaseOrderItems = $data["purchase_order"] ?? [];
