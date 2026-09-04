@@ -19,7 +19,11 @@ const canonicalizeKey = (key = "") =>
 const formatLabel = (key = "", prefix = "") => {
   let cleanKey = canonicalizeKey(key);
 
-  if (prefix && cleanKey.startsWith(prefix) && cleanKey.length > prefix.length) {
+  if (
+    prefix &&
+    cleanKey.startsWith(prefix) &&
+    cleanKey.length > prefix.length
+  ) {
     cleanKey = cleanKey.slice(prefix.length);
   }
 
@@ -185,7 +189,7 @@ const FieldCardGrid = ({ entries, prefix = "" }) => {
           <p className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">
             {formatLabel(key, prefix)}
           </p>
-          <div className="text-sm font-medium text-black dark:text-light break-words">
+          <div className="text-sm font-medium text-black dark:text-light wrap-break-words">
             {renderFieldValue(key, value, prefix, discountType)}
           </div>
         </div>
@@ -215,7 +219,8 @@ const findFieldValue = (item, suffixes) => {
   return undefined;
 };
 
-const hasFieldValue = (item, suffixes) => findFieldValue(item, suffixes) !== undefined;
+const hasFieldValue = (item, suffixes) =>
+  findFieldValue(item, suffixes) !== undefined;
 
 // A "line item" — a product/entry with a name, quantity, and price — shows
 // up under many menus (purchase orders, returns, sales). Detected by shape
@@ -278,7 +283,8 @@ const findDiscountType = (entries) => {
 // An "is_x" flag (is_paid, is_return, is_restocked, ...) is a yes/no status,
 // never a currency amount — even though a word like "paid" would otherwise
 // read as money. Rendered as a small pill instead of a raw 0/1/true/false.
-const isBooleanFlagKey = (key) => /(^|_)is_[a-z0-9]+$/.test(canonicalizeKey(key));
+const isBooleanFlagKey = (key) =>
+  /(^|_)is_[a-z0-9]+$/.test(canonicalizeKey(key));
 const BOOLEAN_LIKE_VALUES = new Set(["0", "1", "true", "false", "yes", "no"]);
 const isTruthyFlag = (value) =>
   ["1", "true", "yes"].includes(String(value).trim().toLowerCase());
@@ -287,11 +293,7 @@ const MoneyValue = ({ value }) => <>&#8369;{formatCurrency(value)}</>;
 
 const PercentValue = ({ value }) => {
   const num = toNumber(value);
-  return (
-    <>
-      {num.toLocaleString(undefined, { maximumFractionDigits: 2 })}%
-    </>
-  );
+  return <>{num.toLocaleString(undefined, { maximumFractionDigits: 2 })}%</>;
 };
 
 const BooleanPill = ({ value }) => {
@@ -440,7 +442,12 @@ const PaymentItemCard = ({ item, index }) => {
         </span>
         <span className="font-semibold text-black dark:text-light">
           {paidAmount !== null ? <>&#8369;{paidAmount}</> : "—"}
-          {amount !== null && <span className="text-gray-400 dark:text-gray-500"> / &#8369;{amount}</span>}
+          {amount !== null && (
+            <span className="text-gray-400 dark:text-gray-500">
+              {" "}
+              / &#8369;{amount}
+            </span>
+          )}
         </span>
       </div>
     </div>
@@ -479,7 +486,9 @@ const buildReturnSummary = (values) => {
 
   const restockedRaw = values.return_product_is_restocked;
   const isRestocked = YES_LIKE.has(
-    String(restockedRaw ?? "").trim().toLowerCase(),
+    String(restockedRaw ?? "")
+      .trim()
+      .toLowerCase(),
   );
 
   return [
@@ -515,7 +524,7 @@ const ReturnSummaryGrid = ({ fields }) => (
         <p className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide mb-1">
           {field.label}
         </p>
-        <div className="text-sm font-medium text-black dark:text-light break-words">
+        <div className="text-sm font-medium text-black dark:text-light wrap-break-words">
           {field.pill ? (
             <span
               className={`px-2 py-0.5 rounded-full text-xs font-semibold ${
@@ -529,7 +538,9 @@ const ReturnSummaryGrid = ({ fields }) => (
           ) : field.money ? (
             <MoneyValue value={field.value} />
           ) : (
-            <span className="capitalize break-words">{String(field.value)}</span>
+            <span className="capitalize wrap-break-words">
+              {String(field.value)}
+            </span>
           )}
         </div>
       </div>
@@ -565,7 +576,7 @@ const ArrayOfObjectsCards = ({ items, prefix = "" }) => (
                     <span className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
                       {formatLabel(itemKey, prefix)}
                     </span>
-                    <span className="text-sm font-medium text-black dark:text-light break-words">
+                    <span className="text-sm font-medium text-black dark:text-light wrap-break-words">
                       {renderFieldValue(itemKey, itemVal, prefix, discountType)}
                     </span>
                   </div>
@@ -651,7 +662,7 @@ const SummaryField = ({ label, children, className = "" }) => (
     <span className="text-[11px] font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wide">
       {label}
     </span>
-    <span className="text-sm font-medium text-black dark:text-light capitalize break-words">
+    <span className="text-sm font-medium text-black dark:text-light capitalize wrap-break-words">
       {children}
     </span>
   </div>
@@ -693,11 +704,14 @@ const ActivityLogDetailsModal = ({ itemEdit, handleClose = () => {} }) => {
   // the generic field grid — a fixed, curated set of fields in place of a
   // raw dump of the merged return/product/order record.
   const isReturnsMenu =
-    String(itemEdit?.activity_log_menu || "").trim().toLowerCase() ===
-    "returns-products";
+    String(itemEdit?.activity_log_menu || "")
+      .trim()
+      .toLowerCase() === "returns-products";
   const returnSummaryFields = isReturnsMenu
     ? buildReturnSummary(
-        description.type === "entries" ? Object.fromEntries(description.entries) : {},
+        description.type === "entries"
+          ? Object.fromEntries(description.entries)
+          : {},
       )
     : [];
 
@@ -712,10 +726,10 @@ const ActivityLogDetailsModal = ({ itemEdit, handleClose = () => {} }) => {
       data-testid="activity-log-details-backdrop"
     >
       <div
-        className="p-1 min-w-[350px] animate-slideUp w-full max-w-2xl my-10"
+        className="p-1 min-w-[350px] animate-slideUp w-full max-w-2xl "
         onClick={(e) => e.stopPropagation()}
       >
-        <div className="bg-light dark:bg-gray-900 rounded-lg dark:border dark:border-gray-800 flex flex-col max-h-[90vh] shadow-xl">
+        <div className="bg-light dark:bg-gray-900 rounded-lg dark:border dark:border-gray-800 flex flex-col max-h-[92vh] shadow-xl">
           <div className="modal-header relative px-5 py-4 border-b border-gray-200 dark:border-gray-800">
             <CloseButton handleClose={handleClose} />
             <h3 className="text-dark dark:text-light text-base font-semibold">
@@ -755,7 +769,10 @@ const ActivityLogDetailsModal = ({ itemEdit, handleClose = () => {} }) => {
               <SummaryField label="Action">
                 {itemEdit?.activity_log_action}
               </SummaryField>
-              <SummaryField label="Date & Time" className="col-span-2 sm:col-span-1">
+              <SummaryField
+                label="Date & Time"
+                className="col-span-2 sm:col-span-1"
+              >
                 {itemEdit?.activity_log_created}
               </SummaryField>
             </div>
@@ -765,11 +782,6 @@ const ActivityLogDetailsModal = ({ itemEdit, handleClose = () => {} }) => {
                 <p className="text-gray-500 dark:text-gray-400 text-xs font-semibold uppercase tracking-wide">
                   Details
                 </p>
-                {description.type === "entries" && fieldCount > 0 && (
-                  <span className="text-[11px] font-semibold text-gray-400 dark:text-gray-500">
-                    &middot; {fieldCount} field{fieldCount === 1 ? "" : "s"}
-                  </span>
-                )}
               </div>
 
               {description.type === "entries" && fieldCount > 0 && (
@@ -777,7 +789,10 @@ const ActivityLogDetailsModal = ({ itemEdit, handleClose = () => {} }) => {
                   {isReturnsMenu ? (
                     <ReturnSummaryGrid fields={returnSummaryFields} />
                   ) : (
-                    <FieldCardGrid entries={detailEntries} prefix={menuPrefix} />
+                    <FieldCardGrid
+                      entries={detailEntries}
+                      prefix={menuPrefix}
+                    />
                   )}
                 </div>
               )}
