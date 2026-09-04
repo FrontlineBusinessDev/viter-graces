@@ -29,7 +29,10 @@ const StatCard = ({
   const [flipped, setFlipped] = React.useState(false);
 
   const handleClick = () => {
-    if (window.innerWidth < 768) {
+    const isTouchDevice = window.matchMedia(
+      "(hover: none), (pointer: coarse)",
+    ).matches;
+    if (window.innerWidth < 768 || isTouchDevice) {
       setFlipped(!flipped);
     }
   };
