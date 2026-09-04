@@ -17,20 +17,48 @@ import {
   Wallet,
 } from "lucide-react";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 // One of the 4 top metric cards (Total Orders / Total Spent / Outstanding
 // Balance / Credit Memo) - icon + label stacked over the value.
-const MetricCard = ({ icon, label, children, onClick }) => {
+const MetricCard = ({
+  icon,
+  label,
+  children,
+  onClick,
+  path,
+  tooltip,
+  filterOnClickId,
+  resolution_type = false,
+}) => {
+  const { store, dispatch } = React.useContext(StoreContext);
+  const userRole = store.credentials?.data?.role;
   const Tag = onClick ? "button" : "div";
 
   return (
-    <Tag
-      type={onClick ? "button" : undefined}
-      onClick={onClick}
-      className={`flex items-start gap-3 border border-gray-300 dark:border-gray-600 rounded-lg p-3 text-left bg-light dark:bg-gray-900 w-full ${
-        onClick ? "cursor-pointer hover:border-primary" : ""
-      }`}
+    <Link
+      to={`${devNavUrl}/${userRole}/${path}`}
+      className={`flex items-start gap-3 border border-gray-300 dark:border-gray-600 rounded-lg p-3 text-left bg-light dark:bg-gray-900 w-full`}
+      data-tooltip={`Go to ${tooltip}`}
+      onClick={() =>
+        sessionStorage.setItem(
+          "filter",
+          JSON.stringify([
+            {
+              id: filterOnClickId,
+              value: rowData?.customer_name,
+            },
+            ...(resolution_type
+              ? [
+                  {
+                    id: "return_product_resolution_type",
+                    value: "credit memo",
+                  },
+                ]
+              : []),
+          ]),
+        )
+      }
     >
       <span className="text-primary shrink-0 mt-0.5">{icon}</span>
       <span className="flex flex-col min-w-0">
@@ -39,7 +67,7 @@ const MetricCard = ({ icon, label, children, onClick }) => {
           {children}
         </span>
       </span>
-    </Tag>
+    </Link>
   );
 };
 
@@ -62,14 +90,10 @@ const ContactRow = ({ icon, value, href }) => {
             {value}
           </a>
         ) : (
-          <span className="text-black dark:text-light break-all">
-            {value}
-          </span>
+          <span className="text-black dark:text-light break-all">{value}</span>
         )
       ) : (
-        <span className="text-gray-400 dark:text-gray-500">
-          Not provided
-        </span>
+        <span className="text-gray-400 dark:text-gray-500">Not provided</span>
       )}
     </li>
   );
@@ -83,24 +107,6 @@ const ViewCustomerDetails = ({ itemEdit }) => {
 
   const handleClose = () => {
     dispatch(setIsView(false));
-  };
-
-  // Filters the Returns page by this customer AND resolution type "credit
-  // memo" - matches the same click-through the Customers table's own
-  // "Open Credit Memo" column already does.
-  const handleOpenCreditMemoClick = () => {
-    sessionStorage.setItem(
-      "filter",
-      JSON.stringify([
-        {
-          id: "return_product_customer_name",
-          value: itemEdit?.customer_name,
-        },
-        { id: "return_product_resolution_type", value: "credit memo" },
-      ]),
-    );
-    dispatch(setIsView(false));
-    navigate(`${devNavUrl}/${userRole}/returns`);
   };
 
   return (
@@ -147,7 +153,11 @@ const ViewCustomerDetails = ({ itemEdit }) => {
           <MetricCard
             icon={<FileText size={18} />}
             label="Credit Memo"
-            onClick={handleOpenCreditMemoClick}
+            tooltip="returns"
+            // onClick={handleOpenCreditMemoClick}
+            path="returns"
+            filterOnClickId="return_product_customer_name"
+            resolution_type={true}
           >
             <AmountWithPesoSign
               classAmnt="justify-start! "

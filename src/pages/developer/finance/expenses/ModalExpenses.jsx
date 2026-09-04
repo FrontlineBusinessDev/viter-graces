@@ -231,14 +231,15 @@ const ModalExpenses = ({ itemEdit }) => {
                     values={props.values}
                     setFieldValue={props.setFieldValue}
                   />
-                  <p className="font-bold mb-3">
+                  {/* <p className="font-bold mb-3">
                     Supplier :{" "}
                     <span className="uppercase font-bold">other</span>
-                  </p>
+                  </p> */}
                   <div className="relative ">
                     <InputText
                       label="Order Date"
                       type="date"
+                      L
                       name="purchase_order_date"
                       disabled={mutation.isPending}
                     />
@@ -283,7 +284,7 @@ const ModalExpenses = ({ itemEdit }) => {
                   </div>
                   <div className="relative my-3">
                     <DefaultInputSelectTagArray
-                      label="Item"
+                      label="Category"
                       onChange={(e, selectedItem) => {
                         if (selectedItem) {
                           props.setFieldValue(
