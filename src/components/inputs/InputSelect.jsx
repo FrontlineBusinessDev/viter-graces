@@ -580,8 +580,8 @@ export const MultiSelectCheckboxFilter = ({
                       checked={checked}
                       onChange={() => toggleValue(option.value)}
                     />
-                    <span className="truncate text-gray-700 dark:text-white">
-                      {option.label}
+                    <span className="truncate text-gray-700 dark:text-white capitalize!">
+                      {isEmptyItem(option.label, "Emply value")}
                     </span>
                   </label>
                 </li>

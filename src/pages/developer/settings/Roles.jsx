@@ -37,7 +37,7 @@ const Roles = () => {
         filterComponent: (column) => (
           <MultiSelectCheckboxFilter
             column={column}
-            path={`users/read-group-by-filer?type=role`}
+            path={`users/read-group-by-filter?type=role`}
             testFilterId={"filter-status"}
           />
         ),

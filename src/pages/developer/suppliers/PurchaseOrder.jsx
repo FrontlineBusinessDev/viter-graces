@@ -63,7 +63,16 @@ const PurchaseOrder = () => {
       orderNumber: "1",
       classTh: "min-w-[7rem] ",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="purchase-order/read-group-by-filter?type=poNumberSupplier"
+            testFilterId={"filter-order-number"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "purchase_order_supplier_name",
@@ -76,6 +85,7 @@ const PurchaseOrder = () => {
           <MultiSelectCheckboxFilter
             column={column}
             path="suppliers"
+            // path="suppliers/read-group-by-filter"
             testFilterId={"filter-supplier"}
           />
         ),
@@ -105,7 +115,10 @@ const PurchaseOrder = () => {
       filterFn: "multiDateRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeDateFilter column={column} testFilterId={"filter-delivery-date"} />
+          <MultiRangeDateFilter
+            column={column}
+            testFilterId={"filter-delivery-date"}
+          />
         ),
       },
     },
@@ -151,7 +164,10 @@ const PurchaseOrder = () => {
       classTd: "",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-balance"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-balance"}
+          />
         ),
       },
       amount: false,

@@ -164,6 +164,7 @@ const AccountsPayable = () => {
           haveFilterTable={true}
           ishaveAdd={false}
           setItemEdit={setItemEdit}
+          hasExport={true}
         />
       </HeaderNav>
       {store.isAdd && <UpdateAccountsPayableDetails itemEdit={itemEdit} />}

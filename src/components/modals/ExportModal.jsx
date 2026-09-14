@@ -21,8 +21,11 @@ const ExportModal = ({
   const [selectedKeys, setSelectedKeys] = React.useState(
     exportableColumns.map((col) => col.accessorKey),
   );
+  // Suggested name is the module path plus today's date, e.g.
+  // "finance-account-payable_2026-09-14" - still just a starting point,
+  // the user can edit it before exporting.
   const [fileName, setFileName] = React.useState(
-    defaultFileName.replaceAll("/", "-"),
+    `${defaultFileName.replaceAll("/", "-")}_${new Date().toISOString().slice(0, 10)}`,
   );
 
   const toggleKey = (accessorKey) => {

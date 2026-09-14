@@ -141,6 +141,7 @@ const FinanceReturns = () => {
           path="finance-returns"
           haveFilterTable={true}
           ishaveAdd={false}
+          hasExport={true}
         />
       </HeaderNav>
     </>

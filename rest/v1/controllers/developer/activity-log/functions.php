@@ -49,6 +49,26 @@ function allowedColumnsActivityLog()
     return $query;
 }
 
+// Create Product
+function checkSupplierDescription($object)
+{
+    $valueArray = [
+        "Other"
+    ];
+
+    foreach ($valueArray as $itemValueArray) {
+        $object->supplier_description_name = $itemValueArray;
+        $object->supplier_description_created = date("Y-m-d H:i:s");
+        $object->supplier_description_updated = date("Y-m-d H:i:s");
+
+        $query = $object->createSupplierDescription();
+    }
+
+    checkQuery($query, "There's a problem processing your request. (create other supplier description)");
+    return $query;
+}
+
+
 // Create 
 function checkCreateWalkInCustomer($object)
 {
@@ -81,7 +101,7 @@ function checkCreateOtherSupplier($object)
     $object->suppliers_updated = date("Y-m-d H:i:s");
 
     $query = $object->createOtherSupplier();
-    $expenses = [
+    $valueArray = [
         "Utilities Expense",
         "Transportation Expense",
         "Repairs and maintenance",
@@ -93,13 +113,13 @@ function checkCreateOtherSupplier($object)
         "Other"
     ];
 
-    foreach ($expenses as $itemExpenses) {
-        $object->suppliers_product_name = $itemExpenses;
+    foreach ($valueArray as $itemValueArray) {
+        $object->suppliers_product_name = $itemValueArray;
         $object->suppliers_product_price = "0";
         $object->suppliers_product_unit = "--";
         $object->suppliers_product_is_active = 1;
         $object->suppliers_product_supplier_id = $object->lastInsertedId;
-        $object->suppliers_product_supplier_name = "Other";
+        $object->suppliers_product_supplier_name = "Other operating expenses";
         $object->suppliers_product_created = date("Y-m-d H:i:s");
         $object->suppliers_product_updated = date("Y-m-d H:i:s");
 

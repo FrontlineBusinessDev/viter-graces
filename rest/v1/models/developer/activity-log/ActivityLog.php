@@ -10,10 +10,15 @@ class ActivityLog
     public $activity_log_description;
     public $activity_log_created;
 
+    public $supplier_description_name;
+    public $supplier_description_created;
+    public $supplier_description_updated;
+
     public $connection;
     public $lastInsertedId;
     public $tblActivityLog;
     public $tblCustomer;
+    public $tblSupplierDescription;
 
     public $filters;
     public $column_start;
@@ -26,6 +31,7 @@ class ActivityLog
         $this->connection = $db;
         $this->tblActivityLog = "graces_activity_log";
         $this->tblCustomer = "graces_customer";
+        $this->tblSupplierDescription = "graces_supplier_description";
     }
 
     // Builds the "columnFilters" WHERE fragments shared by every read*()
@@ -131,7 +137,7 @@ class ActivityLog
             } elseif (is_array($value)) {
                 $selectedValues = array_values(array_filter(
                     $value,
-                    fn ($v) => trim((string) $v) !== ""
+                    fn($v) => trim((string) $v) !== ""
                 ));
 
                 if (empty($selectedValues)) {
@@ -348,6 +354,46 @@ class ActivityLog
             $query->execute([
                 "total" => $this->column_total,
             ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readSupplierDescription()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblSupplierDescription} ";
+            $sql .= " order by supplier_description_name asc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // create
+    public function createSupplierDescription()
+    {
+        try {
+            $sql = "insert into {$this->tblSupplierDescription} ";
+            $sql .= "( supplier_description_name, ";
+            $sql .= "supplier_description_created, ";
+            $sql .= "supplier_description_updated ) values ( ";
+            $sql .= ":supplier_description_name, ";
+            $sql .= ":supplier_description_created, ";
+            $sql .= ":supplier_description_updated ) ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "supplier_description_name" => $this->supplier_description_name,
+                "supplier_description_created" => $this->supplier_description_created,
+                "supplier_description_updated" => $this->supplier_description_updated,
+            ]);
+            $this->lastInsertedId = $this->connection->lastInsertId();
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;

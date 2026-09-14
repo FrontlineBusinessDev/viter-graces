@@ -148,6 +148,7 @@ const CashSales = () => {
           setItemEdit={setItemEdit}
           haveFilterTable={true}
           ishaveAdd={false}
+          hasExport={true}
         />
       </HeaderNav>
     </>
