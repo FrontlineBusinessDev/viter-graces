@@ -269,6 +269,7 @@ class AccountPayable
             $sql .= "SUM(purchase_order_total_amount_per_product) as amount, ";
             $sql .= "SUM(purchase_order_total_amount_per_product) as paid_amount, ";
             $sql .= "SUM(purchase_order_total_balance_per_product) as balance_amount, ";
+            $sql .= "GROUP_CONCAT(DISTINCT purchase_order_product_name ORDER BY purchase_order_product_name SEPARATOR ', ') as purchase_order_product_name, ";
             $sql .= "purchase_order_is_active as is_active, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
@@ -317,6 +318,7 @@ class AccountPayable
             $sql .= "SUM(purchase_order_total_amount_per_product) as amount, ";
             $sql .= "SUM(purchase_order_total_paid_per_product) as paid_amount, ";
             $sql .= "SUM(purchase_order_total_balance_per_product) as balance_amount, ";
+            $sql .= "GROUP_CONCAT(DISTINCT purchase_order_product_name ORDER BY purchase_order_product_name SEPARATOR ', ') as purchase_order_product_name, ";
             $sql .= "purchase_order_is_active as is_active, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";

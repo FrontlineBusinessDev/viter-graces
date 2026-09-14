@@ -231,18 +231,11 @@ const InfiniteTable = ({
 
         return true;
       },
-      // multi-select filter: OR the checked values together. Values are
-      // usually strings (e.g. "paid", "cash"), but some columns (is_active,
-      // restocked) filter on 0/1 - stringify both sides so a numeric filter
-      // value still matches a numeric or string row value either way.
       multiSelect: (row, columnId, value) => {
         if (!Array.isArray(value) || value.length === 0) return true;
 
-        return value
-          .map(String)
-          .includes(String(row.getValue(columnId)));
+        return value.map(String).includes(String(row.getValue(columnId)));
       },
-      // date range filter: pair with DateRangeFilter (InputRangeFilter.jsx).
       dateRange: (row, columnId, value) => {
         const { start, end } = value || {};
         if (!start && !end) return true;
@@ -256,9 +249,6 @@ const InfiniteTable = ({
 
         return true;
       },
-      // multi-range filter: pair with MultiRangeAmountFilter
-      // (InputRangeFilter.jsx). A row matches if it falls inside ANY of the
-      // selected [min, max] ranges (OR'd together).
       multiRange: (row, columnId, value) => {
         if (!Array.isArray(value) || value.length === 0) return true;
 
@@ -270,30 +260,19 @@ const InfiniteTable = ({
           return true;
         });
       },
-      // multi-range date filter: pair with MultiRangeDateFilter
-      // (InputRangeFilter.jsx). A row matches if its date falls inside ANY of
-      // the selected start/end spans (OR'd together).
       multiDateRange: (row, columnId, value) => {
         if (!Array.isArray(value) || value.length === 0) return true;
 
-        // Flexible-plan orders have no fixed due date to fall inside a
-        // range, so they're matched separately here and OR'd together with
-        // any selected date ranges (see MultiRangeDateFilter's allowFlexible
-        // prop) rather than one excluding the other. Other columns using
-        // this filterFn never produce a `.flexible` item, so this is a
-        // no-op for them.
         const flexibleMarker = value.find((range) => range.flexible);
         const ranges = value.filter((range) => !range.flexible);
 
         if (flexibleMarker) {
           const rowData = row.original;
-          const paymentTerms = rowData?.sales_order_payment_terms?.toLowerCase();
+          const paymentTerms =
+            rowData?.sales_order_payment_terms?.toLowerCase();
           const installmentType =
             rowData?.sales_order_installment_type?.toLowerCase();
 
-          // sales_order_installment_type defaults to "flexible" on every
-          // order regardless of payment terms, so this must also require
-          // payment terms = installment or it'd match every order.
           const isFlexibleRow =
             paymentTerms === "installment" &&
             (["flexible", "customize"].includes(installmentType) ||
@@ -318,10 +297,6 @@ const InfiniteTable = ({
   });
 
   const rows = table?.getRowModel()?.rows;
-
-  // console.log("rows", rows);
-  // console.log("tableData", tableData);
-  // console.log("getHeaderGroups", table?.getHeaderGroups());
 
   // ACTIONS ADD
   const handleAdd = () => {
@@ -354,34 +329,10 @@ const InfiniteTable = ({
 
   return (
     <>
-      <div className="md:flex md:justify-between flex-row-reverse my-2 gap-4 items-center">
-        {ishaveAdd && (
-          <div className="flex justify-end sm:mb-0! mb-3 md:w-1/2 ">
-            <AddButton
-              value={addLabel}
-              onClick={handleAdd}
-              testId={dataTestidAddButton}
-            />
-          </div>
-        )}
-        {ishaveSubAdd && (
-          <div className="flex justify-end sm:mb-0! mb-3  ">
-            <AddButton
-              value={addLabel}
-              onClick={handleSubAdd}
-              testId={dataTestidAddButton}
-            />
-          </div>
-        )}
-
-        {hasExport && (
-          <div className="flex md:justify-end lg:mb-0! w-70 ">
-            <ExportCSVButton onClick={() => setShowExportModal(true)} />
-          </div>
-        )}
+      <div className="md:flex md:justify-end my-2 gap-4 items-center">
         {isSearch && (
           <div
-            className={`${haveFilterTable ? " lg:hidden " : " "} ${path === "sales-order" ? " sm:grid grid-cols-[10rem_1fr] gap-2 " : " "} w-full `}
+            className={`${haveFilterTable ? " lg:hidden " : " "} ${path === "sales-order" ? " sm:grid grid-cols-[10rem_1fr] gap-2 " : " "} w-full md:flex-1 `}
           >
             {path === "sales-order" && columnFilters?.length > 0 && (
               <>
@@ -421,6 +372,30 @@ const InfiniteTable = ({
               label={"Search..."}
               className="mb-3 mt-1 md:my-3 "
             />
+          </div>
+        )}
+
+        {/* Add / Sub-add / Export sit side-by-side on desktop, wrapping
+        below the search bar (block layout, no flex) on smaller screens. */}
+        {(ishaveAdd || ishaveSubAdd || hasExport) && (
+          <div className="flex flex-wrap justify-end gap-3 sm:mb-0! mb-3">
+            {ishaveAdd && (
+              <AddButton
+                value={addLabel}
+                onClick={handleAdd}
+                testId={dataTestidAddButton}
+              />
+            )}
+            {ishaveSubAdd && (
+              <AddButton
+                value={addLabel}
+                onClick={handleSubAdd}
+                testId={dataTestidAddButton}
+              />
+            )}
+            {hasExport && (
+              <ExportCSVButton onClick={() => setShowExportModal(true)} />
+            )}
           </div>
         )}
       </div>

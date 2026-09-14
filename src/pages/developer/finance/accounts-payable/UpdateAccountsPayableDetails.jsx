@@ -128,8 +128,12 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
     const rows = (itemEdit?.items || []).map((item, index) => ({
       "#": index + 1,
       "Due Date": isEmptyItem(item?.purchase_order_date, ""),
-      Amount: Number(item?.purchase_order_total_amount_per_product || 0).toFixed(2),
-      "Paid Amount": Number(item?.purchase_order_total_paid_per_product || 0).toFixed(2),
+      Amount: Number(
+        item?.purchase_order_total_amount_per_product || 0,
+      ).toFixed(2),
+      "Paid Amount": Number(
+        item?.purchase_order_total_paid_per_product || 0,
+      ).toFixed(2),
       "Balance Amount": Number(
         item?.purchase_order_total_balance_per_product || 0,
       ).toFixed(2),
@@ -159,7 +163,7 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
       mutation={mutation}
       isOpen={true}
       handleClose={handleClose}
-      // width="min-w-[550px]!"
+      width="min-w-[650px]!"
     >
       <ul className="grid grid-cols-2 [&>li]:flex [&>li]:items-center [&>li]:gap-2 ">
         <li>
@@ -199,6 +203,9 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
               <tr className="sm:table-row sticky top-0 uppercase dark:bg-[#0b111e] border-0! ">
                 <th className="w-px dark:bg-gray-900! bg-gray-100!">#</th>
                 <th className={`min-w-24  dark:bg-gray-900! bg-gray-100!`}>
+                  Item(s)
+                </th>
+                <th className={`min-w-24  dark:bg-gray-900! bg-gray-100!`}>
                   Due Date
                 </th>
                 <th className={` dark:bg-gray-900! bg-gray-100!`}>Amount</th>
@@ -220,6 +227,9 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
                   <tr key={index} className="border-0!">
                     <td className="text-center dark:bg-gray-900! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
                       {index + 1}.
+                    </td>
+                    <td className=" capitalize dark:bg-gray-900! ">
+                      {a?.purchase_order_product_name}
                     </td>
                     <td className=" dark:bg-gray-900! ">
                       {a?.purchase_order_date}
@@ -255,7 +265,7 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
               <tr className="border-0!">
                 <td
                   className="dark:bg-gray-900! text-right font-bold "
-                  colSpan={2}
+                  colSpan={3}
                 >
                   TOTAL
                 </td>
@@ -286,6 +296,7 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
                 return (
                   <tr key={aIndex} className="border-0!">
                     <td className="text-center dark:bg-gray-900! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10"></td>
+                    <td className=" dark:bg-gray-900! "></td>
                     <td className=" dark:bg-gray-900! "></td>
                     <td className=" dark:bg-gray-900! "></td>
                     <td className="dark:bg-gray-900! text-right">

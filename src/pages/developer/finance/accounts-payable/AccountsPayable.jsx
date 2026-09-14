@@ -62,7 +62,7 @@ const AccountsPayable = () => {
     },
     {
       accessorKey: "purchase_order_product_name",
-      header: "Products",
+      header: "Items",
       classTh: "min-w-[10rem]",
       classTd: "",
       filterFn: "multiSelect",
