@@ -57,7 +57,16 @@ class StockOverview
             }
 
             if ($inventoryStatusFilter !== null && $item['id'] === 'inventory_status') {
-                $inventoryStatusFilter = strtolower(trim($item['value']));
+                // the frontend's status filter is now a multi-select
+                // checkbox dropdown, so $item['value'] arrives as an array
+                // even for a single pick - trim()/strtolower() on an array
+                // throws a TypeError. The downstream match below only
+                // supports one status at a time anyway, so take the first
+                // selected value.
+                $rawStatus = is_array($item['value'])
+                    ? ($item['value'][0] ?? '')
+                    : $item['value'];
+                $inventoryStatusFilter = strtolower(trim((string) $rawStatus));
                 continue;
             }
 

@@ -116,7 +116,7 @@ describe("Products Module - CRUD Flow", () => {
       .clear()
       .type("This is test product Updated");
 
-    cy.get('[data-testid="select-supplier"]').select(2);
+    cy.get('[data-testid="select-supplier"]').select(1);
     cy.get('[data-testid="select-product-owner"]').select(2);
 
     cy.get('[data-testid="save-product-btn"]').click();

@@ -27,17 +27,18 @@ describe("Sales Orders Module - CRUD Flow", () => {
     );
 
     // explicitly pick a customer instead of trusting the async "Walk in
-    // customer" default to have resolved by the time we interact with it
+    // customer" default to have resolved by the time we interact with it.
+    // The select's menu renders through a portal on <body> (menuPortalTarget
+    // in InputSelectFilterTagArray), so its options aren't a DOM descendant
+    // of the [data-testid] wrapper - query the option globally instead of
+    // scoping into the wrapper.
     cy.get('[data-testid="sales_order_customer_id"]').click();
-    cy.get('[data-testid="sales_order_customer_id"]').find('[id$="-option-0"]')
-      .first()
-      .click();
+    cy.get('[id$="-option-0"]').first().click();
 
-    // pick the first product for the default line item row
+    // pick the first product for the default line item row - same portal
+    // caveat as the customer select above
     cy.get('[data-testid="sales_order_product_name"]').click();
-    cy.get('[data-testid="sales_order_product_name"]')
-      .find('[id$="-option-0"]')
-      .click();
+    cy.get('[id$="-option-0"]').first().click();
 
     cy.get('textarea[name="sales_order_notes"]').type(orderNotes);
 
@@ -61,11 +62,10 @@ describe("Sales Orders Module - CRUD Flow", () => {
     }).should("be.visible");
 
     // select a customer so a clear indicator exists, then clear the
-    // now-empty required field
+    // now-empty required field (option queried globally - see the portal
+    // note on the "Create sales order" test above)
     cy.get('[data-testid="sales_order_customer_id"]').click();
-    cy.get('[data-testid="sales_order_customer_id"]').find('[id$="-option-0"]')
-      .first()
-      .click();
+    cy.get('[id$="-option-0"]').first().click();
 
     // this select has no classed clear-indicator - its first indicator
     // icon (before the separator/dropdown-arrow) is the clear button
