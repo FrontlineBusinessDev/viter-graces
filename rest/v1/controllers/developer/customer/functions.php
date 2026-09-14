@@ -121,3 +121,25 @@ function allowedColumnsOverview()
     ];
     return $query;
 }
+
+// read all customers
+function checkReadAllCustomers($object, $allowedColumns = [])
+{
+    $query = $object->readAllCustomer($allowedColumns);
+    checkQuery($query, "Empty records. (read all customers)");
+    return $query;
+}
+// read all email
+function checkReadAllEmail($object, $allowedColumns = [])
+{
+    $query = $object->readAllEmail($allowedColumns);
+    checkQuery($query, "Empty records. (read all emails)");
+    return $query;
+}
+// read all contact
+function checkReadAllContact($object, $allowedColumns = [])
+{
+    $query = $object->readAllContact($allowedColumns);
+    checkQuery($query, "Empty records. (read all contacts)");
+    return $query;
+}

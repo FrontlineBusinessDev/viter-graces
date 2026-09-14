@@ -664,3 +664,10 @@ function checkDeleteSalesJournal($object)
     checkQuery($query, "There's a problem processing your request. (deleteSalesJournal)");
     return $query;
 }
+// read all order numbers
+function checkReadAllOrderNumbers($object, $allowedColumns = [])
+{
+    $query = $object->readAllOrderNumbers($allowedColumns);
+    checkQuery($query, "Empty records. (read all order numbers)");
+    return $query;
+}

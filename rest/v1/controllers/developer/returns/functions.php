@@ -67,3 +67,27 @@ function allowedColumns()
     ];
     return $query;
 }
+
+// read all returned order numbers
+function checkReadAllReturnedOrderNumbers($object, $allowedColumns = [])
+{
+    $query = $object->readAllReturnedOrderNumbers($allowedColumns);
+    checkQuery($query, "Empty records. (read all returned order numbers)");
+    return $query;
+}
+
+// read all returned product numbers
+function checkReadAllReturnedProductNumbers($object, $allowedColumns = [])
+{
+    $query = $object->readAllReturnedProductNumbers($allowedColumns);
+    checkQuery($query, "Empty records. (read all returned product numbers)");
+    return $query;
+}
+
+// read all returned product reasons
+function checkReadAllReturnedProductReasons($object, $allowedColumns = [])
+{
+    $query = $object->readAllReturnedProductReasons($allowedColumns);
+    checkQuery($query, "Empty records. (read all returned product reasons)");
+    return $query;
+}

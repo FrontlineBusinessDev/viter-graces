@@ -43,21 +43,47 @@ const Customers = () => {
       filterOnClickId: "sales_order_customer_name",
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="customer/customer-filters?type=customers"
+            testFilterId={"filter-customer-name"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "customer_email",
       header: "email",
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="customer/customer-filters?type=email"
+            testFilterId={"filter-customer-email"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "customer_phone",
       header: "contact",
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="customer/customer-filters?type=contact"
+            testFilterId={"filter-customer-contact"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "number_of_orders",

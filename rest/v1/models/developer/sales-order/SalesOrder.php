@@ -1795,4 +1795,24 @@ class SalesOrder
         }
         return $query;
     }
+
+            // read all order number 
+    public function readAllOrderNumbers()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "sales_order_number as name ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= "where sales_order_number != '' ";
+            $sql .= " group by sales_order_number ";
+            $sql .= " order by sales_order_number desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute();
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
 }

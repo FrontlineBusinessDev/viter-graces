@@ -708,4 +708,64 @@ class Customer
         }
         return $query;
     }
+
+        // read all customer 
+    public function readAllCustomer()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "customer_name as name ";
+            $sql .= "from {$this->tblCustomer} ";
+            $sql .= "where customer_name != '' ";
+            $sql .= " group by customer_name ";
+            $sql .= " order by customer_name desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute();
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
+
+            // read all email 
+    public function readAllEmail()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "customer_email as name ";
+            $sql .= "from {$this->tblCustomer} ";
+            $sql .= "where customer_email != '' ";
+            $sql .= " group by customer_email ";
+            $sql .= " order by customer_email desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute();
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
+
+            // read all contact 
+    public function readAllContact()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "customer_phone as name ";
+            $sql .= "from {$this->tblCustomer} ";
+            $sql .= "where customer_phone != '' ";
+            $sql .= " group by customer_phone ";
+            $sql .= " order by customer_phone desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute();
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
 }
