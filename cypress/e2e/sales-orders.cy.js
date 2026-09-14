@@ -205,4 +205,33 @@ describe("Sales Orders Module - CRUD Flow", () => {
       .should("be.visible")
       .and("contain.text", "successfully");
   });
+
+  // DELETE
+  it("Delete sales order", () => {
+    cy.intercept("PUT", "**/sales-order/**").as("archiveSalesOrder");
+    cy.intercept("DELETE", "**/sales-order/**").as("deleteSalesOrder");
+
+    // action-delete only renders for an archived row (ActionTableList's
+    // "delete" entry has isActive: 0), so archive it first - same two-step
+    // flow as the Archive test above
+    cy.contains('[data-testid="table-row"]', orderNotes, {
+      timeout: 15000,
+    }).within(() => {
+      cy.get('[data-testid="action-archive"]').click({ force: true });
+    });
+
+    cy.contains("button", "Confirm").click();
+
+    cy.wait("@archiveSalesOrder");
+
+    cy.contains('[data-testid="table-row"]', orderNotes).within(() => {
+      cy.get('[data-testid="action-delete"]').click({ force: true });
+    });
+
+    cy.contains("button", "Confirm").click();
+
+    cy.wait("@deleteSalesOrder").its("response.statusCode").should("eq", 200);
+
+    cy.contains('[data-testid="table-row"]', orderNotes).should("not.exist");
+  });
 });
