@@ -812,4 +812,64 @@ class Returns
 
         return $query;
     }
+
+    // read all returned order number 
+    public function readAllReturnedOrderNumbers()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "return_product_order_number as name ";
+            $sql .= "from {$this->tblReturnProducts} ";
+            $sql .= "where return_product_order_number != '' ";
+            $sql .= " group by return_product_order_number ";
+            $sql .= " order by return_product_order_number desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute();
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
+
+    // read all returned product numbers 
+    public function readAllReturnedProductNumbers()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "return_product_number as name ";
+            $sql .= "from {$this->tblReturnProducts} ";
+            $sql .= "where return_product_number != '' ";
+            $sql .= " group by return_product_number ";
+            $sql .= " order by return_product_number desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute();
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
+
+    // read all returned product reasons 
+    public function readAllReturnedProductReasons()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "return_product_reason as name ";
+            $sql .= "from {$this->tblReturnProducts} ";
+            $sql .= "where return_product_reason != '' ";
+            $sql .= " group by return_product_reason ";
+            $sql .= " order by return_product_reason desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute();
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
 }

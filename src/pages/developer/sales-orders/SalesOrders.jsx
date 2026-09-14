@@ -52,7 +52,16 @@ const SalesOrders = () => {
       header: "order #",
       classTh: "min-w-[5rem]",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="sales-order/sales-orders-filter?type=order-numbers"
+            testFilterId={"filter-order-number"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_order_date",
@@ -79,7 +88,8 @@ const SalesOrders = () => {
       cell: (info) => {
         const row = info.row.original;
         const paymentTerms = row?.sales_order_payment_terms?.toLowerCase();
-        const installmentType = row?.sales_order_installment_type?.toLowerCase();
+        const installmentType =
+          row?.sales_order_installment_type?.toLowerCase();
         const dueDate = info.getValue();
 
         // Flexible plans have no fixed schedule - due dates for individual
@@ -130,7 +140,10 @@ const SalesOrders = () => {
       classTd: "",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-total"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-total"}
+          />
         ),
       },
     },
@@ -143,7 +156,10 @@ const SalesOrders = () => {
       classTd: "",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-paid"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-paid"}
+          />
         ),
       },
     },
@@ -156,7 +172,10 @@ const SalesOrders = () => {
       classTd: "",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-balance"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-balance"}
+          />
         ),
       },
     },
@@ -170,8 +189,7 @@ const SalesOrders = () => {
       // row hover feedback still shows through here rather than being fully
       // painted over by the opaque background.
       classTh: "min-w-[10rem] bg-red-50! dark:bg-red-950/40!",
-      classTd:
-        "capitalize bg-red-50! dark:bg-red-950/40! group-hover:bg-red-100! dark:group-hover:bg-red-950/60!",
+      classTd: "capitalize bg-red-200",
       filterFn: "",
       meta: "",
     },

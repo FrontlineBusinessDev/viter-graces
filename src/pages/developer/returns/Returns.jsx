@@ -44,7 +44,16 @@ const Returns = () => {
       header: "return #",
       classTh: "min-w-[6rem] ",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="returns-products/returns-filters?type=return-product-numbers"
+            testFilterId={"filter-return-product-number"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "return_product_date",
@@ -66,7 +75,16 @@ const Returns = () => {
       header: "order #",
       classTh: "min-w-[6rem] ",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="returns-products/returns-filters?type=return-order-numbers"
+            testFilterId={"filter-return-order-number"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "return_product_customer_name",
@@ -173,7 +191,16 @@ const Returns = () => {
       header: "reason",
       classTh: "min-w-40",
       classTd: "capitalize",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="returns-products/returns-filters?type=return-product-reasons"
+            testFilterId={"filter-return-product-reason"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "return_product_is_restocked",

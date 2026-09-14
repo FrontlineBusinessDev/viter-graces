@@ -61,6 +61,7 @@ RewriteRule ^customer/read-all-by-active$ controllers/developer/customer/read-al
 RewriteRule ^customer/read-walk-in-cutomer$ controllers/developer/customer/read-walk-in-cutomer.php [L]
 RewriteRule ^customer/read-cutomer-sales-summary$ controllers/developer/customer/read-cutomer-sales-summary.php [L]
 RewriteRule ^customer/read-open-credit-memo$ controllers/developer/customer/read-open-credit-memo.php [L]
+RewriteRule ^customer/customer-filters$ controllers/developer/customer/customer-filters.php [L]
 
 ### SUPPLIERS ### 
 RewriteRule ^suppliers$ controllers/developer/suppliers/suppliers.php [L]
@@ -130,6 +131,7 @@ RewriteRule ^sales-order/read-top-5-selling-products$ controllers/developer/sale
 RewriteRule ^sales-order/page-by-id/([0-9]+)$ controllers/developer/sales-order/page-by-cutomer-id.php?start=$1 [L]
 RewriteRule ^sales-order/read-all-sales-order$ controllers/developer/sales-order/read-all-sales-order.php [L]
 RewriteRule ^sales-order/sales-overview-graph-value$ controllers/developer/sales-order/sales-overview-graph-value.php [L]
+RewriteRule ^sales-order/sales-orders-filter$ controllers/developer/sales-order/sales-orders-filter.php [L]
  
 ### REPORT SALES ORDER ###
 RewriteRule ^report-sales-order/page-all-sales-order/page/([0-9]+)$ controllers/developer/reports/page-all-sales-order.php?start=$1 [L]
@@ -158,6 +160,7 @@ RewriteRule ^returns-products/page/([0-9]+)$ controllers/developer/returns/page.
 RewriteRule ^returns-products/search$ controllers/developer/returns/search.php [L]
 RewriteRule ^returns-products/read-all-active-by-product$ controllers/developer/returns/read-all-active-by-product.php [L]
 RewriteRule ^returns-products/read-all-product-that-have-stock$ controllers/developer/returns/read-all-product-that-have-stock.php [L]
+RewriteRule ^returns-products/returns-filters$ controllers/developer/returns/returns-filters.php [L]
 
 ### RETURN PRODUCTS ###  
 RewriteRule ^purchase-order-movement$ controllers/developer/suppliers/purchase-order-movement/purchase-order-movement.php [L] 
