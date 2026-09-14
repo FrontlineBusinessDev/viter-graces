@@ -188,8 +188,8 @@ const SalesOrders = () => {
       // cell's red tint on row hover instead of the usual gray/blue, so the
       // row hover feedback still shows through here rather than being fully
       // painted over by the opaque background.
-      classTh: "min-w-[10rem] bg-red-50! dark:bg-red-950/40!",
-      classTd: "capitalize bg-red-200",
+      classTh: "min-w-[10rem] bg-red-200 dark:bg-red-950/40!",
+      classTd: "capitalize bg-red-200 dark:bg-red-950/40!",
       filterFn: "",
       meta: "",
     },
