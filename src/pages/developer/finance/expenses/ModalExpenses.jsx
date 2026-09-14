@@ -71,7 +71,13 @@ const ModalExpenses = ({ itemEdit }) => {
 
   const mutation = useMutation({
     mutationFn: (values) =>
-      queryData(`${apiVersion}/finance-expenses`, "post", values),
+      queryData(
+        itemEdit
+          ? `${apiVersion}/finance-expenses/${itemEdit?.id}`
+          : `${apiVersion}/finance-expenses`,
+        itemEdit ? "put" : "post",
+        values,
+      ),
     onSuccess: (data) => {
       // Invalidate and refetch
       queryClient.invalidateQueries({
@@ -95,38 +101,87 @@ const ModalExpenses = ({ itemEdit }) => {
   });
 
   const initVal = {
-    purchase_order_supplier_id: "",
-    purchase_order_supplier_name: "",
-    purchase_order_date: store?.credentials?.data?.server_date,
-    purchase_order_expected_delivery: store?.credentials?.data?.server_date,
-    purchase_order_total_amount: 0,
+    purchase_order_number: isEmptyItem(itemEdit?.purchase_order_number, ""),
+    purchase_order_supplier_id: isEmptyItem(
+      itemEdit?.purchase_order_supplier_id,
+      "",
+    ),
+    purchase_order_supplier_name: isEmptyItem(
+      itemEdit?.purchase_order_supplier_name,
+      "",
+    ),
+    purchase_order_date: isEmptyItem(
+      itemEdit?.purchase_order_date,
+      store?.credentials?.data?.server_date,
+    ),
+    purchase_order_expected_delivery: isEmptyItem(
+      itemEdit?.purchase_order_expected_delivery,
+      store?.credentials?.data?.server_date,
+    ),
+    purchase_order_total_amount: isEmptyItem(
+      itemEdit?.purchase_order_total_amount,
+      0,
+    ),
     purchase_order_transact_id: store?.credentials?.data?.id,
     purchase_order_transact_name: store?.credentials?.data?.name,
-    purchase_order_tax: 0,
-    purchase_order_balance: 0,
-    purchase_order_discount: 0,
-    purchase_order_discount_type: "amount",
-    purchase_order_discount_percentage: 0,
-    purchase_order_payment: 0,
+    purchase_order_tax: isEmptyItem(itemEdit?.purchase_order_tax, 0),
+    purchase_order_balance: isEmptyItem(itemEdit?.purchase_order_balance, 0),
+    purchase_order_discount: isEmptyItem(itemEdit?.purchase_order_discount, 0),
+    purchase_order_discount_type: isEmptyItem(
+      itemEdit?.purchase_order_discount_type,
+      "amount",
+    ),
+    purchase_order_discount_percentage: isEmptyItem(
+      itemEdit?.purchase_order_discount_percentage,
+      0,
+    ),
+    purchase_order_payment: isEmptyItem(itemEdit?.purchase_order_payment, 0),
     total_amount: 0,
     total_sub_amount: 0,
     total_amount_without_discount_and_vat: 0,
-    purchase_order_status: "draft",
-    purchase_order_payment_status: "paid",
-    purchase_order_note: "",
-    suppliers_delivery: "monday",
-    purchase_order_percent_tax: "",
-    purchase_order_product_id: "",
-    purchase_order_product_name: "",
-    purchase_order_product_owner_id: "",
-    purchase_order_product_owner_name: "",
+    purchase_order_status: isEmptyItem(
+      itemEdit?.purchase_order_status,
+      "draft",
+    ),
+    purchase_order_payment_status: isEmptyItem(
+      itemEdit?.purchase_order_payment_status,
+      "paid",
+    ),
+    purchase_order_note: isEmptyItem(itemEdit?.purchase_order_note, ""),
+    suppliers_delivery: isEmptyItem(itemEdit?.suppliers_delivery, "monday"),
+    purchase_order_percent_tax: isEmptyItem(
+      itemEdit?.purchase_order_percent_tax,
+      "",
+    ),
+    purchase_order_product_id: isEmptyItem(
+      itemEdit?.purchase_order_product_id,
+      "",
+    ),
+    purchase_order_product_name: isEmptyItem(
+      itemEdit?.purchase_order_product_name,
+      "",
+    ),
+    purchase_order_product_owner_id: isEmptyItem(
+      itemEdit?.purchase_order_product_owner_id,
+      "",
+    ),
+    purchase_order_product_owner_name: isEmptyItem(
+      itemEdit?.purchase_order_product_owner_name,
+      "",
+    ),
     purchase_order_qty: "1",
-    purchase_order_price: 0,
+    purchase_order_price: isEmptyItem(itemEdit?.purchase_order_price, 0),
     purchase_order_product_name_other: "",
     purchase_order_delivery_is_status: true,
-    purchase_order_payment_method: "cash",
-    purchase_order_vat: "",
-    purchase_order_vat_amount: "",
+    purchase_order_payment_method: isEmptyItem(
+      itemEdit?.purchase_order_payment_method,
+      "cash",
+    ),
+    purchase_order_vat: isEmptyItem(itemEdit?.purchase_order_vat, ""),
+    purchase_order_vat_amount: isEmptyItem(
+      itemEdit?.purchase_order_vat_amount,
+      "",
+    ),
   };
 
   const yupSchema = Yup.object({
@@ -165,9 +220,14 @@ const ModalExpenses = ({ itemEdit }) => {
               // mutate data
 
               let data = {
-                ...ActivityLogDetails("purchase order", "create", store, {
-                  ...values,
-                }),
+                ...ActivityLogDetails(
+                  "purchase order",
+                  itemEdit ? "update" : "create",
+                  store,
+                  {
+                    ...values,
+                  },
+                ),
                 ...values,
               };
 
@@ -351,12 +411,12 @@ const ModalExpenses = ({ itemEdit }) => {
                         disabled={mutation.isPending}
                       />
                     </div>
-                    <div className="relative ">
+                    <div className="relative  mt-3">
                       <InputSelectArrayWithOptions
                         label="Type of discount"
                         type="purchase_order_discount_type"
                         name="purchase_order_discount_type"
-                        defaultValue="amount"
+                        defaultValue=""
                         options={discountTypeOption()}
                         onChange={(e) => {
                           props.setFieldValue(

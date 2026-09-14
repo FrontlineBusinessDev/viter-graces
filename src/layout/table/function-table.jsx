@@ -82,9 +82,7 @@ export const renderCellContent = (item, rowData, path = "") => {
     return (
       <Link
         to={externalLink}
-        className={`tooltip-action-table bg-transparent! underline text-primary p-0! ${
-          isSocial ? "lowercase" : "capitalize"
-        }`}
+        className={`tooltip-action-table bg-transparent! underline text-primary p-0!`}
         target={column.filterOnClickId ? "" : "_blank"}
         data-tooltip="View details"
         onClick={() =>

@@ -312,7 +312,7 @@ class SuppliersPurchaseOrder
             } elseif (is_array($value)) {
                 $selectedValues = array_values(array_filter(
                     $value,
-                    fn ($v) => trim((string) $v) !== ""
+                    fn($v) => trim((string) $v) !== ""
                 ));
 
                 if (empty($selectedValues)) {
@@ -347,6 +347,7 @@ class SuppliersPurchaseOrder
             $sql .= "from {$this->tblSuppliersPurchaseOrder} as spo, ";
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
+            $sql .= " and s.suppliers_is_default != 1 ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -487,7 +488,7 @@ class SuppliersPurchaseOrder
             } elseif (is_array($value)) {
                 $selectedValues = array_values(array_filter(
                     $value,
-                    fn ($v) => trim((string) $v) !== ""
+                    fn($v) => trim((string) $v) !== ""
                 ));
 
                 if (empty($selectedValues)) {
@@ -522,6 +523,7 @@ class SuppliersPurchaseOrder
             $sql .= "from {$this->tblSuppliersPurchaseOrder} as spo, ";
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
+            $sql .= " and s.suppliers_is_default != 1 ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -809,6 +811,40 @@ class SuppliersPurchaseOrder
             $query->execute([
                 "purchase_order_number" => $newCodeNumber,
             ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+    // name
+    public function readGoupByPurchaseOrderNumber()
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "purchase_order_number as name ";
+            $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
+            $sql .= "where purchase_order_supplier_name != 'other operating expenses' ";
+            $sql .= "group by purchase_order_number ";
+            $sql .= "order by purchase_order_number asc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function readAllGoupByPurchaseOrderNumber()
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "purchase_order_number as name ";
+            $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
+            $sql .= "group by purchase_order_number ";
+            $sql .= "order by purchase_order_number asc ";
+            $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;

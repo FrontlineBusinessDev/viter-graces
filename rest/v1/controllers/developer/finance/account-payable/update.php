@@ -17,27 +17,24 @@ if (array_key_exists("id", $_GET)) {
     // get data
 
     $id = $_GET['id'];
-    $val->purchase_order_payment_status = ['purchase_order_payment_status'];
     $val->purchase_order_updated = date("Y-m-d H:i:s");
 
     $val->purchase_order_balance = max($data["totalBalanceAmount"], 0);
     $val->purchase_order_payment = $data["totalPaidAmount"];
 
-    $val->purchase_order_status = 'completed';
-    $val->purchase_order_payment_status = 'partially paid';
-    if ((float)$val->purchase_order_balance <= 0) {
-        $val->purchase_order_payment_status = 'paid';
-    }
-    if ((float)$val->purchase_order_payment <= 0) {
-        $val->purchase_order_payment_status = 'partially paid';
-    }
-    // update 
+    // update
     $ordersItems = $data["items"];
     if (count($ordersItems) == 0) {
         $ordersItems = [];
     }
     // Cast and parse static payload values once
     $totalAmount = (float)($data['totalAmount'] ?? 0);
+
+    $val->purchase_order_status = 'completed';
+    $val->purchase_order_payment_status = calculatePaymentStatus(
+        $val->purchase_order_payment,
+        $totalAmount
+    );
     $discount = max(0, (float)($data['purchase_order_discount'] ?? 0));
     $payment = (float)($data["totalPaidAmount"] ?? 0);
     $percentTax = (float)($data['purchase_order_percent_tax'] ?? 0);

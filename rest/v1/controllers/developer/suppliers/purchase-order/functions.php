@@ -15,6 +15,14 @@ function checkReadExpensesToday($object)
     return $query;
 }
 
+// Read all
+function checkReadGoupByPurchaseOrderNumber($object)
+{
+    $query = $object->readGoupByPurchaseOrderNumber();
+    checkQuery($query, "Empty records. (Read goup by purchase order number)");
+    return $query;
+}
+
 // check association
 function allowedColumns()
 {
@@ -56,7 +64,7 @@ function allowedColumns()
 function checkItemsBelongToSupplier($conn, $supplierId, $items)
 {
     $productIds = array_map(
-        fn ($item) => $item["purchase_order_product_id"] ?? null,
+        fn($item) => $item["purchase_order_product_id"] ?? null,
         $items
     );
 
@@ -93,17 +101,26 @@ function deliveryStatus($val, $data)
     if ($isHaveNotDelivered > 0 && $val->purchase_order_payment_status == "unpaid") {
         $val->purchase_order_delivery_status = "delivered - incomplete / unpaid";
     }
+    if ($isHaveNotDelivered > 0 && $val->purchase_order_payment_status == "partially paid") {
+        $val->purchase_order_delivery_status = "delivered - incomplete / partially paid";
+    }
     if ($isHaveNotDelivered == 0 && $val->purchase_order_payment_status == "paid") {
         $val->purchase_order_delivery_status = "delivered - completed / paid";
     }
     if ($isHaveNotDelivered == 0 && $val->purchase_order_payment_status == "unpaid") {
         $val->purchase_order_delivery_status = "delivered - completed / unpaid";
     }
+    if ($isHaveNotDelivered == 0 && $val->purchase_order_payment_status == "partially paid") {
+        $val->purchase_order_delivery_status = "delivered - completed / partially paid";
+    }
     if ($isHaveNotDelivered == count($purchase_order) && $val->purchase_order_payment_status == "paid") {
         $val->purchase_order_delivery_status = "not delivered / paid";
     }
     if ($isHaveNotDelivered == count($purchase_order) && $val->purchase_order_payment_status == "unpaid") {
         $val->purchase_order_delivery_status = "not delivered / unpaid";
+    }
+    if ($isHaveNotDelivered == count($purchase_order) && $val->purchase_order_payment_status == "partially paid") {
+        $val->purchase_order_delivery_status = "not delivered / partially paid";
     }
     return;
 }

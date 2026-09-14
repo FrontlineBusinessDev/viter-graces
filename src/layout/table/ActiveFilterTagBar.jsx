@@ -1,4 +1,5 @@
 import { DateFormat } from "@/components/DateFormat";
+import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { X } from "lucide-react";
 import React from "react";
 
@@ -92,7 +93,7 @@ const ActiveFilterTagBar = ({ table, columnFilters, setColumnFilters }) => {
                 data-testid={`active-filter-chip-${group.id}`}
                 className="inline-flex items-center gap-1.5 bg-gray-100 dark:bg-[#0b111e] border border-gray-200 dark:border-gray-700 rounded-full pl-3 pr-1.5 py-1 text-sm normal-case"
               >
-                {label}
+                {isEmptyItem(label, "Emply value")}
                 <button
                   type="button"
                   onClick={() => removeValue(group.id, key)}

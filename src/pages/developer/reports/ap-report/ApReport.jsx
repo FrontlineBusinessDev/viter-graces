@@ -71,11 +71,14 @@ const ApReport = () => {
       accessorKey: "purchase_order_date",
       header: "Order Date",
       filterFn: "multiDateRange",
-      classTh: "w-[8rem]",
+      classTh: "min-w-[8rem]",
       classTd: "",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeDateFilter column={column} testFilterId={"filter-order-date"} />
+          <MultiRangeDateFilter
+            column={column}
+            testFilterId={"filter-order-date"}
+          />
         ),
       },
     },
@@ -88,7 +91,10 @@ const ApReport = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-balance"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-balance"}
+          />
         ),
       },
     },

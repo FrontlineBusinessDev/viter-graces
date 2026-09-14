@@ -1,5 +1,8 @@
 import ModalButton from "@/components/buttons/ModalButton";
-import { InputSelectArrayWithOptions } from "@/components/inputs/InputSelect";
+import {
+  DefaultInputSelectTagArray,
+  InputSelectArrayWithOptions,
+} from "@/components/inputs/InputSelect";
 import { InputNumber, InputText } from "@/components/inputs/InputText";
 import { InputTextArea } from "@/components/inputs/InputTextArea";
 import MessageError from "@/components/MessageError";
@@ -133,15 +136,11 @@ const ModalSuppliers = ({ itemEdit }) => {
     setCounter((prev) => prev + 1);
   };
 
-  const handleRemoveItem = (index) => {
-    setItems(items.filter((_, i) => i !== index));
+  const handleRemoveItem = (id) => {
+    setItems(items.filter((item) => item.id !== id));
   };
   const initVal = {
     suppliers_name: isEmptyItem(itemEdit?.suppliers_name, ""),
-    suppliers_description_name: isEmptyItem(
-      itemEdit?.suppliers_description_name,
-      "",
-    ),
     suppliers_email: isEmptyItem(itemEdit?.suppliers_email, ""),
     suppliers_phone: isEmptyItem(itemEdit?.suppliers_phone, ""),
     suppliers_address: isEmptyItem(itemEdit?.suppliers_address, ""),
@@ -151,6 +150,18 @@ const ModalSuppliers = ({ itemEdit }) => {
     suppliers_delivery: isEmptyItem(itemEdit?.suppliers_delivery, "monday"),
     suppliers_contact_person: "",
     suppliers_notes: isEmptyItem(itemEdit?.suppliers_notes, ""),
+    suppliers_description_id: isEmptyItem(
+      itemEdit?.suppliers_description_id,
+      "",
+    ),
+    suppliers_description_value: isEmptyItem(
+      itemEdit?.suppliers_description_value,
+      "",
+    ),
+    suppliers_description_value_other: isEmptyItem(
+      itemEdit?.suppliers_description_value,
+      "",
+    ),
 
     suppliers_name_old: isEmptyItem(itemEdit?.suppliers_name, ""),
   };
@@ -158,6 +169,8 @@ const ModalSuppliers = ({ itemEdit }) => {
   const yupSchema = Yup.object({
     suppliers_name: Yup.string().trim().required("Required"),
     suppliers_email: Yup.string().trim().email("Invalid email"),
+    suppliers_description_value: Yup.string().trim().required("Required"),
+    suppliers_description_value_other: Yup.string().trim().required("Required"),
   });
 
   React.useEffect(() => {
@@ -245,16 +258,84 @@ const ModalSuppliers = ({ itemEdit }) => {
                         required={false}
                       />
                     </div>
+
                     <div className="relative mt-3">
-                      <InputText
-                        label="Description"
-                        type="text"
-                        name="suppliers_description_name"
-                        placeholder={`${itemEdit ? "Update description" : "Enter description"}`}
-                        disabled={mutation.isPending}
-                        required={false}
+                      <DefaultInputSelectTagArray
+                        label="Supplier Description"
+                        onChange={(e, selectedItem) => {
+                          if (selectedItem) {
+                            props.setFieldValue(
+                              "suppliers_description_id",
+                              isEmptyItem(selectedItem.id, ""),
+                            );
+                            props.setFieldValue(
+                              "suppliers_description_value",
+                              isEmptyItem(selectedItem.name, ""),
+                            );
+
+                            if (
+                              isEmptyItem(selectedItem.name, "") === "Other"
+                            ) {
+                              props.setFieldValue(
+                                "suppliers_description_value_other",
+                                "",
+                              );
+                            } else {
+                              props.setFieldValue(
+                                "suppliers_description_value_other",
+                                isEmptyItem(selectedItem.name, ""),
+                              );
+                            }
+                          } else {
+                            props.setFieldValue("suppliers_description_id", "");
+                            props.setFieldValue(
+                              "suppliers_description_value",
+                              "",
+                            );
+                            props.setFieldValue(
+                              "suppliers_description_value_other",
+                              "",
+                            );
+                          }
+                        }}
+                        dataVal={items}
+                        path={`suppliers/read-group-by-filter`}
+                        testFilterId="suppliers_description_id"
+                        store={store}
+                        required={true}
+                        defaultValue={
+                          itemEdit && itemEdit?.suppliers_description_value
+                            ? {
+                                id: itemEdit.suppliers_description_id,
+                                value: itemEdit.suppliers_description_value,
+                                label: `${itemEdit.suppliers_description_value}`,
+                              }
+                            : []
+                        }
                       />
+                      {props.touched.suppliers_description_value &&
+                      props.errors.suppliers_description_value ? (
+                        <span className="error-show">
+                          {props.errors.suppliers_description_value}
+                        </span>
+                      ) : null}
                     </div>
+                    {props?.values?.suppliers_description_value?.toLowerCase() ===
+                    "other" ? (
+                      <div className="relative mt-3">
+                        <InputText
+                          label="Other Item"
+                          type="text"
+                          name="suppliers_description_value_other"
+                          placeholder={``}
+                          disabled={mutation.isPending}
+                          required={true}
+                          className="mt-0!"
+                        />
+                      </div>
+                    ) : (
+                      <span></span>
+                    )}
                   </div>
 
                   <div className="grid lg:grid-cols-3 gap-2 mt-5">
@@ -419,7 +500,10 @@ const ModalSuppliers = ({ itemEdit }) => {
                       disabled={mutation.isPending}
                       options={optionWeek}
                       onChange={(e) => {
-                        props.setFieldValue("suppliers_delivery", e.target.value);
+                        props.setFieldValue(
+                          "suppliers_delivery",
+                          e.target.value,
+                        );
                         return e;
                       }}
                     />

@@ -23,6 +23,7 @@ import SalesOrderMobileResponsive from "./SalesOrderMobileResponsive";
 import SalesReportMobileResponsive from "./SalesReportMobileResponsive";
 import StockOverviewMobileResponsive from "./StockOverviewMobileResponsive";
 import SupplierMobileReponsive from "./SupplierMobileReponsive";
+import SuppliersMobileResponsive from "./SuppliersMobileResponsive";
 import UsersMobileReponsive from "./UsersMobileReponsive";
 
 const MobileResponsiveList = ({
@@ -33,6 +34,10 @@ const MobileResponsiveList = ({
   setItemVal,
   isDefaultMobile = "",
   ishaveSubAdd = false,
+  // Nested sub-table support (currently only Suppliers passes these through)
+  subColumnsTable = null,
+  subPath = "",
+  ishaveSubTableAdd = false,
 }) => {
   return (
     <>
@@ -93,13 +98,24 @@ const MobileResponsiveList = ({
         setData={setData}
         isDefaultMobile={isDefaultMobile}
       />
-      {/* SUPPLIER RESPONSIVE */}
+      {/* SUPPLIER PRODUCT (SUB-TABLE) RESPONSIVE */}
       <SupplierMobileReponsive
         rows={rows}
         setItemEdit={setItemEdit}
         setItemVal={setItemVal}
         setData={setData}
         isDefaultMobile={isDefaultMobile}
+      />
+      {/* SUPPLIERS LIST RESPONSIVE */}
+      <SuppliersMobileResponsive
+        rows={rows}
+        setItemEdit={setItemEdit}
+        setItemVal={setItemVal}
+        setData={setData}
+        isDefaultMobile={isDefaultMobile}
+        subColumnsTable={subColumnsTable}
+        subPath={subPath}
+        ishaveSubTableAdd={ishaveSubTableAdd}
       />
       {/* PURCHASE ORDER RESPONSIVE */}
       <PurchaseOrderMobileReponsive

@@ -39,7 +39,7 @@ const UsersAccount = () => {
         filterComponent: (column) => (
           <MultiSelectCheckboxFilter
             column={column}
-            path={`users/read-group-by-filer?type=name`}
+            path={`users/read-group-by-filter?type=name`}
             testFilterId={"filter-status"}
           />
         ),
@@ -55,7 +55,7 @@ const UsersAccount = () => {
         filterComponent: (column) => (
           <MultiSelectCheckboxFilter
             column={column}
-            path={`users/read-group-by-filer?type=email`}
+            path={`users/read-group-by-filter?type=email`}
             testFilterId={"filter-status"}
           />
         ),
@@ -71,7 +71,7 @@ const UsersAccount = () => {
         filterComponent: (column) => (
           <MultiSelectCheckboxFilter
             column={column}
-            path={`users/read-group-by-filer?type=role`}
+            path={`users/read-group-by-filter?type=role`}
             testFilterId={"filter-status"}
           />
         ),

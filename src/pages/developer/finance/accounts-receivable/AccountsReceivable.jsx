@@ -280,6 +280,7 @@ const AccountsReceivable = () => {
           ishaveAdd={false}
           setItemEdit={setItemEdit}
           sortComparator={compareAccountsReceivableRows}
+          hasExport={true}
         />
       </HeaderNav>
       {store.isAdd && <UpdateAccountsReceivableDetails itemEdit={itemEdit} />}

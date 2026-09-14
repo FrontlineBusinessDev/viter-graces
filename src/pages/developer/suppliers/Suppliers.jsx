@@ -1,17 +1,20 @@
-import { SearchableSelectFilterStatus } from "@/components/inputs/InputSelect";
-import { ActiveInActiveStatus, ActionTableList } from "@/layout/ArrayValue";
+import {
+  MultiSelectCheckboxFilter,
+  SearchableSelectFilterStatus,
+} from "@/components/inputs/InputSelect";
+import { ActionTableList, ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
-import InfinitePerTabs from "@/layout/table/InfinitePerTabs";
+import InfiniteFilterWithDropDown from "@/layout/table/InfiniteFilterWithDropDown";
 import { StoreContext } from "@/store/StoreContext";
+import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 import { MapPin, Phone } from "lucide-react";
 import React from "react";
 import { AiFillMessage } from "react-icons/ai";
 import { FaFacebookMessenger } from "react-icons/fa";
 import { IoLogoWhatsapp } from "react-icons/io";
+import { MdEmail } from "react-icons/md";
 import ModalAddItem from "./modal/ModalAddItem";
 import ModalSuppliers from "./modal/ModalSuppliers";
-import { MdEmail } from "react-icons/md";
-import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 
 const Suppliers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -29,15 +32,35 @@ const Suppliers = () => {
       isMobileTitle: true,
       classTh: "min-w-40",
       classTd: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="suppliers/read-group-by-filter?type=name"
+            testFilterId={"filter-supplier"}
+          />
+        ),
+      },
     },
     {
-      accessorKey: "suppliers_description_name",
+      accessorKey: "suppliers_description_value",
       header: "supplier description",
       icon: "",
       isHaveLink: false,
       isPrimaryRow: true,
-      classTh: "min-w-40",
+      classTh: "min-w-70",
       classTd: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="suppliers/read-group-by-filter?type=description"
+            testFilterId={"filter-supplier"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "suppliers_email",
@@ -46,7 +69,17 @@ const Suppliers = () => {
       isHaveLink: true,
       icon: <MdEmail size={12} />,
       classTh: "min-w-40",
-      classTd: "",
+      classTd: " normal-case! ",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="suppliers/read-group-by-filter?type=email"
+            testFilterId={"filter-supplier"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "suppliers_phone",
@@ -55,6 +88,7 @@ const Suppliers = () => {
       isPrimaryRow: true,
       classTh: "min-w-40",
       classTd: "",
+      meta: "",
     },
     {
       accessorKey: "suppliers_address",
@@ -64,51 +98,7 @@ const Suppliers = () => {
       isPrimaryRow: true,
       classTh: "min-w-40",
       classTd: "",
-    },
-    {
-      accessorKey: "messenger",
-      header: "messenger",
-      link: (value) => value,
-      isHaveLink: true,
-      icon: <FaFacebookMessenger className="text-blue-500 size-3" />,
-      classTh: "min-w-40",
-      classTd: "",
-    },
-    {
-      accessorKey: "whatsapp",
-      header: "whatsapp",
-      // link: (value) => `wa.me/${value}`,
-      // isHaveLink: true,
-      icon: <IoLogoWhatsapp className="text-green-500 size-3" />,
-      classTh: "min-w-40",
-      classTd: "",
-    },
-    {
-      accessorKey: "other",
-      header: "other social",
-      link: (value) => value,
-      isHaveLink: true,
-      icon: <AiFillMessage className="text-green-500 size-3 " />,
-      classTh: "min-w-40",
-      classTd: "",
-    },
-    {
-      accessorKey: "suppliers_delivery",
-      header: "suppliers_delivery",
-      label: "Delivery",
-      isHaveLink: false,
-      icon: "",
-      classTh: "min-w-40",
-      classTd: "",
-    },
-    {
-      accessorKey: "suppliers_contact_person",
-      header: "stringArray",
-      label: "Other Contacts",
-      isHaveLink: false,
-      icon: "",
-      classTh: "min-w-40",
-      classTd: "",
+      meta: "",
     },
     {
       accessorKey: "action",
@@ -184,21 +174,17 @@ const Suppliers = () => {
   return (
     <>
       <HeaderNav menu={"suppliers"} activeTab="suppliers">
-        <InfinitePerTabs
+        <InfiniteFilterWithDropDown
           columns={columns}
-          subColumnsTable={subColumnsTable}
-          path={"suppliers"}
-          subPath={"suppliers-product"}
-          itemEdit={itemEdit}
+          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
+          path="suppliers"
           setItemEdit={setItemEdit}
-          setItemVal={setItemVal}
-          isView={isView}
-          setView={setView}
-          isSearch={false}
-          ishaveAdd={getAdminDeveloperRole(store)}
-          ishaveSubAdd={getAdminDeveloperRole(store)}
           haveFilterTable={true}
-          isDefaultMobile="suppliers"
+          ishaveAdd={getAdminDeveloperRole(store)}
+          subColumnsTable={subColumnsTable}
+          subPath="suppliers-product"
+          setItemVal={setItemVal}
+          ishaveSubTableAdd={getAdminDeveloperRole(store)}
         />
       </HeaderNav>
       {store.isAdd && <ModalSuppliers itemEdit={itemEdit} />}

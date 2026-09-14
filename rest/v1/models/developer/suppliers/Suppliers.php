@@ -4,7 +4,6 @@ class Suppliers
     public $suppliers_aid;
     public $suppliers_is_active;
     public $suppliers_name;
-    public $suppliers_description_name;
     public $suppliers_email;
     public $suppliers_phone;
     public $suppliers_address;
@@ -15,6 +14,8 @@ class Suppliers
     public $suppliers_delivery;
     public $suppliers_contact_person;
     public $suppliers_is_default;
+    public $suppliers_description_id;
+    public $suppliers_description_value;
     public $suppliers_created;
     public $suppliers_updated;
 
@@ -27,12 +28,16 @@ class Suppliers
     public $suppliers_product_created;
     public $suppliers_product_updated;
 
+    public $suppliers_description_value_other;
+    public $lastInsertedSupplierDescriptionId;
+
     public $connection;
     public $lastInsertedId;
     public $tblSuppliers;
     public $tblSuppliersProduct;
     public $tblSuppliersPurchaseOrder;
     public $tblProducts;
+    public $tblSuppliersDiscription;
 
     public $filters;
     public $column_start;
@@ -47,13 +52,9 @@ class Suppliers
         $this->tblSuppliersProduct = "graces_suppliers_product";
         $this->tblSuppliersPurchaseOrder = "graces_suppliers_purchase_order";
         $this->tblProducts = "graces_products";
+        $this->tblSuppliersDiscription = "graces_supplier_description";
     }
 
-    // Builds the "columnFilters" WHERE fragments shared by every read*()
-    // method below, and writes the matching bound params into &$params.
-    // - {min, max} value  -> numeric BETWEEN (e.g. price range)
-    // - array value       -> multi-select OR match via IN (...)
-    // - plain value       -> single LIKE match (legacy single-select filter)
     private function buildFilterColumns($allowedColumns, &$params)
     {
         $filterColumn = [];
@@ -98,7 +99,7 @@ class Suppliers
             } elseif (is_array($value)) {
                 $selectedValues = array_values(array_filter(
                     $value,
-                    fn ($v) => trim((string) $v) !== ""
+                    fn($v) => trim((string) $v) !== ""
                 ));
 
                 if (empty($selectedValues)) {
@@ -129,7 +130,6 @@ class Suppliers
             $sql = "insert into {$this->tblSuppliers} ";
             $sql .= "( suppliers_is_active, ";
             $sql .= "suppliers_name, ";
-            $sql .= "suppliers_description_name, ";
             $sql .= "suppliers_email, ";
             $sql .= "suppliers_phone, ";
             $sql .= "suppliers_address, ";
@@ -140,11 +140,12 @@ class Suppliers
             $sql .= "suppliers_delivery, ";
             $sql .= "suppliers_contact_person, ";
             $sql .= "suppliers_is_default, ";
+            $sql .= "suppliers_description_id, ";
+            $sql .= "suppliers_description_value, ";
             $sql .= "suppliers_created, ";
             $sql .= "suppliers_updated ) values ( ";
             $sql .= ":suppliers_is_active, ";
             $sql .= ":suppliers_name, ";
-            $sql .= ":suppliers_description_name, ";
             $sql .= ":suppliers_email, ";
             $sql .= ":suppliers_phone, ";
             $sql .= ":suppliers_address, ";
@@ -155,13 +156,14 @@ class Suppliers
             $sql .= ":suppliers_delivery, ";
             $sql .= ":suppliers_contact_person, ";
             $sql .= ":suppliers_is_default, ";
+            $sql .= ":suppliers_description_id, ";
+            $sql .= ":suppliers_description_value, ";
             $sql .= ":suppliers_created, ";
             $sql .= ":suppliers_updated ) ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "suppliers_is_active" => $this->suppliers_is_active,
                 "suppliers_name" => $this->suppliers_name,
-                "suppliers_description_name" => $this->suppliers_description_name,
                 "suppliers_email" => $this->suppliers_email,
                 "suppliers_phone" => $this->suppliers_phone,
                 "suppliers_address" => $this->suppliers_address,
@@ -172,6 +174,8 @@ class Suppliers
                 "suppliers_delivery" => $this->suppliers_delivery,
                 "suppliers_contact_person" => $this->suppliers_contact_person,
                 "suppliers_is_default" => $this->suppliers_is_default,
+                "suppliers_description_id" => $this->suppliers_description_id,
+                "suppliers_description_value" => $this->suppliers_description_value,
                 "suppliers_created" => $this->suppliers_created,
                 "suppliers_updated" => $this->suppliers_updated,
             ]);
@@ -182,6 +186,7 @@ class Suppliers
         }
         return $query;
     }
+
 
     // create
     public function createOtherSupplier()
@@ -407,7 +412,6 @@ class Suppliers
         try {
             $sql = "update {$this->tblSuppliers} set ";
             $sql .= "suppliers_name = :suppliers_name, ";
-            $sql .= "suppliers_description_name = :suppliers_description_name, ";
             $sql .= "suppliers_email = :suppliers_email, ";
             $sql .= "suppliers_phone = :suppliers_phone, ";
             $sql .= "suppliers_address = :suppliers_address, ";
@@ -417,12 +421,13 @@ class Suppliers
             $sql .= "suppliers_notes = :suppliers_notes, ";
             $sql .= "suppliers_delivery = :suppliers_delivery, ";
             $sql .= "suppliers_contact_person = :suppliers_contact_person, ";
+            $sql .= "suppliers_description_id = :suppliers_description_id, ";
+            $sql .= "suppliers_description_value = :suppliers_description_value, ";
             $sql .= "suppliers_updated = :suppliers_updated ";
             $sql .= "where suppliers_aid  = :suppliers_aid ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "suppliers_name" => $this->suppliers_name,
-                "suppliers_description_name" => $this->suppliers_description_name,
                 "suppliers_email" => $this->suppliers_email,
                 "suppliers_phone" => $this->suppliers_phone,
                 "suppliers_address" => $this->suppliers_address,
@@ -432,6 +437,8 @@ class Suppliers
                 "suppliers_notes" => $this->suppliers_notes,
                 "suppliers_delivery" => $this->suppliers_delivery,
                 "suppliers_contact_person" => $this->suppliers_contact_person,
+                "suppliers_description_id" => $this->suppliers_description_id,
+                "suppliers_description_value" => $this->suppliers_description_value,
                 "suppliers_updated" => $this->suppliers_updated,
                 "suppliers_aid" => $this->suppliers_aid,
             ]);
@@ -657,6 +664,131 @@ class Suppliers
             $sql .= "suppliers_name asc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function readBySupplierDescriptionName()
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "supplier_description_aid as id, ";
+            $sql .= "supplier_description_name as name ";
+            $sql .= "from {$this->tblSuppliersDiscription} ";
+            $sql .= "order by CASE WHEN LOWER(supplier_description_name) = 'other' THEN 1 ELSE 0 END asc, ";
+            $sql .= "supplier_description_name asc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function readSupplierDescriptionExist()
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "supplier_description_aid as id, ";
+            $sql .= "supplier_description_name as name ";
+            $sql .= "from {$this->tblSuppliersDiscription} ";
+            $sql .= "where supplier_description_name = :supplier_description_name ";
+            $sql .= "order by supplier_description_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "supplier_description_name" => $this->suppliers_description_value_other,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function readGoupBySupplierDescriptionName()
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "suppliers_description_id as id, ";
+            $sql .= "suppliers_description_value as name ";
+            $sql .= "from {$this->tblSuppliers} ";
+            $sql .= "where suppliers_description_value != '' ";
+            $sql .= "group by suppliers_description_value ";
+            $sql .= "order by suppliers_description_value asc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function readGoupBySupplierName()
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "suppliers_aid as id, ";
+            $sql .= "suppliers_name as name ";
+            $sql .= "from {$this->tblSuppliers} ";
+            $sql .= "where suppliers_is_default = 0 ";
+            $sql .= "group by suppliers_name ";
+            $sql .= "order by suppliers_name asc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // name
+    public function readGoupBySupplierEmail()
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "suppliers_aid as id, ";
+            $sql .= "suppliers_email as name ";
+            $sql .= "from {$this->tblSuppliers} ";
+            $sql .= "where suppliers_is_default = 0 ";
+            $sql .= "group by suppliers_email ";
+            $sql .= "order by suppliers_email asc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // createSupplierDescription
+    public function createSupplierDescription()
+    {
+        try {
+            // Timestamped here (not read from $this->suppliers_created/updated)
+            // since this lookup-table row can be created from the update flow
+            // too, which never sets those supplier-record fields.
+            $now = date("Y-m-d H:i:s");
+            $sql = "insert into {$this->tblSuppliersDiscription} ";
+            $sql .= "( supplier_description_name, ";
+            $sql .= "supplier_description_created, ";
+            $sql .= "supplier_description_updated ) values ( ";
+            $sql .= ":supplier_description_name, ";
+            $sql .= ":supplier_description_created, ";
+            $sql .= ":supplier_description_updated ) ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "supplier_description_name" => $this->suppliers_description_value_other,
+                "supplier_description_created" => $now,
+                "supplier_description_updated" => $now,
+            ]);
+            $this->lastInsertedSupplierDescriptionId = $this->connection->lastInsertId();
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;

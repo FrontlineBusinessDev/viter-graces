@@ -16,7 +16,6 @@ if (array_key_exists("id", $_GET)) {
 checkPayload($data);
 // get data
 $val->suppliers_name = checkIndex($data, "suppliers_name");
-$val->suppliers_description_name = $data["suppliers_description_name"];
 $val->suppliers_email = $data["suppliers_email"];
 $val->suppliers_phone = $data["suppliers_phone"];
 $val->suppliers_address = $data["suppliers_address"];
@@ -26,6 +25,9 @@ $val->suppliers_other = $data["suppliers_other"];
 $val->suppliers_notes = $data["suppliers_notes"];
 $val->suppliers_delivery = $data["suppliers_delivery"];
 $val->suppliers_contact_person = $data["suppliers_contact_person"];
+$val->suppliers_description_id = $data["suppliers_description_id"];
+$val->suppliers_description_value = $data["suppliers_description_value"];
+$val->suppliers_description_value_other = $data["suppliers_description_value_other"];
 $val->suppliers_is_active = 1;
 $val->suppliers_is_default = 0;
 $val->suppliers_created = date("Y-m-d H:i:s");
@@ -33,7 +35,21 @@ $val->suppliers_updated = date("Y-m-d H:i:s");
 
 // check name
 isNameExist($val, $val->suppliers_name);
-// create
+
+if (strtolower($data["suppliers_description_value"]) == "other") {
+
+    $querySupplierDescription = getResultData($val->readSupplierDescriptionExist());
+    if (count($querySupplierDescription) == 0) {
+        // Create Supplier Description
+        checkCreateSupplierDescription($val);
+        $val->suppliers_description_id = $val->lastInsertedSupplierDescriptionId;
+        $val->suppliers_description_value = $data["suppliers_description_value_other"];
+    } else {
+        $val->suppliers_description_id = $querySupplierDescription[0]["supplier_description_aid"];
+        $val->suppliers_description_value = $querySupplierDescription[0]["supplier_description_name"];
+    }
+}
+
 $query = checkCreate($val);
 // create activity log
 createActivityLog($valActivity, $data);

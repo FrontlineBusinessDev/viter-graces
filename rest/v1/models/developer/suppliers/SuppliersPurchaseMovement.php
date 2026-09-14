@@ -289,7 +289,7 @@ class SuppliersPurchaseMovement
             } elseif (is_array($value)) {
                 $selectedValues = array_values(array_filter(
                     $value,
-                    fn ($v) => trim((string) $v) !== ""
+                    fn($v) => trim((string) $v) !== ""
                 ));
 
                 if (empty($selectedValues)) {
@@ -461,7 +461,7 @@ class SuppliersPurchaseMovement
             } elseif (is_array($value)) {
                 $selectedValues = array_values(array_filter(
                     $value,
-                    fn ($v) => trim((string) $v) !== ""
+                    fn($v) => trim((string) $v) !== ""
                 ));
 
                 if (empty($selectedValues)) {
@@ -633,7 +633,7 @@ class SuppliersPurchaseMovement
             } elseif (is_array($value)) {
                 $selectedValues = array_values(array_filter(
                     $value,
-                    fn ($v) => trim((string) $v) !== ""
+                    fn($v) => trim((string) $v) !== ""
                 ));
 
                 if (empty($selectedValues)) {
@@ -668,6 +668,7 @@ class SuppliersPurchaseMovement
             $sql .= "from {$this->tblSuppliersPurchaseOrder} as spo, ";
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
+            $sql .= " and s.suppliers_is_default = 0 ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -676,8 +677,7 @@ class SuppliersPurchaseMovement
                 or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name
                 or spo.purchase_order_product_name like :purchase_order_product_name) " : " ");
             }
-            $sql .= " order by spo.purchase_order_is_active desc, ";
-            $sql .= " spo.purchase_order_aid desc ";
+            $sql .= " order by spo.purchase_order_aid desc ";
             $query = $this->connection->prepare($sql);
             $query->execute($params);
         } catch (PDOException $ex) {
@@ -805,7 +805,7 @@ class SuppliersPurchaseMovement
             } elseif (is_array($value)) {
                 $selectedValues = array_values(array_filter(
                     $value,
-                    fn ($v) => trim((string) $v) !== ""
+                    fn($v) => trim((string) $v) !== ""
                 ));
 
                 if (empty($selectedValues)) {
@@ -840,6 +840,7 @@ class SuppliersPurchaseMovement
             $sql .= "from {$this->tblSuppliersPurchaseOrder} as spo, ";
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
+            $sql .= " and s.suppliers_is_default = 0 ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -848,8 +849,7 @@ class SuppliersPurchaseMovement
                 or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name 
                 or spo.purchase_order_product_name like :purchase_order_product_name) " : " ");
             }
-            $sql .= " order by spo.purchase_order_is_active desc, ";
-            $sql .= " spo.purchase_order_aid desc ";
+            $sql .= " order by spo.purchase_order_aid desc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);

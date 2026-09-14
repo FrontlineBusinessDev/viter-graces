@@ -38,7 +38,7 @@ RewriteRule ^users/token$ controllers/developer/settings/user/token.php [L]
 RewriteRule ^users/login$ controllers/developer/settings/user/login.php [L]
 RewriteRule ^users/reset-password/([0-9]+)$ controllers/developer/settings/user/reset-password.php?id=$1 [L] 
 RewriteRule ^users/forget-password$ controllers/developer/settings/user/forget-password.php [L] 
-RewriteRule ^users/read-group-by-filer$ controllers/developer/settings/user/read-group-by-filer.php [L] 
+RewriteRule ^users/read-group-by-filter$ controllers/developer/settings/user/read-group-by-filter.php [L] 
 
 ### PRODUCT OWNER ###
 RewriteRule ^product-owner/([0-9]+)$ controllers/developer/settings/product-owner/product-owner.php?id=$1 [L]
@@ -70,6 +70,7 @@ RewriteRule ^suppliers/page/([0-9]+)$ controllers/developer/suppliers/page.php?s
 RewriteRule ^suppliers/search$ controllers/developer/suppliers/search.php [L]
 RewriteRule ^suppliers/read-in-modal/([0-9]+)$ controllers/developer/suppliers/read-in-modal.php?id=$1 [L] 
 RewriteRule ^suppliers/read-in-modal$ controllers/developer/suppliers/read-in-modal.php [L] 
+RewriteRule ^suppliers/read-group-by-filter$ controllers/developer/suppliers/read-group-by-filter.php [L] 
 
 ### SUPPLIERS ###
 RewriteRule ^suppliers-product$ controllers/developer/suppliers/product/suppliers-product.php [L]
@@ -103,6 +104,7 @@ RewriteRule ^purchase-order/active/([0-9]+)$ controllers/developer/suppliers/pur
 RewriteRule ^purchase-order/page/([0-9]+)$ controllers/developer/suppliers/purchase-order/page.php?start=$1 [L]
 RewriteRule ^purchase-order/search$ controllers/developer/suppliers/purchase-order/search.php [L]
 RewriteRule ^purchase-order/read-expenses-today$ controllers/developer/suppliers/purchase-order/read-expenses-today.php [L]
+RewriteRule ^purchase-order/read-group-by-filter$ controllers/developer/suppliers/purchase-order/read-group-by-filter.php [L]
 
 ### STOCK MOVEMENT ### 
 RewriteRule ^stock-movement$ controllers/developer/inventory/stock-movement/stock-movement.php [L]
@@ -180,5 +182,4 @@ RewriteRule ^finance-account-payable/account-payable/([0-9]+)$ controllers/devel
 RewriteRule ^finance-sales-journal/page/([0-9]+)$ controllers/developer/finance/sales-journal/page-by-sales-journal.php?start=$1 [L]
 RewriteRule ^finance-sales-journal/read-overview$ controllers/developer/finance/overview/read-overview.php [L]
 RewriteRule ^finance-returns/page/([0-9]+)$ controllers/developer/finance/returns/page-by-finance-returns.php?start=$1 [L]
-   
- 
+    

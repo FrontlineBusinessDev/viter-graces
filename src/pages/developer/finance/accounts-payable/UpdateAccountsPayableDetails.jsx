@@ -15,11 +15,24 @@ import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
+import * as XLSX from "xlsx";
 
 const UpdateAccountsPayableDetails = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
-  const [items, setItems] = React.useState([{ paid_amount: 0 }]);
-  const [isFullyPaid, setIsFullyPaid] = React.useState(false);
+  const [items, setItems] = React.useState([{ paid_amount: "" }]);
+
+  // Running totals for this modal session. itemEdit is a snapshot captured
+  // when the row was clicked and never refreshed while the modal stays
+  // open, so each successful partial payment is folded into this local
+  // baseline instead - that's what lets the totals below stay correct
+  // across multiple saves without double-counting, and what handleSave
+  // compares against to decide whether the balance just reached zero.
+  const [savedPaidAmount, setSavedPaidAmount] = React.useState(() =>
+    Number(isEmptyItem(itemEdit?.paid_amount, 0)),
+  );
+  const [savedBalanceAmount, setSavedBalanceAmount] = React.useState(() =>
+    Number(isEmptyItem(itemEdit?.balance_amount, 0)),
+  );
 
   const queryClient = useQueryClient();
 
@@ -33,19 +46,19 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
 
   handleEscape(() => handleClose());
 
-  let totalPaidAmount = isEmptyItem(itemEdit?.paid_amount, 0);
+  let totalPaidAmount = savedPaidAmount;
   let totalAmount = isEmptyItem(itemEdit?.amount, 0);
-  let totalBalanceAmount = isEmptyItem(itemEdit?.balance_amount, 0);
+  let totalBalanceAmount = savedBalanceAmount;
 
   const mutation = useMutation({
     mutationFn: (values) =>
       queryData(
-        `${apiVersion}/finance-account-payable/account-payable/1`,
+        `${apiVersion}/finance-account-payable/account-payable/${isEmptyItem(itemEdit?.items?.[0]?.purchase_order_aid, 1)}`,
         "put",
         values,
       ),
     onSuccess: (data) => {
-      // Invalidate and refetch
+      // Invalidate and refetch so the table row picks up the new status/amounts
       queryClient.invalidateQueries({
         queryKey: ["finance-account-payable"],
       });
@@ -54,8 +67,18 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
         dispatch(setSuccess(true));
         dispatch(setMessage("Updated successfully."));
 
-        if (Number(totalBalanceAmount) - Number(paidAmount) <= 0) {
-          setIsFullyPaid(true);
+        const newBalance = Number(totalBalanceAmount) - Number(paidAmount);
+
+        if (newBalance <= 0) {
+          // Fully settled - close the modal, the invalidated query above
+          // refreshes the table so its badge flips to PAID immediately.
+          handleClose();
+        } else {
+          // Still owing - fold the payment just made into the running
+          // totals and clear the input so the user can enter another one.
+          setSavedPaidAmount(Number(totalPaidAmount) + Number(paidAmount));
+          setSavedBalanceAmount(newBalance);
+          setItems([{ paid_amount: "" }]);
         }
       }
       if (!data.success) {
@@ -97,6 +120,38 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
     // console.log("data", data);
     mutation.mutate(data);
   };
+
+  // Exports this order's own line items - not a paginated server list like
+  // the table-level Export CSV, so it builds the sheet from what's already
+  // loaded in itemEdit rather than going through ExportContext/ExportModal.
+  const handleExportCsv = () => {
+    const rows = (itemEdit?.items || []).map((item, index) => ({
+      "#": index + 1,
+      "Due Date": isEmptyItem(item?.purchase_order_date, ""),
+      Amount: Number(item?.purchase_order_total_amount_per_product || 0).toFixed(2),
+      "Paid Amount": Number(item?.purchase_order_total_paid_per_product || 0).toFixed(2),
+      "Balance Amount": Number(
+        item?.purchase_order_total_balance_per_product || 0,
+      ).toFixed(2),
+    }));
+
+    rows.push({
+      "#": "",
+      "Due Date": "TOTAL",
+      Amount: Number(totalAmount).toFixed(2),
+      "Paid Amount": Number(totalPaidAmount).toFixed(2),
+      "Balance Amount": Number(totalBalanceAmount).toFixed(2),
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Export");
+
+    const today = new Date().toISOString().slice(0, 10);
+    const fileName = `accounts_payable_${isEmptyItem(itemEdit?.purchase_order_number, "order")}_${today}`;
+    XLSX.writeFile(workbook, `${fileName}.csv`, { bookType: "csv" });
+  };
+
   return (
     <ModalWrapper
       label={`Order Details - ${itemEdit?.purchase_order_number}`}
@@ -208,14 +263,14 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
                   <AmountWithPesoSign
                     classN="size-3"
                     classAmnt="text-primary text-black! "
-                    amount={itemEdit.amount}
+                    amount={totalAmount}
                   />
                 </td>
                 <td className="dark:bg-gray-900! text-right font-bold ">
                   <AmountWithPesoSign
                     classN="size-3"
                     classAmnt="text-primary"
-                    amount={itemEdit.paid_amount}
+                    amount={totalPaidAmount}
                   />
                 </td>
 
@@ -223,7 +278,7 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
                   <AmountWithPesoSign
                     classN="size-3"
                     classAmnt="text-primary text-warning"
-                    amount={itemEdit.balance_amount}
+                    amount={totalBalanceAmount}
                   />
                 </td>
               </tr>
@@ -237,7 +292,7 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
                       <button
                         className={`text-white bg-gray-500 hover:bg-green-800 rounded-sm p-1 text-[10px] disabled:opacity-50 disabled:cursor-not-allowed`}
                         type="button"
-                        disabled={mutation.isPending || isFullyPaid}
+                        disabled={mutation.isPending}
                         onClick={() => handleSave(i)}
                       >
                         Save
@@ -248,7 +303,8 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
                       <input
                         type="number"
                         className="text-right! mt-0! disabled:opacity-50 disabled:cursor-not-allowed"
-                        disabled={mutation.isPending || isFullyPaid}
+                        disabled={mutation.isPending}
+                        value={i?.paid_amount}
                         onChange={(e) => handleChangeSave(e, aIndex)}
                       />
                     </td>
@@ -284,7 +340,7 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
         </span>
       </div>
 
-      <ExportCSVButton />
+      <ExportCSVButton onClick={handleExportCsv} />
     </ModalWrapper>
   );
 };

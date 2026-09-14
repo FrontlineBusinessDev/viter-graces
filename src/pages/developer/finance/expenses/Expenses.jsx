@@ -127,6 +127,7 @@ const Expenses = () => {
           setItemEdit={setItemEdit}
           ishaveAdd={getAdminDeveloperRole(store)}
           haveFilterTable={true}
+          hasExport={true}
         />
       </HeaderNav>
       {store.isAdd && <ModalExpenses itemEdit={itemEdit} />}

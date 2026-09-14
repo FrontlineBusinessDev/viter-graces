@@ -15,6 +15,14 @@ function checkCreateProduct($object)
     return $query;
 }
 
+// create Supplier Description
+function checkCreateSupplierDescription($object)
+{
+    $query = $object->createSupplierDescription();
+    checkQuery($query, "There's a problem processing your request. (createSupplierDescription)");
+    return $query;
+}
+
 // Update 
 function checkUpdateProductSupplier($object)
 {
@@ -43,7 +51,6 @@ function allowedColumns()
     $query = [
         "suppliers_is_active",
         "suppliers_name",
-        "suppliers_description_name",
         "suppliers_email",
         "suppliers_phone",
         "suppliers_address",
@@ -66,5 +73,37 @@ function checkReadSupplierInModal($object, $allowedColumns = [])
 {
     $query = $object->readSupplierInModal($allowedColumns);
     checkQuery($query, "Empty records. (readSupplierInModal)");
+    return $query;
+}
+
+// Read all
+function checkReadBySupplierDescriptionName($object, $allowedColumns = [])
+{
+    $query = $object->readBySupplierDescriptionName($allowedColumns);
+    checkQuery($query, "Empty records. (readBySupplierDescriptionName)");
+    return $query;
+}
+
+// Read all
+function checkReadGoupBySupplierDescriptionName($object, $allowedColumns = [])
+{
+    $query = $object->readGoupBySupplierDescriptionName($allowedColumns);
+    checkQuery($query, "Empty records. (readGoupBySupplierDescriptionName)");
+    return $query;
+}
+
+// Read all
+function checkReadGoupBySupplierName($object, $allowedColumns = [])
+{
+    $query = $object->readGoupBySupplierName($allowedColumns);
+    checkQuery($query, "Empty records. (readGoupBySupplierName)");
+    return $query;
+}
+
+// Read all
+function checkReadGoupBySupplierEmail($object, $allowedColumns = [])
+{
+    $query = $object->readGoupBySupplierEmail($allowedColumns);
+    checkQuery($query, "Empty records. (readGoupBySupplierEmail)");
     return $query;
 }

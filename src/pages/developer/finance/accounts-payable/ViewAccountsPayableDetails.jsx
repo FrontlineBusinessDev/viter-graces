@@ -6,6 +6,7 @@ import { StoreContext } from "@/store/StoreContext";
 import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import React from "react";
+import * as XLSX from "xlsx";
 
 const ViewAccountsPayableDetails = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -20,6 +21,34 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
   let totalPaidAmount = isEmptyItem(itemEdit?.paid_amount, 0);
   let totalAmount = isEmptyItem(itemEdit?.amount, 0);
   let totalBalanceAmount = isEmptyItem(itemEdit?.balance_amount, 0);
+
+  const handleExportCsv = () => {
+    const rows = (itemEdit?.items || []).map((item, index) => ({
+      "#": index + 1,
+      "Due Date": isEmptyItem(item?.purchase_order_date, ""),
+      Amount: Number(item?.purchase_order_total_amount_per_product || 0).toFixed(2),
+      "Paid Amount": Number(item?.purchase_order_total_paid_per_product || 0).toFixed(2),
+      "Balance Amount": Number(
+        item?.purchase_order_total_balance_per_product || 0,
+      ).toFixed(2),
+    }));
+
+    rows.push({
+      "#": "",
+      "Due Date": "TOTAL",
+      Amount: Number(totalAmount).toFixed(2),
+      "Paid Amount": Number(totalPaidAmount).toFixed(2),
+      "Balance Amount": Number(totalBalanceAmount).toFixed(2),
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Export");
+
+    const today = new Date().toISOString().slice(0, 10);
+    const fileName = `accounts_payable_${isEmptyItem(itemEdit?.purchase_order_number, "order")}_${today}`;
+    XLSX.writeFile(workbook, `${fileName}.csv`, { bookType: "csv" });
+  };
 
   return (
     <ModalWrapper
@@ -178,7 +207,7 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
         </span>
       </div>
 
-      <ExportCSVButton />
+      <ExportCSVButton onClick={handleExportCsv} />
     </ModalWrapper>
   );
 };

@@ -106,6 +106,7 @@ const SalesJournal = () => {
           haveFilterTable={true}
           ishaveAdd={false}
           setItemEdit={setItemEdit}
+          hasExport={true}
         />
       </HeaderNav>
     </>

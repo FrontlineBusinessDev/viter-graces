@@ -702,6 +702,25 @@ function calculateTimeSpent($time_in, $time_out)
     return $seconds;
 }
 
+// Shared payment status rule for purchase orders / expenses / accounts
+// payable: unpaid (nothing paid), partially paid (something paid but not
+// the full amount), or paid (paid amount covers the total). Centralized
+// here so every module derives it the same way instead of each controller
+// re-implementing its own (and inevitably diverging) version.
+function calculatePaymentStatus($paid, $total)
+{
+    $paid = (float)$paid;
+    $total = (float)$total;
+
+    if ($paid <= 0) {
+        return "unpaid";
+    }
+    if ($paid >= $total) {
+        return "paid";
+    }
+    return "partially paid";
+}
+
 function console_log($output, $with_script_tags = true)
 {
     $js_code = 'console.log(' . json_encode($output, JSON_HEX_TAG) . ');';

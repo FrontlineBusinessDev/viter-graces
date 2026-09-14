@@ -69,15 +69,7 @@ $val->purchase_order_total_amount_per_product = 0;
 $valNameOld = $data['purchase_order_number_old'] ?? "";
 compareName($val, $valNameOld, $val->purchase_order_number);
 
-if ($payment > 1) {
-    $val->purchase_order_payment_status = "partially paid";
-}
-if ($payment <= 0) {
-    $val->purchase_order_payment_status = "unpaid";
-}
-if ($payment >= $orderGrandTotal && $orderGrandTotal > 0) {
-    $val->purchase_order_payment_status = "paid";
-}
+$val->purchase_order_payment_status = calculatePaymentStatus($payment, $orderGrandTotal);
 
 // Process delivery status helper
 deliveryStatus($val, $data);

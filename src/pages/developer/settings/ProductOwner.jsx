@@ -39,7 +39,7 @@ const ProductOwner = () => {
         filterComponent: (column) => (
           <MultiSelectCheckboxFilter
             column={column}
-            path={`users/read-group-by-filer?type=product-owner`}
+            path={`users/read-group-by-filter?type=product-owner`}
             testFilterId={"filter-status"}
           />
         ),
@@ -55,7 +55,7 @@ const ProductOwner = () => {
         filterComponent: (column) => (
           <MultiSelectCheckboxFilter
             column={column}
-            path={`users/read-group-by-filer?type=product-owner-email`}
+            path={`users/read-group-by-filter?type=product-owner-email`}
             testFilterId={"filter-status"}
           />
         ),

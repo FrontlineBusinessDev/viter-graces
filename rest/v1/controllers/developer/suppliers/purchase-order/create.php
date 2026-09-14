@@ -72,15 +72,7 @@ if ($val->purchase_order_status == 'received') {
 
 $val->purchase_order_number = setIdNumber($val, "PO-");
 
-if ($payment > 1) {
-    $val->purchase_order_payment_status = "partially paid";
-}
-if ($payment <= 0) {
-    $val->purchase_order_payment_status = "unpaid";
-}
-if ($payment >= $orderGrandTotal && $orderGrandTotal > 0) {
-    $val->purchase_order_payment_status = "paid";
-}
+$val->purchase_order_payment_status = calculatePaymentStatus($payment, $orderGrandTotal);
 
 // Handle delivery status logic
 deliveryStatus($val, $data);
