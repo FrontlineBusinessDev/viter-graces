@@ -329,10 +329,10 @@ const InfiniteTable = ({
 
   return (
     <>
-      <div className="md:flex md:justify-end my-2 gap-4 items-center">
+      <div className="my-2">
         {isSearch && (
           <div
-            className={`${haveFilterTable ? " lg:hidden " : " "} ${path === "sales-order" ? " sm:grid grid-cols-[10rem_1fr] gap-2 " : " "} w-full md:flex-1 `}
+            className={`${haveFilterTable ? " lg:hidden " : " "} ${path === "sales-order" ? " sm:grid grid-cols-[10rem_1fr] gap-2 " : " "} w-full `}
           >
             {path === "sales-order" && columnFilters?.length > 0 && (
               <>
@@ -375,10 +375,10 @@ const InfiniteTable = ({
           </div>
         )}
 
-        {/* Add / Sub-add / Export sit side-by-side on desktop, wrapping
-        below the search bar (block layout, no flex) on smaller screens. */}
+        {/* Add / Sub-add / Export always sit on their own row, side-by-side,
+        directly underneath the search bar. */}
         {(ishaveAdd || ishaveSubAdd || hasExport) && (
-          <div className="flex flex-wrap justify-end gap-3 sm:mb-0! mb-3">
+          <div className="flex flex-wrap justify-end gap-3 mt-6 sm:mb-0! mb-3">
             {ishaveAdd && (
               <AddButton
                 value={addLabel}

@@ -3,7 +3,7 @@ import React from "react";
 
 const ExportCSVButton = ({ onClick = () => {} }) => {
   return (
-    <div className="my-4 place-self-center">
+    <div className="place-self-center">
       <button
         type="button"
         onClick={onClick}
