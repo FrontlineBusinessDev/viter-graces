@@ -7,62 +7,91 @@ describe("Returns Module - Filters", () => {
   });
 
   // STATUS
-  // there are 3 SearchableSelectFilterStatus columns on this page (status,
-  // resolution type, restocked), and all 3 share the same
-  // data-testid="filter-status-btn" wrapper - scope by position (this one
-  // is the first column).
   it("Should filter by return status", () => {
     cy.intercept("POST", "**/returns-products/page/*").as("getReturns");
 
-    cy.get('[data-testid="filter-status-btn"]').eq(0).click();
-    cy.get('[data-testid="filter-status-btn"]')
-      .eq(0)
-      .contains(".react-select__option", "pending")
-      .click();
+    cy.get('[data-testid="filter-status"]').click();
+    cy.get('[data-testid="filter-status"]').contains("li", "pending").click();
+    cy.get('[data-testid="filter-status"]').contains("button", "Filter").click();
 
     // whether any return currently has "pending" status depends on the
     // dataset - just assert the filter request completes
     cy.wait("@getReturns").its("response.statusCode").should("eq", 200);
 
-    cy.get('[data-testid="filter-status-btn"]')
-      .eq(0)
-      .find(".react-select__clear-indicator")
-      .click();
+    cy.get('[data-testid="filter-status"]').click();
+    cy.get('[data-testid="filter-status"]').contains("button", "Clear").click();
   });
 
   // RETURN NUMBER
-  it("Should filter the return number as the user types", () => {
+  it("Should filter the return number when selecting one", () => {
     cy.intercept("POST", "**/returns-products/page/*").as("getReturns");
 
-    cy.get('[data-testid="return_product_number"]').type("RET");
+    cy.get('[data-testid="filter-return-product-number"]').click();
+    cy.get('[data-testid="filter-return-product-number"] li').should(
+      "have.length.greaterThan",
+      0,
+    );
+    cy.get('[data-testid="filter-return-product-number"] li')
+      .first()
+      .click();
+    cy.get('[data-testid="filter-return-product-number"]')
+      .contains("button", "Filter")
+      .click();
 
     cy.wait("@getReturns");
     cy.get('[data-testid="table-row"]').should("have.length.greaterThan", 0);
 
-    cy.get('[data-testid="return_product_number"]').clear();
+    cy.get('[data-testid="filter-return-product-number"]').click();
+    cy.get('[data-testid="filter-return-product-number"]')
+      .contains("button", "Clear")
+      .click();
   });
 
   // DATE
   it("Should filter by return date", () => {
     cy.intercept("POST", "**/returns-products/page/*").as("getReturns");
 
-    cy.get('[data-testid="return_product_date"]').type("2026-08-14");
+    cy.get('[data-testid="filter-return-date-trigger"]').click();
+    cy.contains(
+      '[data-testid="filter-return-date"] button',
+      "Add date range",
+    ).click();
+    cy.get(
+      '[data-testid="filter-return-date"] [data-testid^="filter-return-date_"][data-testid$="_start"]',
+    ).type("2026-08-14");
+    cy.get('[data-testid="filter-return-date"]')
+      .contains("button", "Filter")
+      .click();
 
     cy.wait("@getReturns");
 
-    cy.get('[data-testid="return_product_date"]').clear();
+    cy.get('[data-testid="filter-return-date-trigger"]').click();
+    cy.get('[data-testid="filter-return-date"]')
+      .contains("button", "Clear")
+      .click();
   });
 
   // ORDER NUMBER
-  it("Should filter the order number as the user types", () => {
+  it("Should filter the order number when selecting one", () => {
     cy.intercept("POST", "**/returns-products/page/*").as("getReturns");
 
-    cy.get('[data-testid="return_product_order_number"]').type("ORD");
+    cy.get('[data-testid="filter-return-order-number"]').click();
+    cy.get('[data-testid="filter-return-order-number"] li').should(
+      "have.length.greaterThan",
+      0,
+    );
+    cy.get('[data-testid="filter-return-order-number"] li').first().click();
+    cy.get('[data-testid="filter-return-order-number"]')
+      .contains("button", "Filter")
+      .click();
 
     cy.wait("@getReturns");
     cy.get('[data-testid="table-row"]').should("have.length.greaterThan", 0);
 
-    cy.get('[data-testid="return_product_order_number"]').clear();
+    cy.get('[data-testid="filter-return-order-number"]').click();
+    cy.get('[data-testid="filter-return-order-number"]')
+      .contains("button", "Clear")
+      .click();
   });
 
   // CUSTOMER
@@ -70,11 +99,18 @@ describe("Returns Module - Filters", () => {
     cy.intercept("POST", "**/returns-products/page/*").as("getReturns");
 
     cy.get('[data-testid="filter-customer"]').click();
-    cy.get('[data-testid="filter-customer"] .react-select__option')
+    cy.get('[data-testid="filter-customer"] li').should(
+      "have.length.greaterThan",
+      0,
+    );
+    cy.get('[data-testid="filter-customer"] li')
       .first()
       .then(($option) => {
         const customerName = $option.text();
         cy.wrap($option).click();
+        cy.get('[data-testid="filter-customer"]')
+          .contains("button", "Filter")
+          .click();
 
         cy.wait("@getReturns");
 
@@ -83,9 +119,10 @@ describe("Returns Module - Filters", () => {
         );
       });
 
-    cy.get(
-      '[data-testid="filter-customer"] .react-select__clear-indicator',
-    ).click();
+    cy.get('[data-testid="filter-customer"]').click();
+    cy.get('[data-testid="filter-customer"]')
+      .contains("button", "Clear")
+      .click();
   });
 
   // PRODUCT
@@ -96,7 +133,10 @@ describe("Returns Module - Filters", () => {
     // arbitrary active product, which may have none
     cy.get('[data-testid="filter-product-name"]').click();
     cy.get('[data-testid="filter-product-name"]')
-      .contains(".react-select__option", "Cassava chips")
+      .contains("li", "Cassava chips")
+      .click();
+    cy.get('[data-testid="filter-product-name"]')
+      .contains("button", "Filter")
       .click();
 
     cy.wait("@getReturns");
@@ -105,9 +145,10 @@ describe("Returns Module - Filters", () => {
       "exist",
     );
 
-    cy.get(
-      '[data-testid="filter-product-name"] .react-select__clear-indicator',
-    ).click();
+    cy.get('[data-testid="filter-product-name"]').click();
+    cy.get('[data-testid="filter-product-name"]')
+      .contains("button", "Clear")
+      .click();
   });
 
   // PRODUCT OWNER
@@ -119,85 +160,120 @@ describe("Returns Module - Filters", () => {
     // legitimately have zero returns. Just assert the filter request
     // completes, rather than assuming rows come back.
     cy.get('[data-testid="filter-owner"]').click();
-    cy.get('[data-testid="filter-owner"] .react-select__option')
-      .first()
-      .click();
+    cy.get('[data-testid="filter-owner"] li').should(
+      "have.length.greaterThan",
+      0,
+    );
+    cy.get('[data-testid="filter-owner"] li').first().click();
+    cy.get('[data-testid="filter-owner"]').contains("button", "Filter").click();
 
     cy.wait("@getReturns").its("response.statusCode").should("eq", 200);
 
-    cy.get(
-      '[data-testid="filter-owner"] .react-select__clear-indicator',
-    ).click();
+    cy.get('[data-testid="filter-owner"]').click();
+    cy.get('[data-testid="filter-owner"]').contains("button", "Clear").click();
   });
 
   // RESOLUTION TYPE
-  // this is a SearchableSelectFilterStatus dropdown (2nd filter-status-btn
-  // on the page), not a text input.
+  // NOTE: Returns.jsx builds this filter's staticOptions with
+  // `.map((option) => option.value)`, which drops ActiveInActiveStatus's
+  // "Refund"/"Credit Memo"/"Replacement" labels - the dropdown actually
+  // renders the lowercase values ("refund", "credit memo", "replacement").
   it("Should filter the resolution type", () => {
     cy.intercept("POST", "**/returns-products/page/*").as("getReturns");
 
-    cy.get('[data-testid="filter-status-btn"]').eq(1).click();
-    cy.get('[data-testid="filter-status-btn"]')
-      .eq(1)
-      .contains(".react-select__option", "Refund")
+    cy.get('[data-testid="filter-resolution-type"]').click();
+    cy.get('[data-testid="filter-resolution-type"]')
+      .contains("li", "refund")
+      .click();
+    cy.get('[data-testid="filter-resolution-type"]')
+      .contains("button", "Filter")
       .click();
 
     cy.wait("@getReturns");
 
-    cy.get('[data-testid="filter-status-btn"]')
-      .eq(1)
-      .find(".react-select__clear-indicator")
+    cy.get('[data-testid="filter-resolution-type"]').click();
+    cy.get('[data-testid="filter-resolution-type"]')
+      .contains("button", "Clear")
       .click();
   });
 
   // AMOUNT
   it("Should filter by min amount", () => {
     cy.intercept("POST", "**/returns-products/page/*").as("getReturns");
-    cy.get('[data-testid="return_product_amount_min"]').type("1");
+
+    cy.get('[data-testid="filter-amount-trigger"]').click();
+    cy.contains('[data-testid="filter-amount"] button', "Add range").click();
+    cy.get(
+      '[data-testid="filter-amount"] [data-testid^="filter-amount_"][data-testid$="_min"]',
+    ).type("1");
+    cy.get('[data-testid="filter-amount"]').contains("button", "Filter").click();
 
     cy.wait("@getReturns");
 
-    cy.get('[data-testid="return_product_amount_min"]').clear();
+    cy.get('[data-testid="filter-amount-trigger"]').click();
+    cy.get('[data-testid="filter-amount"]').contains("button", "Clear").click();
   });
 
   it("Should filter by max amount", () => {
     cy.intercept("POST", "**/returns-products/page/*").as("getReturns");
-    cy.get('[data-testid="return_product_amount_max"]').type("100000");
+
+    cy.get('[data-testid="filter-amount-trigger"]').click();
+    cy.contains('[data-testid="filter-amount"] button', "Add range").click();
+    cy.get(
+      '[data-testid="filter-amount"] [data-testid^="filter-amount_"][data-testid$="_max"]',
+    ).type("100000");
+    cy.get('[data-testid="filter-amount"]').contains("button", "Filter").click();
 
     cy.wait("@getReturns");
 
-    cy.get('[data-testid="return_product_amount_max"]').clear();
+    cy.get('[data-testid="filter-amount-trigger"]').click();
+    cy.get('[data-testid="filter-amount"]').contains("button", "Clear").click();
   });
 
   // REASON
-  it("Should filter the reason as the user types", () => {
+  it("Should filter the reason when selecting one", () => {
     cy.intercept("POST", "**/returns-products/page/*").as("getReturns");
 
-    cy.get('[data-testid="return_product_reason"]').type("Damage");
+    cy.get('[data-testid="filter-return-product-reason"]').click();
+    cy.get('[data-testid="filter-return-product-reason-search"]').type(
+      "Damage",
+    );
+    cy.get('[data-testid="filter-return-product-reason"] li')
+      .first()
+      .click();
+    cy.get('[data-testid="filter-return-product-reason"]')
+      .contains("button", "Filter")
+      .click();
 
     cy.wait("@getReturns");
     cy.get('[data-testid="table-row"]').should("have.length.greaterThan", 0);
 
-    cy.get('[data-testid="return_product_reason"]').clear();
+    cy.get('[data-testid="filter-return-product-reason"]').click();
+    cy.get('[data-testid="filter-return-product-reason"]')
+      .contains("button", "Clear")
+      .click();
   });
 
   // RESTOCKED
-  // also a SearchableSelectFilterStatus dropdown (3rd filter-status-btn on
-  // the page), not a text input.
+  // NOTE: unlike every other static-options column, this one passes
+  // ActiveInActiveStatus("restocked-status") straight through without
+  // `.map(o => o.value)`, so MultiSelectCheckboxFilter keeps the real
+  // {label, value} pairing - the dropdown renders the title-case labels
+  // ("Yes"/"No"), not the table cell's uppercase "YES"/"NO" text.
   it("Should filter the restocked column", () => {
     cy.intercept("POST", "**/returns-products/page/*").as("getReturns");
 
-    cy.get('[data-testid="filter-status-btn"]').eq(2).click();
-    cy.get('[data-testid="filter-status-btn"]')
-      .eq(2)
-      .contains(".react-select__option", "YES")
+    cy.get('[data-testid="filter-restocked"]').click();
+    cy.get('[data-testid="filter-restocked"]').contains("li", "Yes").click();
+    cy.get('[data-testid="filter-restocked"]')
+      .contains("button", "Filter")
       .click();
 
     cy.wait("@getReturns");
 
-    cy.get('[data-testid="filter-status-btn"]')
-      .eq(2)
-      .find(".react-select__clear-indicator")
+    cy.get('[data-testid="filter-restocked"]').click();
+    cy.get('[data-testid="filter-restocked"]')
+      .contains("button", "Clear")
       .click();
   });
 
