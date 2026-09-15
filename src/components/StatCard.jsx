@@ -21,12 +21,14 @@ const StatCard = ({
   flipBg,
   dataTestId,
   loading = false,
+  defaultVisible = false,
 }) => {
   const { store } = React.useContext(StoreContext);
   const isFlippable = !!flipContent;
+  const hasColorFlip = isFlippable && !!flipBg;
   const userRole = store.credentials?.data?.role;
 
-  const [flipped, setFlipped] = React.useState(false);
+  const [flipped, setFlipped] = React.useState(defaultVisible);
 
   const handleClick = () => {
     const isTouchDevice = window.matchMedia(
@@ -35,6 +37,11 @@ const StatCard = ({
     if (window.innerWidth < 768 || isTouchDevice) {
       setFlipped(!flipped);
     }
+  };
+
+  const toggleVisibility = (e) => {
+    e.stopPropagation();
+    setFlipped(!flipped);
   };
 
   return (
@@ -46,7 +53,7 @@ const StatCard = ({
       >
         <div
           className={`relative transition-transform duration-500 transform-3d ${
-            isFlippable
+            hasColorFlip
               ? flipped
                 ? "transform-[rotateY(180deg)]"
                 : "md:group-hover:transform-[rotateY(180deg)]"
@@ -61,7 +68,30 @@ const StatCard = ({
                   <p className="text-xs text-gray-400 uppercase tracking-wide dark:text-gray-300 mb-0! ">
                     {title}
                   </p>
-                  {isFlippable && <Eye size={16} className="text-green-600" />}
+                  {isFlippable &&
+                    (hasColorFlip ? (
+                      <button
+                        type="button"
+                        onClick={toggleVisibility}
+                        aria-label="Show amount"
+                        className="cursor-pointer"
+                      >
+                        <EyeOff size={16} className="text-gray-400" />
+                      </button>
+                    ) : (
+                      <button
+                        type="button"
+                        onClick={toggleVisibility}
+                        aria-label={flipped ? "Hide amount" : "Show amount"}
+                        className="cursor-pointer"
+                      >
+                        {flipped ? (
+                          <Eye size={16} className="text-green-600" />
+                        ) : (
+                          <EyeOff size={16} className="text-gray-400" />
+                        )}
+                      </button>
+                    ))}
                 </div>
                 <h2
                   className={`${isEmptyItem(extra, "") === "" && isEmptyItem(button, "") === "" ? "my-3! " : " "} text-2xl font-semibold text-gray-900 dark:text-light`}
@@ -71,21 +101,23 @@ const StatCard = ({
                       <TableLoading count={1} cols={1} />
                     </span>
                   ) : (
-                    <>{value}</>
+                    <>{!hasColorFlip && flipped ? flipContent : value}</>
                   )}
                 </h2>
               </div>
               <div className={`${iconBg} ml-3 p-3 rounded-lg`}>{icon}</div>
             </div>
 
-            {subtitle && (
+            {(subtitle || (!hasColorFlip && subTitleFlip)) && (
               <div className="text-sm text-gray-400 dark:text-gray-300">
                 {loading ? (
                   <div className="bg-white dark:bg-gray-900 w-full h-[15px]">
                     <TableLoading count={1} cols={1} />
                   </div>
                 ) : (
-                  <p className=" mb-0!">{subtitle}</p>
+                  <p className=" mb-0!">
+                    {!hasColorFlip && flipped ? subTitleFlip : subtitle}
+                  </p>
                 )}
               </div>
             )}
@@ -115,7 +147,7 @@ const StatCard = ({
           </div>
           {/* BACK */}
 
-          {isFlippable && (
+          {hasColorFlip && (
             <div
               className={`absolute inset-0 ${flipBg} rounded-xl p-3 shadow-sm w-full border border-transparent [transform:rotateY(180deg)] [backface-visibility:hidden]`}
             >
@@ -126,7 +158,14 @@ const StatCard = ({
                       {title}
                     </p>
                     {isFlippable && (
-                      <Eye size={16} className="text-green-600" />
+                      <button
+                        type="button"
+                        onClick={toggleVisibility}
+                        aria-label="Hide amount"
+                        className="cursor-pointer"
+                      >
+                        <Eye size={16} className="text-green-600" />
+                      </button>
                     )}
                   </div>
                   <h2

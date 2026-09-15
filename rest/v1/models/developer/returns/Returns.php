@@ -33,6 +33,7 @@ class Returns
     public $stock_movement_before_qty;
     public $stock_movement_after_qty;
     public $stock_movement_qty;
+    public $stock_movement_return_id;
 
     public $connection;
     public $lastInsertedId;
@@ -251,7 +252,7 @@ class Returns
             } elseif (is_array($value)) {
                 $selectedValues = array_values(array_filter(
                     $value,
-                    fn ($v) => trim((string) $v) !== ""
+                    fn($v) => trim((string) $v) !== ""
                 ));
 
                 if (empty($selectedValues)) {
@@ -420,7 +421,7 @@ class Returns
             } elseif (is_array($value)) {
                 $selectedValues = array_values(array_filter(
                     $value,
-                    fn ($v) => trim((string) $v) !== ""
+                    fn($v) => trim((string) $v) !== ""
                 ));
 
                 if (empty($selectedValues)) {
@@ -563,7 +564,13 @@ class Returns
             $sql .= "return_product_status = :return_product_status, ";
             $sql .= "return_product_resolution_type = :return_product_resolution_type, ";
             $sql .= "return_product_refund_method = :return_product_refund_method, ";
+            $sql .= "return_product_amount = :return_product_amount, ";
             $sql .= "return_product_paid_amount = :return_product_paid_amount, ";
+            $sql .= "return_product_qty = :return_product_qty, ";
+            $sql .= "return_product_is_restocked = :return_product_is_restocked, ";
+            $sql .= "return_product_reason = :return_product_reason, ";
+            $sql .= "return_product_notes = :return_product_notes, ";
+            $sql .= "return_product_date = :return_product_date, ";
             $sql .= "return_product_updated = :return_product_updated ";
             $sql .= "where return_product_aid = :return_product_aid ";
             $query = $this->connection->prepare($sql);
@@ -571,7 +578,13 @@ class Returns
                 "return_product_status" => $this->return_product_status,
                 "return_product_resolution_type" => $this->return_product_resolution_type,
                 "return_product_refund_method" => $this->return_product_refund_method,
+                "return_product_amount" => $this->return_product_amount,
                 "return_product_paid_amount" => $this->return_product_paid_amount,
+                "return_product_qty" => $this->return_product_qty,
+                "return_product_is_restocked" => $this->return_product_is_restocked,
+                "return_product_reason" => $this->return_product_reason,
+                "return_product_notes" => $this->return_product_notes,
+                "return_product_date" => $this->return_product_date,
                 "return_product_updated" => $this->return_product_updated,
                 "return_product_aid" => $this->return_product_aid,
             ]);
@@ -655,6 +668,7 @@ class Returns
             $sql .= "stock_movement_qty, ";
             $sql .= "stock_movement_product_owner_id, ";
             $sql .= "stock_movement_product_owner_name, ";
+            $sql .= "stock_movement_return_id, ";
             $sql .= "stock_movement_created, ";
             $sql .= "stock_movement_updated ) values ( ";
             $sql .= ":stock_movement_product_id, ";
@@ -669,6 +683,7 @@ class Returns
             $sql .= ":stock_movement_qty, ";
             $sql .= ":stock_movement_product_owner_id, ";
             $sql .= ":stock_movement_product_owner_name, ";
+            $sql .= ":stock_movement_return_id, ";
             $sql .= ":stock_movement_created, ";
             $sql .= ":stock_movement_updated ) ";
             $query = $this->connection->prepare($sql);
@@ -685,11 +700,31 @@ class Returns
                 "stock_movement_qty" => $this->stock_movement_qty,
                 "stock_movement_product_owner_id" => $this->return_product_owner_id,
                 "stock_movement_product_owner_name" => $this->return_product_owner_name,
+                "stock_movement_return_id" => $this->stock_movement_return_id,
                 "stock_movement_created" => $this->return_product_created,
                 "stock_movement_updated" => $this->return_product_updated,
             ]);
         } catch (PDOException $ex) {
             returnError($ex);
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // Delete the "stock in - return" movement created for a return, used
+    // when a processed return is reopened back to pending/rejected
+    public function deleteMovementByReturnId()
+    {
+        try {
+            $sql = "delete from {$this->tblMovementStock} ";
+            $sql .= "where stock_movement_return_id = :stock_movement_return_id ";
+            $sql .= "and stock_movement_type = 'stock in - return' ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "stock_movement_return_id" => $this->stock_movement_return_id,
+            ]);
+        } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
             $query = false;
         }

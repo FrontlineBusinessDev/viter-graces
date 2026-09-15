@@ -23,11 +23,23 @@ const Expenses = () => {
   // Columns
   const columns = [
     {
-      accessorKey: "purchase_order_supplier_name",
-      header: "Supplier",
+      accessorKey: "formated_date",
+      header: "Transaction Date",
       classTh: "min-w-[10rem]",
       classTd: "",
-      isMobileTitle: true,
+      filterFn: "multiDateRange",
+      meta: {
+        filterComponent: (column) => (
+          <MultiRangeDateFilter column={column} testFilterId={"filter-date"} />
+        ),
+      },
+    },
+    {
+      accessorKey: "purchase_order_note",
+      header: "Note",
+      orderNumber: "1",
+      classTh: "min-w-[7rem] ",
+      classTd: "",
       meta: "",
     },
     {
@@ -36,6 +48,14 @@ const Expenses = () => {
       orderNumber: "1",
       classTh: "min-w-[7rem] ",
       classTd: "",
+      meta: "",
+    },
+    {
+      accessorKey: "purchase_order_supplier_name",
+      header: "Supplier",
+      classTh: "min-w-[10rem]",
+      classTd: "",
+      isMobileTitle: true,
       meta: "",
     },
     {
@@ -71,16 +91,13 @@ const Expenses = () => {
       },
     },
     {
-      accessorKey: "formated_date",
-      header: "Date",
-      classTh: "w-[10rem]",
+      accessorKey: "purchase_order_total_paid_per_product",
+      header: "Method",
+      amount: true,
+      classTh: "min-w-[10rem]",
       classTd: "",
-      filterFn: "multiDateRange",
-      meta: {
-        filterComponent: (column) => (
-          <MultiRangeDateFilter column={column} testFilterId={"filter-date"} />
-        ),
-      },
+      filterFn: "",
+      meta: "",
     },
     ...(Number(ProductOwnerId(store)) > 0
       ? []

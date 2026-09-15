@@ -119,10 +119,7 @@ const Customers = () => {
     {
       accessorKey: "outstanding_balance",
       header: "Outstanding Balance",
-      link:
-        Number(ProductOwnerId(store)) > 0
-          ? `${devNavUrl}/${userRole}/accounts-receivable`
-          : "",
+      link: `${devNavUrl}/${userRole}/accounts-receivable`,
       filterOnClickId: "sales_order_customer_name",
       amount: true,
       classTh: "min-w-45 ",

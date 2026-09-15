@@ -1,5 +1,6 @@
 import GraphTooltip from "@/components/GraphTooltip";
-import { AmountWithPesoSign, PesoSign } from "@/components/PesoSign";
+import { PesoSign } from "@/components/PesoSign";
+import MiniStatCard from "@/components/MiniStatCard";
 import { apiVersion } from "@/config/config";
 import useDarkMode from "@/custom-hooks/useDarkMode";
 import useQueryData from "@/services/useQueryData";
@@ -45,16 +46,18 @@ const DashboardCashflowChart = () => {
     return dataResult?.data[0];
   }, [dataResult]);
 
-  const cashflowDataAmount = useMemo(() => {
-    if (!dataResult?.count) return [];
-    if (!dataResult?.data[0]["data"]) return [];
-
-    return dataResult?.data[0]["data"]?.filter((item) =>
-      item.label.includes(timeframeCF),
-    );
-  }, [dataResult]);
-
   const currentData = cashflowData[timeframeCF];
+
+  const summary = useMemo(() => {
+    return (currentData || []).reduce(
+      (acc, row) => ({
+        in: acc.in + Number(row.in || 0),
+        out: acc.out + Number(row.out || 0),
+        balance: acc.balance + Number(row.balance || 0),
+      }),
+      { in: 0, out: 0, balance: 0 },
+    );
+  }, [currentData]);
 
   return (
     <>
@@ -86,52 +89,24 @@ const DashboardCashflowChart = () => {
           </div>
 
           <div className="grid grid-cols-3 gap-3 mb-4">
-            {cashflowDataAmount?.map((itemData) => (
-              <>
-                <div className="bg-green-100 dark:bg-green-700 p-3 rounded-lg">
-                  <p className="xs:flex items-center gap-2 text-sm text-gray-600 dark:text-light">
-                    <span className="text-green-600 dark:text-green-200">
-                      <TrendingUp size={14} />
-                    </span>
-                    Money In
-                  </p>
-                  <p className="text-green-600 font-semibold">
-                    <AmountWithPesoSign
-                      classN={"size-3"}
-                      amount={itemData?.in}
-                    />
-                  </p>
-                </div>
-                <div className="bg-red-100 dark:bg-red-700 p-3 rounded-lg">
-                  <p className="xs:flex items-center gap-2 text-sm text-gray-600 dark:text-light">
-                    <span className="text-red-600 dark:text-red-200">
-                      <TrendingDown size={14} />
-                    </span>
-                    Money Out
-                  </p>
-                  <p className="text-red-600 font-semibold">
-                    <AmountWithPesoSign
-                      classN={"size-3"}
-                      amount={itemData?.out}
-                    />
-                  </p>
-                </div>
-                <div className="bg-blue-100 dark:bg-blue-700 p-3 rounded-lg">
-                  <p className="xs:flex items-center gap-2 text-sm text-gray-600 dark:text-light">
-                    <span className="text-blue-600 dark:text-blue-200">
-                      <PhilippinePeso size={14} />
-                    </span>
-                    Balance
-                  </p>
-                  <p className="text-blue-600 font-semibold">
-                    <AmountWithPesoSign
-                      classN={"size-3"}
-                      amount={itemData?.balance}
-                    />
-                  </p>
-                </div>
-              </>
-            ))}
+            <MiniStatCard
+              icon={<TrendingUp size={14} />}
+              iconColor="text-green-600 dark:text-green-400"
+              label="Money In"
+              amount={summary.in}
+            />
+            <MiniStatCard
+              icon={<TrendingDown size={14} />}
+              iconColor="text-red-600 dark:text-red-400"
+              label="Money Out"
+              amount={summary.out}
+            />
+            <MiniStatCard
+              icon={<PhilippinePeso size={14} />}
+              iconColor="text-blue-600 dark:text-blue-400"
+              label="Balance"
+              amount={summary.balance}
+            />
           </div>
 
           {/* Chart */}
