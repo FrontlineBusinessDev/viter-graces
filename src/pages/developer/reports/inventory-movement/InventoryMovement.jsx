@@ -52,7 +52,6 @@ const InventoryMovement = () => {
       header: "SKU",
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
       filterFn: "multiSelect",
       meta: {
         filterComponent: (column) => (
@@ -69,7 +68,6 @@ const InventoryMovement = () => {
       header: "Category",
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
       filterFn: "multiSelect",
       meta: {
         filterComponent: (column) => (

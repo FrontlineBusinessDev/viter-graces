@@ -35,7 +35,9 @@ const formatDescriptionEntries = (obj) =>
   Object.entries(obj)
     .map(([key, value]) => {
       const formatted = formatDescriptionValue(value);
-      return formatted === null ? null : `${formatDescriptionLabel(key)}: ${formatted}`;
+      return formatted === null
+        ? null
+        : `${formatDescriptionLabel(key)}: ${formatted}`;
     })
     .filter(Boolean)
     .join(", ");
@@ -72,8 +74,7 @@ const formatDescriptionForExport = (description) => {
 
   if (Array.isArray(parsed) && parsed.length > 0) {
     const first = parsed[0];
-    parsed =
-      first && typeof first.values === "object" ? first.values : first;
+    parsed = first && typeof first.values === "object" ? first.values : first;
   }
 
   if (parsed === null || typeof parsed !== "object") return String(parsed);
@@ -94,7 +95,6 @@ const ActivityLog = () => {
     {
       accessorKey: "activity_log_menu",
       header: "menu",
-      meta: "",
       classTh: "min-w-[8rem]",
       classTd: "",
       isMobileTitle: true,
@@ -112,7 +112,6 @@ const ActivityLog = () => {
     {
       accessorKey: "activity_log_action",
       header: "action",
-      meta: "",
       classTh: "min-w-[8rem]",
       classTd: "",
       filterFn: "multiSelect",
@@ -129,7 +128,6 @@ const ActivityLog = () => {
     {
       accessorKey: "activity_log_user_name",
       header: "user",
-      meta: "",
       classTh: "min-w-[10rem]",
       classTd: "capitalize",
       filterFn: "multiSelect",
@@ -146,7 +144,6 @@ const ActivityLog = () => {
     {
       accessorKey: "activity_log_user_role",
       header: "role",
-      meta: "",
       classTh: "min-w-[8rem]",
       classTd: "",
       filterFn: "multiSelect",

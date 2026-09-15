@@ -42,7 +42,6 @@ const ApReport = () => {
       orderNumber: "1",
       classTh: "min-w-[8rem] ",
       classTd: "",
-      meta: "",
       filterFn: "multiSelect",
       meta: {
         filterComponent: (column) => (
@@ -75,7 +74,6 @@ const ApReport = () => {
       header: "Supplier",
       classTh: "min-w-[20rem]",
       classTd: "",
-      meta: "",
       filterFn: "multiSelect",
       meta: {
         filterComponent: (column) => (

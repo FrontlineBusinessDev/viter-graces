@@ -107,7 +107,6 @@ const SalesReports = () => {
       header: "Quantity",
       classTh: "min-w-40 ",
       classTd: "",
-      meta: "",
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
@@ -123,7 +122,6 @@ const SalesReports = () => {
       header: "Unit Price",
       classTh: "min-w-40 ",
       classTd: "",
-      meta: "",
       amount: true,
       filterFn: "multiRange",
       meta: {
