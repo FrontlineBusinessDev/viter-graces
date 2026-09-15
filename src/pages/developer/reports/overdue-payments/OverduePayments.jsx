@@ -28,7 +28,16 @@ const OverduePayments = () => {
       classTh: "min-w-40",
       classTd: "",
       isMobileTitle: true,
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="sales-order/sales-orders-filter?type=installment-numbers"
+            testFilterId={"filter-customer"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "installment_payment_due_date",
@@ -41,7 +50,10 @@ const OverduePayments = () => {
       cell: (info) => isEmptyItem(info.getValue(), "--"),
       meta: {
         filterComponent: (column) => (
-          <MultiRangeDateFilter column={column} testFilterId={"filter-due-date"} />
+          <MultiRangeDateFilter
+            column={column}
+            testFilterId={"filter-due-date"}
+          />
         ),
       },
     },
@@ -70,7 +82,10 @@ const OverduePayments = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-amount"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-amount"}
+          />
         ),
       },
     },

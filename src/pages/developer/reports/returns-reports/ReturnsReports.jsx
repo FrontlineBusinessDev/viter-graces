@@ -39,10 +39,19 @@ const ReturnsReports = () => {
     {
       accessorKey: "return_product_number",
       header: "return #",
-      classTh: "min-w-20",
+      classTh: "min-w-22",
       classTd: "",
       isMobileTitle: true,
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="returns-products/returns-filters?type=return-product-numbers"
+            testFilterId={"filter-return-product-number"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "return_product_date",
@@ -52,16 +61,28 @@ const ReturnsReports = () => {
       filterFn: "multiDateRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeDateFilter column={column} testFilterId={"filter-return-date"} />
+          <MultiRangeDateFilter
+            column={column}
+            testFilterId={"filter-return-date"}
+          />
         ),
       },
     },
     {
       accessorKey: "return_product_order_number",
       header: "order #",
-      classTh: "min-w-20",
+      classTh: "min-w-22",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="returns-products/returns-filters?type=return-order-numbers"
+            testFilterId={"filter-return-order-number"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "return_product_customer_name",
@@ -104,7 +125,10 @@ const ReturnsReports = () => {
       classTd: "",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-amount"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-amount"}
+          />
         ),
       },
     },
@@ -113,7 +137,16 @@ const ReturnsReports = () => {
       header: "reason",
       classTh: "min-w-40",
       classTd: "capitalize",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="returns-products/returns-filters?type=return-product-reasons"
+            testFilterId={"filter-return-product-reason"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "return_product_resolution_type",

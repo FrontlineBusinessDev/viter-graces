@@ -1,5 +1,5 @@
 import { MultiSelectCheckboxFilter } from "@/components/inputs/InputSelect";
-import { ActiveInActiveStatus } from "@/layout/ArrayValue";
+import { ActiveInActiveStatus, PaymentMethodList } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -40,7 +40,16 @@ const ArReport = () => {
       header: "Order #",
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="sales-order/sales-orders-filter?type=order-numbers"
+            testFilterId={"filter-order-number"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_order_date",
@@ -50,7 +59,10 @@ const ArReport = () => {
       filterFn: "multiDateRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeDateFilter column={column} testFilterId={"filter-sales-date"} />
+          <MultiRangeDateFilter
+            column={column}
+            testFilterId={"filter-sales-date"}
+          />
         ),
       },
     },
@@ -97,7 +109,10 @@ const ArReport = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-amount"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-amount"}
+          />
         ),
       },
     },
@@ -110,7 +125,10 @@ const ArReport = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-paid"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-paid"}
+          />
         ),
       },
     },
@@ -119,7 +137,17 @@ const ArReport = () => {
       header: "Payment Method",
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            staticOptions={PaymentMethodList().map((option) => option.value)}
+            testFilterId={"filter-method"}
+          />
+        ),
+      },
+      status_option: PaymentMethodList(),
     },
     {
       accessorKey: "sales_order_balance_per_product",
@@ -130,7 +158,10 @@ const ArReport = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-balance"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-balance"}
+          />
         ),
       },
     },

@@ -1815,4 +1815,24 @@ class SalesOrder
 
         return $query;
     }
+
+    // read all installment payment number 
+    public function readAllInstallmentNumbers()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "installment_payment_code_number as name ";
+            $sql .= "from {$this->tblinstallmentPayment} ";
+            $sql .= "where installment_payment_code_number != '' ";
+            $sql .= " group by installment_payment_code_number ";
+            $sql .= " order by installment_payment_code_number desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute();
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
 }

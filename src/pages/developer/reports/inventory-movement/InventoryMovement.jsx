@@ -53,6 +53,16 @@ const InventoryMovement = () => {
       classTh: "min-w-40",
       classTd: "",
       meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="products/read-all-by-filters?type=sku"
+            testFilterId={"filter-product-sku"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "products_category",
@@ -60,6 +70,16 @@ const InventoryMovement = () => {
       classTh: "min-w-40",
       classTd: "",
       meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="products/read-all-by-filters?type=category"
+            testFilterId={"filter-category"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "stock_movement_after_qty",
@@ -84,7 +104,10 @@ const InventoryMovement = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-threshold"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-threshold"}
+          />
         ),
       },
     },
@@ -97,7 +120,10 @@ const InventoryMovement = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-price"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-price"}
+          />
         ),
       },
     },
@@ -106,7 +132,16 @@ const InventoryMovement = () => {
       header: "Location",
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="stock-movement/read-all-by-location?type=location"
+            testFilterId={"filter-product-location"}
+          />
+        ),
+      },
     },
     ...(Number(ProductOwnerId(store)) > 0
       ? []

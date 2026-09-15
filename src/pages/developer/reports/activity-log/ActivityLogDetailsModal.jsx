@@ -1,7 +1,9 @@
 import CloseButton from "@/components/buttons/CloseButton";
+import ExportCSVButton from "@/components/buttons/ExportCSVButton";
 import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import React from "react";
+import * as XLSX from "xlsx";
 import { activityActionPillClass } from "./ActivityLog";
 
 // Some records mix snake_case DB columns with camelCase convenience fields
@@ -656,6 +658,47 @@ const DetailValue = ({ value, prefix = "" }) => {
   return <span className="break-all">{String(value)}</span>;
 };
 
+// Plain-text version of renderFieldValue/FieldCardGrid, for the CSV export -
+// renderFieldValue returns JSX, which can't be written to a spreadsheet cell.
+const stringifyEntries = (entries) => {
+  const cleaned = cleanEntries(entries);
+  const discountType = findDiscountType(cleaned);
+  return cleaned
+    .map(([key, value]) => `${formatLabel(key)}: ${stringifyFieldValue(key, value, discountType)}`)
+    .join(", ");
+};
+
+const stringifyFieldValue = (key, value, discountType = null) => {
+  if (
+    isBooleanFlagKey(key) &&
+    BOOLEAN_LIKE_VALUES.has(String(value).trim().toLowerCase())
+  ) {
+    return isTruthyFlag(value) ? "Yes" : "No";
+  }
+
+  if (isDiscountKey(key) && toNumber(value) !== null) {
+    return discountType === "percentage"
+      ? `${toNumber(value)}%`
+      : `₱${formatCurrency(value)}`;
+  }
+
+  if (isMoneyKey(key) && toNumber(value) !== null) {
+    return `₱${formatCurrency(value)}`;
+  }
+
+  if (Array.isArray(value)) {
+    return value
+      .map((item) => (isPlainObject(item) ? stringifyEntries(Object.entries(item)) : String(item)))
+      .join(" | ");
+  }
+
+  if (isPlainObject(value)) {
+    return stringifyEntries(Object.entries(value));
+  }
+
+  return String(value);
+};
+
 // Small label-over-value cell used in the summary header grid.
 const SummaryField = ({ label, children, className = "" }) => (
   <div className={`flex flex-col gap-1 min-w-0 ${className}`}>
@@ -718,6 +761,36 @@ const ActivityLogDetailsModal = ({ itemEdit, handleClose = () => {} }) => {
   const fieldCount = isReturnsMenu
     ? returnSummaryFields.length
     : detailEntries.length;
+
+  const handleExportCsv = () => {
+    const summaryRows = [
+      { Field: "Menu", Value: itemEdit?.activity_log_menu },
+      { Field: "Action", Value: itemEdit?.activity_log_action },
+      { Field: "User", Value: itemEdit?.activity_log_user_name },
+      { Field: "Role", Value: itemEdit?.activity_log_user_role },
+      { Field: "Date & Time", Value: itemEdit?.activity_log_created },
+    ].filter((row) => !isEmptyValue(row.Value));
+
+    const detailRows = isReturnsMenu
+      ? returnSummaryFields.map((field) => ({
+          Field: field.label,
+          Value: field.money ? `₱${formatCurrency(field.value)}` : String(field.value),
+        }))
+      : description.type === "text"
+        ? [{ Field: "Details", Value: description.value }]
+        : detailEntries.map(([key, value]) => ({
+            Field: formatLabel(key, menuPrefix),
+            Value: stringifyFieldValue(key, value, findDiscountType(detailEntries)),
+          }));
+
+    const worksheet = XLSX.utils.json_to_sheet([...summaryRows, ...detailRows]);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Details");
+    const fileName = `activity-log-details_${itemEdit?.activity_log_menu || "record"}_${new Date().toISOString().slice(0, 10)}`
+      .replaceAll(" ", "-")
+      .toLowerCase();
+    XLSX.writeFile(workbook, `${fileName}.csv`, { bookType: "csv" });
+  };
 
   return (
     <div
@@ -810,6 +883,10 @@ const ActivityLogDetailsModal = ({ itemEdit, handleClose = () => {} }) => {
                 </div>
               )}
             </div>
+          </div>
+
+          <div className="px-5 py-3 flex justify-end border-t border-gray-200 dark:border-gray-800">
+            <ExportCSVButton onClick={handleExportCsv} />
           </div>
         </div>
       </div>

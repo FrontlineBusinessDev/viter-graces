@@ -96,7 +96,10 @@ export function ExportProvider({ children }) {
       const exportRows = rows.map((row) => {
         const exportRow = {};
         fields.forEach((col) => {
-          exportRow[col.header || col.accessorKey] = row[col.accessorKey];
+          const rawValue = row[col.accessorKey];
+          exportRow[col.header || col.accessorKey] = col.formatExport
+            ? col.formatExport(rawValue, row)
+            : rawValue;
         });
         return exportRow;
       });

@@ -52,10 +52,19 @@ const StockLevels = () => {
     {
       accessorKey: "products_sku",
       header: "sku",
-      filterFn: "",
       meta: "",
       classTh: "min-w-40",
       classTd: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="products/read-all-by-filters?type=sku"
+            testFilterId={"filter-product-sku"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "current_qty",
@@ -75,10 +84,19 @@ const StockLevels = () => {
     {
       accessorKey: "products_unit",
       header: "unit",
-      filterFn: "",
       meta: "",
       classTh: "min-w-40",
       classTd: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="products/read-all-by-filters?type=unit"
+            testFilterId={"filter-product-sku"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "products_low_stock_threshold",
@@ -86,7 +104,10 @@ const StockLevels = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-threshold"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-threshold"}
+          />
         ),
       },
       classTh: "min-w-40",
@@ -95,10 +116,18 @@ const StockLevels = () => {
     {
       accessorKey: "products_price",
       header: "Price",
-      filterFn: "",
       meta: "",
       classTh: "min-w-40",
       classTd: "",
+      filterFn: "multiRange",
+      meta: {
+        filterComponent: (column) => (
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-amount"}
+          />
+        ),
+      },
     },
     ...(Number(ProductOwnerId(store)) > 0
       ? []

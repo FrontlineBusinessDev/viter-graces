@@ -41,7 +41,16 @@ const ExpensesReport = () => {
       orderNumber: "1",
       classTh: "min-w-[8rem] ",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="purchase-order/read-group-by-filter?type=poNumberSupplier"
+            testFilterId={"filter-order-number"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "purchase_order_date",
@@ -51,7 +60,10 @@ const ExpensesReport = () => {
       classTd: "",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeDateFilter column={column} testFilterId={"filter-transaction-date"} />
+          <MultiRangeDateFilter
+            column={column}
+            testFilterId={"filter-transaction-date"}
+          />
         ),
       },
     },
@@ -87,7 +99,10 @@ const ExpensesReport = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-amount"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-amount"}
+          />
         ),
       },
     },
@@ -100,7 +115,10 @@ const ExpensesReport = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-paid"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-paid"}
+          />
         ),
       },
     },
@@ -113,7 +131,10 @@ const ExpensesReport = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-balance"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-balance"}
+          />
         ),
       },
     },

@@ -671,3 +671,10 @@ function checkReadAllOrderNumbers($object, $allowedColumns = [])
     checkQuery($query, "Empty records. (read all order numbers)");
     return $query;
 }
+// read all installment numbers
+function checkReadAllInstallmentNumbers($object, $allowedColumns = [])
+{
+    $query = $object->readAllInstallmentNumbers($allowedColumns);
+    checkQuery($query, "Empty records. (read all installment numbers)");
+    return $query;
+}

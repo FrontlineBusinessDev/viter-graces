@@ -43,6 +43,16 @@ const ApReport = () => {
       classTh: "min-w-[8rem] ",
       classTd: "",
       meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="purchase-order/read-group-by-filter?type=poNumberSupplier"
+            testFilterId={"filter-order-number"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "purchase_order_product_name",
@@ -66,6 +76,17 @@ const ApReport = () => {
       classTh: "min-w-[20rem]",
       classTd: "",
       meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="suppliers"
+            // path="suppliers/read-group-by-filter"
+            testFilterId={"filter-supplier"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "purchase_order_date",

@@ -97,6 +97,7 @@ RewriteRule ^products/read-all-by-filters$ controllers/developer/products/read-a
 ### ACTIVITY LOG ### 
 RewriteRule ^activity/read-with-limit$ controllers/developer/activity-log/read-with-limit.php [L]
 RewriteRule ^activity-log/page-all-activity-log/page/([0-9]+)$ controllers/developer/activity-log/page.php?start=$1 [L]
+RewriteRule ^activity/activity-log-filter$ controllers/developer/activity-log/activity-log-filter.php [L]
 
 ### PURCHASE ORDER ### 
 RewriteRule ^purchase-order$ controllers/developer/suppliers/purchase-order/purchase-order.php [L]

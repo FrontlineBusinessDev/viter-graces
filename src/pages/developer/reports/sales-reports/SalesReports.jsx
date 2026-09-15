@@ -1,12 +1,15 @@
 import { MultiSelectCheckboxFilter } from "@/components/inputs/InputSelect";
-import { ActiveInActiveStatus } from "@/layout/ArrayValue";
+import { ActiveInActiveStatus, PaymentMethodList } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
 import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import React from "react";
 import ReportsStats from "../ReportsStats";
-import { MultiRangeDateFilter } from "@/components/inputs/InputRangeFilter";
+import {
+  AmountRangeFilter,
+  MultiRangeDateFilter,
+} from "@/components/inputs/InputRangeFilter";
 import { MultiRangeAmountFilter } from "@/components/inputs/InputRangeFilter";
 
 const SalesReports = () => {
@@ -41,7 +44,16 @@ const SalesReports = () => {
       classTh: "min-w-20 ",
       classTd: "",
       isMobileTitle: true,
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="sales-order/sales-orders-filter?type=order-numbers"
+            testFilterId={"filter-order-number"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_order_date",
@@ -51,7 +63,10 @@ const SalesReports = () => {
       filterFn: "multiDateRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeDateFilter column={column} testFilterId={"filter-sales-date"} />
+          <MultiRangeDateFilter
+            column={column}
+            testFilterId={"filter-sales-date"}
+          />
         ),
       },
     },
@@ -93,6 +108,15 @@ const SalesReports = () => {
       classTh: "min-w-40 ",
       classTd: "",
       meta: "",
+      filterFn: "multiRange",
+      meta: {
+        filterComponent: (column) => (
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-amount"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_order_price",
@@ -101,6 +125,15 @@ const SalesReports = () => {
       classTd: "",
       meta: "",
       amount: true,
+      filterFn: "multiRange",
+      meta: {
+        filterComponent: (column) => (
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-amount"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_order_discounted_with_vat_amount",
@@ -111,7 +144,10 @@ const SalesReports = () => {
       classTd: "",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-amount"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-amount"}
+          />
         ),
       },
     },
@@ -120,7 +156,17 @@ const SalesReports = () => {
       header: "method",
       classTh: "min-w-40 ",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            staticOptions={PaymentMethodList().map((option) => option.value)}
+            testFilterId={"filter-method"}
+          />
+        ),
+      },
+      status_option: PaymentMethodList(),
     },
     ...(Number(ProductOwnerId(store)) > 0
       ? []

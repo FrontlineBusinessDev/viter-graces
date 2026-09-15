@@ -129,3 +129,32 @@ function checkCreateOtherSupplier($object)
     checkQuery($query, "There's a problem processing your request. (create other supplier)");
     return $query;
 }
+
+// read all activity log menu items
+function checkReadAllActivityLogMenu($object, $allowedColumns = [])
+{
+    $query = $object->readAllActivityLogMenu($allowedColumns);
+    checkQuery($query, "Empty records. (read all activity log menu items)");
+    return $query;
+}
+// read all activity log action
+function checkReadAllActivityLogAction($object, $allowedColumns = [])
+{
+    $query = $object->readAllActivityLogAction($allowedColumns);
+    checkQuery($query, "Empty records. (read all activity log action)");
+    return $query;
+}
+// read all activity log user
+function checkReadAllActivityLogUser($object, $allowedColumns = [])
+{
+    $query = $object->readAllActivityLogUser($allowedColumns);
+    checkQuery($query, "Empty records. (read all activity log user)");
+    return $query;
+}
+// read all activity log role
+function checkReadAllActivityLogRole($object, $allowedColumns = [])
+{
+    $query = $object->readAllActivityLogRole($allowedColumns);
+    checkQuery($query, "Empty records. (read all activity log role)");
+    return $query;
+}

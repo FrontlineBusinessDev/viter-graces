@@ -54,6 +54,7 @@ const toDateOnlyString = (raw) => {
 
 const InfiniteTable = ({
   columns,
+  exportColumns = columns,
   className,
   path = "",
   addLabel = path?.replaceAll("-", " "),
@@ -602,7 +603,7 @@ const InfiniteTable = ({
       )}
       {showExportModal && (
         <ExportModal
-          columns={columns}
+          columns={exportColumns}
           path={path}
           columnFilters={columnFilters}
           searchValue={search.current?.value}

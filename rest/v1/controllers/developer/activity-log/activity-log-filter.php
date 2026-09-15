@@ -6,12 +6,12 @@ require '../../../core/header.php';
 require '../../../core/functions.php';
 require 'functions.php';
 // use needed classes
-require '../../../models/developer/sales-order/SalesOrder.php';
+require '../../../models/developer/activity-log/ActivityLog.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new SalesOrder($conn);
+$val = new ActivityLog($conn);
 // validate api key
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
@@ -21,12 +21,20 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
     switch ($type) {
 
-        case 'order-numbers':
-            $query = checkReadAllOrderNumbers($val);
+        case 'log-menu':
+            $query = checkReadAllActivityLogMenu($val);
             break;
 
-        case 'installment-numbers':
-            $query = checkReadAllInstallmentNumbers($val);
+        case 'log-action':
+            $query = checkReadAllActivityLogAction($val);
+            break;
+
+        case 'log-user':
+            $query = checkReadAllActivityLogUser($val);
+            break;
+
+        case 'log-role':
+            $query = checkReadAllActivityLogRole($val);
             break;
 
         default:

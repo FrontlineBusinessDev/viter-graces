@@ -400,4 +400,84 @@ class ActivityLog
         }
         return $query;
     }
+
+    // read all activity log menu items
+    public function readAllActivityLogMenu()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "activity_log_menu as name ";
+            $sql .= "from {$this->tblActivityLog} ";
+            $sql .= "where activity_log_menu != '' ";
+            $sql .= " group by activity_log_menu ";
+            $sql .= " order by activity_log_menu desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute();
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
+
+    // read all activity log action
+    public function readAllActivityLogAction()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "activity_log_action as name ";
+            $sql .= "from {$this->tblActivityLog} ";
+            $sql .= "where activity_log_action != '' ";
+            $sql .= " group by activity_log_action ";
+            $sql .= " order by activity_log_action desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute();
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
+
+    // read all activity log user
+    public function readAllActivityLogUser()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "activity_log_user_name as name ";
+            $sql .= "from {$this->tblActivityLog} ";
+            $sql .= "where activity_log_user_name != '' ";
+            $sql .= " group by activity_log_user_name ";
+            $sql .= " order by activity_log_user_name desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute();
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
+
+    // read all activity log role
+    public function readAllActivityLogRole()
+    {
+        try {
+            $sql = "select ";
+            $sql .= "activity_log_user_role as name ";
+            $sql .= "from {$this->tblActivityLog} ";
+            $sql .= "where activity_log_user_role != '' ";
+            $sql .= " group by activity_log_user_role ";
+            $sql .= " order by activity_log_user_role desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute();
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
 }
