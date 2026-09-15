@@ -16,6 +16,7 @@ if (array_key_exists("id", $_GET)) {
     // get data
     $val->return_product_aid = $_GET['id'];
     checkId($val->return_product_aid);
+    checkReturnIsEditable($val);
 
     $query = checkDelete($val);
     // create activity log

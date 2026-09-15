@@ -178,7 +178,7 @@ class CashSales
             } elseif (is_array($value)) {
                 $selectedValues = array_values(array_filter(
                     $value,
-                    fn ($v) => trim((string) $v) !== ""
+                    fn($v) => trim((string) $v) !== ""
                 ));
 
                 if (empty($selectedValues)) {
@@ -292,6 +292,118 @@ class CashSales
             $sql .= " WHERE sales_order_cash != 0 and sales_order_cash IS NOT NULL";
             $sql .= " and CAST(sales_order_paid_per_product AS DECIMAL(10, 2)) != 0 ";
             $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number 
+            or sales_order_customer_name like :sales_order_customer_name 
+            or sales_order_received_by_name like :sales_order_received_by_name 
+            or sales_order_product_owner_name like :sales_order_product_owner_name 
+            or sales_order_product_name like :sales_order_product_name ) " : " ");
+            }
+            $sql .= " order by sales_order_is_active desc, ";
+            $sql .= "sales_order_number desc ";
+            $sql .= "limit :start, ";
+            $sql .= ":total ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readCashierAll($allowedColumns)
+    {
+        $params = [
+            ...$this->userId != 0 ? ["sales_order_received_by_id" => $this->userId] : [],
+            ...($this->column_search != "" ? [
+                "sales_order_number" => "%{$this->column_search}%",
+                "sales_order_customer_name" => "%{$this->column_search}%",
+                "sales_order_product_name" => "%{$this->column_search}%",
+                "sales_order_received_by_name" => "%{$this->column_search}%",
+                "sales_order_product_owner_name" => "%{$this->column_search}%",
+            ] : []),
+        ];
+
+        $filterColumn = $this->buildFilterColumns($allowedColumns, $params);
+        try {
+            $sql = "select *, ";
+            $sql .= "(sales_order_paid_per_product + sales_order_balance_per_product) as total_amount_per_product, ";
+            $sql .= "sales_order_number, ";
+            $sql .= "sales_order_status as is_status, ";
+            $sql .= "sales_order_total_receivable_amount as total_amount, ";
+            $sql .= "sales_order_total_amount as total_sub_amount, ";
+            $sql .= "sales_order_paid_amount as total_paid, ";
+            $sql .= "sales_order_cash as total_paid_in_cash, ";
+            $sql .= "sales_order_aid as id, ";
+            $sql .= "sales_order_is_active as is_active, ";
+            $sql .= "sales_order_date as order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
+            $sql .= "sales_order_customer_name as name ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= " WHERE sales_order_cash != 0 and sales_order_cash IS NOT NULL";
+            $sql .= " and CAST(sales_order_paid_per_product AS DECIMAL(10, 2)) != 0 ";
+            $sql .= ($this->userId != 0 ? "and sales_order_received_by_id = :sales_order_received_by_id " : " ");
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number 
+            or sales_order_customer_name like :sales_order_customer_name 
+            or sales_order_received_by_name like :sales_order_received_by_name 
+            or sales_order_product_owner_name like :sales_order_product_owner_name 
+            or sales_order_product_name like :sales_order_product_name ) " : " ");
+            }
+            $sql .= " order by DATE(sales_order_date) desc, ";
+            $sql .= "sales_order_number desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all
+    public function readCashierLimit($allowedColumns)
+    {
+        $params = [
+            ...$this->userId != 0 ? ["sales_order_received_by_id" => $this->userId] : [],
+            "start" => $this->column_start - 1,
+            "total" => $this->column_total,
+            ...($this->column_search != "" ? [
+                "sales_order_number" => "%{$this->column_search}%",
+                "sales_order_customer_name" => "%{$this->column_search}%",
+                "sales_order_product_name" => "%{$this->column_search}%",
+                "sales_order_received_by_name" => "%{$this->column_search}%",
+                "sales_order_product_owner_name" => "%{$this->column_search}%",
+            ] : []),
+        ];
+
+        $filterColumn = $this->buildFilterColumns($allowedColumns, $params);
+        try {
+            $sql = "select *, ";
+            $sql .= "(sales_order_paid_per_product + sales_order_balance_per_product) as total_amount_per_product, ";
+            $sql .= "sales_order_number, ";
+            $sql .= "sales_order_status as is_status, ";
+            $sql .= "sales_order_total_receivable_amount as total_amount, ";
+            $sql .= "sales_order_total_amount as total_sub_amount, ";
+            $sql .= "sales_order_paid_amount as total_paid, ";
+            $sql .= "sales_order_cash as total_paid_in_cash, ";
+            $sql .= "sales_order_aid as id, ";
+            $sql .= "sales_order_is_active as is_active, ";
+            $sql .= "sales_order_date as order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
+            $sql .= "sales_order_customer_name as name ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= " WHERE sales_order_cash != 0 and sales_order_cash IS NOT NULL";
+            $sql .= " and CAST(sales_order_paid_per_product AS DECIMAL(10, 2)) != 0 ";
+            $sql .= ($this->userId != 0 ? "and sales_order_received_by_id = :sales_order_received_by_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {

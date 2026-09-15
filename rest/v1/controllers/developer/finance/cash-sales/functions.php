@@ -44,3 +44,19 @@ function allowedColumns()
     ];
     return $query;
 }
+
+// Read all cashier
+function checkReadCashierAll($object, $allowedColumns = [])
+{
+    $query = $object->readCashierAll($allowedColumns);
+    checkQuery($query, "Empty records. (read All)");
+    return $query;
+}
+
+// Read limit cashier
+function checkReadCashierLimit($object, $allowedColumns = [])
+{
+    $query = $object->readCashierLimit($allowedColumns);
+    checkQuery($query, "Empty records. (limit)");
+    return $query;
+}

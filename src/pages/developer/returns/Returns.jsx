@@ -1,5 +1,9 @@
 import { MultiSelectCheckboxFilter } from "@/components/inputs/InputSelect";
-import { ActiveInActiveStatus } from "@/layout/ArrayValue";
+import {
+  ActionTableList,
+  ActiveInActiveStatus,
+  RefundMethodList,
+} from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { setIsAdd } from "@/store/StoreAction";
@@ -218,6 +222,30 @@ const Returns = () => {
         ),
       },
       status_option: ActiveInActiveStatus("restocked-status"),
+    },
+    {
+      accessorKey: "return_product_refund_method",
+      header: "payment method",
+      classTh: "min-w-[10rem]",
+      classTd: "uppercase",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            staticOptions={RefundMethodList().map((option) => option.value)}
+            testFilterId={"filter-resolution-type"}
+          />
+        ),
+      },
+    },
+    {
+      accessorKey: "action",
+      action_array: ActionTableList("returns-products", "edit-delete-status"),
+      editDeleteStatuses: ["pending", "rejected"],
+      header: "Action",
+      classTh: "text-center w-[7rem]",
+      classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
     },
   ];
 

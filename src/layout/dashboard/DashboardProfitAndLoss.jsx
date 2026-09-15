@@ -1,5 +1,5 @@
 import GraphTooltip from "@/components/GraphTooltip";
-import { AmountWithPesoSign } from "@/components/PesoSign";
+import MiniStatCard from "@/components/MiniStatCard";
 import { apiVersion } from "@/config/config";
 import useDarkMode from "@/custom-hooks/useDarkMode";
 import useQueryData from "@/services/useQueryData";
@@ -39,16 +39,18 @@ const DashboardProfitAndLoss = () => {
     return dataResult?.data[0];
   }, [dataResult]);
 
-  const profitAndLossDataAmount = useMemo(() => {
-    if (!dataResult?.count) return [];
-    if (!dataResult?.data[0]["data"]) return [];
-
-    return dataResult?.data[0]["data"]?.filter((item) =>
-      item.label.includes(timeframePL),
-    );
-  }, [dataResult]);
-
   const currentData = profitAndLossData[timeframePL];
+
+  const summary = useMemo(() => {
+    return (currentData || []).reduce(
+      (acc, row) => ({
+        income: acc.income + Number(row.income || 0),
+        expenses: acc.expenses + Number(row.expenses || 0),
+        net: acc.net + Number(row.net || 0),
+      }),
+      { income: 0, expenses: 0, net: 0 },
+    );
+  }, [currentData]);
 
   return (
     <>
@@ -80,52 +82,24 @@ const DashboardProfitAndLoss = () => {
           </div>
 
           <div className="grid grid-cols-3 gap-3 mb-4">
-            {profitAndLossDataAmount?.map((itemData) => (
-              <>
-                <div className="bg-blue-100 dark:bg-blue-700 p-3 rounded">
-                  <p className="xs:flex items-center gap-2 text-sm text-gray-600 dark:text-light">
-                    <span className="text-blue-600 dark:text-blue-200">
-                      <DollarSign size={14} />
-                    </span>
-                    Net
-                  </p>
-                  <p className="text-green-600 font-semibold">
-                    <AmountWithPesoSign
-                      classN={"size-3"}
-                      amount={itemData?.net}
-                    />
-                  </p>
-                </div>
-                <div className="bg-green-100 dark:bg-green-700 p-3 rounded">
-                  <p className="xs:flex items-center gap-2 text-sm text-gray-600 dark:text-light">
-                    <span className="text-green-600 dark:text-green-200">
-                      <TrendingUp size={14} />
-                    </span>
-                    Income
-                  </p>
-                  <p className="text-red-600 font-semibold">
-                    <AmountWithPesoSign
-                      classN={"size-3"}
-                      amount={itemData?.income}
-                    />
-                  </p>
-                </div>
-                <div className="bg-red-100 dark:bg-red-700 p-3 rounded">
-                  <p className="xs:flex items-center gap-2 text-sm text-gray-600 dark:text-light">
-                    <span className="text-red-600 dark:text-red-200">
-                      <TrendingDown size={14} />
-                    </span>
-                    Expenses
-                  </p>
-                  <p className="text-blue-600 font-semibold">
-                    <AmountWithPesoSign
-                      classN={"size-3"}
-                      amount={itemData?.expenses}
-                    />
-                  </p>
-                </div>
-              </>
-            ))}
+            <MiniStatCard
+              icon={<DollarSign size={14} />}
+              iconColor="text-blue-600 dark:text-blue-400"
+              label="Net"
+              amount={summary.net}
+            />
+            <MiniStatCard
+              icon={<TrendingUp size={14} />}
+              iconColor="text-green-600 dark:text-green-400"
+              label="Income"
+              amount={summary.income}
+            />
+            <MiniStatCard
+              icon={<TrendingDown size={14} />}
+              iconColor="text-red-600 dark:text-red-400"
+              label="Expenses"
+              amount={summary.expenses}
+            />
           </div>
 
           {/* Chart */}

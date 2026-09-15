@@ -34,8 +34,16 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->filters = $data['columnFilters'];
         checkLimitId($val->column_start, $val->column_total);
 
-        $query = checkReadLimit($val, allowedColumns());
-        $total_result = checkReadAll($val, allowedColumns());
+
+        if ($data["role"] == 'cashier') {
+            $query = checkReadCashierLimit($val, allowedColumns());
+            $total_result = checkReadCashierAll($val, allowedColumns());
+        } else {
+
+            $query = checkReadLimit($val, allowedColumns());
+            $total_result = checkReadAll($val, allowedColumns());
+        }
+
         http_response_code(200);
 
         checkReadQuery(

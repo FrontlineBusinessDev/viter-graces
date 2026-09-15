@@ -30,13 +30,6 @@ import { renderCellContent } from "./function-table";
 import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import ActiveFilterTagBar from "./ActiveFilterTagBar";
 
-// Shared by the dateRange/multiDateRange filterFns below. Columns vary
-// between raw ISO dates ("2026-09-03") and formatted display aliases
-// ("Sep 03, 2026"). Rather than compare Date objects (an ISO date-only
-// string parses as UTC midnight, but "Sep 03, 2026" parses as LOCAL midnight
-// - mixing the two silently shifts the comparison by a day in any non-UTC
-// timezone), normalize everything to a plain "YYYY-MM-DD" string first and
-// compare those lexically. Returns null when the raw value can't be dated.
 const toDateOnlyString = (raw) => {
   if (raw === null || raw === undefined || raw === "") return null;
 
@@ -67,11 +60,6 @@ const InfiniteTable = ({
   ishaveAdd = true,
   ishaveSubAdd = false,
   dataTestidAddButton,
-  // Optional (a, b) comparator applied to the flattened, fetched rows before
-  // they're handed to the table - a page-specific default order layered on
-  // top of whatever the backend already returns, without touching every
-  // other table that uses this component. A user-initiated column-header
-  // sort (the `sorting` state below) still takes priority over this.
   sortComparator = null,
   refetchOnWindowFocus = false,
 }) => {
@@ -114,10 +102,6 @@ const InfiniteTable = ({
     search.current?.value ? [] : filterName !== "" ? filterName : defaultValue,
   );
 
-  // the incoming filter is only meant for this one mount (e.g. navigating
-  // here from an "Open Credit Memo" click) - consume it once so a later
-  // remount of this same page (browser back/forward, etc.) doesn't silently
-  // re-apply a stale filter from an unrelated page
   React.useEffect(() => {
     window.sessionStorage.removeItem("filter");
   }, []);
@@ -165,6 +149,7 @@ const InfiniteTable = ({
           ...searchPayload,
           columnFilters: columnFilters,
           userId: userId,
+          role: store.credentials?.data?.role,
         },
         "post",
       ),
@@ -375,8 +360,6 @@ const InfiniteTable = ({
           </div>
         )}
 
-        {/* Add / Sub-add / Export always sit on their own row, side-by-side,
-        directly underneath the search bar. */}
         {(ishaveAdd || ishaveSubAdd || hasExport) && (
           <div className="flex flex-wrap justify-end gap-3 mt-6 sm:mb-0! mb-3">
             {ishaveAdd && (

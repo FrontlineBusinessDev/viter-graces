@@ -41,11 +41,11 @@ const DashboardExpensesToday = ({ path = "", id = 0 }) => {
           subtitle="Yesterday: ₱******"
           flipContent={`₱${valDataToday}`}
           subTitleFlip={`Yesterday: ₱${valDataYesterday}`}
-          flipBg="bg-red-100 dark:bg-red-900"
           icon={<PhilippinePeso className="text-red-500" size={20} />}
           iconBg="bg-red-100 dark:bg-[#2a1019]"
           dataTestId="expenses-card"
           loading={isLoading}
+          defaultVisible={true}
         />
       )}
     </>

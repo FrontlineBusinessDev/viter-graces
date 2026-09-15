@@ -28,7 +28,10 @@ const CashSales = () => {
       filterFn: "multiDateRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeDateFilter column={column} testFilterId={"filter-sales-date"} />
+          <MultiRangeDateFilter
+            column={column}
+            testFilterId={"filter-sales-date"}
+          />
         ),
       },
     },
@@ -74,32 +77,32 @@ const CashSales = () => {
       isMobileTitle: true,
       meta: "",
     },
-    {
-      accessorKey: "total_amount_per_product",
-      header: "Amount To Pay",
-      amount: true,
-      classTh: "min-w-40",
-      classTd: "",
-      filterFn: "multiRange",
-      meta: {
-        filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-amount"} />
-        ),
-      },
-    },
-    {
-      accessorKey: "sales_order_paid_per_product",
-      header: "Paid",
-      amount: true,
-      classTh: "min-w-40",
-      classTd: "",
-      filterFn: "multiRange",
-      meta: {
-        filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-paid"} />
-        ),
-      },
-    },
+    // {
+    //   accessorKey: "total_amount_per_product",
+    //   header: "Amount To Pay",
+    //   amount: true,
+    //   classTh: "min-w-40",
+    //   classTd: "",
+    //   filterFn: "multiRange",
+    //   meta: {
+    //     filterComponent: (column) => (
+    //       <MultiRangeAmountFilter column={column} testFilterId={"filter-amount"} />
+    //     ),
+    //   },
+    // },
+    // {
+    //   accessorKey: "sales_order_paid_per_product",
+    //   header: "Paid",
+    //   amount: true,
+    //   classTh: "min-w-40",
+    //   classTd: "",
+    //   filterFn: "multiRange",
+    //   meta: {
+    //     filterComponent: (column) => (
+    //       <MultiRangeAmountFilter column={column} testFilterId={"filter-paid"} />
+    //     ),
+    //   },
+    // },
     {
       accessorKey: "total_paid_in_cash",
       header: "Paid in cash",

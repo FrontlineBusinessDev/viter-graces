@@ -7,6 +7,13 @@ import React from "react";
 const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
+  // when a column restricts edit/delete to specific statuses (e.g. Returns:
+  // only pending/rejected are editable), hide those two actions otherwise
+  const isEditDeleteAllowed = (name) =>
+    !item?.editDeleteStatuses ||
+    !["edit", "delete"].includes(name) ||
+    item.editDeleteStatuses.includes(dataArray?.is_status);
+
   // ACTIONS ACHIEVE, RESTORE AND DELETE
   const handleAction = (val) => {
     dispatch(setIsAction(true));
@@ -60,7 +67,8 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
             return (
               isEmptyItem(a?.name, "") === "edit" &&
               Number(isEmptyItem(a?.isActive, 1)) ===
-                Number(isEmptyItem(dataArray?.is_active, 1)) && (
+                Number(isEmptyItem(dataArray?.is_active, 1)) &&
+              isEditDeleteAllowed("edit") && (
                 <div key={akey}>
                   <ActionButton
                     item={a}
@@ -76,7 +84,8 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
               isEmptyItem(b?.name, "") !== "edit" &&
               isEmptyItem(b?.name, "") !== "view" &&
               Number(isEmptyItem(b?.isActive, 1)) ===
-                Number(isEmptyItem(dataArray?.is_active, 1)) && (
+                Number(isEmptyItem(dataArray?.is_active, 1)) &&
+              isEditDeleteAllowed(isEmptyItem(b?.name, "")) && (
                 <div key={bkey}>
                   <ActionButton
                     item={b}

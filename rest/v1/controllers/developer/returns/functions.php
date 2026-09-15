@@ -7,11 +7,44 @@ function isUserAccountAssociated($object)
     checkExistence($count, "You cannot delete this item because it is already associated with other module.");
 }
 
-// Create 
+// only pending/rejected returns may be updated or deleted - the one
+// exception is reopening a processed return back to pending/rejected,
+// which is how a wrongly-processed return gets its stock movement undone
+function checkReturnIsEditable($object)
+{
+    $existing = getResultData($object->readById())[0] ?? null;
+    $existingStatus = $existing['return_product_status'] ?? null;
+    $isReopening = $existingStatus === "processed" &&
+        in_array($object->return_product_status, ["pending", "rejected"]);
+
+    if (!$existing || (!in_array($existingStatus, ["pending", "rejected"]) && !$isReopening)) {
+        $response = new Response();
+        $error = [];
+        $response->setSuccess(false);
+        $error['error'] = "Only pending or rejected returns can be updated or deleted.";
+        $error["success"] = false;
+        $response->setData($error);
+        $response->send();
+        exit;
+    }
+
+    return $existing;
+}
+
+// Create
 function checkCreateMovementStock($object)
 {
     $query = $object->createMovementStock();
     checkQuery($query, "There's a problem processing your request. (Create Movement Stock)");
+    return $query;
+}
+
+// Delete the "stock in - return" movement tied to a reopened return, so the
+// restocked qty is backed out of current_qty (computed from movement rows)
+function checkDeleteReturnMovement($object)
+{
+    $query = $object->deleteMovementByReturnId();
+    checkQuery($query, "There's a problem processing your request. (Delete Movement Stock)");
     return $query;
 }
 
