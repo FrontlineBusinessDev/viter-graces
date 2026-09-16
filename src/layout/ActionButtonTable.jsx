@@ -14,8 +14,19 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
     !["edit", "delete"].includes(name) ||
     item.editDeleteStatuses.includes(dataArray?.is_status);
 
+  // when a column names a row field to watch (e.g. Sales Orders:
+  // sales_order_has_return), disable delete instead of hiding it, with a
+  // tooltip explaining why - the row is still associated with something
+  // that must be cleared first
+  const isDeleteBlocked =
+    item?.blockDeleteField &&
+    Number(isEmptyItem(dataArray?.[item.blockDeleteField], 0)) > 0;
+
   // ACTIONS ACHIEVE, RESTORE AND DELETE
   const handleAction = (val) => {
+    if (val?.name === "delete" && isDeleteBlocked) {
+      return;
+    }
     dispatch(setIsAction(true));
     setData({
       ...dataArray,
@@ -90,6 +101,12 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
                   <ActionButton
                     item={b}
                     onClick={() => handleAction(b)}
+                    disabled={b?.name === "delete" && isDeleteBlocked}
+                    tooltip={
+                      b?.name === "delete" && isDeleteBlocked
+                        ? "Linked to a return"
+                        : undefined
+                    }
                     data-testid={b.testId}
                   />
                 </div>

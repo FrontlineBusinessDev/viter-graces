@@ -335,6 +335,18 @@ export const PaymentMethodList = () => {
   return result;
 };
 
+export const PaymentMethodListWithCredit = () => {
+  const result = [
+    { label: "cash", value: "cash" },
+    { label: "check", value: "check" },
+    { label: "online transaction", value: "online transaction" },
+    { label: "mutiple payment", value: "mutiple payment" },
+    { label: "credit memo", value: "credit memo" },
+  ];
+
+  return result;
+};
+
 export const RefundMethodList = () => {
   const result = [
     { label: "cash", value: "cash" },

@@ -251,6 +251,10 @@ const SalesOrders = () => {
           ? "product_owner_sales_order"
           : "status-with-view",
       ),
+      // sales_order_has_return (from SalesOrder::readLimit()) flags orders
+      // with at least one item still claimed by a pending/processed return -
+      // block deleting the whole order from the table until that clears.
+      blockDeleteField: "sales_order_has_return",
       header: "Action",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",

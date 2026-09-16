@@ -18,7 +18,16 @@ const CashSales = () => {
       header: "Order #",
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="sales-order/sales-orders-filter?type=order-numbers"
+            testFilterId={"filter-order-number"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_order_date",
@@ -75,7 +84,15 @@ const CashSales = () => {
       classTh: "min-w-40",
       classTd: "",
       isMobileTitle: true,
-      meta: "",
+      filterFn: "multiRange",
+      meta: {
+        filterComponent: (column) => (
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-stocks"}
+          />
+        ),
+      },
     },
     // {
     //   accessorKey: "total_amount_per_product",
