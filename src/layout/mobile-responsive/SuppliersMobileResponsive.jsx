@@ -111,7 +111,7 @@ const SuppliersMobileResponsive = ({
                 {/* VIEW DETAILS - expanded contact info + suppliers product */}
                 {isOpen && (
                   <>
-                    <ul className="">
+                    <ul className="mt-2">
                       <li className="flex gap-2">
                         <span className="text-gray-500 capitalize">Email:</span>
                         <span className="wrap-break-word font-semibold">
@@ -130,7 +130,7 @@ const SuppliersMobileResponsive = ({
                           )}
                         </span>
                       </li>
-                      <li className="flex flex-wrap ">
+                      <li className="flex flex-col ">
                         <div className="flex mr-5">
                           <span className="text-blue-800 capitalize mr-2">
                             Messenger:

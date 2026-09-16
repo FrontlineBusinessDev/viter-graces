@@ -107,3 +107,19 @@ function checkReadGoupBySupplierEmail($object, $allowedColumns = [])
     checkQuery($query, "Empty records. (readGoupBySupplierEmail)");
     return $query;
 }
+
+// Read all supplier phone
+function checkReadGoupBySupplierPhone($object, $allowedColumns = [])
+{
+    $query = $object->readGoupBySupplierPhone($allowedColumns);
+    checkQuery($query, "Empty records. (readGoupBySupplierPhone)");
+    return $query;
+}
+
+// Read all supplier address
+function checkReadGoupBySupplierAddress($object, $allowedColumns = [])
+{
+    $query = $object->readGoupBySupplierAddress($allowedColumns);
+    checkQuery($query, "Empty records. (readGoupBySupplierAddress)");
+    return $query;
+}

@@ -40,7 +40,16 @@ const PurchaseOrderMovement = () => {
       orderNumber: "1",
       classTh: "min-w-[7rem] ",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="purchase-order/read-group-by-filter?type=poNumberSupplier"
+            testFilterId={"filter-order-number"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "purchase_order_supplier_name",
@@ -94,7 +103,10 @@ const PurchaseOrderMovement = () => {
       classTd: "",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-before"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-before"}
+          />
         ),
       },
     },
@@ -106,7 +118,10 @@ const PurchaseOrderMovement = () => {
       classTd: "",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-after"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-after"}
+          />
         ),
       },
     },
@@ -119,7 +134,10 @@ const PurchaseOrderMovement = () => {
       filterFn: "multiDateRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeDateFilter column={column} testFilterId={"filter-order-date"} />
+          <MultiRangeDateFilter
+            column={column}
+            testFilterId={"filter-order-date"}
+          />
         ),
       },
     },
@@ -131,7 +149,10 @@ const PurchaseOrderMovement = () => {
       filterFn: "multiDateRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeDateFilter column={column} testFilterId={"filter-delivery-date"} />
+          <MultiRangeDateFilter
+            column={column}
+            testFilterId={"filter-delivery-date"}
+          />
         ),
       },
     },

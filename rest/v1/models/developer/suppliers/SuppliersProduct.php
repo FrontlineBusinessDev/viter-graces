@@ -80,7 +80,7 @@ class SuppliersProduct
             } elseif (is_array($value)) {
                 $selectedValues = array_values(array_filter(
                     $value,
-                    fn ($v) => trim((string) $v) !== ""
+                    fn($v) => trim((string) $v) !== ""
                 ));
 
                 if (empty($selectedValues)) {
@@ -376,7 +376,7 @@ class SuppliersProduct
     {
         $productIds = array_values(array_unique(array_filter(
             $productIds,
-            fn ($id) => (int)$id > 0
+            fn($id) => (int)$id > 0
         )));
 
         if (empty($productIds)) {
@@ -426,6 +426,50 @@ class SuppliersProduct
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "purchase_order_product_id" => "{$this->suppliers_product_aid}",
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read the supplier product items
+    public function readGoupBySupplierProductItems()
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "suppliers_product_aid as id, ";
+            $sql .= "suppliers_product_name as name ";
+            $sql .= "from {$this->tblSuppliersProduct} ";
+            $sql .= "where suppliers_product_supplier_id = :suppliers_product_supplier_id ";
+            $sql .= "group by suppliers_product_name ";
+            $sql .= "order by suppliers_product_name asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "suppliers_product_supplier_id" => $this->suppliers_product_supplier_id,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read the supplier product unit
+    public function readGoupBySupplierProductUnit()
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "suppliers_product_aid as id, ";
+            $sql .= "suppliers_product_unit as name ";
+            $sql .= "from {$this->tblSuppliersProduct} ";
+            $sql .= "where suppliers_product_supplier_id = :suppliers_product_supplier_id ";
+            $sql .= "group by suppliers_product_unit ";
+            $sql .= "order by suppliers_product_unit asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "suppliers_product_supplier_id" => $this->suppliers_product_supplier_id,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

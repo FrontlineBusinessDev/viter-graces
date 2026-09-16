@@ -15,6 +15,7 @@ import { IoLogoWhatsapp } from "react-icons/io";
 import { MdEmail } from "react-icons/md";
 import ModalAddItem from "./modal/ModalAddItem";
 import ModalSuppliers from "./modal/ModalSuppliers";
+import { MultiRangeAmountFilter } from "@/components/inputs/InputRangeFilter";
 
 const Suppliers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -88,7 +89,16 @@ const Suppliers = () => {
       isPrimaryRow: true,
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="suppliers/read-group-by-filter?type=phone"
+            testFilterId={"filter-supplier"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "suppliers_address",
@@ -98,7 +108,16 @@ const Suppliers = () => {
       isPrimaryRow: true,
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="suppliers/read-group-by-filter?type=address"
+            testFilterId={"filter-supplier"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "action",
@@ -118,12 +137,13 @@ const Suppliers = () => {
       header: "status",
       classTh: "w-[10rem]! p-0!",
       classTd: "",
-      filterFn: "equals",
+      filterFn: "multiSelect",
       meta: {
         filterComponent: (column) => (
-          <SearchableSelectFilterStatus
+          <MultiSelectCheckboxFilter
             column={column}
-            options={ActiveInActiveStatus()}
+            staticOptions={ActiveInActiveStatus()}
+            testFilterId={"filter-status"}
           />
         ),
       },
@@ -135,8 +155,17 @@ const Suppliers = () => {
       isViewItems: false,
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
       isMobileTitle: true,
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column, data) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path={`suppliers-product/read-group-by-filter?type=product-items&suppliers_product_supplier_id=${data?.id}`}
+            testFilterId={"filter-supplier"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "suppliers_product_unit",
@@ -144,8 +173,17 @@ const Suppliers = () => {
       isViewItems: false,
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
       isSubTitle: true,
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column, data) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path={`suppliers-product/read-group-by-filter?type=product-unit&suppliers_product_supplier_id=${data?.id}`}
+            testFilterId={"filter-supplier"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "suppliers_product_price",
@@ -153,10 +191,15 @@ const Suppliers = () => {
       isViewItems: false,
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
-      filterFn: "between",
-      isPrice: true,
-      amount: true,
+      filterFn: "multiRange",
+      meta: {
+        filterComponent: (column) => (
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-price"}
+          />
+        ),
+      },
     },
     ...(getAdminDeveloperRole(store)
       ? [

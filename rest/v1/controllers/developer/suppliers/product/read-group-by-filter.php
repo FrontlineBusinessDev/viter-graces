@@ -1,17 +1,17 @@
 <?php
 
 // set http header
-require '../../../core/header.php';
+require '../../../../core/header.php';
 // use needed functions
-require '../../../core/functions.php';
+require '../../../../core/functions.php';
 require 'functions.php';
 // use needed classes
-require '../../../models/developer/suppliers/Suppliers.php';
+require '../../../../models/developer/suppliers/SuppliersProduct.php';
 // check database connection
 $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
-$val = new Suppliers($conn);
+$val = new SuppliersProduct($conn);
 // validate api key
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
@@ -26,20 +26,18 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $action = isset($_GET['type']) ? (string) $_GET['type'] : '';
 
         switch ($action) {
-            case 'description':
-                $query = checkReadGoupBySupplierDescriptionName($val, allowedColumns());;
+            case 'product-items':
+                $val->suppliers_product_supplier_id = isset($_GET['suppliers_product_supplier_id'])
+                    ? $_GET['suppliers_product_supplier_id']
+                    : null;
+                $query = checkReadGoupBySupplierProductItems($val, allowedColumns());;
                 break;
-            case 'name':
-                $query = checkReadGoupBySupplierName($val, allowedColumns());;
-                break;
-            case 'email':
-                $query = checkReadGoupBySupplierEmail($val, allowedColumns());;
-                break;
-            case 'phone':
-                $query = checkReadGoupBySupplierPhone($val, allowedColumns());;
-                break;
-            case 'address':
-                $query = checkReadGoupBySupplierAddress($val, allowedColumns());;
+
+            case 'product-unit':
+                $val->suppliers_product_supplier_id = isset($_GET['suppliers_product_supplier_id'])
+                    ? $_GET['suppliers_product_supplier_id']
+                    : null;
+                $query = checkReadGoupBySupplierProductUnit($val, allowedColumns());;
                 break;
 
             case '':
