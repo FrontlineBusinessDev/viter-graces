@@ -71,6 +71,7 @@ function allowedColumns()
         "purchase_order_product_name",
         "purchase_order_product_owner_name",
         "purchase_order_total_paid_per_product",
+        "purchase_order_payment_method",
         "formated_date",
     ];
     return $query;

@@ -5,6 +5,10 @@ import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import { MultiRangeDateFilter } from "@/components/inputs/InputRangeFilter";
 import { MultiRangeAmountFilter } from "@/components/inputs/InputRangeFilter";
+import {
+  PaymentMethodList,
+  PaymentMethodListWithCredit,
+} from "@/layout/ArrayValue";
 
 const SalesJournal = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -18,7 +22,16 @@ const SalesJournal = () => {
       classTh: "min-w-40",
       classTd: "",
       isMobileTitle: true,
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="sales-order/sales-orders-filter?type=order-numbers"
+            testFilterId={"filter-order-number"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_journal_date",
@@ -28,7 +41,10 @@ const SalesJournal = () => {
       filterFn: "multiDateRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeDateFilter column={column} testFilterId={"filter-journal-date"} />
+          <MultiRangeDateFilter
+            column={column}
+            testFilterId={"filter-journal-date"}
+          />
         ),
       },
     },
@@ -53,7 +69,19 @@ const SalesJournal = () => {
       header: "Method",
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            staticOptions={PaymentMethodListWithCredit().map(
+              (option) => option.value,
+            )}
+            testFilterId={"filter-method"}
+          />
+        ),
+      },
+      status_option: PaymentMethodListWithCredit(),
     },
     {
       accessorKey: "sales_journal_debit",
@@ -64,7 +92,10 @@ const SalesJournal = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-debit"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-debit"}
+          />
         ),
       },
     },
@@ -77,7 +108,10 @@ const SalesJournal = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-credit"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-credit"}
+          />
         ),
       },
     },
@@ -90,7 +124,10 @@ const SalesJournal = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-balance"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-balance"}
+          />
         ),
       },
     },

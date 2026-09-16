@@ -1,5 +1,5 @@
 import { MultiSelectCheckboxFilter } from "@/components/inputs/InputSelect";
-import { ActionTableList } from "@/layout/ArrayValue";
+import { ActionTableList, PaymentMethodList } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -48,7 +48,16 @@ const Expenses = () => {
       orderNumber: "1",
       classTh: "min-w-[7rem] ",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="purchase-order/read-group-by-filter?type=poNumberSupplier"
+            testFilterId={"filter-order-number"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "purchase_order_supplier_name",
@@ -56,7 +65,17 @@ const Expenses = () => {
       classTh: "min-w-[10rem]",
       classTd: "",
       isMobileTitle: true,
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="suppliers"
+            // path="suppliers/read-group-by-filter"
+            testFilterId={"filter-supplier"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "purchase_order_product_name",
@@ -91,13 +110,21 @@ const Expenses = () => {
       },
     },
     {
-      accessorKey: "purchase_order_total_paid_per_product",
+      accessorKey: "purchase_order_payment_method",
       header: "Method",
-      amount: true,
       classTh: "min-w-[10rem]",
       classTd: "",
-      filterFn: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            staticOptions={PaymentMethodList().map((option) => option.value)}
+            testFilterId={"filter-method"}
+          />
+        ),
+      },
+      status_option: PaymentMethodList(),
     },
     ...(Number(ProductOwnerId(store)) > 0
       ? []

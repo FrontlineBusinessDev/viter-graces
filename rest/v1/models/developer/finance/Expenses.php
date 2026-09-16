@@ -9,6 +9,7 @@ class Expenses
     public $purchase_order_expected_delivery;
     public $purchase_order_total_amount;
     public $purchase_order_payment;
+    public $purchase_order_payment_method;
     public $purchase_order_is_active;
     public $purchase_order_status;
     public $purchase_order_payment_status;
@@ -180,7 +181,7 @@ class Expenses
             } elseif (is_array($value)) {
                 $selectedValues = array_values(array_filter(
                     $value,
-                    fn ($v) => trim((string) $v) !== ""
+                    fn($v) => trim((string) $v) !== ""
                 ));
 
                 if (empty($selectedValues)) {

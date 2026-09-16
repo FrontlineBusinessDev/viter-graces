@@ -157,6 +157,16 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   };
 
   const handleChangeAmount = (index, id = 0, field, value) => {
+    if (Number(isEmptyItem(items[index]?.sales_order_return_count, 0)) > 0) {
+      dispatch(setError(true));
+      dispatch(
+        setMessage(
+          "This item's quantity cannot be edited because it is linked to a return.",
+        ),
+      );
+      return;
+    }
+
     const updated = [...items];
     updated[index]["is_new"] = true;
     updated[index]["old_qty"] = itemEdit
@@ -196,6 +206,16 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
   };
 
   const handleRemoveItem = (a) => {
+    if (Number(isEmptyItem(a?.sales_order_return_count, 0)) > 0) {
+      dispatch(setError(true));
+      dispatch(
+        setMessage(
+          "This item cannot be deleted because it is linked to a return.",
+        ),
+      );
+      return;
+    }
+
     setItemsDelete([
       ...itemsDelete,
       {
@@ -672,6 +692,10 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                             </thead>
                             <tbody className="">
                               {items.map((a, index) => {
+                                const hasReturn =
+                                  Number(
+                                    isEmptyItem(a?.sales_order_return_count, 0),
+                                  ) > 0;
                                 return (
                                   <tr key={a?.id} className="border-0!">
                                     <td className="text-center dark:bg-gray-900! last:opacity-100 last:group-hover:opacity-100 last:-right-3 last:z-10">
@@ -683,6 +707,14 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                       <td className=" dark:bg-gray-900! ">
                                         {a?.sales_order_product_name} (
                                         {a?.current_qty} qty)
+                                        {hasReturn ? (
+                                          <p className="text-xs text-amber-600 dark:text-amber-400 mt-1 mb-0!">
+                                            Linked to a return - cannot be
+                                            deleted or edited
+                                          </p>
+                                        ) : (
+                                          ""
+                                        )}
                                       </td>
                                     ) : (
                                       <td className=" dark:bg-gray-900! ">
@@ -715,13 +747,19 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                             e.target.value,
                                           );
                                         }}
-                                        className="mt-0 bg-white  dark:bg-gray-900!"
+                                        className="mt-0 bg-white  dark:bg-gray-900! disabled:opacity-50 disabled:cursor-not-allowed"
                                         defaultValue={isEmptyItem(
                                           a["sales_order_qty"],
                                           1,
                                         )}
                                         type="number"
                                         placeholder="Qty"
+                                        disabled={hasReturn}
+                                        title={
+                                          hasReturn
+                                            ? "This item's quantity cannot be edited because it is linked to a return."
+                                            : undefined
+                                        }
                                       />
                                     </td>
                                     <td className=" dark:bg-gray-900! ">
@@ -737,13 +775,22 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                       />
                                     </td>
                                     <td className=" dark:bg-gray-900! ">
-                                      <button
-                                        onClick={() => handleRemoveItem(a)}
-                                        className="text-red-500 text-xl"
-                                        type="button"
-                                      >
-                                        ✕
-                                      </button>
+                                      {hasReturn ? (
+                                        <span
+                                          className="text-gray-400 text-xl cursor-not-allowed"
+                                          title="This item cannot be deleted because it is linked to a return."
+                                        >
+                                          ✕
+                                        </span>
+                                      ) : (
+                                        <button
+                                          onClick={() => handleRemoveItem(a)}
+                                          className="text-red-500 text-xl"
+                                          type="button"
+                                        >
+                                          ✕
+                                        </button>
+                                      )}
                                     </td>
                                   </tr>
                                 );

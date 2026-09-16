@@ -95,6 +95,7 @@ class SalesOrder
     public $tblProducts;
     public $tblinstallmentPayment;
     public $tblSalesJournal;
+    public $tblReturnProducts;
 
     public $filters;
     public $column_start;
@@ -113,6 +114,7 @@ class SalesOrder
         $this->tblProducts = "graces_products";
         $this->tblinstallmentPayment = "graces_installment_payment";
         $this->tblSalesJournal = "graces_sales_journal";
+        $this->tblReturnProducts = "graces_return_product";
     }
 
     // Builds the "columnFilters" WHERE fragments shared by every read*()
@@ -528,17 +530,24 @@ class SalesOrder
             $sql .= "sales_order_date as order_date, ";
             $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
             $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
-            $sql .= "sales_order_customer_name as name ";
+            $sql .= "sales_order_customer_name as name, ";
+            // Flags orders that have at least one line item still claimed by
+            // a pending/processed return, so the Sales Orders table can block
+            // deleting the whole order - matched by order number since this
+            // row is grouped and doesn't carry a single sales_order_aid.
+            $sql .= "( select count(*) from {$this->tblReturnProducts} as rp ";
+            $sql .= "where rp.return_product_order_number = {$this->tblSalesOrder}.sales_order_number ";
+            $sql .= "and rp.return_product_status in ('pending', 'processed') ) as sales_order_has_return ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
-                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number 
-            or sales_order_customer_name like :sales_order_customer_name 
-            or sales_order_received_by_name like :sales_order_received_by_name 
-            or sales_order_product_owner_name like :sales_order_product_owner_name 
-            or sales_order_status like :sales_order_status 
+                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number
+            or sales_order_customer_name like :sales_order_customer_name
+            or sales_order_received_by_name like :sales_order_received_by_name
+            or sales_order_product_owner_name like :sales_order_product_owner_name
+            or sales_order_status like :sales_order_status
             or sales_order_product_name like :sales_order_product_name ) " : " ");
             }
             $sql .= " group by sales_order_number ";
@@ -840,6 +849,48 @@ class SalesOrder
         try {
             $sql = "delete from {$this->tblSalesOrder} ";
             $sql .= "where sales_order_number = :sales_order_number ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_order_number" => $this->sales_order_number,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // check association - guards deleteById() against removing a line item
+    // (sales_order_aid) that a return still references
+    public function checkReturnAssociatedByAid()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblReturnProducts} ";
+            $sql .= "where return_product_order_id = :sales_order_aid ";
+            $sql .= "and return_product_status in ('pending', 'processed') ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_order_aid" => $this->sales_order_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // check association - guards delete() against removing a whole sales
+    // order (every line item sharing this sales_order_number, from the
+    // Sales Orders table) when any of its items is still claimed by a
+    // pending/processed return
+    public function checkReturnAssociatedByOrderNumber()
+    {
+        try {
+            $sql = "select * ";
+            $sql .= "from {$this->tblReturnProducts} ";
+            $sql .= "where return_product_order_number = :sales_order_number ";
+            $sql .= "and return_product_status in ('pending', 'processed') ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "sales_order_number" => $this->sales_order_number,
@@ -1569,7 +1620,13 @@ class SalesOrder
             $sql .= "CASE WHEN inventory_data.current_qty <= 0 THEN 'out of stock' ";
             $sql .= "WHEN inventory_data.current_qty <= inventory_data.products_low_stock_threshold THEN 'low stock' ";
             $sql .= "ELSE 'in stock' ";
-            $sql .= "END as inventory_status ";
+            $sql .= "END as inventory_status, ";
+            // Flags line items already claimed by a return (pending/processed
+            // only - a rejected return no longer holds the item) so the edit
+            // form can block deletion of that specific row.
+            $sql .= "( select count(*) from {$this->tblReturnProducts} as rp ";
+            $sql .= "where rp.return_product_order_id = so.sales_order_aid ";
+            $sql .= "and rp.return_product_status in ('pending', 'processed') ) as sales_order_return_count ";
             $sql .= "from ( select MAX(p.products_low_stock_threshold) as products_low_stock_threshold, ";
             $sql .= "MAX(p.products_sku) as products_sku, ";
             $sql .= "MAX(p.products_unit) as products_unit, ";

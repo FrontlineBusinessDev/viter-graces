@@ -7,6 +7,40 @@ function isUserAccountAssociated($object)
     checkExistence($count, "You cannot delete this item because it is already associated with other module.");
 }
 
+// check association - blocks removing a sales order line item that a
+// pending/processed return still references
+function isItemAssociatedWithReturn($object)
+{
+    $query = $object->checkReturnAssociatedByAid();
+    $count = $query->rowCount();
+    checkExistence($count, "This item cannot be deleted because it is linked to a return.");
+}
+
+// check association - blocks deleting a whole sales order (from the Sales
+// Orders table) when any of its items is still linked to a pending/processed
+// return
+function isOrderAssociatedWithReturn($object)
+{
+    $query = $object->checkReturnAssociatedByOrderNumber();
+    $count = $query->rowCount();
+    checkExistence($count, "This sales order cannot be deleted because one or more of its items are linked to a return.");
+}
+
+// check association - blocks editing the quantity of a sales order line
+// item that a pending/processed return still references. $newQty is the
+// submitted value, $oldQty is the qty this row had before the edit
+// (sales_order_qty_old, snapshotted when the order was loaded) - only an
+// actual change needs to be blocked, an untouched row can still be re-saved.
+function isQtyChangeAssociatedWithReturn($object, $newQty, $oldQty)
+{
+    if ((float)$newQty == (float)$oldQty) {
+        return;
+    }
+    $query = $object->checkReturnAssociatedByAid();
+    $count = $query->rowCount();
+    checkExistence($count, "This item's quantity cannot be edited because it is linked to a return.");
+}
+
 // Create 
 function checkCreateMovementStock($object)
 {

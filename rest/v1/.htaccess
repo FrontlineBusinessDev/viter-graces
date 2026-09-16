@@ -82,6 +82,7 @@ RewriteRule ^suppliers-product/search$ controllers/developer/suppliers/product/s
 RewriteRule ^suppliers-product/read-in-modal/([0-9]+)$ controllers/developer/suppliers/product/read-in-modal.php?id=$1 [L]
 RewriteRule ^suppliers-product/read-in-modal$ controllers/developer/suppliers/product/read-in-modal.php [L]
 RewriteRule ^suppliers-product/read-other-supplier-modal$ controllers/developer/suppliers/product/read-other-supplier-modal.php [L] 
+RewriteRule ^suppliers-product/read-group-by-filter$ controllers/developer/suppliers/product/read-group-by-filter.php [L] 
 
 ### PRODUCTS ### 
 RewriteRule ^products$ controllers/developer/products/products.php [L]

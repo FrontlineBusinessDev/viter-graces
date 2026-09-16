@@ -92,7 +92,16 @@ const AccountsReceivable = () => {
       header: "Order #",
       classTh: "min-w-20!",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="sales-order/sales-orders-filter?type=order-numbers"
+            testFilterId={"filter-order-number"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_order_due_date",
@@ -107,7 +116,8 @@ const AccountsReceivable = () => {
       cell: (info) => {
         const row = info.row.original;
         const paymentTerms = row?.sales_order_payment_terms?.toLowerCase();
-        const installmentType = row?.sales_order_installment_type?.toLowerCase();
+        const installmentType =
+          row?.sales_order_installment_type?.toLowerCase();
         const dueDate = info.getValue();
 
         const isFlexible =
@@ -122,7 +132,10 @@ const AccountsReceivable = () => {
       },
       meta: {
         filterComponent: (column) => (
-          <MultiRangeDateFilter column={column} testFilterId={"filter-due-date"} />
+          <MultiRangeDateFilter
+            column={column}
+            testFilterId={"filter-due-date"}
+          />
         ),
       },
     },
@@ -145,7 +158,8 @@ const AccountsReceivable = () => {
       cell: (info) => {
         const row = info.row.original;
         const paymentTerms = row?.sales_order_payment_terms?.toLowerCase();
-        const installmentType = row?.sales_order_installment_type?.toLowerCase();
+        const installmentType =
+          row?.sales_order_installment_type?.toLowerCase();
         const isFlexible =
           paymentTerms === "installment" &&
           ["flexible", "customize"].includes(installmentType);
@@ -162,7 +176,10 @@ const AccountsReceivable = () => {
       filterFn: "multiDateRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeDateFilter column={column} testFilterId={"filter-sales-date"} />
+          <MultiRangeDateFilter
+            column={column}
+            testFilterId={"filter-sales-date"}
+          />
         ),
       },
     },
@@ -204,7 +221,15 @@ const AccountsReceivable = () => {
       header: "Quantity",
       classTh: "min-w-40",
       classTd: "",
-      meta: "",
+      filterFn: "multiRange",
+      meta: {
+        filterComponent: (column) => (
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-stocks"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "sales_order_total_receivable_amount",
@@ -215,7 +240,10 @@ const AccountsReceivable = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-amount"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-amount"}
+          />
         ),
       },
     },
@@ -228,7 +256,10 @@ const AccountsReceivable = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-paid"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-paid"}
+          />
         ),
       },
     },
@@ -241,7 +272,10 @@ const AccountsReceivable = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-balance"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-balance"}
+          />
         ),
       },
     },

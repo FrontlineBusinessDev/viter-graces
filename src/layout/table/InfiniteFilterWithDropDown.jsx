@@ -752,7 +752,7 @@ const InfiniteFilterWithDropDown = ({
 
                             <InfiniteSubTable
                               columns={subColumnsTable}
-                              className="sm:overflow-auto max-h-[calc(93dvh-200px)] min-h-full"
+                              className="sm:overflow-auto max-h-[calc(93dvh-240px)] min-h-104"
                               path={subPath}
                               data={rowData}
                               setItemEdit={setItemEdit}

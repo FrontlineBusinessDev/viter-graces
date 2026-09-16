@@ -9,6 +9,7 @@ class SuppliersPurchaseOrder
     public $purchase_order_expected_delivery;
     public $purchase_order_total_amount;
     public $purchase_order_payment;
+    public $purchase_order_payment_method;
     public $purchase_order_is_active;
     public $purchase_order_status;
     public $purchase_order_payment_status;
@@ -78,6 +79,7 @@ class SuppliersPurchaseOrder
             $sql .= "purchase_order_expected_delivery, ";
             $sql .= "purchase_order_total_amount, ";
             $sql .= "purchase_order_payment, ";
+            $sql .= "purchase_order_payment_method, ";
             $sql .= "purchase_order_is_active, ";
             $sql .= "purchase_order_status, ";
             $sql .= "purchase_order_payment_status, ";
@@ -115,6 +117,7 @@ class SuppliersPurchaseOrder
             $sql .= ":purchase_order_expected_delivery, ";
             $sql .= ":purchase_order_total_amount, ";
             $sql .= ":purchase_order_payment, ";
+            $sql .= ":purchase_order_payment_method, ";
             $sql .= ":purchase_order_is_active, ";
             $sql .= ":purchase_order_status, ";
             $sql .= ":purchase_order_payment_status, ";
@@ -154,6 +157,7 @@ class SuppliersPurchaseOrder
                 "purchase_order_expected_delivery" => $this->purchase_order_expected_delivery,
                 "purchase_order_total_amount" => $this->purchase_order_total_amount,
                 "purchase_order_payment" => $this->purchase_order_payment,
+                "purchase_order_payment_method" => $this->purchase_order_payment_method,
                 "purchase_order_is_active" => $this->purchase_order_is_active,
                 "purchase_order_status" => $this->purchase_order_status,
                 "purchase_order_delivery_status" => $this->purchase_order_delivery_status,
@@ -612,6 +616,7 @@ class SuppliersPurchaseOrder
             $sql .= "purchase_order_expected_delivery = :purchase_order_expected_delivery, ";
             $sql .= "purchase_order_total_amount = :purchase_order_total_amount, ";
             $sql .= "purchase_order_payment = :purchase_order_payment, ";
+            $sql .= "purchase_order_payment_method = :purchase_order_payment_method, ";
             $sql .= "purchase_order_is_active = :purchase_order_is_active, ";
             $sql .= "purchase_order_status = :purchase_order_status, ";
             $sql .= "purchase_order_payment_status = :purchase_order_payment_status, ";
@@ -646,6 +651,7 @@ class SuppliersPurchaseOrder
                 "purchase_order_expected_delivery" => $this->purchase_order_expected_delivery,
                 "purchase_order_total_amount" => $this->purchase_order_total_amount,
                 "purchase_order_payment" => $this->purchase_order_payment,
+                "purchase_order_payment_method" => $this->purchase_order_payment_method,
                 "purchase_order_is_active" => $this->purchase_order_is_active,
                 "purchase_order_status" => $this->purchase_order_status,
                 "purchase_order_payment_status" => $this->purchase_order_payment_status,
