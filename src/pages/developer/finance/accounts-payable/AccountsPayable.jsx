@@ -46,7 +46,16 @@ const AccountsPayable = () => {
       header: "PO Number",
       classTh: "min-w-[10rem]",
       classTd: "",
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="purchase-order/read-group-by-filter?type=poNumberSupplier"
+            testFilterId={"filter-order-number"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "purchase_order_date",
@@ -56,7 +65,10 @@ const AccountsPayable = () => {
       filterFn: "multiDateRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeDateFilter column={column} testFilterId={"filter-purchase-date"} />
+          <MultiRangeDateFilter
+            column={column}
+            testFilterId={"filter-purchase-date"}
+          />
         ),
       },
     },
@@ -82,14 +94,32 @@ const AccountsPayable = () => {
       classTh: "min-w-[10rem]",
       classTd: "",
       isMobileTitle: true,
-      meta: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            path="suppliers"
+            // path="suppliers/read-group-by-filter"
+            testFilterId={"filter-supplier"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "purchase_order_after_qty",
       header: "Quantity",
       classTh: "min-w-[10rem]",
       classTd: "",
-      meta: "",
+      filterFn: "multiRange",
+      meta: {
+        filterComponent: (column) => (
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-stocks"}
+          />
+        ),
+      },
     },
     {
       accessorKey: "amount",
@@ -100,7 +130,10 @@ const AccountsPayable = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-amount"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-amount"}
+          />
         ),
       },
     },
@@ -113,7 +146,10 @@ const AccountsPayable = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-paid"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-paid"}
+          />
         ),
       },
     },
@@ -126,7 +162,10 @@ const AccountsPayable = () => {
       filterFn: "multiRange",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-balance"} />
+          <MultiRangeAmountFilter
+            column={column}
+            testFilterId={"filter-balance"}
+          />
         ),
       },
     },

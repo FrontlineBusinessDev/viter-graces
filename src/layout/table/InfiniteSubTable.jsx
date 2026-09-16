@@ -29,6 +29,7 @@ import ModalSubAction from "../modal/ModalSubAction";
 import { renderCellContent } from "./function-table";
 import OverviewSalesCustomer from "../customer/OverviewSalesCustomer";
 import { getAdminDeveloperRole } from "@/utilities/roleValidation";
+import ActiveFilterTagBar from "./ActiveFilterTagBar";
 
 const InfiniteSubTable = ({
   columns,
@@ -219,6 +220,11 @@ const InfiniteSubTable = ({
           ""
         )}
       </div>
+      <ActiveFilterTagBar
+        table={table}
+        columnFilters={columnFilters}
+        setColumnFilters={setColumnFilters}
+      />
       <div className="">
         <div className="relative rounded-xl md:text-center overflow-auto z-0 ">
           {status !== "pending" && isFetching && <TableSpinner />}
@@ -286,6 +292,7 @@ const InfiniteSubTable = ({
                         >
                           {header.column.columnDef.meta?.filterComponent?.(
                             header.column,
+                            data,
                           )}
 
                           {header.column.columnDef.meta === "" ? (

@@ -116,6 +116,10 @@ if (array_key_exists("id", $_GET)) {
 
         $qtyOld = (float)($item['sales_order_qty_old'] ?? 0);
 
+        if ((int)$val->sales_order_aid !== 0) {
+            isQtyChangeAssociatedWithReturn($val, $val->sales_order_qty, $qtyOld);
+        }
+
         // 1. Financial Calculations
         // Safely calculate proportion share (prevents division by zero)
         $share = ($totalOrderAmount > 0) ? ($val->sales_order_total / $totalOrderAmount) : 0;
@@ -175,6 +179,7 @@ if (array_key_exists("id", $_GET)) {
 
     for ($i = 0; $i < count($itemsDelete); $i++) {
         $val->sales_order_aid = $itemsDelete[$i]['sales_order_aid'];
+        isItemAssociatedWithReturn($val);
         $query = checkDeleteById($val);
     }
 

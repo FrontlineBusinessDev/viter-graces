@@ -748,7 +748,7 @@ class Suppliers
         return $query;
     }
 
-    // name
+    // read the supplier email
     public function readGoupBySupplierEmail()
     {
         try {
@@ -757,6 +757,7 @@ class Suppliers
             $sql .= "suppliers_email as name ";
             $sql .= "from {$this->tblSuppliers} ";
             $sql .= "where suppliers_is_default = 0 ";
+            $sql .= "and suppliers_email is not null and suppliers_email != '' ";
             $sql .= "group by suppliers_email ";
             $sql .= "order by suppliers_email asc ";
             $query = $this->connection->query($sql);
@@ -795,4 +796,46 @@ class Suppliers
         }
         return $query;
     }
+
+    // read the supplier phone
+    public function readGoupBySupplierPhone()
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "suppliers_aid as id, ";
+            $sql .= "suppliers_phone as name ";
+            $sql .= "from {$this->tblSuppliers} ";
+            $sql .= "where suppliers_is_default = 0 ";
+            $sql .= "and suppliers_phone is not null and suppliers_phone != '' ";
+            $sql .= "group by suppliers_phone ";
+            $sql .= "order by suppliers_phone asc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read the supplier address
+    public function readGoupBySupplierAddress()
+    {
+        try {
+            $sql = "select *, ";
+            $sql .= "suppliers_aid as id, ";
+            $sql .= "suppliers_address as name ";
+            $sql .= "from {$this->tblSuppliers} ";
+            $sql .= "where suppliers_is_default = 0 ";
+            $sql .= "and suppliers_address is not null and suppliers_address != '' ";
+            $sql .= "group by suppliers_address ";
+            $sql .= "order by suppliers_address asc ";
+            $query = $this->connection->query($sql);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+
 }

@@ -27,3 +27,19 @@ function checkReadOtherSupplierByProductOwnerId($object)
     checkQuery($query, "Empty records. (read Other Supplier By Product Owner Id)");
     return $query;
 }
+
+// Read all supplier product items
+function checkReadGoupBySupplierProductItems($object, $allowedColumns = [])
+{
+    $query = $object->readGoupBySupplierProductItems($allowedColumns);
+    checkQuery($query, "Empty records. (readGoupBySupplierProductItems)");
+    return $query;
+}
+
+// Read all supplier product unit
+function checkReadGoupBySupplierProductUnit($object, $allowedColumns = [])
+{
+    $query = $object->readGoupBySupplierProductUnit($allowedColumns);
+    checkQuery($query, "Empty records. (readGoupBySupplierProductUnit)");
+    return $query;
+}

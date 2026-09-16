@@ -34,6 +34,7 @@ $valSPO->purchase_order_number = $data["purchase_order_number"] ?? "";
 $valSPO->purchase_order_supplier_name = "Other operating expenses";
 $valSPO->purchase_order_date = $data["purchase_order_date"];
 $valSPO->purchase_order_payment = $data["purchase_order_payment"];
+$valSPO->purchase_order_payment_method = $data["purchase_order_payment_method"] ?? "cash";
 $valSPO->purchase_order_note = $data["purchase_order_note"];
 $valSPO->purchase_order_product_id = $data["purchase_order_product_id"];
 $valSPO->purchase_order_product_name = $data["purchase_order_product_name"];
