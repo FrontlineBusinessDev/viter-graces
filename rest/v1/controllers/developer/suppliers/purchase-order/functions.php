@@ -61,11 +61,22 @@ function allowedColumns()
 // Reject the request when a line item's product doesn't belong to the
 // purchase order's selected supplier (e.g. a stale payload sent after the
 // supplier was switched on the client without the items being reset first).
+// Only newly-added rows (purchase_order_aid == 0) are checked - those are
+// the only rows whose product the client can actually pick/change (the UI
+// renders already-saved rows as read-only text). Re-validating already-saved
+// rows on every save would also reject historical orders whose referenced
+// supplier-product catalog entry was later deleted or reassigned, even
+// though nothing about that row changed in this edit.
 function checkItemsBelongToSupplier($conn, $supplierId, $items)
 {
+    $newItems = array_filter(
+        $items,
+        fn($item) => (int)($item["purchase_order_aid"] ?? 0) === 0
+    );
+
     $productIds = array_map(
         fn($item) => $item["purchase_order_product_id"] ?? null,
-        $items
+        $newItems
     );
 
     $val = new SuppliersProduct($conn);

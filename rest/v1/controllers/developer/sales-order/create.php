@@ -56,18 +56,18 @@ if ((float)$data["sales_order_paid_amount"] >= (float)$data["sales_order_total_r
     $val->sales_order_paid_amount = $data["sales_order_total_receivable_amount"];
 }
 
-// if ($val->sales_order_payment_method == "cash") {
-//     $val->sales_order_cash = $val->sales_order_paid_amount;
-// }
-// if ($val->sales_order_payment_method == "check") {
-//     $val->sales_order_check = $val->sales_order_paid_amount;
-// }
-// if ($val->sales_order_payment_method == "online transaction") {
-//     $val->sales_order_online_transaction = $val->sales_order_paid_amount;
-// }
-// if ($val->sales_order_payment_method == "credit memo") {
-//     $val->sales_order_credit_memo = $val->sales_order_paid_amount;
-// }
+if ($val->sales_order_payment_method == "cash") {
+    $val->sales_order_cash = $val->sales_order_paid_amount;
+}
+if ($val->sales_order_payment_method == "check") {
+    $val->sales_order_check = $val->sales_order_paid_amount;
+}
+if ($val->sales_order_payment_method == "online transaction") {
+    $val->sales_order_online_transaction = $val->sales_order_paid_amount;
+}
+if ($val->sales_order_payment_method == "credit memo") {
+    $val->sales_order_credit_memo = $val->sales_order_paid_amount;
+}
 
 // new order - nothing previously saved, so the full applied amount is the delta
 applyCreditMemoToReturns($valReturns, $val->sales_order_customer_id, (float)$val->sales_order_credit_memo);

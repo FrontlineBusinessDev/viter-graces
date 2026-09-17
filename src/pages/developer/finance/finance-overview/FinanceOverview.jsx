@@ -60,7 +60,8 @@ const FinanceOverview = () => {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-5">
               <FinanceStats
                 title="Total Revenue"
-                value={`${isEmptyItem(currentData[0]?.revenue, 0)}`}
+                value={isEmptyItem(currentData[0]?.revenue, 0)}
+                amount
                 icon={<TrendingUp className="text-green-600" size={20} />}
                 iconBg="bg-green-100 dark:bg-[#082125]"
                 valueColor="text-green-600"
@@ -68,7 +69,8 @@ const FinanceOverview = () => {
               />
               <FinanceStats
                 title="Total Expenses"
-                value={`${isEmptyItem(currentData[0]?.expenses, 0)}`}
+                value={isEmptyItem(currentData[0]?.expenses, 0)}
+                amount
                 icon={<TrendingDown className="text-red-600" size={20} />}
                 iconBg="bg-red-100 dark:bg-[#082125]"
                 valueColor="text-red-600"
@@ -76,7 +78,8 @@ const FinanceOverview = () => {
               />
               <FinanceStats
                 title="Net Profit"
-                value={`${isEmptyItem(currentData[0]?.netProfit, 0)}`}
+                value={isEmptyItem(currentData[0]?.netProfit, 0)}
+                amount
                 icon={<Banknote className="text-blue-600" size={20} />}
                 iconBg="bg-blue-100 dark:bg-[#082125]"
                 valueColor="text-blue-600"
@@ -84,7 +87,8 @@ const FinanceOverview = () => {
               />
               <FinanceStats
                 title="Unpaid / Overdue"
-                value={`${isEmptyItem(currentData[0]?.unpaid, 0)}`}
+                value={isEmptyItem(currentData[0]?.unpaid, 0)}
+                amount
                 icon={<TrendingDown className="text-orange-600" size={20} />}
                 iconBg="bg-orange-100 dark:bg-[#082125]"
                 valueColor="text-orange-600"
