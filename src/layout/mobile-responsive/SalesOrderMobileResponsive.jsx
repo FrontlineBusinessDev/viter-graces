@@ -95,6 +95,8 @@ const SalesOrderMobileResponsive = ({
                     ishaveSubAdd={ishaveSubAdd}
                     path={path}
                     itemVal={ActionTableList("sales-order", "status-with-view")}
+                    blockDeleteField="sales_order_has_return"
+                    viewOnlyStatuses={["paid"]}
                   />
                 </div>
               </div>

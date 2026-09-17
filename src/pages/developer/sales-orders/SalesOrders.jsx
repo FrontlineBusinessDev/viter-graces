@@ -255,6 +255,8 @@ const SalesOrders = () => {
       // with at least one item still claimed by a pending/processed return -
       // block deleting the whole order from the table until that clears.
       blockDeleteField: "sales_order_has_return",
+      // A paid order is settled - only "view" should remain available.
+      viewOnlyStatuses: ["paid"],
       header: "Action",
       classTh: "text-center w-[7rem]",
       classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",

@@ -85,6 +85,7 @@ class Expenses
         // name - aliases aren't visible to a WHERE clause, so map it back
         $columnAliasMap = [
             "formated_date" => "purchase_order_date",
+            "payment_status" => "purchase_order_payment_status",
         ];
 
         foreach ($this->filters as $i => $item) {
