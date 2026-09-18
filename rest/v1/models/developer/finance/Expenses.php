@@ -235,14 +235,22 @@ class Expenses
             $sql .= "from {$this->tblSuppliersPurchaseOrder} as spo, ";
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
-            $sql .= " and CAST(spo.purchase_order_total_paid_per_product AS DECIMAL(10, 2)) != 0 ";
+            // Expenses are purchase orders recorded against the fixed "Other
+            // operating expenses" supplier (see readOtherSupplier() in
+            // Suppliers.php / SuppliersProduct.php, used by this module's own
+            // create.php/update.php) - the same marker SuppliersPurchaseOrder
+            // excludes (!= 1) to keep expense entries out of the real
+            // Purchase Orders list. Filtering by paid amount here instead
+            // hid legitimate unpaid/partially-paid expenses (e.g. PO-008)
+            // from their own list.
+            $sql .= " and s.suppliers_is_default = 1 ";
             $sql .= ($this->userId != 0 ? "and spo.purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != "" ? "and (spo.purchase_order_number like :purchase_order_number
-                or spo.purchase_order_supplier_name like :purchase_order_supplier_name 
-                or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name 
+                or spo.purchase_order_supplier_name like :purchase_order_supplier_name
+                or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name
                 or spo.purchase_order_product_name like :purchase_order_product_name) " : " ");
             }
             $sql .= " order by spo.purchase_order_is_active desc, ";
@@ -288,14 +296,17 @@ class Expenses
             $sql .= "from {$this->tblSuppliersPurchaseOrder} as spo, ";
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
-            $sql .= " and CAST(spo.purchase_order_total_paid_per_product AS DECIMAL(10, 2)) != 0 ";
+            // See readAll() above - expenses are identified by the fixed
+            // "Other operating expenses" supplier, not by whether they've
+            // been paid yet.
+            $sql .= " and s.suppliers_is_default = 1 ";
             $sql .= ($this->userId != 0 ? "and spo.purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != "" ? "and (spo.purchase_order_number like :purchase_order_number
-                or spo.purchase_order_supplier_name like :purchase_order_supplier_name 
-                or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name 
+                or spo.purchase_order_supplier_name like :purchase_order_supplier_name
+                or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name
                 or spo.purchase_order_product_name like :purchase_order_product_name) " : " ");
             }
             $sql .= " order by spo.purchase_order_is_active desc, ";
