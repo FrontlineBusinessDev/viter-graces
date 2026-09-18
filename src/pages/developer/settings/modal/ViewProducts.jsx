@@ -29,7 +29,7 @@ const ViewProducts = ({ itemEdit }) => {
       onClick={handleClose}
     >
       <div
-        className={`p-1 min-w-[650px] animate-slideUp w-full max-w-lg my-10`}
+        className={`p-1 max-w-[650px] animate-slideUp w-full my-10`}
         onClick={(e) => e.stopPropagation()}
       >
         <div className="bg-light dark:bg-gray-900 rounded-lg dark:border dark:border-gray-800 flex flex-col max-h-[90vh] p-4">
