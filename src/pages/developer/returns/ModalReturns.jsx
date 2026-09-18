@@ -590,8 +590,7 @@ const ModalReturns = ({ itemEdit }) => {
                       disabled={mutation.isPending}
                     />
                   </div>
-                  {props.values.return_product_reason === "other" ||
-                  isEdit ? (
+                  {props.values.return_product_reason === "other" || isEdit ? (
                     <div className="flex items-center gap-2 mt-3">
                       <button
                         type="button"
