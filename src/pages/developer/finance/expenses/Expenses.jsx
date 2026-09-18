@@ -181,6 +181,21 @@ const Expenses = () => {
             // status, not is_status, is what carries "paid" for this row).
             viewOnlyStatuses: ["paid"],
             viewOnlyStatusField: "payment_status",
+            // An unpaid expense against the "Other operating expenses"
+            // pseudo-supplier isn't a real purchase order - it can only be
+            // removed, not archived/edited (see expenses create/update.php,
+            // which hardcode this exact supplier name for such rows).
+            deleteOnlyCondition: (row) =>
+              row?.payment_status === "unpaid" &&
+              row?.purchase_order_supplier_name ===
+                "Other operating expenses",
+            // A partially paid expense already has money applied to it -
+            // don't allow it to be archived or deleted outright.
+            hiddenActionStatuses: {
+              field: "payment_status",
+              statuses: ["partially paid"],
+              actions: ["archive", "delete"],
+            },
             header: "Action",
             classTh: " text-center ",
             classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",

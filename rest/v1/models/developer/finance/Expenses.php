@@ -236,6 +236,7 @@ class Expenses
             $sql .= "from {$this->tblSuppliersPurchaseOrder} as spo, ";
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
+<<<<<<< HEAD
             // Expenses are purchase orders recorded against the fixed "Other
             // operating expenses" supplier (see readOtherSupplier() in
             // Suppliers.php / SuppliersProduct.php, used by this module's own
@@ -245,6 +246,8 @@ class Expenses
             // hid legitimate unpaid/partially-paid expenses (e.g. PO-008)
             // from their own list.
             $sql .= " and s.suppliers_is_default = 1 ";
+=======
+>>>>>>> 0a1c6e608cc4ae0408976fc55c080b23dee8c3ed
             $sql .= ($this->userId != 0 ? "and spo.purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
@@ -297,10 +300,13 @@ class Expenses
             $sql .= "from {$this->tblSuppliersPurchaseOrder} as spo, ";
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
+<<<<<<< HEAD
             // See readAll() above - expenses are identified by the fixed
             // "Other operating expenses" supplier, not by whether they've
             // been paid yet.
             $sql .= " and s.suppliers_is_default = 1 ";
+=======
+>>>>>>> 0a1c6e608cc4ae0408976fc55c080b23dee8c3ed
             $sql .= ($this->userId != 0 ? "and spo.purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);

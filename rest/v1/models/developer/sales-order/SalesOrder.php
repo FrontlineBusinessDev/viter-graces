@@ -223,7 +223,7 @@ class SalesOrder
             } elseif (is_array($value)) {
                 $selectedValues = array_values(array_filter(
                     $value,
-                    fn ($v) => trim((string) $v) !== ""
+                    fn($v) => trim((string) $v) !== ""
                 ));
 
                 if (empty($selectedValues)) {
@@ -551,8 +551,7 @@ class SalesOrder
             or sales_order_product_name like :sales_order_product_name ) " : " ");
             }
             $sql .= " group by sales_order_number ";
-            $sql .= " order by sales_order_is_active desc, ";
-            $sql .= "sales_order_number desc ";
+            $sql .= " order by sales_order_number desc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);
@@ -1853,7 +1852,7 @@ class SalesOrder
         return $query;
     }
 
-            // read all order number 
+    // read all order number 
     public function readAllOrderNumbers()
     {
         try {
