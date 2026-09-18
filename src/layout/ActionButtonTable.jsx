@@ -14,6 +14,15 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
     !["edit", "delete"].includes(name) ||
     item.editDeleteStatuses.includes(dataArray?.is_status);
 
+  // when a column names statuses that should be read-only (e.g. Sales
+  // Orders: "paid"), hide every action except view for those rows - reads
+  // dataArray.is_status by default, or item.viewOnlyStatusField when a
+  // column needs to key off a different row field (e.g. Expenses: "paid"
+  // lives on payment_status, since is_status there is the PO status)
+  const isViewOnly = item?.viewOnlyStatuses?.includes(
+    dataArray?.[item?.viewOnlyStatusField ?? "is_status"],
+  );
+
   // when a column names a row field to watch (e.g. Sales Orders:
   // sales_order_has_return), disable delete instead of hiding it, with a
   // tooltip explaining why - the row is still associated with something
@@ -79,6 +88,7 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
               isEmptyItem(a?.name, "") === "edit" &&
               Number(isEmptyItem(a?.isActive, 1)) ===
                 Number(isEmptyItem(dataArray?.is_active, 1)) &&
+              !isViewOnly &&
               isEditDeleteAllowed("edit") && (
                 <div key={akey}>
                   <ActionButton
@@ -96,6 +106,7 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
               isEmptyItem(b?.name, "") !== "view" &&
               Number(isEmptyItem(b?.isActive, 1)) ===
                 Number(isEmptyItem(dataArray?.is_active, 1)) &&
+              !isViewOnly &&
               isEditDeleteAllowed(isEmptyItem(b?.name, "")) && (
                 <div key={bkey}>
                   <ActionButton

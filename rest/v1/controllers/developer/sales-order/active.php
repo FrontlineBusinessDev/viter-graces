@@ -33,6 +33,11 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         if ((float)$val->sales_order_is_active == 0) {
             $val->sales_order_status = "inactive";
         } else {
+            // updateStatus() reads the paid amount off $val (not $data)
+            // to work out paid/overdue/partial/unpaid - without this the
+            // property is unset, restoring a partially paid order back to
+            // "unpaid" instead of "partial".
+            $val->sales_order_paid_amount = $data["sales_order_paid_amount"];
             // INSTALLMENT DATA
             updateStatus($val, $data);
         }

@@ -63,9 +63,9 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
         $weeklyData[] = [
             "label"    => $label,
-            "profit"   => (string)$profitW,
+            "revenue"  => (string)$profitW,
             "expenses" => (string)$expensesW,
-            "revenue"  => (string)($profitW - $expensesW)
+            "profit"   => (string)($profitW - $expensesW)
         ];
     }
 
@@ -119,9 +119,9 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
         $monthlyData[] = [
             "label"    => $label,
-            "profit"   => (string)$profitM,
+            "revenue"  => (string)$profitM,
             "expenses" => (string)$expensesM,
-            "revenue"  => (string)($profitM - $expensesM)
+            "profit"   => (string)($profitM - $expensesM)
         ];
     }
 
@@ -167,9 +167,9 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
 
         $yearlyData[] = [
             "label"    => $label,
-            "profit"   => (string)$profitY,
+            "revenue"  => (string)$profitY,
             "expenses" => (string)$expensesY,
-            "revenue"  => (string)($profitY - $expensesY)
+            "profit"   => (string)($profitY - $expensesY)
         ];
     }
 

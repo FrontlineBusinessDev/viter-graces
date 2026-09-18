@@ -1271,15 +1271,15 @@ class ReportSalesOrder
             $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
-            $sql .= " where CAST(sales_order_balance_per_product AS DECIMAL(10, 2)) != 0 ";
+            $sql .= " where 1 = 1 ";
             $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
-                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number 
-            or sales_order_customer_name like :sales_order_customer_name 
-            or sales_order_received_by_name like :sales_order_received_by_name 
-            or sales_order_product_owner_name like :sales_order_product_owner_name 
+                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number
+            or sales_order_customer_name like :sales_order_customer_name
+            or sales_order_received_by_name like :sales_order_received_by_name
+            or sales_order_product_owner_name like :sales_order_product_owner_name
             or sales_order_product_name like :sales_order_product_name ) " : " ");
             }
             $sql .= " order by DATE(sales_order_date) desc, ";
@@ -1326,15 +1326,15 @@ class ReportSalesOrder
             $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
             $sql .= "sales_order_customer_name as name ";
             $sql .= "from {$this->tblSalesOrder} ";
-            $sql .= " where CAST(sales_order_balance_per_product AS DECIMAL(10, 2)) != 0 ";
+            $sql .= " where 1 = 1 ";
             $sql .= ($this->userId != 0 ? "and sales_order_product_owner_id = :sales_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
-                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number 
-            or sales_order_customer_name like :sales_order_customer_name 
-            or sales_order_received_by_name like :sales_order_received_by_name 
-            or sales_order_product_owner_name like :sales_order_product_owner_name 
+                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number
+            or sales_order_customer_name like :sales_order_customer_name
+            or sales_order_received_by_name like :sales_order_received_by_name
+            or sales_order_product_owner_name like :sales_order_product_owner_name
             or sales_order_product_name like :sales_order_product_name ) " : " ");
             }
             $sql .= " order by sales_order_is_active desc, ";
@@ -1377,14 +1377,14 @@ class ReportSalesOrder
             $sql .= "purchase_order_is_active as is_active, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
-            $sql .= " where CAST(purchase_order_total_balance_per_product AS DECIMAL(10, 2)) != 0 ";
+            $sql .= " where 1 = 1 ";
             $sql .= ($this->userId != 0 ? "and purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != "" ? "and (purchase_order_number like :purchase_order_number
-                or purchase_order_supplier_name like :purchase_order_supplier_name 
-                or purchase_order_product_owner_name like :purchase_order_product_owner_name 
+                or purchase_order_supplier_name like :purchase_order_supplier_name
+                or purchase_order_product_owner_name like :purchase_order_product_owner_name
                 or purchase_order_product_name like :purchase_order_product_name) " : " ");
             }
             $sql .= " order by purchase_order_is_active desc, ";
@@ -1425,14 +1425,14 @@ class ReportSalesOrder
             $sql .= "purchase_order_is_active as is_active, ";
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
-            $sql .= " where CAST(purchase_order_total_balance_per_product AS DECIMAL(10, 2)) != 0 ";
+            $sql .= " where 1 = 1 ";
             $sql .= ($this->userId != 0 ? "and purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != "" ? "and (purchase_order_number like :purchase_order_number
-                or purchase_order_supplier_name like :purchase_order_supplier_name 
-                or purchase_order_product_owner_name like :purchase_order_product_owner_name 
+                or purchase_order_supplier_name like :purchase_order_supplier_name
+                or purchase_order_product_owner_name like :purchase_order_product_owner_name
                 or purchase_order_product_name like :purchase_order_product_name) " : " ");
             }
             $sql .= "order by purchase_order_is_active desc, ";

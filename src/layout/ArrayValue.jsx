@@ -32,13 +32,8 @@ export const ActiveInActiveStatus = (val = "default-status") => {
     },
     {
       name: ["ar-finance"],
-      label: "Due Soon",
-      value: "Due Soon",
-    },
-    {
-      name: ["ar-finance"],
-      label: "Due Tomorrow",
-      value: "Due Tomorrow",
+      label: "Overdue",
+      value: "Overdue",
     },
     {
       name: ["ar-finance"],
@@ -47,18 +42,23 @@ export const ActiveInActiveStatus = (val = "default-status") => {
     },
     {
       name: ["ar-finance"],
-      label: "Pending",
-      value: "Pending",
+      label: "Due Tomorrow",
+      value: "Due Tomorrow",
     },
     {
       name: ["ar-finance"],
-      label: "Overdue",
-      value: "Overdue",
+      label: "Due Soon",
+      value: "Due Soon",
     },
     {
       name: ["ar-finance"],
       label: "Partial",
       value: "Partial",
+    },
+    {
+      name: ["ar-finance"],
+      label: "Pending",
+      value: "Pending",
     },
     {
       name: ["stock-overview"],
@@ -123,13 +123,13 @@ export const ActiveInActiveStatus = (val = "default-status") => {
     },
     {
       name: ["stock-overview"],
-      label: "in stock",
-      value: "in stock",
+      label: "low stock",
+      value: "low stock",
     },
     {
       name: ["stock-overview"],
-      label: "low stock",
-      value: "low stock",
+      label: "in stock",
+      value: "in stock",
     },
 
     {

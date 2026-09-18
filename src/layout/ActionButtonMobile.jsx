@@ -18,11 +18,27 @@ const ActionButtonMobile = ({
   path,
   itemVal = [],
   updateOnly = false,
+  blockDeleteField,
+  viewOnlyStatuses,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
+  // when a row field is named (e.g. Sales Orders: sales_order_has_return),
+  // disable delete instead of hiding it, with a tooltip explaining why -
+  // mirrors ActionButtonTable's desktop behavior
+  const isDeleteBlocked =
+    blockDeleteField &&
+    Number(isEmptyItem(dataArray?.[blockDeleteField], 0)) > 0;
+
+  // when statuses are named (e.g. Sales Orders: "paid"), hide every action
+  // except view for those rows - mirrors ActionButtonTable's desktop behavior
+  const isViewOnly = viewOnlyStatuses?.includes(dataArray?.is_status);
+
   // ACTIONS ACHIEVE, RESTORE AND DELETE
   const handleAction = (val) => {
+    if (val?.name === "delete" && isDeleteBlocked) {
+      return;
+    }
     dispatch(setIsAction(true));
     setData({
       ...dataArray,
@@ -90,71 +106,73 @@ const ActionButtonMobile = ({
               );
             })}
             {dataArray?.is_active > 0 ? (
-              <>
-                <ActionButton
-                  item={{
-                    ...dataArray,
-                    name: "edit",
-                    path: path,
-                    isActive: 1,
-                    testId: "action-edit",
-                    icon: <Edit className="size-5 lg:size-4" />,
-                  }}
-                  onClick={() =>
-                    handleUpdate({
+              !isViewOnly && (
+                <>
+                  <ActionButton
+                    item={{
                       ...dataArray,
                       name: "edit",
                       path: path,
                       isActive: 1,
-                    })
-                  }
-                  data-testid={"action-edit"}
-                />
-                <ActionButton
-                  item={{
-                    ...dataArray,
-                    name: "archive",
-                    path: "active",
-                    isActive: 1,
-                    testId: "action-archive",
-                    icon: <ArchiveRestore className="size-5 lg:size-4" />,
-                  }}
-                  onClick={() =>
-                    handleAction({
+                      testId: "action-edit",
+                      icon: <Edit className="size-5 lg:size-4" />,
+                    }}
+                    onClick={() =>
+                      handleUpdate({
+                        ...dataArray,
+                        name: "edit",
+                        path: path,
+                        isActive: 1,
+                      })
+                    }
+                    data-testid={"action-edit"}
+                  />
+                  <ActionButton
+                    item={{
                       ...dataArray,
                       name: "archive",
                       path: "active",
                       isActive: 1,
                       testId: "action-archive",
-                    })
-                  }
-                  data-testid={"action-archive"}
-                />
-                {path === "users" && (
-                  <div>
-                    <ActionButton
-                      item={{
+                      icon: <ArchiveRestore className="size-5 lg:size-4" />,
+                    }}
+                    onClick={() =>
+                      handleAction({
                         ...dataArray,
-                        name: "reset",
-                        path: "reset-password",
-                        icon: <KeySquare className="size-5 lg:size-4" />,
+                        name: "archive",
+                        path: "active",
                         isActive: 1,
-                        testId: "action-reset",
-                      }}
-                      onClick={() =>
-                        handleAction({
+                        testId: "action-archive",
+                      })
+                    }
+                    data-testid={"action-archive"}
+                  />
+                  {path === "users" && (
+                    <div>
+                      <ActionButton
+                        item={{
                           ...dataArray,
                           name: "reset",
                           path: "reset-password",
+                          icon: <KeySquare className="size-5 lg:size-4" />,
                           isActive: 1,
                           testId: "action-reset",
-                        })
-                      }
-                      data-testid={"action-reset"}
-                    />
-                  </div>
-                )}
-              </>
+                        }}
+                        onClick={() =>
+                          handleAction({
+                            ...dataArray,
+                            name: "reset",
+                            path: "reset-password",
+                            isActive: 1,
+                            testId: "action-reset",
+                          })
+                        }
+                        data-testid={"action-reset"}
+                      />
+                    </div>
+                  )}
+                </>
+              )
             ) : (
               <>
                 <ActionButton
@@ -187,6 +205,8 @@ const ActionButtonMobile = ({
                     icon: <Trash className="size-5 lg:size-4" />,
                   }}
                   onClick={() => handleAction({ ...dataArray, name: "delete" })}
+                  disabled={isDeleteBlocked}
+                  tooltip={isDeleteBlocked ? "Linked to a return" : undefined}
                   data-testid={"action-delete"}
                 />
               </>

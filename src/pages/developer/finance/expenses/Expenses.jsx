@@ -1,5 +1,9 @@
 import { MultiSelectCheckboxFilter } from "@/components/inputs/InputSelect";
-import { ActionTableList, PaymentMethodList } from "@/layout/ArrayValue";
+import {
+  ActionTableList,
+  ActiveInActiveStatus,
+  PaymentMethodList,
+} from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -22,6 +26,25 @@ const Expenses = () => {
 
   // Columns
   const columns = [
+    {
+      accessorKey: "payment_status",
+      header: "payment status",
+      classTh: "min-w-[9rem]",
+      classTd: "",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            staticOptions={ActiveInActiveStatus(
+              "purchase-order-payment-status",
+            ).map((option) => option.value)}
+            testFilterId={"filter-payment-status"}
+          />
+        ),
+      },
+      status_option: ActiveInActiveStatus("purchase-order-payment-status"),
+    },
     {
       accessorKey: "formated_date",
       header: "Transaction Date",
@@ -154,6 +177,10 @@ const Expenses = () => {
             accessorKey: "action",
             haveAction: "action",
             action_array: ActionTableList("expenses", "finance-expenses"),
+            // A paid expense is settled - hide its actions entirely (payment
+            // status, not is_status, is what carries "paid" for this row).
+            viewOnlyStatuses: ["paid"],
+            viewOnlyStatusField: "payment_status",
             header: "Action",
             classTh: " text-center ",
             classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",

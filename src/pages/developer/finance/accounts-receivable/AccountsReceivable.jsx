@@ -18,12 +18,12 @@ import { MultiRangeDateFilter } from "@/components/inputs/InputRangeFilter";
 // client-side re-assertion of that same order so it holds even across
 // InfiniteTable's own accumulated/flattened pages, not a replacement for it.
 const ACCOUNTS_RECEIVABLE_STATUS_PRIORITY = {
-  "due soon": 1,
-  "due tomorrow": 2,
-  "due today": 3,
-  pending: 4,
-  overdue: 5,
-  partial: 6,
+  overdue: 1,
+  "due today": 2,
+  "due tomorrow": 3,
+  "due soon": 4,
+  partial: 5,
+  pending: 6,
 };
 
 const getAccountsReceivableStatusRank = (row) =>
@@ -66,7 +66,7 @@ const AccountsReceivable = () => {
     setItemEdit(item);
   };
 
-  // Columns Pending, Due Soon, Due tomorrow, Due today, Overdue, Partial
+  // Columns Overdue, Due today, Due tomorrow, Due Soon, Partial, Pending
   const columns = [
     {
       accessorKey: "status_text",
