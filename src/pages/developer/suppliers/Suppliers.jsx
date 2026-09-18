@@ -16,6 +16,7 @@ import { MdEmail } from "react-icons/md";
 import ModalAddItem from "./modal/ModalAddItem";
 import ModalSuppliers from "./modal/ModalSuppliers";
 import { MultiRangeAmountFilter } from "@/components/inputs/InputRangeFilter";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 
 const Suppliers = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -119,15 +120,19 @@ const Suppliers = () => {
         ),
       },
     },
-    {
-      accessorKey: "action",
-      action_array: ActionTableList("customer"),
-      header: "action",
-      isHaveLink: false,
-      icon: "",
-      classTh: "text-center w-[7rem]",
-      classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
-    },
+    ...(Number(ProductOwnerId(store)) > 0
+      ? []
+      : [
+          {
+            accessorKey: "action",
+            action_array: ActionTableList("customer"),
+            header: "action",
+            isHaveLink: false,
+            icon: "",
+            classTh: "text-center w-[7rem]",
+            classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
+          },
+        ]),
   ];
 
   // SUB Columns Tables
@@ -201,8 +206,10 @@ const Suppliers = () => {
         ),
       },
     },
-    ...(getAdminDeveloperRole(store)
-      ? [
+
+    ...(Number(ProductOwnerId(store)) > 0
+      ? []
+      : [
           {
             accessorKey: "action",
             action_array: ActionTableList("roles"),
@@ -210,8 +217,7 @@ const Suppliers = () => {
             classTh: " text-center w-[5rem] ",
             classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
           },
-        ]
-      : []),
+        ]),
   ];
 
   return (

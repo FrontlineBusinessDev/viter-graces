@@ -26,8 +26,12 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
     const rows = (itemEdit?.items || []).map((item, index) => ({
       "#": index + 1,
       "Due Date": isEmptyItem(item?.purchase_order_date, ""),
-      Amount: Number(item?.purchase_order_total_amount_per_product || 0).toFixed(2),
-      "Paid Amount": Number(item?.purchase_order_total_paid_per_product || 0).toFixed(2),
+      Amount: Number(
+        item?.purchase_order_total_amount_per_product || 0,
+      ).toFixed(2),
+      "Paid Amount": Number(
+        item?.purchase_order_total_paid_per_product || 0,
+      ).toFixed(2),
       "Balance Amount": Number(
         item?.purchase_order_total_balance_per_product || 0,
       ).toFixed(2),
@@ -198,7 +202,7 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
           />
         </li>
       </ul>
-      <div className="grid grid-cols-2 bg-[#F5F5EC] dark:bg-gray-600 p-2">
+      <div className="grid grid-cols-2 bg-[#F5F5EC] dark:bg-gray-600 p-2 mb-5">
         <span className="font-bold text-lg text-red-600 dark:text-light">
           Balance
         </span>

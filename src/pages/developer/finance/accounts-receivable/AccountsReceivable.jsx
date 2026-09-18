@@ -4,7 +4,10 @@ import { ActionTableList, ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
-import { ProductOwnerIdOnly } from "@/utilities/productOwnerToken";
+import {
+  ProductOwnerId,
+  ProductOwnerIdOnly,
+} from "@/utilities/productOwnerToken";
 import React from "react";
 import UpdateAccountsReceivableDetails from "./UpdateAccountsReceivableDetails";
 import ViewAccountsReceivableDetails from "./ViewAccountsReceivableDetails";
@@ -279,7 +282,7 @@ const AccountsReceivable = () => {
         ),
       },
     },
-    ...(Number(ProductOwnerIdOnly(store)) > 0
+    ...(Number(ProductOwnerId(store)) > 0
       ? [
           {
             accessorKey: "action",

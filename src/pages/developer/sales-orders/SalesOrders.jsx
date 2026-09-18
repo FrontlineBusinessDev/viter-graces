@@ -20,6 +20,7 @@ import {
   MultiRangeDateFilter,
 } from "@/components/inputs/InputRangeFilter";
 import ViewSalesDetails from "./ViewSalesDetails";
+import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 
 const SalesOrders = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -245,12 +246,13 @@ const SalesOrders = () => {
     },
     {
       accessorKey: "action",
-      action_array: ActionTableList(
-        "sales-order",
-        Number(ProductOwnerId(store)) > 0
-          ? "product_owner_sales_order"
-          : "status-with-view",
-      ),
+      action_array: ActionTableList("sales-order", "status-with-view"),
+      // action_array: ActionTableList(
+      //   "sales-order",
+      //   Number(ProductOwnerId(store)) > 0
+      //     ? "product_owner_sales_order"
+      //     : "status-with-view",
+      // ),
       // sales_order_has_return (from SalesOrder::readLimit()) flags orders
       // with at least one item still claimed by a pending/processed return -
       // block deleting the whole order from the table until that clears.
@@ -289,6 +291,7 @@ const SalesOrders = () => {
           setItemEdit={setItemEdit}
           setDataCount={setDataCount}
           haveFilterTable={true}
+          // ishaveAdd={getAdminDeveloperRole(store)}
         />
       </HeaderNav>
       {store.isAdd && (

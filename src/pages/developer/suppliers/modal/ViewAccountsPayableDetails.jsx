@@ -193,7 +193,7 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
           />
         </li>
       </ul>
-      <div className="grid grid-cols-2 bg-[#F5F5EC] dark:bg-gray-600 p-2">
+      <div className="grid grid-cols-2 bg-[#F5F5EC] dark:bg-gray-600 p-2 mb-5">
         <span className="font-bold text-lg text-red-600 dark:text-light">
           Balance
         </span>

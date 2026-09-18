@@ -250,10 +250,6 @@ const InfiniteFilterWithDropDown = ({
 
         return true;
       },
-      // multi-select filter: OR the checked values together. Values are
-      // usually strings (e.g. "paid", "cash"), but some columns (is_active,
-      // restocked) filter on 0/1 - stringify both sides so a numeric filter
-      // value still matches a numeric or string row value either way.
       multiSelect: (row, columnId, value) => {
         if (!Array.isArray(value) || value.length === 0) return true;
 
@@ -273,9 +269,6 @@ const InfiniteFilterWithDropDown = ({
 
         return true;
       },
-      // multi-range filter: pair with MultiRangeAmountFilter
-      // (InputRangeFilter.jsx). A row matches if it falls inside ANY of the
-      // selected [min, max] ranges (OR'd together).
       multiRange: (row, columnId, value) => {
         if (!Array.isArray(value) || value.length === 0) return true;
 
@@ -287,18 +280,9 @@ const InfiniteFilterWithDropDown = ({
           return true;
         });
       },
-      // multi-range date filter: pair with MultiRangeDateFilter
-      // (InputRangeFilter.jsx). A row matches if its date falls inside ANY of
-      // the selected start/end spans (OR'd together).
       multiDateRange: (row, columnId, value) => {
         if (!Array.isArray(value) || value.length === 0) return true;
 
-        // Flexible-plan orders have no fixed due date to fall inside a
-        // range, so they're matched separately here and OR'd together with
-        // any selected date ranges (see MultiRangeDateFilter's allowFlexible
-        // prop) rather than one excluding the other. Other columns using
-        // this filterFn never produce a `.flexible` item, so this is a
-        // no-op for them.
         const flexibleMarker = value.find((range) => range.flexible);
         const ranges = value.filter((range) => !range.flexible);
 
@@ -309,9 +293,6 @@ const InfiniteFilterWithDropDown = ({
           const installmentType =
             rowData?.sales_order_installment_type?.toLowerCase();
 
-          // sales_order_installment_type defaults to "flexible" on every
-          // order regardless of payment terms, so this must also require
-          // payment terms = installment or it'd match every order.
           const isFlexibleRow =
             paymentTerms === "installment" &&
             (["flexible", "customize"].includes(installmentType) ||
@@ -336,10 +317,6 @@ const InfiniteFilterWithDropDown = ({
   });
 
   const rows = table?.getRowModel()?.rows;
-
-  // console.log("rows", rows);
-  // console.log("tableData", tableData);
-  // console.log("getHeaderGroups", table?.getHeaderGroups());
 
   // ACTIONS ADD
   const handleAdd = () => {
@@ -600,34 +577,40 @@ const InfiniteFilterWithDropDown = ({
                             {renderCellContent(item, rowData, path)}
 
                             {/* FOR ACTION BUTTONS */}
-                            {item?.column?.columnDef?.accessorKey ===
-                              "action" && (
+                            {Number(ProductOwnerId(store)) > 0 ? (
+                              ""
+                            ) : (
                               <>
-                                {item?.column?.columnDef?.haveAction ? (
+                                {item?.column?.columnDef?.accessorKey ===
+                                  "action" && (
                                   <>
-                                    {rowData?.is_view === 1 && (
-                                      <ActionButtonTable
-                                        item={item?.column?.columnDef}
-                                        dataArray={rowData}
-                                        setData={setData}
-                                        setItemEdit={setItemEdit}
-                                        ishaveSubAdd={ishaveSubAdd}
-                                        path={path}
-                                      />
-                                    )}
-                                  </>
-                                ) : (
-                                  <>
-                                    {item?.column?.columnDef?.accessorKey ===
-                                      "action" && (
-                                      <ActionButtonTable
-                                        item={item?.column?.columnDef}
-                                        dataArray={rowData}
-                                        setData={setData}
-                                        setItemEdit={setItemEdit}
-                                        ishaveSubAdd={ishaveSubAdd}
-                                        path={path}
-                                      />
+                                    {item?.column?.columnDef?.haveAction ? (
+                                      <>
+                                        {rowData?.is_view === 1 && (
+                                          <ActionButtonTable
+                                            item={item?.column?.columnDef}
+                                            dataArray={rowData}
+                                            setData={setData}
+                                            setItemEdit={setItemEdit}
+                                            ishaveSubAdd={ishaveSubAdd}
+                                            path={path}
+                                          />
+                                        )}
+                                      </>
+                                    ) : (
+                                      <>
+                                        {item?.column?.columnDef
+                                          ?.accessorKey === "action" && (
+                                          <ActionButtonTable
+                                            item={item?.column?.columnDef}
+                                            dataArray={rowData}
+                                            setData={setData}
+                                            setItemEdit={setItemEdit}
+                                            ishaveSubAdd={ishaveSubAdd}
+                                            path={path}
+                                          />
+                                        )}
+                                      </>
                                     )}
                                   </>
                                 )}

@@ -110,7 +110,13 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
 
     mutation.mutate(data);
   };
+  const isInstallment =
+    itemEdit?.sales_order_payment_terms?.toLowerCase() === "installment";
 
+  const installmentType = isEmptyItem(
+    itemEdit?.sales_order_installment_type,
+    "",
+  );
   return (
     <ModalWrapper
       val={`Order Details - ${itemEdit?.sales_order_number}`}
@@ -119,6 +125,21 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
       isOpen={true}
       handleClose={handleClose}
     >
+      {/* <ul className="grid grid-cols-2 [&>li]:flex [&>li]:items-center [&>li]:gap-2 ">
+        <li>
+          <p>Customer:</p>
+          <p className="text-black dark:text-light">
+            {itemEdit?.sales_order_customer_name}
+          </p>
+        </li>
+        <li className="justify-end">
+          <p>Order Date:</p>
+          <p className="text-black dark:text-light">
+            {itemEdit?.sales_order_date}
+          </p>
+        </li>
+      </ul> */}
+
       <ul className="grid grid-cols-2 [&>li]:flex [&>li]:items-center [&>li]:gap-2 ">
         <li>
           <p>Customer:</p>
@@ -133,6 +154,24 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
           </p>
         </li>
       </ul>
+      <div className="flex justify-between">
+        <div className="flex">
+          <p className="mr-1">Payment terms:</p>
+          <p className="text-black dark:text-light capitalize">
+            {itemEdit?.sales_order_payment_terms}
+          </p>
+        </div>
+        {isInstallment ? (
+          <div className="flex">
+            <p className="mr-1">Installment Type:</p>
+            <p className="text-black dark:text-light capitalize">
+              {installmentType}
+            </p>
+          </div>
+        ) : (
+          ""
+        )}
+      </div>
 
       <div className="border shadow border-gray-300 rounded-lg dark:bg-gray-700 w-full  transition-all duration-300 ease-in-out ">
         <div className="relative overflow-auto w-full h-full min-h-80 dark:bg-gray-900! ">
@@ -200,7 +239,7 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
           />
         </li>
       </ul>
-      <div className="grid grid-cols-2 bg-[#F5F5EC] dark:bg-gray-600 p-2">
+      <div className="grid grid-cols-2 bg-[#F5F5EC] dark:bg-gray-600 p-2 mb-5">
         <span className="font-bold text-lg text-red-600 dark:text-light">
           Balance
         </span>

@@ -14,6 +14,7 @@ import ModalReturns from "./ModalReturns";
 import { devNavUrl } from "@/config/config";
 import { MultiRangeAmountFilter } from "@/components/inputs/InputRangeFilter";
 import { MultiRangeDateFilter } from "@/components/inputs/InputRangeFilter";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 
 const Returns = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -239,14 +240,22 @@ const Returns = () => {
         ),
       },
     },
-    {
-      accessorKey: "action",
-      action_array: ActionTableList("returns-products", "edit-delete-status"),
-      editDeleteStatuses: ["pending", "rejected"],
-      header: "Action",
-      classTh: "text-center w-[7rem]",
-      classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
-    },
+
+    ...(Number(ProductOwnerId(store)) > 0
+      ? []
+      : [
+          {
+            accessorKey: "action",
+            action_array: ActionTableList(
+              "returns-products",
+              "edit-delete-status",
+            ),
+            editDeleteStatuses: ["pending", "rejected"],
+            header: "Action",
+            classTh: "text-center w-[7rem]",
+            classTd: "opacity-100 group-hover:opacity-100 -right-3 pr-5 z-10 ",
+          },
+        ]),
   ];
 
   React.useEffect(() => {
