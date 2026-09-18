@@ -52,7 +52,6 @@ const StockLevels = () => {
     {
       accessorKey: "products_sku",
       header: "sku",
-      meta: "",
       classTh: "min-w-40",
       classTd: "",
       filterFn: "multiSelect",
@@ -84,7 +83,6 @@ const StockLevels = () => {
     {
       accessorKey: "products_unit",
       header: "unit",
-      meta: "",
       classTh: "min-w-40",
       classTd: "",
       filterFn: "multiSelect",
@@ -116,7 +114,6 @@ const StockLevels = () => {
     {
       accessorKey: "products_price",
       header: "Price",
-      meta: "",
       classTh: "min-w-40",
       classTd: "",
       filterFn: "multiRange",
