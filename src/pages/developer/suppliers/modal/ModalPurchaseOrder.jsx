@@ -13,6 +13,7 @@ import { apiVersion } from "@/config/config";
 import {
   ActivityLogDetails,
   discountTypeOption,
+  PaymentMethodList,
   taxOption,
 } from "@/layout/ArrayValue";
 import ModalWrapper from "@/layout/modal/ModalWrapper";
@@ -329,6 +330,10 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     purchase_order_payment_status: isEmptyItem(
       itemEdit?.purchase_order_payment_status,
       "unpaid",
+    ),
+    purchase_order_payment_method: isEmptyItem(
+      itemEdit?.purchase_order_payment_method,
+      "cash",
     ),
     purchase_order_note: isEmptyItem(itemEdit?.purchase_order_note, ""),
     suppliers_delivery: isEmptyItem(itemEdit?.suppliers_delivery, "monday"),
@@ -734,7 +739,7 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                     )}
                   </div>
 
-                  <div className="grid grid-cols-2 gap-4">
+                  <div className="grid grid-cols-3 gap-4">
                     <div className="relative capitalize mt-3">
                       <InputSelectArrayWithOptions
                         label="Purchase Order Status"
@@ -769,6 +774,22 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
                           }
                           props.setFieldValue(
                             "purchase_order_payment_status",
+                            e.target.value,
+                          );
+                          return e;
+                        }}
+                      />
+                    </div>
+                    <div className="relative capitalize mt-3">
+                      <InputSelectArrayWithOptions
+                        label="Payment Method"
+                        type="text"
+                        name="purchase_order_payment_method"
+                        defaultValue="cash"
+                        options={PaymentMethodList()}
+                        onChange={(e) => {
+                          props.setFieldValue(
+                            "purchase_order_payment_method",
                             e.target.value,
                           );
                           return e;

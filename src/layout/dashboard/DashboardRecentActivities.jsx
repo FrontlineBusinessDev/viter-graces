@@ -84,20 +84,14 @@ const DashboardRecentActivities = () => {
             </li>
           )}
         </ul>
-        {store.credentials?.data?.role === "developer" ? (
-          <>
-            {valData?.length > 0 ? (
-              <a
-                data-testid="recent-activities-btn-to-view"
-                href={`${devNavUrl}/${userRole}/activity-log`}
-                className="absolute bottom-3 text-orange-500 pt-3 inline-block"
-              >
-                Click to view →
-              </a>
-            ) : (
-              ""
-            )}
-          </>
+        {valData?.length > 0 ? (
+          <a
+            data-testid="recent-activities-btn-to-view"
+            href={`${devNavUrl}/${userRole}/activity-log`}
+            className="absolute bottom-3 text-orange-500 pt-3 inline-block"
+          >
+            Click to view →
+          </a>
         ) : (
           ""
         )}

@@ -48,16 +48,8 @@ const MetricCard = ({
   return (
     <Tag
       type={onClick ? "button" : undefined}
-      onClick={label !== "Outstanding Balance" ? onClick : ""}
-      // onClick={onClick}
-      // data-tooltip={onClick ? "View details" : undefined}
-      data-tooltip={
-        label !== "Outstanding Balance"
-          ? onClick
-            ? "View details"
-            : undefined
-          : "Redirect is not avialable for now"
-      }
+      onClick={onClick}
+      data-tooltip={onClick ? "View details" : undefined}
       className={`flex items-start gap-3 border border-gray-300 dark:border-gray-600 rounded-lg p-3 text-left bg-light dark:bg-gray-900 w-full ${
         onClick ? "cursor-pointer hover:border-primary tooltip-metric-card" : ""
       }`}

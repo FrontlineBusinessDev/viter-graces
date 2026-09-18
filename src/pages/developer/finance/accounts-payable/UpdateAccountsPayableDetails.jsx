@@ -34,6 +34,21 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
     Number(isEmptyItem(itemEdit?.balance_amount, 0)),
   );
 
+  // Per-product-row running Paid/Balance, seeded from the same itemEdit
+  // snapshot - itemEdit.items never refreshes while the modal stays open, so
+  // without this the rows below would stay frozen at their pre-save values
+  // even though the order-level totals above already update correctly.
+  const [itemPayments, setItemPayments] = React.useState(() => {
+    const map = {};
+    (itemEdit?.items || []).forEach((item) => {
+      map[item.purchase_order_aid] = {
+        paid: Number(item.purchase_order_total_paid_per_product || 0),
+        balance: Number(item.purchase_order_total_balance_per_product || 0),
+      };
+    });
+    return map;
+  });
+
   const queryClient = useQueryClient();
 
   const handleClose = () => {
@@ -76,9 +91,35 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
         } else {
           // Still owing - fold the payment just made into the running
           // totals and clear the input so the user can enter another one.
-          setSavedPaidAmount(Number(totalPaidAmount) + Number(paidAmount));
+          const newTotalPaid = Number(totalPaidAmount) + Number(paidAmount);
+          setSavedPaidAmount(newTotalPaid);
           setSavedBalanceAmount(newBalance);
           setItems([{ paid_amount: "" }]);
+
+          // Fold the same payment into each product row: New Paid Amount =
+          // Previous Paid Amount + Input Amount, New Balance Amount = Total
+          // Line Item Amount - New Paid Amount. Multi-item orders split the
+          // payment by each line's share of the order total, matching how
+          // the backend allocates it (see update.php).
+          setItemPayments(() => {
+            const updated = {};
+            (itemEdit?.items || []).forEach((item) => {
+              const aid = item.purchase_order_aid;
+              const itemTotalAmount = Number(
+                item.purchase_order_total_amount_per_product || 0,
+              );
+              const share =
+                Number(totalAmount) > 0
+                  ? itemTotalAmount / Number(totalAmount)
+                  : 0;
+              const newPaid = newTotalPaid * share;
+              updated[aid] = {
+                paid: newPaid,
+                balance: Math.max(0, itemTotalAmount - newPaid),
+              };
+            });
+            return updated;
+          });
         }
       }
       if (!data.success) {
@@ -247,16 +288,20 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
                       <AmountWithPesoSign
                         classN="size-3"
                         classAmnt="text-primary "
-                        amount={Number(a.purchase_order_total_paid_per_product)}
+                        amount={
+                          itemPayments[a.purchase_order_aid]?.paid ??
+                          Number(a.purchase_order_total_paid_per_product)
+                        }
                       />
                     </td>
                     <td className="">
                       <AmountWithPesoSign
                         classN="size-3"
                         classAmnt="text-primary text-warning "
-                        amount={Number(
-                          a.purchase_order_total_balance_per_product,
-                        )}
+                        amount={
+                          itemPayments[a.purchase_order_aid]?.balance ??
+                          Number(a.purchase_order_total_balance_per_product)
+                        }
                       />
                     </td>
                   </tr>

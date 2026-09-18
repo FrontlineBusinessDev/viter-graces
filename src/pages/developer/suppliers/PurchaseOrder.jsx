@@ -1,4 +1,8 @@
-import { ActiveInActiveStatus, ActionTableList } from "@/layout/ArrayValue";
+import {
+  ActiveInActiveStatus,
+  ActionTableList,
+  PaymentMethodList,
+} from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import { StoreContext } from "@/store/StoreContext";
@@ -172,6 +176,23 @@ const PurchaseOrder = () => {
       },
       amount: false,
       paid_amount: true,
+    },
+    {
+      accessorKey: "purchase_order_payment_method",
+      header: "payment method",
+      classTh: "min-w-[10rem]",
+      classTd: "capitalize ",
+      filterFn: "multiSelect",
+      meta: {
+        filterComponent: (column) => (
+          <MultiSelectCheckboxFilter
+            column={column}
+            staticOptions={PaymentMethodList().map((option) => option.value)}
+            testFilterId={"filter-method"}
+          />
+        ),
+      },
+      status_option: PaymentMethodList(),
     },
     ...(getAdminDeveloperRole(store)
       ? [

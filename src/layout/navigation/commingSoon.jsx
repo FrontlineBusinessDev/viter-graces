@@ -10,10 +10,7 @@ const commingSoon = ({ isExpanded, item }) => {
       <div>
         <span className="text-lg">{item.icon}</span>
         <span
-          className={`
-                          text-sm whitespace-nowrap
-                          transition-all duration-200
-                          ${isExpanded || window.innerWidth < 640 ? "opacity-100" : "opacity-0 w-0 overflow-hidden"}
+          className={`text-sm whitespace-nowrap transition-all duration-200 ${isExpanded || window.innerWidth < 640 ? "opacity-100" : "opacity-0 w-0 overflow-hidden"}
                         `}
         >
           {item.label}

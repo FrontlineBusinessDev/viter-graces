@@ -50,6 +50,7 @@ $val->purchase_order_supplier_name = $data["purchase_order_supplier_name"] ?? ""
 $val->purchase_order_date = $data["purchase_order_date"] ?? "";
 $val->purchase_order_expected_delivery = $expectedDeliveryDate;
 $val->purchase_order_payment = $payment;
+$val->purchase_order_payment_method = $data["purchase_order_payment_method"] ?? "cash";
 $val->purchase_order_is_active = 1;
 $val->purchase_order_status = $data["purchase_order_status"] ?? "";
 $val->purchase_order_payment_status = $data["purchase_order_payment_status"] ?? "";
