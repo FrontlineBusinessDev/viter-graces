@@ -32,7 +32,9 @@ const ModalReturns = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const isEdit = Boolean(itemEdit);
   const [selectedItems, setSelectedItems] = React.useState([]);
-  const [isSelected, setIsSelected] = React.useState(false);
+  const [isSelected, setIsSelected] = React.useState(
+    Number(itemEdit?.return_product_is_restocked) === 1,
+  );
 
   const initialReturnStateRef = React.useRef(null);
   if (initialReturnStateRef.current === null) {
@@ -424,7 +426,8 @@ const ModalReturns = ({ itemEdit }) => {
                         </optgroup>
                       </InputSelect>
                     </div>
-                    {props.values.return_product_reason === "other" ? (
+                    {props.values.return_product_reason === "other" ||
+                    isEdit ? (
                       <div className="relative ">
                         <InputText
                           label="Other Reason"
@@ -587,7 +590,8 @@ const ModalReturns = ({ itemEdit }) => {
                       disabled={mutation.isPending}
                     />
                   </div>
-                  {props.values.return_product_reason === "other" ? (
+                  {props.values.return_product_reason === "other" ||
+                  isEdit ? (
                     <div className="flex items-center gap-2 mt-3">
                       <button
                         type="button"

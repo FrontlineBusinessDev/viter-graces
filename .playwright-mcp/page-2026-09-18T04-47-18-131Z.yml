@@ -1,0 +1,26 @@
+- generic [ref=e5]:
+  - generic [ref=e1406]:
+    - paragraph [ref=e1407]: LOG IN
+    - generic [ref=e1408]: Please Login using your account
+  - generic [ref=e1409]:
+    - generic [ref=e1410]:
+      - textbox "EMAIL" [ref=e1412]: cyrene.lumabas@frontlinebusiness.com.ph
+      - generic [ref=e1417]:
+        - textbox "PASSWORD" [ref=e1418]: A!a123123123
+        - generic [ref=e1448] [cursor=pointer]
+      - button "Login" [ref=e1424] [cursor=pointer]
+      - paragraph [ref=e1425]:
+        - link "Forgot password?" [ref=e1426] [cursor=pointer]:
+          - /url: /forgot-password
+    - generic [ref=e1427]:
+      - generic [ref=e1428]: Quick Demo Login
+      - generic [ref=e1429]:
+        - button "Admin cyrene.lumabas@frontlinebusiness.com.ph" [active] [ref=e1430] [cursor=pointer]:
+          - generic [ref=e1434]: Admin
+          - generic [ref=e1435]: cyrene.lumabas@frontlinebusiness.com.ph
+        - button "Product Owner april9rhina@gmail.com" [ref=e1436] [cursor=pointer]:
+          - generic [ref=e1440]: Product Owner
+          - generic [ref=e1441]: april9rhina@gmail.com
+        - button "Cashier thea.consignado@frontlinebusiness.com.ph" [ref=e1442] [cursor=pointer]:
+          - generic [ref=e1446]: Cashier
+          - generic [ref=e1447]: thea.consignado@frontlinebusiness.com.ph

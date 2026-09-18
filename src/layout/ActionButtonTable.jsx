@@ -31,6 +31,25 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
     item?.blockDeleteField &&
     Number(isEmptyItem(dataArray?.[item.blockDeleteField], 0)) > 0;
 
+  // when a column names a predicate (e.g. Expenses: unpaid + supplier
+  // "Other"), restrict the row to delete only - hides view/edit/archive
+  // and shows just the delete action, regardless of is_active
+  const isDeleteOnly = item?.deleteOnlyCondition?.(dataArray);
+  const deleteAction = item?.action_array?.find(
+    (a) => isEmptyItem(a?.name, "") === "delete",
+  );
+
+  // when a column names specific actions that should be hidden for certain
+  // statuses (e.g. Expenses: no archive/delete once "partially paid" - money
+  // is already applied to it) - reads dataArray.is_status by default, or
+  // hiddenActionStatuses.field when a column needs to key off a different
+  // row field
+  const isActionHiddenForStatus = (name) =>
+    !!item?.hiddenActionStatuses?.actions?.includes(name) &&
+    item.hiddenActionStatuses.statuses.includes(
+      dataArray?.[item.hiddenActionStatuses.field ?? "is_status"],
+    );
+
   // ACTIONS ACHIEVE, RESTORE AND DELETE
   const handleAction = (val) => {
     if (val?.name === "delete" && isDeleteBlocked) {
@@ -68,62 +87,80 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
     <>
       <div className="flex items-center justify-end gap-3 ">
         <div className=" right-5 flex gap-x-2 items-center h-full ">
-          {item?.action_array?.map((a, akey) => {
-            return (
-              isEmptyItem(a?.name, "") === "view" &&
-              Number(isEmptyItem(a?.isActive, 1)) ===
-                Number(isEmptyItem(dataArray?.is_active, 1)) && (
-                <div key={akey}>
-                  <ActionButton
-                    item={a}
-                    onClick={() => handleView(a)}
-                    data-testid={a.testId}
-                  />
-                </div>
-              )
-            );
-          })}
-          {item?.action_array?.map((a, akey) => {
-            return (
-              isEmptyItem(a?.name, "") === "edit" &&
-              Number(isEmptyItem(a?.isActive, 1)) ===
-                Number(isEmptyItem(dataArray?.is_active, 1)) &&
-              !isViewOnly &&
-              isEditDeleteAllowed("edit") && (
-                <div key={akey}>
-                  <ActionButton
-                    item={a}
-                    onClick={() => handleUpdate(a)}
-                    data-testid={a.testId}
-                  />
-                </div>
-              )
-            );
-          })}
-          {item?.action_array?.map((b, bkey) => {
-            return (
-              isEmptyItem(b?.name, "") !== "edit" &&
-              isEmptyItem(b?.name, "") !== "view" &&
-              Number(isEmptyItem(b?.isActive, 1)) ===
-                Number(isEmptyItem(dataArray?.is_active, 1)) &&
-              !isViewOnly &&
-              isEditDeleteAllowed(isEmptyItem(b?.name, "")) && (
-                <div key={bkey}>
-                  <ActionButton
-                    item={b}
-                    onClick={() => handleAction(b)}
-                    disabled={b?.name === "delete" && isDeleteBlocked}
-                    tooltip={
-                      b?.name === "delete" && isDeleteBlocked
-                        ? "Linked to a return"
-                        : undefined
-                    }
-                    data-testid={b.testId}
-                  />
-                </div>
-              )
-            );
-          })}
+          {isDeleteOnly ? (
+            deleteAction &&
+            !isActionHiddenForStatus("delete") && (
+              <div>
+                <ActionButton
+                  item={deleteAction}
+                  onClick={() => handleAction(deleteAction)}
+                  disabled={isDeleteBlocked}
+                  tooltip={isDeleteBlocked ? "Linked to a return" : undefined}
+                  data-testid={deleteAction.testId}
+                />
+              </div>
+            )
+          ) : (
+            <>
+              {item?.action_array?.map((a, akey) => {
+                return (
+                  isEmptyItem(a?.name, "") === "view" &&
+                  Number(isEmptyItem(a?.isActive, 1)) ===
+                    Number(isEmptyItem(dataArray?.is_active, 1)) && (
+                    <div key={akey}>
+                      <ActionButton
+                        item={a}
+                        onClick={() => handleView(a)}
+                        data-testid={a.testId}
+                      />
+                    </div>
+                  )
+                );
+              })}
+              {item?.action_array?.map((a, akey) => {
+                return (
+                  isEmptyItem(a?.name, "") === "edit" &&
+                  Number(isEmptyItem(a?.isActive, 1)) ===
+                    Number(isEmptyItem(dataArray?.is_active, 1)) &&
+                  !isViewOnly &&
+                  isEditDeleteAllowed("edit") && (
+                    <div key={akey}>
+                      <ActionButton
+                        item={a}
+                        onClick={() => handleUpdate(a)}
+                        data-testid={a.testId}
+                      />
+                    </div>
+                  )
+                );
+              })}
+              {item?.action_array?.map((b, bkey) => {
+                return (
+                  isEmptyItem(b?.name, "") !== "edit" &&
+                  isEmptyItem(b?.name, "") !== "view" &&
+                  Number(isEmptyItem(b?.isActive, 1)) ===
+                    Number(isEmptyItem(dataArray?.is_active, 1)) &&
+                  !isViewOnly &&
+                  isEditDeleteAllowed(isEmptyItem(b?.name, "")) &&
+                  !isActionHiddenForStatus(isEmptyItem(b?.name, "")) && (
+                    <div key={bkey}>
+                      <ActionButton
+                        item={b}
+                        onClick={() => handleAction(b)}
+                        disabled={b?.name === "delete" && isDeleteBlocked}
+                        tooltip={
+                          b?.name === "delete" && isDeleteBlocked
+                            ? "Linked to a return"
+                            : undefined
+                        }
+                        data-testid={b.testId}
+                      />
+                    </div>
+                  )
+                );
+              })}
+            </>
+          )}
         </div>
       </div>
     </>

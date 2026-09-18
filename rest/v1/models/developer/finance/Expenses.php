@@ -236,14 +236,13 @@ class Expenses
             $sql .= "from {$this->tblSuppliersPurchaseOrder} as spo, ";
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
-            $sql .= " and CAST(spo.purchase_order_total_paid_per_product AS DECIMAL(10, 2)) != 0 ";
             $sql .= ($this->userId != 0 ? "and spo.purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != "" ? "and (spo.purchase_order_number like :purchase_order_number
-                or spo.purchase_order_supplier_name like :purchase_order_supplier_name 
-                or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name 
+                or spo.purchase_order_supplier_name like :purchase_order_supplier_name
+                or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name
                 or spo.purchase_order_product_name like :purchase_order_product_name) " : " ");
             }
             $sql .= " order by spo.purchase_order_is_active desc, ";
@@ -289,14 +288,13 @@ class Expenses
             $sql .= "from {$this->tblSuppliersPurchaseOrder} as spo, ";
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
-            $sql .= " and CAST(spo.purchase_order_total_paid_per_product AS DECIMAL(10, 2)) != 0 ";
             $sql .= ($this->userId != 0 ? "and spo.purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != "" ? "and (spo.purchase_order_number like :purchase_order_number
-                or spo.purchase_order_supplier_name like :purchase_order_supplier_name 
-                or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name 
+                or spo.purchase_order_supplier_name like :purchase_order_supplier_name
+                or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name
                 or spo.purchase_order_product_name like :purchase_order_product_name) " : " ");
             }
             $sql .= " order by spo.purchase_order_is_active desc, ";

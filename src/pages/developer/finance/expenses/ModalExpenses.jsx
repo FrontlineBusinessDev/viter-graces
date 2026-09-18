@@ -411,7 +411,7 @@ const ModalExpenses = ({ itemEdit }) => {
                         disabled={mutation.isPending}
                       />
                     </div>
-                    <div className="relative  mt-3">
+                    <div className="relative ">
                       <InputSelectArrayWithOptions
                         label="Type of discount"
                         type="purchase_order_discount_type"
