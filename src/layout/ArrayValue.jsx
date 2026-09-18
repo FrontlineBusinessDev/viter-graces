@@ -429,7 +429,7 @@ export const variantsStatus = (val = "active") => {
     purchases: "bg-violet-300 text-violet-700 ",
     stock_out__sales: "bg-gray-100 text-gray-500",
     stock_in__return: "bg-success/20 text-success",
-    stock_out__reject_defectiveitems: "bg-warning/10 text-warning",
+    stock_out__rejectdefective_items: "bg-purple-100 text-purple-500",
     // other
     draft: "bg-gray-300 text-gray-700",
     warning: "bg-warning/10 text-warning",
