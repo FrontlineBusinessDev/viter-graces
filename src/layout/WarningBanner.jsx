@@ -8,7 +8,7 @@ import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import { Info, TriangleAlert } from "lucide-react";
 import React, { useMemo } from "react";
 
-const WarningBanner = ({ path = "", text = "", id = 0, description = "" }) => {
+const WarningBanner = ({ path = "", text = "", id = 0, description = "", color = "blue" }) => {
   const { store, dispatch } = React.useContext(StoreContext);
   const {
     isLoading,
@@ -41,18 +41,18 @@ const WarningBanner = ({ path = "", text = "", id = 0, description = "" }) => {
       ) : error ? (
         <ServerError />
       ) : valData?.length > 0 ? (
-        <div className="bg-blue-100 text-blue-600 dark:bg-blue-300 dark:text-blue-300 border border-blue-300 rounded-xl px-3 py-2 my-2  ">
+        <div className={`bg-${color}-100 text-${color}-600 dark:bg-${color}-300 dark:text-${color}-300 border border-${color}-300 rounded-xl px-3 py-2 my-2  `}>
           <div className="flex items-center gap-2">
             <TriangleAlert size={14} className="place-self-start mt-0.5" />
-            <div className="dark:text-blue-600! mb-0 font-bold sm:truncate ">
+            <div className={`dark:text-${color}-600! mb-0 font-bold sm:truncate `}>
               {isLoading ? (
                 <TableLoading count={1} cols={1} />
               ) : (
                 <>
-                  <span className="mr-1 dark:text-blue-600">
+                  <span className={`mr-1 dark:text-${color}-600`}>
                     {isEmptyItem(valData?.length, "")}
                   </span>
-                  <span className="dark:text-blue-600 mr-1">{text}</span>
+                  <span className={`dark:text-${color}-600 mr-1`}>{text}</span>
                   {description}
                   {/* {isLowStock ? (
                     <>
@@ -75,18 +75,18 @@ const WarningBanner = ({ path = "", text = "", id = 0, description = "" }) => {
       )}
 
       {path === "" && description === "" && text !== "" ? (
-        <div className="bg-blue-100 text-blue-600 dark:bg-blue-300 dark:text-blue-300 border border-blue-200 rounded-xl px-3 py-2 my-2  ">
+        <div className={`bg-${color}-100 text-${color}-600 dark:bg-${color}-300 dark:text-${color}-300 border border-${color}-200 rounded-xl px-3 py-2 my-2  `}>
           <div className="flex items-center gap-2">
             <Info
               size={14}
-              className="dark:text-blue-600! place-self-start mt-0.5"
+              className={`dark:text-${color}-600! place-self-start mt-0.5`}
             />
-            <div className="dark:text-blue-600! mb-0 font-bold sm:truncate ">
+            <div className={`dark:text-${color}-600! mb-0 font-bold sm:truncate `}>
               {isLoading ? (
                 <TableLoading count={1} cols={1} />
               ) : (
                 <>
-                  <span className="dark:text-blue-600 mr-1">{text}</span>
+                  <span className={`dark:text-${color}-600 mr-1`}>{text}</span>
                 </>
               )}
             </div>

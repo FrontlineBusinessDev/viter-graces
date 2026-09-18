@@ -164,6 +164,7 @@ const MovementHistory = () => {
           text="products"
           description="are below low stock threshold"
           isLowStock={true}
+          color="orange"
         />
         <InfiniteTable
           columns={columns}
