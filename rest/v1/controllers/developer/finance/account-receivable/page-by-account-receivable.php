@@ -22,20 +22,29 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkPayload($data);
 
     if (array_key_exists("start", $_GET)) {
-        $val->userId = (float)$data["userId"];    // get data
-        $val->sales_order_customer_id = $data["id"];    // get data 
-        $val->column_search = $data["searchValue"];    // get data 
+        $val->sales_order_customer_id = $data["id"];    // get data
+        $val->column_search = $data["searchValue"];    // get data
         $val->column_start = $_GET['start'];
         $val->column_total = 15;
         $val->max = PHP_INT_MAX;
         $total_result_final = [];
 
-        // FOR MULTIPLE FILTER 
+        // FOR MULTIPLE FILTER
         $val->filters = $data['columnFilters'];
         checkLimitId($val->column_start, $val->column_total);
 
-        $query = checkReadLimit($val, allowedColumns());
-        $total_result = checkReadAll($val, allowedColumns());
+        // Cashiers only see the receivables for orders they personally
+        // created - scoped by sales_order_received_by_id, not the
+        // product-owner scoping below.
+        if (($data["role"] ?? "") === "cashier") {
+            $val->userId = (float)($data["loggedInId"] ?? 0);
+            $query = checkReadCashierLimit($val, allowedColumns());
+            $total_result = checkReadCashierAll($val, allowedColumns());
+        } else {
+            $val->userId = (float)$data["userId"];
+            $query = checkReadLimit($val, allowedColumns());
+            $total_result = checkReadAll($val, allowedColumns());
+        }
         $data = getResultData($query);
 
         for ($i = 0; $i < count($data); $i++) {

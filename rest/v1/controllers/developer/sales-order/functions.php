@@ -113,6 +113,22 @@ function checkDeleteInstallment($object)
     return $query;
 }
 
+// Read all - scoped to the orders a single cashier (sales_order_received_by_id) created
+function checkReadByReceivedById($object, $allowedColumns = [])
+{
+    $query = $object->readByReceivedById($allowedColumns);
+    checkQuery($query, "Empty records. (read by received by id)");
+    return $query;
+}
+
+// Read limit - scoped to the orders a single cashier (sales_order_received_by_id) created
+function checkReadByReceivedByIdLimit($object, $allowedColumns = [])
+{
+    $query = $object->readByReceivedByIdLimit($allowedColumns);
+    checkQuery($query, "Empty records. (limit)");
+    return $query;
+}
+
 // Read all
 function checkReadByCustomerId($object, $allowedColumns = [])
 {

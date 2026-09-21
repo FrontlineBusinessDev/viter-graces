@@ -151,6 +151,7 @@ const InfiniteTable = ({
           columnFilters: columnFilters,
           userId: userId,
           role: store.credentials?.data?.role,
+          loggedInId: store.credentials?.data?.id,
         },
         "post",
       ),
@@ -592,6 +593,7 @@ const InfiniteTable = ({
           searchValue={search.current?.value}
           isDeveloper={searchPayload.isDeveloper}
           userId={userId}
+          role={store.credentials?.data?.role}
           defaultFileName={path}
           onClose={() => setShowExportModal(false)}
         />

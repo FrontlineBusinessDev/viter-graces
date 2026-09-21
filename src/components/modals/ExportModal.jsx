@@ -9,6 +9,7 @@ const ExportModal = ({
   searchValue = "",
   isDeveloper = "0",
   userId = "",
+  role = "",
   defaultFileName = "export",
   onClose = () => {},
 }) => {
@@ -53,6 +54,7 @@ const ExportModal = ({
       searchValue,
       isDeveloper,
       userId,
+      role,
       fileName: fileName || "export",
     });
     onClose();

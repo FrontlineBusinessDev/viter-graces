@@ -377,6 +377,131 @@ class AccountReceivable
         return $query;
     }
 
+    // read all - scoped to the orders a single cashier (sales_order_received_by_id) created
+    public function readCashierAll($allowedColumns)
+    {
+        $params = [
+            ...$this->userId != 0 ? ["sales_order_received_by_id" => $this->userId] : [],
+            ...($this->column_search != "" ? [
+                "sales_order_number" => "%{$this->column_search}%",
+                "sales_order_customer_name" => "%{$this->column_search}%",
+                "sales_order_product_name" => "%{$this->column_search}%",
+                "sales_order_received_by_name" => "%{$this->column_search}%",
+                "sales_order_product_owner_name" => "%{$this->column_search}%",
+            ] : []),
+        ];
+
+        $filterColumn = $this->buildFilterColumns($allowedColumns, $params);
+        try {
+            $sql = "select *, ";
+            $sql .= "sales_order_status as is_status, ";
+            $sql .= "sales_order_aid as id, ";
+            $sql .= "sales_order_is_active as is_active, ";
+            $sql .= "sales_order_date as order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
+            $sql .= "CASE WHEN sales_order_paid_amount > 0 AND CAST(sales_order_total_balance_amount AS DECIMAL(10,2)) > 0 THEN 'Partial' ";
+            $sql .= "WHEN sales_order_due_date < CURDATE() THEN 'Overdue' ";
+            $sql .= "WHEN sales_order_due_date = CURDATE() THEN 'Due Today' ";
+            $sql .= "WHEN sales_order_due_date = CURDATE() + INTERVAL 1 DAY THEN 'Due Tomorrow' ";
+            $sql .= "WHEN sales_order_due_date BETWEEN CURDATE() + INTERVAL 2 DAY AND CURDATE() + INTERVAL 7 DAY THEN 'Due Soon' ";
+            $sql .= "ELSE 'Pending' END AS status_text, ";
+            $sql .= "CASE WHEN sales_order_due_date < CURDATE() THEN DATEDIFF(CURDATE(), sales_order_due_date) ELSE 0 END AS days_overdue, ";
+            $sql .= "sales_order_customer_name as name ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= " where CAST(sales_order_total_balance_amount AS DECIMAL(10, 2)) != 0 ";
+            $sql .= ($this->userId != 0 ? "and sales_order_received_by_id = :sales_order_received_by_id " : " ");
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number
+            or sales_order_customer_name like :sales_order_customer_name
+            or sales_order_received_by_name like :sales_order_received_by_name
+            or sales_order_product_owner_name like :sales_order_product_owner_name
+            or sales_order_product_name like :sales_order_product_name ) " : " ");
+            }
+            $sql .= " group by sales_order_number ";
+            $sql .= " order by days_overdue desc, ";
+            $sql .= "DATE(sales_order_due_date) desc, ";
+            $sql .= "sales_order_number asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read limit - scoped to the orders a single cashier (sales_order_received_by_id) created
+    public function readCashierLimit($allowedColumns)
+    {
+        $params = [
+            "start" => $this->column_start - 1,
+            "total" => $this->column_total,
+            ...$this->userId != 0 ? ["sales_order_received_by_id" => $this->userId] : [],
+            ...($this->column_search != "" ? [
+                "sales_order_number" => "%{$this->column_search}%",
+                "sales_order_customer_name" => "%{$this->column_search}%",
+                "sales_order_product_name" => "%{$this->column_search}%",
+                "sales_order_received_by_name" => "%{$this->column_search}%",
+                "sales_order_product_owner_name" => "%{$this->column_search}%",
+            ] : []),
+        ];
+
+        $filterColumn = $this->buildFilterColumns($allowedColumns, $params);
+        try {
+            $sql = "select *, ";
+            $sql .= "sales_order_status as is_status, ";
+            $sql .= "sales_order_aid as id, ";
+            $sql .= "sales_order_is_active as is_active, ";
+            $sql .= "sales_order_date as order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
+            $sql .= "CASE WHEN sales_order_paid_amount > 0 AND CAST(sales_order_total_balance_amount AS DECIMAL(10,2)) > 0 THEN 'Partial' ";
+            $sql .= "WHEN sales_order_due_date < CURDATE() THEN 'Overdue' ";
+            $sql .= "WHEN sales_order_due_date = CURDATE() THEN 'Due Today' ";
+            $sql .= "WHEN sales_order_due_date = CURDATE() + INTERVAL 1 DAY THEN 'Due Tomorrow' ";
+            $sql .= "WHEN sales_order_due_date BETWEEN CURDATE() + INTERVAL 2 DAY AND CURDATE() + INTERVAL 7 DAY THEN 'Due Soon' ";
+            $sql .= "ELSE 'Pending' END AS status_text, ";
+            $sql .= "CASE WHEN sales_order_due_date < CURDATE() THEN DATEDIFF(CURDATE(), sales_order_due_date) ELSE 0 END AS days_overdue, ";
+            $sql .= "sales_order_customer_name as name ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= " where CAST(sales_order_total_balance_amount AS DECIMAL(10, 2)) != 0 ";
+            $sql .= ($this->userId != 0 ? "and sales_order_received_by_id = :sales_order_received_by_id " : " ");
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number
+            or sales_order_customer_name like :sales_order_customer_name
+            or sales_order_received_by_name like :sales_order_received_by_name
+            or sales_order_product_owner_name like :sales_order_product_owner_name
+            or sales_order_product_name like :sales_order_product_name ) " : " ");
+            }
+            $sql .= " group by sales_order_number ";
+            $sql .= " order by ";
+            $sql .= "CASE status_text ";
+            $sql .= "WHEN 'Due Soon' THEN 1 ";
+            $sql .= "WHEN 'Due Tomorrow' THEN 2 ";
+            $sql .= "WHEN 'Due Today' THEN 3 ";
+            $sql .= "WHEN 'Pending' THEN 4 ";
+            $sql .= "WHEN 'Overdue' THEN 5 ";
+            $sql .= "WHEN 'Partial' THEN 6 ";
+            $sql .= "ELSE 7 END asc, ";
+            $sql .= "({$this->tblSalesOrder}.sales_order_due_date IS NULL) asc, ";
+            $sql .= "{$this->tblSalesOrder}.sales_order_due_date asc, ";
+            $sql .= "sales_order_number asc ";
+            $sql .= "limit :start, ";
+            $sql .= ":total ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
     // read all
     public function readByInstallment()
     {

@@ -48,6 +48,22 @@ function allowedColumns()
     return $query;
 }
 
+// Read all cashier
+function checkReadCashierAll($object, $allowedColumns = [])
+{
+    $query = $object->readCashierAll($allowedColumns);
+    checkQuery($query, "Empty records. (read All)");
+    return $query;
+}
+
+// Read limit cashier
+function checkReadCashierLimit($object, $allowedColumns = [])
+{
+    $query = $object->readCashierLimit($allowedColumns);
+    checkQuery($query, "Empty records. (limit)");
+    return $query;
+}
+
 // Consumes $amount from the customer's available credit memo balance,
 // oldest processed credit-memo return first. Mirrors the FIFO consumption in
 // sales-order/functions.php's applyCreditMemoToReturns(), but kept as its
