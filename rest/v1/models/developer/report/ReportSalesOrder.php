@@ -669,6 +669,7 @@ class ReportSalesOrder
     {
         $filterColumn = [];
         $params = [
+            ...$this->userId != 0 ? ["products_owner_id" => $this->userId] : [],
             ...(
                 $this->column_search != ""
                 ? [
@@ -690,6 +691,7 @@ class ReportSalesOrder
             $sql .= "MAX(p.products_price) as products_price, ";
             $sql .= "MAX(p.products_name) as products_name, ";
             $sql .= "MAX(p.products_aid) as products_aid, ";
+            $sql .= "MAX(p.products_owner_id) as products_owner_id, ";
             $sql .= "MAX(ms.stock_movement_location) AS stock_movement_location, ";
             $sql .= "MAX(ms.stock_movement_product_name) as name, ";
             $sql .= "MAX(ms.stock_movement_is_active) as is_active, ";
@@ -763,6 +765,7 @@ class ReportSalesOrder
         ";
 
             $sql .= "WHERE 1=1 ";
+            $sql .= ($this->userId != 0 ? "and p.products_owner_id = :products_owner_id " : " ");
 
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
@@ -803,6 +806,7 @@ class ReportSalesOrder
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
+            ...$this->userId != 0 ? ["products_owner_id" => $this->userId] : [],
             ...(
                 $this->column_search != ""
                 ? [
@@ -824,6 +828,7 @@ class ReportSalesOrder
             $sql .= "MAX(p.products_price) as products_price, ";
             $sql .= "MAX(p.products_name) as products_name, ";
             $sql .= "MAX(p.products_aid) AS products_aid, ";
+            $sql .= "MAX(p.products_owner_id) as products_owner_id, ";
             $sql .= "MAX(ms.stock_movement_location) AS stock_movement_location, ";
             $sql .= "MAX(ms.stock_movement_product_name) AS name, ";
             $sql .= "MAX(ms.stock_movement_is_active) AS is_active, ";
@@ -900,6 +905,7 @@ class ReportSalesOrder
         ";
 
             $sql .= "where 1=1 ";
+            $sql .= ($this->userId != 0 ? "and p.products_owner_id = :products_owner_id " : " ");
 
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
@@ -1135,6 +1141,7 @@ class ReportSalesOrder
         $filterColumn = [];
         $params = [
             "due_date" => $this->due_date,
+            ...$this->userId != 0 ? ["installment_payment_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "installment_payment_due_date" => "%{$this->column_search}%",
                 "installment_payment_code_number" => "%{$this->column_search}%",
@@ -1152,6 +1159,10 @@ class ReportSalesOrder
             $sql .= "from {$this->tblinstallmentPayment} ";
             $sql .= "where installment_payment_is_paid = '0' ";
             $sql .= "and DATE(installment_payment_due_date) < DATE(:due_date) ";
+            $sql .= ($this->userId != 0 ? "and installment_payment_code_number in (
+                select distinct sales_order_number from {$this->tblSalesOrder}
+                where sales_order_product_owner_id = :installment_payment_product_owner_id
+            ) " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -1176,6 +1187,7 @@ class ReportSalesOrder
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
             "due_date" => $this->due_date,
+            ...$this->userId != 0 ? ["installment_payment_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "installment_payment_due_date" => "%{$this->column_search}%",
                 "installment_payment_code_number" => "%{$this->column_search}%",
@@ -1193,6 +1205,10 @@ class ReportSalesOrder
             $sql .= "from {$this->tblinstallmentPayment} ";
             $sql .= "where installment_payment_is_paid = '0' ";
             $sql .= "and DATE(installment_payment_due_date) < DATE(:due_date) ";
+            $sql .= ($this->userId != 0 ? "and installment_payment_code_number in (
+                select distinct sales_order_number from {$this->tblSalesOrder}
+                where sales_order_product_owner_id = :installment_payment_product_owner_id
+            ) " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {

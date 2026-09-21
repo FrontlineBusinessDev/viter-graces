@@ -120,7 +120,7 @@ const ModalExpenses = ({ itemEdit }) => {
     ),
     purchase_order_total_amount: isEmptyItem(
       itemEdit?.purchase_order_total_amount,
-      0,
+      "",
     ),
     purchase_order_transact_id: store?.credentials?.data?.id,
     purchase_order_transact_name: store?.credentials?.data?.name,
@@ -187,7 +187,10 @@ const ModalExpenses = ({ itemEdit }) => {
   const yupSchema = Yup.object({
     purchase_order_date: Yup.string().trim().required("Required"),
     purchase_order_payment_status: Yup.string().trim().required("Required"),
-    purchase_order_total_amount: Yup.string().trim().required("Required"),
+    purchase_order_total_amount: Yup.number()
+      .typeError("Required")
+      .required("Required")
+      .moreThan(0, "Amount must be greater than 0"),
     purchase_order_payment: Yup.string().trim().required("Required"),
     purchase_order_price: Yup.string().trim().required("Required"),
   });

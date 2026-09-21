@@ -122,7 +122,7 @@ class FinanceReturns
     public function readAll($allowedColumns)
     {
         $params = [
-            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
+            ...$this->userId != 0 ? ["return_product_owner_id" => $this->userId] : [],
             ...($this->column_search != "" ? [
                 "return_product_number" => "%{$this->column_search}%",
                 "return_product_order_number" => "%{$this->column_search}%",
@@ -175,7 +175,7 @@ class FinanceReturns
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
-            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
+            ...$this->userId != 0 ? ["return_product_owner_id" => $this->userId] : [],
             ...($this->column_search != "" ? [
                 "return_product_number" => "%{$this->column_search}%",
                 "return_product_order_number" => "%{$this->column_search}%",

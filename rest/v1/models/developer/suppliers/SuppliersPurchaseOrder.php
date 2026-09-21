@@ -44,6 +44,7 @@ class SuppliersPurchaseOrder
 
     public $date_yesterday;
     public $date_today;
+    public $userId;
 
     public $connection;
     public $lastInsertedId;
@@ -204,6 +205,7 @@ class SuppliersPurchaseOrder
         $filterColumn = [];
         $hasActiveFilter = false;
         $params = [
+            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "purchase_order_number" => "%{$this->column_search}%",
                 "purchase_order_supplier_name" => "%{$this->column_search}%",
@@ -352,6 +354,7 @@ class SuppliersPurchaseOrder
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
             $sql .= " and s.suppliers_is_default != 1 ";
+            $sql .= ($this->userId != 0 ? "and spo.purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -380,6 +383,7 @@ class SuppliersPurchaseOrder
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
+            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "purchase_order_number" => "%{$this->column_search}%",
                 "purchase_order_supplier_name" => "%{$this->column_search}%",
@@ -528,6 +532,7 @@ class SuppliersPurchaseOrder
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
             $sql .= " and s.suppliers_is_default != 1 ";
+            $sql .= ($this->userId != 0 ? "and spo.purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {

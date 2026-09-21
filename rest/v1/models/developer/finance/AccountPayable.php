@@ -50,6 +50,7 @@ class AccountPayable
 
     public $date_yesterday;
     public $date_today;
+    public $userId;
 
     public $connection;
     public $lastInsertedId;
@@ -251,6 +252,7 @@ class AccountPayable
     public function readAll($allowedColumns)
     {
         $params = [
+            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "purchase_order_number" => "%{$this->column_search}%",
                 "purchase_order_supplier_name" => "%{$this->column_search}%",
@@ -274,6 +276,7 @@ class AccountPayable
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
             $sql .= " where CAST(purchase_order_total_balance_per_product AS DECIMAL(10, 2)) != 0 ";
+            $sql .= ($this->userId != 0 ? "and purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -300,6 +303,7 @@ class AccountPayable
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
+            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "purchase_order_number" => "%{$this->column_search}%",
                 "purchase_order_supplier_name" => "%{$this->column_search}%",
@@ -323,6 +327,7 @@ class AccountPayable
             $sql .= "purchase_order_number as name ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
             $sql .= " where CAST(purchase_order_total_balance_per_product AS DECIMAL(10, 2)) != 0 ";
+            $sql .= ($this->userId != 0 ? "and purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {

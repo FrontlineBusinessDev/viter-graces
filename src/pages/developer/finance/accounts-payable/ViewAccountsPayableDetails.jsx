@@ -164,7 +164,7 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
                 <td className="dark:bg-gray-900! text-right font-bold ">
                   <AmountWithPesoSign
                     classN="size-3"
-                    classAmnt="text-primary text-black! dark:text-light!"
+                    classAmnt="text-primary text-black! "
                     amount={itemEdit.amount}
                   />
                 </td>

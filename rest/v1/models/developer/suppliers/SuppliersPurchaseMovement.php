@@ -50,6 +50,7 @@ class SuppliersPurchaseMovement
     public $column_total;
     public $column_search;
     public $max;
+    public $userId;
 
     public function __construct($db)
     {
@@ -522,6 +523,7 @@ class SuppliersPurchaseMovement
     {
         $filterColumn = [];
         $params = [
+            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "purchase_order_number" => "%{$this->column_search}%",
                 "purchase_order_supplier_name" => "%{$this->column_search}%",
@@ -669,6 +671,7 @@ class SuppliersPurchaseMovement
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
             $sql .= " and s.suppliers_is_default = 0 ";
+            $sql .= ($this->userId != 0 ? "and spo.purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -694,6 +697,7 @@ class SuppliersPurchaseMovement
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
+            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "purchase_order_number" => "%{$this->column_search}%",
                 "purchase_order_supplier_name" => "%{$this->column_search}%",
@@ -841,12 +845,13 @@ class SuppliersPurchaseMovement
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
             $sql .= " and s.suppliers_is_default = 0 ";
+            $sql .= ($this->userId != 0 ? "and spo.purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
                 $sql .= ($this->column_search != "" ? "and (spo.purchase_order_number like :purchase_order_number
-                or spo.purchase_order_supplier_name like :purchase_order_supplier_name 
-                or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name 
+                or spo.purchase_order_supplier_name like :purchase_order_supplier_name
+                or spo.purchase_order_product_owner_name like :purchase_order_product_owner_name
                 or spo.purchase_order_product_name like :purchase_order_product_name) " : " ");
             }
             $sql .= " order by spo.purchase_order_aid desc ";
