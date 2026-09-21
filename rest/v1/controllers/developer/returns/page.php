@@ -22,17 +22,23 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkPayload($data);
 
     if (array_key_exists("start", $_GET)) {
-        $val->column_search = $data["searchValue"];    // get data 
+        $val->column_search = $data["searchValue"];    // get data
+        $val->userId = $data["userId"];    // get data
         $val->column_start = $_GET['start'];
         $val->column_total = 15;
         $val->max = PHP_INT_MAX;
 
-        // FOR MULTIPLE FILTER 
+        // FOR MULTIPLE FILTER
         $val->filters = $data['columnFilters'];
         checkLimitId($val->column_start, $val->column_total);
 
-        $query = checkReadLimit($val, allowedColumns());
-        $total_result = checkReadAll($val, allowedColumns());
+        if ((float)$val->userId == 0) {
+            $query = checkReadLimit($val, allowedColumns());
+            $total_result = checkReadAll($val, allowedColumns());
+        } else {
+            $query = checkReadByUserIdLimit($val, allowedColumns());
+            $total_result = checkReadByUserId($val, allowedColumns());
+        }
         http_response_code(200);
 
         checkReadQuery(

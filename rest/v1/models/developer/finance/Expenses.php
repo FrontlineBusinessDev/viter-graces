@@ -262,7 +262,7 @@ class Expenses
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
-            ...$this->userId != 0 ? ["sales_order_product_owner_id" => $this->userId] : [],
+            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "purchase_order_number" => "%{$this->column_search}%",
                 "purchase_order_supplier_name" => "%{$this->column_search}%",

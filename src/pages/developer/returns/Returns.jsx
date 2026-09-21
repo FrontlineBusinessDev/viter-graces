@@ -9,6 +9,7 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { getAdminDeveloperRole } from "@/utilities/roleValidation";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import React from "react";
 import ModalReturns from "./ModalReturns";
 import { devNavUrl } from "@/config/config";
@@ -124,22 +125,26 @@ const Returns = () => {
         ),
       },
     },
-    {
-      accessorKey: "return_product_owner_name",
-      header: "Product Owner",
-      classTh: "min-w-40 ",
-      classTd: "",
-      filterFn: "multiSelect",
-      meta: {
-        filterComponent: (column) => (
-          <MultiSelectCheckboxFilter
-            column={column}
-            path="product-owner/read-by-product-owner"
-            testFilterId={"filter-owner"}
-          />
-        ),
-      },
-    },
+    ...(Number(ProductOwnerId(store)) > 0
+      ? []
+      : [
+          {
+            accessorKey: "return_product_owner_name",
+            header: "Product Owner",
+            classTh: "min-w-40 ",
+            classTd: "",
+            filterFn: "multiSelect",
+            meta: {
+              filterComponent: (column) => (
+                <MultiSelectCheckboxFilter
+                  column={column}
+                  path="product-owner/read-by-product-owner"
+                  testFilterId={"filter-owner"}
+                />
+              ),
+            },
+          },
+        ]),
     {
       accessorKey: "resolution_type",
       header: "resolution type",

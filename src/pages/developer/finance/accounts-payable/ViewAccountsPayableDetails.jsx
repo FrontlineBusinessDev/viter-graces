@@ -26,8 +26,12 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
     const rows = (itemEdit?.items || []).map((item, index) => ({
       "#": index + 1,
       "Due Date": isEmptyItem(item?.purchase_order_date, ""),
-      Amount: Number(item?.purchase_order_total_amount_per_product || 0).toFixed(2),
-      "Paid Amount": Number(item?.purchase_order_total_paid_per_product || 0).toFixed(2),
+      Amount: Number(
+        item?.purchase_order_total_amount_per_product || 0,
+      ).toFixed(2),
+      "Paid Amount": Number(
+        item?.purchase_order_total_paid_per_product || 0,
+      ).toFixed(2),
       "Balance Amount": Number(
         item?.purchase_order_total_balance_per_product || 0,
       ).toFixed(2),
@@ -160,7 +164,7 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
                 <td className="dark:bg-gray-900! text-right font-bold ">
                   <AmountWithPesoSign
                     classN="size-3"
-                    classAmnt="text-primary text-black! "
+                    classAmnt="text-primary text-black! dark:text-light! "
                     amount={itemEdit.amount}
                   />
                 </td>

@@ -15,10 +15,12 @@ class SalesJournal
 
     public $date_today;
     public $date_yesterday;
+    public $userId;
 
     public $connection;
     public $lastInsertedId;
     public $tblSalesJournal;
+    public $tblSalesOrder;
 
     public $filters;
     public $column_start;
@@ -32,6 +34,7 @@ class SalesJournal
     {
         $this->connection = $db;
         $this->tblSalesJournal = "graces_sales_journal";
+        $this->tblSalesOrder = "graces_sales_order";
     }
 
     // Builds the "columnFilters" WHERE fragments shared by every read*()
@@ -165,6 +168,7 @@ class SalesJournal
     public function readAll($allowedColumns)
     {
         $params = [
+            ...$this->userId != 0 ? ["sales_journal_product_owner_id" => $this->userId] : [],
             ...($this->column_search != "" ? [
                 "sales_journal_order_number" => "%{$this->column_search}%",
                 "sales_journal_customer" => "%{$this->column_search}%",
@@ -178,6 +182,10 @@ class SalesJournal
             $sql .= "from {$this->tblSalesJournal} ";
             $sql .= " where (CAST(sales_journal_debit AS DECIMAL(10, 2)) != 0 ";
             $sql .= " or CAST(sales_journal_credit AS DECIMAL(10, 2)) != 0) ";
+            $sql .= ($this->userId != 0 ? "and sales_journal_order_number in (
+                select distinct sales_order_number from {$this->tblSalesOrder}
+                where sales_order_product_owner_id = :sales_journal_product_owner_id
+            ) " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -200,6 +208,7 @@ class SalesJournal
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
+            ...$this->userId != 0 ? ["sales_journal_product_owner_id" => $this->userId] : [],
             ...($this->column_search != "" ? [
                 "sales_journal_order_number" => "%{$this->column_search}%",
                 "sales_journal_customer" => "%{$this->column_search}%",
@@ -213,6 +222,10 @@ class SalesJournal
             $sql .= "from {$this->tblSalesJournal} ";
             $sql .= " where (CAST(sales_journal_debit AS DECIMAL(10, 2)) != 0 ";
             $sql .= " or CAST(sales_journal_credit AS DECIMAL(10, 2)) != 0) ";
+            $sql .= ($this->userId != 0 ? "and sales_journal_order_number in (
+                select distinct sales_order_number from {$this->tblSalesOrder}
+                where sales_order_product_owner_id = :sales_journal_product_owner_id
+            ) " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
