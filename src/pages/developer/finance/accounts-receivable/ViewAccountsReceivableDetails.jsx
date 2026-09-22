@@ -15,6 +15,7 @@ import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
+import * as XLSX from "xlsx";
 
 const ViewAccountsReceivableDetails = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -117,6 +118,35 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
     itemEdit?.sales_order_installment_type,
     "",
   );
+
+  const handleExportCsv = () => {
+    const rows = (items || []).map((item, index) => ({
+      "#": index + 1,
+      "Due Date": isEmptyItem(item?.installment_payment_due_date, ""),
+      Amount: Number(item?.installment_payment_amount || 0).toFixed(2),
+      "Paid Amount": Number(
+        item?.installment_payment_paid_amount || 0,
+      ).toFixed(2),
+      Method: item?.installment_payment_method || "-",
+    }));
+
+    rows.push({
+      "#": "",
+      "Due Date": "TOTAL",
+      Amount: Number(totalAmount).toFixed(2),
+      "Paid Amount": (Number(totalPaidAmount) + Number(paidAmount)).toFixed(2),
+      Method: "",
+    });
+
+    const worksheet = XLSX.utils.json_to_sheet(rows);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Export");
+
+    const today = new Date().toISOString().slice(0, 10);
+    const fileName = `accounts_receivable_${isEmptyItem(itemEdit?.sales_order_number, "order")}_${today}`;
+    XLSX.writeFile(workbook, `${fileName}.csv`, { bookType: "csv" });
+  };
+
   return (
     <ModalWrapper
       val={`Order Details - ${itemEdit?.sales_order_number}`}
@@ -190,7 +220,9 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
                 >
                   Paid Amount
                 </th>
-                <th></th>
+                <th className={`min-w-28! dark:bg-gray-900! bg-gray-100!`}>
+                  Method
+                </th>
               </tr>
             </thead>
             <tbody className="">
@@ -217,7 +249,9 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
                         amount={Number(a.installment_payment_paid_amount)}
                       />
                     </td>
-                    <td></td>
+                    <td className="capitalize dark:bg-gray-900!">
+                      {a?.installment_payment_method || "-"}
+                    </td>
                   </tr>
                 );
               })}
@@ -250,7 +284,7 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
         </span>
       </div>
 
-      <ExportCSVButton />
+      <ExportCSVButton onClick={handleExportCsv} />
     </ModalWrapper>
   );
 };

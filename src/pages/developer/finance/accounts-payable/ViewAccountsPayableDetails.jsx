@@ -164,7 +164,7 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
                 <td className="dark:bg-gray-900! text-right font-bold ">
                   <AmountWithPesoSign
                     classN="size-3"
-                    classAmnt="text-primary text-black! "
+                    classAmnt="text-primary text-black! dark:text-light! "
                     amount={itemEdit.amount}
                   />
                 </td>
@@ -191,7 +191,7 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
 
       <ul className="grid grid-cols-2 my-3 [&>li]:border-b [&>li]:border-b-gray-200 gap-y-2 ">
         <li>Total Amount</li>
-        <li className="text-right text-black font-bold">
+        <li className="text-right text-black dark:text-light font-bold">
           <AmountWithPesoSign classN="size-3" amount={Number(totalAmount)} />
         </li>
         <li>Total Paid</li>

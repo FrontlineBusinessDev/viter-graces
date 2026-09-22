@@ -19,16 +19,22 @@ const DashboardExpensesToday = ({ path = "", id = 0 }) => {
     { id: id },
   );
 
+  const toDateString = (date) => date.toISOString().slice(0, 10);
+
   const valDataToday = useMemo(() => {
     if (!result?.count) return "0.00";
 
-    return `${numberWithCommasToFixed(result?.data[0]?.total_expenses, 2)}`;
+    const today = toDateString(new Date());
+    const row = result.data.find((row) => row.expenses_date === today);
+    return `${numberWithCommasToFixed(row?.total_expenses ?? 0, 2)}`;
   }, [result]);
 
   const valDataYesterday = useMemo(() => {
-    if (!result?.count == 1) return "0.00";
+    if (!result?.count) return "0.00";
 
-    return `${numberWithCommasToFixed(result?.data[1]?.total_expenses, 2)}`;
+    const yesterday = toDateString(new Date(Date.now() - 86400000));
+    const row = result.data.find((row) => row.expenses_date === yesterday);
+    return `${numberWithCommasToFixed(row?.total_expenses ?? 0, 2)}`;
   }, [result]);
   return (
     <>

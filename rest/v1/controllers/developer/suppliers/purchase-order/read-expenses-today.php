@@ -13,12 +13,16 @@ $conn = null;
 $conn = checkDbConnection();
 // make instance of classes
 $val = new SuppliersPurchaseOrder($conn);
+// get payload
+$body = file_get_contents("php://input");
+$data = json_decode($body, true) ?? [];
 // validate api key
 if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkApiKey();
 
     $val->date_today = date("Y-m-d");
     $val->date_yesterday = date('Y-m-d', strtotime('-1 day'));
+    $val->userId = (float)($data["id"] ?? 0);
 
     $val->filters = [];
     $query = checkReadExpensesToday($val);

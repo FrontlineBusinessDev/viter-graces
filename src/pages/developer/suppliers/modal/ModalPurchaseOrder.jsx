@@ -323,10 +323,15 @@ const ModalPurchaseOrder = ({ itemEdit }) => {
     total_amount: 0,
     total_sub_amount: 0,
     total_amount_without_discount_and_vat: 0,
-    purchase_order_status: isEmptyItem(
-      itemEdit?.purchase_order_status,
-      "draft",
-    ),
+    // A "completed" status is a side effect of the order being fully paid
+    // (set by the account-payable flow), not a lifecycle stage the user
+    // picks here - the dropdown only offers Draft/Sent/Confirmed/Partially
+    // Received/Received/Cancelled, so it's shown (and re-saved) as "sent",
+    // matching the "Sent" label the table already shows for it.
+    purchase_order_status:
+      itemEdit?.purchase_order_status === "completed"
+        ? "sent"
+        : isEmptyItem(itemEdit?.purchase_order_status, "draft"),
     purchase_order_payment_status: isEmptyItem(
       itemEdit?.purchase_order_payment_status,
       "unpaid",

@@ -208,7 +208,7 @@ const Expenses = () => {
       <HeaderNav menu={"finance"} activeTab="expenses">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(100dvh-203px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(93dvh-203px)] h-[calc(97dvh-250px)]`}
           path="finance-expenses"
           setItemEdit={setItemEdit}
           ishaveAdd={getAdminDeveloperRole(store)}

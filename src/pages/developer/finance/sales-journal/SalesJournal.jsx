@@ -138,7 +138,7 @@ const SalesJournal = () => {
       <HeaderNav menu={"finance"} activeTab="sales-journal">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(100dvh-203px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(93dvh-203px)] h-[calc(97dvh-250px)]`}
           path="finance-sales-journal"
           haveFilterTable={true}
           ishaveAdd={false}

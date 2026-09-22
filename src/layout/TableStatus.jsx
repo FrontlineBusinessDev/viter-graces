@@ -13,7 +13,7 @@ const TableStatus = ({ item, dataArray }) => {
   const selectedItem =
     item?.status_option?.find(
       (o) =>
-        o.label?.toLowerCase() === statusToMatch ||
+        String(o.value)?.toLowerCase() === statusToMatch ||
         o.value === Number(dataArray?.is_active ?? 1),
     )?.label ??
     item?.status_option?.find((o) => o.label === dataArray?.inventory_status)

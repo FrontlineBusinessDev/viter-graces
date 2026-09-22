@@ -6,6 +6,7 @@ import { StoreContext } from "@/store/StoreContext";
 import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import React from "react";
+import * as XLSX from "xlsx";
 
 const ViewAccountsPayableDetails = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -27,6 +28,50 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
   let totalPaidAmount = 0;
   let totalAmount = 0;
   let totalBalanceAmount = 0;
+
+  const taxLabel =
+    Number(itemEdit?.purchase_order_percent_tax) === 0.12
+      ? "Inclusive"
+      : Number(itemEdit?.purchase_order_percent_tax) === 1.12
+        ? "Exclusive"
+        : "--";
+
+  const handleExportCsv = () => {
+    const rows = [
+      ["PO #", itemEdit?.purchase_order_number],
+      ["Supplier", itemEdit?.purchase_order_supplier_name],
+      ["Order Date", itemEdit?.formated_date],
+      ["Delivery Date", itemEdit?.formated_delivery_date],
+      ["Tax", taxLabel],
+      [],
+      ["#", "Due Date", "Amount", "Paid Amount", "Balance Amount"],
+      ...(itemEdit?.items || []).map((item, index) => [
+        index + 1,
+        isEmptyItem(item?.purchase_order_date, ""),
+        Number(item?.purchase_order_total_amount_per_product || 0).toFixed(2),
+        Number(item?.purchase_order_total_paid_per_product || 0).toFixed(2),
+        Number(item?.purchase_order_total_balance_per_product || 0).toFixed(
+          2,
+        ),
+      ]),
+      [
+        "",
+        "TOTAL",
+        Number(totalAmount).toFixed(2),
+        Number(totalPaidAmount).toFixed(2),
+        Number(totalBalanceAmount).toFixed(2),
+      ],
+    ];
+
+    const worksheet = XLSX.utils.aoa_to_sheet(rows);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, "Export");
+
+    const today = new Date().toISOString().slice(0, 10);
+    const fileName = `accounts_payable_${isEmptyItem(itemEdit?.purchase_order_number, "order")}_${today}`;
+    XLSX.writeFile(workbook, `${fileName}.csv`, { bookType: "csv" });
+  };
+
   return (
     <ModalWrapper
       val={`Order Details - ${itemEdit?.purchase_order_number}`}
@@ -57,13 +102,7 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
         </li>
         <li className="justify-end">
           <p>TAX:</p>
-          <p className="text-black dark:text-light">
-            {Number(itemEdit?.purchase_order_percent_tax) === 0.12
-              ? "Inclusive"
-              : Number(itemEdit?.purchase_order_percent_tax) === 1.12
-                ? "Exclusive"
-                : "--"}
-          </p>
+          <p className="text-black dark:text-light">{taxLabel}</p>
         </li>
       </ul>
 
@@ -91,23 +130,14 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
             </thead>
             <tbody className="">
               {itemEdit?.items?.map((a, index) => {
-                totalPaidAmount += Number(
-                  isEmptyItem(
-                    itemEdit?.purchase_order_total_amount_per_product,
-                    0,
-                  ),
-                );
                 totalAmount += Number(
-                  isEmptyItem(
-                    itemEdit?.purchase_order_total_paid_per_product,
-                    0,
-                  ),
+                  isEmptyItem(a?.purchase_order_total_amount_per_product, 0),
+                );
+                totalPaidAmount += Number(
+                  isEmptyItem(a?.purchase_order_total_paid_per_product, 0),
                 );
                 totalBalanceAmount += Number(
-                  isEmptyItem(
-                    itemEdit?.purchase_order_total_balance_per_product,
-                    0,
-                  ),
+                  isEmptyItem(a?.purchase_order_total_balance_per_product, 0),
                 );
                 return (
                   <tr key={index} className="border-0!">
@@ -202,7 +232,7 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
         </span>
       </div>
 
-      <ExportCSVButton />
+      <ExportCSVButton onClick={handleExportCsv} />
     </ModalWrapper>
   );
 };

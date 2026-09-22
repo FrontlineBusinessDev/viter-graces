@@ -381,18 +381,6 @@
       "source_location": "L2"
     },
     {
-      "id": "src_components_dateformat_dateformat",
-      "label": "DateFormat()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "InfiniteTable.jsx",
-      "file_type": "code",
-      "norm_label": "dateformat()",
-      "source_file": "src/components/DateFormat.jsx",
-      "source_location": "L4"
-    },
-    {
       "id": "src_components_inputs_inputrangefilter_amountrangefilter",
       "label": "AmountRangeFilter()",
       "_callable": true,
@@ -511,6 +499,18 @@
       "norm_label": "usefilterpopover()",
       "source_file": "src/components/inputs/InputRangeFilter.jsx",
       "source_location": "L14"
+    },
+    {
+      "id": "src_components_inputs_inputselect_inputselect",
+      "label": "InputSelect()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 0,
+      "community_name": "InfiniteTable.jsx",
+      "file_type": "code",
+      "norm_label": "inputselect()",
+      "source_file": "src/components/inputs/InputSelect.jsx",
+      "source_location": "L12"
     },
     {
       "id": "src_components_inputs_inputselect_multiselectcheckboxfilter",
@@ -1245,63 +1245,51 @@
       "source_location": "L12"
     },
     {
-      "id": "rest_v1_controllers_developer_inventory_stock_overview_functions_allowedcolumns",
+      "id": "rest_v1_controllers_developer_inventory_stock_movement_functions_allowedcolumns",
       "label": "allowedColumns()",
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "stock-overview/functions.php",
+      "community_name": "stock-movement/functions.php",
       "file_type": "code",
       "norm_label": "allowedcolumns()",
-      "source_file": "rest/v1/controllers/developer/inventory/stock-overview/functions.php",
+      "source_file": "rest/v1/controllers/developer/inventory/stock-movement/functions.php",
       "source_location": "L11"
     },
     {
-      "id": "rest_v1_controllers_developer_inventory_stock_overview_functions_checkreadalllowstock",
-      "label": "checkReadAllLowStock()",
+      "id": "rest_v1_controllers_developer_inventory_stock_movement_functions_checkreadalllocation",
+      "label": "checkReadAllLocation()",
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "stock-overview/functions.php",
+      "community_name": "stock-movement/functions.php",
       "file_type": "code",
-      "norm_label": "checkreadalllowstock()",
-      "source_file": "rest/v1/controllers/developer/inventory/stock-overview/functions.php",
-      "source_location": "L31"
+      "norm_label": "checkreadalllocation()",
+      "source_file": "rest/v1/controllers/developer/inventory/stock-movement/functions.php",
+      "source_location": "L30"
     },
     {
-      "id": "rest_v1_controllers_developer_inventory_stock_overview_functions_checkreadbyuseridlowstock",
-      "label": "checkReadByUserIdLowStock()",
+      "id": "rest_v1_controllers_developer_inventory_stock_movement_functions_checkreadallnotes",
+      "label": "checkReadAllNotes()",
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "stock-overview/functions.php",
+      "community_name": "stock-movement/functions.php",
       "file_type": "code",
-      "norm_label": "checkreadbyuseridlowstock()",
-      "source_file": "rest/v1/controllers/developer/inventory/stock-overview/functions.php",
-      "source_location": "L39"
+      "norm_label": "checkreadallnotes()",
+      "source_file": "rest/v1/controllers/developer/inventory/stock-movement/functions.php",
+      "source_location": "L38"
     },
     {
-      "id": "rest_v1_controllers_developer_inventory_stock_overview_functions_checkreadcountlowstock",
-      "label": "checkReadCountLowStock()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 1,
-      "community_name": "stock-overview/functions.php",
-      "file_type": "code",
-      "norm_label": "checkreadcountlowstock()",
-      "source_file": "rest/v1/controllers/developer/inventory/stock-overview/functions.php",
-      "source_location": "L47"
-    },
-    {
-      "id": "rest_v1_controllers_developer_inventory_stock_overview_functions_isuseraccountassociated",
+      "id": "rest_v1_controllers_developer_inventory_stock_movement_functions_isuseraccountassociated",
       "label": "isUserAccountAssociated()",
       "_callable": true,
       "_origin": "ast",
       "community": 1,
-      "community_name": "stock-overview/functions.php",
+      "community_name": "stock-movement/functions.php",
       "file_type": "code",
       "norm_label": "isuseraccountassociated()",
-      "source_file": "rest/v1/controllers/developer/inventory/stock-overview/functions.php",
+      "source_file": "rest/v1/controllers/developer/inventory/stock-movement/functions.php",
       "source_location": "L3"
     },
     {
@@ -1795,6 +1783,54 @@
       "norm_label": "checkquery()",
       "source_file": "rest/v1/core/functions.php",
       "source_location": "L55"
+    },
+    {
+      "id": "rest_v1_controllers_developer_settings_role_functions_allowedcolumns",
+      "label": "allowedColumns()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "role/functions.php",
+      "file_type": "code",
+      "norm_label": "allowedcolumns()",
+      "source_file": "rest/v1/controllers/developer/settings/role/functions.php",
+      "source_location": "L25"
+    },
+    {
+      "id": "rest_v1_controllers_developer_settings_role_functions_checkupdateuseraccountrole",
+      "label": "checkUpdateUserAccountRole()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "role/functions.php",
+      "file_type": "code",
+      "norm_label": "checkupdateuseraccountrole()",
+      "source_file": "rest/v1/controllers/developer/settings/role/functions.php",
+      "source_location": "L11"
+    },
+    {
+      "id": "rest_v1_controllers_developer_settings_role_functions_isuseraccountassociated",
+      "label": "isUserAccountAssociated()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "role/functions.php",
+      "file_type": "code",
+      "norm_label": "isuseraccountassociated()",
+      "source_file": "rest/v1/controllers/developer/settings/role/functions.php",
+      "source_location": "L3"
+    },
+    {
+      "id": "rest_v1_controllers_developer_settings_role_functions_updateconnectedmenu",
+      "label": "updateConnectedMenu()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "role/functions.php",
+      "file_type": "code",
+      "norm_label": "updateconnectedmenu()",
+      "source_file": "rest/v1/controllers/developer/settings/role/functions.php",
+      "source_location": "L19"
     },
     {
       "id": "rest_v1_controllers_developer_sales_order_functions_allowedcolumns",
@@ -2659,102 +2695,6 @@
       "norm_label": ".readsalesperyear()",
       "source_file": "rest/v1/models/developer/report/ReportSalesOrder.php",
       "source_location": "L1532"
-    },
-    {
-      "id": "rest_v1_controllers_developer_inventory_stock_movement_functions_allowedcolumns",
-      "label": "allowedColumns()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "purchase-order/functions.php",
-      "file_type": "code",
-      "norm_label": "allowedcolumns()",
-      "source_file": "rest/v1/controllers/developer/inventory/stock-movement/functions.php",
-      "source_location": "L11"
-    },
-    {
-      "id": "rest_v1_controllers_developer_inventory_stock_movement_functions_checkreadalllocation",
-      "label": "checkReadAllLocation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "purchase-order/functions.php",
-      "file_type": "code",
-      "norm_label": "checkreadalllocation()",
-      "source_file": "rest/v1/controllers/developer/inventory/stock-movement/functions.php",
-      "source_location": "L30"
-    },
-    {
-      "id": "rest_v1_controllers_developer_inventory_stock_movement_functions_checkreadallnotes",
-      "label": "checkReadAllNotes()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "purchase-order/functions.php",
-      "file_type": "code",
-      "norm_label": "checkreadallnotes()",
-      "source_file": "rest/v1/controllers/developer/inventory/stock-movement/functions.php",
-      "source_location": "L38"
-    },
-    {
-      "id": "rest_v1_controllers_developer_inventory_stock_movement_functions_isuseraccountassociated",
-      "label": "isUserAccountAssociated()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "purchase-order/functions.php",
-      "file_type": "code",
-      "norm_label": "isuseraccountassociated()",
-      "source_file": "rest/v1/controllers/developer/inventory/stock-movement/functions.php",
-      "source_location": "L3"
-    },
-    {
-      "id": "rest_v1_controllers_developer_settings_role_functions_allowedcolumns",
-      "label": "allowedColumns()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "purchase-order/functions.php",
-      "file_type": "code",
-      "norm_label": "allowedcolumns()",
-      "source_file": "rest/v1/controllers/developer/settings/role/functions.php",
-      "source_location": "L25"
-    },
-    {
-      "id": "rest_v1_controllers_developer_settings_role_functions_checkupdateuseraccountrole",
-      "label": "checkUpdateUserAccountRole()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "purchase-order/functions.php",
-      "file_type": "code",
-      "norm_label": "checkupdateuseraccountrole()",
-      "source_file": "rest/v1/controllers/developer/settings/role/functions.php",
-      "source_location": "L11"
-    },
-    {
-      "id": "rest_v1_controllers_developer_settings_role_functions_isuseraccountassociated",
-      "label": "isUserAccountAssociated()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "purchase-order/functions.php",
-      "file_type": "code",
-      "norm_label": "isuseraccountassociated()",
-      "source_file": "rest/v1/controllers/developer/settings/role/functions.php",
-      "source_location": "L3"
-    },
-    {
-      "id": "rest_v1_controllers_developer_settings_role_functions_updateconnectedmenu",
-      "label": "updateConnectedMenu()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "purchase-order/functions.php",
-      "file_type": "code",
-      "norm_label": "updateconnectedmenu()",
-      "source_file": "rest/v1/controllers/developer/settings/role/functions.php",
-      "source_location": "L19"
     },
     {
       "id": "rest_v1_controllers_developer_suppliers_purchase_order_functions_allowedcolumns",
@@ -4430,203 +4370,47 @@
       "_callable": true,
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
       "norm_label": "app()",
       "source_file": "src/App.jsx",
       "source_location": "L14"
     },
     {
-      "id": "src_assets_svg_logofull_logofull",
-      "label": "LogoFull()",
+      "id": "src_components_buttons_closebutton_closebutton",
+      "label": "CloseButton()",
       "_callable": true,
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
-      "norm_label": "logofull()",
-      "source_file": "src/assets/svg/LogoFull.jsx",
-      "source_location": "L2"
-    },
-    {
-      "id": "src_assets_svg_logofullsm_logofullsm",
-      "label": "LogoFullSm()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "logofullsm()",
-      "source_file": "src/assets/svg/LogoFullSm.jsx",
-      "source_location": "L2"
-    },
-    {
-      "id": "src_components_inputs_inputtext_inputlogin",
-      "label": "InputLogin()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "inputlogin()",
-      "source_file": "src/components/inputs/InputText.jsx",
-      "source_location": "L154"
-    },
-    {
-      "id": "src_components_loadmore_loadmore",
-      "label": "Loadmore()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "loadmore()",
-      "source_file": "src/components/Loadmore.jsx",
-      "source_location": "L4"
-    },
-    {
-      "id": "src_components_spinners_buttonspinner_buttonspinner",
-      "label": "ButtonSpinner()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "buttonspinner()",
-      "source_file": "src/components/spinners/ButtonSpinner.jsx",
+      "norm_label": "closebutton()",
+      "source_file": "src/components/buttons/CloseButton.jsx",
       "source_location": "L3"
     },
     {
-      "id": "src_components_spinners_fetchingspinner_fetchingspinner",
-      "label": "FetchingSpinner()",
+      "id": "src_components_modals_exportmodal_exportmodal",
+      "label": "ExportModal()",
       "_callable": true,
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
-      "norm_label": "fetchingspinner()",
-      "source_file": "src/components/spinners/FetchingSpinner.jsx",
-      "source_location": "L3"
+      "norm_label": "exportmodal()",
+      "source_file": "src/components/modals/ExportModal.jsx",
+      "source_location": "L5"
     },
     {
-      "id": "src_components_spinners_screenspinner_screenspinner",
-      "label": "ScreenSpinner()",
+      "id": "src_components_widgets_exportprogresswidget_exportprogresswidget",
+      "label": "ExportProgressWidget()",
       "_callable": true,
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
-      "norm_label": "screenspinner()",
-      "source_file": "src/components/spinners/ScreenSpinner.jsx",
-      "source_location": "L3"
-    },
-    {
-      "id": "src_custom_hooks_login_functions_checkroletoredirect",
-      "label": "checkRoleToRedirect()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "checkroletoredirect()",
-      "source_file": "src/custom-hooks/login-functions.jsx",
-      "source_location": "L3"
-    },
-    {
-      "id": "src_layout_arrayvalue_activitylogresetpassdetails",
-      "label": "ActivityLogResetPassDetails()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "activitylogresetpassdetails()",
-      "source_file": "src/layout/ArrayValue.jsx",
-      "source_location": "L576"
-    },
-    {
-      "id": "src_layout_headers_function_header_quickheadershortcut",
-      "label": "quickHeaderShortCut()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "quickheadershortcut()",
-      "source_file": "src/layout/headers/function-header.jsx",
-      "source_location": "L318"
-    },
-    {
-      "id": "src_layout_headers_function_header_titleheadertab",
-      "label": "titleHeaderTab()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "titleheadertab()",
-      "source_file": "src/layout/headers/function-header.jsx",
-      "source_location": "L19"
-    },
-    {
-      "id": "src_layout_headers_header_header",
-      "label": "Header()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "header()",
-      "source_file": "src/layout/headers/Header.jsx",
-      "source_location": "L12"
-    },
-    {
-      "id": "src_layout_headers_header_header_handleclickoutside",
-      "label": "handleClickOutside()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "handleclickoutside()",
-      "source_file": "src/layout/headers/Header.jsx",
-      "source_location": "L29"
-    },
-    {
-      "id": "src_layout_headers_titleheader_titleheader",
-      "label": "TitleHeader()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "titleheader()",
-      "source_file": "src/layout/headers/TitleHeader.jsx",
-      "source_location": "L7"
-    },
-    {
-      "id": "src_layout_navigation_function_nav_getnavlist",
-      "label": "getNavList()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "getnavlist()",
-      "source_file": "src/layout/navigation/function-nav.jsx",
-      "source_location": "L18"
-    },
-    {
-      "id": "src_layout_navigation_navigation_navigation",
-      "label": "Navigation()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "navigation()",
-      "source_file": "src/layout/navigation/Navigation.jsx",
-      "source_location": "L12"
+      "norm_label": "exportprogresswidget()",
+      "source_file": "src/components/widgets/ExportProgressWidget.jsx",
+      "source_location": "L5"
     },
     {
       "id": "src_layout_pagenotfound_pagenotfound",
@@ -4634,143 +4418,71 @@
       "_callable": true,
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
       "norm_label": "pagenotfound()",
       "source_file": "src/layout/PageNotFound.jsx",
       "source_location": "L6"
     },
     {
-      "id": "src_layout_search_searchbar_searchbar",
-      "label": "SearchBar()",
+      "id": "src_services_querydatainfinite_querydatainfinite",
+      "label": "queryDataInfinite()",
       "_callable": true,
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
-      "norm_label": "searchbar()",
-      "source_file": "src/layout/search/SearchBar.jsx",
-      "source_location": "L5"
+      "norm_label": "querydatainfinite()",
+      "source_file": "src/services/queryDataInfinite.jsx",
+      "source_location": "L3"
     },
     {
-      "id": "src_pages_login_createpassword_createpassword",
-      "label": "CreatePassword()",
+      "id": "src_store_exportcontext_exportprovider",
+      "label": "ExportProvider()",
       "_callable": true,
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
-      "norm_label": "createpassword()",
-      "source_file": "src/pages/login/CreatePassword.jsx",
-      "source_location": "L28"
+      "norm_label": "exportprovider()",
+      "source_file": "src/store/ExportContext.jsx",
+      "source_location": "L18"
     },
     {
-      "id": "src_pages_login_forgotpassword_forgotpassword",
-      "label": "ForgotPassword()",
+      "id": "src_store_exportcontext_useexport",
+      "label": "useExport()",
       "_callable": true,
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
-      "norm_label": "forgotpassword()",
-      "source_file": "src/pages/login/ForgotPassword.jsx",
-      "source_location": "L23"
+      "norm_label": "useexport()",
+      "source_file": "src/store/ExportContext.jsx",
+      "source_location": "L138"
     },
     {
-      "id": "src_pages_login_login_login",
-      "label": "Login()",
+      "id": "src_store_storecontext_storeprovider",
+      "label": "StoreProvider()",
       "_callable": true,
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
-      "norm_label": "login()",
-      "source_file": "src/pages/login/Login.jsx",
-      "source_location": "L57"
+      "norm_label": "storeprovider()",
+      "source_file": "src/store/StoreContext.jsx",
+      "source_location": "L33"
     },
     {
-      "id": "src_pages_login_protectedrouteuser_protectedrouteuser",
-      "label": "ProtectedRouteUser()",
+      "id": "src_store_storereducer_storereducer",
+      "label": "StoreReducer()",
       "_callable": true,
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
-      "norm_label": "protectedrouteuser()",
-      "source_file": "src/pages/login/ProtectedRouteUser.jsx",
-      "source_location": "L12"
-    },
-    {
-      "id": "src_pages_login_resetpassword_resetpassword",
-      "label": "ResetPassword()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "resetpassword()",
-      "source_file": "src/pages/login/ResetPassword.jsx",
-      "source_location": "L21"
-    },
-    {
-      "id": "src_services_useraccountlogin_useraccountlogin",
-      "label": "userAccountLogin()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "useraccountlogin()",
-      "source_file": "src/services/userAccountLogin.jsx",
-      "source_location": "L9"
-    },
-    {
-      "id": "src_store_storeaction_setcredentials",
-      "label": "setCredentials()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "setcredentials()",
-      "source_file": "src/store/StoreAction.jsx",
-      "source_location": "L120"
-    },
-    {
-      "id": "src_store_storeaction_setislogin",
-      "label": "setIsLogin()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "setislogin()",
-      "source_file": "src/store/StoreAction.jsx",
-      "source_location": "L43"
-    },
-    {
-      "id": "src_store_storeaction_setisnavfullshow",
-      "label": "setIsNavFullShow()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "setisnavfullshow()",
-      "source_file": "src/store/StoreAction.jsx",
-      "source_location": "L50"
-    },
-    {
-      "id": "src_store_storeaction_setissearch",
-      "label": "setIsSearch()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "setissearch()",
-      "source_file": "src/store/StoreAction.jsx",
-      "source_location": "L85"
+      "norm_label": "storereducer()",
+      "source_file": "src/store/StoreReducer.jsx",
+      "source_location": "L1"
     },
     {
       "id": "src_store_themecontext_themeprovider",
@@ -4778,95 +4490,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
       "norm_label": "themeprovider()",
       "source_file": "src/store/ThemeContext.jsx",
       "source_location": "L5"
-    },
-    {
-      "id": "src_utilities_authchannel_broadcastlogout",
-      "label": "broadcastLogout()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "broadcastlogout()",
-      "source_file": "src/utilities/authChannel.jsx",
-      "source_location": "L11"
-    },
-    {
-      "id": "src_utilities_authchannel_subscribetologout",
-      "label": "subscribeToLogout()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "subscribetologout()",
-      "source_file": "src/utilities/authChannel.jsx",
-      "source_location": "L19"
-    },
-    {
-      "id": "src_utilities_checklocalstorage_checklocalstorage",
-      "label": "checkLocalStorage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "checklocalstorage()",
-      "source_file": "src/utilities/CheckLocalStorage.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_utilities_geturlparam_geturlparam",
-      "label": "getUrlParam()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "geturlparam()",
-      "source_file": "src/utilities/getUrlParam.jsx",
-      "source_location": "L2"
-    },
-    {
-      "id": "src_utilities_logout_clearsession",
-      "label": "clearSession()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "clearsession()",
-      "source_file": "src/utilities/logout.jsx",
-      "source_location": "L4"
-    },
-    {
-      "id": "src_utilities_logout_performlogout",
-      "label": "performLogout()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "performlogout()",
-      "source_file": "src/utilities/logout.jsx",
-      "source_location": "L17"
-    },
-    {
-      "id": "src_utilities_setstorageroute_setstorageroute",
-      "label": "setStorageRoute()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "setstorageroute()",
-      "source_file": "src/utilities/setStorageRoute.jsx",
-      "source_location": "L2"
     },
     {
       "id": "rest_v1_models_developer_customer_customer_customer_active",
@@ -5546,7 +5174,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "addbutton()",
       "source_file": "src/components/buttons/AddButton.jsx",
@@ -5558,11 +5186,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardoverview()",
       "source_file": "src/components/DashboardCharts.jsx",
       "source_location": "L96"
+    },
+    {
+      "id": "src_components_dateformat_dateformat",
+      "label": "DateFormat()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "useQueryData",
+      "file_type": "code",
+      "norm_label": "dateformat()",
+      "source_file": "src/components/DateFormat.jsx",
+      "source_location": "L4"
     },
     {
       "id": "src_components_financestats_financestats",
@@ -5570,7 +5210,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "financestats()",
       "source_file": "src/components/FinanceStats.jsx",
@@ -5582,11 +5222,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "graphtooltip()",
       "source_file": "src/components/GraphTooltip.jsx",
       "source_location": "L3"
+    },
+    {
+      "id": "src_components_inputs_inputselect_inputpurchaseorderselecttagarray",
+      "label": "InputPurchaseOrderSelectTagArray()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "useQueryData",
+      "file_type": "code",
+      "norm_label": "inputpurchaseorderselecttagarray()",
+      "source_file": "src/components/inputs/InputSelect.jsx",
+      "source_location": "L1310"
     },
     {
       "id": "src_components_inputs_inputselect_inputselectcustomerarray",
@@ -5594,11 +5246,23 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "inputselectcustomerarray()",
       "source_file": "src/components/inputs/InputSelect.jsx",
       "source_location": "L221"
+    },
+    {
+      "id": "src_components_inputs_inputselect_inputselecttagarray",
+      "label": "InputSelectTagArray()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "useQueryData",
+      "file_type": "code",
+      "norm_label": "inputselecttagarray()",
+      "source_file": "src/components/inputs/InputSelect.jsx",
+      "source_location": "L683"
     },
     {
       "id": "src_components_inputs_inputselect_searchableselectfilter",
@@ -5606,7 +5270,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "searchableselectfilter()",
       "source_file": "src/components/inputs/InputSelect.jsx",
@@ -5618,7 +5282,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "searchableselectmodalfilter()",
       "source_file": "src/components/inputs/InputSelect.jsx",
@@ -5630,7 +5294,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "debouncedinput()",
       "source_file": "src/components/inputs/InputText.jsx",
@@ -5642,7 +5306,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "loadimages()",
       "source_file": "src/components/LoadImages.jsx",
@@ -5654,23 +5318,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "ministatcard()",
       "source_file": "src/components/MiniStatCard.jsx",
       "source_location": "L3"
-    },
-    {
-      "id": "src_components_modals_exportmodal_exportmodal",
-      "label": "ExportModal()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "exportmodal()",
-      "source_file": "src/components/modals/ExportModal.jsx",
-      "source_location": "L5"
     },
     {
       "id": "src_components_nodata_nodata",
@@ -5678,7 +5330,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "nodata()",
       "source_file": "src/components/NoData.jsx",
@@ -5690,7 +5342,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "pesosign()",
       "source_file": "src/components/PesoSign.jsx",
@@ -5702,7 +5354,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "profitlosschart()",
       "source_file": "src/components/ProfitLossChart.jsx",
@@ -5714,7 +5366,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "salesvsexpensesvsprofit()",
       "source_file": "src/components/SalesVsExpensesVsProfit.jsx",
@@ -5726,7 +5378,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "searchbar()",
       "source_file": "src/components/SearchBar.jsx",
@@ -5738,7 +5390,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "servererror()",
       "source_file": "src/components/ServerError.jsx",
@@ -5750,7 +5402,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "tableloading()",
       "source_file": "src/components/spinners/TableLoading.jsx",
@@ -5762,7 +5414,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "tablespinner()",
       "source_file": "src/components/spinners/TableSpinner.jsx",
@@ -5774,7 +5426,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "statcard()",
       "source_file": "src/components/StatCard.jsx",
@@ -5786,22 +5438,10 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "statcardloader()",
       "source_file": "src/components/StatCardLoader.jsx",
-      "source_location": "L5"
-    },
-    {
-      "id": "src_components_widgets_exportprogresswidget_exportprogresswidget",
-      "label": "ExportProgressWidget()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "exportprogresswidget()",
-      "source_file": "src/components/widgets/ExportProgressWidget.jsx",
       "source_location": "L5"
     },
     {
@@ -5810,7 +5450,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "usedarkmode()",
       "source_file": "src/custom-hooks/useDarkMode.jsx",
@@ -5822,7 +5462,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "overviewsalescustomer()",
       "source_file": "src/layout/customer/OverviewSalesCustomer.jsx",
@@ -5834,7 +5474,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardcashflowchart()",
       "source_file": "src/layout/dashboard/DashboardCashflowChart.jsx",
@@ -5846,7 +5486,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardexpensestoday()",
       "source_file": "src/layout/dashboard/DashboardExpensesToday.jsx",
@@ -5858,7 +5498,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardlowstockalert()",
       "source_file": "src/layout/dashboard/DashboardLowStockAlert.jsx",
@@ -5870,7 +5510,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardoverduepayments()",
       "source_file": "src/layout/dashboard/DashboardOverduePayments.jsx",
@@ -5882,7 +5522,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardprofitandloss()",
       "source_file": "src/layout/dashboard/DashboardProfitAndLoss.jsx",
@@ -5894,7 +5534,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardrecentactivities()",
       "source_file": "src/layout/dashboard/DashboardRecentActivities.jsx",
@@ -5906,7 +5546,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardsalesoverview()",
       "source_file": "src/layout/dashboard/DashboardSalesOverview.jsx",
@@ -5918,7 +5558,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardsalestoday()",
       "source_file": "src/layout/dashboard/DashboardSalesToday.jsx",
@@ -5930,7 +5570,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardtopsellingproduct()",
       "source_file": "src/layout/dashboard/DashboardTopSellingProduct.jsx",
@@ -5942,7 +5582,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardtopsellingproductlist()",
       "source_file": "src/layout/dashboard/DashboardTopSellingProductList.jsx",
@@ -5954,7 +5594,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "mobileresponsivelist()",
       "source_file": "src/layout/mobile-responsive/MobileResponsiveList.jsx",
@@ -5966,7 +5606,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "reportlowstockitems()",
       "source_file": "src/layout/sales-reports/ReportLowStockItems.jsx",
@@ -5978,7 +5618,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "reportnetrevenue()",
       "source_file": "src/layout/sales-reports/ReportNetRevenue.jsx",
@@ -5990,7 +5630,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "reporttotalreturns()",
       "source_file": "src/layout/sales-reports/ReportTotalReturns.jsx",
@@ -6002,7 +5642,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "reporttotalsalesorders()",
       "source_file": "src/layout/sales-reports/ReportTotalSalesOrders.jsx",
@@ -6014,7 +5654,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "activefiltertagbar()",
       "source_file": "src/layout/table/ActiveFilterTagBar.jsx",
@@ -6026,7 +5666,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "chipkey()",
       "source_file": "src/layout/table/ActiveFilterTagBar.jsx",
@@ -6038,7 +5678,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "chiplabel()",
       "source_file": "src/layout/table/ActiveFilterTagBar.jsx",
@@ -6050,10 +5690,34 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "worddate()",
       "source_file": "src/layout/table/ActiveFilterTagBar.jsx",
+      "source_location": "L13"
+    },
+    {
+      "id": "src_layout_table_function_table_rendercellcontent",
+      "label": "renderCellContent()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "useQueryData",
+      "file_type": "code",
+      "norm_label": "rendercellcontent()",
+      "source_file": "src/layout/table/function-table.jsx",
+      "source_location": "L37"
+    },
+    {
+      "id": "src_layout_table_function_table_renderimage",
+      "label": "renderImage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "useQueryData",
+      "file_type": "code",
+      "norm_label": "renderimage()",
+      "source_file": "src/layout/table/function-table.jsx",
       "source_location": "L13"
     },
     {
@@ -6062,7 +5726,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "infinitefilterwithdropdown()",
       "source_file": "src/layout/table/InfiniteFilterWithDropDown.jsx",
@@ -6074,7 +5738,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "todateonlystring()",
       "source_file": "src/layout/table/InfiniteFilterWithDropDown.jsx",
@@ -6086,23 +5750,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "toexternallink()",
       "source_file": "src/layout/table/InfiniteFilterWithDropDown.jsx",
       "source_location": "L61"
-    },
-    {
-      "id": "src_services_querydatainfinite_querydatainfinite",
-      "label": "queryDataInfinite()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "querydatainfinite()",
-      "source_file": "src/services/queryDataInfinite.jsx",
-      "source_location": "L3"
     },
     {
       "id": "src_services_usequerydata_usequerydata",
@@ -6110,35 +5762,11 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "usequerydata()",
       "source_file": "src/services/useQueryData.jsx",
       "source_location": "L5"
-    },
-    {
-      "id": "src_store_exportcontext_exportprovider",
-      "label": "ExportProvider()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "exportprovider()",
-      "source_file": "src/store/ExportContext.jsx",
-      "source_location": "L18"
-    },
-    {
-      "id": "src_store_exportcontext_useexport",
-      "label": "useExport()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "useexport()",
-      "source_file": "src/store/ExportContext.jsx",
-      "source_location": "L138"
     },
     {
       "id": "src_store_themecontext_usetheme",
@@ -6146,47 +5774,35 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "usetheme()",
       "source_file": "src/store/ThemeContext.jsx",
       "source_location": "L65"
     },
     {
-      "id": "src_utilities_formatdate_formatdate",
-      "label": "formatDate()",
+      "id": "src_utilities_getconvertstringtojsonparsedata_getconvertstringtojsonparsedata",
+      "label": "getConvertStringToJSONparseData()",
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
-      "norm_label": "formatdate()",
-      "source_file": "src/utilities/formatDate.jsx",
-      "source_location": "L45"
+      "norm_label": "getconvertstringtojsonparsedata()",
+      "source_file": "src/utilities/getConvertStringToJSONparseData.jsx",
+      "source_location": "L1"
     },
     {
-      "id": "src_utilities_formatdate_formatdaterange",
-      "label": "formatDateRange()",
+      "id": "src_utilities_isemptyitem_isyesorno",
+      "label": "isYesOrNo()",
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
-      "norm_label": "formatdaterange()",
-      "source_file": "src/utilities/formatDate.jsx",
-      "source_location": "L3"
-    },
-    {
-      "id": "src_utilities_formatdate_options",
-      "label": "options()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "options()",
-      "source_file": "src/utilities/formatDate.jsx",
-      "source_location": "L57"
+      "norm_label": "isyesorno()",
+      "source_file": "src/utilities/isEmptyItem.jsx",
+      "source_location": "L32"
     },
     {
       "id": "src_utilities_numberwithcommas_numberwithcommastofixed",
@@ -6194,7 +5810,7 @@
       "_callable": true,
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "numberwithcommastofixed()",
       "source_file": "src/utilities/numberWithCommas.jsx",
@@ -6753,6 +6369,66 @@
       "source_location": "L613"
     },
     {
+      "id": "rest_v1_controllers_developer_inventory_stock_overview_functions_allowedcolumns",
+      "label": "allowedColumns()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 27,
+      "community_name": "products/functions.php",
+      "file_type": "code",
+      "norm_label": "allowedcolumns()",
+      "source_file": "rest/v1/controllers/developer/inventory/stock-overview/functions.php",
+      "source_location": "L11"
+    },
+    {
+      "id": "rest_v1_controllers_developer_inventory_stock_overview_functions_checkreadalllowstock",
+      "label": "checkReadAllLowStock()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 27,
+      "community_name": "products/functions.php",
+      "file_type": "code",
+      "norm_label": "checkreadalllowstock()",
+      "source_file": "rest/v1/controllers/developer/inventory/stock-overview/functions.php",
+      "source_location": "L31"
+    },
+    {
+      "id": "rest_v1_controllers_developer_inventory_stock_overview_functions_checkreadbyuseridlowstock",
+      "label": "checkReadByUserIdLowStock()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 27,
+      "community_name": "products/functions.php",
+      "file_type": "code",
+      "norm_label": "checkreadbyuseridlowstock()",
+      "source_file": "rest/v1/controllers/developer/inventory/stock-overview/functions.php",
+      "source_location": "L39"
+    },
+    {
+      "id": "rest_v1_controllers_developer_inventory_stock_overview_functions_checkreadcountlowstock",
+      "label": "checkReadCountLowStock()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 27,
+      "community_name": "products/functions.php",
+      "file_type": "code",
+      "norm_label": "checkreadcountlowstock()",
+      "source_file": "rest/v1/controllers/developer/inventory/stock-overview/functions.php",
+      "source_location": "L47"
+    },
+    {
+      "id": "rest_v1_controllers_developer_inventory_stock_overview_functions_isuseraccountassociated",
+      "label": "isUserAccountAssociated()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 27,
+      "community_name": "products/functions.php",
+      "file_type": "code",
+      "norm_label": "isuseraccountassociated()",
+      "source_file": "rest/v1/controllers/developer/inventory/stock-overview/functions.php",
+      "source_location": "L3"
+    },
+    {
       "id": "rest_v1_controllers_developer_products_functions_allowedcolumns",
       "label": "allowedColumns()",
       "_callable": true,
@@ -7089,6 +6765,18 @@
       "source_location": "L550"
     },
     {
+      "id": "rest_v1_models_developer_finance_accountreceivable_accountreceivable_createsalesjornal",
+      "label": ".createSalesJornal()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 29,
+      "community_name": "AccountReceivable",
+      "file_type": "code",
+      "norm_label": ".createsalesjornal()",
+      "source_file": "rest/v1/models/developer/finance/AccountReceivable.php",
+      "source_location": "L707"
+    },
+    {
       "id": "rest_v1_models_developer_finance_accountreceivable_accountreceivable_readall",
       "label": ".readAll()",
       "_callable": true,
@@ -7389,6 +7077,30 @@
       "source_location": "L43"
     },
     {
+      "id": "src_assets_svg_logofull_logofull",
+      "label": "LogoFull()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "logofull()",
+      "source_file": "src/assets/svg/LogoFull.jsx",
+      "source_location": "L2"
+    },
+    {
+      "id": "src_assets_svg_logofullsm_logofullsm",
+      "label": "LogoFullSm()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "logofullsm()",
+      "source_file": "src/assets/svg/LogoFullSm.jsx",
+      "source_location": "L2"
+    },
+    {
       "id": "src_components_buttons_exportcsvbutton_exportcsvbutton",
       "label": "ExportCSVButton()",
       "_callable": true,
@@ -7473,18 +7185,6 @@
       "source_location": "L907"
     },
     {
-      "id": "src_components_inputs_inputselect_inputpurchaseorderselecttagarray",
-      "label": "InputPurchaseOrderSelectTagArray()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 295,
-      "community_name": "isEmptyItem",
-      "file_type": "code",
-      "norm_label": "inputpurchaseorderselecttagarray()",
-      "source_file": "src/components/inputs/InputSelect.jsx",
-      "source_location": "L1310"
-    },
-    {
       "id": "src_components_inputs_inputselect_inputsalesorderselecttagarray",
       "label": "InputSalesOrderSelectTagArray()",
       "_callable": true,
@@ -7495,18 +7195,6 @@
       "norm_label": "inputsalesorderselecttagarray()",
       "source_file": "src/components/inputs/InputSelect.jsx",
       "source_location": "L768"
-    },
-    {
-      "id": "src_components_inputs_inputselect_inputselect",
-      "label": "InputSelect()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 295,
-      "community_name": "isEmptyItem",
-      "file_type": "code",
-      "norm_label": "inputselect()",
-      "source_file": "src/components/inputs/InputSelect.jsx",
-      "source_location": "L12"
     },
     {
       "id": "src_components_inputs_inputselect_inputselectarray",
@@ -7545,18 +7233,6 @@
       "source_location": "L1184"
     },
     {
-      "id": "src_components_inputs_inputselect_inputselecttagarray",
-      "label": "InputSelectTagArray()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 295,
-      "community_name": "isEmptyItem",
-      "file_type": "code",
-      "norm_label": "inputselecttagarray()",
-      "source_file": "src/components/inputs/InputSelect.jsx",
-      "source_location": "L683"
-    },
-    {
       "id": "src_components_inputs_inputtext_inputcode",
       "label": "InputCode()",
       "_callable": true,
@@ -7567,6 +7243,18 @@
       "norm_label": "inputcode()",
       "source_file": "src/components/inputs/InputText.jsx",
       "source_location": "L196"
+    },
+    {
+      "id": "src_components_inputs_inputtext_inputlogin",
+      "label": "InputLogin()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "inputlogin()",
+      "source_file": "src/components/inputs/InputText.jsx",
+      "source_location": "L154"
     },
     {
       "id": "src_components_inputs_inputtext_inputmaxminvalue",
@@ -7617,6 +7305,18 @@
       "source_location": "L6"
     },
     {
+      "id": "src_components_loadmore_loadmore",
+      "label": "Loadmore()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "loadmore()",
+      "source_file": "src/components/Loadmore.jsx",
+      "source_location": "L4"
+    },
+    {
       "id": "src_components_messageerror_messageerror",
       "label": "MessageError()",
       "_callable": true,
@@ -7629,6 +7329,54 @@
       "source_location": "L6"
     },
     {
+      "id": "src_components_pesosign_amount",
+      "label": "Amount()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "amount()",
+      "source_file": "src/components/PesoSign.jsx",
+      "source_location": "L19"
+    },
+    {
+      "id": "src_components_spinners_buttonspinner_buttonspinner",
+      "label": "ButtonSpinner()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "buttonspinner()",
+      "source_file": "src/components/spinners/ButtonSpinner.jsx",
+      "source_location": "L3"
+    },
+    {
+      "id": "src_components_spinners_fetchingspinner_fetchingspinner",
+      "label": "FetchingSpinner()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "fetchingspinner()",
+      "source_file": "src/components/spinners/FetchingSpinner.jsx",
+      "source_location": "L3"
+    },
+    {
+      "id": "src_components_spinners_screenspinner_screenspinner",
+      "label": "ScreenSpinner()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "screenspinner()",
+      "source_file": "src/components/spinners/ScreenSpinner.jsx",
+      "source_location": "L3"
+    },
+    {
       "id": "src_components_toast_toast",
       "label": "Toast()",
       "_callable": true,
@@ -7639,6 +7387,18 @@
       "norm_label": "toast()",
       "source_file": "src/components/Toast.jsx",
       "source_location": "L12"
+    },
+    {
+      "id": "src_custom_hooks_login_functions_checkroletoredirect",
+      "label": "checkRoleToRedirect()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "checkroletoredirect()",
+      "source_file": "src/custom-hooks/login-functions.jsx",
+      "source_location": "L3"
     },
     {
       "id": "src_custom_hooks_useuploadmultiplefiles_handlegetseconds",
@@ -7737,6 +7497,18 @@
       "source_location": "L563"
     },
     {
+      "id": "src_layout_arrayvalue_activitylogresetpassdetails",
+      "label": "ActivityLogResetPassDetails()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "activitylogresetpassdetails()",
+      "source_file": "src/layout/ArrayValue.jsx",
+      "source_location": "L576"
+    },
+    {
       "id": "src_layout_arrayvalue_discounttypeoption",
       "label": "discountTypeOption()",
       "_callable": true,
@@ -7797,6 +7569,66 @@
       "source_location": "L589"
     },
     {
+      "id": "src_layout_headers_function_header_quickheadershortcut",
+      "label": "quickHeaderShortCut()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "quickheadershortcut()",
+      "source_file": "src/layout/headers/function-header.jsx",
+      "source_location": "L318"
+    },
+    {
+      "id": "src_layout_headers_function_header_titleheadertab",
+      "label": "titleHeaderTab()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "titleheadertab()",
+      "source_file": "src/layout/headers/function-header.jsx",
+      "source_location": "L19"
+    },
+    {
+      "id": "src_layout_headers_header_header",
+      "label": "Header()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "header()",
+      "source_file": "src/layout/headers/Header.jsx",
+      "source_location": "L12"
+    },
+    {
+      "id": "src_layout_headers_header_header_handleclickoutside",
+      "label": "handleClickOutside()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "handleclickoutside()",
+      "source_file": "src/layout/headers/Header.jsx",
+      "source_location": "L29"
+    },
+    {
+      "id": "src_layout_headers_titleheader_titleheader",
+      "label": "TitleHeader()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "titleheader()",
+      "source_file": "src/layout/headers/TitleHeader.jsx",
+      "source_location": "L7"
+    },
+    {
       "id": "src_layout_modal_modalaction_modalaction",
       "label": "ModalAction()",
       "_callable": true,
@@ -7845,6 +7677,42 @@
       "source_location": "L4"
     },
     {
+      "id": "src_layout_navigation_function_nav_getnavlist",
+      "label": "getNavList()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "getnavlist()",
+      "source_file": "src/layout/navigation/function-nav.jsx",
+      "source_location": "L18"
+    },
+    {
+      "id": "src_layout_navigation_navigation_navigation",
+      "label": "Navigation()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "navigation()",
+      "source_file": "src/layout/navigation/Navigation.jsx",
+      "source_location": "L12"
+    },
+    {
+      "id": "src_layout_search_searchbar_searchbar",
+      "label": "SearchBar()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "searchbar()",
+      "source_file": "src/layout/search/SearchBar.jsx",
+      "source_location": "L5"
+    },
+    {
       "id": "src_layout_tabledefaultstatusdot_tabledefaultstatusdot",
       "label": "TableDefaultStatusDot()",
       "_callable": true,
@@ -7891,54 +7759,6 @@
       "norm_label": "modalsalesorders()",
       "source_file": "src/pages/developer/customers/ModalSalesOrders.jsx",
       "source_location": "L31"
-    },
-    {
-      "id": "src_pages_developer_customers_viewcustomerdetails_buildmessengerhref",
-      "label": "buildMessengerHref()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 295,
-      "community_name": "isEmptyItem",
-      "file_type": "code",
-      "norm_label": "buildmessengerhref()",
-      "source_file": "src/pages/developer/customers/ViewCustomerDetails.jsx",
-      "source_location": "L24"
-    },
-    {
-      "id": "src_pages_developer_customers_viewcustomerdetails_contactrow",
-      "label": "ContactRow()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 295,
-      "community_name": "isEmptyItem",
-      "file_type": "code",
-      "norm_label": "contactrow()",
-      "source_file": "src/pages/developer/customers/ViewCustomerDetails.jsx",
-      "source_location": "L70"
-    },
-    {
-      "id": "src_pages_developer_customers_viewcustomerdetails_metriccard",
-      "label": "MetricCard()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 295,
-      "community_name": "isEmptyItem",
-      "file_type": "code",
-      "norm_label": "metriccard()",
-      "source_file": "src/pages/developer/customers/ViewCustomerDetails.jsx",
-      "source_location": "L35"
-    },
-    {
-      "id": "src_pages_developer_customers_viewcustomerdetails_viewcustomerdetails",
-      "label": "ViewCustomerDetails()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 295,
-      "community_name": "isEmptyItem",
-      "file_type": "code",
-      "norm_label": "viewcustomerdetails()",
-      "source_file": "src/pages/developer/customers/ViewCustomerDetails.jsx",
-      "source_location": "L96"
     },
     {
       "id": "src_pages_developer_finance_accounts_payable_updateaccountspayabledetails_updateaccountspayabledetails",
@@ -8229,6 +8049,66 @@
       "source_location": "L10"
     },
     {
+      "id": "src_pages_login_createpassword_createpassword",
+      "label": "CreatePassword()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "createpassword()",
+      "source_file": "src/pages/login/CreatePassword.jsx",
+      "source_location": "L28"
+    },
+    {
+      "id": "src_pages_login_forgotpassword_forgotpassword",
+      "label": "ForgotPassword()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "forgotpassword()",
+      "source_file": "src/pages/login/ForgotPassword.jsx",
+      "source_location": "L23"
+    },
+    {
+      "id": "src_pages_login_login_login",
+      "label": "Login()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "login()",
+      "source_file": "src/pages/login/Login.jsx",
+      "source_location": "L57"
+    },
+    {
+      "id": "src_pages_login_protectedrouteuser_protectedrouteuser",
+      "label": "ProtectedRouteUser()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "protectedrouteuser()",
+      "source_file": "src/pages/login/ProtectedRouteUser.jsx",
+      "source_location": "L12"
+    },
+    {
+      "id": "src_pages_login_resetpassword_resetpassword",
+      "label": "ResetPassword()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "resetpassword()",
+      "source_file": "src/pages/login/ResetPassword.jsx",
+      "source_location": "L21"
+    },
+    {
       "id": "src_services_querydata_querydata",
       "label": "queryData()",
       "_callable": true,
@@ -8241,6 +8121,18 @@
       "source_location": "L3"
     },
     {
+      "id": "src_services_useraccountlogin_useraccountlogin",
+      "label": "userAccountLogin()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "useraccountlogin()",
+      "source_file": "src/services/userAccountLogin.jsx",
+      "source_location": "L9"
+    },
+    {
       "id": "src_store_storeaction_setcreatepasssuccess",
       "label": "setCreatePassSuccess()",
       "_callable": true,
@@ -8251,6 +8143,18 @@
       "norm_label": "setcreatepasssuccess()",
       "source_file": "src/store/StoreAction.jsx",
       "source_location": "L106"
+    },
+    {
+      "id": "src_store_storeaction_setcredentials",
+      "label": "setCredentials()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "setcredentials()",
+      "source_file": "src/store/StoreAction.jsx",
+      "source_location": "L120"
     },
     {
       "id": "src_store_storeaction_seterror",
@@ -8289,6 +8193,30 @@
       "source_location": "L64"
     },
     {
+      "id": "src_store_storeaction_setislogin",
+      "label": "setIsLogin()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "setislogin()",
+      "source_file": "src/store/StoreAction.jsx",
+      "source_location": "L43"
+    },
+    {
+      "id": "src_store_storeaction_setisnavfullshow",
+      "label": "setIsNavFullShow()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "setisnavfullshow()",
+      "source_file": "src/store/StoreAction.jsx",
+      "source_location": "L50"
+    },
+    {
       "id": "src_store_storeaction_setisresetpass",
       "label": "setIsResetPass()",
       "_callable": true,
@@ -8299,6 +8227,18 @@
       "norm_label": "setisresetpass()",
       "source_file": "src/store/StoreAction.jsx",
       "source_location": "L57"
+    },
+    {
+      "id": "src_store_storeaction_setissearch",
+      "label": "setIsSearch()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "setissearch()",
+      "source_file": "src/store/StoreAction.jsx",
+      "source_location": "L85"
     },
     {
       "id": "src_store_storeaction_setisstripeerror",
@@ -8361,27 +8301,39 @@
       "source_location": "L15"
     },
     {
-      "id": "src_store_storecontext_storeprovider",
-      "label": "StoreProvider()",
+      "id": "src_utilities_authchannel_broadcastlogout",
+      "label": "broadcastLogout()",
       "_callable": true,
       "_origin": "ast",
       "community": 295,
       "community_name": "isEmptyItem",
       "file_type": "code",
-      "norm_label": "storeprovider()",
-      "source_file": "src/store/StoreContext.jsx",
-      "source_location": "L33"
+      "norm_label": "broadcastlogout()",
+      "source_file": "src/utilities/authChannel.jsx",
+      "source_location": "L11"
     },
     {
-      "id": "src_store_storereducer_storereducer",
-      "label": "StoreReducer()",
+      "id": "src_utilities_authchannel_subscribetologout",
+      "label": "subscribeToLogout()",
       "_callable": true,
       "_origin": "ast",
       "community": 295,
       "community_name": "isEmptyItem",
       "file_type": "code",
-      "norm_label": "storereducer()",
-      "source_file": "src/store/StoreReducer.jsx",
+      "norm_label": "subscribetologout()",
+      "source_file": "src/utilities/authChannel.jsx",
+      "source_location": "L19"
+    },
+    {
+      "id": "src_utilities_checklocalstorage_checklocalstorage",
+      "label": "checkLocalStorage()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "checklocalstorage()",
+      "source_file": "src/utilities/CheckLocalStorage.jsx",
       "source_location": "L1"
     },
     {
@@ -8406,6 +8358,54 @@
       "file_type": "code",
       "norm_label": "fetchformdata()",
       "source_file": "src/utilities/fetchFormData.jsx",
+      "source_location": "L2"
+    },
+    {
+      "id": "src_utilities_formatdate_formatdate",
+      "label": "formatDate()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "formatdate()",
+      "source_file": "src/utilities/formatDate.jsx",
+      "source_location": "L45"
+    },
+    {
+      "id": "src_utilities_formatdate_formatdaterange",
+      "label": "formatDateRange()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "formatdaterange()",
+      "source_file": "src/utilities/formatDate.jsx",
+      "source_location": "L3"
+    },
+    {
+      "id": "src_utilities_formatdate_options",
+      "label": "options()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "options()",
+      "source_file": "src/utilities/formatDate.jsx",
+      "source_location": "L57"
+    },
+    {
+      "id": "src_utilities_geturlparam_geturlparam",
+      "label": "getUrlParam()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "geturlparam()",
+      "source_file": "src/utilities/getUrlParam.jsx",
       "source_location": "L2"
     },
     {
@@ -8491,6 +8491,42 @@
       "norm_label": "strip()",
       "source_file": "src/utilities/isRowsDirty.jsx",
       "source_location": "L9"
+    },
+    {
+      "id": "src_utilities_logout_clearsession",
+      "label": "clearSession()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "clearsession()",
+      "source_file": "src/utilities/logout.jsx",
+      "source_location": "L4"
+    },
+    {
+      "id": "src_utilities_logout_performlogout",
+      "label": "performLogout()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "performlogout()",
+      "source_file": "src/utilities/logout.jsx",
+      "source_location": "L17"
+    },
+    {
+      "id": "src_utilities_setstorageroute_setstorageroute",
+      "label": "setStorageRoute()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "setstorageroute()",
+      "source_file": "src/utilities/setStorageRoute.jsx",
+      "source_location": "L2"
     },
     {
       "id": "rest_v1_controllers_developer_customer_functions_allowedcolumns",
@@ -8623,30 +8659,6 @@
       "norm_label": "actionbutton()",
       "source_file": "src/components/buttons/ActionButton.jsx",
       "source_location": "L4"
-    },
-    {
-      "id": "src_components_buttons_closebutton_closebutton",
-      "label": "CloseButton()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "MobileResponsiveList.jsx",
-      "file_type": "code",
-      "norm_label": "closebutton()",
-      "source_file": "src/components/buttons/CloseButton.jsx",
-      "source_location": "L3"
-    },
-    {
-      "id": "src_components_pesosign_amount",
-      "label": "Amount()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "MobileResponsiveList.jsx",
-      "file_type": "code",
-      "norm_label": "amount()",
-      "source_file": "src/components/PesoSign.jsx",
-      "source_location": "L19"
     },
     {
       "id": "src_components_pesosign_amountswithpesosign",
@@ -9081,30 +9093,6 @@
       "source_location": "L6"
     },
     {
-      "id": "src_layout_table_function_table_rendercellcontent",
-      "label": "renderCellContent()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "MobileResponsiveList.jsx",
-      "file_type": "code",
-      "norm_label": "rendercellcontent()",
-      "source_file": "src/layout/table/function-table.jsx",
-      "source_location": "L37"
-    },
-    {
-      "id": "src_layout_table_function_table_renderimage",
-      "label": "renderImage()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "MobileResponsiveList.jsx",
-      "file_type": "code",
-      "norm_label": "renderimage()",
-      "source_file": "src/layout/table/function-table.jsx",
-      "source_location": "L13"
-    },
-    {
       "id": "src_layout_table_infinitesubtable_infinitesubtable",
       "label": "InfiniteSubTable()",
       "_callable": true,
@@ -9127,6 +9115,54 @@
       "norm_label": "tablestatus()",
       "source_file": "src/layout/TableStatus.jsx",
       "source_location": "L6"
+    },
+    {
+      "id": "src_pages_developer_customers_viewcustomerdetails_buildmessengerhref",
+      "label": "buildMessengerHref()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "MobileResponsiveList.jsx",
+      "file_type": "code",
+      "norm_label": "buildmessengerhref()",
+      "source_file": "src/pages/developer/customers/ViewCustomerDetails.jsx",
+      "source_location": "L24"
+    },
+    {
+      "id": "src_pages_developer_customers_viewcustomerdetails_contactrow",
+      "label": "ContactRow()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "MobileResponsiveList.jsx",
+      "file_type": "code",
+      "norm_label": "contactrow()",
+      "source_file": "src/pages/developer/customers/ViewCustomerDetails.jsx",
+      "source_location": "L70"
+    },
+    {
+      "id": "src_pages_developer_customers_viewcustomerdetails_metriccard",
+      "label": "MetricCard()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "MobileResponsiveList.jsx",
+      "file_type": "code",
+      "norm_label": "metriccard()",
+      "source_file": "src/pages/developer/customers/ViewCustomerDetails.jsx",
+      "source_location": "L35"
+    },
+    {
+      "id": "src_pages_developer_customers_viewcustomerdetails_viewcustomerdetails",
+      "label": "ViewCustomerDetails()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "MobileResponsiveList.jsx",
+      "file_type": "code",
+      "norm_label": "viewcustomerdetails()",
+      "source_file": "src/pages/developer/customers/ViewCustomerDetails.jsx",
+      "source_location": "L96"
     },
     {
       "id": "src_pages_developer_reports_activity_log_activitylog_activityactionpillclass",
@@ -9235,30 +9271,6 @@
       "norm_label": "toamount()",
       "source_file": "src/utilities/exportSalesOrderCsv.jsx",
       "source_location": "L5"
-    },
-    {
-      "id": "src_utilities_getconvertstringtojsonparsedata_getconvertstringtojsonparsedata",
-      "label": "getConvertStringToJSONparseData()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "MobileResponsiveList.jsx",
-      "file_type": "code",
-      "norm_label": "getconvertstringtojsonparsedata()",
-      "source_file": "src/utilities/getConvertStringToJSONparseData.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_utilities_isemptyitem_isyesorno",
-      "label": "isYesOrNo()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "MobileResponsiveList.jsx",
-      "file_type": "code",
-      "norm_label": "isyesorno()",
-      "source_file": "src/utilities/isEmptyItem.jsx",
-      "source_location": "L32"
     },
     {
       "id": "src_utilities_numberwithcommas_numberwithcommas",
@@ -10410,7 +10422,7 @@
       "file_type": "code",
       "norm_label": "checkreadallreturnedordernumbers()",
       "source_file": "rest/v1/controllers/developer/returns/functions.php",
-      "source_location": "L105"
+      "source_location": "L121"
     },
     {
       "id": "rest_v1_controllers_developer_returns_functions_checkreadallreturnedproductnumbers",
@@ -10422,7 +10434,7 @@
       "file_type": "code",
       "norm_label": "checkreadallreturnedproductnumbers()",
       "source_file": "rest/v1/controllers/developer/returns/functions.php",
-      "source_location": "L113"
+      "source_location": "L129"
     },
     {
       "id": "rest_v1_controllers_developer_returns_functions_checkreadallreturnedproductreasons",
@@ -10434,7 +10446,7 @@
       "file_type": "code",
       "norm_label": "checkreadallreturnedproductreasons()",
       "source_file": "rest/v1/controllers/developer/returns/functions.php",
-      "source_location": "L121"
+      "source_location": "L137"
     },
     {
       "id": "rest_v1_controllers_developer_returns_functions_checkreadallthathavestock",
@@ -10447,6 +10459,30 @@
       "norm_label": "checkreadallthathavestock()",
       "source_file": "rest/v1/controllers/developer/returns/functions.php",
       "source_location": "L59"
+    },
+    {
+      "id": "rest_v1_controllers_developer_returns_functions_checkreadcashierall",
+      "label": "checkReadCashierAll()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "developer/returns/functions.php",
+      "file_type": "code",
+      "norm_label": "checkreadcashierall()",
+      "source_file": "rest/v1/controllers/developer/returns/functions.php",
+      "source_location": "L105"
+    },
+    {
+      "id": "rest_v1_controllers_developer_returns_functions_checkreadcashierlimit",
+      "label": "checkReadCashierLimit()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 39,
+      "community_name": "developer/returns/functions.php",
+      "file_type": "code",
+      "norm_label": "checkreadcashierlimit()",
+      "source_file": "rest/v1/controllers/developer/returns/functions.php",
+      "source_location": "L113"
     },
     {
       "id": "rest_v1_controllers_developer_returns_functions_isuseraccountassociated",
@@ -11061,18 +11097,6 @@
       "source_location": "L109"
     },
     {
-      "id": "rest_v1_models_developer_finance_accountreceivable_accountreceivable_createsalesjornal",
-      "label": ".createSalesJornal()",
-      "_callable": true,
-      "_origin": "ast",
-      "community": 4,
-      "community_name": "returnError",
-      "file_type": "code",
-      "norm_label": ".createsalesjornal()",
-      "source_file": "rest/v1/models/developer/finance/AccountReceivable.php",
-      "source_location": "L707"
-    },
-    {
       "id": "rest_v1_models_developer_products_products_products_createmovementstock",
       "label": ".createMovementStock()",
       "_callable": true,
@@ -11106,7 +11130,7 @@
       "file_type": "code",
       "norm_label": ".createmovementstock()",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L997"
+      "source_location": "L1345"
     },
     {
       "id": "rest_v1_models_developer_suppliers_supplierspurchaseorder_supplierspurchaseorder_readlimit",
@@ -14454,7 +14478,7 @@
       "file_type": "code",
       "norm_label": ".active()",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L941"
+      "source_location": "L1289"
     },
     {
       "id": "rest_v1_models_developer_returns_returns_returns_checkidnumberexist",
@@ -14466,7 +14490,7 @@
       "file_type": "code",
       "norm_label": ".checkidnumberexist()",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1077"
+      "source_location": "L1425"
     },
     {
       "id": "rest_v1_models_developer_returns_returns_returns_checklastidnumber",
@@ -14478,7 +14502,7 @@
       "file_type": "code",
       "norm_label": ".checklastidnumber()",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1098"
+      "source_location": "L1446"
     },
     {
       "id": "rest_v1_models_developer_returns_returns_returns_checkname",
@@ -14490,7 +14514,7 @@
       "file_type": "code",
       "norm_label": ".checkname()",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L979"
+      "source_location": "L1327"
     },
     {
       "id": "rest_v1_models_developer_returns_returns_returns_construct",
@@ -14526,7 +14550,7 @@
       "file_type": "code",
       "norm_label": ".delete()",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L962"
+      "source_location": "L1310"
     },
     {
       "id": "rest_v1_models_developer_returns_returns_returns_deletemovementbyreturnid",
@@ -14538,7 +14562,7 @@
       "file_type": "code",
       "norm_label": ".deletemovementbyreturnid()",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1059"
+      "source_location": "L1407"
     },
     {
       "id": "rest_v1_models_developer_returns_returns_returns_readall",
@@ -14562,7 +14586,7 @@
       "file_type": "code",
       "norm_label": ".readallreturnedordernumbers()",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1194"
+      "source_location": "L1542"
     },
     {
       "id": "rest_v1_models_developer_returns_returns_returns_readallreturnedproductnumbers",
@@ -14574,7 +14598,7 @@
       "file_type": "code",
       "norm_label": ".readallreturnedproductnumbers()",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1214"
+      "source_location": "L1562"
     },
     {
       "id": "rest_v1_models_developer_returns_returns_returns_readallreturnedproductreasons",
@@ -14586,7 +14610,7 @@
       "file_type": "code",
       "norm_label": ".readallreturnedproductreasons()",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1234"
+      "source_location": "L1582"
     },
     {
       "id": "rest_v1_models_developer_returns_returns_returns_readbyid",
@@ -14598,7 +14622,7 @@
       "file_type": "code",
       "norm_label": ".readbyid()",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L853"
+      "source_location": "L1201"
     },
     {
       "id": "rest_v1_models_developer_returns_returns_returns_readbyuserid",
@@ -14625,6 +14649,30 @@
       "source_location": "L648"
     },
     {
+      "id": "rest_v1_models_developer_returns_returns_returns_readcashierall",
+      "label": ".readCashierAll()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "logError",
+      "file_type": "code",
+      "norm_label": ".readcashierall()",
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L825"
+    },
+    {
+      "id": "rest_v1_models_developer_returns_returns_returns_readcashierlimit",
+      "label": ".readCashierLimit()",
+      "_callable": true,
+      "_origin": "ast",
+      "community": 9,
+      "community_name": "logError",
+      "file_type": "code",
+      "norm_label": ".readcashierlimit()",
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L995"
+    },
+    {
       "id": "rest_v1_models_developer_returns_returns_returns_readcreditmemoreturnsbycustomerid",
       "label": ".readCreditMemoReturnsByCustomerId()",
       "_callable": true,
@@ -14634,7 +14682,7 @@
       "file_type": "code",
       "norm_label": ".readcreditmemoreturnsbycustomerid()",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L879"
+      "source_location": "L1227"
     },
     {
       "id": "rest_v1_models_developer_returns_returns_returns_readlimit",
@@ -14658,7 +14706,7 @@
       "file_type": "code",
       "norm_label": ".readtotalqty()",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1115"
+      "source_location": "L1463"
     },
     {
       "id": "rest_v1_models_developer_returns_returns_returns_search",
@@ -14670,7 +14718,7 @@
       "file_type": "code",
       "norm_label": ".search()",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L820"
+      "source_location": "L1168"
     },
     {
       "id": "rest_v1_models_developer_returns_returns_returns_update",
@@ -14682,7 +14730,7 @@
       "file_type": "code",
       "norm_label": ".update()",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L902"
+      "source_location": "L1250"
     },
     {
       "id": "rest_v1_models_developer_sales_order_salesorder_salesorder_active",
@@ -15285,17 +15333,6 @@
       "source_location": "L2051"
     },
     {
-      "id": "src_components_dateformat",
-      "label": "DateFormat.jsx",
-      "_origin": "ast",
-      "community": 0,
-      "community_name": "InfiniteTable.jsx",
-      "file_type": "code",
-      "norm_label": "dateformat.jsx",
-      "source_file": "src/components/DateFormat.jsx",
-      "source_location": "L1"
-    },
-    {
       "id": "src_components_inputs_inputrangefilter",
       "label": "InputRangeFilter.jsx",
       "_origin": "ast",
@@ -15791,14 +15828,14 @@
       "source_location": "L5"
     },
     {
-      "id": "rest_v1_controllers_developer_inventory_stock_overview_functions",
-      "label": "stock-overview/functions.php",
+      "id": "rest_v1_controllers_developer_inventory_stock_movement_functions",
+      "label": "stock-movement/functions.php",
       "_origin": "ast",
       "community": 1,
-      "community_name": "stock-overview/functions.php",
+      "community_name": "stock-movement/functions.php",
       "file_type": "code",
-      "norm_label": "stock-overview/functions.php",
-      "source_file": "rest/v1/controllers/developer/inventory/stock-overview/functions.php",
+      "norm_label": "stock-movement/functions.php",
+      "source_file": "rest/v1/controllers/developer/inventory/stock-movement/functions.php",
       "source_location": "L1"
     },
     {
@@ -15931,6 +15968,17 @@
       "file_type": "code",
       "norm_label": "overdue-payments.cy.js",
       "source_file": "cypress/e2e/reports/overdue-payments.cy.js",
+      "source_location": "L1"
+    },
+    {
+      "id": "rest_v1_controllers_developer_settings_role_functions",
+      "label": "role/functions.php",
+      "_origin": "ast",
+      "community": 11,
+      "community_name": "role/functions.php",
+      "file_type": "code",
+      "norm_label": "role/functions.php",
+      "source_file": "rest/v1/controllers/developer/settings/role/functions.php",
       "source_location": "L1"
     },
     {
@@ -16284,28 +16332,6 @@
       "file_type": "code",
       "norm_label": "customer/update.php",
       "source_file": "rest/v1/controllers/developer/customer/update.php",
-      "source_location": "L1"
-    },
-    {
-      "id": "rest_v1_controllers_developer_inventory_stock_movement_functions",
-      "label": "stock-movement/functions.php",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "purchase-order/functions.php",
-      "file_type": "code",
-      "norm_label": "stock-movement/functions.php",
-      "source_file": "rest/v1/controllers/developer/inventory/stock-movement/functions.php",
-      "source_location": "L1"
-    },
-    {
-      "id": "rest_v1_controllers_developer_settings_role_functions",
-      "label": "role/functions.php",
-      "_origin": "ast",
-      "community": 14,
-      "community_name": "purchase-order/functions.php",
-      "file_type": "code",
-      "norm_label": "role/functions.php",
-      "source_file": "rest/v1/controllers/developer/settings/role/functions.php",
       "source_location": "L1"
     },
     {
@@ -17017,186 +17043,43 @@
       "label": "App.jsx",
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
       "norm_label": "app.jsx",
       "source_file": "src/App.jsx",
       "source_location": "L1"
     },
     {
-      "id": "src_assets_svg_logofull",
-      "label": "LogoFull.jsx",
+      "id": "src_components_buttons_closebutton",
+      "label": "CloseButton.jsx",
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
-      "norm_label": "logofull.jsx",
-      "source_file": "src/assets/svg/LogoFull.jsx",
+      "norm_label": "closebutton.jsx",
+      "source_file": "src/components/buttons/CloseButton.jsx",
       "source_location": "L1"
     },
     {
-      "id": "src_assets_svg_logofullsm",
-      "label": "LogoFullSm.jsx",
+      "id": "src_components_modals_exportmodal",
+      "label": "ExportModal.jsx",
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
-      "norm_label": "logofullsm.jsx",
-      "source_file": "src/assets/svg/LogoFullSm.jsx",
+      "norm_label": "exportmodal.jsx",
+      "source_file": "src/components/modals/ExportModal.jsx",
       "source_location": "L1"
     },
     {
-      "id": "src_components_loadmore",
-      "label": "Loadmore.jsx",
+      "id": "src_components_widgets_exportprogresswidget",
+      "label": "ExportProgressWidget.jsx",
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
-      "norm_label": "loadmore.jsx",
-      "source_file": "src/components/Loadmore.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_components_spinners_buttonspinner",
-      "label": "ButtonSpinner.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "buttonspinner.jsx",
-      "source_file": "src/components/spinners/ButtonSpinner.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_components_spinners_fetchingspinner",
-      "label": "FetchingSpinner.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "fetchingspinner.jsx",
-      "source_file": "src/components/spinners/FetchingSpinner.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_components_spinners_screenspinner",
-      "label": "ScreenSpinner.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "screenspinner.jsx",
-      "source_file": "src/components/spinners/ScreenSpinner.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_config_config_devnavurl",
-      "label": "devNavUrl",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "devnavurl",
-      "source_file": "src/config/config.jsx",
-      "source_location": "L10"
-    },
-    {
-      "id": "src_config_config_isdemomode",
-      "label": "isDemoMode",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "isdemomode",
-      "source_file": "src/config/config.jsx",
-      "source_location": "L15"
-    },
-    {
-      "id": "src_config_config_urladmin",
-      "label": "UrlAdmin",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "urladmin",
-      "source_file": "src/config/config.jsx",
-      "source_location": "L14"
-    },
-    {
-      "id": "src_config_config_urldeveloper",
-      "label": "UrlDeveloper",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "urldeveloper",
-      "source_file": "src/config/config.jsx",
-      "source_location": "L13"
-    },
-    {
-      "id": "src_custom_hooks_login_functions",
-      "label": "login-functions.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "login-functions.jsx",
-      "source_file": "src/custom-hooks/login-functions.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_layout_headers_function_header",
-      "label": "function-header.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "function-header.jsx",
-      "source_file": "src/layout/headers/function-header.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_layout_headers_header",
-      "label": "Header.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "header.jsx",
-      "source_file": "src/layout/headers/Header.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_layout_headers_titleheader",
-      "label": "TitleHeader.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "titleheader.jsx",
-      "source_file": "src/layout/headers/TitleHeader.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_layout_navigation_function_nav",
-      "label": "function-nav.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "function-nav.jsx",
-      "source_file": "src/layout/navigation/function-nav.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_layout_navigation_navigation",
-      "label": "Navigation.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "navigation.jsx",
-      "source_file": "src/layout/navigation/Navigation.jsx",
+      "norm_label": "exportprogresswidget.jsx",
+      "source_file": "src/components/widgets/ExportProgressWidget.jsx",
       "source_location": "L1"
     },
     {
@@ -17204,21 +17087,10 @@
       "label": "PageNotFound.jsx",
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
       "norm_label": "pagenotfound.jsx",
       "source_file": "src/layout/PageNotFound.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_layout_search_searchbar",
-      "label": "search/SearchBar.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "search/searchbar.jsx",
-      "source_file": "src/layout/search/SearchBar.jsx",
       "source_location": "L1"
     },
     {
@@ -17226,76 +17098,10 @@
       "label": "main.jsx",
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
       "norm_label": "main.jsx",
       "source_file": "src/main.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_pages_login_createpassword",
-      "label": "CreatePassword.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "createpassword.jsx",
-      "source_file": "src/pages/login/CreatePassword.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_pages_login_forgotpassword",
-      "label": "ForgotPassword.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "forgotpassword.jsx",
-      "source_file": "src/pages/login/ForgotPassword.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_pages_login_login",
-      "label": "Login.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "login.jsx",
-      "source_file": "src/pages/login/Login.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_pages_login_login_demoaccounts",
-      "label": "demoAccounts",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "demoaccounts",
-      "source_file": "src/pages/login/Login.jsx",
-      "source_location": "L33"
-    },
-    {
-      "id": "src_pages_login_protectedrouteuser",
-      "label": "ProtectedRouteUser.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "protectedrouteuser.jsx",
-      "source_file": "src/pages/login/ProtectedRouteUser.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_pages_login_resetpassword",
-      "label": "ResetPassword.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "resetpassword.jsx",
-      "source_file": "src/pages/login/ResetPassword.jsx",
       "source_location": "L1"
     },
     {
@@ -17303,29 +17109,18 @@
       "label": "routesCashier",
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
       "norm_label": "routescashier",
       "source_file": "src/routes/ProductCashier.jsx",
       "source_location": "L9"
     },
     {
-      "id": "src_routes_routesaccess",
-      "label": "RoutesAccess.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "routesaccess.jsx",
-      "source_file": "src/routes/RoutesAccess.jsx",
-      "source_location": "L1"
-    },
-    {
       "id": "src_routes_routesaccess_routesaccess",
       "label": "routesAccess",
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
       "norm_label": "routesaccess",
       "source_file": "src/routes/RoutesAccess.jsx",
@@ -17336,7 +17131,7 @@
       "label": "routesAdmin",
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
       "norm_label": "routesadmin",
       "source_file": "src/routes/RoutesAdmin.jsx",
@@ -17347,7 +17142,7 @@
       "label": "routesDeveloper",
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
       "norm_label": "routesdeveloper",
       "source_file": "src/routes/RoutesDeveloper.jsx",
@@ -17358,21 +17153,65 @@
       "label": "routesProductOwner",
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
       "norm_label": "routesproductowner",
       "source_file": "src/routes/RoutesProductOwner.jsx",
       "source_location": "L32"
     },
     {
-      "id": "src_services_useraccountlogin",
-      "label": "userAccountLogin.jsx",
+      "id": "src_services_querydatainfinite",
+      "label": "queryDataInfinite.jsx",
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
-      "norm_label": "useraccountlogin.jsx",
-      "source_file": "src/services/userAccountLogin.jsx",
+      "norm_label": "querydatainfinite.jsx",
+      "source_file": "src/services/queryDataInfinite.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_store_exportcontext",
+      "label": "ExportContext.jsx",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "App.jsx",
+      "file_type": "code",
+      "norm_label": "exportcontext.jsx",
+      "source_file": "src/store/ExportContext.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_store_exportcontext_exportcontext",
+      "label": "ExportContext",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "App.jsx",
+      "file_type": "code",
+      "norm_label": "exportcontext",
+      "source_file": "src/store/ExportContext.jsx",
+      "source_location": "L6"
+    },
+    {
+      "id": "src_store_exportcontext_initstate",
+      "label": "initState",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "App.jsx",
+      "file_type": "code",
+      "norm_label": "initstate",
+      "source_file": "src/store/ExportContext.jsx",
+      "source_location": "L8"
+    },
+    {
+      "id": "src_store_storereducer",
+      "label": "StoreReducer.jsx",
+      "_origin": "ast",
+      "community": 2,
+      "community_name": "App.jsx",
+      "file_type": "code",
+      "norm_label": "storereducer.jsx",
+      "source_file": "src/store/StoreReducer.jsx",
       "source_location": "L1"
     },
     {
@@ -17380,7 +17219,7 @@
       "label": "ThemeContext.jsx",
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
       "norm_label": "themecontext.jsx",
       "source_file": "src/store/ThemeContext.jsx",
@@ -17391,77 +17230,11 @@
       "label": "ThemeContext",
       "_origin": "ast",
       "community": 2,
-      "community_name": "CreatePassword.jsx",
+      "community_name": "App.jsx",
       "file_type": "code",
       "norm_label": "themecontext",
       "source_file": "src/store/ThemeContext.jsx",
       "source_location": "L3"
-    },
-    {
-      "id": "src_utilities_authchannel",
-      "label": "authChannel.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "authchannel.jsx",
-      "source_file": "src/utilities/authChannel.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_utilities_checklocalstorage",
-      "label": "CheckLocalStorage.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "checklocalstorage.jsx",
-      "source_file": "src/utilities/CheckLocalStorage.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_utilities_geturlparam",
-      "label": "getUrlParam.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "geturlparam.jsx",
-      "source_file": "src/utilities/getUrlParam.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_utilities_logout",
-      "label": "logout.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "logout.jsx",
-      "source_file": "src/utilities/logout.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_utilities_setstorageroute",
-      "label": "setStorageRoute.jsx",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "code",
-      "norm_label": "setstorageroute.jsx",
-      "source_file": "src/utilities/setStorageRoute.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_utilities_logout_rationale_8",
-      "label": "NOTE: this only clears the current tab's in-memory/local state. Other",
-      "_origin": "ast",
-      "community": 2,
-      "community_name": "CreatePassword.jsx",
-      "file_type": "rationale",
-      "norm_label": "note: this only clears the current tab's in-memory/local state. other",
-      "source_file": "src/utilities/logout.jsx",
-      "source_location": "L8"
     },
     {
       "id": "rest_v1_models_developer_customer_customer",
@@ -17820,7 +17593,7 @@
       "label": "AddButton.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "addbutton.jsx",
       "source_file": "src/components/buttons/AddButton.jsx",
@@ -17831,7 +17604,7 @@
       "label": "DashboardCharts.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardcharts.jsx",
       "source_file": "src/components/DashboardCharts.jsx",
@@ -17842,7 +17615,7 @@
       "label": "dashboardData",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboarddata",
       "source_file": "src/components/DashboardCharts.jsx",
@@ -17853,18 +17626,29 @@
       "label": "salesData",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "salesdata",
       "source_file": "src/components/DashboardCharts.jsx",
       "source_location": "L14"
     },
     {
+      "id": "src_components_dateformat",
+      "label": "DateFormat.jsx",
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "useQueryData",
+      "file_type": "code",
+      "norm_label": "dateformat.jsx",
+      "source_file": "src/components/DateFormat.jsx",
+      "source_location": "L1"
+    },
+    {
       "id": "src_components_financestats",
       "label": "FinanceStats.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "financestats.jsx",
       "source_file": "src/components/FinanceStats.jsx",
@@ -17875,7 +17659,7 @@
       "label": "GraphTooltip.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "graphtooltip.jsx",
       "source_file": "src/components/GraphTooltip.jsx",
@@ -17886,7 +17670,7 @@
       "label": "LoadImages.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "loadimages.jsx",
       "source_file": "src/components/LoadImages.jsx",
@@ -17897,7 +17681,7 @@
       "label": "MiniStatCard.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "ministatcard.jsx",
       "source_file": "src/components/MiniStatCard.jsx",
@@ -17908,7 +17692,7 @@
       "label": "NoData.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "nodata.jsx",
       "source_file": "src/components/NoData.jsx",
@@ -17919,7 +17703,7 @@
       "label": "ProfitLossChart.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "profitlosschart.jsx",
       "source_file": "src/components/ProfitLossChart.jsx",
@@ -17930,7 +17714,7 @@
       "label": "profitLossData",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "profitlossdata",
       "source_file": "src/components/ProfitLossChart.jsx",
@@ -17941,7 +17725,7 @@
       "label": "SalesVsExpensesVsProfit.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "salesvsexpensesvsprofit.jsx",
       "source_file": "src/components/SalesVsExpensesVsProfit.jsx",
@@ -17952,7 +17736,7 @@
       "label": "components/SearchBar.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "components/searchbar.jsx",
       "source_file": "src/components/SearchBar.jsx",
@@ -17963,7 +17747,7 @@
       "label": "ServerError.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "servererror.jsx",
       "source_file": "src/components/ServerError.jsx",
@@ -17974,7 +17758,7 @@
       "label": "TableLoading.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "tableloading.jsx",
       "source_file": "src/components/spinners/TableLoading.jsx",
@@ -17985,7 +17769,7 @@
       "label": "TableSpinner.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "tablespinner.jsx",
       "source_file": "src/components/spinners/TableSpinner.jsx",
@@ -17996,7 +17780,7 @@
       "label": "StatCard.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "statcard.jsx",
       "source_file": "src/components/StatCard.jsx",
@@ -18007,32 +17791,10 @@
       "label": "StatCardLoader.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "statcardloader.jsx",
       "source_file": "src/components/StatCardLoader.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_components_widgets_exportprogresswidget",
-      "label": "ExportProgressWidget.jsx",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "exportprogresswidget.jsx",
-      "source_file": "src/components/widgets/ExportProgressWidget.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_config_config",
-      "label": "config.jsx",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "config.jsx",
-      "source_file": "src/config/config.jsx",
       "source_location": "L1"
     },
     {
@@ -18040,139 +17802,29 @@
       "label": "apiVersion",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "apiversion",
       "source_file": "src/config/config.jsx",
       "source_location": "L3"
     },
     {
-      "id": "src_config_config_devbaseimgurl",
-      "label": "devBaseImgUrl",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "devbaseimgurl",
-      "source_file": "src/config/config.jsx",
-      "source_location": "L6"
-    },
-    {
-      "id": "src_config_config_devbaseurl",
-      "label": "devBaseUrl",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "devbaseurl",
-      "source_file": "src/config/config.jsx",
-      "source_location": "L7"
-    },
-    {
-      "id": "src_config_config_devkey",
-      "label": "devKey",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "devkey",
-      "source_file": "src/config/config.jsx",
-      "source_location": "L22"
-    },
-    {
-      "id": "src_config_config_devweburl",
-      "label": "devWebUrl",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "devweburl",
-      "source_file": "src/config/config.jsx",
-      "source_location": "L8"
-    },
-    {
       "id": "src_config_config_googlehdviewlink",
       "label": "googleHDViewLink",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "googlehdviewlink",
       "source_file": "src/config/config.jsx",
       "source_location": "L18"
     },
     {
-      "id": "src_config_config_googlethumbnaillink",
-      "label": "googleThumbnailLink",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "googlethumbnaillink",
-      "source_file": "src/config/config.jsx",
-      "source_location": "L16"
-    },
-    {
-      "id": "src_config_config_googleviewlink",
-      "label": "googleViewLink",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "googleviewlink",
-      "source_file": "src/config/config.jsx",
-      "source_location": "L20"
-    },
-    {
-      "id": "src_config_config_settimezone",
-      "label": "setTimeZone",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "settimezone",
-      "source_file": "src/config/config.jsx",
-      "source_location": "L12"
-    },
-    {
-      "id": "src_config_config_sitekey",
-      "label": "siteKey",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "sitekey",
-      "source_file": "src/config/config.jsx",
-      "source_location": "L25"
-    },
-    {
-      "id": "src_config_config_urlpath",
-      "label": "urlPath",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "urlpath",
-      "source_file": "src/config/config.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_config_config_urlpathgraces",
-      "label": "urlPathGRACES",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "urlpathgraces",
-      "source_file": "src/config/config.jsx",
-      "source_location": "L2"
-    },
-    {
       "id": "src_custom_hooks_usedarkmode",
       "label": "useDarkMode.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "usedarkmode.jsx",
       "source_file": "src/custom-hooks/useDarkMode.jsx",
@@ -18183,7 +17835,7 @@
       "label": "OverviewSalesCustomer.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "overviewsalescustomer.jsx",
       "source_file": "src/layout/customer/OverviewSalesCustomer.jsx",
@@ -18194,7 +17846,7 @@
       "label": "DashboardCashflowChart.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardcashflowchart.jsx",
       "source_file": "src/layout/dashboard/DashboardCashflowChart.jsx",
@@ -18205,7 +17857,7 @@
       "label": "DashboardExpensesToday.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardexpensestoday.jsx",
       "source_file": "src/layout/dashboard/DashboardExpensesToday.jsx",
@@ -18216,7 +17868,7 @@
       "label": "DashboardLowStockAlert.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardlowstockalert.jsx",
       "source_file": "src/layout/dashboard/DashboardLowStockAlert.jsx",
@@ -18227,7 +17879,7 @@
       "label": "DashboardOverduePayments.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardoverduepayments.jsx",
       "source_file": "src/layout/dashboard/DashboardOverduePayments.jsx",
@@ -18238,7 +17890,7 @@
       "label": "DashboardProfitAndLoss.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardprofitandloss.jsx",
       "source_file": "src/layout/dashboard/DashboardProfitAndLoss.jsx",
@@ -18249,7 +17901,7 @@
       "label": "DashboardRecentActivities.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardrecentactivities.jsx",
       "source_file": "src/layout/dashboard/DashboardRecentActivities.jsx",
@@ -18260,7 +17912,7 @@
       "label": "DashboardSalesOverview.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardsalesoverview.jsx",
       "source_file": "src/layout/dashboard/DashboardSalesOverview.jsx",
@@ -18271,7 +17923,7 @@
       "label": "DashboardSalesToday.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardsalestoday.jsx",
       "source_file": "src/layout/dashboard/DashboardSalesToday.jsx",
@@ -18282,7 +17934,7 @@
       "label": "DashboardTopSellingProduct.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardtopsellingproduct.jsx",
       "source_file": "src/layout/dashboard/DashboardTopSellingProduct.jsx",
@@ -18293,7 +17945,7 @@
       "label": "DashboardTopSellingProductList.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboardtopsellingproductlist.jsx",
       "source_file": "src/layout/dashboard/DashboardTopSellingProductList.jsx",
@@ -18304,7 +17956,7 @@
       "label": "ReportLowStockItems.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "reportlowstockitems.jsx",
       "source_file": "src/layout/sales-reports/ReportLowStockItems.jsx",
@@ -18315,7 +17967,7 @@
       "label": "ReportNetRevenue.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "reportnetrevenue.jsx",
       "source_file": "src/layout/sales-reports/ReportNetRevenue.jsx",
@@ -18326,7 +17978,7 @@
       "label": "ReportTotalReturns.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "reporttotalreturns.jsx",
       "source_file": "src/layout/sales-reports/ReportTotalReturns.jsx",
@@ -18337,7 +17989,7 @@
       "label": "ReportTotalSalesOrders.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "reporttotalsalesorders.jsx",
       "source_file": "src/layout/sales-reports/ReportTotalSalesOrders.jsx",
@@ -18348,10 +18000,21 @@
       "label": "ActiveFilterTagBar.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "activefiltertagbar.jsx",
       "source_file": "src/layout/table/ActiveFilterTagBar.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_layout_table_function_table",
+      "label": "function-table.jsx",
+      "_origin": "ast",
+      "community": 23,
+      "community_name": "useQueryData",
+      "file_type": "code",
+      "norm_label": "function-table.jsx",
+      "source_file": "src/layout/table/function-table.jsx",
       "source_location": "L1"
     },
     {
@@ -18359,7 +18022,7 @@
       "label": "InfiniteFilterWithDropDown.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "infinitefilterwithdropdown.jsx",
       "source_file": "src/layout/table/InfiniteFilterWithDropDown.jsx",
@@ -18370,7 +18033,7 @@
       "label": "InfiniteSubTable.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "infinitesubtable.jsx",
       "source_file": "src/layout/table/InfiniteSubTable.jsx",
@@ -18381,7 +18044,7 @@
       "label": "WarningBanner.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "warningbanner.jsx",
       "source_file": "src/layout/WarningBanner.jsx",
@@ -18392,7 +18055,7 @@
       "label": "Dashboard.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "dashboard.jsx",
       "source_file": "src/pages/developer/dashboard/Dashboard.jsx",
@@ -18403,21 +18066,10 @@
       "label": "FinanceOverview.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "financeoverview.jsx",
       "source_file": "src/pages/developer/finance/finance-overview/FinanceOverview.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_services_querydatainfinite",
-      "label": "queryDataInfinite.jsx",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "querydatainfinite.jsx",
-      "source_file": "src/services/queryDataInfinite.jsx",
       "source_location": "L1"
     },
     {
@@ -18425,54 +18077,21 @@
       "label": "useQueryData.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "usequerydata.jsx",
       "source_file": "src/services/useQueryData.jsx",
       "source_location": "L1"
     },
     {
-      "id": "src_store_exportcontext",
-      "label": "ExportContext.jsx",
+      "id": "src_utilities_getconvertstringtojsonparsedata",
+      "label": "getConvertStringToJSONparseData.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
-      "norm_label": "exportcontext.jsx",
-      "source_file": "src/store/ExportContext.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_store_exportcontext_exportcontext",
-      "label": "ExportContext",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "exportcontext",
-      "source_file": "src/store/ExportContext.jsx",
-      "source_location": "L6"
-    },
-    {
-      "id": "src_store_exportcontext_initstate",
-      "label": "initState",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "initstate",
-      "source_file": "src/store/ExportContext.jsx",
-      "source_location": "L8"
-    },
-    {
-      "id": "src_utilities_formatdate",
-      "label": "formatDate.jsx",
-      "_origin": "ast",
-      "community": 23,
-      "community_name": "config.jsx",
-      "file_type": "code",
-      "norm_label": "formatdate.jsx",
-      "source_file": "src/utilities/formatDate.jsx",
+      "norm_label": "getconvertstringtojsonparsedata.jsx",
+      "source_file": "src/utilities/getConvertStringToJSONparseData.jsx",
       "source_location": "L1"
     },
     {
@@ -18480,7 +18099,7 @@
       "label": "numberWithCommas.jsx",
       "_origin": "ast",
       "community": 23,
-      "community_name": "config.jsx",
+      "community_name": "useQueryData",
       "file_type": "code",
       "norm_label": "numberwithcommas.jsx",
       "source_file": "src/utilities/numberWithCommas.jsx",
@@ -18960,6 +18579,17 @@
       "source_location": "L1"
     },
     {
+      "id": "rest_v1_controllers_developer_inventory_stock_overview_functions",
+      "label": "stock-overview/functions.php",
+      "_origin": "ast",
+      "community": 27,
+      "community_name": "products/functions.php",
+      "file_type": "code",
+      "norm_label": "stock-overview/functions.php",
+      "source_file": "rest/v1/controllers/developer/inventory/stock-overview/functions.php",
+      "source_location": "L1"
+    },
+    {
       "id": "rest_v1_controllers_developer_products_functions",
       "label": "products/functions.php",
       "_origin": "ast",
@@ -19257,6 +18887,28 @@
       "source_location": "L1"
     },
     {
+      "id": "src_assets_svg_logofull",
+      "label": "LogoFull.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "logofull.jsx",
+      "source_file": "src/assets/svg/LogoFull.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_assets_svg_logofullsm",
+      "label": "LogoFullSm.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "logofullsm.jsx",
+      "source_file": "src/assets/svg/LogoFullSm.jsx",
+      "source_location": "L1"
+    },
+    {
       "id": "src_components_buttons_exportcsvbutton",
       "label": "ExportCSVButton.jsx",
       "_origin": "ast",
@@ -19334,6 +18986,17 @@
       "source_location": "L1"
     },
     {
+      "id": "src_components_loadmore",
+      "label": "Loadmore.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "loadmore.jsx",
+      "source_file": "src/components/Loadmore.jsx",
+      "source_location": "L1"
+    },
+    {
       "id": "src_components_messageerror",
       "label": "MessageError.jsx",
       "_origin": "ast",
@@ -19342,6 +19005,39 @@
       "file_type": "code",
       "norm_label": "messageerror.jsx",
       "source_file": "src/components/MessageError.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_components_spinners_buttonspinner",
+      "label": "ButtonSpinner.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "buttonspinner.jsx",
+      "source_file": "src/components/spinners/ButtonSpinner.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_components_spinners_fetchingspinner",
+      "label": "FetchingSpinner.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "fetchingspinner.jsx",
+      "source_file": "src/components/spinners/FetchingSpinner.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_components_spinners_screenspinner",
+      "label": "ScreenSpinner.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "screenspinner.jsx",
+      "source_file": "src/components/spinners/ScreenSpinner.jsx",
       "source_location": "L1"
     },
     {
@@ -19356,6 +19052,17 @@
       "source_location": "L1"
     },
     {
+      "id": "src_config_config",
+      "label": "config.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "config.jsx",
+      "source_file": "src/config/config.jsx",
+      "source_location": "L1"
+    },
+    {
       "id": "src_config_config_devapiurl",
       "label": "devApiUrl",
       "_origin": "ast",
@@ -19365,6 +19072,171 @@
       "norm_label": "devapiurl",
       "source_file": "src/config/config.jsx",
       "source_location": "L5"
+    },
+    {
+      "id": "src_config_config_devbaseimgurl",
+      "label": "devBaseImgUrl",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "devbaseimgurl",
+      "source_file": "src/config/config.jsx",
+      "source_location": "L6"
+    },
+    {
+      "id": "src_config_config_devbaseurl",
+      "label": "devBaseUrl",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "devbaseurl",
+      "source_file": "src/config/config.jsx",
+      "source_location": "L7"
+    },
+    {
+      "id": "src_config_config_devkey",
+      "label": "devKey",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "devkey",
+      "source_file": "src/config/config.jsx",
+      "source_location": "L22"
+    },
+    {
+      "id": "src_config_config_devnavurl",
+      "label": "devNavUrl",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "devnavurl",
+      "source_file": "src/config/config.jsx",
+      "source_location": "L10"
+    },
+    {
+      "id": "src_config_config_devweburl",
+      "label": "devWebUrl",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "devweburl",
+      "source_file": "src/config/config.jsx",
+      "source_location": "L8"
+    },
+    {
+      "id": "src_config_config_googlethumbnaillink",
+      "label": "googleThumbnailLink",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "googlethumbnaillink",
+      "source_file": "src/config/config.jsx",
+      "source_location": "L16"
+    },
+    {
+      "id": "src_config_config_googleviewlink",
+      "label": "googleViewLink",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "googleviewlink",
+      "source_file": "src/config/config.jsx",
+      "source_location": "L20"
+    },
+    {
+      "id": "src_config_config_isdemomode",
+      "label": "isDemoMode",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "isdemomode",
+      "source_file": "src/config/config.jsx",
+      "source_location": "L15"
+    },
+    {
+      "id": "src_config_config_settimezone",
+      "label": "setTimeZone",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "settimezone",
+      "source_file": "src/config/config.jsx",
+      "source_location": "L12"
+    },
+    {
+      "id": "src_config_config_sitekey",
+      "label": "siteKey",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "sitekey",
+      "source_file": "src/config/config.jsx",
+      "source_location": "L25"
+    },
+    {
+      "id": "src_config_config_urladmin",
+      "label": "UrlAdmin",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "urladmin",
+      "source_file": "src/config/config.jsx",
+      "source_location": "L14"
+    },
+    {
+      "id": "src_config_config_urldeveloper",
+      "label": "UrlDeveloper",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "urldeveloper",
+      "source_file": "src/config/config.jsx",
+      "source_location": "L13"
+    },
+    {
+      "id": "src_config_config_urlpath",
+      "label": "urlPath",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "urlpath",
+      "source_file": "src/config/config.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_config_config_urlpathgraces",
+      "label": "urlPathGRACES",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "urlpathgraces",
+      "source_file": "src/config/config.jsx",
+      "source_location": "L2"
+    },
+    {
+      "id": "src_custom_hooks_login_functions",
+      "label": "login-functions.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "login-functions.jsx",
+      "source_file": "src/custom-hooks/login-functions.jsx",
+      "source_location": "L1"
     },
     {
       "id": "src_custom_hooks_useuploadmultiplefiles",
@@ -19397,6 +19269,39 @@
       "file_type": "code",
       "norm_label": "useuploadphoto.jsx",
       "source_file": "src/custom-hooks/useUploadPhoto.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_layout_headers_function_header",
+      "label": "function-header.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "function-header.jsx",
+      "source_file": "src/layout/headers/function-header.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_layout_headers_header",
+      "label": "Header.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "header.jsx",
+      "source_file": "src/layout/headers/Header.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_layout_headers_titleheader",
+      "label": "TitleHeader.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "titleheader.jsx",
+      "source_file": "src/layout/headers/TitleHeader.jsx",
       "source_location": "L1"
     },
     {
@@ -19444,6 +19349,39 @@
       "source_location": "L1"
     },
     {
+      "id": "src_layout_navigation_function_nav",
+      "label": "function-nav.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "function-nav.jsx",
+      "source_file": "src/layout/navigation/function-nav.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_layout_navigation_navigation",
+      "label": "Navigation.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "navigation.jsx",
+      "source_file": "src/layout/navigation/Navigation.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_layout_search_searchbar",
+      "label": "search/SearchBar.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "search/searchbar.jsx",
+      "source_file": "src/layout/search/SearchBar.jsx",
+      "source_location": "L1"
+    },
+    {
       "id": "src_layout_tabledefaultstatusdot",
       "label": "TableDefaultStatusDot.jsx",
       "_origin": "ast",
@@ -19485,17 +19423,6 @@
       "file_type": "code",
       "norm_label": "customers/modalsalesorders.jsx",
       "source_file": "src/pages/developer/customers/ModalSalesOrders.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_pages_developer_customers_viewcustomerdetails",
-      "label": "ViewCustomerDetails.jsx",
-      "_origin": "ast",
-      "community": 295,
-      "community_name": "isEmptyItem",
-      "file_type": "code",
-      "norm_label": "viewcustomerdetails.jsx",
-      "source_file": "src/pages/developer/customers/ViewCustomerDetails.jsx",
       "source_location": "L1"
     },
     {
@@ -19719,6 +19646,83 @@
       "source_location": "L1"
     },
     {
+      "id": "src_pages_login_createpassword",
+      "label": "CreatePassword.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "createpassword.jsx",
+      "source_file": "src/pages/login/CreatePassword.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_pages_login_forgotpassword",
+      "label": "ForgotPassword.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "forgotpassword.jsx",
+      "source_file": "src/pages/login/ForgotPassword.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_pages_login_login",
+      "label": "Login.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "login.jsx",
+      "source_file": "src/pages/login/Login.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_pages_login_login_demoaccounts",
+      "label": "demoAccounts",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "demoaccounts",
+      "source_file": "src/pages/login/Login.jsx",
+      "source_location": "L33"
+    },
+    {
+      "id": "src_pages_login_protectedrouteuser",
+      "label": "ProtectedRouteUser.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "protectedrouteuser.jsx",
+      "source_file": "src/pages/login/ProtectedRouteUser.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_pages_login_resetpassword",
+      "label": "ResetPassword.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "resetpassword.jsx",
+      "source_file": "src/pages/login/ResetPassword.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_routes_routesaccess",
+      "label": "RoutesAccess.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "routesaccess.jsx",
+      "source_file": "src/routes/RoutesAccess.jsx",
+      "source_location": "L1"
+    },
+    {
       "id": "src_services_querydata",
       "label": "queryData.jsx",
       "_origin": "ast",
@@ -19727,6 +19731,17 @@
       "file_type": "code",
       "norm_label": "querydata.jsx",
       "source_file": "src/services/queryData.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_services_useraccountlogin",
+      "label": "userAccountLogin.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "useraccountlogin.jsx",
+      "source_file": "src/services/userAccountLogin.jsx",
       "source_location": "L1"
     },
     {
@@ -19774,14 +19789,25 @@
       "source_location": "L31"
     },
     {
-      "id": "src_store_storereducer",
-      "label": "StoreReducer.jsx",
+      "id": "src_utilities_authchannel",
+      "label": "authChannel.jsx",
       "_origin": "ast",
       "community": 295,
       "community_name": "isEmptyItem",
       "file_type": "code",
-      "norm_label": "storereducer.jsx",
-      "source_file": "src/store/StoreReducer.jsx",
+      "norm_label": "authchannel.jsx",
+      "source_file": "src/utilities/authChannel.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_utilities_checklocalstorage",
+      "label": "CheckLocalStorage.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "checklocalstorage.jsx",
+      "source_file": "src/utilities/CheckLocalStorage.jsx",
       "source_location": "L1"
     },
     {
@@ -19804,6 +19830,28 @@
       "file_type": "code",
       "norm_label": "fetchformdata.jsx",
       "source_file": "src/utilities/fetchFormData.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_utilities_formatdate",
+      "label": "formatDate.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "formatdate.jsx",
+      "source_file": "src/utilities/formatDate.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_utilities_geturlparam",
+      "label": "getUrlParam.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "geturlparam.jsx",
+      "source_file": "src/utilities/getUrlParam.jsx",
       "source_location": "L1"
     },
     {
@@ -19849,6 +19897,39 @@
       "norm_label": "isrowsdirty.jsx",
       "source_file": "src/utilities/isRowsDirty.jsx",
       "source_location": "L1"
+    },
+    {
+      "id": "src_utilities_logout",
+      "label": "logout.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "logout.jsx",
+      "source_file": "src/utilities/logout.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_utilities_setstorageroute",
+      "label": "setStorageRoute.jsx",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "code",
+      "norm_label": "setstorageroute.jsx",
+      "source_file": "src/utilities/setStorageRoute.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_utilities_logout_rationale_8",
+      "label": "NOTE: this only clears the current tab's in-memory/local state. Other",
+      "_origin": "ast",
+      "community": 295,
+      "community_name": "isEmptyItem",
+      "file_type": "rationale",
+      "norm_label": "note: this only clears the current tab's in-memory/local state. other",
+      "source_file": "src/utilities/logout.jsx",
+      "source_location": "L8"
     },
     {
       "id": "rest_v1_controllers_developer_returns_returns_filters",
@@ -19903,28 +19984,6 @@
       "file_type": "code",
       "norm_label": "actionbutton.jsx",
       "source_file": "src/components/buttons/ActionButton.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_components_buttons_closebutton",
-      "label": "CloseButton.jsx",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "MobileResponsiveList.jsx",
-      "file_type": "code",
-      "norm_label": "closebutton.jsx",
-      "source_file": "src/components/buttons/CloseButton.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_components_modals_exportmodal",
-      "label": "ExportModal.jsx",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "MobileResponsiveList.jsx",
-      "file_type": "code",
-      "norm_label": "exportmodal.jsx",
-      "source_file": "src/components/modals/ExportModal.jsx",
       "source_location": "L1"
     },
     {
@@ -20313,17 +20372,6 @@
       "source_location": "L1"
     },
     {
-      "id": "src_layout_table_function_table",
-      "label": "function-table.jsx",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "MobileResponsiveList.jsx",
-      "file_type": "code",
-      "norm_label": "function-table.jsx",
-      "source_file": "src/layout/table/function-table.jsx",
-      "source_location": "L1"
-    },
-    {
       "id": "src_layout_tablestatus",
       "label": "TableStatus.jsx",
       "_origin": "ast",
@@ -20332,6 +20380,17 @@
       "file_type": "code",
       "norm_label": "tablestatus.jsx",
       "source_file": "src/layout/TableStatus.jsx",
+      "source_location": "L1"
+    },
+    {
+      "id": "src_pages_developer_customers_viewcustomerdetails",
+      "label": "ViewCustomerDetails.jsx",
+      "_origin": "ast",
+      "community": 3,
+      "community_name": "MobileResponsiveList.jsx",
+      "file_type": "code",
+      "norm_label": "viewcustomerdetails.jsx",
+      "source_file": "src/pages/developer/customers/ViewCustomerDetails.jsx",
       "source_location": "L1"
     },
     {
@@ -20365,17 +20424,6 @@
       "file_type": "code",
       "norm_label": "exportsalesordercsv.jsx",
       "source_file": "src/utilities/exportSalesOrderCsv.jsx",
-      "source_location": "L1"
-    },
-    {
-      "id": "src_utilities_getconvertstringtojsonparsedata",
-      "label": "getConvertStringToJSONparseData.jsx",
-      "_origin": "ast",
-      "community": 3,
-      "community_name": "MobileResponsiveList.jsx",
-      "file_type": "code",
-      "norm_label": "getconvertstringtojsonparsedata.jsx",
-      "source_file": "src/utilities/getConvertStringToJSONparseData.jsx",
       "source_location": "L1"
     },
     {
@@ -66404,7 +66452,7 @@
     },
     {
       "source": "rest_v1_controllers_developer_returns_functions",
-      "target": "rest_v1_controllers_developer_returns_functions_checkreadallreturnedordernumbers",
+      "target": "rest_v1_controllers_developer_returns_functions_checkreadcashierall",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -66415,7 +66463,7 @@
     },
     {
       "source": "rest_v1_controllers_developer_returns_functions",
-      "target": "rest_v1_controllers_developer_returns_functions_checkreadallreturnedproductnumbers",
+      "target": "rest_v1_controllers_developer_returns_functions_checkreadcashierlimit",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
@@ -66426,13 +66474,24 @@
     },
     {
       "source": "rest_v1_controllers_developer_returns_functions",
-      "target": "rest_v1_controllers_developer_returns_functions_checkreadallreturnedproductreasons",
+      "target": "rest_v1_controllers_developer_returns_functions_checkreadallreturnedordernumbers",
       "relation": "contains",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "rest/v1/controllers/developer/returns/functions.php",
       "source_location": "L121",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_controllers_developer_returns_functions",
+      "target": "rest_v1_controllers_developer_returns_functions_checkreadallreturnedproductnumbers",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "rest/v1/controllers/developer/returns/functions.php",
+      "source_location": "L129",
       "weight": 1.0
     },
     {
@@ -66444,6 +66503,17 @@
       "confidence_score": 1.0,
       "source_file": "rest/v1/controllers/developer/returns/functions.php",
       "source_location": "L13",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_controllers_developer_returns_functions",
+      "target": "rest_v1_controllers_developer_returns_functions_checkreadallreturnedproductreasons",
+      "relation": "contains",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "rest/v1/controllers/developer/returns/functions.php",
+      "source_location": "L137",
       "weight": 1.0
     },
     {
@@ -77382,79 +77452,101 @@
     },
     {
       "source": "rest_v1_models_developer_returns_returns_returns",
+      "target": "rest_v1_models_developer_returns_returns_returns_search",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L1168",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_models_developer_returns_returns_returns",
+      "target": "rest_v1_models_developer_returns_returns_returns_readbyid",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L1201",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_models_developer_returns_returns_returns",
+      "target": "rest_v1_models_developer_returns_returns_returns_readcreditmemoreturnsbycustomerid",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L1227",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_models_developer_returns_returns_returns",
+      "target": "rest_v1_models_developer_returns_returns_returns_update",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L1250",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_models_developer_returns_returns_returns",
+      "target": "rest_v1_models_developer_returns_returns_returns_active",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L1289",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_models_developer_returns_returns_returns",
+      "target": "rest_v1_models_developer_returns_returns_returns_delete",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L1310",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_models_developer_returns_returns_returns",
+      "target": "rest_v1_models_developer_returns_returns_returns_checkname",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L1327",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_models_developer_returns_returns_returns",
+      "target": "rest_v1_models_developer_returns_returns_returns_createmovementstock",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L1345",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_models_developer_returns_returns_returns",
       "target": "rest_v1_models_developer_returns_returns_returns_deletemovementbyreturnid",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1059",
-      "weight": 1.0
-    },
-    {
-      "source": "rest_v1_models_developer_returns_returns_returns",
-      "target": "rest_v1_models_developer_returns_returns_returns_checkidnumberexist",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1077",
-      "weight": 1.0
-    },
-    {
-      "source": "rest_v1_models_developer_returns_returns_returns",
-      "target": "rest_v1_models_developer_returns_returns_returns_checklastidnumber",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1098",
-      "weight": 1.0
-    },
-    {
-      "source": "rest_v1_models_developer_returns_returns_returns",
-      "target": "rest_v1_models_developer_returns_returns_returns_readtotalqty",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1115",
-      "weight": 1.0
-    },
-    {
-      "source": "rest_v1_models_developer_returns_returns_returns",
-      "target": "rest_v1_models_developer_returns_returns_returns_readallreturnedordernumbers",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1194",
-      "weight": 1.0
-    },
-    {
-      "source": "rest_v1_models_developer_returns_returns_returns",
-      "target": "rest_v1_models_developer_returns_returns_returns_readallreturnedproductnumbers",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1214",
-      "weight": 1.0
-    },
-    {
-      "source": "rest_v1_models_developer_returns_returns_returns",
-      "target": "rest_v1_models_developer_returns_returns_returns_readallreturnedproductreasons",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1234",
+      "source_location": "L1407",
       "weight": 1.0
     },
     {
@@ -77466,6 +77558,72 @@
       "confidence_score": 1.0,
       "source_file": "rest/v1/models/developer/returns/Returns.php",
       "source_location": "L141",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_models_developer_returns_returns_returns",
+      "target": "rest_v1_models_developer_returns_returns_returns_checkidnumberexist",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L1425",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_models_developer_returns_returns_returns",
+      "target": "rest_v1_models_developer_returns_returns_returns_checklastidnumber",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L1446",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_models_developer_returns_returns_returns",
+      "target": "rest_v1_models_developer_returns_returns_returns_readtotalqty",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L1463",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_models_developer_returns_returns_returns",
+      "target": "rest_v1_models_developer_returns_returns_returns_readallreturnedordernumbers",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L1542",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_models_developer_returns_returns_returns",
+      "target": "rest_v1_models_developer_returns_returns_returns_readallreturnedproductnumbers",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L1562",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_models_developer_returns_returns_returns",
+      "target": "rest_v1_models_developer_returns_returns_returns_readallreturnedproductreasons",
+      "relation": "method",
+      "_origin": "ast",
+      "confidence": "EXTRACTED",
+      "confidence_score": 1.0,
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L1582",
       "weight": 1.0
     },
     {
@@ -77525,90 +77683,24 @@
     },
     {
       "source": "rest_v1_models_developer_returns_returns_returns",
-      "target": "rest_v1_models_developer_returns_returns_returns_search",
+      "target": "rest_v1_models_developer_returns_returns_returns_readcashierall",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L820",
+      "source_location": "L825",
       "weight": 1.0
     },
     {
       "source": "rest_v1_models_developer_returns_returns_returns",
-      "target": "rest_v1_models_developer_returns_returns_returns_readbyid",
+      "target": "rest_v1_models_developer_returns_returns_returns_readcashierlimit",
       "relation": "method",
       "_origin": "ast",
       "confidence": "EXTRACTED",
       "confidence_score": 1.0,
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L853",
-      "weight": 1.0
-    },
-    {
-      "source": "rest_v1_models_developer_returns_returns_returns",
-      "target": "rest_v1_models_developer_returns_returns_returns_readcreditmemoreturnsbycustomerid",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L879",
-      "weight": 1.0
-    },
-    {
-      "source": "rest_v1_models_developer_returns_returns_returns",
-      "target": "rest_v1_models_developer_returns_returns_returns_update",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L902",
-      "weight": 1.0
-    },
-    {
-      "source": "rest_v1_models_developer_returns_returns_returns",
-      "target": "rest_v1_models_developer_returns_returns_returns_active",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L941",
-      "weight": 1.0
-    },
-    {
-      "source": "rest_v1_models_developer_returns_returns_returns",
-      "target": "rest_v1_models_developer_returns_returns_returns_delete",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L962",
-      "weight": 1.0
-    },
-    {
-      "source": "rest_v1_models_developer_returns_returns_returns",
-      "target": "rest_v1_models_developer_returns_returns_returns_checkname",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L979",
-      "weight": 1.0
-    },
-    {
-      "source": "rest_v1_models_developer_returns_returns_returns",
-      "target": "rest_v1_models_developer_returns_returns_returns_createmovementstock",
-      "relation": "method",
-      "_origin": "ast",
-      "confidence": "EXTRACTED",
-      "confidence_score": 1.0,
-      "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L997",
+      "source_location": "L995",
       "weight": 1.0
     },
     {
@@ -80949,7 +81041,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/controllers/developer/returns/functions.php",
-      "source_location": "L108",
+      "source_location": "L124",
       "weight": 1.0
     },
     {
@@ -80961,7 +81053,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/controllers/developer/returns/functions.php",
-      "source_location": "L116",
+      "source_location": "L132",
       "weight": 1.0
     },
     {
@@ -80973,7 +81065,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/controllers/developer/returns/functions.php",
-      "source_location": "L124",
+      "source_location": "L140",
       "weight": 1.0
     },
     {
@@ -80986,6 +81078,30 @@
       "context": "call",
       "source_file": "rest/v1/controllers/developer/returns/functions.php",
       "source_location": "L62",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_controllers_developer_returns_functions_checkreadcashierall",
+      "target": "rest_v1_core_functions_checkquery",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "call",
+      "source_file": "rest/v1/controllers/developer/returns/functions.php",
+      "source_location": "L108",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_controllers_developer_returns_functions_checkreadcashierlimit",
+      "target": "rest_v1_core_functions_checkquery",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "call",
+      "source_file": "rest/v1/controllers/developer/returns/functions.php",
+      "source_location": "L116",
       "weight": 1.0
     },
     {
@@ -84021,7 +84137,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L955",
+      "source_location": "L1303",
       "weight": 1.0
     },
     {
@@ -84033,7 +84149,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1091",
+      "source_location": "L1439",
       "weight": 1.0
     },
     {
@@ -84045,7 +84161,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1108",
+      "source_location": "L1456",
       "weight": 1.0
     },
     {
@@ -84057,7 +84173,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L989",
+      "source_location": "L1337",
       "weight": 1.0
     },
     {
@@ -84081,7 +84197,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1050",
+      "source_location": "L1398",
       "weight": 1.0
     },
     {
@@ -84093,7 +84209,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1051",
+      "source_location": "L1399",
       "weight": 1.0
     },
     {
@@ -84105,7 +84221,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L972",
+      "source_location": "L1320",
       "weight": 1.0
     },
     {
@@ -84117,7 +84233,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1070",
+      "source_location": "L1418",
       "weight": 1.0
     },
     {
@@ -84141,7 +84257,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1206",
+      "source_location": "L1554",
       "weight": 1.0
     },
     {
@@ -84153,7 +84269,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1226",
+      "source_location": "L1574",
       "weight": 1.0
     },
     {
@@ -84165,7 +84281,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1246",
+      "source_location": "L1594",
       "weight": 1.0
     },
     {
@@ -84177,7 +84293,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L870",
+      "source_location": "L1218",
       "weight": 1.0
     },
     {
@@ -84205,6 +84321,30 @@
       "weight": 1.0
     },
     {
+      "source": "rest_v1_models_developer_returns_returns_returns_readcashierall",
+      "target": "rest_v1_core_functions_logerror",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "call",
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L987",
+      "weight": 1.0
+    },
+    {
+      "source": "rest_v1_models_developer_returns_returns_returns_readcashierlimit",
+      "target": "rest_v1_core_functions_logerror",
+      "relation": "calls",
+      "_origin": "ast",
+      "confidence": "INFERRED",
+      "confidence_score": 0.85,
+      "context": "call",
+      "source_file": "rest/v1/models/developer/returns/Returns.php",
+      "source_location": "L1161",
+      "weight": 1.0
+    },
+    {
       "source": "rest_v1_models_developer_returns_returns_returns_readcreditmemoreturnsbycustomerid",
       "target": "rest_v1_core_functions_logerror",
       "relation": "calls",
@@ -84213,7 +84353,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L895",
+      "source_location": "L1243",
       "weight": 1.0
     },
     {
@@ -84237,7 +84377,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L1186",
+      "source_location": "L1534",
       "weight": 1.0
     },
     {
@@ -84249,7 +84389,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L846",
+      "source_location": "L1194",
       "weight": 1.0
     },
     {
@@ -84261,7 +84401,7 @@
       "confidence_score": 0.85,
       "context": "call",
       "source_file": "rest/v1/models/developer/returns/Returns.php",
-      "source_location": "L934",
+      "source_location": "L1282",
       "weight": 1.0
     },
     {

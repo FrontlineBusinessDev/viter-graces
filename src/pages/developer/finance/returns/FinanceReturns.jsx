@@ -137,7 +137,7 @@ const FinanceReturns = () => {
       <HeaderNav menu={"finance"} activeTab="finance-returns">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(100dvh-203px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(93dvh-203px)] h-[calc(97dvh-250px)]`}
           path="finance-returns"
           haveFilterTable={true}
           ishaveAdd={false}

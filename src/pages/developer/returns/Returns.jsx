@@ -277,10 +277,14 @@ const Returns = () => {
       >
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(93dvh-203px)] h-[calc(97dvh-250px)]`}
           path="returns-products"
           haveFilterTable={true}
-          ishaveAdd={getAdminDeveloperRole(store)}
+          ishaveAdd={
+            getAdminDeveloperRole(store) ||
+            Number(ProductOwnerId(store)) > 0 ||
+            userRole === "cashier"
+          }
           setItemEdit={setItemEdit}
           setDataCount={setDataCount}
         />
