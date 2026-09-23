@@ -1,18 +1,18 @@
 <?php
 require_once __DIR__ . '/../bootstrap.php';
 
-define("USERNAME", "noreply@hris.frontlinebusiness.com.ph");
-define("PASSWORD", "b@11551gfN4b");
+define("USERNAME", $_ENV['EMAIL_USERNAME']);
+define("PASSWORD", $_ENV['EMAIL_PASSWORD']);
 define("FROM", "Grace's ");
 define("VERIFY_ACCOUNT", "Account Verification");
 define("RESET_PASSWORD", "Reset Password");
 define("VERIFY_EMAIL", "Email Verification");
-define("REPLY_TO", "cyrene.lumabas@frontlinebusiness.com.ph");
+define("REPLY_TO", $_ENV['EMAIL_REPLY_TO']);
 
 // Frontline
-define("HOST", "mail.frontlinebusiness.com.ph");
-define("PORT", 465);
-define("SMTPSECURE", "ssl");
+define("HOST", $_ENV['EMAIL_HOST']);
+define("PORT", $_ENV['EMAIL_PORT']);
+define("SMTPSECURE", $_ENV['EMAIL_SMTPSECURE']);
 
 
 // // local
