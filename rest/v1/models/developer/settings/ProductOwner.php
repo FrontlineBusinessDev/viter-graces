@@ -219,6 +219,50 @@ class ProductOwner
     }
 
     // read all
+    // Same as readByProductOwner(), widened to the roles that can create a
+    // sales order - matched on the normalized role key (e.g. "Product Owner"
+    // -> product_owner), the same form the login token uses.
+    public function readByCreatedBy($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            ...$this->column_search != "" ? [
+                "user_account_first_name" => "%{$this->column_search}%",
+                "user_account_last_name" => "%{$this->column_search}%",
+                "name" => "%{$this->column_search}%",
+                "fullname" => "%{$this->column_search}%",
+                "user_account_role" => "%{$this->column_search}%",
+            ] : [],
+        ];
+
+        $filterColumn = $this->buildFilterColumns($allowedColumns, $params);
+        try {
+            $sql = "select *, ";
+            $sql .= "user_account_aid as id, ";
+            $sql .= "user_account_is_active as is_active, ";
+            $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) as name ";
+            $sql .= "from {$this->tblUserAccount} ";
+            $sql .= "where LOWER(REPLACE(TRIM(user_account_role), ' ', '_')) in ('product_owner', 'admin', 'cashier') ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and (user_account_first_name like :user_account_first_name
+                                                    or user_account_last_name like :user_account_last_name
+                                                    or CONCAT(user_account_first_name, ' ', user_account_last_name) like :name
+                                                    or CONCAT(user_account_last_name, ', ', user_account_first_name) like :fullname
+                                                    or user_account_role like :user_account_role ) " : " ");
+            }
+            $sql .= " order by user_account_is_active desc, ";
+            $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
     public function readByProductOwner($allowedColumns)
     {
         $filterColumn = [];

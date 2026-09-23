@@ -1710,6 +1710,29 @@ class SalesOrder
         return $query;
     }
 
+    // update - resizes one schedule row and re-flags it paid/unpaid
+    public function updateInstallmentAmountById()
+    {
+        try {
+            $sql = "update {$this->tblinstallmentPayment} set ";
+            $sql .= "installment_payment_amount = :installment_payment_amount, ";
+            $sql .= "installment_payment_is_paid = :installment_payment_is_paid, ";
+            $sql .= "installment_payment_updated = :installment_payment_updated ";
+            $sql .= "where installment_payment_aid = :installment_payment_aid ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "installment_payment_amount" => $this->installment_payment_amount,
+                "installment_payment_is_paid" => $this->installment_payment_is_paid,
+                "installment_payment_updated" => $this->sales_order_updated,
+                "installment_payment_aid" => $this->installment_payment_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
     // update
     public function updateInstallmentByOrderNumber()
     {

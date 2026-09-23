@@ -468,8 +468,17 @@ function installmentDetails($val, $installmentItems, $data)
         // "customize" is accepted too for rows saved before the rename (see
         // the data migration in rest/v1/db-backup/migrations/) that haven't
         // been resaved through the UI yet.
-        if (
-            !in_array(strtolower($data['sales_order_installment_type']), ["flexible", "customize"], true)
+        $isFixedPlan = !in_array(strtolower($data['sales_order_installment_type']), ["flexible", "customize"], true);
+        $existingQuery = $isFixedPlan ? $val->readByInstallment() : false;
+        $existingRows = $existingQuery ? getResultData($existingQuery) : [];
+
+        if ($isFixedPlan && count($existingRows) > 0) {
+            // The schedule already exists (editing the order) - rebalance it
+            // against the new balance instead of regenerating it, so rows
+            // already paid in Accounts Receivable stay intact.
+            rebalanceInstallmentSchedule($val, $data, $existingRows);
+        } elseif (
+            $isFixedPlan
             && (float)$data['sales_order_installment_count'] > 0
         ) {
             // CREATE INSTALLMENT PAYMENT
@@ -504,11 +513,7 @@ function installmentDetails($val, $installmentItems, $data)
                 $val->installment_payment_method = $val->sales_order_payment_method;
                 $val->installment_payment_amount = $val->sales_order_installment_amount;
 
-                if (count($installmentItems) == 0) {
-                    checkCreateInstallment($val);
-                } else {
-                    checkUpdateInstallmentByOrderNumber($val);
-                }
+                checkCreateInstallment($val);
             }
         } else {
             // Flexible plan: no fixed schedule, so there's no single due date
@@ -567,6 +572,82 @@ function installmentDetails($val, $installmentItems, $data)
     }
 
     return;
+}
+
+// Update - spreads the order's current balance across the still-open rows
+// of an existing Weekly/Monthly schedule. Paid rows are left untouched. If
+// every row is already paid but the balance went up (e.g. a product qty was
+// added after the plan was settled), one new row is added after the last due
+// date so Accounts Receivable has something to collect against.
+function rebalanceInstallmentSchedule($val, $data, $rows)
+{
+    usort($rows, function ($a, $b) {
+        return strcmp($a['installment_payment_due_date'], $b['installment_payment_due_date'])
+            ?: ((int)$a['installment_payment_aid'] - (int)$b['installment_payment_aid']);
+    });
+
+    $balance = round(max(0, (float)$val->sales_order_total_balance_amount), 2);
+    $openRows = array_values(array_filter($rows, function ($row) {
+        return (int)$row['installment_payment_is_paid'] === 0;
+    }));
+
+    if ($balance > 0 && count($openRows) === 0) {
+        $lastDueDate = end($rows)['installment_payment_due_date'];
+        $step = strtolower($data['sales_order_installment_type']) == "weekly" ? ' +1 week' : ' +1 month';
+
+        $val->installment_payment_code_id = 0;
+        $val->installment_payment_is_paid = 0;
+        $val->installment_payment_aid = 0;
+        $val->installment_payment_code = 'sales-order';
+        $val->installment_payment_code_number = $val->sales_order_number;
+        $val->installment_payment_customer_id = $val->sales_order_customer_id;
+        $val->installment_payment_customer_name = $val->sales_order_customer_name;
+        $val->installment_payment_method = $val->sales_order_payment_method;
+        $val->installment_payment_paid_amount = 0;
+        $val->installment_payment_amount = $balance;
+        $val->installment_payment_due_date = date('Y-m-d', strtotime($lastDueDate . $step));
+        checkCreateInstallment($val);
+
+        $val->sales_order_due_date = $val->installment_payment_due_date;
+        return;
+    }
+
+    // Even split across open rows, last row absorbs the rounding remainder.
+    $share = count($openRows) > 0 ? round($balance / count($openRows), 2) : 0;
+    $allocated = 0;
+    $nextDueDate = null;
+
+    foreach ($openRows as $index => $row) {
+        $alreadyPaid = (float)$row['installment_payment_paid_amount'];
+        $rowShare = $index === count($openRows) - 1 ? round($balance - $allocated, 2) : $share;
+        $allocated += $rowShare;
+
+        $val->installment_payment_aid = $row['installment_payment_aid'];
+
+        if ($rowShare <= 0 && $alreadyPaid <= 0) {
+            // nothing left to collect on an untouched row (balance went down)
+            checkDeleteinstallmentById($val);
+            continue;
+        }
+
+        $val->installment_payment_amount = $alreadyPaid + $rowShare;
+        $val->installment_payment_is_paid = $rowShare <= 0 ? 1 : 0;
+        checkUpdateInstallmentAmountById($val);
+
+        if ($rowShare > 0 && $nextDueDate === null) {
+            $nextDueDate = $row['installment_payment_due_date'];
+        }
+    }
+
+    $val->sales_order_due_date = $nextDueDate ?? end($rows)['installment_payment_due_date'];
+}
+
+// Update
+function checkUpdateInstallmentAmountById($object)
+{
+    $query = $object->updateInstallmentAmountById();
+    checkQuery($query, "There's a problem processing your request. (Update installment amount)");
+    return $query;
 }
 
 // Read WEEKLY

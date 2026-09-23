@@ -2,7 +2,11 @@ import { setMessage } from "@/store/StoreAction";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 
 // Props Values
-export const PropsValues = (props, items) => {
+// scheduleRows: an edited order's saved Weekly/Monthly installment rows -
+// when given, the installment amount mirrors how the backend rebalances the
+// schedule on save (see rebalanceInstallmentSchedule in
+// rest/v1/controllers/developer/sales-order/functions.php).
+export const PropsValues = (props, items, _installmentItems, scheduleRows) => {
   const values = props.values;
 
   values.sales_order_total_amount = items?.reduce(
@@ -61,6 +65,20 @@ export const PropsValues = (props, items) => {
     values.sales_order_installment_amount = Number(
       values.sales_order_total_balance_amount,
     ).toFixed(2);
+  } else if (scheduleRows?.length > 0) {
+    // Existing schedule: paid rows stay as they are, so the balance is split
+    // across the rows still unpaid - or, if every row is already paid, it
+    // becomes one additional payment added after the last due date.
+    const balance = Math.max(0, Number(values.sales_order_total_balance_amount));
+    const openCount = scheduleRows.filter(
+      (row) => Number(row.installment_payment_is_paid) === 0,
+    ).length;
+    const remainingCount = balance > 0 ? Math.max(openCount, 1) : 0;
+
+    values.installment_remaining_count = remainingCount;
+    values.installment_is_additional_payment = balance > 0 && openCount === 0;
+    values.sales_order_installment_amount =
+      remainingCount > 0 ? (balance / remainingCount).toFixed(2) : 0;
   } else if (
     Number(values.sales_order_total_balance_amount) !== 0 &&
     Number(values.sales_order_installment_count) !== 0

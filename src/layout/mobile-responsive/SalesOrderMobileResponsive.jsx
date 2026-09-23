@@ -97,6 +97,7 @@ const SalesOrderMobileResponsive = ({
                     itemVal={ActionTableList("sales-order", "status-with-view")}
                     blockDeleteField="sales_order_has_return"
                     viewOnlyStatuses={["paid"]}
+                    allowEditWhenViewOnly
                   />
                 </div>
               </div>

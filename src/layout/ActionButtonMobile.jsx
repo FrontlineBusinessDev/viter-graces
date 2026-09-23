@@ -20,6 +20,7 @@ const ActionButtonMobile = ({
   updateOnly = false,
   blockDeleteField,
   viewOnlyStatuses,
+  allowEditWhenViewOnly = false,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
@@ -106,7 +107,31 @@ const ActionButtonMobile = ({
               );
             })}
             {dataArray?.is_active > 0 ? (
-              !isViewOnly && (
+              isViewOnly ? (
+                // view-only rows can still opt into edit (e.g. Sales Orders:
+                // "paid") while archive stays hidden
+                allowEditWhenViewOnly && (
+                  <ActionButton
+                    item={{
+                      ...dataArray,
+                      name: "edit",
+                      path: path,
+                      isActive: 1,
+                      testId: "action-edit",
+                      icon: <Edit className="size-5 lg:size-4" />,
+                    }}
+                    onClick={() =>
+                      handleUpdate({
+                        ...dataArray,
+                        name: "edit",
+                        path: path,
+                        isActive: 1,
+                      })
+                    }
+                    data-testid={"action-edit"}
+                  />
+                )
+              ) : (
                 <>
                   <ActionButton
                     item={{

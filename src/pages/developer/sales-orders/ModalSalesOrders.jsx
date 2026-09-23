@@ -490,7 +490,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
             }}
           >
             {(props) => {
-              PropsValues(props, items);
+              PropsValues(props, items, null, itemEdit?.installmentItems);
               formikRef.current = props;
 
               if (
@@ -1071,6 +1071,20 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                                 {props.values.sales_order_installment_count}
                               </div>
                             </div>
+                            {props.values.installment_remaining_count !==
+                            undefined ? (
+                              <div className="  ">
+                                <p className="">Remaining payments</p>
+                                <div className="flex capitalize">
+                                  {props.values.installment_remaining_count}
+                                  {props.values.installment_is_additional_payment
+                                    ? " (additional)"
+                                    : ""}
+                                </div>
+                              </div>
+                            ) : (
+                              ""
+                            )}
                           </>
                         ) : (
                           ""
@@ -1208,7 +1222,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                           return e;
                         }}
                         itemEdit={itemEdit}
-                        path={`product-owner/read-by-product-owner`}
+                        path={`product-owner/read-by-created-by`}
                         testFilterId="sales_order_received_by_id"
                         store={store}
                       />

@@ -193,6 +193,17 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
     const enteredAmount = Number(row.installment_payment_paid_amount || 0);
     if (enteredAmount <= 0 || !row.installment_payment_due_date) return;
 
+    // an additional payment on a settled fixed plan only covers what's owed
+    if (canAddExtraPayment && enteredAmount > Number(totalBalanceAmount)) {
+      dispatch(setError(true));
+      dispatch(
+        setMessage(
+          `Payment cannot exceed the remaining balance of ${Number(totalBalanceAmount).toFixed(2)}.`,
+        ),
+      );
+      return;
+    }
+
     const newTotalPaidAmount = Number(totalPaidAmount) + enteredAmount;
     const newTotalBalanceAmount = Math.max(
       0,
@@ -265,6 +276,18 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
   // same open/flexible payment logging: free-entry amounts, add-payment-as-you-go.
   const isFixedInstallment = isInstallment && !isFlexibleInstallment;
   const useUnifiedPaymentFlow = !isFixedInstallment;
+
+  // A fixed plan whose schedule is fully paid can still carry a balance
+  // (e.g. a product qty was added to the order afterwards) - with no unpaid
+  // row left to settle, allow logging that balance as an additional payment.
+  const hasUnpaidScheduleRow = (items || []).some(
+    (a) => Number(a?.installment_payment_is_paid) === 0,
+  );
+  const canAddExtraPayment =
+    isFixedInstallment &&
+    !hasUnpaidScheduleRow &&
+    Number(totalBalanceAmount) > 0;
+  const showAddPayment = useUnifiedPaymentFlow || canAddExtraPayment;
 
   // "mutiple payment" is no longer selectable (its split-breakdown UI was
   // removed as redundant) - normalize any pre-existing row still carrying
@@ -562,7 +585,7 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
 
       <div className="flex justify-between items-center mt-3 mb-1">
         <label></label>
-        {useUnifiedPaymentFlow ? (
+        {showAddPayment ? (
           <button
             type="button"
             className="cursor-pointer flex items-center justify-center text-dark gap-2 px-3 py-3 bg-transparent rounded-md border-gray-300 border min-w-20 hover:bg-primary transition-all duration-300 ease-in-out hover:text-light dark:text-light"
@@ -710,6 +733,17 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
                       }
                     />
                   </td>
+                  {!useUnifiedPaymentFlow ? (
+                    // keeps the row aligned under the fixed plan's Amount column
+                    <td className="dark:bg-gray-900!">
+                      <AmountWithPesoSign
+                        classN="size-3"
+                        amount={Number(row.installment_payment_paid_amount || 0)}
+                      />
+                    </td>
+                  ) : (
+                    ""
+                  )}
                   <td className="dark:bg-gray-900!">
                     <input
                       type="number"

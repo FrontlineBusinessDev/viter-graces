@@ -2,6 +2,14 @@
 
 
 // Read all
+// Read all - users a sales order can be "Created by" (product owner, admin, cashier)
+function checkReadByCreatedBy($object, $allowedColumns = [])
+{
+    $query = $object->readByCreatedBy($allowedColumns);
+    checkQuery($query, "Empty records. (read by created by)");
+    return $query;
+}
+
 function checkReadByProductOwner($object, $readByProductOwner = [])
 {
     $query = $object->readByProductOwner($readByProductOwner);
