@@ -22,6 +22,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
     checkPayload($data);
 
     $val->filters = [];
+    $val->userId = (float)($data["userId"] ?? 0);
     $query = checkReadCountLowStock($val);
     http_response_code(200);
     getQueriedData($query);

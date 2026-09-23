@@ -44,6 +44,7 @@ class SuppliersPurchaseOrder
 
     public $date_yesterday;
     public $date_today;
+    public $userId;
 
     public $connection;
     public $lastInsertedId;
@@ -204,6 +205,7 @@ class SuppliersPurchaseOrder
         $filterColumn = [];
         $hasActiveFilter = false;
         $params = [
+            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "purchase_order_number" => "%{$this->column_search}%",
                 "purchase_order_supplier_name" => "%{$this->column_search}%",
@@ -352,6 +354,7 @@ class SuppliersPurchaseOrder
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
             $sql .= " and s.suppliers_is_default != 1 ";
+            $sql .= ($this->userId != 0 ? "and spo.purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -380,6 +383,7 @@ class SuppliersPurchaseOrder
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
+            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
             ...$this->column_search != "" ? [
                 "purchase_order_number" => "%{$this->column_search}%",
                 "purchase_order_supplier_name" => "%{$this->column_search}%",
@@ -528,6 +532,7 @@ class SuppliersPurchaseOrder
             $sql .= "{$this->tblSuppliers} as s ";
             $sql .= " where spo.purchase_order_supplier_id = s.suppliers_aid ";
             $sql .= " and s.suppliers_is_default != 1 ";
+            $sql .= ($this->userId != 0 ? "and spo.purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {
@@ -762,20 +767,26 @@ class SuppliersPurchaseOrder
         return $query;
     }
 
+    // ponytail: keyed off purchase_order_updated (bumped by the PO update
+    // endpoint whenever a payment is recorded) since there's no dedicated
+    // payment-date column; add one if non-payment edits start polluting this.
     public function readExpensesToday()
     {
         try {
-            $sql = "select DATE(purchase_order_date) AS expenses_date, ";
-            $sql .= "SUM(purchase_order_total_amount) AS total_expenses, ";
+            $sql = "select DATE(purchase_order_updated) AS expenses_date, ";
+            $sql .= "SUM(purchase_order_payment) AS total_expenses, ";
             $sql .= "SUM(purchase_order_qty) AS total_qty ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
-            $sql .= "where DATE(purchase_order_date) in (DATE(:date_today), DATE(:date_yesterday)) ";
-            $sql .= "group by DATE(purchase_order_date) ";
-            $sql .= "order by DATE(purchase_order_date) desc ";
+            $sql .= "where DATE(purchase_order_updated) in (DATE(:date_today), DATE(:date_yesterday)) ";
+            $sql .= "and purchase_order_payment_status in ('paid', 'partially paid') ";
+            $sql .= ($this->userId != 0 ? "and purchase_order_product_owner_id = :purchase_order_product_owner_id " : " ");
+            $sql .= "group by DATE(purchase_order_updated) ";
+            $sql .= "order by DATE(purchase_order_updated) desc ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "date_today" => $this->date_today,
                 "date_yesterday" => $this->date_yesterday,
+                ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

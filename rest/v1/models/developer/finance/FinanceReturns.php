@@ -30,6 +30,7 @@ class FinanceReturns
     public $connection;
     public $lastInsertedId;
     public $tblReturnProducts;
+    public $tblSalesOrder;
 
     public $filters;
     public $column_start;
@@ -43,6 +44,7 @@ class FinanceReturns
     {
         $this->connection = $db;
         $this->tblReturnProducts = "graces_return_product";
+        $this->tblSalesOrder = "graces_sales_order";
     }
 
     // Builds the "columnFilters" WHERE fragments shared by every read*()
@@ -122,7 +124,7 @@ class FinanceReturns
     public function readAll($allowedColumns)
     {
         $params = [
-            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
+            ...$this->userId != 0 ? ["return_product_owner_id" => $this->userId] : [],
             ...($this->column_search != "" ? [
                 "return_product_number" => "%{$this->column_search}%",
                 "return_product_order_number" => "%{$this->column_search}%",
@@ -175,7 +177,7 @@ class FinanceReturns
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
-            ...$this->userId != 0 ? ["purchase_order_product_owner_id" => $this->userId] : [],
+            ...$this->userId != 0 ? ["return_product_owner_id" => $this->userId] : [],
             ...($this->column_search != "" ? [
                 "return_product_number" => "%{$this->column_search}%",
                 "return_product_order_number" => "%{$this->column_search}%",
@@ -213,6 +215,118 @@ class FinanceReturns
             $sql .= " return_product_owner_id ";
             $sql .= " order by CASE WHEN LOWER(return_product_status) = 'processed' THEN 1 ELSE 0 END asc, ";
             $sql .= "return_product_status asc ";
+            $sql .= "limit :start, ";
+            $sql .= ":total ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all - scoped to returns against orders a single cashier
+    // (sales_order_received_by_id) created. return_product carries no
+    // "who processed this return" column of its own, so this joins back to
+    // the sales order it was returned against instead.
+    public function readCashierAll($allowedColumns)
+    {
+        $params = [
+            ...$this->userId != 0 ? ["sales_order_received_by_id" => $this->userId] : [],
+            ...($this->column_search != "" ? [
+                "return_product_number" => "%{$this->column_search}%",
+                "return_product_order_number" => "%{$this->column_search}%",
+                "return_product_customer_name" => "%{$this->column_search}%",
+                "return_product_product_name" => "%{$this->column_search}%",
+                "return_product_owner_name" => "%{$this->column_search}%",
+            ] : []),
+        ];
+
+        $filterColumn = $this->buildFilterColumns($allowedColumns, $params);
+        try {
+            $sql = "select rp.*, ";
+            $sql .= "rp.return_product_aid as id, ";
+            $sql .= "rp.return_product_status as is_status, ";
+            $sql .= "SUM(rp.return_product_paid_amount) as return_product_paid_amount, ";
+            $sql .= "SUM(rp.return_product_amount) as return_product_amount, ";
+            $sql .= "DATE_FORMAT(rp.return_product_date, '%b %d, %Y') as return_product_date, ";
+            $sql .= "rp.return_product_number as name ";
+            $sql .= "from {$this->tblReturnProducts} as rp ";
+            $sql .= "inner join {$this->tblSalesOrder} as so on so.sales_order_number = rp.return_product_order_number ";
+            $sql .= " where true ";
+            $sql .= ($this->userId != 0 ? "and so.sales_order_received_by_id = :sales_order_received_by_id " : " ");
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn) . " ";
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( rp.return_product_number like :return_product_number
+            or rp.return_product_order_number like :return_product_order_number
+            or rp.return_product_customer_name like :return_product_customer_name
+            or rp.return_product_product_name like :return_product_product_name
+            or rp.return_product_owner_name like :return_product_owner_name ) " : " ");
+            }
+            $sql .= " group by rp.return_product_customer_id, ";
+            $sql .= " rp.return_product_status, ";
+            $sql .= " rp.return_product_resolution_type, ";
+            $sql .= " rp.return_product_refund_method, ";
+            $sql .= " rp.return_product_owner_id ";
+            $sql .= " order by CASE WHEN LOWER(rp.return_product_status) = 'processed' THEN 1 ELSE 0 END asc, ";
+            $sql .= "rp.return_product_status asc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read limit - scoped to returns against orders a single cashier
+    // (sales_order_received_by_id) created.
+    public function readCashierLimit($allowedColumns)
+    {
+        $params = [
+            "start" => $this->column_start - 1,
+            "total" => $this->column_total,
+            ...$this->userId != 0 ? ["sales_order_received_by_id" => $this->userId] : [],
+            ...($this->column_search != "" ? [
+                "return_product_number" => "%{$this->column_search}%",
+                "return_product_order_number" => "%{$this->column_search}%",
+                "return_product_customer_name" => "%{$this->column_search}%",
+                "return_product_product_name" => "%{$this->column_search}%",
+                "return_product_owner_name" => "%{$this->column_search}%",
+            ] : []),
+        ];
+
+        $filterColumn = $this->buildFilterColumns($allowedColumns, $params);
+        try {
+            $sql = "select rp.*, ";
+            $sql .= "rp.return_product_aid as id, ";
+            $sql .= "rp.return_product_status as is_status, ";
+            $sql .= "SUM(rp.return_product_paid_amount) as return_product_paid_amount, ";
+            $sql .= "SUM(rp.return_product_amount) as return_product_amount, ";
+            $sql .= "DATE_FORMAT(rp.return_product_date, '%b %d, %Y') as return_product_date, ";
+            $sql .= "rp.return_product_number as name ";
+            $sql .= "from {$this->tblReturnProducts} as rp ";
+            $sql .= "inner join {$this->tblSalesOrder} as so on so.sales_order_number = rp.return_product_order_number ";
+            $sql .= " where true ";
+            $sql .= ($this->userId != 0 ? "and so.sales_order_received_by_id = :sales_order_received_by_id " : " ");
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn) . " ";
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( rp.return_product_number like :return_product_number
+            or rp.return_product_order_number like :return_product_order_number
+            or rp.return_product_customer_name like :return_product_customer_name
+            or rp.return_product_product_name like :return_product_product_name
+            or rp.return_product_owner_name like :return_product_owner_name ) " : " ");
+            }
+            $sql .= " group by rp.return_product_customer_id, ";
+            $sql .= " rp.return_product_status, ";
+            $sql .= " rp.return_product_resolution_type, ";
+            $sql .= " rp.return_product_refund_method, ";
+            $sql .= " rp.return_product_owner_id ";
+            $sql .= " order by CASE WHEN LOWER(rp.return_product_status) = 'processed' THEN 1 ELSE 0 END asc, ";
+            $sql .= "rp.return_product_status asc ";
             $sql .= "limit :start, ";
             $sql .= ":total ";
             $query = $this->connection->prepare($sql);

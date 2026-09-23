@@ -32,8 +32,18 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->filters = $data['columnFilters'];
         checkLimitId($val->column_start, $val->column_total);
 
-        $query = checkReadLimit($val, allowedColumns());
-        $total_result = checkReadAll($val, allowedColumns());
+        // Cashiers only see returns against orders they personally created -
+        // scoped (via a join back to the sales order) by
+        // sales_order_received_by_id, not the product-owner scoping below.
+        if (($data["role"] ?? "") === "cashier") {
+            $val->userId = (float)($data["loggedInId"] ?? 0);
+            $query = checkReadCashierLimit($val, allowedColumns());
+            $total_result = checkReadCashierAll($val, allowedColumns());
+        } else {
+            $val->userId = (float)($data["userId"] ?? 0);
+            $query = checkReadLimit($val, allowedColumns());
+            $total_result = checkReadAll($val, allowedColumns());
+        }
 
         http_response_code(200);
 

@@ -111,11 +111,11 @@ export const ActiveInActiveStatus = (val = "default-status") => {
     //   label: "partial",
     //   value: "partial",
     // },
-    // {
-    //   name: ["purchase-order-status"],
-    //   label: "completed",
-    //   value: "completed",
-    // },
+    {
+      name: ["purchase-order-status"],
+      label: "sent",
+      value: "completed",
+    },
     {
       name: ["purchase-order-status"],
       label: "cancelled",
@@ -469,7 +469,6 @@ export const ActionTableList = (path, val = "default-status") => {
         "status-with-view",
         "product_owner_sales_order",
         "po_product_owner",
-        "finance_ar_product_owner",
         "finance_ap_product_owner",
         "customer-status",
       ],
@@ -486,6 +485,7 @@ export const ActionTableList = (path, val = "default-status") => {
         "user-status",
         "finance-ar",
         "finance-ap",
+        "finance_ar_product_owner",
         "edit-delete-status",
         "customer-status",
       ],

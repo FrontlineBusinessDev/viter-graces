@@ -344,6 +344,8 @@ class StockOverview
     public function readCountLowStock()
     {
         try {
+            $params = $this->userId != 0 ? ["products_owner_id" => $this->userId] : [];
+
             $sql = "select COUNT(*) AS data_count ";
             $sql .= " FROM ( select MAX(p.products_low_stock_threshold) as products_low_stock_threshold, ";
             $sql .= "MAX(p.products_sku) as products_sku, ";
@@ -352,6 +354,7 @@ class StockOverview
             $sql .= "MAX(p.products_price) as products_price, ";
             $sql .= "MAX(p.products_name) as products_name, ";
             $sql .= "MAX(p.products_aid) as products_aid, ";
+            $sql .= "MAX(p.products_owner_id) as products_owner_id, ";
             $sql .= "MAX(ms.stock_movement_location) AS stock_movement_location, ";
             $sql .= "MAX(ms.stock_movement_product_name) as name, ";
             $sql .= "MAX(ms.stock_movement_is_active) as is_active, ";
@@ -427,8 +430,10 @@ class StockOverview
         ";
             $sql .= " group by p.products_aid ) as p ";
             $sql .= "WHERE current_qty <= products_low_stock_threshold ";
+            $sql .= ($this->userId != 0 ? "and products_owner_id = :products_owner_id " : " ");
             $sql .= " order by p.products_aid ";
-            $query = $this->connection->query($sql);
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
         } catch (PDOException $ex) {
             logError(
                 $ex->getMessage(),
@@ -626,7 +631,7 @@ class StockOverview
         $inventoryStatusFilter = "";
 
         $params = [
-            "stock_movement_product_owner_id" => $this->userId,
+            "products_owner_id" => $this->userId,
             ...(
                 $this->column_search != ""
                 ? [
@@ -672,8 +677,9 @@ class StockOverview
             $sql .= "select sales_order_product_id, SUM(sales_order_qty) AS order_qty ";
             $sql .= "from {$this->tblSalesOrder} group by sales_order_product_id ) as so ";
             $sql .= "ON so.sales_order_product_id = p.products_aid ";
+            $sql .= "where p.products_owner_id = :products_owner_id ";
             $sql .= "group by p.products_aid ) AS inventory_data ";
-            $sql .= " where inventory_data.stock_movement_product_owner_id = :stock_movement_product_owner_id ";
+            $sql .= " where true ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } elseif ($this->column_search !== "") {
@@ -714,7 +720,7 @@ class StockOverview
         $params = [
             "start" => $this->column_start - 1,
             "total" => $this->column_total,
-            "stock_movement_product_owner_id" => $this->userId,
+            "products_owner_id" => $this->userId,
             ...(
                 $this->column_search != ""
                 ? [
@@ -761,15 +767,16 @@ class StockOverview
             $sql .= "select sales_order_product_id, SUM(sales_order_qty) AS order_qty ";
             $sql .= "from {$this->tblSalesOrder} group by sales_order_product_id ) as so ";
             $sql .= "ON so.sales_order_product_id = p.products_aid ";
+            $sql .= "where p.products_owner_id = :products_owner_id ";
             $sql .= "group by p.products_aid ) AS inventory_data ";
-            $sql .= " where inventory_data.stock_movement_product_owner_id = :stock_movement_product_owner_id ";
+            $sql .= " where true ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } elseif ($this->column_search !== "") {
                 $sql .= " and ( inventory_data.products_name LIKE :stock_movement_product_name
                 OR inventory_data.products_owner_name LIKE :stock_movement_product_owner_name ) ";
             }
-            // FILTER THE inventory_status 
+            // FILTER THE inventory_status
             if ($inventoryStatusFilter === 'out of stock') {
                 $sql .= " and inventory_data.current_qty <= 0 ";
             } elseif ($inventoryStatusFilter === 'low stock') {

@@ -9,12 +9,12 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import { getAdminDeveloperRole } from "@/utilities/roleValidation";
+import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import React from "react";
 import ModalReturns from "./ModalReturns";
 import { devNavUrl } from "@/config/config";
 import { MultiRangeAmountFilter } from "@/components/inputs/InputRangeFilter";
 import { MultiRangeDateFilter } from "@/components/inputs/InputRangeFilter";
-import { ProductOwnerId } from "@/utilities/productOwnerToken";
 
 const Returns = () => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -125,22 +125,26 @@ const Returns = () => {
         ),
       },
     },
-    {
-      accessorKey: "return_product_owner_name",
-      header: "Product Owner",
-      classTh: "min-w-40 ",
-      classTd: "",
-      filterFn: "multiSelect",
-      meta: {
-        filterComponent: (column) => (
-          <MultiSelectCheckboxFilter
-            column={column}
-            path="product-owner/read-by-product-owner"
-            testFilterId={"filter-owner"}
-          />
-        ),
-      },
-    },
+    ...(Number(ProductOwnerId(store)) > 0
+      ? []
+      : [
+          {
+            accessorKey: "return_product_owner_name",
+            header: "Product Owner",
+            classTh: "min-w-40 ",
+            classTd: "",
+            filterFn: "multiSelect",
+            meta: {
+              filterComponent: (column) => (
+                <MultiSelectCheckboxFilter
+                  column={column}
+                  path="product-owner/read-by-product-owner"
+                  testFilterId={"filter-owner"}
+                />
+              ),
+            },
+          },
+        ]),
     {
       accessorKey: "resolution_type",
       header: "resolution type",
@@ -273,10 +277,14 @@ const Returns = () => {
       >
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(100dvh-200px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(93dvh-203px)] h-[calc(97dvh-250px)]`}
           path="returns-products"
           haveFilterTable={true}
-          ishaveAdd={getAdminDeveloperRole(store)}
+          ishaveAdd={
+            getAdminDeveloperRole(store) ||
+            Number(ProductOwnerId(store)) > 0 ||
+            userRole === "cashier"
+          }
           setItemEdit={setItemEdit}
           setDataCount={setDataCount}
         />

@@ -163,7 +163,7 @@ const CashSales = () => {
       <HeaderNav menu={"finance"} activeTab="cash-sales">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(100dvh-203px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(93dvh-203px)] h-[calc(97dvh-250px)]`}
           path="finance-cash-sales"
           setItemEdit={setItemEdit}
           haveFilterTable={true}

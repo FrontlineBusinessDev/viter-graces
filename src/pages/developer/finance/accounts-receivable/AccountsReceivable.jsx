@@ -311,7 +311,7 @@ const AccountsReceivable = () => {
       <HeaderNav menu={"finance"} activeTab="accounts-receivable">
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(100dvh-203px)] h-[calc(97dvh-250px)]`}
+          className={`sm:overflow-auto sm:h-[calc(93dvh-203px)] h-[calc(97dvh-250px)]`}
           path="finance-account-receivable"
           haveFilterTable={true}
           ishaveAdd={false}

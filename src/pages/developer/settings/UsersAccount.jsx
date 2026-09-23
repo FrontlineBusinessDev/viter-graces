@@ -95,7 +95,7 @@ const UsersAccount = () => {
         />
         <InfiniteTable
           columns={columns}
-          className={`sm:overflow-auto sm:h-[calc(93dvh-200px)] h-[calc(97dvh-250px)] `}
+          className={`sm:overflow-auto sm:h-[calc(90dvh-200px)] h-[calc(97dvh-250px)] `}
           path="users"
           haveFilterTable={true}
           setItemEdit={setItemEdit}

@@ -102,6 +102,7 @@ class SalesOrder
     public $column_total;
     public $column_search;
     public $max;
+    public $userId;
 
 
 
@@ -540,6 +541,242 @@ class SalesOrder
             $sql .= "and rp.return_product_status in ('pending', 'processed') ) as sales_order_has_return ";
             $sql .= "from {$this->tblSalesOrder} ";
             $sql .= " where true ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number
+            or sales_order_customer_name like :sales_order_customer_name
+            or sales_order_received_by_name like :sales_order_received_by_name
+            or sales_order_product_owner_name like :sales_order_product_owner_name
+            or sales_order_status like :sales_order_status
+            or sales_order_product_name like :sales_order_product_name ) " : " ");
+            }
+            $sql .= " group by sales_order_number ";
+            $sql .= " order by sales_order_number desc ";
+            $sql .= "limit :start, ";
+            $sql .= ":total ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all - scoped to a single product owner's own products
+    public function readByUserId($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            "sales_order_product_owner_id" => $this->userId,
+            ...($this->column_search != "" ? [
+                "sales_order_number" => "%{$this->column_search}%",
+                "sales_order_customer_name" => "%{$this->column_search}%",
+                "sales_order_product_name" => "%{$this->column_search}%",
+                "sales_order_received_by_name" => "%{$this->column_search}%",
+                "sales_order_product_owner_name" => "%{$this->column_search}%",
+                "sales_order_status" => "%{$this->column_search}%",
+            ] : []),
+        ];
+
+        $filterColumn = $this->buildFilterColumns($allowedColumns, $params);
+        try {
+            $sql = "select *, ";
+            $sql .= "sales_order_number, ";
+            $sql .= "sales_order_status as is_status, ";
+            $sql .= "sales_order_total_receivable_amount as total_amount, ";
+            $sql .= "sales_order_total_amount as total_sub_amount, ";
+            $sql .= "sales_order_paid_amount as total_paid, ";
+            $sql .= "sales_order_aid as id, ";
+            $sql .= "sales_order_is_active as is_active, ";
+            $sql .= "sales_order_date as order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
+            $sql .= "sales_order_customer_name as name ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= " where sales_order_product_owner_id = :sales_order_product_owner_id ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number
+            or sales_order_customer_name like :sales_order_customer_name
+            or sales_order_received_by_name like :sales_order_received_by_name
+            or sales_order_product_owner_name like :sales_order_product_owner_name
+            or sales_order_status like :sales_order_status
+            or sales_order_product_name like :sales_order_product_name ) " : " ");
+            }
+            $sql .= " group by sales_order_number ";
+            $sql .= " order by MAX(sales_order_is_active) desc, ";
+            $sql .= "sales_order_number desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read limit - scoped to a single product owner's own products
+    public function readByUserIdLimit($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            "start" => $this->column_start - 1,
+            "total" => $this->column_total,
+            "sales_order_product_owner_id" => $this->userId,
+            ...($this->column_search != "" ? [
+                "sales_order_number" => "%{$this->column_search}%",
+                "sales_order_customer_name" => "%{$this->column_search}%",
+                "sales_order_product_name" => "%{$this->column_search}%",
+                "sales_order_received_by_name" => "%{$this->column_search}%",
+                "sales_order_product_owner_name" => "%{$this->column_search}%",
+                "sales_order_status" => "%{$this->column_search}%",
+            ] : []),
+        ];
+
+        $filterColumn = $this->buildFilterColumns($allowedColumns, $params);
+        try {
+            $sql = "select *, ";
+            $sql .= "sales_order_number, ";
+            $sql .= "sales_order_status as is_status, ";
+            $sql .= "sales_order_total_receivable_amount as total_amount, ";
+            $sql .= "sales_order_total_amount as total_sub_amount, ";
+            $sql .= "sales_order_paid_amount as total_paid, ";
+            $sql .= "sales_order_aid as id, ";
+            $sql .= "sales_order_is_active as is_active, ";
+            $sql .= "sales_order_date as order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
+            $sql .= "sales_order_customer_name as name, ";
+            // Flags orders that have at least one line item still claimed by
+            // a pending/processed return, so the Sales Orders table can block
+            // deleting the whole order - matched by order number since this
+            // row is grouped and doesn't carry a single sales_order_aid.
+            $sql .= "( select count(*) from {$this->tblReturnProducts} as rp ";
+            $sql .= "where rp.return_product_order_number = {$this->tblSalesOrder}.sales_order_number ";
+            $sql .= "and rp.return_product_status in ('pending', 'processed') ) as sales_order_has_return ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= " where sales_order_product_owner_id = :sales_order_product_owner_id ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number
+            or sales_order_customer_name like :sales_order_customer_name
+            or sales_order_received_by_name like :sales_order_received_by_name
+            or sales_order_product_owner_name like :sales_order_product_owner_name
+            or sales_order_status like :sales_order_status
+            or sales_order_product_name like :sales_order_product_name ) " : " ");
+            }
+            $sql .= " group by sales_order_number ";
+            $sql .= " order by sales_order_number desc ";
+            $sql .= "limit :start, ";
+            $sql .= ":total ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read all - scoped to the orders a single cashier (sales_order_received_by_id) created
+    public function readByReceivedById($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            "sales_order_received_by_id" => $this->userId,
+            ...($this->column_search != "" ? [
+                "sales_order_number" => "%{$this->column_search}%",
+                "sales_order_customer_name" => "%{$this->column_search}%",
+                "sales_order_product_name" => "%{$this->column_search}%",
+                "sales_order_received_by_name" => "%{$this->column_search}%",
+                "sales_order_product_owner_name" => "%{$this->column_search}%",
+                "sales_order_status" => "%{$this->column_search}%",
+            ] : []),
+        ];
+
+        $filterColumn = $this->buildFilterColumns($allowedColumns, $params);
+        try {
+            $sql = "select *, ";
+            $sql .= "sales_order_number, ";
+            $sql .= "sales_order_status as is_status, ";
+            $sql .= "sales_order_total_receivable_amount as total_amount, ";
+            $sql .= "sales_order_total_amount as total_sub_amount, ";
+            $sql .= "sales_order_paid_amount as total_paid, ";
+            $sql .= "sales_order_aid as id, ";
+            $sql .= "sales_order_is_active as is_active, ";
+            $sql .= "sales_order_date as order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
+            $sql .= "sales_order_customer_name as name ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= " where sales_order_received_by_id = :sales_order_received_by_id ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn);
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( sales_order_number like :sales_order_number
+            or sales_order_customer_name like :sales_order_customer_name
+            or sales_order_received_by_name like :sales_order_received_by_name
+            or sales_order_product_owner_name like :sales_order_product_owner_name
+            or sales_order_status like :sales_order_status
+            or sales_order_product_name like :sales_order_product_name ) " : " ");
+            }
+            $sql .= " group by sales_order_number ";
+            $sql .= " order by MAX(sales_order_is_active) desc, ";
+            $sql .= "sales_order_number desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read limit - scoped to the orders a single cashier (sales_order_received_by_id) created
+    public function readByReceivedByIdLimit($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            "start" => $this->column_start - 1,
+            "total" => $this->column_total,
+            "sales_order_received_by_id" => $this->userId,
+            ...($this->column_search != "" ? [
+                "sales_order_number" => "%{$this->column_search}%",
+                "sales_order_customer_name" => "%{$this->column_search}%",
+                "sales_order_product_name" => "%{$this->column_search}%",
+                "sales_order_received_by_name" => "%{$this->column_search}%",
+                "sales_order_product_owner_name" => "%{$this->column_search}%",
+                "sales_order_status" => "%{$this->column_search}%",
+            ] : []),
+        ];
+
+        $filterColumn = $this->buildFilterColumns($allowedColumns, $params);
+        try {
+            $sql = "select *, ";
+            $sql .= "sales_order_number, ";
+            $sql .= "sales_order_status as is_status, ";
+            $sql .= "sales_order_total_receivable_amount as total_amount, ";
+            $sql .= "sales_order_total_amount as total_sub_amount, ";
+            $sql .= "sales_order_paid_amount as total_paid, ";
+            $sql .= "sales_order_aid as id, ";
+            $sql .= "sales_order_is_active as is_active, ";
+            $sql .= "sales_order_date as order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_date, '%b %d, %Y') as sales_order_date, ";
+            $sql .= "DATE_FORMAT(sales_order_due_date, '%b %d, %Y') as sales_order_due_date, ";
+            $sql .= "sales_order_customer_name as name, ";
+            // Flags orders that have at least one line item still claimed by
+            // a pending/processed return, so the Sales Orders table can block
+            // deleting the whole order - matched by order number since this
+            // row is grouped and doesn't carry a single sales_order_aid.
+            $sql .= "( select count(*) from {$this->tblReturnProducts} as rp ";
+            $sql .= "where rp.return_product_order_number = {$this->tblSalesOrder}.sales_order_number ";
+            $sql .= "and rp.return_product_status in ('pending', 'processed') ) as sales_order_has_return ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= " where sales_order_received_by_id = :sales_order_received_by_id ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn);
             } else {

@@ -31,7 +31,7 @@ import { StoreContext } from "@/store/StoreContext";
 import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { isRowsDirty } from "@/utilities/isRowsDirty";
-import { ProductOwnerId } from "@/utilities/productOwnerToken";
+import { getAdminDeveloperRole } from "@/utilities/roleValidation";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { Form, Formik } from "formik";
 import { PhilippinePeso, Plus } from "lucide-react";
@@ -1173,7 +1173,7 @@ const ModalSalesOrders = ({ itemEdit, cutomer = "" }) => {
                     />
                   </div>
 
-                  {Number(ProductOwnerId(store)) > 0 ? (
+                  {!getAdminDeveloperRole(store) ? (
                     ""
                   ) : (
                     <div className="relative my-3 ">

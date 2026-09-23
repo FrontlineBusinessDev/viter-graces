@@ -61,13 +61,13 @@ export const titleHeaderTab = (description) => {
     {
       title: "sales-orders",
       description: `${description}`,
-      roles: ["admin", "developer", "product_owner"],
+      roles: ["admin", "developer", "product_owner", "cashier"],
       array_tab: [],
     },
     {
       title: "returns",
       description: `${description}`,
-      roles: ["admin", "developer", "product_owner"],
+      roles: ["admin", "developer", "product_owner", "cashier"],
       array_tab: [],
     },
     {

@@ -47,6 +47,7 @@ class Returns
     public $column_total;
     public $column_search;
     public $max;
+    public $userId;
 
     public function __construct($db)
     {
@@ -451,6 +452,347 @@ class Returns
             $sql .= "return_product_number as name ";
             $sql .= "from {$this->tblReturnProducts} ";
             $sql .= " where true ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn) . " ";
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( return_product_order_number like :return_product_order_number
+            or return_product_customer_name like :return_product_customer_name
+            or return_product_product_name like :return_product_product_name
+            or return_product_owner_name like :return_product_owner_name
+            or return_product_reason like :return_product_reason ) " : " ");
+            }
+            $sql .= " order by CASE WHEN LOWER(return_product_status) = 'processed' THEN 1 ELSE 0 END asc, ";
+            $sql .= " return_product_status asc, ";
+            $sql .= " return_product_number desc ";
+            $sql .= "limit :start, ";
+            $sql .= ":total ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+
+        return $query;
+    }
+
+    // read all - scoped to a single product owner's own returns
+    public function readByUserId($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            "return_product_owner_id" => $this->userId,
+            ...$this->column_search != "" ? [
+                "return_product_order_number" => "%{$this->column_search}%",
+                "return_product_customer_name" => "%{$this->column_search}%",
+                "return_product_product_name" => "%{$this->column_search}%",
+                "return_product_reason" => "%{$this->column_search}%",
+                "return_product_owner_name" => "%{$this->column_search}%",
+            ] : [],
+        ];
+
+        // is_status / resolution_type are SELECT aliases of
+        // return_product_status / return_product_resolution_type - mapped
+        // back to the real columns since aliases aren't visible to a WHERE
+        // clause
+        $columnAliasMap = [
+            "is_status" => "return_product_status",
+            "resolution_type" => "return_product_resolution_type",
+        ];
+
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $columnAliasMap[$item['id']] ?? $item['id'];
+            $value = $item['value'];
+            if (is_array($value) && array_key_exists('start', $value)) {
+                $hasStart = trim((string) $value['start']) !== '';
+                $hasEnd = trim((string) $value['end']) !== '';
+                if (!$hasStart && !$hasEnd) {
+                    continue;
+                }
+                if ($hasStart && $hasEnd) {
+                    $params["start$i"] = trim($value['start']);
+                    $params["end$i"] = trim($value['end']);
+                    $filterColumn[] = "DATE($col) BETWEEN :start$i AND :end$i";
+                } elseif ($hasStart) {
+                    $params["start$i"] = trim($value['start']);
+                    $filterColumn[] = "DATE($col) >= :start$i";
+                } else {
+                    $params["end$i"] = trim($value['end']);
+                    $filterColumn[] = "DATE($col) <= :end$i";
+                }
+            } elseif (is_array($value) && array_key_exists('min', $value)) {
+                $params["min$i"] = (float) $value['min'];
+                $filterColumn[] = "$col BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $value['max'] === ""
+                    ? (float) $this->max
+                    : (float) $value['max'];
+            } elseif (
+                is_array($value)
+                && isset($value[0])
+                && is_array($value[0])
+                && array_key_exists('start', $value[0])
+            ) {
+                $rangeClauses = [];
+
+                foreach ($value as $j => $range) {
+                    $hasStart = isset($range['start']) && trim((string) $range['start']) !== '';
+                    $hasEnd = isset($range['end']) && trim((string) $range['end']) !== '';
+
+                    if (!$hasStart && !$hasEnd) {
+                        continue;
+                    }
+
+                    $startKey = "daterange{$i}_{$j}_start";
+                    $endKey = "daterange{$i}_{$j}_end";
+
+                    if ($hasStart && $hasEnd) {
+                        $params[$startKey] = trim($range['start']);
+                        $params[$endKey] = trim($range['end']);
+                        $rangeClauses[] = "DATE($col) BETWEEN :$startKey AND :$endKey";
+                    } elseif ($hasStart) {
+                        $params[$startKey] = trim($range['start']);
+                        $rangeClauses[] = "DATE($col) >= :$startKey";
+                    } else {
+                        $params[$endKey] = trim($range['end']);
+                        $rangeClauses[] = "DATE($col) <= :$endKey";
+                    }
+                }
+
+                if (empty($rangeClauses)) {
+                    continue;
+                }
+
+                $filterColumn[] = "(" . implode(" OR ", $rangeClauses) . ")";
+            } elseif (is_array($value) && isset($value[0]) && is_array($value[0])) {
+                $rangeClauses = [];
+
+                foreach ($value as $j => $range) {
+                    $hasMin = isset($range['min']) && $range['min'] !== '';
+                    $hasMax = isset($range['max']) && $range['max'] !== '';
+
+                    if (!$hasMin && !$hasMax) {
+                        continue;
+                    }
+
+                    $minKey = "range{$i}_{$j}_min";
+                    $maxKey = "range{$i}_{$j}_max";
+                    $params[$minKey] = $hasMin ? (float) $range['min'] : 0.0;
+                    $params[$maxKey] = $hasMax ? (float) $range['max'] : (float) $this->max;
+                    $rangeClauses[] = "$col BETWEEN :$minKey AND :$maxKey";
+                }
+
+                if (empty($rangeClauses)) {
+                    continue;
+                }
+
+                $filterColumn[] = "(" . implode(" OR ", $rangeClauses) . ")";
+            } elseif (is_array($value)) {
+                $selectedValues = array_values(array_filter(
+                    $value,
+                    fn($v) => trim((string) $v) !== ""
+                ));
+
+                if (empty($selectedValues)) {
+                    continue;
+                }
+
+                $placeholders = [];
+                foreach ($selectedValues as $j => $selectedValue) {
+                    $paramKey = "filter{$i}_{$j}";
+                    $placeholders[] = ":$paramKey";
+                    $params[$paramKey] = trim($selectedValue);
+                }
+
+                $filterColumn[] = "$col IN (" . implode(", ", $placeholders) . ")";
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($value) . "%";
+            }
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "return_product_aid as id, ";
+            $sql .= "return_product_status as is_status, ";
+            $sql .= "DATE_FORMAT(return_product_date, '%b %d, %Y') as return_product_date, ";
+            $sql .= "return_product_customer_name as customer_name, ";
+            $sql .= "return_product_resolution_type as resolution_type, ";
+            $sql .= "return_product_number as name ";
+            $sql .= "from {$this->tblReturnProducts} ";
+            $sql .= " where return_product_owner_id = :return_product_owner_id ";
+            if (!empty($filterColumn)) {
+                $sql .= " and " . implode(" and ", $filterColumn) . " ";
+            } else {
+                $sql .= ($this->column_search != "" ? "and ( return_product_order_number like :return_product_order_number
+            or return_product_customer_name like :return_product_customer_name
+            or return_product_product_name like :return_product_product_name
+            or return_product_owner_name like :return_product_owner_name
+            or return_product_reason like :return_product_reason ) " : " ");
+            }
+            $sql .= " order by CASE WHEN LOWER(return_product_status) = 'processed' THEN 1 ELSE 0 END asc, ";
+            $sql .= " return_product_status asc, ";
+            $sql .= " return_product_number desc ";
+            $query = $this->connection->prepare($sql);
+            $query->execute($params);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
+    // read limit - scoped to a single product owner's own returns
+    public function readByUserIdLimit($allowedColumns)
+    {
+        $filterColumn = [];
+        $params = [
+            "start" => $this->column_start - 1,
+            "total" => $this->column_total,
+            "return_product_owner_id" => $this->userId,
+            ...$this->column_search != "" ? [
+                "return_product_order_number" => "%{$this->column_search}%",
+                "return_product_customer_name" => "%{$this->column_search}%",
+                "return_product_product_name" => "%{$this->column_search}%",
+                "return_product_reason" => "%{$this->column_search}%",
+                "return_product_owner_name" => "%{$this->column_search}%",
+            ] : [],
+        ];
+
+        // is_status / resolution_type are SELECT aliases of
+        // return_product_status / return_product_resolution_type - mapped
+        // back to the real columns since aliases aren't visible to a WHERE
+        // clause
+        $columnAliasMap = [
+            "is_status" => "return_product_status",
+            "resolution_type" => "return_product_resolution_type",
+        ];
+
+        foreach ($this->filters as $i => $item) {
+            if (!in_array($item['id'], $allowedColumns, true)) {
+                continue;
+            }
+            $col = $columnAliasMap[$item['id']] ?? $item['id'];
+            $value = $item['value'];
+            if (is_array($value) && array_key_exists('start', $value)) {
+                $hasStart = trim((string) $value['start']) !== '';
+                $hasEnd = trim((string) $value['end']) !== '';
+                if (!$hasStart && !$hasEnd) {
+                    continue;
+                }
+                if ($hasStart && $hasEnd) {
+                    $params["start$i"] = trim($value['start']);
+                    $params["end$i"] = trim($value['end']);
+                    $filterColumn[] = "DATE($col) BETWEEN :start$i AND :end$i";
+                } elseif ($hasStart) {
+                    $params["start$i"] = trim($value['start']);
+                    $filterColumn[] = "DATE($col) >= :start$i";
+                } else {
+                    $params["end$i"] = trim($value['end']);
+                    $filterColumn[] = "DATE($col) <= :end$i";
+                }
+            } elseif (is_array($value) && array_key_exists('min', $value)) {
+                $params["min$i"] = (float) $value['min'];
+                $filterColumn[] = " CAST($col AS UNSIGNED) BETWEEN :min$i AND :max$i";
+
+                $params["max$i"] = $value['max'] === ""
+                    ? (float) $this->max
+                    : (float) $value['max'];
+            } elseif (
+                is_array($value)
+                && isset($value[0])
+                && is_array($value[0])
+                && array_key_exists('start', $value[0])
+            ) {
+                $rangeClauses = [];
+
+                foreach ($value as $j => $range) {
+                    $hasStart = isset($range['start']) && trim((string) $range['start']) !== '';
+                    $hasEnd = isset($range['end']) && trim((string) $range['end']) !== '';
+
+                    if (!$hasStart && !$hasEnd) {
+                        continue;
+                    }
+
+                    $startKey = "daterange{$i}_{$j}_start";
+                    $endKey = "daterange{$i}_{$j}_end";
+
+                    if ($hasStart && $hasEnd) {
+                        $params[$startKey] = trim($range['start']);
+                        $params[$endKey] = trim($range['end']);
+                        $rangeClauses[] = "DATE($col) BETWEEN :$startKey AND :$endKey";
+                    } elseif ($hasStart) {
+                        $params[$startKey] = trim($range['start']);
+                        $rangeClauses[] = "DATE($col) >= :$startKey";
+                    } else {
+                        $params[$endKey] = trim($range['end']);
+                        $rangeClauses[] = "DATE($col) <= :$endKey";
+                    }
+                }
+
+                if (empty($rangeClauses)) {
+                    continue;
+                }
+
+                $filterColumn[] = "(" . implode(" OR ", $rangeClauses) . ")";
+            } elseif (is_array($value) && isset($value[0]) && is_array($value[0])) {
+                $rangeClauses = [];
+
+                foreach ($value as $j => $range) {
+                    $hasMin = isset($range['min']) && $range['min'] !== '';
+                    $hasMax = isset($range['max']) && $range['max'] !== '';
+
+                    if (!$hasMin && !$hasMax) {
+                        continue;
+                    }
+
+                    $minKey = "range{$i}_{$j}_min";
+                    $maxKey = "range{$i}_{$j}_max";
+                    $params[$minKey] = $hasMin ? (float) $range['min'] : 0.0;
+                    $params[$maxKey] = $hasMax ? (float) $range['max'] : (float) $this->max;
+                    $rangeClauses[] = "CAST($col AS UNSIGNED) BETWEEN :$minKey AND :$maxKey";
+                }
+
+                if (empty($rangeClauses)) {
+                    continue;
+                }
+
+                $filterColumn[] = "(" . implode(" OR ", $rangeClauses) . ")";
+            } elseif (is_array($value)) {
+                $selectedValues = array_values(array_filter(
+                    $value,
+                    fn($v) => trim((string) $v) !== ""
+                ));
+
+                if (empty($selectedValues)) {
+                    continue;
+                }
+
+                $placeholders = [];
+                foreach ($selectedValues as $j => $selectedValue) {
+                    $paramKey = "filter{$i}_{$j}";
+                    $placeholders[] = ":$paramKey";
+                    $params[$paramKey] = trim($selectedValue);
+                }
+
+                $filterColumn[] = "$col IN (" . implode(", ", $placeholders) . ")";
+            } else {
+                $filterColumn[] = "$col LIKE :search$i";
+                $params["search$i"] = "%" . trim($value) . "%";
+            }
+        }
+        try {
+            $sql = "select *, ";
+            $sql .= "return_product_aid as id, ";
+            $sql .= "return_product_status as is_status, ";
+            $sql .= "DATE_FORMAT(return_product_date, '%b %d, %Y') as return_product_date, ";
+            $sql .= "return_product_customer_name as customer_name, ";
+            $sql .= "return_product_resolution_type as resolution_type, ";
+            $sql .= "return_product_number as name ";
+            $sql .= "from {$this->tblReturnProducts} ";
+            $sql .= " where return_product_owner_id = :return_product_owner_id ";
             if (!empty($filterColumn)) {
                 $sql .= " and " . implode(" and ", $filterColumn) . " ";
             } else {

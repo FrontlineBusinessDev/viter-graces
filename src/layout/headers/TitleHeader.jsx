@@ -43,7 +43,7 @@ const TitleHeader = ({ description }) => {
 
           {currentHeader.array_tab.length > 0 && (
             <div className="rounded-lg lg:bg-gray-200 dark:bg-gray-900 p-1 inline-block">
-              <ul className="lg:flex flex-wrap gap-2 items-center hidden">
+              <ul className="lg:flex flex-wrap items-center hidden">
                 {currentHeader.array_tab.map((itemTab, key) => {
                   const isActive = store.tabValue === itemTab?.title_tab;
                   console.log("itemTab?.roles", itemTab?.roles);

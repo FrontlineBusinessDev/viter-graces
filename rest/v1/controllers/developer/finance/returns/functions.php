@@ -30,6 +30,22 @@ function allowedColumns()
     return $query;
 }
 
+// Read all cashier
+function checkReadCashierAll($object, $allowedColumns = [])
+{
+    $query = $object->readCashierAll($allowedColumns);
+    checkQuery($query, "Empty records. (read All)");
+    return $query;
+}
+
+// Read limit cashier
+function checkReadCashierLimit($object, $allowedColumns = [])
+{
+    $query = $object->readCashierLimit($allowedColumns);
+    checkQuery($query, "Empty records. (limit)");
+    return $query;
+}
+
 // translates the UI-only "display_status" filter (Pending/Refunded/Open/
 // Completed/Rejected) into a SQL condition on the real status + resolution
 // type columns
