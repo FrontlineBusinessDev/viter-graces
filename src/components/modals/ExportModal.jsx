@@ -128,7 +128,7 @@ const ExportModal = ({
               className="btn--green disabled:opacity-50 disabled:cursor-not-allowed"
               data-testid="export-submit"
             >
-              Export CSV
+              Export Excel
             </button>
           </div>
         </div>

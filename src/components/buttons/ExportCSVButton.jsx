@@ -11,7 +11,7 @@ const ExportCSVButton = ({ onClick = () => {} }) => {
         data-testid="export-csv-button"
       >
         <Download size={15} />
-        Export CSV
+        Export Excel
       </button>
     </div>
   );

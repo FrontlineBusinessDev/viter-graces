@@ -1,4 +1,4 @@
-import * as XLSX from "xlsx";
+import { exportRowsToXlsx } from "@/utilities/exportWorkbook";
 
 // keeps all amount cells as real numbers (not pre-formatted currency strings)
 // so they import cleanly into a spreadsheet and never trip up a CSV parser
@@ -7,9 +7,9 @@ const toAmount = (value) => {
   return Number.isFinite(num) ? Math.round(num * 100) / 100 : 0;
 };
 
-// builds and downloads a CSV snapshot of the Sales Order Details modal,
+// builds and downloads an Excel snapshot of the Sales Order Details modal,
 // mirroring the metadata / line items / financial summary sections shown there
-export function exportSalesOrderCsv(itemEdit) {
+export async function exportSalesOrderCsv(itemEdit) {
   if (!itemEdit) {
     return;
   }
@@ -17,7 +17,7 @@ export function exportSalesOrderCsv(itemEdit) {
   const items = itemEdit.items ?? [];
   const totalBalance = toAmount(itemEdit.total_amount) - toAmount(itemEdit.total_paid);
 
-  const rows = [
+  const metaRows = [
     ["Order ID", itemEdit.sales_order_number ?? ""],
     ["Customer Name", itemEdit.sales_order_customer_name ?? ""],
     ["Order Date", itemEdit.sales_order_date ?? ""],
@@ -26,8 +26,13 @@ export function exportSalesOrderCsv(itemEdit) {
     ["Payment Status", itemEdit.sales_order_status ?? ""],
     ["Payment Terms", itemEdit.sales_order_payment_terms ?? ""],
     ["Notes", itemEdit.sales_order_notes ?? ""],
+  ];
+  const tableHeaderRow = ["#", "Products", "QTY", "Price Per Unit", "Total"];
+
+  const rows = [
+    ...metaRows,
     [],
-    ["#", "Products", "QTY", "Price Per Unit", "Total"],
+    tableHeaderRow,
     ...items.map((item, index) => [
       index + 1,
       item?.sales_order_product_name ?? "",
@@ -44,10 +49,12 @@ export function exportSalesOrderCsv(itemEdit) {
     ["Balance Due", "", "", "", totalBalance < 0 ? 0 : totalBalance],
   ];
 
-  const worksheet = XLSX.utils.aoa_to_sheet(rows);
-  const workbook = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(workbook, worksheet, "Order");
-
-  const fileName = `sales-order-${String(itemEdit.sales_order_number ?? "order").replaceAll("/", "-")}.csv`;
-  XLSX.writeFile(workbook, fileName, { bookType: "csv" });
+  const fileName = `sales-order-${String(itemEdit.sales_order_number ?? "order").replaceAll("/", "-")}`;
+  await exportRowsToXlsx({
+    rows,
+    fileName,
+    title: `Sales Order ${itemEdit.sales_order_number ?? ""}`,
+    sheetName: "Order",
+    headerRowIndexes: [...metaRows.keys(), metaRows.length + 1],
+  });
 }

@@ -1,7 +1,7 @@
 import { createContext, useContext, useRef, useState } from "react";
-import * as XLSX from "xlsx";
 import { apiVersion } from "@/config/config";
 import { queryDataInfinite } from "@/services/queryDataInfinite";
+import { exportRowsToXlsx } from "@/utilities/exportWorkbook";
 
 const ExportContext = createContext();
 
@@ -95,21 +95,20 @@ export function ExportProvider({ children }) {
         return;
       }
 
-      const exportRows = rows.map((row) => {
-        const exportRow = {};
-        fields.forEach((col) => {
+      const headerRow = fields.map((col) => col.header || col.accessorKey);
+      const dataRows = rows.map((row) =>
+        fields.map((col) => {
           const rawValue = row[col.accessorKey];
-          exportRow[col.header || col.accessorKey] = col.formatExport
-            ? col.formatExport(rawValue, row)
-            : rawValue;
-        });
-        return exportRow;
-      });
+          return col.formatExport ? col.formatExport(rawValue, row) : rawValue;
+        }),
+      );
 
-      const worksheet = XLSX.utils.json_to_sheet(exportRows);
-      const workbook = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(workbook, worksheet, "Export");
-      XLSX.writeFile(workbook, `${fileName}.csv`, { bookType: "csv" });
+      await exportRowsToXlsx({
+        rows: [headerRow, ...dataRows],
+        fileName,
+        title: fileName,
+        headerRowIndexes: [0],
+      });
 
       setState((prev) => ({
         ...prev,

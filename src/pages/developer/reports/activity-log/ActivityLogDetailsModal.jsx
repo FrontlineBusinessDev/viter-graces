@@ -1,9 +1,9 @@
 import CloseButton from "@/components/buttons/CloseButton";
 import ExportCSVButton from "@/components/buttons/ExportCSVButton";
+import { exportRowsToXlsx } from "@/utilities/exportWorkbook";
 import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import React from "react";
-import * as XLSX from "xlsx";
 import { activityActionPillClass } from "./ActivityLog";
 
 // Some records mix snake_case DB columns with camelCase convenience fields
@@ -762,7 +762,7 @@ const ActivityLogDetailsModal = ({ itemEdit, handleClose = () => {} }) => {
     ? returnSummaryFields.length
     : detailEntries.length;
 
-  const handleExportCsv = () => {
+  const handleExportCsv = async () => {
     const summaryRows = [
       { Field: "Menu", Value: itemEdit?.activity_log_menu },
       { Field: "Action", Value: itemEdit?.activity_log_action },
@@ -783,13 +783,17 @@ const ActivityLogDetailsModal = ({ itemEdit, handleClose = () => {} }) => {
             Value: stringifyFieldValue(key, value, findDiscountType(detailEntries)),
           }));
 
-    const worksheet = XLSX.utils.json_to_sheet([...summaryRows, ...detailRows]);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Details");
+    const allRows = [...summaryRows, ...detailRows];
     const fileName = `activity-log-details_${itemEdit?.activity_log_menu || "record"}_${new Date().toISOString().slice(0, 10)}`
       .replaceAll(" ", "-")
       .toLowerCase();
-    XLSX.writeFile(workbook, `${fileName}.csv`, { bookType: "csv" });
+    await exportRowsToXlsx({
+      rows: [["Field", "Value"], ...allRows.map((r) => [r.Field, r.Value])],
+      fileName,
+      title: `Activity Log - ${itemEdit?.activity_log_menu ?? ""}`,
+      sheetName: "Details",
+      headerRowIndexes: [0],
+    });
   };
 
   return (

@@ -1,11 +1,11 @@
 # Graph Report - viter-graces  (2026-09-29)
 
 ## Corpus Check
-- 537 files · ~513,035 words
+- 537 files · ~512,638 words
 - Verdict: corpus is large enough that graph structure adds value.
 
 ## Summary
-- 1866 nodes · 5539 edges · 307 communities (268 shown, 39 thin omitted)
+- 1864 nodes · 5536 edges · 307 communities (268 shown, 39 thin omitted)
 - Extraction: 90% EXTRACTED · 10% INFERRED · 0% AMBIGUOUS · INFERRED: 549 edges (avg confidence: 0.85)
 - Token cost: 0 input · 0 output
 
@@ -18,7 +18,7 @@
 - StoreContext.jsx
 - stock-movement/functions.php
 - CreatePassword.jsx
-- MobileResponsiveList.jsx
+- InfiniteTable.jsx
 - returnError
 - core/functions.php
 - SMTP
@@ -110,20 +110,20 @@
 ## Communities (307 total, 39 thin omitted)
 
 ### Community 0 - "StoreContext.jsx"
-Cohesion: 0.08
-Nodes (85): App(), AmountRangeFilter(), DateRangeFilter(), dateRangeLabel(), MultiRangeAmountFilter(), MultiRangeDateFilter(), nextRangeId(), rangeLabel() (+77 more)
+Cohesion: 0.09
+Nodes (77): InputPhotoUpload(), AmountRangeFilter(), DateRangeFilter(), dateRangeLabel(), MultiRangeAmountFilter(), MultiRangeDateFilter(), nextRangeId(), rangeLabel() (+69 more)
 
 ### Community 1 - "stock-movement/functions.php"
 Cohesion: 0.40
 Nodes (3): checkReadAllLocation(), checkReadAllNotes(), isUserAccountAssociated()
 
 ### Community 2 - "CreatePassword.jsx"
-Cohesion: 0.11
-Nodes (29): LogoFull(), LogoFullSm(), InputLogin(), SearchBar(), ButtonSpinner(), FetchingSpinner(), devNavUrl, checkRoleToRedirect() (+21 more)
+Cohesion: 0.07
+Nodes (48): App(), LogoFull(), LogoFullSm(), InputLogin(), FetchingSpinner(), ExportProgressWidget(), devNavUrl, UrlAdmin (+40 more)
 
-### Community 3 - "MobileResponsiveList.jsx"
+### Community 3 - "InfiniteTable.jsx"
 Cohesion: 0.05
-Nodes (73): ActionButton(), CloseButton(), DateFormat(), ExportModal(), AmountsWithPesoSign(), AmountWithPesoSign(), Pills(), ExportProgressWidget() (+65 more)
+Nodes (78): ActionButton(), AddButton(), CloseButton(), DateFormat(), DebouncedInput(), LoadImages(), ExportModal(), NoData() (+70 more)
 
 ### Community 4 - "returnError"
 Cohesion: 0.06
@@ -162,8 +162,8 @@ Cohesion: 0.25
 Nodes (5): checkDeleteById(), checkItemsBelongToSupplier(), checkReadExpensesToday(), checkReadGoupByPurchaseOrderNumber(), isUserAccountAssociated()
 
 ### Community 23 - "config.jsx"
-Cohesion: 0.06
-Nodes (61): AddButton(), dashboardData, DashboardOverview(), salesData, FinanceStats(), GraphTooltip(), InputPurchaseOrderSelectTagArray(), InputSelectCustomerArray() (+53 more)
+Cohesion: 0.08
+Nodes (50): dashboardData, DashboardOverview(), salesData, FinanceStats(), GraphTooltip(), InputPurchaseOrderSelectTagArray(), InputSelectCustomerArray(), InputSelectTagArray() (+42 more)
 
 ### Community 25 - "product-owner/functions.php"
 Cohesion: 0.17
@@ -198,15 +198,15 @@ Cohesion: 0.13
 Nodes (14): checkAssociatedInPurchaseOrderById(), checkCreateProduct(), checkCreateSupplierDescription(), checkDeleteSupplierProduct(), checkReadBySupplierDescriptionName(), checkReadGoupBySupplierAddress(), checkReadGoupBySupplierDescriptionName(), checkReadGoupBySupplierEmail() (+6 more)
 
 ### Community 295 - "isEmptyItem"
-Cohesion: 0.09
-Nodes (81): ExportCSVButton(), ModalButton(), InputCheckbox(), InputPhotoUpload(), InputRadioButton(), DefaultInputSelectTagArray(), InputSalesOrderSelectTagArray(), InputSelect() (+73 more)
+Cohesion: 0.10
+Nodes (74): ExportCSVButton(), ModalButton(), InputCheckbox(), InputRadioButton(), DefaultInputSelectTagArray(), InputSalesOrderSelectTagArray(), InputSelectArray(), InputSelectArrayWithOptions() (+66 more)
 
 ### Community 299 - "customer/functions.php"
 Cohesion: 0.18
 Nodes (8): checkReadAllActive(), checkReadAllContact(), checkReadAllCustomers(), checkReadAllEmail(), checkReadAllOpenBalance(), checkReadAllOverdueBalance(), checkReadWalkInCustomer(), isUserAccountAssociated()
 
 ## Knowledge Gaps
-- **27 isolated node(s):** `{ defineConfig }`, `salesData`, `dashboardData`, `profitLossData`, `urlPath` (+22 more)
+- **26 isolated node(s):** `{ defineConfig }`, `salesData`, `dashboardData`, `profitLossData`, `urlPath` (+21 more)
   These have ≤1 connection - possible missing edges or undocumented components.
 - **39 thin communities (<3 nodes) omitted from report** — run `graphify query` to explore isolated nodes.
 
@@ -224,6 +224,6 @@ _Questions this graph is uniquely positioned to answer:_
 - **Are the 158 inferred relationships involving `checkQuery()` (e.g. with `checkCreateOtherSupplier()` and `checkCreateWalkInCustomer()`) actually correct?**
   _`checkQuery()` has 158 INFERRED edges - model-reasoned connections that need verification._
 - **What connects `{ defineConfig }`, `salesData`, `dashboardData` to the rest of the system?**
-  _27 weakly-connected nodes found - possible documentation gaps or missing edges._
+  _26 weakly-connected nodes found - possible documentation gaps or missing edges._
 - **Should `StoreContext.jsx` be split into smaller, more focused modules?**
-  _Cohesion score 0.08351440717997166 - nodes in this community are weakly interconnected._
+  _Cohesion score 0.09159261790840738 - nodes in this community are weakly interconnected._

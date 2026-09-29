@@ -15,7 +15,7 @@ import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import React from "react";
-import * as XLSX from "xlsx";
+import { exportRowsToXlsx } from "@/utilities/exportWorkbook";
 
 const UpdateAccountsPayableDetails = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -165,7 +165,7 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
   // Exports this order's own line items - not a paginated server list like
   // the table-level Export CSV, so it builds the sheet from what's already
   // loaded in itemEdit rather than going through ExportContext/ExportModal.
-  const handleExportCsv = () => {
+  const handleExportCsv = async () => {
     const rows = (itemEdit?.items || []).map((item, index) => ({
       "#": index + 1,
       "Due Date": isEmptyItem(item?.purchase_order_date, ""),
@@ -188,13 +188,17 @@ const UpdateAccountsPayableDetails = ({ itemEdit }) => {
       "Balance Amount": Number(totalBalanceAmount).toFixed(2),
     });
 
-    const worksheet = XLSX.utils.json_to_sheet(rows);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Export");
+    const headerRow = Object.keys(rows[0] || {});
+    const aoaRows = rows.map((row) => headerRow.map((key) => row[key]));
 
     const today = new Date().toISOString().slice(0, 10);
     const fileName = `accounts_payable_${isEmptyItem(itemEdit?.purchase_order_number, "order")}_${today}`;
-    XLSX.writeFile(workbook, `${fileName}.csv`, { bookType: "csv" });
+    await exportRowsToXlsx({
+      rows: [headerRow, ...aoaRows],
+      fileName,
+      title: `Accounts Payable - ${itemEdit?.purchase_order_number ?? ""}`,
+      headerRowIndexes: [0],
+    });
   };
 
   return (

@@ -15,6 +15,12 @@ const ExportProgressWidget = () => {
     dismiss,
   } = useExport() || {};
 
+  React.useEffect(() => {
+    if (!isDone) return;
+    const timer = setTimeout(dismiss, 5000);
+    return () => clearTimeout(timer);
+  }, [isDone, dismiss]);
+
   if (!isExporting && !isDone && !error) return null;
 
   return (

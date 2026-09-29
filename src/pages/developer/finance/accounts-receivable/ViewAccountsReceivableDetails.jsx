@@ -14,8 +14,8 @@ import { StoreContext } from "@/store/StoreContext";
 import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
+import { exportRowsToXlsx } from "@/utilities/exportWorkbook";
 import React from "react";
-import * as XLSX from "xlsx";
 
 const ViewAccountsReceivableDetails = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -119,7 +119,7 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
     "",
   );
 
-  const handleExportCsv = () => {
+  const handleExportCsv = async () => {
     const rows = (items || []).map((item, index) => ({
       "#": index + 1,
       "Due Date": isEmptyItem(item?.installment_payment_due_date, ""),
@@ -138,13 +138,17 @@ const ViewAccountsReceivableDetails = ({ itemEdit }) => {
       Method: "",
     });
 
-    const worksheet = XLSX.utils.json_to_sheet(rows);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Export");
+    const headerRow = Object.keys(rows[0] || {});
+    const aoaRows = rows.map((row) => headerRow.map((key) => row[key]));
 
     const today = new Date().toISOString().slice(0, 10);
     const fileName = `accounts_receivable_${isEmptyItem(itemEdit?.sales_order_number, "order")}_${today}`;
-    XLSX.writeFile(workbook, `${fileName}.csv`, { bookType: "csv" });
+    await exportRowsToXlsx({
+      rows: [headerRow, ...aoaRows],
+      fileName,
+      title: `Accounts Receivable - ${itemEdit?.sales_order_number ?? ""}`,
+      headerRowIndexes: [0],
+    });
   };
 
   return (

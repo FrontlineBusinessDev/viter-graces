@@ -6,7 +6,7 @@ import { StoreContext } from "@/store/StoreContext";
 import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
 import React from "react";
-import * as XLSX from "xlsx";
+import { exportRowsToXlsx } from "@/utilities/exportWorkbook";
 
 const ViewAccountsPayableDetails = ({ itemEdit }) => {
   const { store, dispatch } = React.useContext(StoreContext);
@@ -36,15 +36,26 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
         ? "Exclusive"
         : "--";
 
-  const handleExportCsv = () => {
-    const rows = [
+  const handleExportCsv = async () => {
+    const metaRows = [
       ["PO #", itemEdit?.purchase_order_number],
       ["Supplier", itemEdit?.purchase_order_supplier_name],
       ["Order Date", itemEdit?.formated_date],
       ["Delivery Date", itemEdit?.formated_delivery_date],
       ["Tax", taxLabel],
+    ];
+    const tableHeaderRow = [
+      "#",
+      "Due Date",
+      "Amount",
+      "Paid Amount",
+      "Balance Amount",
+    ];
+
+    const rows = [
+      ...metaRows,
       [],
-      ["#", "Due Date", "Amount", "Paid Amount", "Balance Amount"],
+      tableHeaderRow,
       ...(itemEdit?.items || []).map((item, index) => [
         index + 1,
         isEmptyItem(item?.purchase_order_date, ""),
@@ -63,13 +74,14 @@ const ViewAccountsPayableDetails = ({ itemEdit }) => {
       ],
     ];
 
-    const worksheet = XLSX.utils.aoa_to_sheet(rows);
-    const workbook = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(workbook, worksheet, "Export");
-
     const today = new Date().toISOString().slice(0, 10);
     const fileName = `accounts_payable_${isEmptyItem(itemEdit?.purchase_order_number, "order")}_${today}`;
-    XLSX.writeFile(workbook, `${fileName}.csv`, { bookType: "csv" });
+    await exportRowsToXlsx({
+      rows,
+      fileName,
+      title: `Accounts Payable - ${itemEdit?.purchase_order_number ?? ""}`,
+      headerRowIndexes: [...metaRows.keys(), metaRows.length + 1],
+    });
   };
 
   return (

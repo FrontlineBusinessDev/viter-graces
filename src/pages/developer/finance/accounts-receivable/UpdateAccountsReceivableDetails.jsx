@@ -12,6 +12,7 @@ import {
 } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
 import useQueryData from "@/services/useQueryData";
+import { exportRowsToXlsx } from "@/utilities/exportWorkbook";
 import { formatDate } from "@/utilities/formatDate";
 import { handleEscape } from "@/utilities/handleEscape";
 import { isEmptyItem } from "@/utilities/isEmptyItem";
@@ -490,12 +491,7 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
   // CSV reflects exactly what's on screen: the header summary above the
   // table plus one row per already-recorded payment (unpaid/draft rows
   // aren't "recorded" yet, so they're excluded).
-  const handleExportCSV = () => {
-    const csvEscape = (value) => {
-      const text = String(value ?? "");
-      return /[",\n]/.test(text) ? `"${text.replace(/"/g, '""')}"` : text;
-    };
-
+  const handleExportCSV = async () => {
     const currentTotalPaid =
       Number(totalPaidAmount) +
       Number(paidAmount) +
@@ -507,7 +503,7 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
         Number(newInstallmentsPaidTotal),
     );
 
-    const rows = [
+    const metaRows = [
       ["Order #", itemEdit?.sales_order_number],
       ["Customer Name", itemEdit?.sales_order_customer_name],
       ["Order Date", itemEdit?.sales_order_date],
@@ -516,8 +512,18 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
       ["Total Amount", Number(totalAmount).toFixed(2)],
       ["Total Paid", currentTotalPaid.toFixed(2)],
       ["Remaining Balance", currentBalance.toFixed(2)],
+    ];
+    const tableHeaderRow = [
+      "Payment #",
+      "Payment Date",
+      "Paid Amount",
+      "Payment Method",
+    ];
+
+    const rows = [
+      ...metaRows,
       [],
-      ["Payment #", "Payment Date", "Paid Amount", "Payment Method"],
+      tableHeaderRow,
       ...(items || [])
         .filter((item) => Number(item?.installment_payment_is_paid) === 1)
         .map((item, index) => [
@@ -528,19 +534,12 @@ const UpdateAccountsReceivableDetails = ({ itemEdit }) => {
         ]),
     ];
 
-    const csvContent = rows
-      .map((row) => row.map(csvEscape).join(","))
-      .join("\n");
-
-    const blob = new Blob([csvContent], { type: "text/csv;charset=utf-8;" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = `Order_Details_${itemEdit?.sales_order_number}.csv`;
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+    await exportRowsToXlsx({
+      rows,
+      fileName: `Order_Details_${itemEdit?.sales_order_number}`,
+      title: `Accounts Receivable - ${itemEdit?.sales_order_number ?? ""}`,
+      headerRowIndexes: [...metaRows.keys(), metaRows.length + 1],
+    });
   };
 
   return (
