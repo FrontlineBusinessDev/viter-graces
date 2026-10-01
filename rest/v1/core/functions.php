@@ -845,7 +845,7 @@ function setIdNumber($object, $val)
     $newCodeNumber = (int)$lastPayNumber + 1;
     if ((int)$newCodeNumber < 10) {
         $newCodeNumber =  $val . "00" . $newCodeNumber;
-    } elseif ((int)$lastPayNumber < 100) {
+    } elseif ((int)$lastPayNumber <= 99) {
         $newCodeNumber =  $val . "0" . $newCodeNumber;
     } else {
         $newCodeNumber =  $val . $newCodeNumber;

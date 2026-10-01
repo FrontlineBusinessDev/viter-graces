@@ -79,7 +79,7 @@ installmentDetails($val, $installmentItems, $data);
 
 // INSTALLMENT DATA
 updateStatus($val, $data);
-$val->sales_order_number = setIdNumber($val, "ORD");
+$val->sales_order_number = $val->sales_order_number;
 
 $ordersItems = $data["items"];
 // CREATE STOCK MOVEMENT
