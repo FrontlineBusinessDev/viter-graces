@@ -14,6 +14,7 @@ if (array_key_exists("id", $_GET)) {
     checkEndpoint();
 }
 // check data
+
 checkPayload($data);
 // get data
 
