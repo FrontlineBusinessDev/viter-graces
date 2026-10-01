@@ -1,3 +1,5 @@
+import AddButton from "@/components/buttons/AddButton";
+import DemoLimitModal from "@/components/modals/DemoLimitModal";
 import { MultiSelectCheckboxFilter } from "@/components/inputs/InputSelect";
 import { apiVersion } from "@/config/config";
 import {
@@ -26,6 +28,7 @@ const SalesOrders = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
   const [dataCount, setDataCount] = React.useState("...Loading");
+  const [showDemoLimit, setShowDemoLimit] = React.useState(false);
 
   // Columns
   const columns = [
@@ -294,12 +297,15 @@ const SalesOrders = () => {
           setItemEdit={setItemEdit}
           setDataCount={setDataCount}
           haveFilterTable={true}
-          // ishaveAdd={getAdminDeveloperRole(store)}
+          ishaveAdd={true}
         />
       </HeaderNav>
       {store.isAdd && (
-        <ModalSalesOrders itemEdit={itemEdit} cutomer={result?.data[0]} />
+        <DemoLimitModal onClose={() => dispatch(setIsAdd(false))} />
       )}
+      {/* {store.isAdd && (
+        <ModalSalesOrders itemEdit={itemEdit} cutomer={result?.data[0]} />
+      )} */}
       {store.isView && <ViewSalesDetails itemEdit={itemEdit} />}
     </>
   );

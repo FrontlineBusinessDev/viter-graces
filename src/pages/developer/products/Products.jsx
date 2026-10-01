@@ -9,6 +9,7 @@ import ModalProducts from "./ModalProducts";
 import { ProductOwnerId } from "@/utilities/productOwnerToken";
 import { setIsAdd } from "@/store/StoreAction";
 import { getAdminDeveloperRole } from "@/utilities/roleValidation";
+import DemoLimitModal from "@/components/modals/DemoLimitModal";
 const Products = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -183,7 +184,10 @@ const Products = () => {
           dataTestidAddButton="add-product-btn"
         />
       </HeaderNav>
-      {store.isAdd && <ModalProducts itemEdit={itemEdit} />}
+      {store.isAdd && (
+        <DemoLimitModal onClose={() => dispatch(setIsAdd(false))} />
+      )}
+      {/* {store.isAdd && <ModalProducts itemEdit={itemEdit} />} */}
     </>
   );
 };
