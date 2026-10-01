@@ -1458,17 +1458,19 @@ class SalesOrder
     public function readSalesToday()
     {
         try {
-            $sql = "select DATE(sales_order_date) AS sales_date, ";
-            $sql .= "SUM(sales_order_discounted_with_vat_amount) AS total_sales, ";
-            $sql .= "SUM(sales_order_qty) AS total_qty ";
+            $sql = "select ";
+            $sql .= "COALESCE(SUM(case when DATE(sales_order_date) = DATE(:date_today) ";
+            $sql .= "then sales_order_discounted_with_vat_amount end), 0) AS total_sales_today, ";
+            $sql .= "COALESCE(SUM(case when DATE(sales_order_date) = DATE(:date_yesterday) ";
+            $sql .= "then sales_order_discounted_with_vat_amount end), 0) AS total_sales_yesterday ";
             $sql .= "from {$this->tblSalesOrder} ";
-            $sql .= "where DATE(sales_order_date) in (DATE(:date_today), DATE(:date_yesterday)) ";
-            $sql .= "group by DATE(sales_order_date) ";
-            $sql .= "order by DATE(sales_date) desc ";
+            $sql .= "where DATE(sales_order_date) in (DATE(:date_today_filter), DATE(:date_yesterday_filter)) ";
             $query = $this->connection->prepare($sql);
             $query->execute([
                 "date_today" => $this->date_today,
                 "date_yesterday" => $this->date_yesterday,
+                "date_today_filter" => $this->date_today,
+                "date_yesterday_filter" => $this->date_yesterday,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

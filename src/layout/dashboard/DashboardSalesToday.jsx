@@ -20,15 +20,17 @@ const DashboardSalesToday = ({ path = "", id = 0 }) => {
   );
 
   const valDataToday = useMemo(() => {
-    if (!result?.count) return "0.00";
-
-    return `${numberWithCommasToFixed(result?.data[0]?.total_sales, 2)}`;
+    return `${numberWithCommasToFixed(
+      Number(result?.data?.[0]?.total_sales_today ?? 0),
+      2,
+    )}`;
   }, [result]);
 
   const valDataYesterday = useMemo(() => {
-    if (!result?.count == 1) return "0.00";
-
-    return `${numberWithCommasToFixed(result?.data[1]?.total_sales, 2)}`;
+    return `${numberWithCommasToFixed(
+      Number(result?.data?.[0]?.total_sales_yesterday ?? 0),
+      2,
+    )}`;
   }, [result]);
   return (
     <>
