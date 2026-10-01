@@ -803,7 +803,7 @@ class SuppliersPurchaseOrder
             $sql = "select *, ";
             $sql .= "purchase_order_number as id_number ";
             $sql .= "from {$this->tblSuppliersPurchaseOrder} ";
-            $sql .= "order by purchase_order_number desc ";
+            $sql .= "order by CAST(SUBSTRING(purchase_order_number, 4) AS UNSIGNED) desc ";
             $sql .= "limit 1 ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {

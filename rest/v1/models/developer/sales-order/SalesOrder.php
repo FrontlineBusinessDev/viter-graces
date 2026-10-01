@@ -1363,7 +1363,7 @@ class SalesOrder
             $sql = "select *, ";
             $sql .= "sales_order_number as id_number ";
             $sql .= "from {$this->tblSalesOrder} ";
-            $sql .= "order by sales_order_number desc ";
+            $sql .= "order by CAST(SUBSTRING(sales_order_number, 4) AS UNSIGNED) desc ";
             $sql .= "limit 1 ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {

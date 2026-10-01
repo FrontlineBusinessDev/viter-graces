@@ -1,7 +1,7 @@
 # Graph Report - viter-graces  (2026-10-01)
 
 ## Corpus Check
-- 537 files · ~513,063 words
+- 537 files · ~513,045 words
 - Verdict: corpus is large enough that graph structure adds value.
 - Unclassified: 19 file(s) not represented in the graph (top: (none) 11, .conf 2, .woff2 2)
 
@@ -11,7 +11,7 @@
 - Token cost: 0 input · 0 output
 
 ## Graph Freshness
-- Built from commit: `fa31827d`
+- Built from commit: `526ca2ba`
 - Run `git rev-parse HEAD` and compare to check if the graph is stale.
 - Run `graphify update .` after code changes (no API cost).
 

@@ -842,14 +842,7 @@ function setIdNumber($object, $val)
     // value number of payroll id
     $lastPayNumber = intval(substr($lastIdNumber[0]['id_number'], 3));
 
-    $newCodeNumber = (int)$lastPayNumber + 1;
-    if ((int)$newCodeNumber < 10) {
-        $newCodeNumber =  $val . "00" . $newCodeNumber;
-    } elseif ((int)$lastPayNumber <= 99) {
-        $newCodeNumber =  $val . "0" . $newCodeNumber;
-    } else {
-        $newCodeNumber =  $val . $newCodeNumber;
-    }
+    $newCodeNumber = $val . str_pad((string)($lastPayNumber + 1), 3, "0", STR_PAD_LEFT);
     // CHECK IF PAYROLL ID GENERATED IS EXIST IN SPECIFIC SUBSCRIBER ID
     isIdNumberExist($object, $newCodeNumber);
 

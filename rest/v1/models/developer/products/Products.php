@@ -767,7 +767,7 @@ class Products
             $sql = "select *, ";
             $sql .= "products_sku as id_number ";
             $sql .= "from {$this->tblProducts} ";
-            $sql .= "order by products_sku desc ";
+            $sql .= "order by CAST(SUBSTRING(products_sku, 4) AS UNSIGNED) desc ";
             $sql .= "limit 1 ";
             $query = $this->connection->query($sql);
         } catch (PDOException $ex) {
