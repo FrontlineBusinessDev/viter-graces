@@ -35,11 +35,29 @@ const NO_VALUE_OPS = ["is_empty", "not_empty"];
 const inputClass =
   "w-full text-sm border border-gray-300 rounded-lg px-2 py-1.5 dark:bg-[#0b111e] normal-case hover:border-primary focus:border-primary outline-none";
 
+// Native date inputs ignore placeholder; show a text input until focused or filled.
+const PlaceholderDate = ({ value, ...props }) => {
+  const [focused, setFocused] = React.useState(false);
+  return (
+    <input
+      {...props}
+      value={value}
+      type={focused || value ? "date" : "text"}
+      onFocus={(e) => {
+        setFocused(true);
+        setTimeout(() => e.target.showPicker?.(), 0);
+      }}
+      onBlur={() => setFocused(false)}
+    />
+  );
+};
+
 const OperatorFilter = ({ column, testFilterId, type }) => {
   const isNumber = type === "number";
   const isDate = type === "date";
   const ops = isNumber ? NUMBER_OPS : isDate ? DATE_OPS : TEXT_OPS;
   const inputType = isDate ? "date" : "text";
+  const Field = isDate ? PlaceholderDate : "input";
   const applied = column.getFilterValue() || {};
   const op = applied.op || ops[0][0];
   const { isOpen, wrapperRef, handleClose, open } = useFilterPopover(applied);
@@ -98,7 +116,7 @@ const OperatorFilter = ({ column, testFilterId, type }) => {
       </button>
 
       {isOpen && (
-        <div className="absolute top-full right-0 z-50 mt-1 w-56 max-w-[80vw] border border-gray-100 rounded-lg shadow-lg bg-white dark:bg-[#0b111e] p-3 space-y-2">
+        <div className="absolute top-full left-0 z-50 mt-1 w-56 max-w-[80vw] border border-gray-100 rounded-lg shadow-lg bg-white dark:bg-[#0b111e] p-3 space-y-2">
           <select
             className={inputClass}
             value={currentOp}
@@ -112,7 +130,7 @@ const OperatorFilter = ({ column, testFilterId, type }) => {
             ))}
           </select>
           {needsValue && (
-            <input
+            <Field
               type={inputType}
               className={inputClass}
               placeholder={isRange ? "From" : "Filter..."}
@@ -124,7 +142,7 @@ const OperatorFilter = ({ column, testFilterId, type }) => {
             />
           )}
           {isRange && (
-            <input
+            <Field
               type={inputType}
               className={inputClass}
               placeholder="To"
