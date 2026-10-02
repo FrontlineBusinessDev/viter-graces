@@ -300,12 +300,12 @@ const SalesOrders = () => {
           ishaveAdd={true}
         />
       </HeaderNav>
-      {store.isAdd && (
-        <DemoLimitModal onClose={() => dispatch(setIsAdd(false))} />
-      )}
       {/* {store.isAdd && (
-        <ModalSalesOrders itemEdit={itemEdit} cutomer={result?.data[0]} />
+        <DemoLimitModal onClose={() => dispatch(setIsAdd(false))} />
       )} */}
+      {store.isAdd && (
+        <ModalSalesOrders itemEdit={itemEdit} cutomer={result?.data[0]} />
+      )}
       {store.isView && <ViewSalesDetails itemEdit={itemEdit} />}
     </>
   );

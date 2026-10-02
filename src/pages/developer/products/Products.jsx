@@ -184,10 +184,10 @@ const Products = () => {
           dataTestidAddButton="add-product-btn"
         />
       </HeaderNav>
-      {store.isAdd && (
+      {/* {store.isAdd && (
         <DemoLimitModal onClose={() => dispatch(setIsAdd(false))} />
-      )}
-      {/* {store.isAdd && <ModalProducts itemEdit={itemEdit} />} */}
+      )} */}
+      {store.isAdd && <ModalProducts itemEdit={itemEdit} />}
     </>
   );
 };
