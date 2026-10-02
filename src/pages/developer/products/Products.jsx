@@ -18,6 +18,7 @@ const Products = () => {
   const [itemEdit, setItemEdit] = React.useState(null);
 
   // Columns
+  
   const columns = [
     {
       accessorKey: "products_is_active",
