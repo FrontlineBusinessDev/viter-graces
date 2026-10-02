@@ -11,7 +11,7 @@ const nextRangeId = () => `range-${++rangeIdCounter}`;
 // and Escape both close the panel, and re-opening always resets the draft to
 // whatever is currently applied on the column (so a cancelled edit never
 // leaks into the next open).
-const useFilterPopover = (appliedValue) => {
+export const useFilterPopover = (appliedValue) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [draft, setDraft] = React.useState(appliedValue);
   const wrapperRef = React.useRef(null);

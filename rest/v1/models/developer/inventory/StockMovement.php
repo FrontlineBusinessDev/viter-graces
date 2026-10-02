@@ -1,6 +1,8 @@
 <?php
+require_once __DIR__ . "/../OperatorFilterTrait.php";
 class StockMovement
 {
+    use OperatorFilterTrait;
     public $stock_movement_aid;
     public $stock_movement_date;
     public $stock_movement_type;
@@ -25,6 +27,8 @@ class StockMovement
     public $tblSalesOrder;
 
     public $filters;
+    private $numericColumns = ["stock_movement_qty", "stock_movement_before_qty", "stock_movement_after_qty"];
+    private $dateColumns = ["stock_movement_date"];
     public $userId;
     public $column_start;
     public $column_total;
@@ -55,7 +59,12 @@ class StockMovement
             $col = $item['id'];
             $value = $item['value'];
 
-            if (is_array($value) && array_key_exists('start', $value)) {
+            if (is_array($value) && array_key_exists('op', $value)) {
+                $clause = $this->buildOperatorClause($col, $value, $i, $params);
+                if ($clause !== null) {
+                    $filterColumn[] = $clause;
+                }
+            } elseif (is_array($value) && array_key_exists('start', $value)) {
                 $hasStart = trim((string) $value['start']) !== '';
                 $hasEnd = trim((string) $value['end']) !== '';
                 if (!$hasStart && !$hasEnd) {

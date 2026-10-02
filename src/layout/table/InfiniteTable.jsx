@@ -218,6 +218,8 @@ const InfiniteTable = ({
 
         return true;
       },
+      // operator filters are applied by the server; returned rows all match
+      operator: () => true,
       multiSelect: (row, columnId, value) => {
         if (!Array.isArray(value) || value.length === 0) return true;
 

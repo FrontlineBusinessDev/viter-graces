@@ -1,5 +1,8 @@
-import { MultiSelectCheckboxFilter } from "@/components/inputs/InputSelect";
-import { ActiveInActiveStatus } from "@/layout/ArrayValue";
+import {
+  DateOperatorFilter,
+  NumberOperatorFilter,
+  TextOperatorFilter,
+} from "@/components/inputs/InputOperatorFilter";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
 import WarningBanner from "@/layout/WarningBanner";
@@ -7,8 +10,6 @@ import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalStockOverview from "./modal/ModalStockOverview";
 import { getAdminDeveloperRole } from "@/utilities/roleValidation";
-import { MultiRangeDateFilter } from "@/components/inputs/InputRangeFilter";
-import { MultiRangeAmountFilter } from "@/components/inputs/InputRangeFilter";
 const MovementHistory = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -20,14 +21,11 @@ const MovementHistory = () => {
       header: "status",
       classTh: "w-[10rem]",
       classTd: " uppercase ",
-      filterFn: "multiSelect",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiSelectCheckboxFilter
+          <TextOperatorFilter
             column={column}
-            staticOptions={ActiveInActiveStatus("stock-type-status").map(
-              (option) => option.value,
-            )}
             testFilterId={"filter-status"}
           />
         ),
@@ -38,10 +36,10 @@ const MovementHistory = () => {
       header: "Date",
       classTh: "min-w-40",
       classTd: "",
-      filterFn: "multiDateRange",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeDateFilter
+          <DateOperatorFilter
             column={column}
             testFilterId={"filter-movement-date"}
           />
@@ -53,12 +51,11 @@ const MovementHistory = () => {
       header: "Products",
       classTh: "min-w-40",
       classTd: "",
-      filterFn: "multiSelect",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiSelectCheckboxFilter
+          <TextOperatorFilter
             column={column}
-            path="products/read-all-by-active"
             testFilterId={"filter-product-name"}
           />
         ),
@@ -69,10 +66,10 @@ const MovementHistory = () => {
       header: "QTY",
       classTh: "min-w-40",
       classTd: "",
-      filterFn: "multiRange",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter column={column} testFilterId={"filter-qty"} />
+          <NumberOperatorFilter column={column} testFilterId={"filter-qty"} />
         ),
       },
     },
@@ -81,10 +78,10 @@ const MovementHistory = () => {
       header: "Before",
       classTh: "min-w-40",
       classTd: "",
-      filterFn: "multiRange",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter
+          <NumberOperatorFilter
             column={column}
             testFilterId={"filter-before"}
           />
@@ -96,10 +93,10 @@ const MovementHistory = () => {
       header: "After",
       classTh: "min-w-40",
       classTd: "",
-      filterFn: "multiRange",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter
+          <NumberOperatorFilter
             column={column}
             testFilterId={"filter-after"}
           />
@@ -111,12 +108,11 @@ const MovementHistory = () => {
       header: "Location",
       classTh: "min-w-40",
       classTd: " line-clamp-2 max-w-40",
-      filterFn: "multiSelect",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiSelectCheckboxFilter
+          <TextOperatorFilter
             column={column}
-            path="stock-movement/read-all-by-location?type=location"
             testFilterId={"filter-product-location"}
           />
         ),
@@ -127,12 +123,11 @@ const MovementHistory = () => {
       header: "Product Owner",
       classTh: "min-w-[10rem]",
       classTd: "",
-      filterFn: "multiSelect",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiSelectCheckboxFilter
+          <TextOperatorFilter
             column={column}
-            path="product-owner/read-by-product-owner"
             testFilterId={"filter-owner"}
           />
         ),
@@ -143,12 +138,11 @@ const MovementHistory = () => {
       header: "Notes",
       classTh: "min-w-40",
       classTd: "",
-      filterFn: "multiSelect",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiSelectCheckboxFilter
+          <TextOperatorFilter
             column={column}
-            path="stock-movement/read-all-by-location?type=notes"
             testFilterId={"filter-product-notes"}
           />
         ),

@@ -1,4 +1,8 @@
-import { MultiSelectCheckboxFilter } from "@/components/inputs/InputSelect";
+import {
+  DropdownFilter,
+  NumberOperatorFilter,
+  TextOperatorFilter,
+} from "@/components/inputs/InputOperatorFilter";
 import { ActiveInActiveStatus } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
@@ -7,7 +11,6 @@ import { StoreContext } from "@/store/StoreContext";
 import React from "react";
 import ModalStockOverview from "./modal/ModalStockOverview";
 import { ProductOwnerId } from "@/utilities/productOwnerToken";
-import { MultiRangeAmountFilter } from "@/components/inputs/InputRangeFilter";
 const StockOverview = () => {
   const { store, dispatch } = React.useContext(StoreContext);
   const [itemEdit, setItemEdit] = React.useState(null);
@@ -21,14 +24,12 @@ const StockOverview = () => {
       header: "status",
       classTh: "min-w-[8rem]",
       classTd: "",
-      filterFn: "multiSelect",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiSelectCheckboxFilter
+          <DropdownFilter
             column={column}
-            staticOptions={ActiveInActiveStatus("stock-overview").map(
-              (option) => option.value,
-            )}
+            options={ActiveInActiveStatus("stock-overview")}
             testFilterId={"filter-status"}
           />
         ),
@@ -41,12 +42,11 @@ const StockOverview = () => {
       classTh: "min-w-40",
       classTd: "",
       isMobileTitle: true,
-      filterFn: "multiSelect",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiSelectCheckboxFilter
+          <TextOperatorFilter
             column={column}
-            path="products/read-all-by-active"
             testFilterId={"filter-product-name"}
           />
         ),
@@ -58,12 +58,11 @@ const StockOverview = () => {
       classTh: "min-w-40",
       classTd: "",
       isTag: true,
-      filterFn: "multiSelect",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiSelectCheckboxFilter
+          <TextOperatorFilter
             column={column}
-            path="products/read-all-by-filters?type=sku"
             testFilterId={"filter-product-sku"}
           />
         ),
@@ -74,12 +73,11 @@ const StockOverview = () => {
       header: "Location",
       classTh: "min-w-40",
       classTd: "line-clamp-2 max-w-40",
-      filterFn: "multiSelect",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiSelectCheckboxFilter
+          <TextOperatorFilter
             column={column}
-            path="stock-movement/read-all-by-location?type=location"
             testFilterId={"filter-product-location"}
           />
         ),
@@ -88,12 +86,12 @@ const StockOverview = () => {
     {
       accessorKey: "current_qty",
       header: "Current Stock",
-      filterFn: "multiRange",
+      filterFn: "operator",
       classTh: "min-w-[10rem]",
       classTd: "",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter
+          <NumberOperatorFilter
             column={column}
             testFilterId={"filter-current-stock"}
           />
@@ -103,12 +101,12 @@ const StockOverview = () => {
     {
       accessorKey: "products_low_stock_threshold",
       header: "Threshold",
-      filterFn: "multiRange",
+      filterFn: "operator",
       classTh: "min-w-[10rem]",
       classTd: "",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter
+          <NumberOperatorFilter
             column={column}
             testFilterId={"filter-threshold"}
           />
@@ -120,12 +118,11 @@ const StockOverview = () => {
       header: "Unit",
       classTh: "min-w-[5rem]",
       classTd: "",
-      filterFn: "multiSelect",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiSelectCheckboxFilter
+          <TextOperatorFilter
             column={column}
-            path="products/read-all-by-filters?type=unit"
             testFilterId={"filter-product-sku"}
           />
         ),
@@ -139,12 +136,11 @@ const StockOverview = () => {
             header: "Product Owner",
             classTh: "min-w-[10rem]",
             classTd: "",
-            filterFn: "multiSelect",
+            filterFn: "operator",
             meta: {
               filterComponent: (column) => (
-                <MultiSelectCheckboxFilter
+                <TextOperatorFilter
                   column={column}
-                  path="product-owner/read-by-product-owner"
                   testFilterId={"filter-owner"}
                 />
               ),

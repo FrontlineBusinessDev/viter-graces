@@ -1,5 +1,8 @@
-import { MultiSelectCheckboxFilter } from "@/components/inputs/InputSelect";
-import { MultiRangeAmountFilter } from "@/components/inputs/InputRangeFilter";
+import {
+  DropdownFilter,
+  NumberOperatorFilter,
+  TextOperatorFilter,
+} from "@/components/inputs/InputOperatorFilter";
 import { ActiveInActiveStatus, ActionTableList } from "@/layout/ArrayValue";
 import HeaderNav from "@/layout/headers/HeaderNav";
 import InfiniteTable from "@/layout/table/InfiniteTable";
@@ -21,12 +24,14 @@ const Products = () => {
       header: "status",
       classTh: "min-w-[8rem]",
       classTd: "",
-      filterFn: "multiSelect",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiSelectCheckboxFilter
+          <DropdownFilter
             column={column}
-            staticOptions={ActiveInActiveStatus()}
+            options={ActiveInActiveStatus().filter((o) =>
+              o.name.includes("default-status"),
+            )}
             testFilterId={"filter-status"}
           />
         ),
@@ -39,12 +44,11 @@ const Products = () => {
       classTh: "min-w-[10rem] ",
       classTd: "",
       isMobileTitle: true,
-      filterFn: "multiSelect",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiSelectCheckboxFilter
+          <TextOperatorFilter
             column={column}
-            path="products/read-all-by-active"
             testFilterId={"filter-product-name"}
           />
         ),
@@ -56,12 +60,11 @@ const Products = () => {
       classTh: "min-w-[10rem] ",
       classTd: "",
       isTag: true,
-      filterFn: "multiSelect",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiSelectCheckboxFilter
+          <TextOperatorFilter
             column={column}
-            path="products/read-all-by-filters?type=sku"
             testFilterId={"filter-product-sku"}
           />
         ),
@@ -72,12 +75,11 @@ const Products = () => {
       header: "Category",
       classTh: " min-w-[10rem]",
       classTd: "",
-      filterFn: "multiSelect",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiSelectCheckboxFilter
+          <TextOperatorFilter
             column={column}
-            path="products/read-all-by-filters?type=category"
             testFilterId={"filter-category"}
           />
         ),
@@ -88,12 +90,12 @@ const Products = () => {
       header: "Price",
       classTh: "min-w-[10rem]",
       classTd: "",
-      filterFn: "multiRange",
+      filterFn: "operator",
       isPrice: true,
       amount: true,
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter
+          <NumberOperatorFilter
             column={column}
             testFilterId={"filter-price"}
           />
@@ -105,11 +107,11 @@ const Products = () => {
       header: "Estimated Cost Price",
       classTh: "min-w-[12rem]",
       classTd: "",
-      filterFn: "multiRange",
+      filterFn: "operator",
       amount: true,
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter
+          <NumberOperatorFilter
             column={column}
             testFilterId={"filter-cost"}
           />
@@ -121,10 +123,10 @@ const Products = () => {
       header: "Stocks",
       classTh: "min-w-[10rem]",
       classTd: "",
-      filterFn: "multiRange",
+      filterFn: "operator",
       meta: {
         filterComponent: (column) => (
-          <MultiRangeAmountFilter
+          <NumberOperatorFilter
             column={column}
             testFilterId={"filter-stocks"}
           />
@@ -139,12 +141,11 @@ const Products = () => {
             header: "Product Owner",
             classTh: "min-w-[10rem]",
             classTd: "",
-            filterFn: "multiSelect",
+            filterFn: "operator",
             meta: {
               filterComponent: (column) => (
-                <MultiSelectCheckboxFilter
+                <TextOperatorFilter
                   column={column}
-                  path="product-owner/read-by-product-owner"
                   testFilterId={"filter-owner"}
                 />
               ),

@@ -1,6 +1,8 @@
 <?php
+require_once __DIR__ . "/../OperatorFilterTrait.php";
 class StockOverview
 {
+    use OperatorFilterTrait;
     public $stock_movement_aid;
     public $stock_movement_date;
     public $stock_movement_type;
@@ -27,6 +29,7 @@ class StockOverview
     public $tblSalesOrder;
 
     public $filters;
+    private $numericColumns = ["current_qty", "products_low_stock_threshold"];
     public $column_start;
     public $column_total;
     public $column_search;
@@ -64,7 +67,7 @@ class StockOverview
                 // supports one status at a time anyway, so take the first
                 // selected value.
                 $rawStatus = is_array($item['value'])
-                    ? ($item['value'][0] ?? '')
+                    ? ($item["value"]["value"] ?? $item["value"][0] ?? "")
                     : $item['value'];
                 $inventoryStatusFilter = strtolower(trim((string) $rawStatus));
                 continue;
@@ -73,7 +76,12 @@ class StockOverview
             $col = $item['id'];
             $value = $item['value'];
 
-            if (is_array($value) && array_key_exists('min', $value)) {
+            if (is_array($value) && array_key_exists('op', $value)) {
+                $clause = $this->buildOperatorClause($col, $value, $i, $params);
+                if ($clause !== null) {
+                    $filterColumn[] = $clause;
+                }
+            } elseif (is_array($value) && array_key_exists('min', $value)) {
                 $params["min$i"] = (float) $value['min'];
 
                 $params["max$i"] = $value['max'] === ""

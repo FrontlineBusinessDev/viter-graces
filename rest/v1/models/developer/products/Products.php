@@ -1,6 +1,8 @@
 <?php
+require_once __DIR__ . "/../OperatorFilterTrait.php";
 class Products
 {
+    use OperatorFilterTrait;
     public $products_aid;
     public $products_status;
     public $products_is_active;
@@ -41,6 +43,7 @@ class Products
     public $tblReturnProduct;
 
     public $filters;
+    private $numericColumns = ["products_price", "products_cost", "products_stocks", "products_low_stock_threshold", "products_sales"];
     public $column_start;
     public $column_total;
     public $column_search;
@@ -74,7 +77,12 @@ class Products
             $col = $item['id'];
             $value = $item['value'];
 
-            if (is_array($value) && array_key_exists('min', $value)) {
+            if (is_array($value) && array_key_exists('op', $value)) {
+                $clause = $this->buildOperatorClause($col, $value, $i, $params);
+                if ($clause !== null) {
+                    $filterColumn[] = $clause;
+                }
+            } elseif (is_array($value) && array_key_exists('min', $value)) {
                 $params["min$i"] = (float) $value['min'];
                 $filterColumn[] = " CAST($col AS UNSIGNED) BETWEEN :min$i AND :max$i";
 

@@ -22,7 +22,13 @@ function allowedColumns()
         "stock_movement_location",
         "stock_movement_product_owner_name",
         "stock_movement_notes",
-        "inventory_status"
+        "inventory_status",
+        "products_name",
+        "products_sku",
+        "products_unit",
+        "products_low_stock_threshold",
+        "products_owner_name",
+        "current_qty"
     ];
     return $query;
 }
