@@ -509,7 +509,7 @@ class User
         try {
             $sql = "select user_account_key, ";
             $sql .= "user_account_aid as id, ";
-            $sql .= "user_account_role as role, ";
+            $sql .= "user_account_role as `role`, ";
             $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) as name ";
             $sql .= "from {$this->tblUserAccount} ";
             $sql .= "where user_account_key = :user_account_key ";
@@ -597,7 +597,7 @@ class User
             $sql .= "user_account_role as activity_log_user_role, ";
             $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) as activity_log_user_name, ";
             $sql .= "user_account_aid as id, ";
-            $sql .= "user_account_role as role, ";
+            $sql .= "user_account_role as `role`, ";
             $sql .= "CONCAT(user_account_first_name, ' ', user_account_last_name) as name ";
             $sql .= "from {$this->tblUserAccount} ";
             $sql .= "where user_account_email = :user_account_email ";
