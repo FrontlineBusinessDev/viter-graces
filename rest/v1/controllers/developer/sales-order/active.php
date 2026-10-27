@@ -28,6 +28,7 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
         $val->sales_order_aid = $_GET['id'];
         $val->sales_order_number = trim($data["sales_order_number"]);
         $val->sales_order_is_active = trim($data["isActive"]);
+        isOrderCreatedByOtherOwner($val, $data);
         $val->sales_order_due_date = $data["sales_order_due_date"];
 
         if ((float)$val->sales_order_is_active == 0) {

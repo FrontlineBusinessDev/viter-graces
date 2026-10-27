@@ -14,7 +14,10 @@ import InfiniteTable from "@/layout/table/InfiniteTable";
 import useQueryData from "@/services/useQueryData";
 import { setIsAdd } from "@/store/StoreAction";
 import { StoreContext } from "@/store/StoreContext";
-import { ProductOwnerId } from "@/utilities/productOwnerToken";
+import {
+  ProductOwnerId,
+  isOtherOwnersSalesOrder,
+} from "@/utilities/productOwnerToken";
 import React from "react";
 import ModalSalesOrders from "./ModalSalesOrders";
 import {
@@ -260,6 +263,8 @@ const SalesOrders = () => {
       // with at least one item still claimed by a pending/processed return -
       // block deleting the whole order from the table until that clears.
       blockDeleteField: "sales_order_has_return",
+      // product owners can only view orders created by someone else
+      readOnlyCondition: (row) => isOtherOwnersSalesOrder(store, row),
       // A paid order is settled - only "view" and "edit" remain available.
       hiddenActionStatuses: {
         actions: ["archive", "restore", "delete"],

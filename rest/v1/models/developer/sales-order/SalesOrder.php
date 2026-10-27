@@ -1138,6 +1138,27 @@ class SalesOrder
         return $query;
     }
 
+    // rows of this order (by sales_order_number) that were created by
+    // someone other than $this->userId
+    public function checkCreatedByOtherUser()
+    {
+        try {
+            $sql = "select sales_order_aid ";
+            $sql .= "from {$this->tblSalesOrder} ";
+            $sql .= "where sales_order_number = :sales_order_number ";
+            $sql .= "and sales_order_received_by_id != :sales_order_received_by_id ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "sales_order_number" => $this->sales_order_number,
+                "sales_order_received_by_id" => $this->userId,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
     // delete
     public function deleteById()
     {

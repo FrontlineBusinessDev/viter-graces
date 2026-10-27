@@ -41,12 +41,10 @@ if (isset($_SERVER['HTTP_AUTHORIZATION'])) {
             $val->userId = $data["loggedInId"] ?? 0;
             $query = checkReadByReceivedByIdLimit($val, allowedColumns());
             $total_result = checkReadByReceivedById($val, allowedColumns());
-        } elseif ((float)$val->userId == 0) {
+        } else {
+            // Admins and product owners both see every sales order.
             $query = checkReadLimit($val, allowedColumns());
             $total_result = checkReadAll($val, allowedColumns());
-        } else {
-            $query = checkReadByUserIdLimit($val, allowedColumns());
-            $total_result = checkReadByUserId($val, allowedColumns());
         }
 
         $data = getResultData($query);

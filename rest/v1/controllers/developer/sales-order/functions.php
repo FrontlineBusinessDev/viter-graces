@@ -26,6 +26,20 @@ function isOrderAssociatedWithReturn($object)
     checkExistence($count, "This sales order cannot be deleted because one or more of its items are linked to a return.");
 }
 
+// product owners can only edit/archive/delete sales orders they created.
+// shortcut: trusts the role/id the client sends (no server-side session yet),
+// move to the JWT once requests carry it.
+function isOrderCreatedByOtherOwner($object, $data)
+{
+    if (($data["activity_log_user_role"] ?? "") !== "product_owner") {
+        return;
+    }
+    $object->userId = $data["activity_log_user_id"] ?? 0;
+    $query = $object->checkCreatedByOtherUser();
+    // a failed query blocks too, rather than letting the change through
+    checkExistence($query ? $query->rowCount() : 1, "You can only modify sales orders you created.");
+}
+
 // check association - blocks editing the quantity of a sales order line
 // item that a pending/processed return still references. $newQty is the
 // submitted value, $oldQty is the qty this row had before the edit

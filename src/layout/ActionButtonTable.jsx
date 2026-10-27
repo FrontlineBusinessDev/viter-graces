@@ -19,9 +19,12 @@ const ActionButtonTable = ({ item, dataArray, setData, setItemEdit, path }) => {
   // dataArray.is_status by default, or item.viewOnlyStatusField when a
   // column needs to key off a different row field (e.g. Expenses: "paid"
   // lives on payment_status, since is_status there is the PO status)
-  const isViewOnly = item?.viewOnlyStatuses?.includes(
-    dataArray?.[item?.viewOnlyStatusField ?? "is_status"],
-  );
+  // readOnlyCondition (e.g. Sales Orders: another owner's order) does the
+  // same, but from a row predicate instead of a status
+  const isViewOnly =
+    item?.viewOnlyStatuses?.includes(
+      dataArray?.[item?.viewOnlyStatusField ?? "is_status"],
+    ) || !!item?.readOnlyCondition?.(dataArray);
 
   // when a column names a row field to watch (e.g. Sales Orders:
   // sales_order_has_return), disable delete instead of hiding it, with a

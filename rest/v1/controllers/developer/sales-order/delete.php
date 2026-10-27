@@ -17,6 +17,7 @@ if (array_key_exists("id", $_GET)) {
     $val->sales_order_aid = $_GET['id'];
     $val->sales_order_number = trim($data["sales_order_number"]);
     checkId($val->sales_order_aid);
+    isOrderCreatedByOtherOwner($val, $data);
 
     isOrderAssociatedWithReturn($val);
 

@@ -2,6 +2,9 @@ import Pills from "@/components/Pills";
 import ActionButtonMobile from "../ActionButtonMobile";
 import { ActionTableList } from "../ArrayValue";
 import { AmountWithPesoSign } from "@/components/PesoSign";
+import { StoreContext } from "@/store/StoreContext";
+import { isOtherOwnersSalesOrder } from "@/utilities/productOwnerToken";
+import React from "react";
 
 const SalesOrderMobileResponsive = ({
   rows,
@@ -12,6 +15,7 @@ const SalesOrderMobileResponsive = ({
   ishaveSubAdd = false,
   path = "",
 }) => {
+  const { store } = React.useContext(StoreContext);
   return (
     <>
       {isDefaultMobile === "sales-order" && (
@@ -98,6 +102,9 @@ const SalesOrderMobileResponsive = ({
                     blockDeleteField="sales_order_has_return"
                     viewOnlyStatuses={["paid"]}
                     allowEditWhenViewOnly
+                    readOnlyCondition={(row) =>
+                      isOtherOwnersSalesOrder(store, row)
+                    }
                   />
                 </div>
               </div>

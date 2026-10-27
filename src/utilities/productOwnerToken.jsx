@@ -17,6 +17,11 @@ export const ProductOwnerIdOnly = (store) => {
   return userId;
 };
 
+// true when a product owner is looking at a sales order someone else created
+export const isOtherOwnersSalesOrder = (store, row) =>
+  Number(ProductOwnerId(store)) > 0 &&
+  Number(row?.sales_order_received_by_id) !== Number(ProductOwnerId(store));
+
 // format the numbers separated by comma
 export const ProductOwnerName = (store) => {
   const userName =

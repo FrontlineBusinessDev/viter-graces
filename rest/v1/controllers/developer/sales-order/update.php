@@ -36,6 +36,7 @@ if (array_key_exists("id", $_GET)) {
     $val->sales_order_total_amount = $data["sales_order_total_amount"];
     $val->sales_order_tax_amount = $data["sales_order_tax_amount"];
     $val->sales_order_number = $data["sales_order_number"];
+    isOrderCreatedByOtherOwner($val, $data);
 
     // fetch the credit memo amount this order previously applied, before it
     // gets overwritten below, so only the difference is applied/released

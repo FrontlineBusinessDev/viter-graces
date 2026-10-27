@@ -21,6 +21,7 @@ const ActionButtonMobile = ({
   blockDeleteField,
   viewOnlyStatuses,
   allowEditWhenViewOnly = false,
+  readOnlyCondition,
 }) => {
   const { store, dispatch } = React.useContext(StoreContext);
 
@@ -106,7 +107,8 @@ const ActionButtonMobile = ({
                 )
               );
             })}
-            {dataArray?.is_active > 0 ? (
+            {/* read-only rows (e.g. another owner's sales order) keep view only */}
+            {readOnlyCondition?.(dataArray) ? null : dataArray?.is_active > 0 ? (
               isViewOnly ? (
                 // view-only rows can still opt into edit (e.g. Sales Orders:
                 // "paid") while archive stays hidden
