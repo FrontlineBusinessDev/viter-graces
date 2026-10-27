@@ -166,7 +166,7 @@ function checkLogin($object)
 {
     $response = new Response();
     $query = $object->readLogin();
-    if ($query->rowCount() == 0) {
+    if ($query === false || $query->rowCount() == 0) {
         $response->setSuccess(false);
         $error["count"] = 0;
         $error["success"] = false;

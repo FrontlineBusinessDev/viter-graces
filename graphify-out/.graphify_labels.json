@@ -1,8 +1,16 @@
 {
+<<<<<<< HEAD
   "0": "ref_react",
   "1": "stock-overview/functions.php",
   "3": "ref_lucide_react",
   "4": "returnError",
+=======
+  "0": "StoreContext.jsx",
+  "1": "DashboardCashflowChart.jsx",
+  "2": "ref_react",
+  "3": "AmountWithPesoSign",
+  "4": "google-api.php",
+>>>>>>> aeea1a75615bfe948dc7537db6a78a967ec99f5c
   "5": "core/functions.php",
   "6": "SMTP",
   "7": "PHPMailer",
@@ -21,10 +29,18 @@
   "20": "Customer",
   "21": "Role",
   "22": ".preSend",
+<<<<<<< HEAD
+=======
+  "23": "ref_lucide_react",
+>>>>>>> aeea1a75615bfe948dc7537db6a78a967ec99f5c
   "24": "SuppliersProduct",
   "25": "product-owner/functions.php",
   "26": "SuppliersPurchaseOrder",
   "27": "products/functions.php",
+<<<<<<< HEAD
+=======
+  "28": "config.jsx",
+>>>>>>> aeea1a75615bfe948dc7537db6a78a967ec99f5c
   "29": "AccountReceivable",
   "30": "StockMovement",
   "31": "ActivityLog",
@@ -62,6 +78,7 @@
   "63": "cash-sales/functions.php",
   "64": "sales-journal/functions.php",
   "65": "verify-recaptcha.php",
+<<<<<<< HEAD
   "67": ".createBody",
   "68": "stock-movement/functions.php",
   "69": "CopyrightYear.jsx",
@@ -69,6 +86,14 @@
   "71": "InfiniteTable.jsx",
   "72": ".setOAuth",
   "73": "OperatorFilterTrait.php",
+=======
+  "66": "InfiniteFilterWithDropDown.jsx",
+  "67": "google-api-personal.php",
+  "68": "App.jsx",
+  "69": "CopyrightYear.jsx",
+  "70": "getDateNow.jsx",
+  "72": "google-api-dwd.php",
+>>>>>>> aeea1a75615bfe948dc7537db6a78a967ec99f5c
   "74": "WarningNoteForComingSoon.jsx",
   "76": "getWeekName.jsx",
   "77": "accounts-payable.cy.js",
@@ -169,7 +194,11 @@
   "172": "products/read.php",
   "173": "products/read-all-active-by-product.php",
   "174": "products/read-all-by-active.php",
+<<<<<<< HEAD
   "175": "config.jsx",
+=======
+  "175": "ProtectedRouteUser.jsx",
+>>>>>>> aeea1a75615bfe948dc7537db6a78a967ec99f5c
   "176": "products/read-all-product-that-have-stock.php",
   "177": "products/search.php",
   "178": "products/update.php",
@@ -301,6 +330,15 @@
   "304": "purchase-order/read-group-by-filter.php",
   "305": "suppliers/read-group-by-filter.php",
   "306": "read-by-created-by.php",
+<<<<<<< HEAD
   "307": ".setMessageType",
   "308": "ref_react_icons"
+=======
+  "307": ".msgHTML",
+  "308": "Returns.php",
+  "309": "formatDate.jsx",
+  "310": "notifications/reset-password.php",
+  "311": "notifications/verify-account.php",
+  "312": "notifications/verify-email.php"
+>>>>>>> aeea1a75615bfe948dc7537db6a78a967ec99f5c
 }
