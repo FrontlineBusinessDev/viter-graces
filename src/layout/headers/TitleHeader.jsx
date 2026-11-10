@@ -99,7 +99,13 @@ const TitleHeader = ({ description }) => {
                 <optgroup label={`Select sub menu`}>
                   <option hidden>{store.tabValue?.replaceAll("-", " ")}</option>
                   {currentHeader.array_tab.map((itemTab, key) => {
+                    // same role rule as the desktop tabs above
+                    const canSeeTab =
+                      itemTab?.roles?.filter((itemr) =>
+                        itemr?.includes(userRole),
+                      )?.length > 0;
                     return (
+                      canSeeTab &&
                       !itemTab.ongoingDevelopment && (
                         <option
                           key={key}

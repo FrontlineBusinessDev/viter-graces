@@ -26,6 +26,7 @@ class User
     public $tblSuppliersPurchaseOrder;
     public $tblMovementStock;
     public $tblReturnProduct;
+    public $tblInstallmentPayment;
 
     public $filters;
     public $column_start;
@@ -45,6 +46,7 @@ class User
         $this->tblSuppliersPurchaseOrder = "graces_suppliers_purchase_order";
         $this->tblMovementStock = "graces_stock_movement";
         $this->tblReturnProduct = "graces_return_product";
+        $this->tblInstallmentPayment = "graces_installment_payment";
     }
 
     // Builds the "columnFilters" WHERE fragments shared by every read*()
@@ -662,7 +664,8 @@ class User
     }
 
     // check if the user account is already used by other modules
-    // (activity log, products, sales order, purchase order, stock movement, returns)
+    // (activity log, products, sales order, purchase order, stock movement, returns,
+    // and as the receiver / transactor of sales orders, purchase orders and installment payments)
     public function associatedById()
     {
         try {
@@ -683,6 +686,15 @@ class User
             $sql .= "union all ";
             $sql .= "select 1 from {$this->tblReturnProduct} ";
             $sql .= "where return_product_owner_id = :aid_return ";
+            $sql .= "union all ";
+            $sql .= "select 1 from {$this->tblSalesOrder} ";
+            $sql .= "where sales_order_received_by_id = :aid_received ";
+            $sql .= "union all ";
+            $sql .= "select 1 from {$this->tblSuppliersPurchaseOrder} ";
+            $sql .= "where purchase_order_transact_id = :aid_transact ";
+            $sql .= "union all ";
+            $sql .= "select 1 from {$this->tblInstallmentPayment} ";
+            $sql .= "where installment_payment_received_id = :aid_installment ";
             $sql .= "limit 1 ";
             $query = $this->connection->prepare($sql);
             $query->execute([
@@ -692,6 +704,9 @@ class User
                 "aid_purchase" => $this->user_account_aid,
                 "aid_stock" => $this->user_account_aid,
                 "aid_return" => $this->user_account_aid,
+                "aid_received" => $this->user_account_aid,
+                "aid_transact" => $this->user_account_aid,
+                "aid_installment" => (string) $this->user_account_aid,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

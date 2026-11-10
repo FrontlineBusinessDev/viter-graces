@@ -22,6 +22,7 @@ import ProfitAddLoss from "@/pages/developer/reports/profit-loss/ProfitAddLoss";
 import ReturnsReports from "@/pages/developer/reports/returns-reports/ReturnsReports";
 import SalesReports from "@/pages/developer/reports/sales-reports/SalesReports";
 import StockLevels from "@/pages/developer/reports/stock-leves/StockLevels";
+import UnlinkedData from "@/pages/developer/reports/unlinked-data/UnlinkedData";
 import Returns from "@/pages/developer/returns/Returns";
 import SalesOrders from "@/pages/developer/sales-orders/SalesOrders";
 import ProductOwner from "@/pages/developer/settings/ProductOwner";
@@ -222,6 +223,14 @@ export const routesDeveloper = [
     element: (
       <ProtectedRouteUser>
         <ReturnsReports />
+      </ProtectedRouteUser>
+    ),
+  },
+  {
+    path: `${devNavUrl}/developer/unlinked-data`,
+    element: (
+      <ProtectedRouteUser>
+        <UnlinkedData />
       </ProtectedRouteUser>
     ),
   },

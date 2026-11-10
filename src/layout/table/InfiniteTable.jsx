@@ -596,6 +596,7 @@ const InfiniteTable = ({
           isDeveloper={searchPayload.isDeveloper}
           userId={userId}
           role={store.credentials?.data?.role}
+          loggedInId={store.credentials?.data?.id}
           defaultFileName={path}
           onClose={() => setShowExportModal(false)}
         />

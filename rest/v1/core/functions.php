@@ -555,6 +555,42 @@ function checkNoSharedOrders($conn, $userId)
     }
 }
 
+// Sales orders / purchase orders / installment payments that this user only received or
+// transacted (the owner is someone else). That data belongs to other product owners, so it is
+// never deleted together with the user: the delete is stopped instead.
+function checkNoReceivedLinks($conn, $userId)
+{
+    try {
+        $count = function ($sql, $param) use ($conn) {
+            $query = $conn->prepare($sql);
+            $query->execute(["id" => $param]);
+            return (int) $query->fetchColumn();
+        };
+        $found = [
+            "Sales Order (received)" => $count("select count(*) from graces_sales_order where sales_order_received_by_id = :id", $userId),
+            "Purchase Order (transacted)" => $count("select count(*) from graces_suppliers_purchase_order where purchase_order_transact_id = :id", $userId),
+            "Installment Payment (received)" => $count("select count(*) from graces_installment_payment where installment_payment_received_id = :id", (string) $userId),
+        ];
+    } catch (PDOException $ex) {
+        logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+        returnError("There's a problem processing your request. (check received links)");
+    }
+
+    $parts = [];
+    foreach ($found as $label => $total) {
+        if ($total > 0) {
+            $parts[] = "{$label}: {$total}";
+        }
+    }
+    if (!empty($parts)) {
+        returnError(
+            "You cannot delete this account because it is already used in records owned by other users ("
+                . implode("; ", $parts)
+                . ")."
+        );
+    }
+}
+
 // Developer only: permanently delete a user account together with ALL data connected to it
 // (activity log, products, sales orders, purchase orders, stock movements, returns).
 // Call checkNoSharedOrders() first: orders shared with other product owners must not be deleted

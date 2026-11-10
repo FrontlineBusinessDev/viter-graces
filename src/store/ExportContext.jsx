@@ -34,6 +34,7 @@ export function ExportProvider({ children }) {
     isDeveloper = "0",
     userId = "",
     role = "",
+    loggedInId = "",
     fileName = "export",
   }) => {
     cancelRef.current = false;
@@ -69,6 +70,7 @@ export function ExportProvider({ children }) {
             id: "",
             userId,
             role,
+            loggedInId,
             columnFilters,
           },
           "post",

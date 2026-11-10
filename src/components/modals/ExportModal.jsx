@@ -10,6 +10,7 @@ const ExportModal = ({
   isDeveloper = "0",
   userId = "",
   role = "",
+  loggedInId = "",
   defaultFileName = "export",
   onClose = () => {},
 }) => {
@@ -55,6 +56,7 @@ const ExportModal = ({
       isDeveloper,
       userId,
       role,
+      loggedInId,
       fileName: fileName || "export",
     });
     onClose();

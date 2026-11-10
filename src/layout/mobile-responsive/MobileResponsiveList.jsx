@@ -18,6 +18,7 @@ import ReportAccountReceivableMobileResponsive from "./ReportAccountReceivableMo
 import ReportOverdueMobileResponsive from "./ReportOverdueMobileResponsive";
 import ReturnsMobileReponsive from "./ReturnsMobileReponsive";
 import ReturnsReportsMobileResponsive from "./ReturnsReportsMobileResponsive";
+import UnlinkedDataMobileResponsive from "./UnlinkedDataMobileResponsive";
 import RoleMobileReponsive from "./RoleMobileReponsive";
 import SalesOrderMobileResponsive from "./SalesOrderMobileResponsive";
 import SalesReportMobileResponsive from "./SalesReportMobileResponsive";
@@ -248,6 +249,12 @@ const MobileResponsiveList = ({
       {/* RETURNS REPORTS RESPONSIVE */}
       <ReturnsReportsMobileResponsive
         rows={rows}
+        isDefaultMobile={isDefaultMobile}
+      />
+      {/* UNLINKED DATA (records of deleted users) RESPONSIVE */}
+      <UnlinkedDataMobileResponsive
+        rows={rows}
+        setData={setData}
         isDefaultMobile={isDefaultMobile}
       />
       {/* DEFAULT RESPONSIVE */}

@@ -224,6 +224,15 @@ export const titleHeaderTab = (description) => {
           ongoingDevelopment: false,
           roles: ["admin", "developer", "product_owner"],
         },
+        {
+          icon: "",
+          title_tab: "unlinked-data",
+          description_tab:
+            "Records that still point to a user account that no longer exists.",
+          on_click: onClickTab,
+          ongoingDevelopment: false,
+          roles: ["developer"],
+        },
       ],
     },
     {
