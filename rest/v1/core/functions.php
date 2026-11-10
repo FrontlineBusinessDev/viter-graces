@@ -493,11 +493,73 @@ function isDeveloperRequester($conn, $data)
     }
 }
 
+// Sales orders and purchase orders of the user that are shared with other product owners
+// (the same order number also has lines owned by someone else). The stored journal / totals
+// of such an order cover the whole order and cannot be split per owner, so deleting only
+// this user's lines would leave them out of sync.
+function getSharedOrderNumbers($conn, $userId)
+{
+    try {
+        $sales = $conn->prepare(
+            "select distinct o.sales_order_number from graces_sales_order o
+            where o.sales_order_product_owner_id = :id
+            and exists (select 1 from graces_sales_order x
+                where x.sales_order_number = o.sales_order_number
+                and x.sales_order_product_owner_id != :other_id)
+            order by o.sales_order_number"
+        );
+        $sales->execute(["id" => $userId, "other_id" => $userId]);
+
+        $purchase = $conn->prepare(
+            "select distinct o.purchase_order_number from graces_suppliers_purchase_order o
+            where o.purchase_order_product_owner_id = :id
+            and exists (select 1 from graces_suppliers_purchase_order x
+                where x.purchase_order_number = o.purchase_order_number
+                and x.purchase_order_product_owner_id != :other_id)
+            order by o.purchase_order_number"
+        );
+        $purchase->execute(["id" => $userId, "other_id" => $userId]);
+
+        return [
+            "sales" => array_map('trim', $sales->fetchAll(PDO::FETCH_COLUMN)),
+            "purchase" => array_map('trim', $purchase->fetchAll(PDO::FETCH_COLUMN)),
+        ];
+    } catch (PDOException $ex) {
+        logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+        returnError("There's a problem processing your request. (check shared orders)");
+    }
+}
+
+// Stop the delete when the user shares sales orders / purchase orders with other product owners.
+function checkNoSharedOrders($conn, $userId)
+{
+    $shared = getSharedOrderNumbers($conn, $userId);
+    $format = function ($numbers) {
+        $shown = array_slice($numbers, 0, 10);
+        $more = count($numbers) - count($shown);
+        return implode(", ", $shown) . ($more > 0 ? " and {$more} more" : "");
+    };
+    $parts = [];
+    if (!empty($shared["sales"])) {
+        $parts[] = "Sales Order: " . $format($shared["sales"]);
+    }
+    if (!empty($shared["purchase"])) {
+        $parts[] = "Purchase Order: " . $format($shared["purchase"]);
+    }
+    if (!empty($parts)) {
+        returnError(
+            "You cannot delete this account because it shares orders with other product owners ("
+                . implode("; ", $parts)
+                . "). Resolve these orders first."
+        );
+    }
+}
+
 // Developer only: permanently delete a user account together with ALL data connected to it
 // (activity log, products, sales orders, purchase orders, stock movements, returns).
-// The sales journal and installment payments of an order are deleted only when no sales order
-// line is left for that order number, because one order number can hold lines of several
-// product owners. Everything runs in one transaction: either all of it is deleted or none.
+// Call checkNoSharedOrders() first: orders shared with other product owners must not be deleted
+// this way. The sales journal and installment payments of the user's orders are then deleted too.
+// Everything runs in one transaction: either all of it is deleted or none.
 // Returns the PDOStatement of the final user delete, or false on failure.
 function deleteUserAccountWithConnectedData($conn, $userId)
 {

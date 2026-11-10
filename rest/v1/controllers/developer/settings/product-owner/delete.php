@@ -23,6 +23,8 @@ if (array_key_exists("id", $_GET)) {
         if ((int) $data['activity_log_user_id'] === (int) $val->user_account_aid) {
             returnError("You cannot delete your own account.");
         }
+        // block if the product owner shares sales/purchase orders with other product owners
+        checkNoSharedOrders($conn, (int) $val->user_account_aid);
         $query = deleteUserAccountWithConnectedData($conn, (int) $val->user_account_aid);
         checkQuery($query, "There's a problem processing your request. (delete with connected data)");
     } else {
