@@ -469,6 +469,85 @@ function checkAssociatedByName($object)
     checkExistence($count, "You cannot delete this item because it is already associated with other module.");
 }
 
+// Is the requester an active Developer?
+// The requester id comes from the activity log payload, but the role is read from
+// the database so a client cannot claim to be a Developer by editing the payload.
+function isDeveloperRequester($conn, $data)
+{
+    $requesterId = $data['activity_log_user_id'] ?? 0;
+    if (!is_numeric($requesterId) || (int) $requesterId <= 0) {
+        return false;
+    }
+    try {
+        $query = $conn->prepare(
+            "select user_account_aid from graces_user_account
+            where user_account_aid = :id
+            and user_account_role = 'Developer'
+            and user_account_is_active = 1"
+        );
+        $query->execute(["id" => (int) $requesterId]);
+        return $query->rowCount() > 0;
+    } catch (PDOException $ex) {
+        logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+        return false;
+    }
+}
+
+// Developer only: permanently delete a user account together with ALL data connected to it
+// (activity log, products, sales orders, purchase orders, stock movements, returns).
+// The sales journal and installment payments of an order are deleted only when no sales order
+// line is left for that order number, because one order number can hold lines of several
+// product owners. Everything runs in one transaction: either all of it is deleted or none.
+// Returns the PDOStatement of the final user delete, or false on failure.
+function deleteUserAccountWithConnectedData($conn, $userId)
+{
+    try {
+        $conn->beginTransaction();
+        $id = ["id" => $userId];
+
+        // order numbers of the user's sales orders (needed before the lines are deleted)
+        $query = $conn->prepare("select distinct sales_order_number from graces_sales_order where sales_order_product_owner_id = :id");
+        $query->execute($id);
+        $orderNumbers = $query->fetchAll(PDO::FETCH_COLUMN);
+
+        $tables = [
+            "graces_stock_movement" => "stock_movement_product_owner_id",
+            "graces_return_product" => "return_product_owner_id",
+            "graces_sales_order" => "sales_order_product_owner_id",
+            "graces_suppliers_purchase_order" => "purchase_order_product_owner_id",
+            "graces_products" => "products_owner_id",
+            "graces_activity_log" => "activity_log_user_id",
+        ];
+        foreach ($tables as $table => $column) {
+            $conn->prepare("delete from {$table} where {$column} = :id")->execute($id);
+        }
+
+        // journal and installments of orders that no longer have any line
+        foreach ($orderNumbers as $orderNumber) {
+            $query = $conn->prepare("select 1 from graces_sales_order where sales_order_number = :number limit 1");
+            $query->execute(["number" => $orderNumber]);
+            if ($query->rowCount() > 0) {
+                continue; // another product owner still has a line in this order
+            }
+            $conn->prepare("delete from graces_sales_journal where sales_journal_order_number = :number")
+                ->execute(["number" => $orderNumber]);
+            $conn->prepare("delete from graces_installment_payment where installment_payment_code_number = :number")
+                ->execute(["number" => $orderNumber]);
+        }
+
+        $query = $conn->prepare("delete from graces_user_account where user_account_aid = :id");
+        $query->execute($id);
+        $conn->commit();
+        return $query;
+    } catch (PDOException $ex) {
+        if ($conn->inTransaction()) {
+            $conn->rollBack();
+        }
+        logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+        return false;
+    }
+}
+
 // Result data
 function getResultData($query)
 {

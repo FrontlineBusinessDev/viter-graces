@@ -17,10 +17,19 @@ if (array_key_exists("id", $_GET)) {
     // get data
     $val->user_account_aid = $_GET['id'];
     checkId($val->user_account_aid);
-    // block delete if the user is already used by other modules
-    checkAssociatedById($val);
 
-    $query = checkDelete($val);
+    if (isDeveloperRequester($conn, $data)) {
+        // Developer: delete the user together with all of its connected data
+        if ((int) $data['activity_log_user_id'] === (int) $val->user_account_aid) {
+            returnError("You cannot delete your own account.");
+        }
+        $query = deleteUserAccountWithConnectedData($conn, (int) $val->user_account_aid);
+        checkQuery($query, "There's a problem processing your request. (delete with connected data)");
+    } else {
+        // others: block delete if the user is already used by other modules
+        checkAssociatedById($val);
+        $query = checkDelete($val);
+    }
     // create activity log
     createActivityLog($valActivity, $data);
     returnSuccess($val, "User Account", $query);
