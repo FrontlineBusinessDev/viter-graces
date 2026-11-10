@@ -22,6 +22,10 @@ class User
     public $tblActivityLog;
     public $tblProducts;
     public $tblRole;
+    public $tblSalesOrder;
+    public $tblSuppliersPurchaseOrder;
+    public $tblMovementStock;
+    public $tblReturnProduct;
 
     public $filters;
     public $column_start;
@@ -37,6 +41,10 @@ class User
         $this->tblActivityLog = "graces_activity_log";
         $this->tblProducts = "graces_products";
         $this->tblRole = "graces_roles";
+        $this->tblSalesOrder = "graces_sales_order";
+        $this->tblSuppliersPurchaseOrder = "graces_suppliers_purchase_order";
+        $this->tblMovementStock = "graces_stock_movement";
+        $this->tblReturnProduct = "graces_return_product";
     }
 
     // Builds the "columnFilters" WHERE fragments shared by every read*()
@@ -653,34 +661,37 @@ class User
         return $query;
     }
 
-    // name
-    public function associatedByActivityLog()
+    // check if the user account is already used by other modules
+    // (activity log, products, sales order, purchase order, stock movement, returns)
+    public function associatedById()
     {
         try {
-            $sql = "select activity_log_user_name ";
-            $sql .= "from {$this->tblActivityLog} ";
-            $sql .= "where activity_log_user_id = :activity_log_user_id ";
+            $sql = "select 1 as associated from {$this->tblActivityLog} ";
+            $sql .= "where activity_log_user_id = :aid_log ";
+            $sql .= "union all ";
+            $sql .= "select 1 from {$this->tblProducts} ";
+            $sql .= "where products_owner_id = :aid_products ";
+            $sql .= "union all ";
+            $sql .= "select 1 from {$this->tblSalesOrder} ";
+            $sql .= "where sales_order_product_owner_id = :aid_sales ";
+            $sql .= "union all ";
+            $sql .= "select 1 from {$this->tblSuppliersPurchaseOrder} ";
+            $sql .= "where purchase_order_product_owner_id = :aid_purchase ";
+            $sql .= "union all ";
+            $sql .= "select 1 from {$this->tblMovementStock} ";
+            $sql .= "where stock_movement_product_owner_id = :aid_stock ";
+            $sql .= "union all ";
+            $sql .= "select 1 from {$this->tblReturnProduct} ";
+            $sql .= "where return_product_owner_id = :aid_return ";
+            $sql .= "limit 1 ";
             $query = $this->connection->prepare($sql);
             $query->execute([
-                "activity_log_user_id" => $this->user_account_aid,
-            ]);
-        } catch (PDOException $ex) {
-            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
-            $query = false;
-        }
-        return $query;
-    }
-
-    // name
-    public function associatedByProducts()
-    {
-        try {
-            $sql = "select products_owner_name ";
-            $sql .= "from {$this->tblActivityLog} ";
-            $sql .= "where products_owner_id = :products_owner_id ";
-            $query = $this->connection->prepare($sql);
-            $query->execute([
-                "products_owner_id" => $this->user_account_aid,
+                "aid_log" => $this->user_account_aid,
+                "aid_products" => $this->user_account_aid,
+                "aid_sales" => $this->user_account_aid,
+                "aid_purchase" => $this->user_account_aid,
+                "aid_stock" => $this->user_account_aid,
+                "aid_return" => $this->user_account_aid,
             ]);
         } catch (PDOException $ex) {
             logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);

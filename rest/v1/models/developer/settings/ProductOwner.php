@@ -629,6 +629,45 @@ class ProductOwner
         return $query;
     }
 
+    // check if the product owner is already used by other modules
+    // (activity log, products, sales order, purchase order, stock movement, returns)
+    public function associatedById()
+    {
+        try {
+            $sql = "select 1 as associated from {$this->tblActivityLog} ";
+            $sql .= "where activity_log_user_id = :aid_log ";
+            $sql .= "union all ";
+            $sql .= "select 1 from {$this->tblProducts} ";
+            $sql .= "where products_owner_id = :aid_products ";
+            $sql .= "union all ";
+            $sql .= "select 1 from {$this->tblSalesOrder} ";
+            $sql .= "where sales_order_product_owner_id = :aid_sales ";
+            $sql .= "union all ";
+            $sql .= "select 1 from {$this->tblSuppliersPurchaseOrder} ";
+            $sql .= "where purchase_order_product_owner_id = :aid_purchase ";
+            $sql .= "union all ";
+            $sql .= "select 1 from {$this->tblMovementStock} ";
+            $sql .= "where stock_movement_product_owner_id = :aid_stock ";
+            $sql .= "union all ";
+            $sql .= "select 1 from {$this->tblReturnProduct} ";
+            $sql .= "where return_product_owner_id = :aid_return ";
+            $sql .= "limit 1 ";
+            $query = $this->connection->prepare($sql);
+            $query->execute([
+                "aid_log" => $this->user_account_aid,
+                "aid_products" => $this->user_account_aid,
+                "aid_sales" => $this->user_account_aid,
+                "aid_purchase" => $this->user_account_aid,
+                "aid_stock" => $this->user_account_aid,
+                "aid_return" => $this->user_account_aid,
+            ]);
+        } catch (PDOException $ex) {
+            logError($ex->getMessage(), $ex->getFile(), ['line' => $ex->getLine(), 'code' => $ex->getCode()]);
+            $query = false;
+        }
+        return $query;
+    }
+
     // delete
     public function delete()
     {

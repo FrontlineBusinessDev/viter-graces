@@ -17,6 +17,8 @@ if (array_key_exists("id", $_GET)) {
     // get data
     $val->user_account_aid = $_GET['id'];
     checkId($val->user_account_aid);
+    // block delete if the user is already used by other modules
+    checkAssociatedById($val);
 
     $query = checkDelete($val);
     // create activity log

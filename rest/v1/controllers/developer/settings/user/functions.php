@@ -29,27 +29,7 @@ function updateConnectedMenu($object)
     checkUpdateProducts($object);
 }
 
-function checkAssociatedByActivityLog($object)
-{
-    $query = $object->associatedByActivityLog();
-    $count = $query->rowCount();
-    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
-}
-
-function checkAssociatedByProducts($object)
-{
-    $query = $object->associatedByProducts();
-    $count = $query->rowCount();
-    checkExistence($count, "You cannot delete this item because it is already associated with other module.");
-}
-// Reset password
-function checkAssociatedByMenu($object)
-{
-    checkAssociatedByActivityLog($object);
-    checkAssociatedByProducts($object);
-}
-
-// check association
+// allowed filter columns
 function allowedColumns()
 {
     $query = [
